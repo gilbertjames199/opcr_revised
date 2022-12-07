@@ -52,6 +52,7 @@
                     style="font-weight: bold !important; font-color: white">
                         WELCOME
                 </h4>
+                <div class="bgc-red-50">REED</div>
             </div>
 
             @if (count($errors) > 0)
