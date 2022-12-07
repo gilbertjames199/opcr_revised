@@ -46,13 +46,14 @@
                     <img class="img-fluid" src="images/logo.png" alt="">
                     <h3>WELCOME</h3>
                 </div>
+
             </div>
             <div class="hide_for_mobile">
                 <h4 class="fw-300 mB-10 font-weight-bold"
                     style="font-weight: bold !important; font-color: white">
                         WELCOME
                 </h4>
-                <div class="bgc-red-50">REED</div>
+
             </div>
 
             @if (count($errors) > 0)
@@ -74,6 +75,7 @@
             </div>
             @endif
             <form method="POST" action="{{ route('login') }}">
+
                 @csrf
                 <div class="mb-3">
                     <label class="text-normal text-light form-label">Username: </label>
