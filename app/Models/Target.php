@@ -21,7 +21,11 @@ class Target extends Model
         'planned_period_to',
         'planned_budget',
         'target_qty',
-        'onsite_tag'
+        'onsite_tag',
+        'target_qty1',
+        'target_qty2',
+        'target_qty3',
+        'target_qty4'
     ];
     public function accomp()
     {

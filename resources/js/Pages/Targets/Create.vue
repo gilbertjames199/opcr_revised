@@ -97,14 +97,37 @@
                         autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.planned_budget">{{ form.errors.description }}</div>
 
-                <label for="">TARGET QUANTITY</label>
+                <hr />
+                <label for="" >TARGET QUANTITY</label><br/>
+                <label for="">Q1</label>
                 <input type="number"
-                        v-model="form.target_qty"
+                    v-model="form.target_qty1"
+                    v-on:keypress="NumbersOnly"
+                    class="form-control"
+                    autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.target_qty1">{{ form.errors.target_qty1 }}</div>
+                <label for="">Q2</label>
+                <input type="number"
+                        v-model="form.target_qty2"
                         v-on:keypress="NumbersOnly"
                         class="form-control"
                         autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.target_qty">{{ form.errors.target_qty }}</div>
-
+                <div class="fs-6 c-red-500" v-if="form.errors.target_qty2">{{ form.errors.target_qty2 }}</div>
+                <label for="">Q3</label>
+                <input type="number"
+                        v-model="form.target_qty3"
+                        v-on:keypress="NumbersOnly"
+                        class="form-control"
+                        autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.target_qty3">{{ form.errors.target_qty3 }}</div>
+                <label for="">Q4</label>
+                <input type="number"
+                        v-model="form.target_qty4"
+                        v-on:keypress="NumbersOnly"
+                        class="form-control"
+                        autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.target_qty4">{{ form.errors.target_qty4 }}</div>
+                <hr />
                 <label for="">Indicator</label>
                 <input type="text" v-model="form.idindicator" class="form-control d-none" autocomplete="chrome-off">
                 <select v-model="form.idindicator" class="form-control" >
@@ -184,6 +207,10 @@ export default {
                     planned_budget: "",
                     target_qty: "",
                     onsite_tag: "",
+                    target_qty1: "",
+                    target_qty2: "",
+                    target_qty3: "",
+                    target_qty4: "",
                     id: null
                 }),
                 bar: [],
@@ -210,6 +237,10 @@ export default {
                 this.form.planned_budget=this.editData.planned_budget
                 this.form.target_qty=this.editData.target_qty
                 this.form.onsite_tag=this.editData.onsite_tag
+                this.form.target_qty1=this.editData.target_qty1
+                this.form.target_qty2=this.editData.target_qty2
+                this.form.target_qty3=this.editData.target_qty3
+                this.form.target_qty4=this.editData.target_qty4
                 this.form.id=this.editData.id
             } else {
                 this.pageTitle = "Create"
@@ -246,6 +277,8 @@ export default {
                 );
             },
             submit() {
+                this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
+                alert(this.form.target_qty);
                 if (this.editData !== undefined) {
                     this.form.patch("/targets/" + this.form.id, this.form);
                 } else {

@@ -26,14 +26,7 @@ class TargetController extends Controller
         if($request->id_raao){
             $raao_id1=$request->id_raao;
         }
-        //dd($request->id_raao);
-        //dd('request->id_raao'.$request->id_raao);
-        // /dd($request->url());
 
-        // DB::table(DB::raw('targets T'))
-        // ->select('t.description','t.brgy',DB::raw('(SELECT SUM(a.accomplishment_qty) FROM accomplishments WHERE id=t.id) AS \'sum_accomp'))
-        // ->join(DB::raw('accomplishments A'),'T.id','=','A.idtarget')
-        // ->get();
         $data = $this->model
                 ->with('accomp')
                 ->where('idraao', $raao_id1)
@@ -173,11 +166,16 @@ class TargetController extends Controller
             'planned_budget' => 'required',
             'target_qty' => 'required',
             'onsite_tag' => 'required',
+            'target_qty1'=> 'required',
+            'target_qty2'=> 'required',
+            'target_qty3'=> 'required',
+            'target_qty4'=> 'required',
         ]);
 
         $this->model->create($attributes);
         $request->pass='';
         $request->id_raao=$request->idraao;
+        //dd($attributes);
         //return redirect('/targets')->with('raao_id',$request->idraao)->with('message', 'Target added');
         return redirect('/targets?id_raao='.$request->id_raao)
                 ->with('message','Target added');
@@ -195,7 +193,11 @@ class TargetController extends Controller
             'planned_period_to',
             'planned_budget',
             'target_qty',
-            'onsite_tag'
+            'onsite_tag',
+            'target_qty1',
+            'target_qty2',
+            'target_qty3',
+            'target_qty4'
         ]);
         $indicator=DB::table('indicators')->select('id','description')->get();
         $raao=DB::connection('mysql2')
@@ -252,7 +254,11 @@ class TargetController extends Controller
             'planned_period_to'=>$request->planned_period_to,
             'planned_budget'=>$request->planned_budget,
             'target_qty'=>$request->target_qty,
-            'onsite_tag'=>$request->onsite_tag
+            'onsite_tag'=>$request->onsite_tag,
+            'target_qty1'=>$request->target_qty1,
+            'target_qty2'=>$request->target_qty2,
+            'target_qty3'=>$request->target_qty3,
+            'target_qty4'=>$request->target_qty4,
         ]);
 
         return redirect('/targets?id_raao='.$request->idraao)
