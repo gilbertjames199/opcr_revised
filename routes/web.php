@@ -137,8 +137,8 @@ Route::prefix('print')->group(function(){
                                         'i.description',
                                         DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
                             ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
-                            ->Join(DB::raw('my_raao_new.targets t'),'t.idraao','=','b.idraao')
-                            ->Join(DB::raw('my_raao_new.indicators i'),'t.idindicator','=','i.id')
+                            ->leftJoin(DB::raw('my_raao_new.targets t'),'t.idraao','=','b.idraao')
+                            ->leftJoin(DB::raw('my_raao_new.indicators i'),'t.idindicator','=','i.id')
                             ->get();
 
         $userType=request('userType');
