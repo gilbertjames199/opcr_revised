@@ -218,6 +218,81 @@ class RAAOController extends Controller
                             ],
                     ]);
     }
+    public function raao_jasper(Request $request){
+        $today = Carbon::now();
+        $year = ''.$today->year.'';
+
+        $data_new=DB::connection('mysql2')
+                            ->table(DB::raw('(select raaohs.tyear,
+                                                    raaohs.aipcode,
+                                                    raaohs.fraodesc,
+                                                    raaohs.falltcod,
+                                                    raaohs.ffunccod,
+                                                    raaohs.recid,
+                                                    sources.fsource from raaohs
+                                                    left join sources on
+                                                    sources.recid = raaohs.idsource
+                                                    where fraotype>\'2\') a'))
+                            ->select('a.tyear',
+                                        'a.fraodesc',
+                                        'a.falltcod',
+                                        'a.aipcode',
+                                        'a.ffunccod',
+                                        'a.fsource',
+                                        'a.recid',
+                                        'b.appropriation',
+                                        'b.obligations',
+                                        'b.idraao',
+                                        't.target_qty',
+                                        't.target_qty1',
+                                        't.target_qty2',
+                                        't.target_qty3',
+                                        't.target_qty4',
+                                        't.idraao',
+                                        't.description',
+                                        'i.description',
+                                        DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
+                            ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
+                            ->leftJoin(DB::raw('my_raao_new.targets t'),'t.idraao','=','b.idraao')
+                            ->leftJoin(DB::raw('my_raao_new.indicators i'),'t.idindicator','=','i.id')
+                            ->get()->map(function($item){
+                                $userType=request('userType');
+                                return [
+                                            'userType'=>$userType,
+                                            'lgu'=>request('lgu'),
+                                            'dept'=>request('dept'),
+                                            'dept_head'=>'Department Head Name',
+                                            'lce'=>'Local Chief Executive',
+                                            'fraodesc'=>$item->fraodesc,
+                                            'appropriation'=>$item->appropriation,
+                                            'description'=>$item->description,
+                                            'target_qty1'=>$item->target_qty1,
+                                            'target_qty2'=>$item->target_qty2,
+                                            'target_qty3'=>$item->target_qty3,
+                                            'target_qty4'=>$item->target_qty4
+                                        ];
+                            });
+
+
+        if(auth()){
+            return $data_new;
+        }else{
+            $data_new=[
+                'userType'=>'',
+                'lgu'=>'',
+                'dept'=>'',
+                'dept_head'=>'',
+                'lce'=>'',
+                'fraodesc'=>'',
+                'appropriation'=>'',
+                'description'=>'',
+                'target_qty1'=>'',
+                'target_qty2'=>'',
+                'target_qty3'=>'',
+                'target_qty4'=>''
+            ];
+        }
+    }
 }
 class RAAO{
     public $id;
