@@ -137,8 +137,8 @@ Route::prefix('print')->group(function(){
                                         'i.description',
                                         DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
                             ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
-                            ->Join(DB::raw('my_raao_new.targets t'),'t.idraao','=','b.idraao')
-                            ->Join(DB::raw('my_raao_new.indicators i'),'t.idindicator','=','i.id')
+                            ->leftJoin(DB::raw('my_raao_new.targets t'),'t.idraao','=','b.idraao')
+                            ->leftJoin(DB::raw('my_raao_new.indicators i'),'t.idindicator','=','i.id')
                             ->get();
 
         $userType=request('userType');
@@ -149,6 +149,70 @@ Route::prefix('print')->group(function(){
                     'dept_head'=>'Department Head Name',
                     'lce'=>'Local Chief Executive',
                     'data'=>$data_new
+                ];
+    });
+    Route::get('/PPA_Data/{year?}/{userType?}/{lgu?}/{dept?}',function(){
+        $today = Carbon::now();
+        $year = ''.$today->year.'';
+        $data_new=DB::connection('mysql2')
+                            ->table(DB::raw('(select raaohs.tyear,
+                                                    raaohs.aipcode,
+                                                    raaohs.fraodesc,
+                                                    raaohs.falltcod,
+                                                    raaohs.ffunccod,
+                                                    raaohs.recid,
+                                                    sources.fsource from raaohs
+                                                    left join sources on
+                                                    sources.recid = raaohs.idsource
+                                                    where fraotype>\'2\') a'))
+                            ->select('a.tyear',
+                                        'a.fraodesc',
+                                        'a.falltcod',
+                                        'a.aipcode',
+                                        'a.ffunccod',
+                                        'a.fsource',
+                                        'a.recid',
+                                        'b.appropriation',
+                                        'b.obligations',
+                                        'b.idraao',
+                                        't.target_qty',
+                                        't.target_qty1',
+                                        't.target_qty2',
+                                        't.target_qty3',
+                                        't.target_qty4',
+                                        't.idraao',
+                                        't.description',
+                                        'i.description',
+                                        DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
+                            ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
+                            ->leftJoin(DB::raw('my_raao_new.targets t'),'t.idraao','=','b.idraao')
+                            ->leftJoin(DB::raw('my_raao_new.indicators i'),'t.idindicator','=','i.id')
+                            ->get();
+
+        $userType=request('userType');
+
+        $ppa_desc=$data_new->pluck('fraodesc');
+        $total_cost = $data_new->pluck('appropriation');
+        $indicator = $data_new->pluck('description');
+        $target = $data_new->pluck('target_qty');
+        $target_qty1 = $data_new->pluck('target_qty1');
+        $target_qty2 = $data_new->pluck('target_qty2');
+        $target_qty3 = $data_new->pluck('target_qty3');
+        $target_qty4 = $data_new->pluck('target_qty4');
+        return [
+                    'userType'=>$userType,
+                    'lgu'=>request('lgu'),
+                    'dept'=>request('dept'),
+                    'dept_head'=>'Department Head Name',
+                    'lce'=>'Local Chief Executive',
+                    'ppa_desc'=>$ppa_desc,
+                    'total_cost'=>$total_cost,
+                    'indicator'=>$indicator,
+                    'target'=>$target,
+                    'target_qty1'=>$target_qty1,
+                    'target_qty2'=>$target_qty2,
+                    'target_qty3'=>$target_qty3,
+                    'target_qty4'=>$target_qty4,
                 ];
     });
 });

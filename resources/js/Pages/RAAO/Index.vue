@@ -25,6 +25,7 @@
                         </option>
                     </select>
                 </div>
+                <Link href="http://192.168.6.23:8080/jasperserver/flow.html? pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden _flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FPPA%2FActual_Print&reportUnit=%2Freports%2FPPA%2FActual_Print%2Fraao_doc_grouped&standAlone=true&decorate=no&year=2022&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO">Print</Link>
             </div>
         </div>
         <div class="masonry-sizer col-md-6"></div>
