@@ -3,83 +3,106 @@
 namespace App\Http\Controllers;
 
 use App\Models\IntermediateOutCome;
+use App\Models\Outcome;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IntermediateOutcomeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct(IntermediateOutCome $model)
     {
-        //
+        //$this->middleware(['auth','verified']);
+        $this->model = $model;
+    }
+    public function index(Request $request, $id)
+    {
+        $data = $this->model
+                ->where('idoutcome',$id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
+
+        return inertia('InterOutcome/Index',[
+            "data"=>$data,
+            "idoutcome"=>$id,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function create(Request $request, $id)
     {
-        //
+        $outcomes=Outcome::get();
+        return inertia('InterOutcome/Create',[
+            'idoutcome'=>$id,
+            'outcomes'=>$outcomes,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $attributes = $request->validate([
+            'io_desc' => 'required',
+            'idoutcome' => 'required',
+        ]);
+        //dd($attributes);
+        $this->model->create($attributes);
+        $request->pass='';
+        return redirect('/inter_outcome/'.$request->idoutcome)
+                ->with('message','Outcome added');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\IntermediateOutCome  $intermediateOutCome
-     * @return \Illuminate\Http\Response
-     */
     public function show(IntermediateOutCome $intermediateOutCome)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\IntermediateOutCome  $intermediateOutCome
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(IntermediateOutCome $intermediateOutCome)
+    public function edit(Request $request, $id, $idoutcome)
     {
-        //
+        $outcomes=Outcome::get();
+        $data = $this->model->where('id', $id)->first([
+            'id',
+            'io_desc',
+            'idoutcome'
+        ]);
+
+        return inertia('InterOutcome/Create', [
+            "editData" => $data,
+            "outcomes"=>$outcomes,
+            "idoutcome"=> $idoutcome,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\IntermediateOutCome  $intermediateOutCome
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, IntermediateOutCome $intermediateOutCome)
+    public function update(Request $request)
     {
-        //
+        $data = $this->model->findOrFail($request->id);
+        //dd($request->plan_period);
+        $data->update([
+            'io_desc'=>$request->io_desc,
+            'idoutcome'=>$request->idoutcome
+        ]);
+
+        return redirect('/inter_outcome/'.$request->idoutcome)
+                ->with('message','Outcome updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\IntermediateOutCome  $intermediateOutCome
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(IntermediateOutCome $intermediateOutCome)
+    public function destroy(Request $request, $id, $idoutcome)
     {
-        //
+        //dd('delete me!'.$id);
+        $data = $this->model->findOrFail($id);
+        $data->delete();
+        //dd($request->raao_id);
+        return redirect('/inter_outcome/'.$idoutcome)->with('warning', 'Intermediate Outcome deleted');
     }
 }

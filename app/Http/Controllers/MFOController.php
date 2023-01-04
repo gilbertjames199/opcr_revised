@@ -3,83 +3,112 @@
 namespace App\Http\Controllers;
 
 use App\Models\MajorFinalOutput;
+use App\Models\Strategy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MFOController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct(MajorFinalOutput $model)
     {
-        //
+        //$this->middleware(['auth','verified']);
+        $this->model = $model;
+    }
+    public function index(Request $request, $id)
+    {
+        $idinteroutcome = Strategy::where('id',$id)
+                        ->value('idinteroutcome');
+
+        $data = MajorFinalOutput::where('idstrategy',$id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
+        //dd($data->pluck('mfo_desc'));
+        return inertia('MFOs/Index',[
+            "data"=>$data,
+            "idstrategy"=>$id,
+            "idinteroutcome"=>$idinteroutcome,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function create($id)
     {
-        //
+        $strats= Strategy::get();
+        return inertia('MFOs/Create', [
+            'strategies'=>$strats,
+            'idstrategy'=>$id,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $attributes = $request->validate([
+                            'mfo_desc' => 'required',
+                            'idstrategy' => 'required',
+                        ]);
+        //dd($attributes);
+        $this->model->create($attributes);
+        $request->pass='';
+        return redirect('/mfos/'.$request->idstrategy)
+                ->with('message','MFO added');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\MajorFinalOutput  $majorFinalOutput
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(MajorFinalOutput $majorFinalOutput)
     {
-        //
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\MajorFinalOutput  $majorFinalOutput
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(MajorFinalOutput $majorFinalOutput)
+
+    public function edit(MajorFinalOutput $majorFinalOutput, $id, $idstrategy)
     {
-        //
+        $strategies=Strategy::get();
+        $data = $this->model->where('id', $id)->first([
+            'id',
+            'mfo_desc',
+            'idstrategy'
+        ]);
+
+        return inertia('MFOs/Create', [
+            "editData" => $data,
+            "strategies"=>$strategies,
+            "idstrategy"=> $idstrategy,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\MajorFinalOutput  $majorFinalOutput
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, MajorFinalOutput $majorFinalOutput)
     {
-        //
+        $data = $majorFinalOutput::findOrFail($request->id);
+        //dd($request->plan_period);
+        $data->update([
+            'mfo_desc'=>$request->mfo_desc,
+            'idstrategy'=>$request->idstrategy
+        ]);
+
+        return redirect('/mfos/'.$request->idstrategy)
+                ->with('message','MFOs updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\MajorFinalOutput  $majorFinalOutput
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(MajorFinalOutput $majorFinalOutput)
+
+    public function destroy(Request $request, $id, $idstrategy)
     {
-        //
+        $data = $this->model->findOrFail($id);
+        $data->delete();
+        //dd($request->raao_id);
+        return redirect('/mfos/'.$idstrategy)->with('warning', 'MFO deleted');
     }
 }

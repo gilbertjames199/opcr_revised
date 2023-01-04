@@ -139,7 +139,7 @@ class TargetController extends Controller
         $mun=DB::table('municipalities')
                         ->select('citymunDesc','citymunCode')
                         ->get();
-        //dd($raao_id);
+        //dd($mun);
         return inertia('Targets/Create',[
             'indicator'=>$indicator,
             'mun'=>$mun,

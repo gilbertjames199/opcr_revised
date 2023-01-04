@@ -218,10 +218,7 @@ class RAAOController extends Controller
                             ],
                     ]);
     }
-    public function raao_jasper(Request $request){
-        $today = Carbon::now();
-        $year = ''.$today->year.'';
-
+    public function rrr(Request $request){
         $data_new=DB::connection('mysql2')
                             ->table(DB::raw('(select raaohs.tyear,
                                                     raaohs.aipcode,
@@ -272,26 +269,138 @@ class RAAOController extends Controller
                                             'target_qty4'=>$item->target_qty4
                                         ];
                             });
+        //************************************* */
+        $data_new=DB::connection('mysql2')
+                    ->table(DB::raw('(select raaohs.tyear,
+                                    raaohs.aipcode,
+                                    raaohs.fraodesc,
+                                    raaohs.falltcod,
+                                    raaohs.ffunccod,
+                                    raaohs.recid,
+                                    sources.fsource from raaohs
+                                    left join sources on
+                                    sources.recid = raaohs.idsource
+                                    where fraotype>\'2\') a'))
+                    ->select('a.tyear',
+                            'a.fraodesc',
+                            'a.falltcod',
+                            'a.aipcode',
+                            'a.ffunccod',
+                            'a.fsource',
+                            'a.recid',
+                            'b.appropriation',
+                            'b.obligations',
+                            'b.idraao',
+                            DB::raw('group_concat(t.target_qty) as target_qty'),
+                            DB::raw('group_concat(t.target_qty1,"-") as target_qty1'),
+                            DB::raw('group_concat(t.target_qty2) as target_qty2'),
+                            DB::raw('group_concat(t.target_qty3) as target_qty3'),
+                            DB::raw('group_concat(t.target_qty4) as target_qty4'),
+                            DB::raw('group_concat(t.idraao) as idraao'),
+                            DB::raw('group_concat(t.description) as target_description'),
+                            DB::raw('group_concat(i.description) as description'),
+                            DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
+                    ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
+                    ->Join(DB::raw('my_raao_new.targets t'),'t.idraao','=','b.idraao')
+                    ->Join(DB::raw('my_raao_new.indicators i'),'t.idindicator','=','i.id')
+                    ->groupBy('a.recid')
+                    ->get()
+                    ->map(function($item){
+                        $userType=request('userType');
+                        return [
+                                    'userType'=>$userType,
+                                    'lgu'=>request('lgu'),
+                                    'dept'=>request('dept'),
+                                    'dept_head'=>'Department Head Name',
+                                    'lce'=>'Local Chief Executive',
+                                    'fraodesc'=>$item->fraodesc,
+                                    'appropriation'=>$item->appropriation,
+                                    'description'=>$item->description,
+                                    'target_qty1'=>$item->target_qty1,
+                                    'target_qty2'=>$item->target_qty2,
+                                    'target_qty3'=>$item->target_qty3,
+                                    'target_qty4'=>$item->target_qty4
+                                ];
+                    });
+    }
+    public function raao_jasper(Request $request){
+        $today = Carbon::now();
+        $year = ''.$today->year.'';
 
 
-        if(auth()){
-            return $data_new;
-        }else{
-            $data_new=[
-                'userType'=>'',
-                'lgu'=>'',
-                'dept'=>'',
-                'dept_head'=>'',
-                'lce'=>'',
-                'fraodesc'=>'',
-                'appropriation'=>'',
-                'description'=>'',
-                'target_qty1'=>'',
-                'target_qty2'=>'',
-                'target_qty3'=>'',
-                'target_qty4'=>''
-            ];
-        }
+                    //dd($data_new);
+
+
+        // if(Auth::user()){
+        // }else{
+        //     $data_new=[
+        //         'userType'=>'',
+        //         'lgu'=>'',
+        //         'dept'=>'',
+        //         'dept_head'=>'',
+        //         'lce'=>'',
+        //         'fraodesc'=>'',
+        //         'appropriation'=>'',
+        //         'description'=>'',
+        //         'target_qty1'=>'',
+        //         'target_qty2'=>'',
+        //         'target_qty3'=>'',
+        //         'target_qty4'=>''
+        //     ];
+        // }
+        $data_new=DB::connection('mysql2')
+                    ->table(DB::raw('(select raaohs.tyear,
+                                    raaohs.aipcode,
+                                    raaohs.fraodesc,
+                                    raaohs.falltcod,
+                                    raaohs.ffunccod,
+                                    raaohs.recid,
+                                    sources.fsource from raaohs
+                                    left join sources on
+                                    sources.recid = raaohs.idsource
+                                    where fraotype>\'2\') a'))
+                    ->select('a.tyear',
+                            'a.fraodesc',
+                            'a.falltcod',
+                            'a.aipcode',
+                            'a.ffunccod',
+                            'a.fsource',
+                            'a.recid',
+                            'b.appropriation',
+                            'b.obligations',
+                            'b.idraao',
+                            DB::raw('group_concat(t.target_qty) as target_qty'),
+                            DB::raw('group_concat(t.target_qty1,"-") as target_qty1'),
+                            DB::raw('group_concat(t.target_qty2) as target_qty2'),
+                            DB::raw('group_concat(t.target_qty3) as target_qty3'),
+                            DB::raw('group_concat(t.target_qty4) as target_qty4'),
+                            DB::raw('group_concat(t.idraao) as idraao'),
+                            DB::raw('group_concat(t.description) as target_description'),
+                            DB::raw('group_concat(i.description) as description'),
+                            DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
+                    ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
+                    ->Join(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
+                    ->Join(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
+                    ->groupBy('a.recid')
+                    ->get()
+                    ->map(function($item){
+                        $userType=request('userType');
+                        return [
+                                    'userType'=>$userType,
+                                    'lgu'=>request('lgu'),
+                                    'dept'=>request('dept'),
+                                    'dept_head'=>'Department Head Name',
+                                    'lce'=>'Local Chief Executive',
+                                    'fraodesc'=>$item->fraodesc,
+                                    'appropriation'=>$item->appropriation,
+                                    'description'=>$item->description,
+                                    'target_qty1'=>$item->target_qty1,
+                                    'target_qty2'=>$item->target_qty2,
+                                    'target_qty3'=>$item->target_qty3,
+                                    'target_qty4'=>$item->target_qty4
+                                ];
+                    });
+        return $data_new;
     }
 }
 class RAAO{

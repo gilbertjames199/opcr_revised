@@ -17,11 +17,15 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\AccomplishmentController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\IndicatorController;
+use App\Http\Controllers\IntermediateOutcomeController;
+use App\Http\Controllers\MFOController;
+use App\Http\Controllers\OutcomeController;
 use App\Http\Controllers\RAAOController;
 use App\Http\Controllers\PlacesController;
+use App\Http\Controllers\StrategyController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
-
+use App\Models\IntermediateOutcome;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -100,6 +104,48 @@ Route::middleware('auth')->group(function() {
         Route::post('/bar',[PlacesController::class,'getBarangays']);
     });
 
+    //Outcome
+    Route::prefix('/outcome')->group(function(){
+        ///outcome/${dat.id}/edit
+        Route::get('/',[OutcomeController::class,'index']);
+        Route::get('/create',[OutcomeController::class,'create']);
+        Route::post('/store',[OutcomeController::class,'store']);
+        Route::get('/{id}/edit', [OutcomeController::class, 'edit']);
+        Route::patch('/{id}', [OutcomeController::class, 'update']);
+        Route::delete('/{id}', [OutcomeController::class, 'destroy']);
+    });
+
+    //Intermediate Outcomes
+    ///inter_outcome/${dat.id}
+    Route::prefix('/inter_outcome')->group(function(){
+        //create/${idoutcome}
+        //this.$inertia.delete("/inter_outcome/" + id+"/"+this.idoutcome);
+        Route::get('/{id}',[IntermediateOutcomeController::class,'index']);
+        Route::get('/create/{id}',[IntermediateOutcomeController::class,'create']);
+        Route::post('/store',[IntermediateOutcomeController::class,'store']);
+        Route::delete('/{id}/{idoutcome}', [IntermediateOutcomeController::class, 'destroy']);
+        Route::get('/{id}/{idoutcome}/edit', [IntermediateOutcomeController::class, 'edit']);
+        Route::patch('/', [IntermediateOutcomeController::class, 'update']);
+    });
+
+    Route::prefix('/strategies')->group(function(){
+        Route::get('/{id}',[StrategyController::class,'index']);
+        Route::get('/create/{id}',[StrategyController::class,'create']);
+        Route::post('/store',[StrategyController::class,'store']);
+        Route::delete('/{id}/{idoutcome}', [StrategyController::class, 'destroy']);
+        Route::get('/{id}/{idinteroutcome}/edit', [StrategyController::class, 'edit']);
+        Route::patch('/', [StrategyController::class, 'update']);
+    });
+
+    Route::prefix('/mfos')->group(function(){
+        Route::get('/{id}',[MFOController::class,'index']);
+        Route::get('/create/{id}',[MFOController::class,'create']);
+        Route::post('/store',[MFOController::class,'store']);
+        Route::get('/{id}/{idinteroutcome}/edit', [MFOController::class, 'edit']);
+        Route::patch('/', [MFOController::class, 'update']);
+        Route::delete('/{id}/{idoutcome}', [MFOController::class, 'destroy']);
+    });
+    //
 });
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);
