@@ -575,7 +575,6 @@ var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 var _hoisted_12 = {
-  key: 0,
   "class": "nav-item"
 };
 
@@ -584,6 +583,38 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "icon-holder"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "20",
+  height: "20",
+  fill: "currentColor",
+  "class": "bi bi-person-rolodex",
+  viewBox: "0 0 16 16"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M1 1a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h.5a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h.5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6.707L6 1.293A1 1 0 0 0 5.293 1H1Zm0 1h4.293L6 2.707A1 1 0 0 0 6.707 3H15v10h-.085a1.5 1.5 0 0 0-2.4-.63C11.885 11.223 10.554 10 8 10c-2.555 0-3.886 1.224-4.514 2.37a1.5 1.5 0 0 0-2.4.63H1V2Z"
+})])], -1
+/* HOISTED */
+);
+
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "title"
+}, "Outcome", -1
+/* HOISTED */
+);
+
+var _hoisted_16 = {
+  key: 0,
+  "class": "nav-item"
+};
+
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "icon-holder"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -599,7 +630,7 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Indicators", -1
 /* HOISTED */
@@ -618,7 +649,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("ALL REPORTS"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Users\n                <li class=\"nav-item\">\n                    <Link class=\"sidebar-link\" href=\"/users\">\n                        <span></span>\n                        <span class=\"icon-holder\">\n                                <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-people\" viewBox=\"0 0 16 16\">\n                                <path d=\"M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z\"/>\n                            </svg>\n                        </span>\n                        <span class=\"title\">Users</span>\n                    </Link>\n                </li>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("TIMESHEETS"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": "sidebar-link",
     href: "/raao"
   }, {
@@ -628,12 +659,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })]), _ctx.$page.props.can.can_access_indicators ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    "class": "sidebar-link",
+    href: "/outcome"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_13, _hoisted_14, _hoisted_15];
+    }),
+    _: 1
+    /* STABLE */
+
+  })]), _ctx.$page.props.can.can_access_indicators ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": "sidebar-link",
     href: "/indicators"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_13, _hoisted_14, _hoisted_15];
+      return [_hoisted_17, _hoisted_18, _hoisted_19];
     }),
     _: 1
     /* STABLE */
@@ -1329,6 +1370,54 @@ var map = {
 		"./resources/js/Pages/Indicators/Index.vue",
 		"resources_js_Pages_Indicators_Index_vue"
 	],
+	"./InterOutcome/Create": [
+		"./resources/js/Pages/InterOutcome/Create.vue",
+		"resources_js_Pages_InterOutcome_Create_vue"
+	],
+	"./InterOutcome/Create.vue": [
+		"./resources/js/Pages/InterOutcome/Create.vue",
+		"resources_js_Pages_InterOutcome_Create_vue"
+	],
+	"./InterOutcome/Index": [
+		"./resources/js/Pages/InterOutcome/Index.vue",
+		"resources_js_Pages_InterOutcome_Index_vue"
+	],
+	"./InterOutcome/Index.vue": [
+		"./resources/js/Pages/InterOutcome/Index.vue",
+		"resources_js_Pages_InterOutcome_Index_vue"
+	],
+	"./MFOs/Create": [
+		"./resources/js/Pages/MFOs/Create.vue",
+		"resources_js_Pages_MFOs_Create_vue"
+	],
+	"./MFOs/Create.vue": [
+		"./resources/js/Pages/MFOs/Create.vue",
+		"resources_js_Pages_MFOs_Create_vue"
+	],
+	"./MFOs/Index": [
+		"./resources/js/Pages/MFOs/Index.vue",
+		"resources_js_Pages_MFOs_Index_vue"
+	],
+	"./MFOs/Index.vue": [
+		"./resources/js/Pages/MFOs/Index.vue",
+		"resources_js_Pages_MFOs_Index_vue"
+	],
+	"./Outcome/Create": [
+		"./resources/js/Pages/Outcome/Create.vue",
+		"resources_js_Pages_Outcome_Create_vue"
+	],
+	"./Outcome/Create.vue": [
+		"./resources/js/Pages/Outcome/Create.vue",
+		"resources_js_Pages_Outcome_Create_vue"
+	],
+	"./Outcome/Index": [
+		"./resources/js/Pages/Outcome/Index.vue",
+		"resources_js_Pages_Outcome_Index_vue"
+	],
+	"./Outcome/Index.vue": [
+		"./resources/js/Pages/Outcome/Index.vue",
+		"resources_js_Pages_Outcome_Index_vue"
+	],
 	"./Places": [
 		"./resources/js/Pages/Places.vue",
 		"resources_js_Pages_Places_vue"
@@ -1360,6 +1449,22 @@ var map = {
 	"./RAAO/Index.vue": [
 		"./resources/js/Pages/RAAO/Index.vue",
 		"resources_js_Pages_RAAO_Index_vue"
+	],
+	"./Strategies/Create": [
+		"./resources/js/Pages/Strategies/Create.vue",
+		"resources_js_Pages_Strategies_Create_vue"
+	],
+	"./Strategies/Create.vue": [
+		"./resources/js/Pages/Strategies/Create.vue",
+		"resources_js_Pages_Strategies_Create_vue"
+	],
+	"./Strategies/Index": [
+		"./resources/js/Pages/Strategies/Index.vue",
+		"resources_js_Pages_Strategies_Index_vue"
+	],
+	"./Strategies/Index.vue": [
+		"./resources/js/Pages/Strategies/Index.vue",
+		"resources_js_Pages_Strategies_Index_vue"
 	],
 	"./Targets/Create": [
 		"./resources/js/Pages/Targets/Create.vue",

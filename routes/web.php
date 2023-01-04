@@ -17,11 +17,15 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\AccomplishmentController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\IndicatorController;
+use App\Http\Controllers\IntermediateOutcomeController;
+use App\Http\Controllers\MFOController;
+use App\Http\Controllers\OutcomeController;
 use App\Http\Controllers\RAAOController;
 use App\Http\Controllers\PlacesController;
+use App\Http\Controllers\StrategyController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
-
+use App\Models\IntermediateOutcome;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -100,57 +104,52 @@ Route::middleware('auth')->group(function() {
         Route::post('/bar',[PlacesController::class,'getBarangays']);
     });
 
+    //Outcome
+    Route::prefix('/outcome')->group(function(){
+        ///outcome/${dat.id}/edit
+        Route::get('/',[OutcomeController::class,'index']);
+        Route::get('/create',[OutcomeController::class,'create']);
+        Route::post('/store',[OutcomeController::class,'store']);
+        Route::get('/{id}/edit', [OutcomeController::class, 'edit']);
+        Route::patch('/{id}', [OutcomeController::class, 'update']);
+        Route::delete('/{id}', [OutcomeController::class, 'destroy']);
+    });
+
+    //Intermediate Outcomes
+    ///inter_outcome/${dat.id}
+    Route::prefix('/inter_outcome')->group(function(){
+        //create/${idoutcome}
+        //this.$inertia.delete("/inter_outcome/" + id+"/"+this.idoutcome);
+        Route::get('/{id}',[IntermediateOutcomeController::class,'index']);
+        Route::get('/create/{id}',[IntermediateOutcomeController::class,'create']);
+        Route::post('/store',[IntermediateOutcomeController::class,'store']);
+        Route::delete('/{id}/{idoutcome}', [IntermediateOutcomeController::class, 'destroy']);
+        Route::get('/{id}/{idoutcome}/edit', [IntermediateOutcomeController::class, 'edit']);
+        Route::patch('/', [IntermediateOutcomeController::class, 'update']);
+    });
+
+    Route::prefix('/strategies')->group(function(){
+        Route::get('/{id}',[StrategyController::class,'index']);
+        Route::get('/create/{id}',[StrategyController::class,'create']);
+        Route::post('/store',[StrategyController::class,'store']);
+        Route::delete('/{id}/{idoutcome}', [StrategyController::class, 'destroy']);
+        Route::get('/{id}/{idinteroutcome}/edit', [StrategyController::class, 'edit']);
+        Route::patch('/', [StrategyController::class, 'update']);
+    });
+
+    Route::prefix('/mfos')->group(function(){
+        Route::get('/{id}',[MFOController::class,'index']);
+        Route::get('/create/{id}',[MFOController::class,'create']);
+        Route::post('/store',[MFOController::class,'store']);
+        Route::get('/{id}/{idinteroutcome}/edit', [MFOController::class, 'edit']);
+        Route::patch('/', [MFOController::class, 'update']);
+        Route::delete('/{id}/{idoutcome}', [MFOController::class, 'destroy']);
+    });
+    //
 });
 Route::prefix('print')->group(function(){
-    Route::get('/RaaoData/{year?}/{userType?}/{lgu?}/{dept?}',function(){
-        //http://192.168.6.44:8000/print/RaaoData?year=2020&userType=admin&lgu=Nabunturan&dept=PICTO
-        $today = Carbon::now();
-        $year = ''.$today->year.'';
-        $data_new=DB::connection('mysql2')
-                            ->table(DB::raw('(select raaohs.tyear,
-                                                    raaohs.aipcode,
-                                                    raaohs.fraodesc,
-                                                    raaohs.falltcod,
-                                                    raaohs.ffunccod,
-                                                    raaohs.recid,
-                                                    sources.fsource from raaohs
-                                                    left join sources on
-                                                    sources.recid = raaohs.idsource
-                                                    where fraotype>\'2\') a'))
-                            ->select('a.tyear',
-                                        'a.fraodesc',
-                                        'a.falltcod',
-                                        'a.aipcode',
-                                        'a.ffunccod',
-                                        'a.fsource',
-                                        'a.recid',
-                                        'b.appropriation',
-                                        'b.obligations',
-                                        'b.idraao',
-                                        't.target_qty',
-                                        't.target_qty1',
-                                        't.target_qty2',
-                                        't.target_qty3',
-                                        't.target_qty4',
-                                        't.idraao',
-                                        't.description',
-                                        'i.description',
-                                        DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
-                            ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
-                            ->leftJoin(DB::raw('my_raao_new.targets t'),'t.idraao','=','b.idraao')
-                            ->leftJoin(DB::raw('my_raao_new.indicators i'),'t.idindicator','=','i.id')
-                            ->get();
-
-        $userType=request('userType');
-        return [
-                    'userType'=>$userType,
-                    'lgu'=>request('lgu'),
-                    'dept'=>request('dept'),
-                    'dept_head'=>'Department Head Name',
-                    'lce'=>'Local Chief Executive',
-                    'data'=>$data_new
-                ];
-    });
+    Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);
+    Route::get('/RaaoData/{year?}/{userType?}/{lgu?}/{dept?}');
     Route::get('/PPA_Data/{year?}/{userType?}/{lgu?}/{dept?}',function(){
         $today = Carbon::now();
         $year = ''.$today->year.'';
