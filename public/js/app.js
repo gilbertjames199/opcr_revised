@@ -1418,6 +1418,22 @@ var map = {
 		"./resources/js/Pages/Outcome/Index.vue",
 		"resources_js_Pages_Outcome_Index_vue"
 	],
+	"./PAPS/Create": [
+		"./resources/js/Pages/PAPS/Create.vue",
+		"resources_js_Pages_PAPS_Create_vue"
+	],
+	"./PAPS/Create.vue": [
+		"./resources/js/Pages/PAPS/Create.vue",
+		"resources_js_Pages_PAPS_Create_vue"
+	],
+	"./PAPS/Index": [
+		"./resources/js/Pages/PAPS/Index.vue",
+		"resources_js_Pages_PAPS_Index_vue"
+	],
+	"./PAPS/Index.vue": [
+		"./resources/js/Pages/PAPS/Index.vue",
+		"resources_js_Pages_PAPS_Index_vue"
+	],
 	"./Places": [
 		"./resources/js/Pages/Places.vue",
 		"resources_js_Pages_Places_vue"

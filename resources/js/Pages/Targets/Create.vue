@@ -32,7 +32,7 @@
 
                 <select class="form-control" v-model="form.idraao" >
                     <option v-for="rao in raao" :value="rao.recid" >
-                        {{ rao.FRAODESC }} ( {{ rao.recid }})
+                        {{ rao.FRAODESC }}
                     </option>
                 </select>
                 <!--<input class="form-control" v-model="form.idraao" />-->

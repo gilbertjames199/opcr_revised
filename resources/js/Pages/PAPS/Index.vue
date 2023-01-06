@@ -7,17 +7,19 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Targets</h3>
+            <h3>Programs and Projects</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
+
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/targets/${raao_id}/${year}/create`">Add Target</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/paps/create/${idmfo}`">Add PAPS {{ idmfo }}</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
-            <Link :href="'/raao'">
+
+            <Link :href="`/mfos/${idstrategy}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                     <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -33,23 +35,13 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Barangay</th>
-                                <th>Municipality</th>
-                                <th>Description</th>
-                                <th>Onsite Tag</th>
-                                <th>Target QTY</th>
-                                <th>Percent Accomplished</th>
+                                <th>PAPS Description</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.brgy }}</td>
-                                <td>{{ dat.municipality }}</td>
-                                <td>{{ dat.description }}</td>
-                                <td>{{ dat.onsite_tag }}</td>
-                                <td>{{ dat.target_qty }}</td>
-                                <td>{{ getPercent(dat.accomp, dat.target_qty)}}&nbsp;%</td>
+                                <td>{{ dat.FRAODESC }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -57,23 +49,17 @@
                                             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li>
-                                                <Link class="dropdown-item" :href="`/accomplishments/${dat.id}/list`">Accomplishment</Link>
-                                            </li>
-                                            <li><Link class="dropdown-item" :href="`/targets/${dat.id}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteUser(dat.id)">Delete</Link></li>
+                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
+                                            <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
-
-                                <!--
-                                    <td><button class="btn btn-light" @click="getAccomplishment(dat.id)">Accomplishment</button></td>
-                                -->
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
@@ -99,8 +85,8 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
-        raao_id: String,
-        year: String,
+        idstrategy: String,
+        idmfo: String
     },
     data() {
         return{
@@ -126,35 +112,11 @@ export default {
                 }
             );
         },
-        deleteUser(id) {
-            let text = "WARNING!\nAre you sure you want to delete the record?"+id;
+        deletePAPS(id) {
+            let text = "WARNING!\nAre you sure you want to delete the Program and Projects? "+id;
               if (confirm(text) == true) {
-                this.$inertia.delete("/targets/" + id+'/'+this.raao_id);
+                this.$inertia.delete("/paps/" + id+"/"+this.idmfo);
             }
-        },
-        getAccomplishment(tar_id){
-            this.$inertia.get(
-                "/accomplishments",
-                {
-                    idtarget: tar_id
-                },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        },
-        getPercent(accomp, targqty){
-            var accSum=0;
-            accomp.forEach(myFunction);
-            function myFunction(item){
-                accSum += parseFloat(item.accomplishment_qty)
-
-            }
-            var percentt = (accSum/targqty)*100
-            percentt=this.format_number(percentt,2,true)
-            return percentt;
         }
     }
 };

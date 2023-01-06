@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RAAOHS;
 use App\Models\Target;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,9 +23,12 @@ class TargetController extends Controller
         // if($rrr){
         //     $raao_id1=session()->get('raao_id');
         // }
-
+        $today = Carbon::now();
+        $year = ''.$today->year.'';
         if($request->id_raao){
             $raao_id1=$request->id_raao;
+            $year = RAAOHS::where('recid',$raao_id1)->value('tyear');
+
         }
 
         $data = $this->model
@@ -37,6 +41,7 @@ class TargetController extends Controller
         return inertia('Targets/Index',[
             "data"=>$data,
             "raao_id"=>$raao_id1,
+            "year"=>$year,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -79,10 +84,14 @@ class TargetController extends Controller
         ]);
     }
 
-    public function create(Request $request, $raao_id)
+    public function create(Request $request, $raao_id, $year)
     {
-        $today = Carbon::now();
-        $year = ''.$today->year.'';
+        if(!$year){
+            $today = Carbon::now();
+            $year = ''.$today->year.'';
+        }
+
+
         $raao=[];
         if(Auth::user()->UserType=='Administrator'){
             $raao=DB::connection('mysql2')

@@ -533,7 +533,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.raao, function (rao) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       value: rao.recid
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(rao.FRAODESC) + " ( " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(rao.recid) + ") ", 9
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(rao.FRAODESC), 9
     /* TEXT, PROPS */
     , _hoisted_10);
   }), 256

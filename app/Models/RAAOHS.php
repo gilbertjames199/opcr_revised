@@ -17,36 +17,21 @@ class RAAOHS extends Model
     protected $connection = "mysql2";
     protected $fillable = [
         'recid',
-        'idraao',
-        'idooe',
-        'entrytype',
-        'famount',
-        'fdate',
-        'facctdate',
-        'fparticulars',
-        'idpayee',
-        'frefno',
-        'ftag',
+        'tyear',
+        'FRAOTYPE',
+        'FRAODESC',
+        'FALLTCOD',
+        'FFUNCCOD',
+        'FFUNDCOD',
+        'idsource',
+        'idappttype',
+        'idprogram',
         'aipcode',
-        'procuredamount',
-        'procuredamount2',
-        'vouchno',
-        'chkno',
-        'chkdate',
-        'advno',
-        'jevno',
-        'post_tag',
-        'idcafoa',
-        'created_at',
-        'updated_at',
-        'update_lock',
-        'lockdate',
-        'idapprop',
-        'prior_amount',
-        'curr_amount',
-        'curr_amount2'
+        'date_created',
+        'excludetag',
+        'previd'
     ];
-    protected $table='raaods';
+    protected $table='raaohs';
 
     public function ooe()
     {
