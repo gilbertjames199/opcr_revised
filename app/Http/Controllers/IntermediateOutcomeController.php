@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\IntermediateOutCome;
+use App\models\IntermediateOutcome;
 use App\Models\Outcome;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class IntermediateOutcomeController extends Controller
 {
-    public function __construct(IntermediateOutCome $model)
+    public function __construct(IntermediateOutcome $model)
     {
         //$this->middleware(['auth','verified']);
         $this->model = $model;
@@ -59,7 +59,7 @@ class IntermediateOutcomeController extends Controller
                 ->with('message','Outcome added');
     }
 
-    public function show(IntermediateOutCome $intermediateOutCome)
+    public function show(IntermediateOutcome $intermediateOutCome)
     {
         //
     }
