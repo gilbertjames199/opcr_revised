@@ -22,6 +22,7 @@ class IntermediateOutcomeController extends Controller
                 ->paginate(10)
                 ->withQueryString();
 
+
         return inertia('InterOutcome/Index',[
             "data"=>$data,
             "idoutcome"=>$id,
@@ -31,7 +32,6 @@ class IntermediateOutcomeController extends Controller
             ],
         ]);
     }
-
 
     public function create(Request $request, $id)
     {

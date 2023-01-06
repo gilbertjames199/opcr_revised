@@ -16,19 +16,19 @@ class CreateProgramAndProjectsTable extends Migration
         Schema::create('program_and_projects', function (Blueprint $table) {
             $table->id();
             $table->string('paps_desc')->nullable();
-            $table->integer('tyear',11)->nullable();
+            $table->integer('tyear')->unsigned()->nullable();
             $table->string('FRAOTYPE',1)->nullable();
             $table->string('FRAODESC',200)->nullable();
             $table->string('FALLTCOD',3)->nullable();
             $table->string('FFUNCCOD',6)->nullable();
             $table->string('FFUNDCOD',3)->nullable();
-            $table->integer('idsource',11)->nullable();
-            $table->integer('idappttype',11)->nullable();
-            $table->integer('idprogram',11)->nullable();
+            $table->integer('idsource')->unsigned()->nullable();
+            $table->integer('idappttype')->unsigned()->nullable();
+            $table->integer('idprogram')->unsigned()->nullable();
             $table->string('aipcode',30)->nullable();
             $table->timestamp('date_created')->nullable();
-            $table->integer('excludetag',11)->nullable();
-            $table->integer('previd',11)->nullable();
+            $table->integer('excludetag')->nullable();
+            $table->integer('previd')->unsigned()->nullable();
             $table->string('idpaps')->nullable();
             $table->string('idmfo')->nullable();
             $table->timestamps();

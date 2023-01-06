@@ -25,7 +25,7 @@
                         </option>
                     </select>
                 </div>
-                <a href="http://192.168.6.23:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FPPA%2FPrintPPA&reportUnit=%2Freports%2FPPA%2FPrintPPA%2FPPA_Jasper_Doc1&standAlone=true&decorate=no&year=2022&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO">Print</a>
+                <a :href="`http://192.168.6.23:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FPPA%2FPrintPPA&reportUnit=%2Freports%2FPPA%2FPrintPPA%2FPPA_Jasper_Doc1&standAlone=true&decorate=no&year=${tyear}&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO`" target="_blank">Print</a>
             </div>
         </div>
         <div class="masonry-sizer col-md-6"></div>

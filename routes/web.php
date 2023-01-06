@@ -20,6 +20,7 @@ use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\IntermediateOutcomeController;
 use App\Http\Controllers\MFOController;
 use App\Http\Controllers\OutcomeController;
+use App\Http\Controllers\PAPController;
 use App\Http\Controllers\RAAOController;
 use App\Http\Controllers\PlacesController;
 use App\Http\Controllers\StrategyController;
@@ -77,7 +78,7 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}',[TargetController::class,'update']);
         Route::post('/store', [TargetController::class, 'store']);
         Route::delete('/{id}/{raao_id}', [TargetController::class, 'destroy']);
-        Route::get('/{raao_id}/create', [TargetController::class, 'create']);
+        Route::get('/{raao_id}/{year}/create', [TargetController::class, 'create']);
         Route::get('/{id}/edit', [TargetController::class, 'edit']);
         Route::get('/return/{target_id}',[TargetController::class,'ret']);
     });
@@ -144,6 +145,15 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/{idinteroutcome}/edit', [MFOController::class, 'edit']);
         Route::patch('/', [MFOController::class, 'update']);
         Route::delete('/{id}/{idoutcome}', [MFOController::class, 'destroy']);
+    });
+    //Route::patch('/', [PAPController::class, 'update']);
+    Route::prefix('/paps')->group(function(){
+        Route::get('/{id}',[PAPController::class,'index']);
+        Route::get('/create/{id}',[PAPController::class,'create']);
+        Route::post('/store',[PAPController::class,'store']);
+        Route::get('/{id}/{idmfo}/edit', [PAPController::class, 'edit']);
+        Route::patch('/{id}', [PAPController::class, 'update']);
+        Route::delete('/{id}/{idoutcome}', [PAPController::class, 'destroy']);
     });
     //
 });
