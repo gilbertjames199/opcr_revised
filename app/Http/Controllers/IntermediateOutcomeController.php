@@ -2,15 +2,7 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-//<<<<<<< HEAD
-//use App\models\IntermediateOutcome;
-//=======
 use App\Models\IntermediateOutcome;
-//>>>>>>> 88fee40ff17dd2494b0984f5ac1061fd4983677d
-=======
-use App\Models\IntermediateOutcome;
->>>>>>> eb4a03215029f7909b347b4649ba0a67281fc206
 use App\Models\Outcome;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,15 +59,7 @@ class IntermediateOutcomeController extends Controller
                 ->with('message','Outcome added');
     }
 
-<<<<<<< HEAD
-/*<<<<<<< HEAD
-    public function show(IntermediateOutcome $intermediateOutCome)
-=======*/
     public function show(IntermediateOutcome $IntermediateOutcome)
-//>>>>>>> 88fee40ff17dd2494b0984f5ac1061fd4983677d
-=======
-    public function show(IntermediateOutcome $IntermediateOutcome)
->>>>>>> eb4a03215029f7909b347b4649ba0a67281fc206
     {
         //
     }
