@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h1 style="color:red;">Programs and Projects terererere</h1>
+            <h1 style="color:red;">Programs and Projects </h1>
             <!--<div class="bgc-red-50">REED</div>
             <div>RAAOOOO</div>-->
             <div class="peers">
@@ -25,7 +25,7 @@
                         </option>
                     </select>
                 </div>
-                <a :href="`http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FPPA%2FPrintPPA&reportUnit=%2Freports%2FPPA%2FPrintPPA%2FPPA_Jasper_Doc1&standAlone=true&decorate=no&year=${tyear}&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO`" target="_blank">Print</a>
+                <!--<a :href="`http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FPPA%2FPrintPPA&reportUnit=%2Freports%2FPPA%2FPrintPPA%2FPPA_Jasper_Doc1&standAlone=true&decorate=no&year=${tyear}&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO`" target="_blank">Print</a>-->
                 <a :href="`http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2FPPA%2FFinalPPA%2FPPA_FINAL_MAIN_K&standAlone=true&ParentFolderUri=%2Freports%2FPPA%2FFinalPPA&standAlone=true&decorate=no&year=${tyear}&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO`">print</a>
             </div>
         </div>
