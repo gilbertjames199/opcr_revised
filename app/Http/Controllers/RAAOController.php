@@ -675,8 +675,8 @@ class RAAOController extends Controller
                             DB::raw('group_concat(i.description) as description'),
                             DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
                     ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
-                    ->Join(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
-                    ->Join(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
+                    ->leftJoin(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
+                    ->leftJoin(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
                     ->groupBy('a.recid')
                     ->get()
                     ->map(function($item){
@@ -741,7 +741,8 @@ class RAAOController extends Controller
                                     'appropriation'=>$item->appropriation,
                                     'description'=>$item->description,
                                     'target'=>$targ_f,
-                                    'recid'=>$item->recid
+                                    'recid'=>$item->recid,
+                                    'tyear'=>$item->tyear
                                 ];
                     });
         return $data_new;
