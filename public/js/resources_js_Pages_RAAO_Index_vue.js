@@ -137,7 +137,7 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   style: {
     "color": "red"
   }
-}, "Programs and Projects terererere", -1
+}, "Programs and Projects ", -1
 /* HOISTED */
 );
 
@@ -165,77 +165,76 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_10 = ["href"];
-var _hoisted_11 = ["href"];
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "masonry-sizer col-md-6"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_13 = {
+var _hoisted_12 = {
   "class": "masonry-item w-100"
 };
-var _hoisted_14 = {
+var _hoisted_13 = {
   "class": "bgc-white p-20 bd"
 };
-var _hoisted_15 = {
+var _hoisted_14 = {
   "class": "table-responsive"
 };
-var _hoisted_16 = {
+var _hoisted_15 = {
   "class": "table table-sm table-borderless table-striped table-hover"
 };
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
   "class": "bg-secondary text-white"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Description"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "AIP CODE"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Year"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Allotment Class"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Source of Funds"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Office"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Targets"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Outputs"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Appropriations"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Obligations"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Funds Utilization (%)")])], -1
 /* HOISTED */
 );
 
-var _hoisted_18 = ["onClick"];
+var _hoisted_17 = ["onClick"];
 
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Outputs ");
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Outputs ");
 
-var _hoisted_20 = {
+var _hoisted_19 = {
   "class": "text-end"
+};
+var _hoisted_20 = {
+  key: 0
 };
 var _hoisted_21 = {
-  key: 0
+  key: 1
 };
 var _hoisted_22 = {
-  key: 1
+  "class": "text-end"
 };
 var _hoisted_23 = {
-  "class": "text-end"
+  key: 0
 };
 var _hoisted_24 = {
-  key: 0
+  key: 1
 };
 var _hoisted_25 = {
-  key: 1
-};
-var _hoisted_26 = {
   "class": "text-end"
 };
-var _hoisted_27 = {
+var _hoisted_26 = {
   key: 0
 };
-var _hoisted_28 = {
+var _hoisted_27 = {
   key: 1
 };
-var _hoisted_29 = {
+var _hoisted_28 = {
   key: 2
 };
-var _hoisted_30 = {
+var _hoisted_29 = {
   "class": "row justify-content-center"
 };
-var _hoisted_31 = {
+var _hoisted_30 = {
   "class": "col-md-12"
 };
-var _hoisted_32 = {
+var _hoisted_31 = {
   "class": "row justify-content-center"
 };
-var _hoisted_33 = {
+var _hoisted_32 = {
   "class": "col-md-12"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -277,16 +276,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* UNKEYED_FRAGMENT */
   ))], 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.tyear]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    href: "http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FPPA%2FPrintPPA&reportUnit=%2Freports%2FPPA%2FPrintPPA%2FPPA_Jasper_Doc1&standAlone=true&decorate=no&year=".concat($data.tyear, "&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO"),
-    target: "_blank"
-  }, "Print", 8
-  /* PROPS */
-  , _hoisted_10), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.tyear]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<a :href=\"`http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FPPA%2FPrintPPA&reportUnit=%2Freports%2FPPA%2FPrintPPA%2FPPA_Jasper_Doc1&standAlone=true&decorate=no&year=${tyear}&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO`\" target=\"_blank\">Print</a>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2FPPA%2FFinalPPA%2FPPA_FINAL_MAIN_K&standAlone=true&ParentFolderUri=%2Freports%2FPPA%2FFinalPPA&standAlone=true&decorate=no&year=".concat($data.tyear, "&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO")
   }, "print", 8
   /* PROPS */
-  , _hoisted_11)])]), _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\n                        <tbody>\n                            <tr v-for=\"(dat,index) in data.data\">\n                                dat.FRAODESC\n                                <td>{{ dat.FRAODESC }}</td>\n                                <td>{{ dat.aipcode }}</td>\n                                <td>{{ dat.tyear }}</td>\n                                <td>{{ dat.FALLTCOD }}</td>allotment clas\n                                <td>{{ dat.FSOURCE }}</td>Source of Fund\n                                <td>{{ dat.FFUNCCOD }}</td>office\n                                <td>\n                                    <button class=\"btn btn-light\" @click=\"getTarget(dat.recid)\">Target</button>\n                                </td>\n                                <td>\n                                    <Link class=\"btn btn-light text-black\" :href=\"`/accomplishments/${dat.recid}/raao/list`\">\n                                        Outputs\n                                    </Link>\n                                </td>\n                                <td class=\"text-end\">{{ format_number(dat.tapprop,2,true) }}</td>Appropriations\n                                <td class=\"text-end\">{{ format_number(dat.toblig,2,true) }}</td>Obligations\n                                <td class=\"text-end\">{{ computeFinacialAccomplishment(dat.toblig,dat.tapprop)}}%</td>\n\n                            </tr>\n                        </tbody>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.datanew.data, function (dtnew) {
+  , _hoisted_10)])]), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\n                        <tbody>\n                            <tr v-for=\"(dat,index) in data.data\">\n                                dat.FRAODESC\n                                <td>{{ dat.FRAODESC }}</td>\n                                <td>{{ dat.aipcode }}</td>\n                                <td>{{ dat.tyear }}</td>\n                                <td>{{ dat.FALLTCOD }}</td>allotment clas\n                                <td>{{ dat.FSOURCE }}</td>Source of Fund\n                                <td>{{ dat.FFUNCCOD }}</td>office\n                                <td>\n                                    <button class=\"btn btn-light\" @click=\"getTarget(dat.recid)\">Target</button>\n                                </td>\n                                <td>\n                                    <Link class=\"btn btn-light text-black\" :href=\"`/accomplishments/${dat.recid}/raao/list`\">\n                                        Outputs\n                                    </Link>\n                                </td>\n                                <td class=\"text-end\">{{ format_number(dat.tapprop,2,true) }}</td>Appropriations\n                                <td class=\"text-end\">{{ format_number(dat.toblig,2,true) }}</td>Obligations\n                                <td class=\"text-end\">{{ computeFinacialAccomplishment(dat.toblig,dat.tapprop)}}%</td>\n\n                            </tr>\n                        </tbody>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.datanew.data, function (dtnew) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dtnew.fraodesc), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dtnew.aipcode), 1
@@ -306,33 +300,33 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, "Target", 8
     /* PROPS */
-    , _hoisted_18)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    , _hoisted_17)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "btn btn-light text-black",
       href: "/accomplishments/".concat(dtnew.recid, "/raao/list")
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [_hoisted_19];
+        return [_hoisted_18];
       }),
       _: 2
       /* DYNAMIC */
 
     }, 1032
     /* PROPS, DYNAMIC_SLOTS */
-    , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_20, [dtnew.appropriation == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_21, "0.00")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(dtnew.appropriation, 2, true)), 1
+    , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [dtnew.appropriation == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_20, "0.00")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(dtnew.appropriation, 2, true)), 1
     /* TEXT */
-    ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("format_number(AAP,2,true)Appropriations"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, [dtnew.obligations == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_24, "0.00")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(dtnew.obligations, 2, true)), 1
+    ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("format_number(AAP,2,true)Appropriations"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_22, [dtnew.obligations == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_23, "0.00")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(dtnew.obligations, 2, true)), 1
     /* TEXT */
-    ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Obligations"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_26, [dtnew.appropriation == '0' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_27, "0.00%")) : dtnew.appropriation == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_28, "0.00%")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(dtnew.utilization, 2, true)) + "%", 1
+    ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Obligations"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_25, [dtnew.appropriation == '0' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_26, "0.00%")) : dtnew.appropriation == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_27, "0.00%")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(dtnew.utilization, 2, true)) + "%", 1
     /* TEXT */
     ))])]);
   }), 256
   /* UNKEYED_FRAGMENT */
-  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {
+  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {
     next: $props.datanew.next_page_url,
     prev: $props.datanew.prev_page_url
   }, null, 8
   /* PROPS */
-  , ["next", "prev"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.datanew.from) + " to " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.datanew.to) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.datanew.total) + " entries ", 1
+  , ["next", "prev"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.datanew.from) + " to " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.datanew.to) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.datanew.total) + " entries ", 1
   /* TEXT */
   )])])])])])], 64
   /* STABLE_FRAGMENT */
