@@ -6,6 +6,7 @@ use App\Models\OOE;
 use App\Models\RAAOD;
 use App\Models\RAAOHS;
 use App\Models\Systemuser;
+use App\Models\Target;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -221,6 +222,7 @@ class RAAOController extends Controller
     }
     //DILI NI MAO
     public function rrr(Request $request){
+        /*
         $data_new=DB::connection('mysql2')
                     ->table(DB::raw('(select raaohs.tyear,
                                     raaohs.aipcode,
@@ -274,7 +276,9 @@ class RAAOController extends Controller
                                     'target_qty4'=>$item->target_qty4
                                 ];
                     });
+        */
         /************************************* */
+        /*
         $data_new=DB::connection('mysql2')
                             ->table(DB::raw('(select raaohs.tyear,
                                                     raaohs.aipcode,
@@ -325,6 +329,7 @@ class RAAOController extends Controller
                                             'target_qty4'=>$item->target_qty4
                                         ];
                             });
+        */
         //************************************* */
         $data_new=DB::connection('mysql2')
                     ->table(DB::raw('(select raaohs.tyear,
@@ -378,6 +383,7 @@ class RAAOController extends Controller
                                     'target_qty4'=>$item->target_qty4
                                 ];
                     });
+        return $data_new;
     }
     //MAO NI
     public function raao_jasper(Request $request){
@@ -425,21 +431,34 @@ class RAAOController extends Controller
                             DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
                     ->where('a.tyear',request('year'))
                     ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
-                    ->Join(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
-                    ->Join(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
+                    ->Join(DB::raw('rta.targets t'),'t.idraao','=','b.idraao')
+                    ->Join(DB::raw('rta.indicators i'),'t.idindicator','=','i.id')
+                    ->groupBy('a.recid')
                     ->get()
                     ->map(function($item){
                         $userType=request('userType');
+                        $id = $item->recid;
+                        $targ_qty1= DB::table('targets')
+                                        ->select('targets.target_qty1','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['target_qty1'=>$item->target_qty1,
+                                                    'indicator'=>$item->description
+                                                    ];
+
+                                        });
                         return [
                                 'userType'=>$userType,
                                 'lgu'=>request('lgu'),
                                 'dept'=>request('dept'),
                                 'dept_head'=>'Department Head Name',
                                 'lce'=>'Local Chief Executive',
-                                'fraodesc'=>$item->fraodesc,
+                                'fraodesc'=>rtrim($item->fraodesc," "),
                                 'appropriation'=>$item->appropriation,
                                 'description'=>$item->description,
-                                'target_qty1'=>$item->target_qty1,
+                                'target_qty1'=>$targ_qty1,
                                 'target_qty2'=>$item->target_qty2,
                                 'target_qty3'=>$item->target_qty3,
                                 'target_qty4'=>$item->target_qty4
@@ -454,7 +473,6 @@ class RAAOController extends Controller
 
         $data_j = json_encode($data_e);
         $data_jd = json_decode($data_j, true);
-
         $data_c = collect($data_e);
         $data_g = $data_c->groupBy('rec_id')->toArray();
         //
@@ -463,6 +481,8 @@ class RAAOController extends Controller
 
         return $data_new;
     }
+
+
 }
 class RAAO{
     public $id;

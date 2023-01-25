@@ -48,7 +48,7 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}`">Strategies</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/mfos/${dat.id}`">MFO</Link></li>
                                             <li><Link class="dropdown-item" :href="`/inter_outcome/${dat.id}/${dat.idoutcome}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deletInterOutcome(dat.id)">Delete</Link></li>
                                         </ul>
