@@ -159,7 +159,13 @@ Route::middleware('auth')->group(function() {
 });
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);
+<<<<<<< HEAD
     Route::get('/RaaoData/xyz',[RAAOController::class,'rrr']);
+=======
+    Route::get('/printRaao',[RAAOController::class,'rrr']);
+    Route::get('/RaaoDataM',[RAAOController::class,'raao_jasper_3']);
+    Route::get('/RaaoData2/target_qty1',[RAAOController::class,'raao_jasper_tgqty1']);
+>>>>>>> b68d6e5f50df311be9f17757e90ec304e6596f17
     Route::get('/RaaoData/{year?}/{userType?}/{lgu?}/{dept?}');
     Route::get('/PPA_Data/{year?}/{userType?}/{lgu?}/{dept?}',function(){
         $today = Carbon::now();

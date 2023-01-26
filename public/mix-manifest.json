@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
     "/js/app.js": "/js/app.js?id=1500d3cb49e7493dc8ba4cda4cd49130",
+=======
+    "/js/app.js": "/js/app.js?id=6f7c47489524b1944239ff65c689f9a3",
+>>>>>>> b68d6e5f50df311be9f17757e90ec304e6596f17
     "/js/manifest.js": "/js/manifest.js?id=881649446dc8b2c0c12961f4635297c7",
     "/css/app.css": "/css/app.css?id=cefcb17fe484f529b7530fac623c3f3b",
     "/js/vendor.js": "/js/vendor.js?id=19db0f066429fb3835a84b12538f47c4"
