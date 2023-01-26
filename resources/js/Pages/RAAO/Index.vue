@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h1 style="color:red;">Programs and Projects </h1>
+            <h1 style="color:red;">Programs and Projects 1</h1>
             <!--<div class="bgc-red-50">REED</div>
             <div>RAAOOOO</div>-->
             <div class="peers">
@@ -25,8 +25,10 @@
                         </option>
                     </select>
                 </div>
-                <!--<a :href="`http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FPPA%2FPrintPPA&reportUnit=%2Freports%2FPPA%2FPrintPPA%2FPPA_Jasper_Doc1&standAlone=true&decorate=no&year=${tyear}&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO`" target="_blank">Print</a>-->
-                <a :href="`http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2FPPA%2FFinalPPA%2FPPA_FINAL_MAIN_K&standAlone=true&ParentFolderUri=%2Freports%2FPPA%2FFinalPPA&standAlone=true&decorate=no&year=${tyear}&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO`">print</a>
+                <!--<a :href="`http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&                                                                                          reportUnit=%2Freports%2FPPA%2FFinalPPA%2FPPA_FINAL_MAIN_K&standAlone=true&ParentFolderUri=%2Freports%2FPPA%2FFinalPPA&standAlone=true&decorate=no&year=${tyear}&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO`">print</a>
+                <a :href="`http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FPPA%2FPrintPPA&reportUnit=%2Freports%2FPPA%2FPrintPPA%2FPPA_Jasper_Doc1&standAlone=true&decorate=no&year=${tyear}&userType=Admin&lgu=Davao%20de%20Oro&dept=PICTO`" target="_blank">Print</a>-->
+                <a :href="`http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&reportUnit=%2Freports%2FPPA%2FFinalPPA%2FPPA_FINAL_MAIN_K&standAlone=true&ParentFolderUri=%2Freports%2FPPA%2FFinalPPA&standAlone=true&decorate=no&p_year=${tyear}&p_userType=Admin&p_lgu=Davao%20de%20Oro&p_dept=PICTO&p_dept_head=Department%20Head%20Name&p_lce=Local%20Chief%20Executive`" target="_blank">print</a>
+                
             </div>
         </div>
         <div class="masonry-sizer col-md-6"></div>
@@ -50,30 +52,7 @@
                                 <th>Funds Utilization (%)</th>
                             </tr>
                         </thead>
-                        <!--
-                        <tbody>
-                            <tr v-for="(dat,index) in data.data">
-                                dat.FRAODESC
-                                <td>{{ dat.FRAODESC }}</td>
-                                <td>{{ dat.aipcode }}</td>
-                                <td>{{ dat.tyear }}</td>
-                                <td>{{ dat.FALLTCOD }}</td>allotment clas
-                                <td>{{ dat.FSOURCE }}</td>Source of Fund
-                                <td>{{ dat.FFUNCCOD }}</td>office
-                                <td>
-                                    <button class="btn btn-light" @click="getTarget(dat.recid)">Target</button>
-                                </td>
-                                <td>
-                                    <Link class="btn btn-light text-black" :href="`/accomplishments/${dat.recid}/raao/list`">
-                                        Outputs
-                                    </Link>
-                                </td>
-                                <td class="text-end">{{ format_number(dat.tapprop,2,true) }}</td>Appropriations
-                                <td class="text-end">{{ format_number(dat.toblig,2,true) }}</td>Obligations
-                                <td class="text-end">{{ computeFinacialAccomplishment(dat.toblig,dat.tapprop)}}%</td>
-
-                            </tr>
-                        </tbody>-->
+                        
                         <tbody>
                             <tr v-for="dtnew in datanew.data">
 
