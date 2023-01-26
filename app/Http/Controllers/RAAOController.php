@@ -222,11 +222,7 @@ class RAAOController extends Controller
     }
     //DILI NI MAO
     public function rrr(Request $request){
-<<<<<<< HEAD
         /*
-=======
-
->>>>>>> b68d6e5f50df311be9f17757e90ec304e6596f17
         $data_new=DB::connection('mysql2')
                     ->table(DB::raw('(select raaohs.tyear,
                                     raaohs.aipcode,
@@ -323,11 +319,6 @@ class RAAOController extends Controller
                                     'recid'=>$item->recid
                                 ];
                     });
-<<<<<<< HEAD
-        */
-=======
-
->>>>>>> b68d6e5f50df311be9f17757e90ec304e6596f17
         /************************************* */
         /*
         $data_new=DB::connection('mysql2')
@@ -433,11 +424,7 @@ class RAAOController extends Controller
                                     'target_qty3'=>$item->target_qty3,
                                     'target_qty4'=>$item->target_qty4
                                 ];
-<<<<<<< HEAD
-                    });
-=======
                     });*/
->>>>>>> b68d6e5f50df311be9f17757e90ec304e6596f17
         return $data_new;
     }
     //MAO NI
@@ -510,8 +497,6 @@ class RAAOController extends Controller
                                                     ];
 
                                         });
-<<<<<<< HEAD
-=======
                         $targ_qty2= DB::table('targets')
                                         ->select('targets.target_qty2','indicators.description')
                                         ->where('idraao',$id)
@@ -542,7 +527,6 @@ class RAAOController extends Controller
                                                     'indicator'=>$item->description
                                                     ];
                                         });
->>>>>>> b68d6e5f50df311be9f17757e90ec304e6596f17
                         return [
                                 'userType'=>$userType,
                                 'lgu'=>request('lgu'),
@@ -553,7 +537,6 @@ class RAAOController extends Controller
                                 'appropriation'=>$item->appropriation,
                                 'description'=>$item->description,
                                 'target_qty1'=>$targ_qty1,
-<<<<<<< HEAD
                                 'target_qty2'=>$item->target_qty2,
                                 'target_qty3'=>$item->target_qty3,
                                 'target_qty4'=>$item->target_qty4
@@ -570,14 +553,12 @@ class RAAOController extends Controller
         $data_jd = json_decode($data_j, true);
         $data_c = collect($data_e);
         $data_g = $data_c->groupBy('rec_id')->toArray();
-=======
                                 'target_qty2'=>$targ_qty2,
                                 'target_qty3'=>$targ_qty3,
                                 'target_qty4'=>$targ_qty4,
                                 'recid'=>$id
                         ];
                     });*/
->>>>>>> b68d6e5f50df311be9f17757e90ec304e6596f17
         //
         //->leftJoin(DB::raw('select idraao,sum(if(entrytype="1", famount,0)) as appropriation ,sum(if(entrytype="3", famount,0)) as obligations from raaods group by idraao) b '),'a.recid','=','b.idraao')
                 //->where('a.tyear',request('year'))
