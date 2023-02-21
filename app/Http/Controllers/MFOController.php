@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\IntermediateOutcome;
 use App\Models\MajorFinalOutput;
 use App\Models\Strategy;
 use Illuminate\Http\Request;
@@ -16,18 +17,18 @@ class MFOController extends Controller
     }
     public function index(Request $request, $id)
     {
-        $idinteroutcome = Strategy::where('id',$id)
-                        ->value('idinteroutcome');
+        $idoutcome = IntermediateOutcome::where('id',$id)
+                        ->value('idoutcome');
 
-        $data = MajorFinalOutput::where('idstrategy',$id)
+        $data = MajorFinalOutput::where('idinteroutcome',$id)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
         //dd($data->pluck('mfo_desc'));
         return inertia('MFOs/Index',[
             "data"=>$data,
-            "idstrategy"=>$id,
-            "idinteroutcome"=>$idinteroutcome,
+            "idinteroutcome"=>$id,
+            "idoutcome"=>$idoutcome,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -38,10 +39,10 @@ class MFOController extends Controller
 
     public function create($id)
     {
-        $strats= Strategy::get();
+        $interoutcomes=IntermediateOutcome::get();
         return inertia('MFOs/Create', [
-            'strategies'=>$strats,
-            'idstrategy'=>$id,
+            'interoutcomes'=>$interoutcomes,
+            'idinteroutcome'=>$id,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -53,12 +54,12 @@ class MFOController extends Controller
     {
         $attributes = $request->validate([
                             'mfo_desc' => 'required',
-                            'idstrategy' => 'required',
+                            'idinteroutcome' => 'required',
                         ]);
         //dd($attributes);
         $this->model->create($attributes);
         $request->pass='';
-        return redirect('/mfos/'.$request->idstrategy)
+        return redirect('/mfos/'.$request->idinteroutcome)
                 ->with('message','MFO added');
     }
 
@@ -69,19 +70,19 @@ class MFOController extends Controller
     }
 
 
-    public function edit(MajorFinalOutput $majorFinalOutput, $id, $idstrategy)
+    public function edit(MajorFinalOutput $majorFinalOutput, $id, $idinteroutcome)
     {
-        $strategies=Strategy::get();
+        $interoutcomes=IntermediateOutcome::get();
         $data = $this->model->where('id', $id)->first([
             'id',
             'mfo_desc',
-            'idstrategy'
+            'idinteroutcome'
         ]);
-
+        //dd($idinteroutcome);
         return inertia('MFOs/Create', [
             "editData" => $data,
-            "strategies"=>$strategies,
-            "idstrategy"=> $idstrategy,
+            "interoutcomes"=>$interoutcomes,
+            "idinteroutcome"=> $idinteroutcome,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -96,19 +97,19 @@ class MFOController extends Controller
         //dd($request->plan_period);
         $data->update([
             'mfo_desc'=>$request->mfo_desc,
-            'idstrategy'=>$request->idstrategy
+            'idinteroutcome'=>$request->idinteroutcome
         ]);
 
-        return redirect('/mfos/'.$request->idstrategy)
+        return redirect('/mfos/'.$request->idinteroutcome)
                 ->with('message','MFOs updated');
     }
 
 
-    public function destroy(Request $request, $id, $idstrategy)
+    public function destroy(Request $request, $id, $idinteroutcome)
     {
         $data = $this->model->findOrFail($id);
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/mfos/'.$idstrategy)->with('warning', 'MFO deleted');
+        return redirect('/mfos/'.$idinteroutcome)->with('warning', 'MFO deleted');
     }
 }

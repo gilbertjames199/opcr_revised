@@ -1,4 +1,4 @@
-There is no font package included here, if you want to add icon/s go to https://icons.getbootstrap.com/ then copy the HTML SVG for performance.
+php artisan keThere is no font package included here, if you want to add icon/s go to https://icons.getbootstrap.com/ then copy the HTML SVG for performance.
 
 Laravel 8 + Inertiajs + vue3
 

@@ -18,8 +18,8 @@ class PAPController extends Controller
 
     public function index(Request $request, $id)
     {
-        $idstrategy = MajorFinalOutput::where('id',$id)
-                        ->value('idstrategy');
+        $idinteroutcome = MajorFinalOutput::where('id',$id)
+                        ->value('idinteroutcome');
 
         $data = ProgramAndProject::where('idmfo',$id)
                 ->orderBy('created_at', 'desc')
@@ -28,7 +28,7 @@ class PAPController extends Controller
         //dd($data);
         return inertia('PAPS/Index',[
             "data"=>$data,
-            "idstrategy"=>$idstrategy,
+            "idinteroutcome"=>$idinteroutcome,
             "idmfo"=>$id,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),

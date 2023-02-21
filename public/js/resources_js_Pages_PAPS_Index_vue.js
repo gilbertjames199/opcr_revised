@@ -18,7 +18,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     data: Object,
-    idstrategy: String,
+    idinteroutcome: String,
     idmfo: String
   },
   data: function data() {
@@ -261,7 +261,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return _ctx.showFilter();
     })
   }, "Filter")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    href: "/mfos/".concat($props.idstrategy)
+    href: "/mfos/".concat($props.idinteroutcome)
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_8];
