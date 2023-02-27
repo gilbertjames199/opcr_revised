@@ -506,9 +506,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Accomplishment ", 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(":href=\"`/accomplishments/${form.idtarget }/list`\"   {{ form.idtarget }}"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" form.raao_id: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.raao_id) + " raao_id: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.raao_id) + " ", 1
-  /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(":href=\"`/accomplishments/${form.idtarget }/list`\"   {{ form.idtarget }}"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("form.raao_id: {{ form.raao_id }}\n            raao_id: {{ raao_id}}"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/accomplishments/".concat($props.raao_id, "/raao/list")
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
