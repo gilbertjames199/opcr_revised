@@ -137,7 +137,7 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   style: {
     "color": "red"
   }
-}, "Programs and Projects 1", -1
+}, "Programs and Projects", -1
 /* HOISTED */
 );
 
@@ -280,7 +280,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "btn btn-primary btn-sm mL-2 text-white",
     target: "_blank",
     href: "http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&reportUnit=%2Freports%2FPPA%2FFinalPPA%2FPPA_FINAL_MAIN_K&standAlone=true&ParentFolderUri=%2Freports%2FPPA%2FFinalPPA&standAlone=true&decorate=no&output=pdf&p_year=".concat($data.tyear, "&p_userType=Admin&p_lgu=Davao%20de%20Oro&p_dept=PICTO&p_dept_head=Department%20Head%20Name&p_lce=Local%20Chief%20Executive")
-  }, " PDF Download ", 8
+  }, " PDF File Button ", 8
   /* PROPS */
   , _hoisted_10)])]), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.datanew.data, function (dtnew) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dtnew.fraodesc), 1
