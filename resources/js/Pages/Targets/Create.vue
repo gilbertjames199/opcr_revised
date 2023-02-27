@@ -278,7 +278,7 @@ export default {
             },
             submit() {
                 this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
-                alert(this.form.target_qty);
+                //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
                     this.form.patch("/targets/" + this.form.id, this.form);
                 } else {

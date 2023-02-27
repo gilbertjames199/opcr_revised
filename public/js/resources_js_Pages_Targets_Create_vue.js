@@ -121,8 +121,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     submit: function submit() {
-      this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4);
-      alert(this.form.target_qty);
+      this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4); //alert(this.form.target_qty);
 
       if (this.editData !== undefined) {
         this.form.patch("/targets/" + this.form.id, this.form);
@@ -500,7 +499,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-8\">\r\n            <button class=\"btn btn-secondary\" @click=\"showModal\" :disabled=\"submitted\">Permissions</button>\r\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-8\">\n            <button class=\"btn btn-secondary\" @click=\"showModal\" :disabled=\"submitted\">Permissions</button>\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: _cache[26] || (_cache[26] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
@@ -716,7 +715,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.idindicator]]), $data.form.errors.idindicator ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.idindicator), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                    <input type=\"text\" v-model=\"form.onsite_tag\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\n                    <input type=\"text\" v-model=\"form.onsite_tag\" class=\"form-control\" autocomplete=\"chrome-off\">\n                "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "onUpdate:modelValue": _cache[23] || (_cache[23] = function ($event) {
       return $data.form.onsite_tag = $event;
     }),
@@ -746,7 +745,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_56)], 32
   /* HYDRATE_EVENTS */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n            <div class=\"col-md-8\">\r\n                <form @submit.prevent=\"submit()\">\r\n                    <input type=\"hidden\" required>\r\n                    <label for=\"\">Names</label>\r\n                </form>\r\n            </div>\r\n        ")]);
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\n            <div class=\"col-md-8\">\n                <form @submit.prevent=\"submit()\">\n                    <input type=\"hidden\" required>\n                    <label for=\"\">Names</label>\n                </form>\n            </div>\n        ")]);
 }
 
 /***/ }),
