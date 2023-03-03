@@ -56,36 +56,33 @@
                         
                         <tbody>
                             <tr v-for="dtnew in datanew.data">
-
-                                    <td>{{ dtnew.fraodesc }}</td>
-                                    <td>{{ dtnew.aipcode }}</td>
-                                    <td>{{ dtnew.tyear }}</td>
-                                    <td>{{ dtnew.falltcod }}</td><!--allotment class-->
-                                    <td>{{ dtnew.fsource }}</td><!--Source of Funds-->
-                                    <td>{{ dtnew.ffunccod }}</td><!--office -->
-                                    <td>
-                                        <button class="btn btn-light" @click="getTarget(dtnew.recid)">Target</button>
-                                    </td>
-                                    <td>
-                                        <Link class="btn btn-light text-black" :href="`/accomplishments/${dtnew.recid}/raao/list`">
-                                            Outputs
-                                        </Link>
-                                    </td>
-                                    <td class="text-end">
-
-                                        <span v-if="dtnew.appropriation==null">0.00</span>
-                                        <span v-else>{{ format_number_conv(dtnew.appropriation,2,true) }}</span>
-                                    </td><!--format_number(AAP,2,true)Appropriations-->
-                                    <td class="text-end">
-                                        <span v-if="dtnew.obligations==null">0.00</span>
-                                        <span v-else>{{ format_number_conv(dtnew.obligations,2,true) }}</span>
-                                    </td><!--Obligations-->
-                                    <td class="text-end">
-                                        <span v-if="dtnew.appropriation=='0'">0.00%</span>
-                                        <span v-else-if="dtnew.appropriation==null">0.00%</span>
-                                        <span v-else>{{ format_number_conv(dtnew.utilization,2,true)}}%</span>
-                                    </td>
-
+                                <td>{{ dtnew.fraodesc }}</td>
+                                <td>{{ dtnew.aipcode }}</td>
+                                <td>{{ dtnew.tyear }}</td>
+                                <td>{{ dtnew.falltcod }}</td><!--allotment class-->
+                                <td>{{ dtnew.fsource }}</td><!--Source of Funds-->
+                                <td>{{ dtnew.ffunccod }}</td><!--office -->
+                                <td>
+                                    <button class="btn btn-light" @click="getTarget(dtnew.recid)">Target</button>
+                                </td>
+                                <td>
+                                    <Link class="btn btn-light text-black" :href="`/accomplishments/${dtnew.recid}/raao/list`">
+                                        Outputs
+                                    </Link>
+                                </td>
+                                <td class="text-end">
+                                    <span v-if="dtnew.appropriation==null">0.00</span>
+                                    <span v-else>{{ format_number_conv(dtnew.appropriation,2,true) }}</span>
+                                </td><!--format_number(AAP,2,true)Appropriations-->
+                                <td class="text-end">
+                                    <span v-if="dtnew.obligations==null">0.00</span>
+                                    <span v-else>{{ format_number_conv(dtnew.obligations,2,true) }}</span>
+                                </td><!--Obligations-->
+                                <td class="text-end">
+                                    <span v-if="dtnew.appropriation=='0'">0.00%</span>
+                                    <span v-else-if="dtnew.appropriation==null">0.00%</span>
+                                    <span v-else>{{ format_number_conv(dtnew.utilization,2,true)}}%</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

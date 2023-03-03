@@ -543,6 +543,7 @@ class RAAOController extends Controller
                                 'target_qty4'=>$item->target_qty4
                                 ];
                     });
+        /*
         $data_e = RAAOHS::select(DB::raw('a.recid, a.tyear,a.fraodesc, a.falltcod,a.ffunccod, a.fsource, b.appropriation, b.obligations, (100*(b.obligations/b.appropriation)) as utilization, t.target_qty, t.target_qty1'))
                     ->from(DB::raw('(select raaohs.tyear, raaohs.fraodesc, raaohs.recid, raaohs.falltcod, raaohs.ffunccod, sources.fsource from raaohs left join sources on sources.recid = raaohs.idsource where fraotype>"2" ) a'))
                     ->leftJoin(DB::raw("(select idraao, sum(if(entrytype='1', famount,0)) as appropriation ,sum(if(entrytype='3', famount,0)) as obligations from raaods group by idraao) b "),'a.recid','=','b.idraao')
@@ -554,12 +555,16 @@ class RAAOController extends Controller
         $data_jd = json_decode($data_j, true);
         $data_c = collect($data_e);
         $data_g = $data_c->groupBy('rec_id')->toArray();
+<<<<<<< HEAD
                                 'target_qty2'=>$targ_qty2,
                                 'target_qty3'=>$targ_qty3,
                                 'target_qty4'=>$targ_qty4,
                                 'recid'=>$id
                         ];
                     });*/
+=======
+        */
+>>>>>>> a6d9c8f6b362482f5959ca72a237d321965ebd23
         //
         //->leftJoin(DB::raw('select idraao,sum(if(entrytype="1", famount,0)) as appropriation ,sum(if(entrytype="3", famount,0)) as obligations from raaods group by idraao) b '),'a.recid','=','b.idraao')
                 //->where('a.tyear',request('year'))
@@ -765,8 +770,88 @@ class RAAOController extends Controller
                     });
         return $data_new;
     }
-
-
+    //RAAO ADMIN
+    public function raao_jasper_admin(Request $request){
+        $today = Carbon::now();
+        $year = ''.$today->year.'';
+        $data_new=DB::connection('mysql2')
+                            ->table(DB::raw('(select raaohs.tyear,
+                                                    raaohs.aipcode,
+                                                    raaohs.fraodesc,
+                                                    raaohs.falltcod,
+                                                    raaohs.ffunccod,
+                                                    raaohs.recid,
+                                                    sources.fsource from raaohs
+                                                    left join sources on
+                                                    sources.recid = raaohs.idsource
+                                                    where fraotype>\'2\') a'))
+                            ->select('a.tyear',
+                                        'a.fraodesc',
+                                        'a.falltcod',
+                                        'a.aipcode',
+                                        'a.ffunccod',
+                                        'a.fsource',
+                                        'a.recid',
+                                        'b.appropriation',
+                                        'b.obligations',
+                                        DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
+                            ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
+                            ->when($request->year, function($query, $year_search){
+                                $query->where('a.tyear','=',$year_search);
+                             })
+                             ->when($request->search, function ($query, $searchItem) {
+                                $query->whereNested(function($query) use ($searchItem){
+                                                $query->where('a.FRAODESC', 'like', '%' . $searchItem . '%')
+                                                    ->orWhere('a.FALLTCOD', 'like', '%' . $searchItem . '%')
+                                                    ->orWhere('a.FFUNCCOD', 'like', '%' . $searchItem . '%');
+                                        });
+                            })
+                            ->paginate(10);
+                            return $data_new;
+    }
+    //RAAO USER
+    public function raao_jasper_user(Request $request){
+        $today = Carbon::now();
+        $year = ''.$today->year.'';
+        $data_new=DB::connection('mysql2')
+                    ->table(DB::raw('(select raaohs.tyear,
+                                            raaohs.aipcode,
+                                            raaohs.fraodesc,
+                                            raaohs.falltcod,
+                                            raaohs.ffunccod,
+                                            raaohs.recid,
+                                            sources.fsource from raaohs
+                                            left join sources on
+                                            sources.recid = raaohs.idsource
+                                            where fraotype>\'2\') a'))
+                    ->select('a.tyear',
+                                'a.fraodesc',
+                                'a.falltcod',
+                                'a.aipcode',
+                                'a.ffunccod',
+                                'a.fsource',
+                                'a.recid',
+                                'b.appropriation',
+                                'b.obligations',
+                                DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
+                    ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
+                    ->leftjoin('accountaccess AS acc','a.ffunccod','=','acc.ffunccod')
+                    ->leftjoin('systemusers AS su','su.recid','=','acc.iduser')
+                    ->where('acc.iduser','=',Auth::user()->recid)
+                    ->where('a.tyear','=',$request->year)
+                    ->when($request->year, function($query, $year_search){
+                        $query->where('a.tyear','=',$year_search);
+                        })
+                        ->when($request->search, function ($query, $searchItem) {
+                        $query->whereNested(function($query) use ($searchItem){
+                            $query->where('a.FRAODESC', 'like', '%' . $searchItem . '%')
+                                    ->orWhere('a.FALLTCOD', 'like', '%' . $searchItem . '%')
+                                    ->orWhere('a.FFUNCCOD', 'like', '%' . $searchItem . '%');
+                        });
+                    })
+                    ->paginate(10);
+        return $data_new;
+    }
 }
 class RAAO{
     public $id;
