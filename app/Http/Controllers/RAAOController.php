@@ -555,16 +555,7 @@ class RAAOController extends Controller
         $data_jd = json_decode($data_j, true);
         $data_c = collect($data_e);
         $data_g = $data_c->groupBy('rec_id')->toArray();
-<<<<<<< HEAD
-                                'target_qty2'=>$targ_qty2,
-                                'target_qty3'=>$targ_qty3,
-                                'target_qty4'=>$targ_qty4,
-                                'recid'=>$id
-                        ];
-                    });*/
-=======
         */
->>>>>>> a6d9c8f6b362482f5959ca72a237d321965ebd23
         //
         //->leftJoin(DB::raw('select idraao,sum(if(entrytype="1", famount,0)) as appropriation ,sum(if(entrytype="3", famount,0)) as obligations from raaods group by idraao) b '),'a.recid','=','b.idraao')
                 //->where('a.tyear',request('year'))
