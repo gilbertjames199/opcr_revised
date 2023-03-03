@@ -524,8 +524,11 @@ class RAAOController extends Controller
     }
     //RAAO USER
     public function raao_jasper_user(Request $request){
+        //dd($request);
         $today = Carbon::now();
-        $year = ''.$today->year.'';
+        //$year = ''.$today->year.'';
+        $year = $request->p_year;
+        //dd($year);
         $data_new=DB::connection('mysql2')
                     ->table(DB::raw('(select raaohs.tyear,
                                             raaohs.aipcode,
@@ -546,23 +549,51 @@ class RAAOController extends Controller
                                 'a.recid',
                                 'b.appropriation',
                                 'b.obligations',
+                                'b.idraao',
+                                't.target_qty',
+                                't.target_qty1',
+                                't.target_qty2',
+                                't.target_qty3',
+                                't.target_qty4',
+                                't.idraao',
+                                't.description',
+                                'i.description',
                                 DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
                     ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
                     ->leftjoin('accountaccess AS acc','a.ffunccod','=','acc.ffunccod')
                     ->leftjoin('systemusers AS su','su.recid','=','acc.iduser')
+                    ->Join(DB::raw('rta.targets t'),'t.idraao','=','b.idraao')
+                    ->Join(DB::raw('rta.indicators i'),'t.idindicator','=','i.id')
                     ->where('acc.iduser','=',Auth::user()->recid)
-                    ->where('a.tyear','=',$request->year)
+                    ->where('a.tyear','=',$year)
                     ->when($request->year, function($query, $year_search){
                         $query->where('a.tyear','=',$year_search);
-                        })
-                        ->when($request->search, function ($query, $searchItem) {
+                    })
+                    ->when($request->search, function ($query, $searchItem) {
                         $query->whereNested(function($query) use ($searchItem){
                             $query->where('a.FRAODESC', 'like', '%' . $searchItem . '%')
                                     ->orWhere('a.FALLTCOD', 'like', '%' . $searchItem . '%')
                                     ->orWhere('a.FFUNCCOD', 'like', '%' . $searchItem . '%');
                         });
                     })
-                    ->paginate(10);
+                    ->get()
+                    ->map(function($item){
+                        $userType=request('userType');
+                        return [
+                                    'userType'=>$userType,
+                                    'lgu'=>request('lgu'),
+                                    'dept'=>request('dept'),
+                                    'dept_head'=>'Department Head Name',
+                                    'lce'=>'Local Chief Executive',
+                                    'fraodesc'=>$item->fraodesc,
+                                    'appropriation'=>$item->appropriation,
+                                    'description'=>$item->description,
+                                    'target_qty1'=>$item->target_qty1,
+                                    'target_qty2'=>$item->target_qty2,
+                                    'target_qty3'=>$item->target_qty3,
+                                    'target_qty4'=>$item->target_qty4
+                                ];
+                    });
         return $data_new;
     }
 }
