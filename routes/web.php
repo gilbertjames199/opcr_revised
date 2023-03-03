@@ -225,6 +225,8 @@ Route::prefix('print')->group(function(){
                     'target_qty4'=>$target_qty4,
                 ];
     });
+    Route::get('/jasadmin',[RAAOController::class,'raao_jasper_admin']);
+    Route::get('/jasuser',[RAAOController::class,'raao_jasper_user']);
 });
 
 

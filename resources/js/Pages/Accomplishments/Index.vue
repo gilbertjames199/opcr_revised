@@ -36,7 +36,7 @@
             </Link>
         </div>
         <div class="peers fxw-nw jc-sb ai-c">
-            <h6><bold>Target: </bold>{{ target_description }}</h6>
+            <div><b>Target: </b><u>{{ target_description }}</u></div>
         </div>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
@@ -132,8 +132,6 @@
                     autocomplete="chrome-off"
                     :readonly="valid_status=='Yes'"
             >
-
-
             <label for="">Validated Date</label>
             <input type="date"
                     v-model="form.val_date"

@@ -2,15 +2,12 @@
     <Head>
         <title>Home</title>
     </Head>
-
     <!--
     <h1 style="color: #26394a; font-weight: bold; font-family: verdana;">Accomplishments</h1>
     <p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
     </p>-->
     <div class="row gap-20 masonry pos-r">
-
         <div class="peers fxw-nw jc-sb ai-c">
-
             <h3>Accomplishments </h3>
             <div class="peers">
                 <div class="peer mR-10">
@@ -19,7 +16,6 @@
                             class="form-control form-control-sm"
                             placeholder="Search...">
                 </div>
-
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/accomplishments/raao/${raao_id}/create`">Add Accomplishment</Link>
                     From
@@ -29,7 +25,6 @@
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="filterByDate()">Filter</button>
                     <button class="btn btn-danger btn-sm mL-2 text-white" @click="clearAllFilter()">Clear Filters</button>
                 </div>
-
             </div>
             <Link :href="'/raao'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -39,7 +34,7 @@
             </Link>
         </div>
         <div class="peers fxw-nw jc-sb ai-c">
-            <h6><bold>FRAO DESCRIPTION: </bold>{{ raao_description }}</h6>
+            <div><b>FRAO DESCRIPTION: </b><u>{{ raao_description }}</u></div>
         </div>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
@@ -100,13 +95,12 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <p >
+                        <p>
                             {{ data.from }} to {{ data.to }} of
                             {{ data.total }} entries
                         </p>
                     </div>
                 </div>
-
             </div>
         </div>
         <ValidationModal v-if="displayModal" @close-modal-event="hideModal">
@@ -123,8 +117,6 @@
                     autocomplete="chrome-off"
                     :readonly="valid_status=='Yes'"
             >
-
-
             <label for="">Validated Date</label>
             <input type="date"
                     v-model="form.val_date"
@@ -155,7 +147,6 @@
                             CANCEL
                 </button>
             </div>
-
         </ValidationModal>
     </div>
 </template>

@@ -303,6 +303,7 @@ class AccomplishmentController extends Controller
                     "target"=>$targ,
                     "raao_id"=>$raao_id,
                     "filters" => $request->only(['search']),
+                    "raao_description" =>$raao_description->FRAODESC,
                     //"raao_description"=>$raao_description->FRAODESC,
                     //"target_description"=>$target_description->description,
                     'can'=>[
