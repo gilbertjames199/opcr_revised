@@ -32,6 +32,10 @@
                 <input type="text" v-model="form.mfo_desc" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.mfo_desc">{{ form.errors.mfo_desc }}</div>
 
+                <label for="">FFUNCCOD</label>
+                <input type="text" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
+
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
@@ -70,6 +74,7 @@ export default {
                 form: useForm({
                     mfo_desc: "",
                     idinteroutcome: "",
+                    FFUNCCOD: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -82,6 +87,7 @@ export default {
                 this.pageTitle = "Edit"
                 this.form.idinteroutcome=this.idinteroutcome
                 this.form.mfo_desc=this.editData.mfo_desc
+                this.form.FFUNCCOD = this.editData.FFUNCCOD
                 this.form.id=this.editData.id
             } else {
                 this.pageTitle = "Create"

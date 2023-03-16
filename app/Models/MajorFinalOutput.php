@@ -12,6 +12,7 @@ class MajorFinalOutput extends Model
     protected $table='major_final_outputs';
     protected $fillable = [
         'mfo_desc',
-        'idinteroutcome'
+        'idinteroutcome',
+        'FFUNCCOD'
     ];
 }

@@ -20,7 +20,6 @@ class OutcomeController extends Controller
     }
     public function index(Request $request)
     {
-
         $data = $this->model
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)

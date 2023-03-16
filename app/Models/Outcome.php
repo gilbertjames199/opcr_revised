@@ -12,6 +12,14 @@ class Outcome extends Model
     protected $table='outcomes';
     protected $fillable = [
         'plan_period',
-        'oc_desc'
+        'oc_desc',
+        'id_org_goals',
+        'id_sec_goals',
+        'id_sdg_goals',
+        'id_cea',
+        'id_sea',
+        'id_ela',
+        'id_rea',
+        'FFUNCCOD'
     ];
 }

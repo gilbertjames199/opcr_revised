@@ -55,6 +55,7 @@ class MFOController extends Controller
         $attributes = $request->validate([
                             'mfo_desc' => 'required',
                             'idinteroutcome' => 'required',
+                            'FFUNCCOD'=>'required'
                         ]);
         //dd($attributes);
         $this->model->create($attributes);
@@ -76,6 +77,7 @@ class MFOController extends Controller
         $data = $this->model->where('id', $id)->first([
             'id',
             'mfo_desc',
+            'FFUNCCOD',
             'idinteroutcome'
         ]);
         //dd($idinteroutcome);
@@ -97,7 +99,8 @@ class MFOController extends Controller
         //dd($request->plan_period);
         $data->update([
             'mfo_desc'=>$request->mfo_desc,
-            'idinteroutcome'=>$request->idinteroutcome
+            'idinteroutcome'=>$request->idinteroutcome,
+            'FFUNCCOD'=>$request->FFUNCCOD
         ]);
 
         return redirect('/mfos/'.$request->idinteroutcome)
@@ -111,5 +114,21 @@ class MFOController extends Controller
         $data->delete();
         //dd($request->raao_id);
         return redirect('/mfos/'.$idinteroutcome)->with('warning', 'MFO deleted');
+    }
+
+    public function direct(Request $request){
+        $data = MajorFinalOutput::get()
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
+        dd($data);
+        //dd($data->pluck('mfo_desc'));
+        return inertia('MFOs/Direct',[
+            "data"=>$data,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 }

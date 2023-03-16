@@ -140,6 +140,7 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('/mfos')->group(function(){
         Route::get('/{id}',[MFOController::class,'index']);
+        Route::get('/direct',[MFOController::class,'direct']);
         Route::get('/create/{id}',[MFOController::class,'create']);
         Route::post('/store',[MFOController::class,'store']);
         Route::get('/{id}/{idinteroutcome}/edit', [MFOController::class, 'edit']);
@@ -228,5 +229,3 @@ Route::prefix('print')->group(function(){
     Route::get('/jasadmin',[RAAOController::class,'raao_jasper_admin']);
     Route::get('/jasuser',[RAAOController::class,'raao_jasper_user']);
 });
-
-
