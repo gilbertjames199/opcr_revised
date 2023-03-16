@@ -7,17 +7,17 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Intermediate Outcome</h3>
+            <h3>Chief Executive Agenda</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/inter_outcome/create/${idoutcome}`">Add Intermediate Outcome</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/ChiefAgenda/create`">Add Agenda</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
-            <Link :href="`/outcome`">
+            <Link :href="'/ChiefAgenda'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                     <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -33,13 +33,20 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Outcome Description</th>
+                                <th>Agenda Description</th>
+                                <th>Year From</th>
+                                <th>Year To</th>
+                                <th>Rationale</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dat in data.data">
-                                <td>{{ dat.io_desc }}</td>
+
+                            <tr v-for="dat in data">
+                                <td>{{ dat.agenda_description }}</td>
+                                <td>{{ dat.yearfrom }}</td>
+                                <td>{{ dat.yearto }}</td>
+                                <td>{{ dat.rationale }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,9 +55,8 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/mfos/${dat.id}`">MFO</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/inter_outcome/${dat.id}/${dat.idoutcome}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deletInterOutcome(dat.id)">Delete</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/ChiefAgenda/${dat.id}/edit`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteChiefAgenda(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -82,8 +88,7 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 export default {
     props: {
-        data: Object,
-        idoutcome: String
+        data: Object
     },
     data() {
         return{
@@ -109,10 +114,10 @@ export default {
                 }
             );
         },
-        deletInterOutcome(id) {
-            let text = "WARNING!\nAre you sure you want to delete the intermediate outcome?"+id;
+        deleteChiefAgenda(id) {
+            let text = "WARNING!\nAre you sure you want to delete the Chief Executive Agenda?"+id;
               if (confirm(text) == true) {
-                this.$inertia.delete("/inter_outcome/" + id+"/"+this.idoutcome);
+                this.$inertia.delete("/ChiefAgenda/" + id);
             }
         },
         getAccomplishment(tar_id){
@@ -133,6 +138,7 @@ export default {
             accomp.forEach(myFunction);
             function myFunction(item){
                 accSum += parseFloat(item.accomplishment_qty)
+
             }
             var percentt = (accSum/targqty)*100
             percentt=this.format_number(percentt,2,true)

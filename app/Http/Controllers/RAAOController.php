@@ -840,8 +840,8 @@ class RAAOController extends Controller
                     ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
                     ->leftjoin('accountaccess AS acc','a.ffunccod','=','acc.ffunccod')
                     ->leftjoin('systemusers AS su','su.recid','=','acc.iduser')
-                    ->Join(DB::raw('rta.targets t'),'t.idraao','=','b.idraao')
-                    ->Join(DB::raw('rta.indicators i'),'t.idindicator','=','i.id')
+                    ->Join(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
+                    ->Join(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
                     ->where('acc.iduser','=',Auth::user()->recid)
                     ->where('a.tyear','=',$year)
                     ->when($request->year, function($query, $year_search){

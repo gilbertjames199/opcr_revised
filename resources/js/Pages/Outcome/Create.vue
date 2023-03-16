@@ -32,8 +32,35 @@
                 <input type="text" v-model="form.oc_desc" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.oc_desc">{{ form.errors.oc_desc }}</div>
 
+                <label for="">ORGANIZATIONAL GOALS</label>
+                <!--<input type="text" v-model="form.plan_period" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.plan_period">{{ form.errors.plan_period }}</div>
+                -->
+                <label for="">SECTORAL GOALS</label>
+                <!--<input type="text" v-model="form.plan_period" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.plan_period">{{ form.errors.plan_period }}</div>
+                -->
+                <label for="">SUSTAINABLE DEVELOPMENT GOALS</label>
+                <!--<input type="text" v-model="form.plan_period" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.plan_period">{{ form.errors.plan_period }}</div>
+                -->
 
-
+                <label for="">CHIEF EXECUTIVE AGENDA</label>
+                <!--<input type="text" v-model="form.plan_period" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.plan_period">{{ form.errors.plan_period }}</div>
+                -->
+                <label for="">EIGHT POINT SOCIO-ECONOMIC AGENDA</label>
+                <!--<input type="text" v-model="form.plan_period" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.plan_period">{{ form.errors.plan_period }}</div>
+                -->
+                <label for="">EXECUTIVE LEGISLATIVE AGENDA</label>
+                <!--<input type="text" v-model="form.plan_period" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.plan_period">{{ form.errors.plan_period }}</div>
+                -->
+                <label for="">RESEARCH AGENDA</label>
+                <!--<input type="text" v-model="form.plan_period" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.plan_period">{{ form.errors.plan_period }}</div>
+                -->
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">

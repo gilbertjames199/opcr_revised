@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MajorFinalOutput extends Model
+class OrganizationalGoal extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='major_final_outputs';
+    protected $table='organizational_goals';
     protected $fillable = [
-        'mfo_desc',
-        'idinteroutcome',
-        'FFUNCCOD'
+        'goal_description',
     ];
 }

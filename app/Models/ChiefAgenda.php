@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MajorFinalOutput extends Model
+class ChiefAgenda extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='major_final_outputs';
+    protected $table='chief_executive_agenda';
     protected $fillable = [
-        'mfo_desc',
-        'idinteroutcome',
-        'FFUNCCOD'
+        'agenda_description',
+        'yearfrom',
+        'yearto',
+        'rationale',
     ];
 }

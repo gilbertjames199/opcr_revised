@@ -24,6 +24,10 @@ use App\Http\Controllers\PAPController;
 use App\Http\Controllers\RAAOController;
 use App\Http\Controllers\PlacesController;
 use App\Http\Controllers\StrategyController;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\SectoralController;
+use App\Http\Controllers\ChiefAgendaController;
+use App\Http\Controllers\EconomicAgendaController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\IntermediateOutcome;
@@ -83,6 +87,45 @@ Route::middleware('auth')->group(function() {
         Route::get('/return/{target_id}',[TargetController::class,'ret']);
     });
 
+    //Organization
+    Route::prefix('/Organization')->group(function(){
+        Route::get('/',[OrganizationController::class,'index']);
+        Route::get('/create',[OrganizationController::class,'create']);
+        Route::post('/',[OrganizationController::class,'store']);
+        Route::get('/{id}/edit', [OrganizationController::class, 'edit']);
+        Route::patch('/{id}', [OrganizationController::class, 'update']);
+        Route::delete('/{id}', [OrganizationController::class, 'destroy']);
+    });
+
+     //Sectoral
+     Route::prefix('/Sectoral')->group(function(){
+        Route::get('/',[SectoralController::class,'index']);
+        Route::get('/create',[SectoralController::class,'create']);
+        Route::post('/',[SectoralController::class,'store']);
+        Route::get('/{id}/edit', [SectoralController::class, 'edit']);
+        Route::patch('/{id}', [SectoralController::class, 'update']);
+        Route::delete('/{id}', [SectoralController::class, 'destroy']);
+    });
+
+     //ChiefAgenda
+     Route::prefix('/ChiefAgenda')->group(function(){
+        Route::get('/',[ChiefAgendaController::class,'index']);
+        Route::get('/create',[ChiefAgendaController::class,'create']);
+        Route::post('/',[ChiefAgendaController::class,'store']);
+        Route::get('/{id}/edit', [ChiefAgendaController::class, 'edit']);
+        Route::patch('/{id}', [ChiefAgendaController::class, 'update']);
+        Route::delete('/{id}', [ChiefAgendaController::class, 'destroy']);
+    });
+
+     //Eight Point Socio
+     Route::prefix('/EconomicAgenda')->group(function(){
+        Route::get('/',[EconomicAgendaController::class,'index']);
+        Route::get('/create',[EconomicAgendaController::class,'create']);
+        Route::post('/',[EconomicAgendaController::class,'store']);
+        Route::get('/{id}/edit', [EconomicAgendaController::class, 'edit']);
+        Route::patch('/{id}', [EconomicAgendaController::class, 'update']);
+        Route::delete('/{id}', [EconomicAgendaController::class, 'destroy']);
+    });
     //Indicators
     Route::prefix('/indicators')->group(function(){
         Route::get('/',[IndicatorController::class,'index']);
@@ -140,6 +183,7 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('/mfos')->group(function(){
         Route::get('/{id}',[MFOController::class,'index']);
+        Route::get('/direct',[MFOController::class,'direct']);
         Route::get('/create/{id}',[MFOController::class,'create']);
         Route::post('/store',[MFOController::class,'store']);
         Route::get('/{id}/{idinteroutcome}/edit', [MFOController::class, 'edit']);
@@ -231,5 +275,3 @@ Route::prefix('print')->group(function(){
     Route::get('/jasadmin',[RAAOController::class,'raao_jasper_admin']);
     Route::get('/jasuser',[RAAOController::class,'raao_jasper_user']);
 });
-
-
