@@ -133,7 +133,6 @@ export default {
             accomp.forEach(myFunction);
             function myFunction(item){
                 accSum += parseFloat(item.accomplishment_qty)
-
             }
             var percentt = (accSum/targqty)*100
             percentt=this.format_number(percentt,2,true)
