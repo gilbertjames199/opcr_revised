@@ -63,6 +63,7 @@
                         <span class="title">Targets/Accomplishments</span>
                     </Link>
                 </li>
+                <li class="nav-item"><hr class="sidebar-link" ></li>
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/raao" :class="{'active': $page.url === '/raao'}">
                         <span></span>
@@ -113,7 +114,37 @@
                     </Link>
                 </li>
                 -->
+                <!--GOALS-->
+                <li  class="nav-item dropdown" >
+                    <a class="dropdown-toggle" href="javascript:void(0);">
+                        <span class="icon-holder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
+                            </svg>
+                        </span>
+                        <span class="title">Goals</span>
+                        <span class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <ul  class="dropdown-menu">
+                        <li>
+                            <Link class="sidebar-link" href="/Organization" :class="{'active': $page.url === '/Organization'}">
 
+                                <span class="title">Organizational Goals</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="sidebar-link" href="/Sectoral" :class="{'active': $page.url === '/Sectoral'}">
+
+                                <span class="title">Sectoral Goals</span>
+                            </Link>
+                        </li>
+                    </ul>
+                </li>
+                <!--
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/Organization" :class="{'active': $page.url === '/Organization'}">
                         <span></span>
@@ -137,7 +168,7 @@
                         <span class="title">Sectoral Goals</span>
                     </Link>
                 </li>
-
+            -->
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/ChiefAgenda" :class="{'active': $page.url === '/ChiefAgenda'}">
                         <span></span>
