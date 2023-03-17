@@ -50,7 +50,7 @@
                     >
                 </li>-->
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/targets">
+                    <Link class="sidebar-link" href="/targets" :class="{'active': $page.url === '/targets'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-rolodex" viewBox="0 0 16 16">
@@ -62,7 +62,7 @@
                     </Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/raao">
+                    <Link class="sidebar-link" href="/raao" :class="{'active': $page.url === '/raao'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-rolodex" viewBox="0 0 16 16">
@@ -75,7 +75,7 @@
                 </li>
                 <!--MFO-->
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/mfos/direct">
+                    <Link class="sidebar-link" href="/mfos/direct" :class="{'active': $page.url === '/mfos/direct'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-rolodex" viewBox="0 0 16 16">
@@ -88,7 +88,7 @@
                 </li>
                 <!--Outcomes-->
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/outcome">
+                    <Link class="sidebar-link" href="/outcome" :class="{'active': $page.url === '/outcome'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-rolodex" viewBox="0 0 16 16">
@@ -114,7 +114,7 @@
                 -->
 
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/Organization">
+                    <Link class="sidebar-link" href="/Organization" :class="{'active': $page.url === '/Organization'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bezier2" viewBox="0 0 16 16">
@@ -126,7 +126,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/Sectoral">
+                    <Link class="sidebar-link" href="/Sectoral" :class="{'active': $page.url === '/Sectoral'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bezier2" viewBox="0 0 16 16">
@@ -138,7 +138,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/ChiefAgenda">
+                    <Link class="sidebar-link" href="/ChiefAgenda" :class="{'active': $page.url === '/ChiefAgenda'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bezier2" viewBox="0 0 16 16">
@@ -150,7 +150,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/EconomicAgenda">
+                    <Link class="sidebar-link" href="/EconomicAgenda" :class="{'active': $page.url === '/EconomicAgenda'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bezier2" viewBox="0 0 16 16">
@@ -161,7 +161,7 @@
                     </Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/SDG">
+                    <Link class="sidebar-link" href="/SDG" :class="{'active': $page.url === '/SDG'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bezier2" viewBox="0 0 16 16">
@@ -172,7 +172,7 @@
                     </Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/ELA">
+                    <Link class="sidebar-link" href="/ELA" :class="{'active': $page.url === '/ELA'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bezier2" viewBox="0 0 16 16">
@@ -183,7 +183,7 @@
                     </Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/ResearchAgenda">
+                    <Link class="sidebar-link" href="/ResearchAgenda" :class="{'active': $page.url === '/ResearchAgenda'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bezier2" viewBox="0 0 16 16">
