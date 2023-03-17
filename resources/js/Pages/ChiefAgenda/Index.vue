@@ -41,7 +41,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <tr v-for="dat in data.data">
                                 <td>{{ dat.agenda_description }}</td>
                                 <td>{{ dat.yearfrom }}</td>
