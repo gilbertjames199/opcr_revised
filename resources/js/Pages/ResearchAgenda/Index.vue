@@ -1,28 +1,20 @@
 <template>
     <Head>
-        <title>Home</title>
+        <title>Research Agenda</title>
     </Head>
 
-    <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
-    </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Chief Executive Agenda</h3>
+            <h3>Research Agenda</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/ChiefAgenda/create`">Add Agenda</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/ResearchAgenda/create`">Add Agenda</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
-            <Link :href="'/ChiefAgenda'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
-            </Link>
         </div>
 
         <div class="masonry-sizer col-md-6"></div>
@@ -33,7 +25,7 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Agenda Description</th>
+                                <th>Description</th>
                                 <th>Year From</th>
                                 <th>Year To</th>
                                 <th>Rationale</th>
@@ -42,10 +34,10 @@
                         </thead>
                         <tbody>
 
-                            <tr v-for="dat in data.data">
+                            <tr v-for="dat in data">
                                 <td>{{ dat.agenda_description }}</td>
-                                <td>{{ dat.yearfrom }}</td>
-                                <td>{{ dat.yearto }}</td>
+                                <td>{{ dat.year_from }}</td>
+                                <td>{{ dat.year_to }}</td>
                                 <td>{{ dat.rationale }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
@@ -55,8 +47,8 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/ChiefAgenda/${dat.id}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteChiefAgenda(dat.id)">Delete</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/ResearchAgenda/${dat.id}/edit`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteRA(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -82,7 +74,9 @@
         </div>
 
     </div>
+    
 </template>
+
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
@@ -101,49 +95,14 @@ export default {
 
     methods:{
 
-        showCreate(){
-            this.$inertia.get(
-                "/targets/create",
-                {
-                    raao_id: this.raao_id
-                },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        },
-        deleteChiefAgenda(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Chief Executive Agenda?"+id;
+      
+        deleteRA(id) {
+            let text = "WARNING!\nAre you sure you want to delete the Research Agenda?";
               if (confirm(text) == true) {
-                this.$inertia.delete("/ChiefAgenda/" + id);
+                this.$inertia.delete("/ResearchAgenda/" + id);
             }
         },
-        getAccomplishment(tar_id){
-            this.$inertia.get(
-                "/accomplishments",
-                {
-                    idtarget: tar_id
-                },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        },
-        getPercent(accomp, targqty){
-            var accSum=0;
-            accomp.forEach(myFunction);
-            function myFunction(item){
-                accSum += parseFloat(item.accomplishment_qty)
-
-            }
-            var percentt = (accSum/targqty)*100
-            percentt=this.format_number(percentt,2,true)
-            return percentt;
-        }
+        
     }
 };
 </script>

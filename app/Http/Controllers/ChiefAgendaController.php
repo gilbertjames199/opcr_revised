@@ -19,7 +19,9 @@ class ChiefAgendaController extends Controller
     public function index(Request $request){
 
         $data = $this->model
-                ->get();
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
         return inertia('ChiefAgenda/Index',[
             "data"=>$data,
             'can'=>[

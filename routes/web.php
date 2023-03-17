@@ -30,6 +30,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SectoralController;
 use App\Http\Controllers\ChiefAgendaController;
 use App\Http\Controllers\EconomicAgendaController;
+use App\Http\Controllers\RAController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\IntermediateOutcome;
@@ -119,6 +120,15 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [ELAController::class, 'destroy']);
     });
 
+     //Research Agenda
+     Route::prefix('/ResearchAgenda')->group(function(){
+        Route::get('/',[RAController::class,'index']);
+        Route::get('/create',[RAController::class,'create']);
+        Route::post('/',[RAController::class,'store']);
+        Route::get('/{id}/edit', [RAController::class, 'edit']);
+        Route::patch('/{id}', [RAController::class, 'update']);
+        Route::delete('/{id}', [RAController::class, 'destroy']);
+    });
      //Sectoral
      Route::prefix('/Sectoral')->group(function(){
         Route::get('/',[SectoralController::class,'index']);
