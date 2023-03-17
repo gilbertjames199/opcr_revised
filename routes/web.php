@@ -204,13 +204,13 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::prefix('/mfos')->group(function(){
-        Route::get('/{id}',[MFOController::class,'index']);
         Route::get('/direct',[MFOController::class,'direct']);
         Route::get('/create/{id}',[MFOController::class,'create']);
         Route::post('/store',[MFOController::class,'store']);
         Route::get('/{id}/{idinteroutcome}/edit', [MFOController::class, 'edit']);
         Route::patch('/', [MFOController::class, 'update']);
         Route::delete('/{id}/{idoutcome}', [MFOController::class, 'destroy']);
+        Route::get('/{id}',[MFOController::class,'index']);
     });
     //Route::patch('/', [PAPController::class, 'update']);
     Route::prefix('/paps')->group(function(){
