@@ -53,30 +53,7 @@
                                 <th>Funds Utilization (%)</th>
                             </tr>
                         </thead>
-                        <!--
-                        <tbody>
-                            <tr v-for="(dat,index) in data.data">
-                                dat.FRAODESC
-                                <td>{{ dat.FRAODESC }}</td>
-                                <td>{{ dat.aipcode }}</td>
-                                <td>{{ dat.tyear }}</td>
-                                <td>{{ dat.FALLTCOD }}</td>allotment clas
-                                <td>{{ dat.FSOURCE }}</td>Source of Fund
-                                <td>{{ dat.FFUNCCOD }}</td>office
-                                <td>
-                                    <button class="btn btn-light" @click="getTarget(dat.recid)">Target</button>
-                                </td>
-                                <td>
-                                    <Link class="btn btn-light text-black" :href="`/accomplishments/${dat.recid}/raao/list`">
-                                        Outputs
-                                    </Link>
-                                </td>
-                                <td class="text-end">{{ format_number(dat.tapprop,2,true) }}</td>Appropriations
-                                <td class="text-end">{{ format_number(dat.toblig,2,true) }}</td>Obligations
-                                <td class="text-end">{{ computeFinacialAccomplishment(dat.toblig,dat.tapprop)}}%</td>
-
-                            </tr>
-                        </tbody>-->
+                        
                         <tbody>
                             <tr v-for="dtnew in datanew.data">
                                 <td>{{ dtnew.fraodesc }}</td>

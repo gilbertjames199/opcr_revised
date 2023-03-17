@@ -253,7 +253,7 @@ class RAAOController extends Controller
                             DB::raw('group_concat(t.description) as target_description'),
                             DB::raw('group_concat(i.description) as description'),
                             DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
-                    ->where('a.raaohs',request('year'))
+                    ->where('a.tyear',request('year'))
                     ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
                     ->Join(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
                     ->Join(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
@@ -261,6 +261,48 @@ class RAAOController extends Controller
                     ->get()
                     ->map(function($item){
                         $userType=request('userType');
+                        $id=$item->recid;
+                        $targ_qty1= DB::table('targets')
+                                        ->select('targets.target_qty1','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['target_qty1'=>$item->target_qty1,
+                                                    'indicator'=>$item->description
+                                                    ];
+
+                                        });
+                        $targ_qty2= DB::table('targets')
+                                        ->select('targets.target_qty2','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['target_qty2'=>$item->target_qty2,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
+                        $targ_qty3= DB::table('targets')
+                                        ->select('targets.target_qty3','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['target_qty3'=>$item->target_qty3,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
+                        $targ_qty4= DB::table('targets')
+                                        ->select('targets.target_qty4','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['target_qty4'=>$item->target_qty4,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
                         return [
                                     'userType'=>$userType,
                                     'lgu'=>request('lgu'),
@@ -270,13 +312,13 @@ class RAAOController extends Controller
                                     'fraodesc'=>$item->fraodesc,
                                     'appropriation'=>$item->appropriation,
                                     'description'=>$item->description,
-                                    'target_qty1'=>$item->target_qty1,
-                                    'target_qty2'=>$item->target_qty2,
-                                    'target_qty3'=>$item->target_qty3,
-                                    'target_qty4'=>$item->target_qty4
+                                    'target_qty1'=>$targ_qty1,
+                                    'target_qty2'=>$targ_qty2,
+                                    'target_qty3'=>$targ_qty3,
+                                    'target_qty4'=>$targ_qty4,
+                                    'recid'=>$item->recid
                                 ];
                     });
-        */
         /************************************* */
         /*
         $data_new=DB::connection('mysql2')
@@ -331,7 +373,7 @@ class RAAOController extends Controller
                             });
         */
         //************************************* */
-        $data_new=DB::connection('mysql2')
+        /*$data_new=DB::connection('mysql2')
                     ->table(DB::raw('(select raaohs.tyear,
                                     raaohs.aipcode,
                                     raaohs.fraodesc,
@@ -382,13 +424,16 @@ class RAAOController extends Controller
                                     'target_qty3'=>$item->target_qty3,
                                     'target_qty4'=>$item->target_qty4
                                 ];
-                    });
+                    });*/
         return $data_new;
     }
     //MAO NI
     public function raao_jasper(Request $request){
+        
+        /*
         $today = Carbon::now();
         $year = ''.$today->year.'';
+
         $table_a = RAAOHS::select('tyear','aipcode','falltcod','FFUNCCOD','raaohs.recid','FSOURCE')
                     ->leftjoin('sources','sources.recid','=','raaohs.idsource')
                     ->get();
@@ -397,8 +442,12 @@ class RAAOController extends Controller
                     DB::raw('sum(if(entrytype=\'3\', famount,0)) as obligations')
                    )->groupby('idraao')
                    ->get();
-
+        */
         //dd($table_a);
+        // if($request->year){
+        //     dd($request);
+        // }
+        /*
         $data_new=DB::connection('mysql2')
                     ->table(DB::raw('(select raaohs.tyear,
                                     raaohs.aipcode,
@@ -449,11 +498,41 @@ class RAAOController extends Controller
                                                     ];
 
                                         });
+                        $targ_qty2= DB::table('targets')
+                                        ->select('targets.target_qty2','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['target_qty2'=>$item->target_qty2,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
+                        $targ_qty3= DB::table('targets')
+                                        ->select('targets.target_qty3','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['target_qty3'=>$item->target_qty3,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
+                        $targ_qty4= DB::table('targets')
+                                        ->select('targets.target_qty4','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['target_qty4'=>$item->target_qty4,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
                         return [
                                 'userType'=>$userType,
                                 'lgu'=>request('lgu'),
                                 'dept'=>request('dept'),
-                                'dept_head'=>'Department Head Name',
+                                'dept_head'=>'Department Head Name (1234)',
                                 'lce'=>'Local Chief Executive',
                                 'fraodesc'=>rtrim($item->fraodesc," "),
                                 'appropriation'=>$item->appropriation,
@@ -479,8 +558,207 @@ class RAAOController extends Controller
         */
         //
         //->leftJoin(DB::raw('select idraao,sum(if(entrytype="1", famount,0)) as appropriation ,sum(if(entrytype="3", famount,0)) as obligations from raaods group by idraao) b '),'a.recid','=','b.idraao')
+                //->where('a.tyear',request('year'))
+        $data_new=DB::connection('mysql2')
+                    ->table(DB::raw('(select raaohs.tyear,
+                                    raaohs.aipcode,
+                                    raaohs.fraodesc,
+                                    raaohs.falltcod,
+                                    raaohs.ffunccod,
+                                    raaohs.recid,
+                                    sources.fsource from raaohs
+                                    left join sources on
+                                    sources.recid = raaohs.idsource
+                                    where fraotype>\'2\') a'))
+                    ->select('a.tyear',
+                            'a.fraodesc',
+                            'a.falltcod',
+                            'a.aipcode',
+                            'a.ffunccod',
+                            'a.fsource',
+                            'a.recid',
+                            'b.appropriation',
+                            'b.obligations',
+                            'b.idraao',
+                            DB::raw('group_concat(i.description) as description'),
+                            DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
+                    ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
+                    ->Join(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
+                    ->Join(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
+                    ->groupBy('a.recid')
+                    ->get()
+                    ->map(function($item){
+                        $userType=request('userType');
+                        $id=$item->recid;
+                        $targ_qty1= DB::table('targets')
+                                        ->select('targets.target_qty1','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['targ_qty1'=>$item->target_qty1,
+                                                    'indicator'=>$item->description
+                                                    ];
 
+                                        });
+                        $targ_qty2= DB::table('targets')
+                                        ->select('targets.target_qty2','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['targ_qty2'=>$item->target_qty2,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
+                        $targ_qty3= DB::table('targets')
+                                        ->select('targets.target_qty3','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['targ_qty3'=>$item->target_qty3,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
+                        $targ_qty4= DB::table('targets')
+                                        ->select('targets.target_qty4','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['targ_qty4'=>$item->target_qty4,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
+                        return [
+                                    'userType'=>$userType,
+                                    'lgu'=>request('lgu'),
+                                    'dept'=>request('dept'),
+                                    'dept_head'=>'Department Head Name',
+                                    'lce'=>'Local Chief Executive',
+                                    'fraodesc'=>rtrim($item->fraodesc," "),
+                                    'appropriation'=>$item->appropriation,
+                                    'description'=>$item->description,
+                                    'target_qty1'=>$targ_qty1,
+                                    'target_qty2'=>$targ_qty2,
+                                    'target_qty3'=>$targ_qty3,
+                                    'target_qty4'=>$targ_qty4,
+                                    'recid'=>$item->recid,
+                                    'tyear'=>$item->tyear
+                                ];
+                    });
+        return $data_new;
+    }
+    public function raao_jasper_tgqty1(Request $request){
+        $targ_qty1= DB::table('targets')
+                                        ->select('targets.target_qty1','indicators.description')
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->where('idraao','=',$request->id)
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['target_qty1'=>$item->target_qty1,
+                                                    'indicator'=>$item->description
+                                                    ];
 
+                                        });
+        return $targ_qty1;
+    }
+    public function raao_jasper_3(Request $request){
+        $data_new=DB::connection('mysql2')
+                    ->table(DB::raw('(select raaohs.tyear,
+                                    raaohs.aipcode,
+                                    raaohs.fraodesc,
+                                    raaohs.falltcod,
+                                    raaohs.ffunccod,
+                                    raaohs.recid,
+                                    sources.fsource from raaohs
+                                    left join sources on
+                                    sources.recid = raaohs.idsource
+                                    where fraotype>\'2\') a'))
+                    ->select('a.tyear',
+                            'a.fraodesc',
+                            'a.falltcod',
+                            'a.aipcode',
+                            'a.ffunccod',
+                            'a.fsource',
+                            'a.recid',
+                            'b.appropriation',
+                            'b.obligations',
+                            'b.idraao',
+                            DB::raw('group_concat(i.description) as description'),
+                            DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
+                    ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
+                    ->Join(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
+                    ->Join(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
+                    ->groupBy('a.recid')
+                    ->get()
+                    ->map(function($item){
+                        $userType=request('userType');
+                        $id=$item->recid;
+                        $targ_qty1= DB::table('targets')
+                                        ->select('targets.target_qty1','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+
+                                            return [
+                                                    'type'=>'Q1',
+                                                    'targ'=>$item->target_qty1,
+                                                    'indicator'=>$item->description
+                                                    ];
+
+                                        });
+                        $targ_qty2= DB::table('targets')
+                                        ->select('targets.target_qty2','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['type'=>'Q2',
+                                                    'targ'=>$item->target_qty2,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
+                        $targ_qty3= DB::table('targets')
+                                        ->select('targets.target_qty3','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['type'=>'Q3',
+                                                    'targ'=>$item->target_qty3,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
+                        $targ_qty4= DB::table('targets')
+                                        ->select('targets.target_qty4','indicators.description')
+                                        ->where('idraao',$id)
+                                        ->join('indicators','targets.idindicator','=','indicators.id')
+                                        ->get()
+                                        ->map(function($item){
+                                            return ['type'=>'Q4','targ'=>$item->target_qty4,
+                                                    'indicator'=>$item->description
+                                                    ];
+                                        });
+                        $targ_f= $targ_qty1->merge($targ_qty2);
+                        $targ_f=$targ_f->merge($targ_qty3);
+                        $targ_f=$targ_f->merge($targ_qty4);
+                        return [
+                                    'userType'=>$userType,
+                                    'lgu'=>request('lgu'),
+                                    'dept'=>request('dept'),
+                                    'dept_head'=>'Department Head Name',
+                                    'lce'=>'Local Chief Executive',
+                                    'fraodesc'=>rtrim($item->fraodesc," "),
+                                    'appropriation'=>$item->appropriation,
+                                    'description'=>$item->description,
+                                    'target'=>$targ_f,
+                                    'recid'=>$item->recid,
+                                    'tyear'=>$item->tyear
+                                ];
+                    });
         return $data_new;
     }
     //RAAO ADMIN
@@ -562,8 +840,8 @@ class RAAOController extends Controller
                     ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
                     ->leftjoin('accountaccess AS acc','a.ffunccod','=','acc.ffunccod')
                     ->leftjoin('systemusers AS su','su.recid','=','acc.iduser')
-                    ->Join(DB::raw('rta.targets t'),'t.idraao','=','b.idraao')
-                    ->Join(DB::raw('rta.indicators i'),'t.idindicator','=','i.id')
+                    ->Join(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
+                    ->Join(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
                     ->where('acc.iduser','=',Auth::user()->recid)
                     ->where('a.tyear','=',$year)
                     ->when($request->year, function($query, $year_search){
