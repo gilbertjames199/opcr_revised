@@ -49,6 +49,13 @@
     color: rgba(178, 183, 255, var(--tw-text-opacity));
 }
 
+//HR
+hr{
+    color: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    height: 1px;
+    border: none;
+}
 .dropdown-menu>li>a {
     --tw-text-opacity: 1;
     //color: rgb(236, 237, 194);
