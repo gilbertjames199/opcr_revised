@@ -1,6 +1,8 @@
 <?php
 
 // use App\Http\Controllers\FileHandleController;
+use App\Http\Controllers\ELAController;
+use App\Http\Controllers\SDGController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -95,6 +97,26 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [OrganizationController::class, 'edit']);
         Route::patch('/{id}', [OrganizationController::class, 'update']);
         Route::delete('/{id}', [OrganizationController::class, 'destroy']);
+    });
+
+     //SDG
+     Route::prefix('/SDG')->group(function(){
+        Route::get('/',[SDGController::class,'index']);
+        Route::get('/create',[SDGController::class,'create']);
+        Route::post('/',[SDGController::class,'store']);
+        Route::get('/{id}/edit', [SDGController::class, 'edit']);
+        Route::patch('/{id}', [SDGController::class, 'update']);
+        Route::delete('/{id}', [SDGController::class, 'destroy']);
+    });
+
+     //ELA
+     Route::prefix('/ELA')->group(function(){
+        Route::get('/',[ELAController::class,'index']);
+        Route::get('/create',[ELAController::class,'create']);
+        Route::post('/',[ELAController::class,'store']);
+        Route::get('/{id}/edit', [ELAController::class, 'edit']);
+        Route::patch('/{id}', [ELAController::class, 'update']);
+        Route::delete('/{id}', [ELAController::class, 'destroy']);
     });
 
      //Sectoral
