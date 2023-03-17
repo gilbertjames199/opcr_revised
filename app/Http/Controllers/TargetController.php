@@ -28,15 +28,28 @@ class TargetController extends Controller
         if($request->id_raao){
             $raao_id1=$request->id_raao;
             $year = RAAOHS::where('recid',$raao_id1)->value('tyear');
-
-        }
-
-        $data = $this->model
+            $data = $this->model
                 ->with('accomp')
                 ->where('idraao', $raao_id1)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
+
+        }else{
+            $data = $this->model
+                ->with('accomp')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
+                //dd($data);
+        }
+        //dd($data);
+        // $data = $this->model
+        //         ->with('accomp')
+        //         ->where('idraao', $raao_id1)
+        //         ->orderBy('created_at', 'desc')
+        //         ->paginate(10)
+        //         ->withQueryString();
 
         return inertia('Targets/Index',[
             "data"=>$data,
@@ -287,6 +300,9 @@ class TargetController extends Controller
         $data = $this->model->findOrFail($target_id);
         //dd($data->idraao);
         return redirect('/targets?id_raao='.$data->idraao);
+    }
+    public function direct_targets(Request $request){
+
     }
 
 }
