@@ -34,7 +34,7 @@
                         </thead>
                         <tbody>
 
-                            <tr v-for="dat in data">
+                            <tr v-for="dat in data.data">
                                 <td>{{ dat.agenda_description }}</td>
                                 <td>{{ dat.year_from }}</td>
                                 <td>{{ dat.year_to }}</td>
@@ -74,7 +74,7 @@
         </div>
 
     </div>
-    
+
 </template>
 
 <script>
@@ -95,14 +95,14 @@ export default {
 
     methods:{
 
-      
+
         deleteRA(id) {
             let text = "WARNING!\nAre you sure you want to delete the Research Agenda?";
               if (confirm(text) == true) {
                 this.$inertia.delete("/ResearchAgenda/" + id);
             }
         },
-        
+
     }
 };
 </script>

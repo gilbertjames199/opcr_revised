@@ -16,7 +16,9 @@ class ELAController extends Controller
     public function index(Request $request)
     {
         $data = $this->model
-                    ->get();
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
         return inertia('ELA/Index',[
             "data"=>$data,
             'can'=>[
@@ -36,7 +38,7 @@ class ELAController extends Controller
         ],
         ]);
     }
-    
+
     public function store(Request $request)
     {
 
@@ -51,7 +53,7 @@ class ELAController extends Controller
         return redirect('/ELA')
                 ->with('message','Executive Legislative Agenda added');
     }
-    
+
     public function edit(Request $request, $id){
         $data = $this->model
             ->where('id', $id)->first([
@@ -86,7 +88,7 @@ class ELAController extends Controller
         return redirect('/ELA')
                 ->with('message','Executive Legislative Agenda updated');
     }
-    
+
     public function destroy(Request $request){
         $data = $this->model->findOrFail($request->id);
         $data->delete();

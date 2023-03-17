@@ -81634,6 +81634,10 @@ table.dataTable.no-footer {
   color: #fff !important;
 }
 
+.sidebar-link :active {
+  color: #fff !important;
+}
+
 .tab {
   overflow: hidden;
   border: 1px solid #ccc cv z;
