@@ -17,7 +17,7 @@ class MFOController extends Controller
     }
     public function index(Request $request, $id)
     {
-        dd($request);
+        //dd($request);
         $idoutcome = IntermediateOutcome::where('id',$id)
                         ->value('idoutcome');
 
