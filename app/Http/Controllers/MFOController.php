@@ -17,6 +17,7 @@ class MFOController extends Controller
     }
     public function index(Request $request, $id)
     {
+        dd($request);
         $idoutcome = IntermediateOutcome::where('id',$id)
                         ->value('idoutcome');
 
@@ -117,11 +118,11 @@ class MFOController extends Controller
     }
 
     public function direct(Request $request){
-        $data = MajorFinalOutput::get()
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
-                ->withQueryString();
-        dd($data);
+        //dd("direct");
+        $data = $this->model->orderBy('created_at', 'desc')
+        ->paginate(10)
+        ->withQueryString();
+
         //dd($data->pluck('mfo_desc'));
         return inertia('MFOs/Direct',[
             "data"=>$data,
