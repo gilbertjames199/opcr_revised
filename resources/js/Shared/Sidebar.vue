@@ -39,6 +39,7 @@
             </div>
             <!-- ### $Sidebar Menu ### -->
             <ul class="sidebar-menu scrollable pos-r">
+                <hr >
                 <!--<li class="nav-item mT-30 actived">
                     <Link class="sidebar-link" href="/"
                         ><span class="icon-holder"
@@ -63,7 +64,7 @@
                         <span class="title">Targets/Accomplishments</span>
                     </Link>
                 </li>
-                <li class="nav-item"><hr class="sidebar-link" ></li>
+                <hr >
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/raao" :class="{'active': $page.url === '/raao'}">
                         <span></span>
@@ -144,6 +145,7 @@
                         </li>
                     </ul>
                 </li>
+
                 <!--
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/Organization" :class="{'active': $page.url === '/Organization'}">
@@ -169,6 +171,8 @@
                     </Link>
                 </li>
             -->
+                <hr >
+
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/ChiefAgenda" :class="{'active': $page.url === '/ChiefAgenda'}">
                         <span></span>
@@ -233,6 +237,7 @@
                         <span class="title">Research Agenda</span>
                     </Link>
                 </li>
+                <hr >
             </ul>
         </div>
     </div>

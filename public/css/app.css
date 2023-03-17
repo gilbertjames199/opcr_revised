@@ -81548,6 +81548,13 @@ table.dataTable.no-footer {
   color: rgba(178, 183, 255, var(--tw-text-opacity));
 }
 
+hr {
+  color: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  height: 1px;
+  border: none;
+}
+
 .dropdown-menu > li > a {
   --tw-text-opacity: 1;
   color: rgba(0, 50, 50, var(--tw-text-opacity)) !important;
