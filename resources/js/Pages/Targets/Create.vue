@@ -65,7 +65,7 @@
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.brgy">{{ form.errors.brgy }}</div>
                 <div>
-                    <label for="">PLANNED PERIOD</label><br />
+                    <label for="">PLAN PERIOD</label><br />
                     <div class="relative row gap-20 masonry pos-r">
                         <div class="col-md-1"></div>
                         <div class="col-md-1">
@@ -87,7 +87,7 @@
                         </div>
                     </div>
                 </div>
-                <label for="">PLANNED BUDGET</label>
+                <label for="">PLAN BUDGET</label>
                 <!--@input="handleNumberInput"-->
                 <input type="number"
                         v-model="form.planned_budget"
