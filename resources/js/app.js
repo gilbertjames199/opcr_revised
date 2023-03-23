@@ -25,7 +25,7 @@ import vSelect from 'vue-select';
 import VueSelect from 'vue-select';
 
 //YEAR PICKER
-import yearPicker from 'vue-year-picker';
+//import yearPicker from 'vue-year-picker';
 
 //Bootstrap Vue
 //import { BootstrapVue } from 'bootstrap-vue';
