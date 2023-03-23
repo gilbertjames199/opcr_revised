@@ -53,7 +53,7 @@
                                 <th>Funds Utilization (%)</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody>
                             <tr v-for="dtnew in datanew.data">
                                 <td>{{ dtnew.fraodesc }}</td>
@@ -87,8 +87,6 @@
                         </tbody>
                     </table>
                 </div>
-
-
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="datanew.next_page_url" :prev="datanew.prev_page_url" />

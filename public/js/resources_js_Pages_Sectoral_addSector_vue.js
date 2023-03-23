@@ -186,7 +186,7 @@ var _hoisted_7 = {
 
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "SECTORAL", -1
+}, "SECTOR", -1
 /* HOISTED */
 );
 

@@ -15,7 +15,7 @@ class CreateProgramAndProjectsTable extends Migration
     {
         Schema::create('program_and_projects', function (Blueprint $table) {
             $table->id();
-            $table->string('paps_desc')->nullable();
+            $table->longText('paps_desc')->nullable();
             $table->integer('tyear')->unsigned()->nullable();
             $table->string('FRAOTYPE',1)->nullable();
             $table->string('FRAODESC',200)->nullable();
@@ -29,8 +29,8 @@ class CreateProgramAndProjectsTable extends Migration
             $table->timestamp('date_created')->nullable();
             $table->integer('excludetag')->nullable();
             $table->integer('previd')->unsigned()->nullable();
-            $table->string('idpaps')->nullable();
-            $table->string('idmfo')->nullable();
+            $table->bigInteger('idpaps')->nullable();
+            $table->bigInteger('idmfo')->nullable();
             $table->timestamps();
         });
     }

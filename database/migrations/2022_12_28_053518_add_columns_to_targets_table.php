@@ -14,10 +14,10 @@ class AddColumnsToTargetsTable extends Migration
     public function up()
     {
         Schema::table('targets', function (Blueprint $table) {
-            $table->string('target_qty1')->nullable();
-            $table->string('target_qty2')->nullable();
-            $table->string('target_qty3')->nullable();
-            $table->string('target_qty4')->nullable();
+            $table->decimal('target_qty1',12,2)->nullable();
+            $table->decimal('target_qty2',12,2)->nullable();
+            $table->decimal('target_qty3',12,2)->nullable();
+            $table->decimal('target_qty4',12,2)->nullable();
         });
     }
 

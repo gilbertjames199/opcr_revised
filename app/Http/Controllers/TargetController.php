@@ -176,24 +176,7 @@ class TargetController extends Controller
 
     public function store(Request $request)
     {
-        $attributes = $request->validate([
-            'idraao' => 'required',
-            //'idooe' => 'required',
-            'idindicator' => 'required',
-            'description' => 'required',
-            'brgy' => 'required',
-            'municipality' => 'required',
-            'planned_period_from' => 'required',
-            'planned_period_to' => 'required',
-            'planned_budget' => 'required',
-            'target_qty' => 'required',
-            'onsite_tag' => 'required',
-            'target_qty1'=> 'required',
-            'target_qty2'=> 'required',
-            'target_qty3'=> 'required',
-            'target_qty4'=> 'required',
-        ]);
-
+        $attributes = $request->validate(Target::rules(), Target::errorMessages());
         $this->model->create($attributes);
         $request->pass='';
         $request->id_raao=$request->idraao;
@@ -202,8 +185,26 @@ class TargetController extends Controller
         return redirect('/targets?id_raao='.$request->id_raao)
                 ->with('message','Target added');
     }
+    // $raao=DB::connection('mysql2')
+        //          ->table('raaohs AS r')
+        //          ->leftjoin('accountaccess AS a','r.ffunccod','=','a.ffunccod')
+        //          ->leftjoin('systemusers AS su','su.recid','=','a.iduser')
+        //          ->select('r.recid AS recid','r.FRAODESC AS FRAODESC')
+        //          ->where('a.iduser','=',Auth::user()->recid)
+        //          ->where('r.FRAOTYPE','>',2)
+        //          ->when($request->search, function ($query, $searchItem) {
+        //             $query->whereNested(function($query) use ($searchItem){
+        //                             $query->where('r.FRAODESC', 'like', '%' . $searchItem . '%')
+        //                                 ->orWhere('r.FALLTCOD', 'like', '%' . $searchItem . '%')
+        //                                 ->orWhere('r.FFUNCCOD', 'like', '%' . $searchItem . '%');
+        //                     })
+        //                     ->where('a.iduser','=',Auth::user()->recid);
+        //         })
+        //         ->get();
     public function edit(Request $request, $id)
     {
+        $today = Carbon::now();
+        $year = ''.$today->year.'';
         $data = $this->model->where('id', $id)->first([
             'id',
             'idraao',
@@ -222,22 +223,37 @@ class TargetController extends Controller
             'target_qty4'
         ]);
         $indicator=DB::table('indicators')->select('id','description')->get();
-        $raao=DB::connection('mysql2')
-                 ->table('raaohs AS r')
-                 ->leftjoin('accountaccess AS a','r.ffunccod','=','a.ffunccod')
-                 ->leftjoin('systemusers AS su','su.recid','=','a.iduser')
-                 ->select('r.recid AS recid','r.FRAODESC AS FRAODESC')
-                 ->where('a.iduser','=',Auth::user()->recid)
-                 ->where('r.FRAOTYPE','>',2)
-                 ->when($request->search, function ($query, $searchItem) {
-                    $query->whereNested(function($query) use ($searchItem){
-                                    $query->where('r.FRAODESC', 'like', '%' . $searchItem . '%')
-                                        ->orWhere('r.FALLTCOD', 'like', '%' . $searchItem . '%')
-                                        ->orWhere('r.FFUNCCOD', 'like', '%' . $searchItem . '%');
-                            })
-                            ->where('a.iduser','=',Auth::user()->recid);
-                })
-                ->get();
+        if(Auth::user()->UserType=='Administrator'){
+            $raao=DB::connection('mysql2')
+                    ->table(DB::raw('raaohs r'))
+                    ->select(
+                        'r.recid',
+                        'r.FRAODESC'
+                    )
+                    ->join(DB::raw('raaods d'),'r.recid','=','d.idraao')
+                    ->join(DB::raw('ooes o'),'o.recid','=','d.idooe')
+                    ->where('r.FRAOTYPE','>',2)
+                    ->where('r.tyear','=',$year)
+                    ->groupBy('d.idooe')
+                    ->get();
+        }else{
+            $raao=DB::connection('mysql2')
+                ->table('raaohs AS r')
+                ->select(
+                'r.recid',
+                'r.FRAODESC',
+                )
+                ->leftjoin('accountaccess AS a','r.ffunccod','=','a.ffunccod')
+                ->leftjoin('systemusers AS su','su.recid','=','a.iduser')
+                ->join(DB::raw('raaods d'),'r.recid','=','d.idraao')
+                ->join(DB::raw('ooes o'),'o.recid','=','d.idooe')
+                ->where('FRAOTYPE','>','2')
+                ->where('a.iduser','=',Auth::user()->recid)
+            ->groupBy('d.idooe')
+            ->get();
+        }
+
+        //dd($raao);
         // $raao=DB::connection('mysql2')->table('raaohs')
         //         ->select('recid','FRAODESC')
         //         ->get();
@@ -264,24 +280,26 @@ class TargetController extends Controller
     }
     public function update(Request $request)
     {
+        //dd($request->target_qty);
         $data = $this->model->findOrFail($request->id);
-
-        $data->update([
-            'idraao'=>$request->idraao,
-            'idindicator'=>$request->idindicator,
-            'description'=>$request->description,
-            'brgy'=>$request->brgy,
-            'municipality'=>$request->municipality,
-            'planned_period_from' => $request->planned_period_from,
-            'planned_period_to'=>$request->planned_period_to,
-            'planned_budget'=>$request->planned_budget,
-            'target_qty'=>$request->target_qty,
-            'onsite_tag'=>$request->onsite_tag,
-            'target_qty1'=>$request->target_qty1,
-            'target_qty2'=>$request->target_qty2,
-            'target_qty3'=>$request->target_qty3,
-            'target_qty4'=>$request->target_qty4,
-        ]);
+        $validatedData = $request->validate(Target::rules(), Target::errorMessages());
+        $data->update($validatedData);
+        // $data->update([
+        //     'idraao'=>$request->idraao,
+        //     'idindicator'=>$request->idindicator,
+        //     'description'=>$request->description,
+        //     'brgy'=>$request->brgy,
+        //     'municipality'=>$request->municipality,
+        //     'planned_period_from' => $request->planned_period_from,
+        //     'planned_period_to'=>$request->planned_period_to,
+        //     'planned_budget'=>$request->planned_budget,
+        //     'target_qty'=>$request->target_qty,
+        //     'onsite_tag'=>$request->onsite_tag,
+        //     'target_qty1'=>$request->target_qty1,
+        //     'target_qty2'=>$request->target_qty2,
+        //     'target_qty3'=>$request->target_qty3,
+        //     'target_qty4'=>$request->target_qty4,
+        // ]);
 
         return redirect('/targets?id_raao='.$request->idraao)
                 ->with('message','Target added');

@@ -15,13 +15,13 @@ class AddColumnsToOutcomes extends Migration
     {
         Schema::table('outcomes', function (Blueprint $table) {
             //
-            $table->string('id_org_goals')->nullable();
-            $table->string('id_sec_goals')->nullable();
-            $table->string('id_sdg_goals')->nullable();
-            $table->string('id_cea')->nullable();
-            $table->string('id_sea')->nullable();
-            $table->string('id_ela')->nullable();
-            $table->string('id_rea')->nullable();
+            $table->bigInteger('id_org_goals')->nullable();
+            $table->bigInteger('id_sec_goals')->nullable();
+            $table->bigInteger('id_sdg_goals')->nullable();
+            $table->bigInteger('id_cea')->nullable();
+            $table->bigInteger('id_sea')->nullable();
+            $table->bigInteger('id_ela')->nullable();
+            $table->bigInteger('id_rea')->nullable();
         });
     }
 

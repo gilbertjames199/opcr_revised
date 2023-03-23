@@ -59,25 +59,7 @@ class PAPController extends Controller
 
     public function store(Request $request)
     {
-
-        $attributes = $request->validate([
-            'paps_desc'=>'required',
-            'tyear'=>'required',
-            'FRAOTYPE'=>'required',
-            'FRAODESC'=>'required',
-            'FALLTCOD'=>'required',
-            'FFUNCCOD'=>'required',
-            'FFUNDCOD'=>'required',
-            'idsource'=>'required',
-            'idappttype'=>'required',
-            'idprogram'=>'required',
-            'aipcode'=>'required',
-            'excludetag'=>'required',
-            'previd'=>'required',
-            'idpaps'=>'required',
-            'idmfo'=>'required'
-        ]);
-
+        $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $this->model->create($attributes);
         //dd($request->idmfo);
         //$request->pass='';
@@ -102,21 +84,16 @@ class PAPController extends Controller
         $data = $this->model->where('id', $id)->first([
             'id',
             'paps_desc',
-            'tyear',
-            'FRAOTYPE',
-            'FRAODESC',
-            'FALLTCOD',
+            'plan_period_from',
+            'plan_period_to',
+            'plan_amount_year1',
+            'plan_amount_year2',
+            'plan_amount_year3',
+            'plan_amount_year4',
+            'plan_amount_year5',
+            'plan_amount_year6',
             'FFUNCCOD',
-            'FFUNDCOD',
-            'idsource',
-            'idappttype',
-            'idprogram',
-            'aipcode',
-            'date_created',
-            'excludetag',
-            'previd',
-            'idpaps',
-            'idmfo'
+            'idmfo',
         ]);
 
         return inertia('PAPS/Create', [
@@ -136,27 +113,8 @@ class PAPController extends Controller
     {
 
         $data = $this->model::findOrFail($request->id);
-
-        //dd($request->plan_period);
-        $data->update([
-            'paps_desc'=>$request->paps_desc,
-            'tyear'=>$request->tyear,
-            'FRAOTYPE'=>$request->FRAOTYPE,
-            'FRAODESC'=>$request->FRAODESC,
-            'FALLTCOD'=>$request->FALLTCOD,
-            'FFUNCCOD'=>$request->FFUNCCOD,
-            'FFUNDCOD'=>$request->FFUNDCOD,
-            'idsource'=>$request->idsource,
-            'idappttype'=>$request->idappttype,
-            'idprogram'=>$request->idprogram,
-            'aipcode'=>$request->aipcode,
-            'date_created'=>$request->date_created,
-            'excludetag'=>$request->excludetag,
-            'previd'=>$request->previd,
-            'idpaps'=>$request->idpaps,
-            'idmfo'=>$request->idmfo
-        ]);
-        //dd('requestmfo: '.$request->idmfo);
+        $validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
+        $data->update($validatedData);
         return redirect('/paps/'.$request->idmfo)
                 ->with('message','Program and Projects updated');
     }

@@ -30,9 +30,10 @@
                         disabled>
                 <label for="">Program/Project </label>
 
+                <!--<div v-for="rao in raao">{{  rao.recid }}</div>-->
                 <select class="form-control" v-model="form.idraao" >
                     <option v-for="rao in raao" :value="rao.recid" >
-                        {{ rao.FRAODESC }}
+                        {{ rao.FRAODESC }} - {{  rao.recid }}
                     </option>
                 </select>
                 <!--<input class="form-control" v-model="form.idraao" />-->

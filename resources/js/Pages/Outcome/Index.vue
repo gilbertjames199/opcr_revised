@@ -40,7 +40,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.plan_period }}</td>
+                                <td>{{ dat.plan_period_year_from }} to {{ dat.plan_period_year_to }}</td>
                                 <td>{{ dat.oc_desc }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >

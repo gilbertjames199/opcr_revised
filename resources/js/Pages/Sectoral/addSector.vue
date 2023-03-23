@@ -22,7 +22,7 @@
                 <input type="text" v-model="form.goal_description" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.goal_description">{{ form.errors.goal_description }}</div>
 
-                <label for="">SECTORAL</label>
+                <label for="">SECTOR</label>
                 <input type="text" v-model="form.sector" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.sectoral">{{ form.errors.goal_sectoral }}</div>
 

@@ -15,7 +15,7 @@ class CreateSectoralGoalsTable extends Migration
     {
         Schema::create('sectoral_goals', function (Blueprint $table) {
             $table->id();
-            $table->string('goal_description');
+            $table->longText('goal_description');
             $table->string('sector');
             $table->timestamps();
         });
