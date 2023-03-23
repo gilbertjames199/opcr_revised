@@ -1080,7 +1080,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 //Vue Multiselect 3
 
 
-var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_7___default()((filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_8___default()), (filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_9___default()), (filepond_plugin_file_validate_size__WEBPACK_IMPORTED_MODULE_10___default()), (filepond_plugin_image_crop__WEBPACK_IMPORTED_MODULE_11___default()), (filepond_plugin_image_transform__WEBPACK_IMPORTED_MODULE_12___default()));
+var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_7___default()((filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_8___default()), (filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_9___default()), (filepond_plugin_file_validate_size__WEBPACK_IMPORTED_MODULE_10___default()), (filepond_plugin_image_crop__WEBPACK_IMPORTED_MODULE_11___default()), (filepond_plugin_image_transform__WEBPACK_IMPORTED_MODULE_12___default())); //.use(yearPicker)
+
 (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.createInertiaApp)({
   resolve: function () {
     var _resolve = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(name) {
@@ -1122,7 +1123,7 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_7___default()((filepond_plu
       render: function render() {
         return (0,vue__WEBPACK_IMPORTED_MODULE_1__.h)(App, props);
       }
-    }).use(plugin).use(yearPicker).component("multiselect", _vueform_multiselect__WEBPACK_IMPORTED_MODULE_15__["default"]).component("Link", _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.Link).component("Head", _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.Head).component('CardModal', _Shared_CardModal__WEBPACK_IMPORTED_MODULE_6__["default"]).component("Notification", _Shared_Notification__WEBPACK_IMPORTED_MODULE_4__["default"]).component("FilePond", FilePond).component("v-select", (vue_select__WEBPACK_IMPORTED_MODULE_14___default())).mixin({
+    }).use(plugin).component("multiselect", _vueform_multiselect__WEBPACK_IMPORTED_MODULE_15__["default"]).component("Link", _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.Link).component("Head", _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.Head).component('CardModal', _Shared_CardModal__WEBPACK_IMPORTED_MODULE_6__["default"]).component("Notification", _Shared_Notification__WEBPACK_IMPORTED_MODULE_4__["default"]).component("FilePond", FilePond).component("v-select", (vue_select__WEBPACK_IMPORTED_MODULE_14___default())).mixin({
       data: function data() {
         return {
           my_years: ["2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039", "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050", "2051", "2052", "2053", "2054", "2055", "2056", "2057", "2058", "2059", "2060", "2061", "2062", "2063", "2064", "2065", "2066", "2067", "2068", "2069", "2070", "2071", "2072", "2073", "2074", "2075", "2076", "2077", "2078", "2079", "2080", "2081", "2082", "2083", "2084", "2085", "2086", "2087", "2088", "2089", "2090", "2091", "2092", "2093", "2094", "2095", "2096", "2097", "2098", "2099", "2100"]

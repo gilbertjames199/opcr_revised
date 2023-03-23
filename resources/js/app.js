@@ -42,7 +42,7 @@ const FilePond = vueFilePond(
     FilePondPluginImageCrop,
     FilePondPluginImageTransform
 );
-
+//.use(yearPicker)
 createInertiaApp({
   resolve: async name => {
     let page = (await import(`./Pages/${name}`)).default;
@@ -52,7 +52,6 @@ createInertiaApp({
   setup({ el, App, props, plugin }) {
     createApp({ render: () => h(App, props) })
       .use(plugin)
-      .use(yearPicker)
       .component("multiselect",Multiselect)
       .component("Link", Link)
       .component("Head", Head)
