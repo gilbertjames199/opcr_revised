@@ -15,7 +15,8 @@ class CreateOutcomesTable extends Migration
     {
         Schema::create('outcomes', function (Blueprint $table) {
             $table->id();
-            $table->string('plan_period')->nullable();
+            $table->string('plan_period_year_from')->nullable();
+            $table->string('plan_period_year_to')->nullable();
             $table->string('oc_desc')->nullable();
             $table->timestamps();
         });

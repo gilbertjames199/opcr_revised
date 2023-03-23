@@ -41,7 +41,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.FRAODESC }}</td>
+                                <td>{{ dat.paps_desc }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

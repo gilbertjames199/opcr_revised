@@ -14,7 +14,7 @@ class AddFfunccodToOutcomes extends Migration
     public function up()
     {
         Schema::table('outcomes', function (Blueprint $table) {
-            $table->string('FFUNCCOD')->nullable();
+            $table->bigInteger('FFUNCCOD')->nullable();
         });
     }
 

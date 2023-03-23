@@ -48,11 +48,7 @@ class IntermediateOutcomeController extends Controller
 
     public function store(Request $request)
     {
-        $attributes = $request->validate([
-            'io_desc' => 'required',
-            'idoutcome' => 'required',
-        ]);
-        //dd($attributes);
+        $attributes = $request->validate(IntermediateOutcome::rules(), IntermediateOutcome::errorMessages());
         $this->model->create($attributes);
         $request->pass='';
         return redirect('/inter_outcome/'.$request->idoutcome)
@@ -87,12 +83,9 @@ class IntermediateOutcomeController extends Controller
     public function update(Request $request)
     {
         $data = $this->model->findOrFail($request->id);
+        $validatedData = $request->validate(IntermediateOutcome::rules(), IntermediateOutcome::errorMessages());
+        $data->update($validatedData);
         //dd($request->plan_period);
-        $data->update([
-            'io_desc'=>$request->io_desc,
-            'idoutcome'=>$request->idoutcome
-        ]);
-
         return redirect('/inter_outcome/'.$request->idoutcome)
                 ->with('message','Outcome updated');
     }

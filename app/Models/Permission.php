@@ -13,7 +13,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\HasMedia;
 use App\Models\User;
 
-class Permission extends Model 
+class Permission extends Model
 {
     use HasFactory;
 
@@ -24,4 +24,5 @@ class Permission extends Model
     public function users(){
         return $this->belongsToMany(User::class,'permission_user')->withPivot('permission_id');
     }
+
 }

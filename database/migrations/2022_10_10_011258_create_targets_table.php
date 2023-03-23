@@ -15,10 +15,10 @@ class CreateTargetsTable extends Migration
     {
         Schema::create('targets', function (Blueprint $table) {
             $table->id();
-            $table->string('idraao')->nullable();
-            $table->string('idooe')->nullable();
-            $table->string('idindicator')->nullable();
-            $table->string('description')->nullable();
+            $table->bigInteger('idraao')->nullable();
+            $table->bigInteger('idooe')->nullable();
+            $table->bigInteger('idindicator')->nullable();
+            $table->longText('description')->nullable();
             $table->string('brgy')->nullable();
             $table->string('municipality')->nullable();
             $table->date('planned_period_from')->nullable();

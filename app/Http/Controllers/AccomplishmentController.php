@@ -99,41 +99,43 @@ class AccomplishmentController extends Controller
 
     public function store(Request $request)
     {
-        $attributes = $request->validate([
-            //'idraao' => 'required',
-            //'idooe' => 'required',
-            'idtarget' => 'required',
-            'accomplishment_qty' => 'required',
-            'actual_period_from' => 'required',
-            'actual_period_to' => 'required',
-            'actual_expenditure' => 'required',
-            'facilitating_timeliness' => 'required',
-            'facilitating_competency' => 'required',
-            'facilitating_logistics' => 'required',
-            'deterring_timeliness' => 'required',
-            'deterring_concerns' => 'required',
-            'deterring_logistics' => 'required',
-            'concerns_timeliness' => 'required',
-            'concerns_competency' => 'required',
-            'concerns_logistics' => 'required',
-            'new_strategy' => 'required',
-            'remarks' => 'required',
-            'date_accomplished_from' => 'required',
-            'date_accomplished_to' => 'required',
-            'validated_status' => 'required',
-            'validated_remarks' => 'nullable',
-            'validated_date' => 'nullable'
-        ]);
-        /*
-            'validated_remarks' => 'required',
-            'validated_date' => 'required'
-        */
+        $attributes = $request->validate(Accomplishment::rules(), Accomplishment::errorMessages());
         $this->model->create($attributes);
         $request->pass='';
 
         //return redirect('/targets')->with('raao_id',$request->idraao)->with('message', 'Target added');
         return redirect('/accomplishments/'.$request->idtarget.'/list')
                 ->with('message','Accomplishment added');
+        // $attributes = $request->validate([
+        //     //'idraao' => 'required',
+        //     //'idooe' => 'required',
+        //     'idtarget' => 'required',
+        //     'accomplishment_qty' => 'required',
+        //     'actual_period_from' => 'required',
+        //     'actual_period_to' => 'required',
+        //     'actual_expenditure' => 'required',
+        //     'facilitating_timeliness' => 'required',
+        //     'facilitating_competency' => 'required',
+        //     'facilitating_logistics' => 'required',
+        //     'deterring_timeliness' => 'required',
+        //     'deterring_concerns' => 'required',
+        //     'deterring_logistics' => 'required',
+        //     'concerns_timeliness' => 'required',
+        //     'concerns_competency' => 'required',
+        //     'concerns_logistics' => 'required',
+        //     'new_strategy' => 'required',
+        //     'remarks' => 'required',
+        //     'date_accomplished_from' => 'required',
+        //     'date_accomplished_to' => 'required',
+        //     'validated_status' => 'required',
+        //     'validated_remarks' => 'nullable',
+        //     'validated_date' => 'nullable'
+        // ]);
+        /*
+            'validated_remarks' => 'required',
+            'validated_date' => 'required'
+        */
+
     }
 
     public function edit(Request $request, $id, $target_id)
@@ -176,28 +178,29 @@ class AccomplishmentController extends Controller
     public function update(Request $request)
     {
         $data = $this->model->findOrFail($request->id);
-
-        $data->update([
-            'idtarget' => $request->idtarget,
-            'accomplishment_qty' => $request->accomplishment_qty,
-            'actual_period_from' => $request->actual_period_from,
-            'actual_period_to' => $request->actual_period_to,
-            'actual_expenditure' => $request->actual_expenditure,
-            'facilitating_timeliness' => $request->facilitating_timeliness,
-            'facilitating_competency' => $request->facilitating_competency,
-            'facilitating_logistics' => $request->facilitating_logistics,
-            'deterring_timeliness' => $request->deterring_timeliness,
-            'deterring_concerns' => $request->deterring_concerns,
-            'deterring_logistics' => $request->deterring_logistics,
-            'concerns_timeliness' => $request->concerns_timeliness,
-            'concerns_competency' => $request->concerns_competency,
-            'concerns_logistics' => $request->concerns_logistics,
-            'new_strategy' => $request->new_strategy,
-            'remarks' => $request->remarks,
-            'date_accomplished' => $request->date_accomplished,
-            'validated_remarks' => $request->validated_remarks,
-            'validated_date' => $request->validated_date
-        ]);
+        $validatedData = $request->validate(Accomplishment::rules(), Accomplishment::errorMessages());
+        $data->update($validatedData);
+        // $data->update([
+        //     'idtarget' => $request->idtarget,
+        //     'accomplishment_qty' => $request->accomplishment_qty,
+        //     'actual_period_from' => $request->actual_period_from,
+        //     'actual_period_to' => $request->actual_period_to,
+        //     'actual_expenditure' => $request->actual_expenditure,
+        //     'facilitating_timeliness' => $request->facilitating_timeliness,
+        //     'facilitating_competency' => $request->facilitating_competency,
+        //     'facilitating_logistics' => $request->facilitating_logistics,
+        //     'deterring_timeliness' => $request->deterring_timeliness,
+        //     'deterring_concerns' => $request->deterring_concerns,
+        //     'deterring_logistics' => $request->deterring_logistics,
+        //     'concerns_timeliness' => $request->concerns_timeliness,
+        //     'concerns_competency' => $request->concerns_competency,
+        //     'concerns_logistics' => $request->concerns_logistics,
+        //     'new_strategy' => $request->new_strategy,
+        //     'remarks' => $request->remarks,
+        //     'date_accomplished' => $request->date_accomplished,
+        //     'validated_remarks' => $request->validated_remarks,
+        //     'validated_date' => $request->validated_date
+        // ]);
 
         return redirect('/accomplishments/'.$request->idtarget.'/list')
                 ->with('message','Target added');

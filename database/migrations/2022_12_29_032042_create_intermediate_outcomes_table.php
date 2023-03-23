@@ -15,8 +15,8 @@ class CreateIntermediateOutcomesTable extends Migration
     {
         Schema::create('intermediate_outcomes', function (Blueprint $table) {
             $table->id();
-            $table->string('io_desc')->nullable();
-            $table->string('idoutcome')->nullable();
+            $table->longText('io_desc')->nullable();
+            $table->bigInteger('idoutcome')->nullable();
             $table->timestamps();
         });
     }

@@ -14,4 +14,18 @@ class IntermediateOutcome extends Model
         'io_desc',
         'idoutcome'
     ];
+    public static function rules(){
+        return [
+            'io_desc'=> 'required',
+            'idoutcome'=>'required|numeric',
+        ];
+    }
+
+    public static function errorMessages(){
+        return [
+            'io_desc.required'=> 'The intermediate outcome description field is required',
+            'idoutcome.required'=>'The outcome field is required',
+            'idoutcome.numeric'=>'The outcome ID field must be a number',
+        ];
+    }
 }

@@ -53,11 +53,7 @@ class MFOController extends Controller
 
     public function store(Request $request)
     {
-        $attributes = $request->validate([
-                            'mfo_desc' => 'required',
-                            'idinteroutcome' => 'required',
-                            'FFUNCCOD'=>'required'
-                        ]);
+        $attributes = $request->validate(MajorFinalOutput::rules(), MajorFinalOutput::errorMessages());
         //dd($attributes);
         $this->model->create($attributes);
         $request->pass='';
@@ -97,13 +93,8 @@ class MFOController extends Controller
     public function update(Request $request, MajorFinalOutput $majorFinalOutput)
     {
         $data = $majorFinalOutput::findOrFail($request->id);
-        //dd($request->plan_period);
-        $data->update([
-            'mfo_desc'=>$request->mfo_desc,
-            'idinteroutcome'=>$request->idinteroutcome,
-            'FFUNCCOD'=>$request->FFUNCCOD
-        ]);
-
+        $validatedData = $request->validate(MajorFinalOutput::rules(), MajorFinalOutput::errorMessages());
+        $data->update($validatedData);
         return redirect('/mfos/'.$request->idinteroutcome)
                 ->with('message','MFOs updated');
     }

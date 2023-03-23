@@ -71,20 +71,7 @@ class OutcomeController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request);
-        $attributes = $request->validate([
-            'plan_period' => 'required',
-            'oc_desc' => 'required',
-            'id_org_goals'=>'required',
-            'id_sec_goals'=>'required',
-            'id_sdg_goals'=>'required',
-            'id_cea'=>'required',
-            'id_sea'=>'required',
-            'id_ela'=>'required',
-            'id_rea'=>'required',
-            'FFUNCCOD'=>'required',
-        ]);
-        //dd($attributes);
+        $attributes = $request->validate(Outcome::rules(), Outcome::errorMessages());
         $this->model->create($attributes);
         $request->pass='';
         return redirect('/outcome')
@@ -102,7 +89,8 @@ class OutcomeController extends Controller
         $res_agenda = ResearchAgenda::get();
         $data = $this->model->where('id', $id)->first([
             'id',
-            'plan_period',
+            'plan_period_year_from',
+            'plan_period_year_to',
             'oc_desc',
             'id_org_goals',
             'id_sec_goals',
@@ -133,20 +121,8 @@ class OutcomeController extends Controller
     public function update(Request $request)
     {
         $data = $this->model->findOrFail($request->id);
-        //dd($request->plan_period);
-        $data->update([
-            'plan_period'=>$request->plan_period,
-            'oc_desc'=>$request->oc_desc,
-            'id_org_goals'=>$request->id_org_goals,
-            'id_sec_goals'=>$request->id_sec_goals,
-            'id_sdg_goals'=>$request->id_sdg_goals,
-            'id_cea'=>$request->id_cea,
-            'id_sea'=>$request->id_sea,
-            'id_ela'=>$request->id_ela,
-            'id_rea'=>$request->id_rea,
-            'FFUNCCOD'=>$request->FFUNCCOD,
-        ]);
-
+        $validatedData = $request->validate(Outcome::rules(), Outcome::errorMessages());
+        $data->update($validatedData);
         return redirect('/outcome')
                 ->with('message','Outcome updated');
     }

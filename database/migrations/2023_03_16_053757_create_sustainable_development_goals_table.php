@@ -15,7 +15,7 @@ class CreateSustainableDevelopmentGoalsTable extends Migration
     {
         Schema::create('sustainable_development_goals', function (Blueprint $table) {
             $table->id();
-            $table->string('goal_description');
+            $table->longText('goal_description');
             $table->timestamps();
         });
     }
