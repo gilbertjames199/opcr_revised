@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 
 class RAAOController extends Controller
 {
+    protected $ooe_model;
+    protected $raaod_model;
     public function construct(OOE $ooe_model, RAAOD $raaod_model){
         $this->ooe_model=$ooe_model;
         $this->raaod_model = $raaod_model;
@@ -429,7 +431,7 @@ class RAAOController extends Controller
     }
     //MAO NI
     public function raao_jasper(Request $request){
-        
+
         /*
         $today = Carbon::now();
         $year = ''.$today->year.'';

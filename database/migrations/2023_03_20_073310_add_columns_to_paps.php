@@ -14,6 +14,7 @@ class AddColumnsToPaps extends Migration
     public function up()
     {
         Schema::table('program_and_projects', function (Blueprint $table) {
+            $table->bigInteger('idppa')->nullable();
             $table->string('plan_period_from')->after('paps_desc');
             $table->string('plan_period_to')->after('plan_period_from');
             $table->decimal('plan_amount_year1',12,2)->after('plan_period_to');
