@@ -30,6 +30,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SectoralController;
 use App\Http\Controllers\ChiefAgendaController;
 use App\Http\Controllers\EconomicAgendaController;
+use App\Http\Controllers\ProjectProfileController;
 use App\Http\Controllers\RAController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
@@ -203,7 +204,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/{idoutcome}/edit', [IntermediateOutcomeController::class, 'edit']);
         Route::patch('/', [IntermediateOutcomeController::class, 'update']);
     });
-
+    //Strategies
     Route::prefix('/strategies')->group(function(){
         Route::get('/{id}',[StrategyController::class,'index']);
         Route::get('/create/{id}',[StrategyController::class,'create']);
@@ -212,7 +213,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/{idinteroutcome}/edit', [StrategyController::class, 'edit']);
         Route::patch('/', [StrategyController::class, 'update']);
     });
-
+    //MFO
     Route::prefix('/mfos')->group(function(){
         Route::get('/direct',[MFOController::class,'direct']);
         Route::get('/create/{id}',[MFOController::class,'create']);
@@ -231,7 +232,11 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [PAPController::class, 'update']);
         Route::delete('/{id}/{idoutcome}', [PAPController::class, 'destroy']);
     });
-    //
+    //Project Profile
+    Route::prefix('/projectprofile')->group(function(){
+        Route::get('/',[ProjectProfileController::class,'index']);
+        Route::get('/create',[ProjectProfileController::class,'create']);
+    });
 });
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);

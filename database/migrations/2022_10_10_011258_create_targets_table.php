@@ -15,7 +15,7 @@ class CreateTargetsTable extends Migration
     {
         Schema::create('targets', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('idraao')->nullable();
+            $table->bigInteger('idpdip')->nullable();
             $table->bigInteger('idooe')->nullable();
             $table->bigInteger('idindicator')->nullable();
             $table->longText('description')->nullable();

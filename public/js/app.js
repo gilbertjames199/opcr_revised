@@ -1871,6 +1871,22 @@ var map = {
 		"./resources/js/Pages/Posts/Index.vue",
 		"resources_js_Pages_Posts_Index_vue"
 	],
+	"./ProjectProfile/Create": [
+		"./resources/js/Pages/ProjectProfile/Create.vue",
+		"resources_js_Pages_ProjectProfile_Create_vue"
+	],
+	"./ProjectProfile/Create.vue": [
+		"./resources/js/Pages/ProjectProfile/Create.vue",
+		"resources_js_Pages_ProjectProfile_Create_vue"
+	],
+	"./ProjectProfile/Index": [
+		"./resources/js/Pages/ProjectProfile/Index.vue",
+		"resources_js_Pages_ProjectProfile_Index_vue"
+	],
+	"./ProjectProfile/Index.vue": [
+		"./resources/js/Pages/ProjectProfile/Index.vue",
+		"resources_js_Pages_ProjectProfile_Index_vue"
+	],
 	"./RAAO/Index": [
 		"./resources/js/Pages/RAAO/Index.vue",
 		"resources_js_Pages_RAAO_Index_vue"
