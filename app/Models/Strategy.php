@@ -12,6 +12,6 @@ class Strategy extends Model
     protected $table='strategies';
     protected $fillable = [
         'strat_desc',
-        'idinteroutcome'
+        'idpaps'
     ];
 }
