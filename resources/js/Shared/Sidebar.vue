@@ -65,18 +65,20 @@
                     </Link>
                 </li>
                 <hr >
+
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/raao" :class="{'active': $page.url === '/raao'}">
+                    <Link class="sidebar-link" href="/Societal" :class="{'active': $page.url === '/Societal'}">
                         <span></span>
                         <span class="icon-holder">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-grid-1x2-fill" viewBox="0 0 16 16">
-                                <path d="M0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V1zm0 9a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-rolodex" viewBox="0 0 16 16">
+                                <path d="M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+                                <path d="M1 1a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h.5a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h.5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6.707L6 1.293A1 1 0 0 0 5.293 1H1Zm0 1h4.293L6 2.707A1 1 0 0 0 6.707 3H15v10h-.085a1.5 1.5 0 0 0-2.4-.63C11.885 11.223 10.554 10 8 10c-2.555 0-3.886 1.224-4.514 2.37a1.5 1.5 0 0 0-2.4.63H1V2Z"/>
                             </svg>
                         </span>
-                        <span class="title">PAPS</span>
+                        <span class="title">Societal Goals</span>
                     </Link>
                 </li>
+
                 <!--MFO-->
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/mfos/direct" :class="{'active': $page.url === '/mfos/direct'}">
@@ -86,11 +88,11 @@
                                 <path d="M1 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V4zM1 9a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V9zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V9z"/>
                             </svg>
                         </span>
-                        <span class="title">MFOs/Strategies</span>
+                        <span class="title">Major Final Output</span>
                     </Link>
                 </li>
                 <!--Outcomes-->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/outcome" :class="{'active': $page.url === '/outcome'}">
                         <span></span>
                         <span class="icon-holder">
@@ -101,7 +103,7 @@
                         </span>
                         <span class="title">Outcomes</span>
                     </Link>
-                </li>
+                </li> -->
                 <!--
                 <li class="nav-item" v-if="$page.props.can.can_access_indicators">
                     <Link class="sidebar-link" href="/indicators">
@@ -123,7 +125,7 @@
                                 <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
                             </svg>
                         </span>
-                        <span class="title">Goals</span>
+                        <span class="title">Outcomes</span>
                         <span class="arrow">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -134,16 +136,29 @@
                         <li>
                             <Link class="sidebar-link" href="/Organization" :class="{'active': $page.url === '/Organization'}">
 
-                                <span class="title">Organizational Goals</span>
+                                <span class="title">Organizational Outcomes</span>
                             </Link>
                         </li>
                         <li>
                             <Link class="sidebar-link" href="/Sectoral" :class="{'active': $page.url === '/Sectoral'}">
 
-                                <span class="title">Sectoral Goals</span>
+                                <span class="title">Sectoral Outcomes</span>
                             </Link>
                         </li>
                     </ul>
+                </li>
+
+                <li class="nav-item">
+                    <Link class="sidebar-link" href="/raao" :class="{'active': $page.url === '/raao'}">
+                        <span></span>
+                        <span class="icon-holder">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-grid-1x2-fill" viewBox="0 0 16 16">
+                                <path d="M0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V1zm0 9a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5z"/>
+                            </svg>
+                        </span>
+                        <span class="title">PAPS</span>
+                    </Link>
                 </li>
 
                 <!--

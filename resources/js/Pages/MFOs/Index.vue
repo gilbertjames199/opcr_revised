@@ -13,7 +13,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/mfos/create/${idinteroutcome}`">Add MFO </Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/mfos/add`">Add MFO </Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>

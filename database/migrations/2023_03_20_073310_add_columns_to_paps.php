@@ -15,14 +15,15 @@ class AddColumnsToPaps extends Migration
     {
         Schema::table('program_and_projects', function (Blueprint $table) {
             $table->bigInteger('idppa')->nullable();
-            $table->string('plan_period_from')->after('paps_desc');
-            $table->string('plan_period_to')->after('plan_period_from');
-            $table->decimal('plan_amount_year1',12,2)->after('plan_period_to');
-            $table->decimal('plan_amount_year2',12,2)->after('plan_amount_year1');
-            $table->decimal('plan_amount_year3',12,2)->after('plan_amount_year2');
-            $table->decimal('plan_amount_year4',12,2)->after('plan_amount_year3');
-            $table->decimal('plan_amount_year5',12,2)->after('plan_amount_year4');
-            $table->decimal('plan_amount_year6',12,2)->after('plan_amount_year5');
+            $table->longText('MOV')->nullable();
+            // $table->string('plan_period_from')->after('paps_desc');
+            // $table->string('plan_period_to')->after('plan_period_from');
+            // $table->decimal('plan_amount_year1',12,2)->after('plan_period_to');
+            // $table->decimal('plan_amount_year2',12,2)->after('plan_amount_year1');
+            // $table->decimal('plan_amount_year3',12,2)->after('plan_amount_year2');
+            // $table->decimal('plan_amount_year4',12,2)->after('plan_amount_year3');
+            // $table->decimal('plan_amount_year5',12,2)->after('plan_amount_year4');
+            // $table->decimal('plan_amount_year6',12,2)->after('plan_amount_year5');
         });
     }
 

@@ -2,7 +2,7 @@
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Major Final Outputs {{  idinteroutcome }}</h3>
-            <Link :href="`/mfos/${idinteroutcome}`">
+            <Link :href="`/mfos/direct`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                 <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -19,14 +19,33 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
 
-                <label for="">INTERMEDIATE OUTCOME</label>
+                <label for="">SOCIETAL GOALS</label>
 
-                <select class="form-control" v-model="form.idinteroutcome" >
-                    <option v-for="interoutcome in interoutcomes" :value="interoutcome.id" >
-                        {{ interoutcome.io_desc }}
+                <select class="form-control" v-model="form.id_socgoal" >
+                    <option v-for="societalGoal in societalGoals" :value="societalGoal.id" >
+                        {{ societalGoal.description }}
                     </option>
                 </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.idinteroutcome">{{ form.errors.idinteroutcome }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.id_socgoal">{{ form.errors.id_socgoal }}</div>
+
+
+                <label for="">SECTOR OUTCOMES</label>
+
+                <select class="form-control" v-model="form.id_sec_outcome" >
+                    <option v-for="sectorOutcome in sectorOutcomes" :value="sectorOutcome.id" >
+                        {{ sectorOutcome.goal_description }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.id_sec_outcome">{{ form.errors.id_sec_outcome }}</div>
+
+                <label for="">ORGANIZATIONAL OUTCOMES</label>
+
+                <select class="form-control" v-model="form.id_org_outcome" >
+                    <option v-for="organizationalOutcome in organizationalOutcomes" :value="organizationalOutcome.id" >
+                        {{ organizationalOutcome.goal_description }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.id_org_outcome">{{ form.errors.id_org_outcome }}</div>
 
                 <label for="">MFO DESCRIPTION</label>
                 <input type="text" v-model="form.mfo_desc" class="form-control" autocomplete="chrome-off">
@@ -56,7 +75,9 @@ import Places from "@/Shared/PlacesShared";
 export default {
         props: {
             editData: Object,
-            interoutcomes: Object,
+            societalGoals: Object,
+            sectorOutcomes: Object,
+            organizationalOutcomes:Object,
             idinteroutcome: String
         },
         components: {
@@ -72,8 +93,10 @@ export default {
             return {
                 submitted: false,
                 form: useForm({
+                    id_org_outcome: "",
+                    id_sec_outcome: "",
+                    id_socgoal: "",
                     mfo_desc: "",
-                    idinteroutcome: "",
                     FFUNCCOD: "",
                     id: null
                 }),
@@ -82,10 +105,11 @@ export default {
         },
 
         mounted() {
-            this.form.idinteroutcome=this.idinteroutcome
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
-                this.form.idinteroutcome=this.idinteroutcome
+                this.form.id_org_outcome=this.editData.id_org_outcome
+                this.form.id_sec_outcome=this.editData.id_sec_outcome
+                this.form.id_socgoal=this.editData.id_socgoal
                 this.form.mfo_desc=this.editData.mfo_desc
                 this.form.FFUNCCOD = this.editData.FFUNCCOD
                 this.form.id=this.editData.id
@@ -97,13 +121,13 @@ export default {
 
         methods: {
             submit() {
+                // alert(this.dat)
                 this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
-                    this.form.patch("/mfos/", this.form);
+                    this.form.patch("/mfos", this.form);
                 } else {
                     this.form.id=null;
-                    //alert('/mfos/store');
                     this.form.post("/mfos/store", this.form);
                 }
             },
