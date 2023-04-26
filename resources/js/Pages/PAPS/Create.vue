@@ -1,7 +1,7 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Programs and Progjects {{  idmfo }}</h3>
+            <h3>{{ pageTitle }} Programs and Proects {{  idmfo }}</h3>
             <Link :href="`/paps/${idmfo}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -31,23 +31,26 @@
                 <input type="text" v-model="form.paps_desc" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.paps_desc">{{ form.errors.paps_desc }}</div>
 
-                <div>PLAN PERIOD</div>
+                <label for="">Means of Verification	</label>
+                <input type="text" v-model="form.paps_desc" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.paps_desc">{{ form.errors.paps_desc }}</div>
+                <!-- <div>PLAN PERIOD</div>
 
                 <label for="">From</label>
                 <select v-model="form.plan_period_from" class="form-control" >
                     <option v-for="year in year_values">{{ year }}</option>
-                </select>
+                </select> -->
                 <!--<input type="number" min="2000" max="2099" step="1" v-model="form.plan_period_from" class="form-control" autocomplete="chrome-off">-->
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_period_from">{{ form.errors.plan_period_from }}</div>
+                <!-- <div class="fs-6 c-red-500" v-if="form.errors.plan_period_from">{{ form.errors.plan_period_from }}</div>
 
                 <label for="">To</label>
                 <select v-model="form.plan_period_to" class="form-control" >
                     <option v-for="year in year_values">{{ year }}</option>
-                </select>
+                </select> -->
                 <!--<input type="number" min="2000" max="2099" step="1" v-model="form.plan_period_to" class="form-control" autocomplete="chrome-off">-->
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_period_to">{{ form.errors.plan_period_to }}</div>
+                <!-- <div class="fs-6 c-red-500" v-if="form.errors.plan_period_to">{{ form.errors.plan_period_to }}</div> -->
 
-                <div>PLAN AMOUNT</div>
+                <!-- <div>PLAN AMOUNT</div>
                 <label for="">Year 1</label>
                 <input type="number" v-model="form.plan_amount_year1" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year1">{{ form.errors.plan_amount_year1 }}</div>
@@ -70,7 +73,7 @@
 
                 <label for="">Year 6</label>
                 <input type="number" v-model="form.plan_amount_year6" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year6">{{ form.errors.plan_amount_year6 }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year6">{{ form.errors.plan_amount_year6 }}</div> -->
 
                 <label for="">Office</label>
                 <input type="number" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">
@@ -97,9 +100,6 @@ export default {
         props: {
             editData: Object,
             mfos: Object,
-            idmfo: String,
-            years: Object,
-
         },
         components: {
 
@@ -130,17 +130,17 @@ export default {
                     // previd: "",
                     // idpaps: "",
                     // idmfo: "",
-                    paps_desc	: "",
-                    plan_period_from	: "",
-                    plan_period_to	: "",
-                    plan_amount_year1	: "",
-                    plan_amount_year2	: "",
-                    plan_amount_year3	: "",
-                    plan_amount_year4	: "",
-                    plan_amount_year5	: "",
-                    plan_amount_year6	: "",
+                    // paps_desc	: "",
+                    // plan_period_from	: "",
+                    // plan_period_to	: "",
+                    // plan_amount_year1	: "",
+                    // plan_amount_year2	: "",
+                    // plan_amount_year3	: "",
+                    // plan_amount_year4	: "",
+                    // plan_amount_year5	: "",
+                    // plan_amount_year6	: "",
                     FFUNCCOD	: "",
-                    aipcode	: "",
+                    // aipcode	: "",
                     idmfo	: "",
                     id: null
                 }),
