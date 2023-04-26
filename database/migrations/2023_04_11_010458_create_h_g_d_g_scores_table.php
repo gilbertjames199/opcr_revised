@@ -15,12 +15,12 @@ class CreateHGDGScoresTable extends Migration
     {
         Schema::create('h_g_d_g_scores', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('idppa');
-            $table->bigInteger('question_id');
-            $table->bigInteger('user_id');
-            $table->decimal('score',12,2);
-            $table->string('result_comment');
-            $table->string('FFUNCCOD');
+            $table->bigInteger('idrevplan')->comment('Revision Plan ID');
+            $table->bigInteger('question_id')->comment(' Question ID');
+            $table->bigInteger('user_id')->comment('User ID');
+            $table->decimal('score',12,2)->comment('Item Score');
+            $table->string('result_comment')->comment('Evaluator\'s comment');
+            $table->string('FFUNCCOD')->comment('Office Code');
             $table->timestamps();
         });
     }

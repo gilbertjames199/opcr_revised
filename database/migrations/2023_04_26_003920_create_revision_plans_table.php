@@ -15,11 +15,10 @@ class CreateRevisionPlansTable extends Migration
     {
         Schema::create('revision_plans', function (Blueprint $table) {
             $table->id();
-            $table->string('idpaps');
-            $table->string('aip_code');
-            $table->string('project_title');
-            $table->string('location');
-            $table->string('list_of_lgu_covered');
+            $table->string('idpaps')->comment('PAPS ID');
+            $table->string('aip_code')->comment('AIP Code of the Project');
+            $table->string('project_title')->comment('Project title');
+            $table->string('list_of_lgu_covered')->comment('List of LGUs covered');
             $table->string('date_start');
             $table->string('date_end');
             $table->integer('beneficiary_male');
@@ -29,15 +28,16 @@ class CreateRevisionPlansTable extends Migration
             $table->integer('baseline_total');
             $table->decimal('amount',12,2);
             $table->decimal('attributed_amount',12,2);
-            $table->integer('baseline_total');
             $table->bigInteger('idchecklist');
             $table->decimal('hgdg_score',12,2);
             $table->decimal('hgdg_percent',12,2);
             $table->string('rationale');
             $table->string('objective');
             $table->string('beneficiaries');
-            $table->string('aip_code');
-            $table->string('version');
+            $table->integer('version');
+            $table->string('type');
+            $table->string('final');
+            $table->string('supplemental');
             $table->integer('iduser');
             $table->timestamps();
         });
