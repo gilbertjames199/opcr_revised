@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIssuesTable extends Migration
+class AddIdimplementationToTargets extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateIssuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('issues', function (Blueprint $table) {
-            $table->id();
-            $table->string('description')->comment('Gender issues');
-            $table->timestamps();
+        Schema::table('targets', function (Blueprint $table) {
+            $table->integer('idimplementation')
+                ->nullable()
+                ->after('onsite_tag')
+                ->comment('Implementation');
         });
     }
 
@@ -27,6 +28,8 @@ class CreateIssuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('issues');
+        Schema::table('targets', function (Blueprint $table) {
+            //
+        });
     }
 }
