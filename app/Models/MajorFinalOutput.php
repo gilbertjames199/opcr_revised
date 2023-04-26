@@ -12,13 +12,18 @@ class MajorFinalOutput extends Model
     protected $table='major_final_outputs';
     protected $fillable = [
         'mfo_desc',
-        'idinteroutcome',
+        'id_org_outcome',
+        'id_sec_outcome',
+        'id_socgoal',
         'FFUNCCOD'
     ];
     public static function rules(){
         return [
+
             'mfo_desc'=> 'required',
-            'idinteroutcome'=>'required|numeric',
+            'id_org_outcome'=>'required|numeric',
+        'id_sec_outcome'=>'required|numeric',
+        'id_socgoal'=>'required|numeric',
             'FFUNCCOD'=>'required|numeric',
         ];
     }
@@ -26,7 +31,9 @@ class MajorFinalOutput extends Model
     public static function errorMessages(){
         return [
             'mfo_desc.required'=> 'The MFO description field is required',
-            'idinteroutcome.required'=>'The intermediate outcomes description field is required',
+            'id_org_outcome'=> 'The Organizational Outcome field is required',
+            'id_sec_outcome'=> 'The Sectoral Outcome field is required',
+            'id_socgoal'=> 'The Societal Goal field is required',
             'FFUNCCOD.required'=>'The office code field is required',
             'FFUNCCOD.numeric'=>'Office code must be a number.',
         ];
