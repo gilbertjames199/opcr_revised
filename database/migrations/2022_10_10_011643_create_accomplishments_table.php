@@ -16,9 +16,9 @@ class CreateAccomplishmentsTable extends Migration
         Schema::create('accomplishments', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('idtarget')->nullable();
-            $table->string('accomplishment_qty')->nullable();
-            $table->string('actual_period_from')->nullable();
-            $table->string('actual_period_to')->nullable();
+            $table->string('accomplishment_qty')->nullable()->comment('Accomplishment quantity');
+            $table->string('actual_period_from')->nullable()->comment('Actual period accomplished -from');
+            $table->string('actual_period_to')->nullable()->comment('Actual period accomplished -to');
             $table->string('actual_expenditure')->nullable();
             $table->string('facilitating_timeliness')->nullable();
             $table->string('facilitating_competency')->nullable();

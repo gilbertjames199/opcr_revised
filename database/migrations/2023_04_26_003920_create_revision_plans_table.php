@@ -15,11 +15,10 @@ class CreateRevisionPlansTable extends Migration
     {
         Schema::create('revision_plans', function (Blueprint $table) {
             $table->id();
-            $table->string('idpaps');
-            $table->string('aip_code');
-            $table->string('project_title');
-            $table->string('location');
-            $table->string('list_of_lgu_covered');
+            $table->string('idpaps')->comment('PAPS ID');
+            $table->string('aip_code')->comment('AIP Code of the Project');
+            $table->string('project_title')->comment('Project title');
+            $table->string('list_of_lgu_covered')->comment('List of LGUs covered');
             $table->string('date_start');
             $table->string('date_end');
             $table->integer('beneficiary_male');
