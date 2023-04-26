@@ -15,7 +15,7 @@ class CreateProjectProfilesTable extends Migration
     {
         Schema::create('project_profiles', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('idmfo')->nullable();
+            $table->bigInteger('idmfo')->nullable()->comment('MFO ID');
             $table->string('project_title');
             $table->string('project_location');
             $table->string('start_date');
