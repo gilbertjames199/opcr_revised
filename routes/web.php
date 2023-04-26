@@ -32,6 +32,7 @@ use App\Http\Controllers\ChiefAgendaController;
 use App\Http\Controllers\EconomicAgendaController;
 use App\Http\Controllers\ProjectProfileController;
 use App\Http\Controllers\RAController;
+use App\Http\Controllers\SocietalGoalController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\IntermediateOutcome;
@@ -140,6 +141,16 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [SectoralController::class, 'destroy']);
     });
 
+       //Societal
+       Route::prefix('/Societal')->group(function(){
+        Route::get('/',[SocietalGoalController::class,'index']);
+        Route::get('/create',[SocietalGoalController::class,'create']);
+        Route::post('/',[SocietalGoalController::class,'store']);
+        Route::get('/{id}/edit', [SocietalGoalController::class, 'edit']);
+        Route::patch('/{id}', [SocietalGoalController::class, 'update']);
+        Route::delete('/{id}', [SocietalGoalController::class, 'destroy']);
+    });
+
      //ChiefAgenda
      Route::prefix('/ChiefAgenda')->group(function(){
         Route::get('/',[ChiefAgendaController::class,'index']);
@@ -216,6 +227,7 @@ Route::middleware('auth')->group(function() {
     //MFO
     Route::prefix('/mfos')->group(function(){
         Route::get('/direct',[MFOController::class,'direct']);
+        Route::get('/add',[MFOController::class,'add']);
         Route::get('/create/{id}',[MFOController::class,'create']);
         Route::post('/store',[MFOController::class,'store']);
         Route::get('/{id}/{idinteroutcome}/edit', [MFOController::class, 'edit']);
