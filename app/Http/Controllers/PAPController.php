@@ -18,17 +18,16 @@ class PAPController extends Controller
 
     public function index(Request $request, $id)
     {
-        $idinteroutcome = MajorFinalOutput::where('id',$id)
-                        ->value('idinteroutcome');
+        // $data = ProgramAndProject::where('idmfo',$id)
+        //         ->orderBy('created_at', 'desc')
+        //         ->paginate(10)
+        //         ->withQueryString();
 
-        $data = ProgramAndProject::where('idmfo',$id)
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
-                ->withQueryString();
+        $data = ProgramAndProject::get();
+
         //dd($data);
         return inertia('PAPS/Index',[
             "data"=>$data,
-            "idinteroutcome"=>$idinteroutcome,
             "idmfo"=>$id,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
@@ -36,6 +35,8 @@ class PAPController extends Controller
             ],
         ]);
     }
+
+
 
     public function create($id)
     {
@@ -56,6 +57,20 @@ class PAPController extends Controller
             ],
         ]);
     }
+
+    public function direct_create()
+    {
+        $mfos= MajorFinalOutput::get();
+        //dd($id);
+        return inertia('PAPS/Create', [
+            'mfos'=>$mfos,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
+    }
+
 
     public function store(Request $request)
     {
@@ -126,5 +141,21 @@ class PAPController extends Controller
         $data->delete();
         //dd($request->raao_id);
         return redirect('/paps/'.$idmfo)->with('warning', 'PAPS deleted');
+    }
+
+    public function direct(Request $request){
+        //dd("direct");
+        $data = $this->model->orderBy('created_at', 'desc')
+        ->paginate(10)
+        ->withQueryString();
+
+        //dd($data->pluck('mfo_desc'));
+        return inertia('PAPS/Direct',[
+            "data"=>$data,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 }

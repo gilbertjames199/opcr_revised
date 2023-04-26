@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnsToTargetsTable extends Migration
+class AddIdimplementationToTargets extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,10 @@ class AddColumnsToTargetsTable extends Migration
     public function up()
     {
         Schema::table('targets', function (Blueprint $table) {
-            $table->decimal('target_qty1',12,2)->nullable()->comment('target quantity for first quarter');
-            $table->decimal('target_qty2',12,2)->nullable()->comment('target quantity for second quarter');
-            $table->decimal('target_qty3',12,2)->nullable()->comment('target quantity for third quarter');
-            $table->decimal('target_qty4',12,2)->nullable()->comment('target quantity for fourth quarter');
+            $table->integer('idimplementation')
+                ->nullable()
+                ->after('onsite_tag')
+                ->comment('Implementation');
         });
     }
 

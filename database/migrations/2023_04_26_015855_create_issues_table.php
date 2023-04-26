@@ -15,7 +15,7 @@ class CreateIssuesTable extends Migration
     {
         Schema::create('issues', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
+            $table->string('description')->comment('Gender issues');
             $table->timestamps();
         });
     }
