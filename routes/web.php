@@ -244,7 +244,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/store',[PAPController::class,'store']);
         Route::get('/{id}/{idmfo}/edit', [PAPController::class, 'edit']);
         Route::patch('/{id}', [PAPController::class, 'update']);
-        Route::delete('/{id}/{idoutcome}', [PAPController::class, 'destroy']);
+        Route::delete('/{id}', [PAPController::class, 'destroy']);
     });
     //Project Profile
     Route::prefix('/projectprofile')->group(function(){

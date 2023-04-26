@@ -35,7 +35,9 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
+                                <th>Major Final Outputs</th>
                                 <th>PAPS Description</th>
+                                <th>Means of Verification</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

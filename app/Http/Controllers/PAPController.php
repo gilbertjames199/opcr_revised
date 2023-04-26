@@ -38,6 +38,7 @@ class PAPController extends Controller
 
 
 
+
     public function create($id)
     {
         $mfos= MajorFinalOutput::get();
@@ -61,6 +62,7 @@ class PAPController extends Controller
     public function direct_create()
     {
         $mfos= MajorFinalOutput::get();
+
         //dd($id);
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
@@ -78,7 +80,7 @@ class PAPController extends Controller
         $this->model->create($attributes);
         //dd($request->idmfo);
         //$request->pass='';
-        return redirect('/paps/'.$request->idmfo)
+        return redirect('/paps/direct')
         ->with('message','Programs and Projects(PAPS) added');
     }
 
@@ -99,18 +101,12 @@ class PAPController extends Controller
         $data = $this->model->where('id', $id)->first([
             'id',
             'paps_desc',
-            'plan_period_from',
-            'plan_period_to',
-            'plan_amount_year1',
-            'plan_amount_year2',
-            'plan_amount_year3',
-            'plan_amount_year4',
-            'plan_amount_year5',
-            'plan_amount_year6',
             'FFUNCCOD',
             'idmfo',
+            'MOV',
         ]);
 
+        // dd($data);
         return inertia('PAPS/Create', [
             "editData" => $data,
             "mfos"=>$mfos,
@@ -130,25 +126,25 @@ class PAPController extends Controller
         $data = $this->model::findOrFail($request->id);
         $validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $data->update($validatedData);
-        return redirect('/paps/'.$request->idmfo)
+        return redirect('/paps/direct')
                 ->with('message','Program and Projects updated');
     }
 
 
-    public function destroy(Request $request, $id, $idmfo)
+    public function destroy(Request $request, $id)
     {
         $data = $this->model->findOrFail($id);
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/paps/'.$idmfo)->with('warning', 'PAPS deleted');
+        return redirect('/paps/direct')->with('warning', 'PAPS deleted');
     }
 
     public function direct(Request $request){
         //dd("direct");
-        $data = $this->model->orderBy('created_at', 'desc')
+        $data = $this->model->with('MFO')->orderBy('created_at', 'desc')
         ->paginate(10)
         ->withQueryString();
-
+        //dd($data);
         //dd($data->pluck('mfo_desc'));
         return inertia('PAPS/Direct',[
             "data"=>$data,

@@ -13,7 +13,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add PAPs </Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -41,8 +41,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dat in data.data">
-                                <td>{{ dat.mfo_desc }}</td>
+                            <tr v-for="dat in data.data" :key="dat.id">
+                                <td>{{ dat.m_f_o.mfo_desc }}</td>
+                                <td>{{ dat.paps_desc }}</td>
+                                <td>{{ dat.MOV }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -51,8 +53,8 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/paps/${dat.id}`">Programs and Projects</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/mfos/${dat.id}/edit`">Edit</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/paps/${dat.id}`">Add Strategies</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${idmfo}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
@@ -115,9 +117,9 @@ export default {
             );
         },
         deleteMFO(id) {
-            let text = "WARNING!\nAre you sure you want to delete the MFO?";
+            let text = "WARNING!\nAre you sure you want to delete the PAP?";
               if (confirm(text) == true) {
-                this.$inertia.delete("/mfos/" + id+"/"+this.idinteroutcome);
+                this.$inertia.delete("/paps/" + id+"/");
             }
         }
     }
