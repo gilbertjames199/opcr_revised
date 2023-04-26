@@ -46,7 +46,7 @@ class TargetSeeder extends Seeder
             }
 
             DB::table('targets')->insert([
-                'idraao' => $idraao[$i],
+                //'idraao' => $idraao[$i],
                 'idooe' => '0',
                 'idindicator' =>'1',
                 'description' => 'Target Description -> '.$i,
