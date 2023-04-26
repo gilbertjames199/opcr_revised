@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\IntermediateOutcome;
 use App\Models\MajorFinalOutput;
+use App\Models\OrganizationalGoal;
+use App\Models\Sectoral;
+use App\Models\SocietalGoal;
 use App\Models\Strategy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,12 +41,15 @@ class MFOController extends Controller
     }
 
 
-    public function create($id)
+    public function create()
     {
-        $interoutcomes=IntermediateOutcome::get();
+        $SocietalGoals=SocietalGoal::get();
+        $SectorOutcomes=Sectoral::get();
+        $OrganizationalOutcomes=OrganizationalGoal::get();
         return inertia('MFOs/Create', [
-            'interoutcomes'=>$interoutcomes,
-            'idinteroutcome'=>$id,
+            'societalGoals'=>$SocietalGoals,
+            'sectorOutcomes'=>$SectorOutcomes,
+            'organizationalOutcomes'=>$OrganizationalOutcomes,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
