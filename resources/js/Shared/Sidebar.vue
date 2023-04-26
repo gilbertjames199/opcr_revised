@@ -79,18 +79,6 @@
                     </Link>
                 </li>
 
-                <!--MFO-->
-                <li class="nav-item">
-                    <Link class="sidebar-link" href="/mfos/direct" :class="{'active': $page.url === '/mfos/direct'}">
-                        <span></span>
-                        <span class="icon-holder">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-grid-3x2-gap-fill" viewBox="0 0 16 16">
-                                <path d="M1 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V4zM1 9a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V9zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V9z"/>
-                            </svg>
-                        </span>
-                        <span class="title">Major Final Output</span>
-                    </Link>
-                </li>
                 <!--Outcomes-->
                 <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/outcome" :class="{'active': $page.url === '/outcome'}">
@@ -148,8 +136,22 @@
                     </ul>
                 </li>
 
+
+                <!--MFO-->
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/raao" :class="{'active': $page.url === '/raao'}">
+                    <Link class="sidebar-link" href="/mfos/direct" :class="{'active': $page.url === '/mfos/direct'}">
+                        <span></span>
+                        <span class="icon-holder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-grid-3x2-gap-fill" viewBox="0 0 16 16">
+                                <path d="M1 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V4zM1 9a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V9zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V9z"/>
+                            </svg>
+                        </span>
+                        <span class="title">Major Final Output</span>
+                    </Link>
+                </li>
+
+                <li class="nav-item">
+                    <Link class="sidebar-link" href="/paps/direct" :class="{'active': $page.url === '/paps/direct'}">
                         <span></span>
                         <span class="icon-holder">
 

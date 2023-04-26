@@ -237,6 +237,8 @@ Route::middleware('auth')->group(function() {
     });
     //Route::patch('/', [PAPController::class, 'update']);
     Route::prefix('/paps')->group(function(){
+        Route::get('/direct',[PAPController::class,'direct']);
+        Route::get('/direct/create',[PAPController::class,'direct_create']);
         Route::get('/{id}',[PAPController::class,'index']);
         Route::get('/create/{id}',[PAPController::class,'create']);
         Route::post('/store',[PAPController::class,'store']);
