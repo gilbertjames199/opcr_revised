@@ -15,11 +15,13 @@ class CreateBudgetRequirementsTable extends Migration
     {
         Schema::create('budget_requirements', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('idrevision_plan');
             $table->bigInteger('id_project_profile')->nullable();
             $table->string('particulars');
             $table->string('account_code');
             $table->decimal('amount',12,2);
             $table->string('category');
+            $table->string('category_gad');
             $table->timestamps();
         });
     }
