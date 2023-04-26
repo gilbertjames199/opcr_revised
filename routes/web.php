@@ -228,9 +228,9 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/mfos')->group(function(){
         Route::get('/direct',[MFOController::class,'direct']);
         Route::get('/add',[MFOController::class,'add']);
-        Route::get('/create/{id}',[MFOController::class,'create']);
+        Route::get('/create',[MFOController::class,'create']);
         Route::post('/store',[MFOController::class,'store']);
-        Route::get('/{id}/{idinteroutcome}/edit', [MFOController::class, 'edit']);
+        Route::get('/{id}/edit', [MFOController::class, 'edit']);
         Route::patch('/', [MFOController::class, 'update']);
         Route::delete('/{id}/{idoutcome}', [MFOController::class, 'destroy']);
         Route::get('/{id}',[MFOController::class,'index']);

@@ -93,8 +93,10 @@ export default {
             return {
                 submitted: false,
                 form: useForm({
+                    id_org_outcome: "",
+                    id_sec_outcome: "",
+                    id_socgoal: "",
                     mfo_desc: "",
-                    idinteroutcome: "",
                     FFUNCCOD: "",
                     id: null
                 }),
@@ -103,10 +105,11 @@ export default {
         },
 
         mounted() {
-            this.form.idinteroutcome=this.idinteroutcome
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
-                this.form.idinteroutcome=this.idinteroutcome
+                this.form.id_org_outcome=this.editData.id_org_outcome
+                this.form.id_sec_outcome=this.editData.id_sec_outcome
+                this.form.id_socgoal=this.editData.id_socgoal
                 this.form.mfo_desc=this.editData.mfo_desc
                 this.form.FFUNCCOD = this.editData.FFUNCCOD
                 this.form.id=this.editData.id
@@ -118,13 +121,13 @@ export default {
 
         methods: {
             submit() {
+                // alert(this.dat)
                 this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
-                    this.form.patch("/mfos/", this.form);
+                    this.form.patch("/mfos", this.form);
                 } else {
                     this.form.id=null;
-                    //alert('/mfos/store');
                     this.form.post("/mfos/store", this.form);
                 }
             },

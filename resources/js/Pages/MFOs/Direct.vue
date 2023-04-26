@@ -13,7 +13,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/mfos/create/${idinteroutcome}`">Add MFO </Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/mfos/create`">Add MFO </Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
                                             <li><Link class="dropdown-item" :href="`/paps/${dat.id}`">Programs and Projects</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/mfos/${dat.id}/${dat.idinteroutcome}/edit`">Edit</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/mfos/${dat.id}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>

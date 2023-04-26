@@ -63,7 +63,7 @@ class MFOController extends Controller
         //dd($attributes);
         $this->model->create($attributes);
         $request->pass='';
-        return redirect('/mfos/'.$request->idinteroutcome)
+        return redirect('/mfos/direct')
                 ->with('message','MFO added');
     }
 
@@ -74,20 +74,25 @@ class MFOController extends Controller
     }
 
 
-    public function edit(MajorFinalOutput $majorFinalOutput, $id, $idinteroutcome)
+    public function edit(MajorFinalOutput $majorFinalOutput, $id)
     {
-        $interoutcomes=IntermediateOutcome::get();
+        $SocietalGoals=SocietalGoal::get();
+        $SectorOutcomes=Sectoral::get();
+        $OrganizationalOutcomes=OrganizationalGoal::get();
         $data = $this->model->where('id', $id)->first([
             'id',
             'mfo_desc',
-            'FFUNCCOD',
-            'idinteroutcome'
+            'id_socgoal',
+            'id_org_outcome',
+            'id_sec_outcome',
+            'FFUNCCOD'
         ]);
         //dd($idinteroutcome);
         return inertia('MFOs/Create', [
             "editData" => $data,
-            "interoutcomes"=>$interoutcomes,
-            "idinteroutcome"=> $idinteroutcome,
+            'societalGoals'=>$SocietalGoals,
+            'sectorOutcomes'=>$SectorOutcomes,
+            'organizationalOutcomes'=>$OrganizationalOutcomes,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -101,7 +106,7 @@ class MFOController extends Controller
         $data = $majorFinalOutput::findOrFail($request->id);
         $validatedData = $request->validate(MajorFinalOutput::rules(), MajorFinalOutput::errorMessages());
         $data->update($validatedData);
-        return redirect('/mfos/'.$request->idinteroutcome)
+        return redirect('/mfos/direct')
                 ->with('message','MFOs updated');
     }
 
@@ -111,7 +116,7 @@ class MFOController extends Controller
         $data = $this->model->findOrFail($id);
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/mfos/'.$idinteroutcome)->with('warning', 'MFO deleted');
+        return redirect('/mfos/direct')->with('warning', 'MFO deleted');
     }
 
     public function direct(Request $request){
