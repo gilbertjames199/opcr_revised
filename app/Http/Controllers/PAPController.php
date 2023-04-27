@@ -150,7 +150,7 @@ class PAPController extends Controller
         $data = $this->model::findOrFail($request->id);
         $validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $data->update($validatedData);
-        dd('updated');
+        //dd('updated');
         return redirect('/paps/'.$request->idmfo)
                 ->with('message','Program and Projects updated');
     }
