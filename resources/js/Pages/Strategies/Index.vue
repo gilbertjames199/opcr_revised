@@ -41,7 +41,8 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.strat_desc }}</td>
+                                <td>{{ dat.paps.paps_desc }}</td>
+                                <td>{{ dat.description }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -51,7 +52,7 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
                                             <li><Link class="dropdown-item" :href="`/mfos/${dat.id}`">MFOs</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idinteroutcome}/edit`">Edit</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idpaps}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
@@ -85,12 +86,13 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
-        idinteroutcome: String,
-        idoutcome: String
+        idmfos: String,
+        idpaps: String,
+        filters: Object,
     },
     data() {
         return{
-
+            search: this.$props.filters.search,
         }
     },
     components: {

@@ -128,6 +128,7 @@ class MFOController extends Controller
         //dd($data->pluck('mfo_desc'));
         return inertia('MFOs/Direct',[
             "data"=>$data,
+            "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

@@ -14,4 +14,7 @@ class Strategy extends Model
         'description',
         'idpaps'
     ];
+    public function paps(){
+        return $this -> hasOne(ProgramAndProject::class, 'id', 'idpaps');
+    }
 }
