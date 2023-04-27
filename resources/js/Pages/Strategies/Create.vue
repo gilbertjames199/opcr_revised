@@ -19,18 +19,18 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
 
-                <label for="">INTERMEDIATE OUTCOME</label>
+                <!-- <label for="">INTERMEDIATE OUTCOME</label>
 
                 <select class="form-control" v-model="form.idinteroutcome" >
                     <option v-for="interoutcome in interoutcomes" :value="interoutcome.id" >
                         {{ interoutcome.io_desc }}
                     </option>
                 </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_period">{{ form.errors.plan_period }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.plan_period">{{ form.errors.plan_period }}</div> -->
 
                 <label for="">STRATEGY DESCRIPTION</label>
-                <input type="text" v-model="form.strat_desc" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.strat_desc">{{ form.errors.strat_desc }}</div>
+                <input type="text" v-model="form.description" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.description">{{ form.errors.description }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
@@ -68,8 +68,7 @@ export default {
             return {
                 submitted: false,
                 form: useForm({
-                    strat_desc: "",
-                    idinteroutcome: "",
+                    description: "",
                     id: null
                 }),
                 pageTitle: ""
