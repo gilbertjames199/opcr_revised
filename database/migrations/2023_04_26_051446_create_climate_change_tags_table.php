@@ -15,12 +15,12 @@ class CreateClimateChangeTagsTable extends Migration
     {
         Schema::create('climate_change_tags', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->comment('Climate Change Topology Code');
-            $table->longText('activity')->comment('Activity Description');
-            $table->string('strategic_priority')->comment('Strategic priority');
-            $table->string('sub_priority')->comment('Sub priority');
-            $table->string('instrument_of_delivery')->comment('Instrument of delivery');
-            $table->string('type')->comment('Indicate a->adaptation or m->mitigation');
+            $table->string('code',20)->comment('Climate Change Topology Code');
+            $table->Text('activity')->comment('Activity Description');
+            $table->Text('strategic_priority')->comment('Strategic priority');
+            $table->Text('sub_priority')->comment('Sub priority');
+            $table->Text('instrument_of_delivery')->comment('Instrument of delivery');
+            $table->Text('type')->comment('Indicate a->adaptation or m->mitigation');
             $table->timestamps();
         });
     }
