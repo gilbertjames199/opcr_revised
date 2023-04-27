@@ -15,22 +15,22 @@ class CreateAccomplishmentsTable extends Migration
     {
         Schema::create('accomplishments', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('idtarget')->nullable();
+            $table->Integer('target_id')->nullable();
             $table->decimal('accomplishment_qty',12,2)->nullable()->comment('Accomplishment quantity');
             $table->date('actual_period_from')->nullable()->comment('Actual period accomplished -from');
             $table->date('actual_period_to')->nullable()->comment('Actual period accomplished -to');
             $table->decimal('actual_expenditure',12,2)->nullable()->comment('Actual expenditure');
-            $table->longText('facilitating_timeliness')->nullable()->comment('Facilitating timeliness');
-            $table->longText('facilitating_competency')->nullable()->comment('Facilitating competency');
-            $table->longText('facilitating_logistics')->nullable()->comment('Facilitting logistics');
-            $table->longText('deterring_timeliness')->nullable()->comment('Deterring timeliness');
-            $table->longText('deterring_concerns')->nullable()->comment('Deterring concerns');
-            $table->longText('deterring_logistics')->nullable()->comment('Deterring logistics');
-            $table->longText('concerns_timeliness')->nullable()->comment('Concerns timeliness');
-            $table->longText('concerns_competency')->nullable()->comment('Concerns competency');
-            $table->longText('concerns_logistics')->nullable()->comment('Concerns logistics');
-            $table->longText('new_strategy')->nullable()->comment('New strategy');
-            $table->longText('remarks')->nullable()->comment('Remarks');
+            $table->Text('facilitating_timeliness')->nullable()->comment('Facilitating timeliness');
+            $table->Text('facilitating_competency')->nullable()->comment('Facilitating competency');
+            $table->Text('facilitating_logistics')->nullable()->comment('Facilitting logistics');
+            $table->Text('deterring_timeliness')->nullable()->comment('Deterring timeliness');
+            $table->Text('deterring_concerns')->nullable()->comment('Deterring concerns');
+            $table->Text('deterring_logistics')->nullable()->comment('Deterring logistics');
+            $table->Text('concerns_timeliness')->nullable()->comment('Concerns timeliness');
+            $table->Text('concerns_competency')->nullable()->comment('Concerns competency');
+            $table->Text('concerns_logistics')->nullable()->comment('Concerns logistics');
+            $table->Text('new_strategy')->nullable()->comment('New strategy');
+            $table->Text('remarks')->nullable()->comment('Remarks');
             $table->date('date_accomplished_from')->nullable()->comment('Date accomplished from');
             $table->date('date_accomplished_to')->nullable()->comment('Date accomplished to');
             $table->string('validated_status')->nullable()->comment('Validated status -yes, no');

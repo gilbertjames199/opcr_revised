@@ -15,8 +15,8 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->longText('description')->comment('Activity description');
-            $table->bigInteger('idstrategy')->comment('Strategy ID');
+            $table->Text('description')->comment('Activity description');
+            $table->bigInteger('strategy_id')->comment('Strategy ID');
             $table->timestamps();
         });
     }

@@ -15,8 +15,8 @@ class CreateStrategiesTable extends Migration
     {
         Schema::create('strategies', function (Blueprint $table) {
             $table->id();
-            $table->string('description')->comment('Description of strategies');
-            $table->bigInteger('idpaps')->comment('ID of the Program/Project');
+            $table->text('description')->comment('Description of strategies');
+            $table->Integer('idpaps')->comment('ID of the Program/Project');
             $table->timestamps();
         });
     }
