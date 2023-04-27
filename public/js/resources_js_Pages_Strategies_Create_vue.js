@@ -61,7 +61,7 @@ __webpack_require__.r(__webpack_exports__);
       //alert(this.form.target_qty);
       if (this.editData !== undefined) {
         alert('patch');
-        this.form.post("/strategies/update", this.form);
+        this.form.patch("/strategies/", this.form);
       } else {
         this.form.id = null; //alert('store');
 
@@ -201,7 +201,7 @@ var _hoisted_10 = ["value"];
 
 var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "STRATEGY DESCRIPTION", -1
+}, "STRATEGY DESCRIPTION ", -1
 /* HOISTED */
 );
 

@@ -15,8 +15,8 @@ class CreateIndicatorsTable extends Migration
     {
         Schema::create('indicators', function (Blueprint $table) {
             $table->id();
-            $table->Integer('idindication')->nullable();
-            $table->Integer('idindicator')->nullable();
+            // $table->Integer('idindication')->nullable();
+            // $table->Integer('idindicator')->nullable();
             $table->Text('description')->nullable()->comment('Indicator description');
             $table->timestamps();
         });

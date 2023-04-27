@@ -27,7 +27,7 @@
                     </option>
                 </select>
 
-                <label for="">STRATEGY DESCRIPTION</label>
+                <label for="">STRATEGY DESCRIPTION </label>
                 <input type="text" v-model="form.description" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.description">{{ form.errors.description }}</div>
 
@@ -95,7 +95,7 @@ export default {
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
                     alert('patch');
-                    this.form.post("/strategies/update", this.form);
+                    this.form.patch("/strategies/", this.form);
                 } else {
                     this.form.id=null;
                     //alert('store');

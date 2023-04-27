@@ -9,13 +9,14 @@ class CreateAccomplishmentsTable extends Migration
     /**
      * Run the migrations.
      *
+     *$table->foreignId('target_id')->constrained()->nullable()->comment('Target');
      * @return void
      */
     public function up()
     {
         Schema::create('accomplishments', function (Blueprint $table) {
             $table->id();
-            $table->Integer('target_id')->nullable();
+            $table->integer('idtarget')->nullable()->comment('Target ID');
             $table->decimal('accomplishment_qty',12,2)->nullable()->comment('Accomplishment quantity');
             $table->date('actual_period_from')->nullable()->comment('Actual period accomplished -from');
             $table->date('actual_period_to')->nullable()->comment('Actual period accomplished -to');
@@ -33,7 +34,7 @@ class CreateAccomplishmentsTable extends Migration
             $table->Text('remarks')->nullable()->comment('Remarks');
             $table->date('date_accomplished_from')->nullable()->comment('Date accomplished from');
             $table->date('date_accomplished_to')->nullable()->comment('Date accomplished to');
-            $table->string('validated_status')->nullable()->comment('Validated status -yes, no');
+            $table->string('validated_status',10)->nullable()->comment('Validated status -yes, no');
             $table->longText('validated_remarks')->nullable()->comment('Validated remarks ');
             $table->date('validated_date')->nullable()->comment('Date validated');
             $table->timestamps();

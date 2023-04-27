@@ -8,14 +8,16 @@ class CreateTargetsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
+     *$table->Integer('idpdip')->nullable()->comment('Indicator ID');
      * @return void
      */
     public function up()
     {
         Schema::create('targets', function (Blueprint $table) {
             $table->id();
-            $table->Integer('idpdip')->nullable()->comment('PAPS ID');
+            //$table->foreignId('program_and_project_id')->constrained()->onDelete('cascade')->nullable();
+            //$table->foreignId('program_and_project_id')->constrained()->onDelete('cascade')->nullable()->comment('PAPS ID');
+            $table->Integer('idpdip')->nullable()->comment('Indicator IDPAPS ID');
             $table->Integer('idooe')->nullable();
             $table->Integer('idindicator')->nullable()->comment('Indicator ID');
             $table->Text('description')->nullable()->comment('Target description');
