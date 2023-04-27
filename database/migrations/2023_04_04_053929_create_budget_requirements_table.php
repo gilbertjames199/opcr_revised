@@ -15,13 +15,13 @@ class CreateBudgetRequirementsTable extends Migration
     {
         Schema::create('budget_requirements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idrevision_plan')->comment('ID of the revision plan');
+            $table->Integer('idrevision_plan')->comment('ID of the revision plan');
             //$table->bigInteger('id_project_profile')->nullable();
-            $table->longText('particulars')->comment('Particular');
-            $table->string('account_code',100)->comment('Account code -from the chart of accounts');
+            $table->Text('particulars')->comment('Particular');
+            $table->string('account_code',10)->comment('Account code -from the chart of accounts');
             $table->decimal('amount',12,2)->comment('Amount of the budget');
-            $table->longText('category')->comment('Indicate if MOOE, PS or capital outlay');
-            $table->longText('category_gad')->comment('Indicate if GAD or Non-GAD');
+            $table->Text('category')->comment('Indicate if MOOE, PS or capital outlay');
+            $table->Text('category_gad')->comment('Indicate if GAD or Non-GAD');
             $table->timestamps();
         });
     }
