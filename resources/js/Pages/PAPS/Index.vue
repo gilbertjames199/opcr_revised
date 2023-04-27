@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/paps/create/${idmfo}`">Add PAPS {{ idmfo }}</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/paps/create/${idmfo}`">Add Programs and Projects {{ idmfo }}</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>

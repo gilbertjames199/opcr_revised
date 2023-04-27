@@ -16,19 +16,14 @@ class StrategyController extends Controller
     }
     public function index(Request $request, $id)
     {
-        $idoutcome = IntermediateOutcome::where('id',$id)
-                        ->value('idoutcome');
         //dd($idoc);
         $data = $this->model
-                ->where('idinteroutcome',$id)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
 
         return inertia('Strategies/Index',[
             "data"=>$data,
-            "idinteroutcome"=>$id,
-            "idoutcome"=>$idoutcome,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -39,6 +34,7 @@ class StrategyController extends Controller
 
     public function create(Request $request, $id)
     {
+
         $interoutcomes=IntermediateOutcome::get();
         //dd($id);
         return inertia('Strategies/Create',[
@@ -56,12 +52,11 @@ class StrategyController extends Controller
     {
         $attributes = $request->validate([
             'strat_desc' => 'required',
-            'idinteroutcome' => 'required',
         ]);
         //dd($attributes);
         $this->model->create($attributes);
         $request->pass='';
-        return redirect('/strategies/'.$request->idinteroutcome)
+        return redirect('/strategies')
                 ->with('message','Outcome added');
     }
 
