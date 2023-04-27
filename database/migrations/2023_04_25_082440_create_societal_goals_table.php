@@ -15,7 +15,7 @@ class CreateSocietalGoalsTable extends Migration
     {
         Schema::create('societal_goals', function (Blueprint $table) {
             $table->id();
-            $table->longText('description')->comment('Societal goal description');
+            $table->Text('description')->comment('Societal goal description');
             $table->timestamps();
         });
     }

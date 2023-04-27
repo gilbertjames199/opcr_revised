@@ -15,17 +15,17 @@ class CreateTargetsTable extends Migration
     {
         Schema::create('targets', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('idpdip')->nullable()->comment('PAPS ID');
-            $table->bigInteger('idooe')->nullable();
-            $table->bigInteger('idindicator')->nullable()->comment('Indicator ID');
-            $table->longText('description')->nullable()->comment('Target description');
-            $table->string('brgy')->nullable()->comment('Barangay');
-            $table->string('municipality')->nullable()->comment('Municipality');
+            $table->Integer('idpdip')->nullable()->comment('PAPS ID');
+            $table->Integer('idooe')->nullable();
+            $table->Integer('idindicator')->nullable()->comment('Indicator ID');
+            $table->Text('description')->nullable()->comment('Target description');
+            $table->string('brgy',20)->nullable()->comment('Barangay');
+            $table->string('municipality',20)->nullable()->comment('Municipality');
             $table->date('planned_period_from')->nullable()->comment('Plan period start date');
             $table->date('planned_period_to')->nullable()->comment('Plan period end date');
-            $table->string('planned_budget')->nullable()->comment('Plan budget');
-            $table->string('target_qty')->nullable()->comment('Target Quantity');
-            $table->string('onsite_tag')->nullable()->comment('Onsite tag answerable by yes or no');
+            $table->decimal('planned_budget',12,2)->nullable()->comment('Plan budget');
+            $table->integer('target_qty')->nullable()->comment('Target Quantity');
+            $table->Text('onsite_tag')->nullable()->comment('Onsite tag answerable by yes or no');
             $table->timestamps();
         });
     }
