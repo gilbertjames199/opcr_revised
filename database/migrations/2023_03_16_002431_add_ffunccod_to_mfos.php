@@ -15,7 +15,7 @@ class AddFfunccodToMfos extends Migration
     {
         Schema::table('major_final_outputs', function (Blueprint $table) {
             //
-            $table->bigInteger('FFUNCCOD')->nullable();
+            $table->Integer('FFUNCCOD')->nullable();
         });
     }
 
