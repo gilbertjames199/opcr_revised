@@ -1,7 +1,7 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Programs and Proects {{  idmfo }}</h3>
+            <h3>{{ pageTitle }} Programs and Projects {{  idmfo }}</h3>
             <Link :href="`/paps/direct`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -100,6 +100,7 @@ export default {
         props: {
             editData: Object,
             mfos: Object,
+            idmfo: String,
         },
         components: {
 
@@ -112,6 +113,7 @@ export default {
         },
         data() {
             return {
+                from_mfo: false,
                 submitted: false,
                 form: useForm({
                     paps_desc: "",
@@ -271,6 +273,10 @@ export default {
                 this.form.id=this.editData.id
             } else {
                 this.pageTitle = "Create"
+                if(this.idmfo!=undefined){
+                    this.form.idmfo=this.idmfo
+                    this.from_mfo=true
+                }
                 this.setselect();
             }
 
@@ -278,15 +284,29 @@ export default {
 
         methods: {
             submit() {
+                if(this.id_mfo!=undefined){
+                        this.from_mfo=true
+                }
                 this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
-                    alert('paps/'+this.form.id);
-                    this.form.patch("/paps/"+this.form.id, this.form);
+
+                    if(this.from_mfo==true){
+                        alert('paps/update/'+this.form.id);
+                        this.form.patch("/paps/update/"+this.form.id, this.form);
+                    }else{
+                        this.form.patch("/paps/"+this.form.id, this.form);
+                    }
+
                 } else {
                     this.form.id=null;
 
-                    this.form.post("/paps/store", this.form);
+                    if(this.from_mfo==true){
+                        this.form.post("/paps/save", this.form);
+                    }else{
+                        this.form.post("/paps/store", this.form);
+                    }
+
                 }
             },
             setselect(){

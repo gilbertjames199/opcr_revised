@@ -15,10 +15,10 @@ class CreateResearchAgendaTable extends Migration
     {
         Schema::create('research_agenda', function (Blueprint $table) {
             $table->id();
-            $table->string('agenda_description');
-            $table->date('year_from');
-            $table->date('year_to');
-            $table->string('rationale');
+            $table->string('agenda_description')->comment('Research agenda description');
+            $table->date('year_from')->comment('Date from');
+            $table->date('year_to')->comment('Date to');
+            $table->string('rationale')->comment('Rationale');
             $table->timestamps();
         });
     }

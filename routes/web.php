@@ -241,9 +241,11 @@ Route::middleware('auth')->group(function() {
         Route::get('/direct/create',[PAPController::class,'direct_create']);
         Route::get('/{id}',[PAPController::class,'index']);
         Route::get('/create/{id}',[PAPController::class,'create']);
+        Route::post('/save',[PAPController::class,'save']);
         Route::post('/store',[PAPController::class,'store']);
         Route::get('/{id}/{idmfo}/edit', [PAPController::class, 'edit']);
         Route::patch('/{id}', [PAPController::class, 'update']);
+        Route::patch('/update/{id}', [PAPController::class, 'updated']);
         Route::delete('/{id}', [PAPController::class, 'destroy']);
     });
     //Project Profile

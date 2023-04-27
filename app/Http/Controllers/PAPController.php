@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class PAPController extends Controller
 {
+    protected $model;
     public function __construct(ProgramAndProject $model)
     {
         //$this->middleware(['auth','verified']);
@@ -18,17 +19,22 @@ class PAPController extends Controller
 
     public function index(Request $request, $id)
     {
-        // $data = ProgramAndProject::where('idmfo',$id)
-        //         ->orderBy('created_at', 'desc')
-        //         ->paginate(10)
-        //         ->withQueryString();
+        $data = ProgramAndProject::where('idmfo',$id)
+                ->with('MFO')
+                ->when($request->search, function($query, $searchItem){
+                    $query->where('paps_desc','LIKE','%'.$searchItem.'%');
+                })
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
 
-        $data = ProgramAndProject::get();
+        //$data = ProgramAndProject::get();
 
         //dd($data);
         return inertia('PAPS/Index',[
             "data"=>$data,
             "idmfo"=>$id,
+            "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -83,6 +89,14 @@ class PAPController extends Controller
         return redirect('/paps/direct')
         ->with('message','Programs and Projects(PAPS) added');
     }
+    public function save(Request $request)
+    {
+        $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
+        $this->model->create($attributes);
+
+        return redirect('/paps/'.$request->idmfo)
+        ->with('message','Programs and Projects(PAPS) added');
+    }
 
 
     public function show(ProgramAndProject $programAndProject)
@@ -130,7 +144,16 @@ class PAPController extends Controller
                 ->with('message','Program and Projects updated');
     }
 
+    public function updated(Request $request, $id)
+    {
 
+        $data = $this->model::findOrFail($request->id);
+        $validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
+        $data->update($validatedData);
+        dd('updated');
+        return redirect('/paps/'.$request->idmfo)
+                ->with('message','Program and Projects updated');
+    }
     public function destroy(Request $request, $id)
     {
         $data = $this->model->findOrFail($id);
@@ -141,13 +164,18 @@ class PAPController extends Controller
 
     public function direct(Request $request){
         //dd("direct");
-        $data = $this->model->with('MFO')->orderBy('created_at', 'desc')
-        ->paginate(10)
-        ->withQueryString();
+        $data = $this->model->with('MFO')
+                ->when($request->search, function($query, $searchItem){
+                    $query->where('paps_desc','LIKE','%'.$searchItem.'%');
+                })
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
         //dd($data);
         //dd($data->pluck('mfo_desc'));
         return inertia('PAPS/Direct',[
             "data"=>$data,
+            "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

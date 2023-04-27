@@ -14,7 +14,7 @@ class CreateOrganizationalGoalsTable extends Migration
     public function up(){
         Schema::create('organizational_goals', function (Blueprint $table) {
             $table->id();
-            $table->longText('goal_description');
+            $table->longText('goal_description')->comment('Organizational Goal Description');
             $table->timestamps();
         });
     }

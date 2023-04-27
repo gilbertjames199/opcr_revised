@@ -15,10 +15,10 @@ class CreateExecutiveLegislativeAgendaTable extends Migration
     {
         Schema::create('executive_legislative_agenda', function (Blueprint $table) {
             $table->id();
-            $table->string('agenda_description');
-            $table->date('year_from');
-            $table->date('year_to');
-            $table->string('rationale');
+            $table->string('agenda_description')->comment('Agenda description');
+            $table->date('year_from')->comment('Year From');
+            $table->date('year_to')->comment('Year to');
+            $table->string('rationale')->comment('Rationale');
             $table->timestamps();
         });
     }

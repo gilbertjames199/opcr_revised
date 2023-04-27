@@ -54,7 +54,7 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
                                             <li><Link class="dropdown-item" :href="`/paps/${dat.id}`">Add Strategies</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${idmfo}/edit`">Edit</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
@@ -89,13 +89,29 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
-        idinteroutcome: String,
-        idoutcome: String
+        filters: Object,
+        // idinteroutcome: String,
+        // idoutcome: String,
+        // idmfo: String,
+        can: Object
     },
     data() {
         return{
-
+            search: this.$props.filters.search,
         }
+    },
+    watch: {
+            search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/paps/direct",
+                { search: value },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 300),
     },
     components: {
         Pagination, Filtering,
