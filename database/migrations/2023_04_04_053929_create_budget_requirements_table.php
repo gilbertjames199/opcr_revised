@@ -15,7 +15,7 @@ class CreateBudgetRequirementsTable extends Migration
     {
         Schema::create('budget_requirements', function (Blueprint $table) {
             $table->id();
-            $table->Integer('idrevision_plan')->comment('ID of the revision plan');
+            $table->Integer('revision_plan_id')->comment('ID of the revision plan');
             //$table->bigInteger('id_project_profile')->nullable();
             $table->Text('particulars')->comment('Particular');
             $table->string('account_code',10)->comment('Account code -from the chart of accounts');
