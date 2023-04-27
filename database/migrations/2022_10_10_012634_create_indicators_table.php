@@ -17,7 +17,7 @@ class CreateIndicatorsTable extends Migration
             $table->id();
             $table->bigInteger('idindication')->nullable();
             $table->bigInteger('idindicator')->nullable();
-            $table->longText('description')->nullable();
+            $table->longText('description')->nullable()->comment('Indicator description');
             $table->timestamps();
         });
     }

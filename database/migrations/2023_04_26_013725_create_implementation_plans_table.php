@@ -23,9 +23,9 @@ class CreateImplementationPlansTable extends Migration
             $table->date('date_from')->comment('date from');
             $table->date('date_to')->comment('date to');
             $table->decimal('amount',12,2)->comment('Budget/cost of the implementation plan');
-            $table->decimal('cc_adaptation',12,2)->comment('Budget/cost for climate change adaptation');
-            $table->decimal('cc_migitagion',12,2)->comment('Budget/cost for climate change mitigation');
-            $table->string('cc_topology')->comment('Climate Change Topology Code');
+            $table->decimal('cc_adaptation',12,2)->nullable()->comment('Budget/cost for climate change adaptation');
+            $table->decimal('cc_migitagion',12,2)->nullable()->comment('Budget/cost for climate change mitigation');
+            $table->string('cc_topology',100)->nullable()->comment('Climate Change Topology Code');
             $table->timestamps();
         });
     }

@@ -19,7 +19,7 @@ class CreateHGDGScoresTable extends Migration
             $table->bigInteger('question_id')->comment(' Question ID');
             $table->bigInteger('user_id')->comment('User ID');
             $table->decimal('score',12,2)->comment('Item Score');
-            $table->string('result_comment')->comment('Evaluator\'s comment');
+            $table->string('result_comment')->comment('Result comment');
             $table->string('FFUNCCOD')->comment('Office Code');
             $table->timestamps();
         });

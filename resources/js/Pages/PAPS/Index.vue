@@ -14,9 +14,17 @@
                 </div>
 
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/paps/create/${idmfo}`">Add Programs and Projects {{ idmfo }}</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/paps/create/${idmfo}`">Add Programs and Projects<!--PAPS {{ idmfo }}--></Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                    &nbsp;&nbsp;
+                    <Link :href="`/mfos/direct`">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                        </svg>
+                    </Link>
                 </div>
+
             </div>
 <!--
             <Link :href="`/mfos/${idinteroutcome}`">
@@ -43,7 +51,9 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data">
+                                <td>{{ dat.m_f_o.mfo_desc }}</td>
                                 <td>{{ dat.paps_desc }}</td>
+                                <td>{{ dat.MOV }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -88,12 +98,27 @@ export default {
     props: {
         data: Object,
         idinteroutcome: String,
-        idmfo: String
+        idmfo: String,
+        can: Object,
+        filters: Object,
     },
     data() {
         return{
-
+            search: this.$props.filters.search,
         }
+    },
+    watch: {
+            search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/paps/"+this.idmfo,
+                { search: value },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 300),
     },
     components: {
         Pagination, Filtering,

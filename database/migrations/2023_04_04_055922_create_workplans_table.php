@@ -16,8 +16,8 @@ class CreateWorkplansTable extends Migration
         Schema::create('workplans', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_project_profile');
-            $table->string('strategies');
-            $table->string('performance_indicators_target'); //targets/indicators table
+            $table->longText('strategies');
+            $table->longText('performance_indicators_target'); //targets/indicators table
             $table->string('gender_issues');
             $table->string('timeline');
             $table->string('outcome');

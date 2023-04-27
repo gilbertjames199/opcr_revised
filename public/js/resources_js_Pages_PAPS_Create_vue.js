@@ -19,7 +19,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     editData: Object,
-    mfos: Object
+    mfos: Object,
+    idmfo: String
   },
   components: {
     Places: function Places() {
@@ -32,6 +33,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      from_mfo: false,
       submitted: false,
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         paps_desc: "",
@@ -89,19 +91,38 @@ __webpack_require__.r(__webpack_exports__);
       this.form.id = this.editData.id;
     } else {
       this.pageTitle = "Create";
+
+      if (this.idmfo != undefined) {
+        this.form.idmfo = this.idmfo;
+        this.from_mfo = true;
+      }
+
       this.setselect();
     }
   },
   methods: {
     submit: function submit() {
+      if (this.id_mfo != undefined) {
+        this.from_mfo = true;
+      }
+
       this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4); //alert(this.form.target_qty);
 
       if (this.editData !== undefined) {
-        alert('paps/' + this.form.id);
-        this.form.patch("/paps/" + this.form.id, this.form);
+        if (this.from_mfo == true) {
+          alert('paps/update/' + this.form.id);
+          this.form.patch("/paps/update/" + this.form.id, this.form);
+        } else {
+          this.form.patch("/paps/" + this.form.id, this.form);
+        }
       } else {
         this.form.id = null;
-        this.form.post("/paps/store", this.form);
+
+        if (this.from_mfo == true) {
+          this.form.post("/paps/save", this.form);
+        } else {
+          this.form.post("/paps/store", this.form);
+        }
       }
     },
     setselect: function setselect() {
@@ -281,7 +302,7 @@ var _hoisted_18 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Programs and Proects " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.idmfo), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Programs and Projects " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.idmfo), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/paps/direct"
@@ -346,7 +367,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.MOV]]), $data.form.errors.MOV ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.MOV), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>PLAN PERIOD</div>\n\n                <label for=\"\">From</label>\n                <select v-model=\"form.plan_period_from\" class=\"form-control\" >\n                    <option v-for=\"year in year_values\">{{ year }}</option>\n                </select> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<input type=\"number\" min=\"2000\" max=\"2099\" step=\"1\" v-model=\"form.plan_period_from\" class=\"form-control\" autocomplete=\"chrome-off\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_period_from\">{{ form.errors.plan_period_from }}</div>\n\n                <label for=\"\">To</label>\n                <select v-model=\"form.plan_period_to\" class=\"form-control\" >\n                    <option v-for=\"year in year_values\">{{ year }}</option>\n                </select> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<input type=\"number\" min=\"2000\" max=\"2099\" step=\"1\" v-model=\"form.plan_period_to\" class=\"form-control\" autocomplete=\"chrome-off\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_period_to\">{{ form.errors.plan_period_to }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>PLAN AMOUNT</div>\n                <label for=\"\">Year 1</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year1\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year1\">{{ form.errors.plan_amount_year1 }}</div>\n\n                <label for=\"\">Year 2</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year2\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year2\">{{ form.errors.plan_amount_year2 }}</div>\n\n                <label for=\"\">Year 3</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year3\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year3\">{{ form.errors.plan_amount_year3 }}</div>\n\n                <label for=\"\">Year 4</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year4\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year4\">{{ form.errors.plan_amount_year4 }}</div>\n\n                <label for=\"\">Year 5</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year5\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year5\">{{ form.errors.plan_amount_year5 }}</div>\n\n                <label for=\"\">Year 6</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year6\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year6\">{{ form.errors.plan_amount_year6 }}</div> "), _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>PLAN PERIOD</div>\r\n\r\n                <label for=\"\">From</label>\r\n                <select v-model=\"form.plan_period_from\" class=\"form-control\" >\r\n                    <option v-for=\"year in year_values\">{{ year }}</option>\r\n                </select> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<input type=\"number\" min=\"2000\" max=\"2099\" step=\"1\" v-model=\"form.plan_period_from\" class=\"form-control\" autocomplete=\"chrome-off\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_period_from\">{{ form.errors.plan_period_from }}</div>\r\n\r\n                <label for=\"\">To</label>\r\n                <select v-model=\"form.plan_period_to\" class=\"form-control\" >\r\n                    <option v-for=\"year in year_values\">{{ year }}</option>\r\n                </select> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<input type=\"number\" min=\"2000\" max=\"2099\" step=\"1\" v-model=\"form.plan_period_to\" class=\"form-control\" autocomplete=\"chrome-off\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_period_to\">{{ form.errors.plan_period_to }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>PLAN AMOUNT</div>\r\n                <label for=\"\">Year 1</label>\r\n                <input type=\"number\" v-model=\"form.plan_amount_year1\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year1\">{{ form.errors.plan_amount_year1 }}</div>\r\n\r\n                <label for=\"\">Year 2</label>\r\n                <input type=\"number\" v-model=\"form.plan_amount_year2\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year2\">{{ form.errors.plan_amount_year2 }}</div>\r\n\r\n                <label for=\"\">Year 3</label>\r\n                <input type=\"number\" v-model=\"form.plan_amount_year3\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year3\">{{ form.errors.plan_amount_year3 }}</div>\r\n\r\n                <label for=\"\">Year 4</label>\r\n                <input type=\"number\" v-model=\"form.plan_amount_year4\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year4\">{{ form.errors.plan_amount_year4 }}</div>\r\n\r\n                <label for=\"\">Year 5</label>\r\n                <input type=\"number\" v-model=\"form.plan_amount_year5\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year5\">{{ form.errors.plan_amount_year5 }}</div>\r\n\r\n                <label for=\"\">Year 6</label>\r\n                <input type=\"number\" v-model=\"form.plan_amount_year6\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year6\">{{ form.errors.plan_amount_year6 }}</div> "), _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "number",
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.form.FFUNCCOD = $event;

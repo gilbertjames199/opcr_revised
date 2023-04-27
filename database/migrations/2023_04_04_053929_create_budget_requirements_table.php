@@ -17,11 +17,11 @@ class CreateBudgetRequirementsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('idrevision_plan')->comment('ID of the revision plan');
             //$table->bigInteger('id_project_profile')->nullable();
-            $table->string('particulars')->comment('Particular');
-            $table->string('account_code')->comment('Account code -from the chart of accounts');
+            $table->longText('particulars')->comment('Particular');
+            $table->string('account_code',100)->comment('Account code -from the chart of accounts');
             $table->decimal('amount',12,2)->comment('Amount of the budget');
-            $table->string('category')->comment('Indicate if MOOE, PS or capital outlay');
-            $table->string('category_gad')->comment('Indicate if GAD or Non-GAD');
+            $table->longText('category')->comment('Indicate if MOOE, PS or capital outlay');
+            $table->longText('category_gad')->comment('Indicate if GAD or Non-GAD');
             $table->timestamps();
         });
     }
