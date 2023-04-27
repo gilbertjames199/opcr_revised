@@ -109,13 +109,12 @@ __webpack_require__.r(__webpack_exports__);
       this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4); //alert(this.form.target_qty);
 
       if (this.editData !== undefined) {
-        alert('from mfo: ' + this.from_mfo);
-
+        //alert('from mfo: '+this.from_mfo);
         if (this.from_mfo == true) {
-          alert('paps/update/' + this.form.id);
+          //alert('paps/update/'+this.form.id);
           this.form.patch("/paps/update/" + this.form.id, this.form);
         } else {
-          alert('direct paps/' + this.form.id);
+          //alert('direct paps/'+this.form.id);
           this.form.patch("/paps/" + this.form.id, this.form);
         }
       } else {

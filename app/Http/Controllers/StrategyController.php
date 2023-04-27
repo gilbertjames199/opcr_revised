@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\IntermediateOutcome;
+use App\Models\ProgramAndProject;
 use App\Models\Strategy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class StrategyController extends Controller
 {
+    protected $model;
     public function __construct(Strategy $model)
     {
         //$this->middleware(['auth','verified']);
@@ -16,14 +18,18 @@ class StrategyController extends Controller
     }
     public function index(Request $request, $id)
     {
-        //dd($idoc);
+        //dd($id);
         $data = $this->model
+                ->where('idpaps',$id)
+                ->with('paps')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
 
         return inertia('Strategies/Index',[
             "data"=>$data,
+            "idpaps"=>$id,
+            "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -35,11 +41,11 @@ class StrategyController extends Controller
     public function create(Request $request, $id)
     {
 
-        $interoutcomes=IntermediateOutcome::get();
-        //dd($id);
+        $paps=ProgramAndProject::get();
+        //dd($paps);
         return inertia('Strategies/Create',[
-            'idinteroutcome'=>$id,
-            'interoutcomes'=>$interoutcomes,
+            'idpaps'=>$id,
+            'paps'=>$paps,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -50,13 +56,14 @@ class StrategyController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request);
         $attributes = $request->validate([
-            'strat_desc' => 'required',
+            'idpaps'=>'required',
+            'description' => 'required',
         ]);
-        //dd($attributes);
         $this->model->create($attributes);
-        $request->pass='';
-        return redirect('/strategies')
+        //$request->pass='';
+        return redirect('/strategies/'.$request->idpaps)
                 ->with('message','Outcome added');
     }
 
@@ -67,19 +74,19 @@ class StrategyController extends Controller
     }
 
 
-    public function edit(Strategy $strategy, $id,$idinteroutcome)
+    public function edit(Request $request, $id, $idpaps)
     {
-        $interoutcomes=IntermediateOutcome::get();
+        $paps=ProgramAndProject::get();
         $data = $this->model->where('id', $id)->first([
             'id',
-            'strat_desc',
-            'idinteroutcome'
+            'description',
+            'idpaps'
         ]);
 
         return inertia('Strategies/Create', [
             "editData" => $data,
-            "interoutcomes"=>$interoutcomes,
-            "idinteroutcome"=> $idinteroutcome,
+            "paps"=>$paps,
+            "idpaps"=> $idpaps,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

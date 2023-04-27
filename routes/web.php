@@ -220,6 +220,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}',[StrategyController::class,'index']);
         Route::get('/create/{id}',[StrategyController::class,'create']);
         Route::post('/store',[StrategyController::class,'store']);
+        Route::post('/update',[StrategyController::class,'update']);
         Route::delete('/{id}/{idoutcome}', [StrategyController::class, 'destroy']);
         Route::get('/{id}/{idinteroutcome}/edit', [StrategyController::class, 'edit']);
         Route::patch('/', [StrategyController::class, 'update']);
