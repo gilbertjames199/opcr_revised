@@ -31,6 +31,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SectoralController;
 use App\Http\Controllers\ChiefAgendaController;
 use App\Http\Controllers\EconomicAgendaController;
+use App\Http\Controllers\LogFrameController;
 use App\Http\Controllers\ProjectProfileController;
 use App\Http\Controllers\RAController;
 use App\Http\Controllers\SocietalGoalController;
@@ -234,6 +235,10 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}/{strategy_id}', [ActivityController::class, 'destroy']);
         Route::get('/{id}/{strategy_id}/edit', [ActivityController::class, 'edit']);
         Route::patch('/', [ActivityController::class, 'update']);
+    });
+    //LOGFRAME
+    Route::prefix('/logframe')->group(function(){
+        Route::get('/',[LogFrameController::class,'index']);
     });
     //MFO
     Route::prefix('/mfos')->group(function(){
