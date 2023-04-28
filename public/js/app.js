@@ -1679,6 +1679,22 @@ var map = {
 		"./resources/js/Pages/Accomplishments2/ValidationModal.vue",
 		"resources_js_Pages_Accomplishments2_ValidationModal_vue"
 	],
+	"./Activities/Create": [
+		"./resources/js/Pages/Activities/Create.vue",
+		"resources_js_Pages_Activities_Create_vue"
+	],
+	"./Activities/Create.vue": [
+		"./resources/js/Pages/Activities/Create.vue",
+		"resources_js_Pages_Activities_Create_vue"
+	],
+	"./Activities/Index": [
+		"./resources/js/Pages/Activities/Index.vue",
+		"resources_js_Pages_Activities_Index_vue"
+	],
+	"./Activities/Index.vue": [
+		"./resources/js/Pages/Activities/Index.vue",
+		"resources_js_Pages_Activities_Index_vue"
+	],
 	"./Authentication/LogIn": [
 		"./resources/js/Pages/Authentication/LogIn.vue",
 		"resources_js_Pages_Authentication_LogIn_vue"

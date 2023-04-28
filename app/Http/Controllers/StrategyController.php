@@ -100,20 +100,20 @@ class StrategyController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
-            'strat_desc'=>$request->strat_desc,
-            'idinteroutcome'=>$request->idinteroutcome
+            'description'=>$request->description,
+            'idpaps'=>$request->idpaps
         ]);
 
-        return redirect('/strategies/'.$request->idinteroutcome)
+        return redirect('/strategies/'.$request->idpaps)
                 ->with('message','Strategy updated');
     }
 
 
-    public function destroy(Request $request, $id, $idinteroutcome)
+    public function destroy(Request $request, $id, $idpaps)
     {
         $data = $this->model->findOrFail($id);
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/strategies/'.$idinteroutcome)->with('warning', 'Strategy deleted');
+        return redirect('/strategies/'.$idpaps)->with('warning', 'Strategy deleted');
     }
 }
