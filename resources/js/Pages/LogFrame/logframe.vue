@@ -44,11 +44,11 @@
                         <tbody>
                             <tr>
                                 <td>SOCIETAL GOAL</td>
-                                <td v-for="soc in societal" col-span="4">{{ soc.description }}</td>
+                                <td v-for="soc in societal" colspan="4">{{ soc.description }}</td>
                             </tr>
                             <tr>
                                 <td>SECTOR OUTCOMES</td>
-                                <td>
+                                <td colspan="4">
                                     <div v-if="FFUNCCOD===1031">
                                         <div v-if="sec_econ">
                                             Economic Services Sector:
@@ -76,9 +76,11 @@
                             </tr>
                             <tr>
                                 <td>ORGANIZATIONAL OUTCOME</td>
+                                <td colspan="4">
                                 <div v-for="org in organizational">
                                     <div>- {{ org.goal_description }}</div>
                                 </div>
+                            </td>
                             </tr>
                             <tr>
                                 <td>MAJOR FINAL OUTPUTS</td>
@@ -91,7 +93,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>PAPS</td>
+                                <td>PROGRAMS AND PROJECTS</td>
                                 <td v-for="mfo in mfos">
                                     <tr >
                                         <td>
