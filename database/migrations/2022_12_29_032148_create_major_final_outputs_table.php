@@ -15,7 +15,7 @@ class CreateMajorFinalOutputsTable extends Migration
     {
         Schema::create('major_final_outputs', function (Blueprint $table) {
             $table->id();
-            $table->string('mfo_desc')->nullable()->comment('MFO description');
+            $table->Text('mfo_desc')->nullable()->comment('MFO description');
             $table->bigInteger('idinteroutcome')->nullable();
             $table->timestamps();
         });
