@@ -63,9 +63,10 @@ class SectoralController extends Controller
             'goal_description',
             'sector',
         ]);
-
+        $sectors = Sector::get();
         return inertia('Sectoral/addSector', [
             "editData" => $data,
+            'sectors'=>$sectors,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

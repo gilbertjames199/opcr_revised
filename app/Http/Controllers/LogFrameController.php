@@ -36,7 +36,8 @@ class LogFrameController extends Controller
         $sec_goal_gen = Sectoral::Join('sectors','sectors.id','sectoral_goals.sector')
                         ->where('sectors.sector_name','LIKE','%General%')
                         ->get();
-
+        $sec_goal=Sectoral::Join('sectors','sectors.id','sectoral_goals.sector')
+                    ->get();
 
         $organizational=OrganizationalGoal::where('FFUNCCOD', $FFUNCCOD)->get();
 
@@ -47,7 +48,9 @@ class LogFrameController extends Controller
             "sec_social"=>$sec_goal_soc,
             "sec_general"=>$sec_goal_gen,
             "organizational"=>$organizational,
+            "sec_goal"=>$sec_goal,
             "mfos"=>$mfos,
+            "FFUNCCOD"=>$FFUNCCOD,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

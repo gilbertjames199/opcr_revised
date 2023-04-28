@@ -40,7 +40,7 @@
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
-                    <table class="table table-sm table-borderless table-striped table-hover">
+                    <table class="table table-sm table-borderless table-hover border">
 
                         <tbody>
                             <tr>
@@ -50,21 +50,59 @@
                             <tr>
                                 <td>SECTOR OUTCOMES</td>
                                 <td>
-                                    <div v-if="sec_econ.length!==0">Economic Sector:</div><br>
-                                    <template v-if="Object.keys(sec_econ).length>0" v-for="econ in sec_econ">
-                                        - {{ econ.description }}
-                                    </template>
-                                    <div v-if="!sec_social">Social Services Sector:</div><br>
-                                    <template v-if="!sec_social" v-for="social in sec_social">
-                                        - {{ social.description }}
-                                    </template>
-                                    <div v-if="!sec_general">General Public Services Sector:</div><br>
-                                    <template v-if="Object.keys(sec_general).length>0" v-for="gen in sec_general">
-                                        <tr >
+                                    <div v-if="FFUNCCOD===1031">
+                                        <div v-if="sec_econ">
+                                            Economic Services Sector:
+                                            {{ sec_econ }}
+                                        </div>
+                                        <div v-if="sec_social">
+                                            Social Services Sector:
+                                            <div v-for="soc in sec_social">
+                                                {{ soc.goal_description }}
+                                            </div>
+                                        </div>
+                                        <div v-if="sec_general">
+                                            <b>General and Public Services Sector:</b>
+                                            <div v-for="gen in sec_general">
+                                                {{ gen.goal_description }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <div v-for="sec in sec_goal">
+                                            {{ sec.goal_description }}
+                                        </div>
+                                    </div>
 
-                                        </tr>
-                                    </template>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ORGANIZATIONAL OUTCOME</td>
+                                <div v-for="org in organizational">
+                                    <div>- {{ org.goal_description }}</div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <td>MAJOR FINAL OUTPUTS</td>
+                                <td v-for="mfo in mfos">
+                                    <tr >
+                                        <td><b>{{ mfo.mfo_desc }}</b>
 
+                                        </td>
+                                    </tr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>PAPS</td>
+                                <td v-for="mfo in mfos">
+                                    <tr >
+                                        <td>
+                                            <div v-for="pap in mfo.paps">
+                                                {{ pap.paps_desc }} <span v-if="pap.MOV!=='-'">(<i>MOV: {{ pap.MOV }}</i>)</span>
+                                                <div style="color: white"> .</div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </td>
                             </tr>
                             <tr v-for="functional in data">
@@ -118,6 +156,7 @@ export default {
         sec_social: Object,
         sec_general: Object,
         organizational: Object,
+        sec_goal: Object,
         mfos: Object,
         // idinteroutcome: String,
         // idmfo: String,
