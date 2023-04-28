@@ -19,8 +19,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     editData: Object,
-    paps: Object,
-    idpaps: String
+    strats: Object,
+    idstrat: String
   },
   components: {
     Places: function Places() {
@@ -35,7 +35,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       submitted: false,
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
-        idpaps: null,
+        strategy_id: null,
         description: "",
         id: null
       }),
@@ -43,12 +43,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.form.idpaps = this.idpaps;
-    this.form.idinteroutcome = this.idinteroutcome;
+    this.form.strategy_id = this.idstrat; //this.form.idinteroutcome=this.idinteroutcome
 
     if (this.editData !== undefined) {
       this.pageTitle = "Edit";
-      this.form.idpaps = this.idpaps;
+      this.form.strategy_id = this.idstrat;
       this.form.description = this.editData.description;
       this.form.id = this.editData.id;
     } else {
@@ -61,11 +60,11 @@ __webpack_require__.r(__webpack_exports__);
       //alert(this.form.target_qty);
       if (this.editData !== undefined) {
         alert('patch');
-        this.form.patch("/strategies/", this.form);
+        this.form.patch("/activities/", this.form);
       } else {
         this.form.id = null; //alert('store');
 
-        this.form.post("/strategies/store", this.form);
+        this.form.post("/activities/store", this.form);
       }
     }
   }
@@ -193,7 +192,7 @@ var _hoisted_8 = {
 
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "PROGRAMS AND PROJECTS", -1
+}, "STRATEGIES", -1
 /* HOISTED */
 );
 
@@ -244,19 +243,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-      return $data.form.idpaps = $event;
+      return $data.form.strategy_id = $event;
     })
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.paps, function (pap) {
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.strats, function (strat) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
-      value: pap.id
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(pap.paps_desc), 9
+      value: strat.id
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(strat.description), 9
     /* TEXT, PROPS */
     , _hoisted_10);
   }), 256
   /* UNKEYED_FRAGMENT */
   ))], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.idpaps]]), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.strategy_id]]), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.form.description = $event;

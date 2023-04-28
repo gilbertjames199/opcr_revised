@@ -86,7 +86,7 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
-        idmfos: String,
+        //idstrat: String,
         idpaps: String,
         filters: Object,
     },

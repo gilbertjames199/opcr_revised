@@ -19,11 +19,11 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
 
-                <label for="">PROGRAMS AND PROJECTS</label>
+                <label for="">STRATEGIES</label>
 
-                <select class="form-control" v-model="form.idpaps" >
-                    <option v-for="pap in paps" :value="pap.id" >
-                        {{ pap.paps_desc }}
+                <select class="form-control" v-model="form.strategy_id" >
+                    <option v-for="strat in strats" :value="strat.id" >
+                        {{ strat.description }}
                     </option>
                 </select>
 
@@ -51,8 +51,8 @@ import Places from "@/Shared/PlacesShared";
 export default {
         props: {
             editData: Object,
-            paps: Object,
-            idpaps: String
+            strats: Object,
+            idstrat: String
         },
         components: {
 
@@ -67,7 +67,7 @@ export default {
             return {
                 submitted: false,
                 form: useForm({
-                    idpaps: null,
+                    strategy_id: null,
                     description: "",
                     id: null
                 }),
@@ -76,11 +76,11 @@ export default {
         },
 
         mounted() {
-            this.form.idpaps=this.idpaps;
-            this.form.idinteroutcome=this.idinteroutcome
+            this.form.strategy_id=this.idstrat;
+            //this.form.idinteroutcome=this.idinteroutcome
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
-                this.form.idpaps=this.idpaps
+                this.form.strategy_id=this.idstrat
                 this.form.description=this.editData.description
                 this.form.id=this.editData.id
             } else {
@@ -95,11 +95,11 @@ export default {
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
                     alert('patch');
-                    this.form.patch("/strategies/", this.form);
+                    this.form.patch("/activities/", this.form);
                 } else {
                     this.form.id=null;
                     //alert('store');
-                    this.form.post("/strategies/store", this.form);
+                    this.form.post("/activities/store", this.form);
                 }
             },
         },

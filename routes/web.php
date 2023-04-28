@@ -229,6 +229,11 @@ Route::middleware('auth')->group(function() {
     //Activities
     Route::prefix('/activities')->group(function(){
         Route::get('/{idstrat}', [ActivityController::class,'index']);
+        Route::get('/create/{id}',[ActivityController::class,'create']);
+        Route::post('/store',[ActivityController::class,'store']);
+        Route::delete('/{id}/{strategy_id}', [ActivityController::class, 'destroy']);
+        Route::get('/{id}/{strategy_id}/edit', [ActivityController::class, 'edit']);
+        Route::patch('/', [ActivityController::class, 'update']);
     });
     //MFO
     Route::prefix('/mfos')->group(function(){

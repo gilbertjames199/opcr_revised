@@ -7,13 +7,13 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Strategies</h3>
+            <h3>Activities</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/strategies/create/${idpaps}`">Add Strategies</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/activities/create/${idstrategy}`">Add Activities</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -34,14 +34,14 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Programs and Projects</th>
                                 <th>Strategies</th>
+                                <th>Activity Description</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.paps.paps_desc }}</td>
+                                <td>{{ dat.strat.description }}</td>
                                 <td>{{ dat.description }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
@@ -51,9 +51,9 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/mfos/${dat.id}`">MFOs</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idpaps}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>
+                                            <!--<li><Link class="dropdown-item" :href="`/mfos/${dat.id}`">MFOs</Link></li>-->
+                                            <li><Link class="dropdown-item" :href="`/activities/${dat.id}/${dat.strategy_id}/edit`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteActivitity(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -86,7 +86,7 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
-        idmfos: String,
+        idstrategy: String,
         idpaps: String,
         filters: Object,
     },
@@ -101,24 +101,12 @@ export default {
 
     methods:{
 
-        showCreate(){
-            this.$inertia.get(
-                "/targets/create",
-                {
-                    raao_id: this.raao_id
-                },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        },
-        deleteStrat(id) {
-            //alert(this.idpaps);
-            let text = "WARNING!\nAre you sure you want to delete the strategy?"+id;
-              if (confirm(text) == true) {
-                this.$inertia.delete("/strategies/" + id+"/"+this.idpaps);
+
+        deleteActivitity(id) {
+            //alert(this.idstrategy);
+            let text = "WARNING!\nAre you sure you want to delete the activity?"+id;
+            if (confirm(text) == true) {
+                this.$inertia.delete("/activities/" + id+"/"+this.idstrategy);
             }
         },
         getAccomplishment(tar_id){
