@@ -41,7 +41,6 @@
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
                     <table class="table table-sm table-borderless table-hover border">
-
                         <tbody>
                             <tr>
                                 <td>SOCIETAL GOAL</td>
@@ -73,7 +72,6 @@
                                             {{ sec.goal_description }}
                                         </div>
                                     </div>
-
                                 </td>
                             </tr>
                             <tr>
