@@ -17,6 +17,7 @@ use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\AuthenticationController;
 // use App\Http\Controllers\TimeSheetController;
 use App\Http\Controllers\AccomplishmentController;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\IntermediateOutcomeController;
@@ -221,9 +222,18 @@ Route::middleware('auth')->group(function() {
         Route::get('/create/{id}',[StrategyController::class,'create']);
         Route::post('/store',[StrategyController::class,'store']);
         Route::post('/update',[StrategyController::class,'update']);
-        Route::delete('/{id}/{idoutcome}', [StrategyController::class, 'destroy']);
+        Route::delete('/{id}/{idpaps}', [StrategyController::class, 'destroy']);
         Route::get('/{id}/{idinteroutcome}/edit', [StrategyController::class, 'edit']);
         Route::patch('/', [StrategyController::class, 'update']);
+    });
+    //Activities
+    Route::prefix('/activities')->group(function(){
+        Route::get('/{idstrat}', [ActivityController::class,'index']);
+        Route::get('/create/{id}',[ActivityController::class,'create']);
+        Route::post('/store',[ActivityController::class,'store']);
+        Route::delete('/{id}/{strategy_id}', [ActivityController::class, 'destroy']);
+        Route::get('/{id}/{strategy_id}/edit', [ActivityController::class, 'edit']);
+        Route::patch('/', [ActivityController::class, 'update']);
     });
     //MFO
     Route::prefix('/mfos')->group(function(){
