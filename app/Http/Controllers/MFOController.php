@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountAccess;
+use App\Models\FFUNCCOD;
 use App\Models\IntermediateOutcome;
 use App\Models\MajorFinalOutput;
 use App\Models\OrganizationalGoal;
@@ -46,10 +48,14 @@ class MFOController extends Controller
         $SocietalGoals=SocietalGoal::get();
         $SectorOutcomes=Sectoral::get();
         $OrganizationalOutcomes=OrganizationalGoal::get();
+        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        $functions = $accounts->pluck('func');
+        //dd($accounts);
         return inertia('MFOs/Create', [
             'societalGoals'=>$SocietalGoals,
             'sectorOutcomes'=>$SectorOutcomes,
             'organizationalOutcomes'=>$OrganizationalOutcomes,
+            'functions'=>$functions,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

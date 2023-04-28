@@ -51,8 +51,13 @@
                 <input type="text" v-model="form.mfo_desc" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.mfo_desc">{{ form.errors.mfo_desc }}</div>
 
-                <label for="">FFUNCCOD</label>
-                <input type="text" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">
+                <label for="">OFFICE</label>
+                <!--<input type="text" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">-->
+                <select class="form-control" v-model="form.FFUNCCOD" >
+                    <option v-for="functional in functions" :value="functional.FFUNCCOD" >
+                        {{ functional.FFUNCTION }}
+                    </option>
+                </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
@@ -78,7 +83,8 @@ export default {
             societalGoals: Object,
             sectorOutcomes: Object,
             organizationalOutcomes:Object,
-            idinteroutcome: String
+            idinteroutcome: String,
+            functions: Object,
         },
         components: {
 

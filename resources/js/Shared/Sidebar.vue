@@ -51,6 +51,20 @@
                     >
                 </li>-->
                 <li class="nav-item">
+                    <Link class="sidebar-link" href="/logframe" :class="{'active': $page.url === '/logframe'}">
+                        <span></span>
+                        <span class="icon-holder">
+                            <!--<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
+                            </svg>-->
+                            <svg class="svg-icon" style="width: 23; height: 23;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1024 448l-100.928 0C895.424 269.76 754.24 128.576 576 100.928L576 0l-128 0 0 100.928C269.76 128.576 128.576 269.76 100.928 448L0 448l0 128 100.928 0C128.576 754.24 269.76 895.424 448 923.072L448 1024l128 0 0-100.928C754.24 895.424 895.424 754.24 923.072 576L1024 576 1024 448zM792.832 448 693.056 448c-19.296-54.56-62.496-97.792-117.056-117.056l0-99.776C683.52 255.68 768.32 340.48 792.832 448zM512 576c-35.36 0-64-28.64-64-64 0-35.36 28.64-64 64-64 35.36 0 64 28.64 64 64C576 547.36 547.36 576 512 576zM448 231.168l0 99.776c-54.56 19.296-97.792 62.496-117.056 117.056l-99.776 0C255.68 340.48 340.48 255.68 448 231.168zM231.168 576l99.776 0c19.296 54.56 62.496 97.792 117.056 117.056l0 99.776C340.48 768.32 255.68 683.52 231.168 576zM576 792.832 576 693.056c54.56-19.296 97.792-62.496 117.056-117.056l99.776 0C768.32 683.52 683.52 768.32 576 792.832z"  />
+                            </svg>
+                        </span>
+                        <span class="title">LOGFRAME</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
                     <Link class="sidebar-link" href="/targets" :class="{'active': $page.url === '/targets'}">
                         <span></span>
                         <span class="icon-holder">

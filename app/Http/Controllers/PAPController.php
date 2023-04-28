@@ -171,7 +171,7 @@ class PAPController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
-        //dd($data);
+
         //dd($data->pluck('mfo_desc'));
         return inertia('PAPS/Direct',[
             "data"=>$data,
