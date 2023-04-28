@@ -20,7 +20,8 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     editData: Object,
     mfos: Object,
-    idmfo: String
+    idmfo: String,
+    functions: Object
   },
   components: {
     Places: function Places() {
@@ -320,17 +321,18 @@ var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_20 = {
+var _hoisted_20 = ["value"];
+var _hoisted_21 = {
   key: 3,
   "class": "fs-6 c-red-500"
 };
-var _hoisted_21 = ["disabled"];
+var _hoisted_22 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Programs and Projects fdfdfdf " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.idmfo), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Programs and Projects ", 1
   /* TEXT */
-  ), $data.from_mfo == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("{{  idmfo }}")]), $data.from_mfo == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/paps/".concat($props.idmfo)
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -404,16 +406,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.MOV]]), $data.form.errors.MOV ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.MOV), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>PLAN PERIOD</div>\n\n                <label for=\"\">From</label>\n                <select v-model=\"form.plan_period_from\" class=\"form-control\" >\n                    <option v-for=\"year in year_values\">{{ year }}</option>\n                </select> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<input type=\"number\" min=\"2000\" max=\"2099\" step=\"1\" v-model=\"form.plan_period_from\" class=\"form-control\" autocomplete=\"chrome-off\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_period_from\">{{ form.errors.plan_period_from }}</div>\n\n                <label for=\"\">To</label>\n                <select v-model=\"form.plan_period_to\" class=\"form-control\" >\n                    <option v-for=\"year in year_values\">{{ year }}</option>\n                </select> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<input type=\"number\" min=\"2000\" max=\"2099\" step=\"1\" v-model=\"form.plan_period_to\" class=\"form-control\" autocomplete=\"chrome-off\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_period_to\">{{ form.errors.plan_period_to }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>PLAN AMOUNT</div>\n                <label for=\"\">Year 1</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year1\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year1\">{{ form.errors.plan_amount_year1 }}</div>\n\n                <label for=\"\">Year 2</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year2\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year2\">{{ form.errors.plan_amount_year2 }}</div>\n\n                <label for=\"\">Year 3</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year3\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year3\">{{ form.errors.plan_amount_year3 }}</div>\n\n                <label for=\"\">Year 4</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year4\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year4\">{{ form.errors.plan_amount_year4 }}</div>\n\n                <label for=\"\">Year 5</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year5\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year5\">{{ form.errors.plan_amount_year5 }}</div>\n\n                <label for=\"\">Year 6</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year6\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year6\">{{ form.errors.plan_amount_year6 }}</div> "), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "number",
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>PLAN PERIOD</div>\n\n                <label for=\"\">From</label>\n                <select v-model=\"form.plan_period_from\" class=\"form-control\" >\n                    <option v-for=\"year in year_values\">{{ year }}</option>\n                </select> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<input type=\"number\" min=\"2000\" max=\"2099\" step=\"1\" v-model=\"form.plan_period_from\" class=\"form-control\" autocomplete=\"chrome-off\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_period_from\">{{ form.errors.plan_period_from }}</div>\n\n                <label for=\"\">To</label>\n                <select v-model=\"form.plan_period_to\" class=\"form-control\" >\n                    <option v-for=\"year in year_values\">{{ year }}</option>\n                </select> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<input type=\"number\" min=\"2000\" max=\"2099\" step=\"1\" v-model=\"form.plan_period_to\" class=\"form-control\" autocomplete=\"chrome-off\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_period_to\">{{ form.errors.plan_period_to }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>PLAN AMOUNT</div>\n                <label for=\"\">Year 1</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year1\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year1\">{{ form.errors.plan_amount_year1 }}</div>\n\n                <label for=\"\">Year 2</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year2\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year2\">{{ form.errors.plan_amount_year2 }}</div>\n\n                <label for=\"\">Year 3</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year3\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year3\">{{ form.errors.plan_amount_year3 }}</div>\n\n                <label for=\"\">Year 4</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year4\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year4\">{{ form.errors.plan_amount_year4 }}</div>\n\n                <label for=\"\">Year 5</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year5\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year5\">{{ form.errors.plan_amount_year5 }}</div>\n\n                <label for=\"\">Year 6</label>\n                <input type=\"number\" v-model=\"form.plan_amount_year6\" class=\"form-control\" autocomplete=\"chrome-off\">\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.plan_amount_year6\">{{ form.errors.plan_amount_year6 }}</div> "), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<input type=\"number\" v-model=\"form.FFUNCCOD\" class=\"form-control\" autocomplete=\"chrome-off\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "class": "form-control",
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.form.FFUNCCOD = $event;
-    }),
-    "class": "form-control",
-    autocomplete: "chrome-off"
-  }, null, 512
+    })
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.functions, function (functional) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      value: functional.FFUNCCOD
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(functional.FFUNCTION), 9
+    /* TEXT, PROPS */
+    , _hoisted_20);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  ))], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.FFUNCCOD]]), $data.form.errors.FFUNCCOD ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.FFUNCCOD), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.FFUNCCOD]]), $data.form.errors.FFUNCCOD ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.FFUNCCOD), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "hidden",
@@ -433,7 +441,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $data.form.processing
   }, " Save changes ", 8
   /* PROPS */
-  , _hoisted_21)], 32
+  , _hoisted_22)], 32
   /* HYDRATE_EVENTS */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{  form }} ")]);
 }

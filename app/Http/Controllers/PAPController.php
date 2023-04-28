@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountAccess;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
@@ -54,9 +55,12 @@ class PAPController extends Controller
                         ->select(DB::raw('DISTINCT(tyear)'))
                         ->orderBy('tyear','ASC')
                         ->get();
+        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        $functions = $accounts->pluck('func');
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
             'idmfo'=>$id,
+            'functions'=>$functions,
             'years'=>$year_object,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
@@ -68,10 +72,12 @@ class PAPController extends Controller
     public function direct_create()
     {
         $mfos= MajorFinalOutput::get();
-
+        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        $functions = $accounts->pluck('func');
         //dd($id);
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
+            'functions'=>$functions,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -119,12 +125,14 @@ class PAPController extends Controller
             'idmfo',
             'MOV',
         ]);
-
+        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        $functions = $accounts->pluck('func');
         // dd($data);
         return inertia('PAPS/Create', [
             "editData" => $data,
             "mfos"=>$mfos,
             "idmfo"=> $idmfo,
+            "functions"=>$functions,
             'years'=>$year_object,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
@@ -164,10 +172,14 @@ class PAPController extends Controller
 
     public function direct(Request $request){
         //dd("direct");
+        $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
                 })
+                ->Join(DB::raw('projects.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
+                ->Join(DB::raw('projects.systemusers sysu'),'sysu.recid','=','acc.iduser')
+                ->where('sysu.recid',$idn)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();

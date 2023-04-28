@@ -1,7 +1,7 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Programs and Projects fdfdfdf {{  idmfo }}</h3>
+            <h3>{{ pageTitle }} Programs and Projects <!--{{  idmfo }}--></h3>
             <div v-if="from_mfo==true">
                 <Link :href="`/paps/${idmfo}`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -87,7 +87,12 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year6">{{ form.errors.plan_amount_year6 }}</div> -->
 
                 <label for="">Office</label>
-                <input type="number" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">
+                <!--<input type="number" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">-->
+                <select class="form-control" v-model="form.FFUNCCOD" >
+                    <option v-for="functional in functions" :value="functional.FFUNCCOD" >
+                        {{ functional.FFUNCTION }}
+                    </option>
+                </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
@@ -112,6 +117,7 @@ export default {
             editData: Object,
             mfos: Object,
             idmfo: String,
+            functions: Object
         },
         components: {
 
