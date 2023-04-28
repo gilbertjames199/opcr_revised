@@ -1847,6 +1847,14 @@ var map = {
 		"./resources/js/Pages/LogFrame/Index.vue",
 		"resources_js_Pages_LogFrame_Index_vue"
 	],
+	"./LogFrame/logframe": [
+		"./resources/js/Pages/LogFrame/logframe.vue",
+		"resources_js_Pages_LogFrame_logframe_vue"
+	],
+	"./LogFrame/logframe.vue": [
+		"./resources/js/Pages/LogFrame/logframe.vue",
+		"resources_js_Pages_LogFrame_logframe_vue"
+	],
 	"./MFOs/Create": [
 		"./resources/js/Pages/MFOs/Create.vue",
 		"resources_js_Pages_MFOs_Create_vue"

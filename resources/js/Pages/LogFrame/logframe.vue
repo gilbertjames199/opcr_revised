@@ -41,13 +41,32 @@
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
                     <table class="table table-sm table-borderless table-striped table-hover">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th>Office</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+
                         <tbody>
+                            <tr>
+                                <td>SOCIETAL GOAL</td>
+                                <td v-for="soc in societal" row-span="4">{{ soc.description }}</td>
+                            </tr>
+                            <tr>
+                                <td>SECTOR OUTCOMES</td>
+                                <td>
+                                    <div v-if="sec_econ.length!==0">Economic Sector:</div><br>
+                                    <template v-if="Object.keys(sec_econ).length>0" v-for="econ in sec_econ">
+                                        - {{ econ.description }}
+                                    </template>
+                                    <div v-if="!sec_social">Social Services Sector:</div><br>
+                                    <template v-if="!sec_social" v-for="social in sec_social">
+                                        - {{ social.description }}
+                                    </template>
+                                    <div v-if="!sec_general">General Public Services Sector:</div><br>
+                                    <template v-if="Object.keys(sec_general).length>0" v-for="gen in sec_general">
+                                        <tr >
+
+                                        </tr>
+                                    </template>
+
+                                </td>
+                            </tr>
                             <tr v-for="functional in data">
                                 <td>{{ functional.FFUNCTION }}</td>
                                 <td>
@@ -60,7 +79,7 @@
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit
                                             <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
-                                            <li><Link class="dropdown-item" :href="`/logframe/${functional.FFUNCCOD}`">View Logframe</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/logframe/${FFUNCCOD}`">View Logframe</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -68,7 +87,7 @@
                         </tbody>
                     </table>
                 </div>
-
+                <!--
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
@@ -82,7 +101,7 @@
                         </p>
                     </div>
                 </div>
-
+                -->
             </div>
         </div>
 
@@ -94,6 +113,12 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
+        societal: Object,
+        sec_econ: Object,
+        sec_social: Object,
+        sec_general: Object,
+        organizational: Object,
+        mfos: Object,
         // idinteroutcome: String,
         // idmfo: String,
         // can: Object,

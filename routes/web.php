@@ -239,6 +239,7 @@ Route::middleware('auth')->group(function() {
     //LOGFRAME
     Route::prefix('/logframe')->group(function(){
         Route::get('/',[LogFrameController::class,'index']);
+        Route::get('/{idstrat}',[LogFrameController::class,'showlog']);
     });
     //MFO
     Route::prefix('/mfos')->group(function(){

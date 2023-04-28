@@ -5,17 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sectoral extends Model
+class Sector extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='sectoral_goals';
+    protected $table='sectors';
     protected $fillable = [
-        'goal_description',
-        'sector',
+        'sector_name',
+        'aip_code',
     ];
-
-    public function sectors(){
-        return $this -> hasOne(Sector::class, 'id', 'sector');
-    }
 }

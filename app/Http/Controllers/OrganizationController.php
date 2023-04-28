@@ -53,7 +53,7 @@ class OrganizationController extends Controller
 
         $attributes = $request->validate([
             'goal_description' => 'required',
-            'FFUNCOD'=>'required'
+            'FFUNCCOD'=>'required'
         ]);
         //dd($attributes);
         $this->model->create($attributes);
@@ -64,11 +64,14 @@ class OrganizationController extends Controller
     public function edit(Request $request, $id){
         $data = $this->model->where('id', $id)->first([
             'id',
-            'goal_description'
+            'goal_description',
+            'FFUNCCOD'
         ]);
-
+        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        $functions = $accounts->pluck('func');
         return inertia('Organizational/addOrganizational', [
             "editData" => $data,
+            "functions"=>$functions,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

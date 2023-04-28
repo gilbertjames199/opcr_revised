@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sector;
 use Illuminate\Http\Request;
 use App\Models\Sectoral;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ class SectoralController extends Controller
 
         $data = $this->model
                     ->orderBy('created_at', 'desc')
+                    ->with('sectors')
                     ->paginate(10)
                     ->withQueryString();
         return inertia('Sectoral/Index',[
@@ -33,13 +35,14 @@ class SectoralController extends Controller
     }
 
     public function create(Request $request){
-
-    return inertia('Sectoral/addSector',[
-    'can'=>[
-        'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-        'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-    ],
-]);
+        $sectors = Sector::get();
+        return inertia('Sectoral/addSector',[
+            'sectors'=>$sectors,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 
     public function store(Request $request){

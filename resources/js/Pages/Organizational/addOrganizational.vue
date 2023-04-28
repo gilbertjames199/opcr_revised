@@ -84,6 +84,7 @@ export default {
                 }
                 this.pageTitle = "Edit"
                 this.form.goal_description=this.editData.goal_description
+                this.form.FFUNCCOD=this.editData.FFUNCCOD
                 this.form.id=this.editData.id
             } else {
                 this.pageTitle = "Create"
