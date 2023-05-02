@@ -20,7 +20,8 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     editData: Object,
     paps: Object,
-    idpaps: String
+    duplicate: Object,
+    idpaps: Number
   },
   components: {
     Places: function Places() {
@@ -35,7 +36,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       submitted: false,
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
-        idpaps: this.idpaps,
+        idpaps: "",
         project_title: this.paps[0].paps_desc,
         list_of_lgu_covered: "",
         date_start: "",
@@ -54,16 +55,42 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.form.idpaps = this.idpaps;
+    //this.form.idpaps=this.idpaps;
     this.form.idinteroutcome = this.idinteroutcome;
 
     if (this.editData !== undefined) {
       this.pageTitle = "Edit";
-      this.form.idpaps = this.idpaps;
-      this.form.description = this.editData.description;
-      this.form.id = this.editData.id;
+      this.form.idpaps = this.editData.idpaps;
+      this.form.project_title = this.editData.project_title;
+      this.form.list_of_lgu_covered = this.editData.list_of_lgu_covered;
+      this.form.date_start = this.editData.date_start;
+      this.form.date_end = this.editData.date_end;
+      this.form.beneficiary_male = this.editData.beneficiary_male;
+      this.form.beneficiary_female = this.editData.beneficiary_female;
+      this.form.baseline_male = this.editData.baseline_male;
+      this.form.baseline_female = this.editData.baseline_female;
+      this.form.baseline_total = this.editData.baseline_total;
+      this.form.rationale = this.editData.rationale;
+      this.form.objective = this.editData.objective;
+      this.form.beneficiaries = this.editData.beneficiaries;
     } else {
-      this.pageTitle = "Create";
+      this.pageTitle = "Create"; //this.form.idpaps=this.idpaps
+
+      if (this.duplicate !== null) {
+        this.form.idpaps = this.duplicate[0].idpaps;
+        this.form.project_title = this.duplicate[0].project_title;
+        this.form.list_of_lgu_covered = this.duplicate[0].list_of_lgu_covered;
+        this.form.date_start = this.duplicate[0].date_start;
+        this.form.date_end = this.duplicate[0].date_end;
+        this.form.beneficiary_male = this.duplicate[0].beneficiary_male;
+        this.form.beneficiary_female = this.duplicate[0].beneficiary_female;
+        this.form.baseline_male = this.duplicate[0].baseline_male;
+        this.form.baseline_female = this.duplicate[0].baseline_female;
+        this.form.baseline_total = this.duplicate[0].baseline_total;
+        this.form.rationale = this.duplicate[0].rationale;
+        this.form.objective = this.duplicate[0].objective;
+        this.form.beneficiaries = this.duplicate[0].beneficiaries;
+      }
     }
   },
   methods: {
@@ -401,7 +428,7 @@ var _hoisted_44 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Revision Plan", 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Revision Plan " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.idpaps), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/revision/".concat($props.idpaps)
@@ -722,13 +749,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Create_vue_vue_type_template_id_ec8c29f6__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.vue?vue&type=template&id=ec8c29f6 */ "./resources/js/Pages/RevisionPlans/Create.vue?vue&type=template&id=ec8c29f6");
 /* harmony import */ var _Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Create.vue?vue&type=script&lang=js */ "./resources/js/Pages/RevisionPlans/Create.vue?vue&type=script&lang=js");
-/* harmony import */ var D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_xampp_htdocs_raao_latest_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_ec8c29f6__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/RevisionPlans/Create.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao_latest_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_ec8c29f6__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/RevisionPlans/Create.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -749,13 +776,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _PlacesShared_vue_vue_type_template_id_ee3222a6__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PlacesShared.vue?vue&type=template&id=ee3222a6 */ "./resources/js/Shared/PlacesShared.vue?vue&type=template&id=ee3222a6");
 /* harmony import */ var _PlacesShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PlacesShared.vue?vue&type=script&lang=js */ "./resources/js/Shared/PlacesShared.vue?vue&type=script&lang=js");
-/* harmony import */ var D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_xampp_htdocs_raao_latest_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PlacesShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PlacesShared_vue_vue_type_template_id_ee3222a6__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/PlacesShared.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao_latest_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PlacesShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PlacesShared_vue_vue_type_template_id_ee3222a6__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/PlacesShared.vue"]])
 /* hot reload */
 if (false) {}
 

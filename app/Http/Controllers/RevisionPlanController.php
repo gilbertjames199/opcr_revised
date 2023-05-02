@@ -40,12 +40,14 @@ class RevisionPlanController extends Controller
     public function create(Request $request, $id){
         $paps=ProgramAndProject::where('id',$id)->get();
         $hgdg=HGDG_Checklist::get();
-        //dd($paps);
+        $duplicate=RevisionPlan::where('idpaps',$id)->get();
+        //dd($id);
         return inertia('RevisionPlans/Create',[
-            'idpaps'=>$id,
+            "idpaps"=>$id,
             "hgdgs"=>$hgdg,
-            'paps'=>$paps,
-            'can'=>[
+            "paps"=>$paps,
+            "duplicate"=>$duplicate,
+            "can"=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
             ],
@@ -53,6 +55,7 @@ class RevisionPlanController extends Controller
     }
     public function store(Request $request){
         //dd($request);
+        $idpaps=$request->idpaps;
         $attributes = $request->validate([
             'idpaps'=>'required',
             'project_title' => 'required',
@@ -94,7 +97,7 @@ class RevisionPlanController extends Controller
         $rev->checklist_id='0';
         $rev->hgdg_score='0';
         $rev->version=$version;
-        $rev->type='project profile';
+        $rev->type='p';
         $rev->final='0';
         $rev->supplemental='0';
         $rev->user_id=auth()->user()->recid;
@@ -104,7 +107,7 @@ class RevisionPlanController extends Controller
         // }
         //$this->model->create($attributes);
         //$request->pass='';
-        return redirect('/revision/'.$request->idpaps)
+        return redirect('/revision/'.$idpaps)
                 ->with('message','Revision Plan added');
     }
 

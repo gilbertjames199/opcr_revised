@@ -1,7 +1,7 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Revision Plan</h3>
+            <h3>{{ pageTitle }} Revision Plan {{ idpaps }}</h3>
             <Link :href="`/revision/${idpaps}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -98,7 +98,8 @@ export default {
         props: {
             editData: Object,
             paps: Object,
-            idpaps: String
+            duplicate: Object,
+            idpaps: Number
         },
         components: {
 
@@ -113,7 +114,7 @@ export default {
             return {
                 submitted: false,
                 form: useForm({
-                    idpaps: this.idpaps,
+                    idpaps: "",
                     project_title: this.paps[0].paps_desc,
                     list_of_lgu_covered: "",
                     date_start: "",
@@ -133,15 +134,44 @@ export default {
         },
 
         mounted() {
-            this.form.idpaps=this.idpaps;
+            //this.form.idpaps=this.idpaps;
             this.form.idinteroutcome=this.idinteroutcome
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
-                this.form.idpaps=this.idpaps
-                this.form.description=this.editData.description
-                this.form.id=this.editData.id
+                this.form.idpaps=this.editData.idpaps
+                this.form.project_title=this.editData.project_title
+                this.form.list_of_lgu_covered=this.editData.list_of_lgu_covered
+                this.form.date_start=this.editData.date_start
+                this.form.date_end=this.editData.date_end
+                this.form.beneficiary_male=this.editData.beneficiary_male
+                this.form.beneficiary_female=this.editData.beneficiary_female
+                this.form.baseline_male=this.editData.baseline_male
+                this.form.baseline_female=this.editData.baseline_female
+                this.form.baseline_total=this.editData.baseline_total
+                this.form.rationale=this.editData.rationale
+                this.form.objective=this.editData.objective
+                this.form.beneficiaries=this.editData.beneficiaries
+
             } else {
                 this.pageTitle = "Create"
+                //this.form.idpaps=this.idpaps
+                if(this.duplicate!==null){
+                    this.form.idpaps=this.duplicate[0].idpaps
+                    this.form.project_title=this.duplicate[0].project_title
+                    this.form.list_of_lgu_covered=this.duplicate[0].list_of_lgu_covered
+                    this.form.date_start=this.duplicate[0].date_start
+                    this.form.date_end=this.duplicate[0].date_end
+                    this.form.beneficiary_male=this.duplicate[0].beneficiary_male
+                    this.form.beneficiary_female=this.duplicate[0].beneficiary_female
+                    this.form.baseline_male=this.duplicate[0].baseline_male
+                    this.form.baseline_female=this.duplicate[0].baseline_female
+                    this.form.baseline_total=this.duplicate[0].baseline_total
+                    this.form.rationale=this.duplicate[0].rationale
+                    this.form.objective=this.duplicate[0].objective
+                    this.form.beneficiaries=this.duplicate[0].beneficiaries
+
+
+                }
             }
 
         },
