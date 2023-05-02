@@ -20,7 +20,8 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     editData: Object,
     paps: Object,
-    idpaps: String
+    duplicate: Object,
+    idpaps: Number
   },
   components: {
     Places: function Places() {
@@ -35,8 +36,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       submitted: false,
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
-        idpaps: this.idpaps,
-        project_title: "",
+        idpaps: "",
+        project_title: this.paps[0].paps_desc,
         list_of_lgu_covered: "",
         date_start: "",
         date_end: "",
@@ -54,16 +55,42 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.form.idpaps = this.idpaps;
+    //this.form.idpaps=this.idpaps;
     this.form.idinteroutcome = this.idinteroutcome;
 
     if (this.editData !== undefined) {
       this.pageTitle = "Edit";
-      this.form.idpaps = this.idpaps;
-      this.form.description = this.editData.description;
-      this.form.id = this.editData.id;
+      this.form.idpaps = this.editData.idpaps;
+      this.form.project_title = this.editData.project_title;
+      this.form.list_of_lgu_covered = this.editData.list_of_lgu_covered;
+      this.form.date_start = this.editData.date_start;
+      this.form.date_end = this.editData.date_end;
+      this.form.beneficiary_male = this.editData.beneficiary_male;
+      this.form.beneficiary_female = this.editData.beneficiary_female;
+      this.form.baseline_male = this.editData.baseline_male;
+      this.form.baseline_female = this.editData.baseline_female;
+      this.form.baseline_total = this.editData.baseline_total;
+      this.form.rationale = this.editData.rationale;
+      this.form.objective = this.editData.objective;
+      this.form.beneficiaries = this.editData.beneficiaries;
     } else {
-      this.pageTitle = "Create";
+      this.pageTitle = "Create"; //this.form.idpaps=this.idpaps
+
+      if (this.duplicate !== null) {
+        this.form.idpaps = this.duplicate[0].idpaps;
+        this.form.project_title = this.duplicate[0].project_title;
+        this.form.list_of_lgu_covered = this.duplicate[0].list_of_lgu_covered;
+        this.form.date_start = this.duplicate[0].date_start;
+        this.form.date_end = this.duplicate[0].date_end;
+        this.form.beneficiary_male = this.duplicate[0].beneficiary_male;
+        this.form.beneficiary_female = this.duplicate[0].beneficiary_female;
+        this.form.baseline_male = this.duplicate[0].baseline_male;
+        this.form.baseline_female = this.duplicate[0].baseline_female;
+        this.form.baseline_total = this.duplicate[0].baseline_total;
+        this.form.rationale = this.duplicate[0].rationale;
+        this.form.objective = this.duplicate[0].objective;
+        this.form.beneficiaries = this.duplicate[0].beneficiaries;
+      }
     }
   },
   methods: {
@@ -401,7 +428,7 @@ var _hoisted_44 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Revision Plan", 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Revision Plan " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.idpaps), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/revision/".concat($props.idpaps)
@@ -473,16 +500,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "date",
     "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
-      return $data.form.date_start = $event;
+      return $data.form.date_end = $event;
     }),
     "class": "form-control",
     autocomplete: "chrome-off"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.date_start]]), $data.form.errors.date_start ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.date_start), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.date_end]]), $data.form.errors.date_end ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.date_end), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_21, _hoisted_22, _hoisted_23, _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "date",
+    type: "number",
     "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
       return $data.form.beneficiary_male = $event;
     }),
@@ -493,7 +520,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.beneficiary_male]]), $data.form.errors.beneficiary_male ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.beneficiary_male), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "date",
+    type: "number",
     "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $data.form.beneficiary_female = $event;
     }),
@@ -504,7 +531,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.beneficiary_female]]), $data.form.errors.beneficiary_female ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.beneficiary_female), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_28, _hoisted_29, _hoisted_30, _hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "date",
+    type: "number",
     "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
       return $data.form.baseline_male = $event;
     }),
@@ -515,7 +542,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.baseline_male]]), $data.form.errors.baseline_male ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.baseline_male), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "date",
+    type: "number",
     "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
       return $data.form.baseline_female = $event;
     }),
@@ -526,7 +553,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.baseline_female]]), $data.form.errors.baseline_female ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.baseline_female), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "date",
+    type: "number",
     "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
       return $data.form.baseline_total = $event;
     }),
