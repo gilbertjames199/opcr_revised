@@ -9,7 +9,7 @@ class HGDGScore extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='budget_requirements';
+    protected $table='hgdg_score';
     protected $fillable = [
         'idppa',
         'question_id',

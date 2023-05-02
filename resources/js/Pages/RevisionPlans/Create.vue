@@ -37,31 +37,31 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.date_start">{{ form.errors.date_start }}</div>
 
                 <label for="">END</label>
-                <input type="date" v-model="form.date_start" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.date_start">{{ form.errors.date_start }}</div>
+                <input type="date" v-model="form.date_end" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.date_end">{{ form.errors.date_end }}</div>
                 <hr style="background-color: black !important; border:1px; height: 1px;">
 
                 INTENDED BENEFICIARIES<br>
                 <label for="">MALE</label>
-                <input type="date" v-model="form.beneficiary_male" class="form-control" autocomplete="chrome-off">
+                <input type="number" v-model="form.beneficiary_male" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_male">{{ form.errors.beneficiary_male }}</div>
 
                 <label for="">FEMALE</label>
-                <input type="date" v-model="form.beneficiary_female" class="form-control" autocomplete="chrome-off">
+                <input type="number" v-model="form.beneficiary_female" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_female">{{ form.errors.beneficiary_female }}</div>
 
                 <hr style="background-color: black !important; border:1px; height: 1px;">
                 BASELINE DISAGGREGATED DATA<br>
                 <label for="">MALE</label>
-                <input type="date" v-model="form.baseline_male" class="form-control" autocomplete="chrome-off">
+                <input type="number" v-model="form.baseline_male" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.baseline_male">{{ form.errors.baseline_male }}</div>
 
                 <label for="">FEMALE</label>
-                <input type="date" v-model="form.baseline_female" class="form-control" autocomplete="chrome-off">
+                <input type="number" v-model="form.baseline_female" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.baseline_female">{{ form.errors.baseline_female }}</div>
 
                 <label for="">TOTAL</label>
-                <input type="date" v-model="form.baseline_total" class="form-control" autocomplete="chrome-off">
+                <input type="number" v-model="form.baseline_total" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
                 <hr style="background-color: black !important; border:1px; height: 1px;">
 
@@ -114,7 +114,7 @@ export default {
                 submitted: false,
                 form: useForm({
                     idpaps: this.idpaps,
-                    project_title: "",
+                    project_title: this.paps[0].paps_desc,
                     list_of_lgu_covered: "",
                     date_start: "",
                     date_end: "",

@@ -9,7 +9,7 @@ class HGDG_Checklist extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='h_g_d_g__checklists';
+    protected $table='hgdg_checklists';
     protected $fillable = [
         'box_number',
         'subsector_id',
