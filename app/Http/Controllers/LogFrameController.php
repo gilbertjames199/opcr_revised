@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountAccess;
+use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\OrganizationalGoal;
 use App\Models\Outcome;
@@ -42,6 +43,10 @@ class LogFrameController extends Controller
         $organizational=OrganizationalGoal::where('FFUNCCOD', $FFUNCCOD)->get();
 
         $mfos = MajorFinalOutput::where('FFUNCCOD',$FFUNCCOD)->with('paps')->get();
+        $id= auth()->user()->recid;
+        $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
+        $office=$functions->pluck('FFUNCTION');
+        //dd($office[0]);
         return inertia('LogFrame/logframe',[
             "societal"=>$soc_goal,
             "sec_econ"=>$sec_goal_econ,
@@ -50,6 +55,7 @@ class LogFrameController extends Controller
             "organizational"=>$organizational,
             "sec_goal"=>$sec_goal,
             "mfos"=>$mfos,
+            "office"=>$office[0],
             "FFUNCCOD"=>$FFUNCCOD,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),

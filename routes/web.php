@@ -34,6 +34,7 @@ use App\Http\Controllers\EconomicAgendaController;
 use App\Http\Controllers\LogFrameController;
 use App\Http\Controllers\ProjectProfileController;
 use App\Http\Controllers\RAController;
+use App\Http\Controllers\RevisionPlanController;
 use App\Http\Controllers\SocietalGoalController;
 use App\Http\Controllers\IssueController;
 use Illuminate\Support\Facades\Mail;
@@ -281,6 +282,14 @@ Route::middleware('auth')->group(function() {
         Route::get('/',[ProjectProfileController::class,'index']);
         Route::get('/create',[ProjectProfileController::class,'create']);
     });
+    //Revision Plan
+    Route::prefix('/revision')->group(function(){
+        Route::get('/{id}',[RevisionPlanController::class,'index']);
+        Route::get('/create/{id}',[RevisionPlanController::class,'create']);
+        Route::get('/store',[RevisionPlanController::class,'store']);
+    });
+    //SubSector
+    Route::prefix('/subsector')->group(function(){});
 });
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);

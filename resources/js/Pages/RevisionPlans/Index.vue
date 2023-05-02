@@ -7,23 +7,23 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Programs and Projects</h3>
+            <h3>Revision Plans {{ idpaps }}</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`">Add Revision Plan</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
 
-            <!-- <Link :href="`/inter_outcome/${idoutcome}`">
+            <Link :href="`/paps/direct`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                     <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
                 </svg>
-            </Link> -->
+            </Link>
         </div>
 
         <div class="masonry-sizer col-md-6"></div>
@@ -34,17 +34,17 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Major Final Output</th>
-                                <th>PAPS Description</th>
-                                <th>Means of Verification</th>
-                                <th>Action</th>
+                                <th>Project Title</th>
+                                <th>Office</th>
+                                <th>Version</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dat in data.data" :key="dat.id">
-                                <td>{{ dat.m_f_o.mfo_desc }}</td>
+                            <tr v-for="dat in data">
                                 <td>{{ dat.paps_desc }}</td>
-                                <td>{{ dat.MOV }}</td>
+                                <td>{{ dat.FFUNCTION }}</td>
+                                <td>{{ dat.version }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -52,11 +52,10 @@
                                             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}`">Add Strategies</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/revision/${dat.id}`">Revision Plans</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li>
+                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                            <!--<li><Link class="dropdown-item" :href="`/activities/${dat.id}`">Activities</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idpaps}/edit`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>-->
                                         </ul>
                                     </div>
                                 </td>
@@ -64,7 +63,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
@@ -90,29 +88,14 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
+        //idstrat: String,
+        idpaps: String,
         filters: Object,
-        // idinteroutcome: String,
-        // idoutcome: String,
-        // idmfo: String,
-        can: Object
     },
     data() {
         return{
             search: this.$props.filters.search,
         }
-    },
-    watch: {
-            search: _.debounce(function (value) {
-            this.$inertia.get(
-                "/paps/direct",
-                { search: value },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        }, 300),
     },
     components: {
         Pagination, Filtering,
@@ -133,11 +116,36 @@ export default {
                 }
             );
         },
-        deleteMFO(id) {
-            let text = "WARNING!\nAre you sure you want to delete the PAP?";
+        deleteStrat(id) {
+            //alert(this.idpaps);
+            let text = "WARNING!\nAre you sure you want to delete the strategy?"+id;
               if (confirm(text) == true) {
-                this.$inertia.delete("/paps/" + id+"/");
+                this.$inertia.delete("/strategies/" + id+"/"+this.idpaps);
             }
+        },
+        getAccomplishment(tar_id){
+            this.$inertia.get(
+                "/accomplishments",
+                {
+                    idtarget: tar_id
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        },
+        getPercent(accomp, targqty){
+            var accSum=0;
+            accomp.forEach(myFunction);
+            function myFunction(item){
+                accSum += parseFloat(item.accomplishment_qty)
+
+            }
+            var percentt = (accSum/targqty)*100
+            percentt=this.format_number(percentt,2,true)
+            return percentt;
         }
     }
 };

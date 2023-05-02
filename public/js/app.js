@@ -2015,6 +2015,22 @@ var map = {
 		"./resources/js/Pages/ResearchAgenda/Index.vue",
 		"resources_js_Pages_ResearchAgenda_Index_vue"
 	],
+	"./RevisionPlans/Create": [
+		"./resources/js/Pages/RevisionPlans/Create.vue",
+		"resources_js_Pages_RevisionPlans_Create_vue"
+	],
+	"./RevisionPlans/Create.vue": [
+		"./resources/js/Pages/RevisionPlans/Create.vue",
+		"resources_js_Pages_RevisionPlans_Create_vue"
+	],
+	"./RevisionPlans/Index": [
+		"./resources/js/Pages/RevisionPlans/Index.vue",
+		"resources_js_Pages_RevisionPlans_Index_vue"
+	],
+	"./RevisionPlans/Index.vue": [
+		"./resources/js/Pages/RevisionPlans/Index.vue",
+		"resources_js_Pages_RevisionPlans_Index_vue"
+	],
 	"./SDG/Create": [
 		"./resources/js/Pages/SDG/Create.vue",
 		"resources_js_Pages_SDG_Create_vue"

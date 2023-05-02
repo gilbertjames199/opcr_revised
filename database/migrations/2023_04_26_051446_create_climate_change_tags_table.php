@@ -17,8 +17,8 @@ class CreateClimateChangeTagsTable extends Migration
             $table->id();
             $table->string('code',20)->comment('Climate Change Topology Code');
             $table->Text('activity')->comment('Activity Description');
-            $table->Text('strategic_priority')->comment('Strategic priority');
-            $table->Text('sub_priority')->comment('Sub priority');
+            //$table->Text('strategic_priority')->comment('Strategic priority');
+            $table->Text('sub_priority_id')->comment('Sub priority');
             $table->Text('instrument_of_delivery')->comment('Instrument of delivery');
             $table->Text('type')->comment('Indicate a->adaptation or m->mitigation');
             $table->timestamps();
