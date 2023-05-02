@@ -53,8 +53,8 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/activities/${dat.id}`">Budget Requirements</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/activities/${dat.id}`">Implementation Plan</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/budget/${dat.id}`">Budget Requirements</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/implementation/${dat.id}`">Implementation Plan</Link></li>
                                             <!--<li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idpaps}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>-->
                                         </ul>

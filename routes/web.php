@@ -288,6 +288,12 @@ Route::middleware('auth')->group(function() {
         Route::get('/create/{id}',[RevisionPlanController::class,'create']);
         Route::post('/store',[RevisionPlanController::class,'store']);
     });
+    //Budget
+    Route::prefix('/budget')->group(function(){
+        Route::get('/{id}',[RevisionPlanController::class,'index']);
+        Route::get('/create/{id}',[RevisionPlanController::class,'create']);
+        Route::post('/store',[RevisionPlanController::class,'store']);
+    });
     //SubSector
     Route::prefix('/subsector')->group(function(){});
 });
