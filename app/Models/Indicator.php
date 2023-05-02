@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Indicator extends Model
 {
     use HasFactory;
+    protected $connection = "mysql";
+    protected $table='indicators';
     protected $fillable = [
-        'idindication',
-        'idindicator',
         'description'
     ];
     public function targ()

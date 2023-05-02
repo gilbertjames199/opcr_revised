@@ -44,7 +44,7 @@
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
-                    <table class="table table-sm table-hover border">
+                    <table class="table table-sm table-hover table-bordered border-dark" >
                         <tbody>
                             <tr>
                                 <td>SOCIETAL GOAL</td>
