@@ -1839,6 +1839,22 @@ var map = {
 		"./resources/js/Pages/InterOutcome/Index.vue",
 		"resources_js_Pages_InterOutcome_Index_vue"
 	],
+	"./Issues/Create": [
+		"./resources/js/Pages/Issues/Create.vue",
+		"resources_js_Pages_Issues_Create_vue"
+	],
+	"./Issues/Create.vue": [
+		"./resources/js/Pages/Issues/Create.vue",
+		"resources_js_Pages_Issues_Create_vue"
+	],
+	"./Issues/Index": [
+		"./resources/js/Pages/Issues/Index.vue",
+		"resources_js_Pages_Issues_Index_vue"
+	],
+	"./Issues/Index.vue": [
+		"./resources/js/Pages/Issues/Index.vue",
+		"resources_js_Pages_Issues_Index_vue"
+	],
 	"./LogFrame/Index": [
 		"./resources/js/Pages/LogFrame/Index.vue",
 		"resources_js_Pages_LogFrame_Index_vue"

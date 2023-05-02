@@ -44,7 +44,7 @@
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
-                    <table class="table table-sm table-borderless table-hover border">
+                    <table class="table table-sm table-hover border">
                         <tbody>
                             <tr>
                                 <td>SOCIETAL GOAL</td>
@@ -82,7 +82,7 @@
                                 <td>ORGANIZATIONAL OUTCOME</td>
                                 <td colspan="4">
                                 <div v-for="org in organizational">
-                                    <div>- {{ org.goal_description }}</div>
+                                    <div> {{ org.goal_description }}</div>
                                 </div>
                             </td>
                             </tr>

@@ -36,6 +36,7 @@ use App\Http\Controllers\ProjectProfileController;
 use App\Http\Controllers\RAController;
 use App\Http\Controllers\RevisionPlanController;
 use App\Http\Controllers\SocietalGoalController;
+use App\Http\Controllers\IssueController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\IntermediateOutcome;
@@ -152,6 +153,16 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [SocietalGoalController::class, 'edit']);
         Route::patch('/{id}', [SocietalGoalController::class, 'update']);
         Route::delete('/{id}', [SocietalGoalController::class, 'destroy']);
+    });
+
+       //Issues
+       Route::prefix('/Issues')->group(function(){
+        Route::get('/',[IssueController::class,'index']);
+        Route::get('/create',[IssueController::class,'create']);
+        Route::post('/',[IssueController::class,'store']);
+        Route::get('/{id}/edit', [IssueController::class, 'edit']);
+        Route::patch('/{id}', [IssueController::class, 'update']);
+        Route::delete('/{id}', [IssueController::class, 'destroy']);
     });
 
      //ChiefAgenda
@@ -274,7 +285,8 @@ Route::middleware('auth')->group(function() {
     //Revision Plan
     Route::prefix('/revision')->group(function(){
         Route::get('/{id}',[RevisionPlanController::class,'index']);
-        Route::get('/create',[RevisionPlanController::class,'create']);
+        Route::get('/create/{id}',[RevisionPlanController::class,'create']);
+        Route::get('/store',[RevisionPlanController::class,'store']);
     });
     //SubSector
     Route::prefix('/subsector')->group(function(){});
