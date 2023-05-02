@@ -60,7 +60,7 @@ __webpack_require__.r(__webpack_exports__);
       //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
       //alert(this.form.target_qty);
       if (this.editData !== undefined) {
-        alert('patch');
+        //alert('patch');
         this.form.patch("/strategies/", this.form);
       } else {
         this.form.id = null; //alert('store');
