@@ -188,7 +188,7 @@ var _hoisted_14 = {
   "class": "table-responsive"
 };
 var _hoisted_15 = {
-  "class": "table table-sm table-hover border"
+  "class": "table table-sm table-hover table-bordered border-dark"
 };
 
 var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "SOCIETAL GOAL", -1

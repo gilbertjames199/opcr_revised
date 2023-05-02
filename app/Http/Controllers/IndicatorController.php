@@ -55,19 +55,13 @@ class IndicatorController extends Controller
         $attributes = $request->validate([
             //'idraao' => 'required',
             //'idooe' => 'required',
-            'idindication' => 'required',
-            'idindicator' => 'required',
             'description' => 'required',
         ]);
 
         $this->model->create($attributes);
-        $data=$this->model->paginate(10);
-        return inertia('Indicators/Index',["data"=>$data,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-            ],
-        ]);
+       return redirect('/indicators')
+                ->with('message','Issues added');
+
     }
 
     public function destroy(Request $request){
@@ -86,8 +80,6 @@ class IndicatorController extends Controller
     public function edit(Request $request, $id){
         $data = $this->model->where('id', $id)->first([
             'id',
-            'idindicator',
-            'idindication',
             'description'
         ]);
 
@@ -103,8 +95,6 @@ class IndicatorController extends Controller
         $data = $this->model->findOrFail($request->id);
 
         $data->update([
-            'idindicator' => $request->idindicator,
-            'idindication' => $request->idindication,
             'description' => $request->description,
         ]);
 

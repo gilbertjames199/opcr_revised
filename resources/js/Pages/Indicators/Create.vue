@@ -23,21 +23,21 @@
                     <input type="text" v-model="form.id" class="form-control" autocomplete="chrome-off">
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
-                <label for="">ID Indicator </label>
+                <!-- <label for="">ID Indicator </label>
                 <input type="text"
                         v-model="form.idindicator"
                         class="form-control"
                         autocomplete="chrome-off"
                 >
-                <div class="fs-6 c-red-500" v-if="form.errors.idindicator">{{ form.errors.idindicator }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.idindicator">{{ form.errors.idindicator }}</div> -->
 
-                <label for="">ID Indication </label>
+                <!-- <label for="">ID Indication </label>
                 <input type="text"
                         v-model="form.idindication"
                         class="form-control"
                         autocomplete="chrome-off"
                 >
-                <div class="fs-6 c-red-500" v-if="form.errors.idindication">{{ form.errors.idindication }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.idindication">{{ form.errors.idindication }}</div> -->
 
                 <label for="">Description</label>
                 <input type="text"
@@ -71,8 +71,6 @@ export default {
             return {
                 submitted: false,
                 form: useForm({
-                    idindication: '',
-                    idindicator: '',
                     description: '',
                     id: null
                 }),
@@ -84,8 +82,6 @@ export default {
 
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
-                this.form.idindication=this.editData.idindication
-                this.form.idindicator=this.editData.idindicator
                 this.form.description=this.editData.description
                 this.form.id=this.editData.id
                 //this.target_id=this.editData.idtarget
