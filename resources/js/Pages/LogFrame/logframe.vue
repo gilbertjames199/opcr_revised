@@ -28,7 +28,6 @@
                         </svg>
                     </Link>
                 </div>
-
             </div>-->
 <!--
             <Link :href="`/mfos/${idinteroutcome}`">

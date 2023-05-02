@@ -13,7 +13,7 @@ class CreateHGDGQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('h_g_d_g_questions', function (Blueprint $table) {
+        Schema::create('hgdg_questions', function (Blueprint $table) {
             $table->id();
             $table->string('question_number',10)->comment('Item number of the question');
             $table->Text('question')->comment('HGDG Question');
