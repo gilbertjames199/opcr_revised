@@ -135,7 +135,7 @@ export default {
 
         mounted() {
             this.form.idpaps=this.idpaps;
-            this.form.idinteroutcome=this.idinteroutcome
+            //this.form.idinteroutcome=this.idinteroutcome
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
                 this.form.idpaps=this.editData.idpaps
@@ -169,6 +169,8 @@ export default {
                     this.form.rationale=this.duplicate[0].rationale
                     this.form.objective=this.duplicate[0].objective
                     this.form.beneficiaries=this.duplicate[0].beneficiaries
+                }else{
+                    alert('undefined si idpaps!');
                 }
             }
 
