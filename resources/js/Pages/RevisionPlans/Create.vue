@@ -134,7 +134,7 @@ export default {
         },
 
         mounted() {
-            //this.form.idpaps=this.idpaps;
+            this.form.idpaps=this.idpaps;
             this.form.idinteroutcome=this.idinteroutcome
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
