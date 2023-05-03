@@ -43,22 +43,39 @@ class RevisionPlanController extends Controller
     public function create(Request $request, $id){
         $paps=ProgramAndProject::where('id',$id)->get();
         $hgdg=HGDG_Checklist::get();
+        $count=RevisionPlan::where('idpaps',$id)->count();
         $duplicate=RevisionPlan::where('idpaps',$id)->get();
-        //dd($id);
-        return inertia('RevisionPlans/Create',[
-            "idpaps"=>$id,
-            "hgdgs"=>$hgdg,
-            "paps"=>$paps,
-            "duplicate"=>$duplicate,
-            "can"=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-            ],
-        ]);
+
+        if($count>0){
+            //dd("Duplicate is not empty");
+            return inertia('RevisionPlans/Create',[
+                "idpaps"=>$id,
+                "hgdgs"=>$hgdg,
+                "paps"=>$paps,
+                "duplicate"=>$duplicate,
+                "can"=>[
+                    'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                    'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+                ],
+            ]);
+        }else{
+            //dd("Duplicate is empty");
+            return inertia('RevisionPlans/Create',[
+                "idpaps"=>$id,
+                "hgdgs"=>$hgdg,
+                "paps"=>$paps,
+                "can"=>[
+                    'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                    'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+                ],
+            ]);
+        }
+        //dd($duplicate);
+
     }
     public function store(Request $request){
-        //dd($request);
-        $idpaps=$request->idpaps;
+        //dd($request->idpaps);
+        //$idpaps=$request->idpaps;
         $attributes = $request->validate([
             'idpaps'=>'required',
             'project_title' => 'required',
@@ -74,13 +91,14 @@ class RevisionPlanController extends Controller
             'objective'=>'required',
             'beneficiaries'=>'required',
         ]);
+
         $version = RevisionPlan::where('idpaps','=', $request->idpaps)->max('version');
         if($version){
             $version=$version+1;
         }else{
             $version=1;
         }
-        //dd($version);
+
         $rev = new RevisionPlan();
         $rev->idpaps=$attributes['idpaps'];
         $rev->project_title=$attributes['project_title'];
@@ -110,7 +128,7 @@ class RevisionPlanController extends Controller
         // }
         //$this->model->create($attributes);
         //$request->pass='';
-        return redirect('/revision/'.$idpaps)
+        return redirect('/revision/'.$request->idpaps)
                 ->with('message','Revision Plan added');
     }
 
