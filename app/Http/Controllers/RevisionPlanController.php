@@ -44,12 +44,12 @@ class RevisionPlanController extends Controller
         $paps=ProgramAndProject::where('id',$id)->get();
         $hgdg=HGDG_Checklist::get();
         $duplicate=RevisionPlan::where('idpaps',$id)->get();
-        //dd($id);
+        //dd($duplicate);
         return inertia('RevisionPlans/Create',[
             "idpaps"=>$id,
             "hgdgs"=>$hgdg,
             "paps"=>$paps,
-            "duplicate"=>$duplicate,
+            //"duplicate"=>$duplicate,
             "can"=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
