@@ -58,7 +58,7 @@ class RevisionPlanController extends Controller
     }
     public function store(Request $request){
         //dd($request);
-        $idpaps=$request->idpaps;
+        //$idpaps=$request->idpaps;
         $attributes = $request->validate([
             'idpaps'=>'required',
             'project_title' => 'required',
@@ -74,6 +74,7 @@ class RevisionPlanController extends Controller
             'objective'=>'required',
             'beneficiaries'=>'required',
         ]);
+
         $version = RevisionPlan::where('idpaps','=', $request->idpaps)->max('version');
         if($version){
             $version=$version+1;

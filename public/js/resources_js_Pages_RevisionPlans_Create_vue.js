@@ -90,6 +90,8 @@ __webpack_require__.r(__webpack_exports__);
         this.form.rationale = this.duplicate[0].rationale;
         this.form.objective = this.duplicate[0].objective;
         this.form.beneficiaries = this.duplicate[0].beneficiaries;
+      } else {
+        alert('Dili undefined');
       }
     }
   },
