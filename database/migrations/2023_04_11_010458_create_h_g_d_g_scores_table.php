@@ -13,11 +13,7 @@ class CreateHGDGScoresTable extends Migration
      */
     public function up()
     {
-<<<<<<< HEAD
-        Schema::create('hgdg_scores', function (Blueprint $table) {
-=======
         Schema::create('hgdg_score', function (Blueprint $table) {
->>>>>>> 5d1bfcbbf8c103d4f71de2b78fd40ac62703db26
             $table->id();
             $table->Integer('idrevplan')->comment('Revision Plan ID');
             $table->Integer('question_id')->comment(' Question ID');

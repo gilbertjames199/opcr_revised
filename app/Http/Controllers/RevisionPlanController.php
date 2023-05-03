@@ -80,7 +80,7 @@ class RevisionPlanController extends Controller
         }else{
             $version=1;
         }
-        //dd($version);
+        dd($version);
         $rev = new RevisionPlan();
         $rev->idpaps=$attributes['idpaps'];
         $rev->project_title=$attributes['project_title'];
