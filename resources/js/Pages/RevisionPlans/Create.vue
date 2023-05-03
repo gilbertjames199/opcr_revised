@@ -155,7 +155,8 @@ export default {
             } else {
                 this.pageTitle = "Create"
                 //this.form.idpaps=this.idpaps
-                if(this.duplicate!==null){
+                if(this.duplicate!==undefined){
+
                     this.form.idpaps=this.duplicate[0].idpaps
                     this.form.project_title=this.duplicate[0].project_title
                     this.form.list_of_lgu_covered=this.duplicate[0].list_of_lgu_covered
@@ -169,8 +170,8 @@ export default {
                     this.form.rationale=this.duplicate[0].rationale
                     this.form.objective=this.duplicate[0].objective
                     this.form.beneficiaries=this.duplicate[0].beneficiaries
-
-
+                }else{
+                    alert('Dili undefined')
                 }
             }
 
