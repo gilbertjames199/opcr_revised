@@ -5,6 +5,8 @@ import { createInertiaApp, Head, Link } from '@inertiajs/inertia-vue3'
 import Layout  from "./Shared/Layout"
 import Notification  from "./Shared/Notification"
 import { InertiaProgress } from '@inertiajs/progress'
+//Vue Search Select
+import 'vue-search-select/dist/VueSearchSelect.css'
 
 //Card modal
 //.component('CardModal', CardModal)

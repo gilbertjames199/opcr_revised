@@ -5,15 +5,16 @@
 
     <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
     </p>-->
+    <h2>{{ revs.project_title }}</h2>
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Revision Plans </h3>
+            <h3>Budget Requirement</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`">Add Revision Plan</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/budget/create/${idrev}`">Add Budget Requirement</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -34,17 +35,19 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Project Title</th>
-                                <th>Office</th>
-                                <th>Version</th>
+                                <th>Particular</th>
+                                <th>Account Code</th>
+                                <th>Amount</th>
+                                <th>Type</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="dat in data">
-                                <td>{{ dat.project_title }}</td>
-                                <td>{{ dat.FFUNCTION }}</td>
-                                <td>{{ dat.version }}</td>
+                                <td>{{ dat.particulars }}</td>
+                                <td>{{ dat.account_code }}</td>
+                                <td>{{ dat.amount }}</td>
+                                <td>{{ dat.category }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,10 +56,11 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/budget/${dat.id}`">Budget Requirements {{ dat.id }}</Link></li>
+                                            <!--<li><Link class="dropdown-item" :href="`/budget/${dat.id}`">Budget Requirements</Link></li>
                                             <li><Link class="dropdown-item" :href="`/implementation/${dat.id}`">Implementation Plan</Link></li>
-                                            <!--<li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idpaps}/edit`">Edit</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idpaps}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>-->
+                                            <li><Link class="dropdown-item" :href="`/budget/edit/${dat.id}`">Edit</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -90,7 +94,8 @@ export default {
     props: {
         data: Object,
         //idstrat: String,
-        idpaps: String,
+        revs: Object,
+        idrev: String,
         filters: Object,
     },
     data() {
@@ -121,7 +126,7 @@ export default {
             //alert(this.idpaps);
             let text = "WARNING!\nAre you sure you want to delete the strategy?"+id;
               if (confirm(text) == true) {
-                this.$inertia.delete("/strategies/" + id+"/"+this.idpaps);
+                //this.$inertia.delete("/strategies/" + id+"/"+this.idpaps);
             }
         },
         getAccomplishment(tar_id){

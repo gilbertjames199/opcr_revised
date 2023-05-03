@@ -18,6 +18,7 @@ use App\Http\Controllers\AuthenticationController;
 // use App\Http\Controllers\TimeSheetController;
 use App\Http\Controllers\AccomplishmentController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\BudgetRequirementController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\IntermediateOutcomeController;
@@ -290,9 +291,10 @@ Route::middleware('auth')->group(function() {
     });
     //Budget
     Route::prefix('/budget')->group(function(){
-        Route::get('/{id}',[RevisionPlanController::class,'index']);
-        Route::get('/create/{id}',[RevisionPlanController::class,'create']);
-        Route::post('/store',[RevisionPlanController::class,'store']);
+        Route::get('/{id}',[BudgetRequirementController::class,'index']);
+        Route::get('/create/{idrev}',[BudgetRequirementController::class,'create']);
+        Route::post('/store',[BudgetRequirementController::class,'store']);
+        Route::post('/edit/{idbudget}',[BudgetRequirementController::class,'store']);
     });
     //SubSector
     Route::prefix('/subsector')->group(function(){});

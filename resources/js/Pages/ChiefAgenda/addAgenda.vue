@@ -60,10 +60,10 @@ export default {
           //BootstrapModalNoJquery,
 
           Places: () => new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(Places)
-            }, 2000)
-        })
+                setTimeout(() => {
+                    resolve(Places)
+                }, 2000)
+            })
 
         },
         data() {

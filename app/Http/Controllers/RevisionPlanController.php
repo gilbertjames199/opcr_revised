@@ -20,6 +20,9 @@ class RevisionPlanController extends Controller
         $myid=auth()->user()->recid;
         //dd($idpaps);
         $data=$this->model
+                ->select('revision_plans.id', 'revision_plans.project_title',
+                            'revision_plans.version','revision_plans.type',
+                            'ff.FFUNCTION')
                 ->Join(DB::raw('program_and_projects paps'), 'paps.id','=','revision_plans.idpaps')
                 ->Join(DB::raw('projects.functions ff'), 'ff.FFUNCCOD','=','paps.FFUNCCOD')
                 ->Join(DB::raw('projects.accountaccess acc'),'acc.ffunccod','=','ff.FFUNCCOD')
