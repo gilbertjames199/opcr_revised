@@ -17,6 +17,10 @@ class MajorFinalOutput extends Model
         'id_socgoal',
         'FFUNCCOD'
     ];
+
+    public function paps(){
+        return $this -> hasMany(ProgramAndProject::class, 'idmfo', 'id');
+    }
     public static function rules(){
         return [
 

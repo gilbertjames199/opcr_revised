@@ -57,7 +57,7 @@
                                     </button>
                                     <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
                                         <li><Link class="dropdown-item" :href="`/indicators/${dat.id}/edit`">Edit</Link></li>
-                                        <li><Link class="dropdown-item" @click="editThis(dat.id, dat.targ)">Edit</Link></li>
+                                        <!-- <li><Link class="dropdown-item" @click="editThis(dat.id, dat.targ)">Edit</Link></li> -->
                                         <li><Link class="text-danger dropdown-item" @click="deleteIndicator(dat.id)">Delete</Link></li>
                                     </ul>
                                 </div>

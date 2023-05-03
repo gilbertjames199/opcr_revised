@@ -27,9 +27,10 @@ class DatabaseSeeder extends Seeder
             //FirstUserSeed::class,
             MunicipalitySeeder::class,
             BarangaySeeder::class,
-            TargetSeeder::class,
-            AccomplishmentSeeder::class,
-            IndicatorSeeder::class
+            SectorSeeder::class,
+            //TargetSeeder::class,
+            //AccomplishmentSeeder::class,
+            //IndicatorSeeder::class
         ]);
     }
 }

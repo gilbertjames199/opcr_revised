@@ -17,6 +17,8 @@ use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\AuthenticationController;
 // use App\Http\Controllers\TimeSheetController;
 use App\Http\Controllers\AccomplishmentController;
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\BudgetRequirementController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\IntermediateOutcomeController;
@@ -30,9 +32,12 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SectoralController;
 use App\Http\Controllers\ChiefAgendaController;
 use App\Http\Controllers\EconomicAgendaController;
+use App\Http\Controllers\LogFrameController;
 use App\Http\Controllers\ProjectProfileController;
 use App\Http\Controllers\RAController;
+use App\Http\Controllers\RevisionPlanController;
 use App\Http\Controllers\SocietalGoalController;
+use App\Http\Controllers\IssueController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\IntermediateOutcome;
@@ -151,6 +156,16 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [SocietalGoalController::class, 'destroy']);
     });
 
+       //Issues
+       Route::prefix('/Issues')->group(function(){
+        Route::get('/',[IssueController::class,'index']);
+        Route::get('/create',[IssueController::class,'create']);
+        Route::post('/',[IssueController::class,'store']);
+        Route::get('/{id}/edit', [IssueController::class, 'edit']);
+        Route::patch('/{id}', [IssueController::class, 'update']);
+        Route::delete('/{id}', [IssueController::class, 'destroy']);
+    });
+
      //ChiefAgenda
      Route::prefix('/ChiefAgenda')->group(function(){
         Route::get('/',[ChiefAgendaController::class,'index']);
@@ -220,9 +235,24 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}',[StrategyController::class,'index']);
         Route::get('/create/{id}',[StrategyController::class,'create']);
         Route::post('/store',[StrategyController::class,'store']);
-        Route::delete('/{id}/{idoutcome}', [StrategyController::class, 'destroy']);
+        Route::post('/update',[StrategyController::class,'update']);
+        Route::delete('/{id}/{idpaps}', [StrategyController::class, 'destroy']);
         Route::get('/{id}/{idinteroutcome}/edit', [StrategyController::class, 'edit']);
         Route::patch('/', [StrategyController::class, 'update']);
+    });
+    //Activities
+    Route::prefix('/activities')->group(function(){
+        Route::get('/{idstrat}', [ActivityController::class,'index']);
+        Route::get('/create/{id}',[ActivityController::class,'create']);
+        Route::post('/store',[ActivityController::class,'store']);
+        Route::delete('/{id}/{strategy_id}', [ActivityController::class, 'destroy']);
+        Route::get('/{id}/{strategy_id}/edit', [ActivityController::class, 'edit']);
+        Route::patch('/', [ActivityController::class, 'update']);
+    });
+    //LOGFRAME
+    Route::prefix('/logframe')->group(function(){
+        Route::get('/',[LogFrameController::class,'index']);
+        Route::get('/{idstrat}',[LogFrameController::class,'showlog']);
     });
     //MFO
     Route::prefix('/mfos')->group(function(){
@@ -241,9 +271,11 @@ Route::middleware('auth')->group(function() {
         Route::get('/direct/create',[PAPController::class,'direct_create']);
         Route::get('/{id}',[PAPController::class,'index']);
         Route::get('/create/{id}',[PAPController::class,'create']);
+        Route::post('/save',[PAPController::class,'save']);
         Route::post('/store',[PAPController::class,'store']);
         Route::get('/{id}/{idmfo}/edit', [PAPController::class, 'edit']);
         Route::patch('/{id}', [PAPController::class, 'update']);
+        Route::patch('/update/{id}', [PAPController::class, 'updated']);
         Route::delete('/{id}', [PAPController::class, 'destroy']);
     });
     //Project Profile
@@ -251,6 +283,21 @@ Route::middleware('auth')->group(function() {
         Route::get('/',[ProjectProfileController::class,'index']);
         Route::get('/create',[ProjectProfileController::class,'create']);
     });
+    //Revision Plan
+    Route::prefix('/revision')->group(function(){
+        Route::get('/{id}',[RevisionPlanController::class,'index']);
+        Route::get('/create/{id}',[RevisionPlanController::class,'create']);
+        Route::post('/store',[RevisionPlanController::class,'store']);
+    });
+    //Budget
+    Route::prefix('/budget')->group(function(){
+        Route::get('/{id}',[BudgetRequirementController::class,'index']);
+        Route::get('/create/{idrev}',[BudgetRequirementController::class,'create']);
+        Route::post('/store',[BudgetRequirementController::class,'store']);
+        Route::post('/edit/{idbudget}',[BudgetRequirementController::class,'store']);
+    });
+    //SubSector
+    Route::prefix('/subsector')->group(function(){});
 });
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);

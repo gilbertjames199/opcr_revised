@@ -22,6 +22,14 @@
                 <input type="text" v-model="form.goal_description" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.goal_description">{{ form.errors.goal_description }}</div>
 
+                <label for="">OFFICES</label>
+                <!--<input type="text" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">-->
+                <select class="form-control form-select" v-model="form.FFUNCCOD" >
+                    <option v-for="functional in functions" :value="functional.FFUNCCOD" >
+                        {{ functional.FFUNCTION }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
 
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
@@ -43,7 +51,8 @@ import Places from "@/Shared/PlacesShared";
 
 export default {
         props: {
-            editData: Object
+            editData: Object,
+            functions: Object
         },
         components: {
           //BootstrapModalNoJquery,
@@ -60,6 +69,7 @@ export default {
                 submitted: false,
                 form: useForm({
                     goal_description: "",
+                    FFUNCCOD: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -74,6 +84,7 @@ export default {
                 }
                 this.pageTitle = "Edit"
                 this.form.goal_description=this.editData.goal_description
+                this.form.FFUNCCOD=this.editData.FFUNCCOD
                 this.form.id=this.editData.id
             } else {
                 this.pageTitle = "Create"

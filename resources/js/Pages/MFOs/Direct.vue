@@ -40,7 +40,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.mfo_desc }}</td>
+                                <td>{{ dat.mfo_desc }} </td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -86,7 +86,8 @@ export default {
     props: {
         data: Object,
         idinteroutcome: String,
-        idoutcome: String
+        idoutcome: String,
+
     },
     data() {
         return{

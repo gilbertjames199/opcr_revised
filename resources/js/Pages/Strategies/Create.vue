@@ -19,18 +19,17 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
 
-                <label for="">INTERMEDIATE OUTCOME</label>
+                <label for="">PROGRAMS AND PROJECTS</label>
 
-                <select class="form-control" v-model="form.idinteroutcome" >
-                    <option v-for="interoutcome in interoutcomes" :value="interoutcome.id" >
-                        {{ interoutcome.io_desc }}
+                <select class="form-control" v-model="form.idpaps" >
+                    <option v-for="pap in paps" :value="pap.id" >
+                        {{ pap.paps_desc }}
                     </option>
                 </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_period">{{ form.errors.plan_period }}</div>
 
-                <label for="">STRATEGY DESCRIPTION</label>
-                <input type="text" v-model="form.strat_desc" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.strat_desc">{{ form.errors.strat_desc }}</div>
+                <label for="">STRATEGY DESCRIPTION </label>
+                <input type="text" v-model="form.description" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.description">{{ form.errors.description }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
@@ -52,8 +51,8 @@ import Places from "@/Shared/PlacesShared";
 export default {
         props: {
             editData: Object,
-            interoutcomes: Object,
-            idinteroutcome: String
+            paps: Object,
+            idpaps: String
         },
         components: {
 
@@ -68,8 +67,8 @@ export default {
             return {
                 submitted: false,
                 form: useForm({
-                    strat_desc: "",
-                    idinteroutcome: "",
+                    idpaps: null,
+                    description: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -77,11 +76,12 @@ export default {
         },
 
         mounted() {
+            this.form.idpaps=this.idpaps;
             this.form.idinteroutcome=this.idinteroutcome
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
-                this.form.idinteroutcome=this.idinteroutcome
-                this.form.strat_desc=this.editData.strat_desc
+                this.form.idpaps=this.idpaps
+                this.form.description=this.editData.description
                 this.form.id=this.editData.id
             } else {
                 this.pageTitle = "Create"
@@ -91,12 +91,14 @@ export default {
 
         methods: {
             submit() {
-                this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
+                //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
+                    //alert('patch');
                     this.form.patch("/strategies/", this.form);
                 } else {
                     this.form.id=null;
+                    //alert('store');
                     this.form.post("/strategies/store", this.form);
                 }
             },

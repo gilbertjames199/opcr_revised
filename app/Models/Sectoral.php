@@ -14,4 +14,8 @@ class Sectoral extends Model
         'goal_description',
         'sector',
     ];
+
+    public function sectors(){
+        return $this -> hasOne(Sector::class, 'id', 'sector');
+    }
 }

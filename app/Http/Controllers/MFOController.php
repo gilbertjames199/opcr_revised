@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountAccess;
+use App\Models\FFUNCCOD;
 use App\Models\IntermediateOutcome;
 use App\Models\MajorFinalOutput;
 use App\Models\OrganizationalGoal;
@@ -10,9 +12,11 @@ use App\Models\SocietalGoal;
 use App\Models\Strategy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MFOController extends Controller
 {
+    protected $model;
     public function __construct(MajorFinalOutput $model)
     {
         //$this->middleware(['auth','verified']);
@@ -28,6 +32,7 @@ class MFOController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
+
         //dd($data->pluck('mfo_desc'));
         return inertia('MFOs/Index',[
             "data"=>$data,
@@ -46,10 +51,14 @@ class MFOController extends Controller
         $SocietalGoals=SocietalGoal::get();
         $SectorOutcomes=Sectoral::get();
         $OrganizationalOutcomes=OrganizationalGoal::get();
+        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        $functions = $accounts->pluck('func');
+        //dd($accounts);
         return inertia('MFOs/Create', [
             'societalGoals'=>$SocietalGoals,
             'sectorOutcomes'=>$SectorOutcomes,
             'organizationalOutcomes'=>$OrganizationalOutcomes,
+            'functions'=>$functions,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -87,9 +96,12 @@ class MFOController extends Controller
             'id_sec_outcome',
             'FFUNCCOD'
         ]);
+        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        $functions = $accounts->pluck('func');
         //dd($idinteroutcome);
         return inertia('MFOs/Create', [
             "editData" => $data,
+            "functions"=>$functions,
             'societalGoals'=>$SocietalGoals,
             'sectorOutcomes'=>$SectorOutcomes,
             'organizationalOutcomes'=>$OrganizationalOutcomes,
@@ -121,13 +133,19 @@ class MFOController extends Controller
 
     public function direct(Request $request){
         //dd("direct");
+        $idn = auth()->user()->recid;
+        //dd($idn);
         $data = $this->model->orderBy('created_at', 'desc')
-        ->paginate(10)
-        ->withQueryString();
-
+                ->Join(DB::raw('projects.accountaccess acc'),'acc.FFUNCCOD','=','major_final_outputs.FFUNCCOD')
+                ->Join(DB::raw('projects.systemusers sysu'),'sysu.recid','=','acc.iduser')
+                ->where('sysu.recid',$idn)
+                ->paginate(10)
+                ->withQueryString();
+        //dd($data);
         //dd($data->pluck('mfo_desc'));
         return inertia('MFOs/Direct',[
             "data"=>$data,
+            "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

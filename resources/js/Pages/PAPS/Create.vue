@@ -1,13 +1,24 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Programs and Proects {{  idmfo }}</h3>
-            <Link :href="`/paps/direct`">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
-            </Link>
+            <h3>{{ pageTitle }} Programs and Projects <!--{{  idmfo }}--></h3>
+            <div v-if="from_mfo==true">
+                <Link :href="`/paps/${idmfo}`">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                    </svg>
+                </Link>
+            </div>
+            <div v-else>
+                <Link :href="`/paps/direct`">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                    </svg>
+                </Link>
+            </div>
+
         </div>
 
         <div class="col-md-8">
@@ -76,7 +87,12 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year6">{{ form.errors.plan_amount_year6 }}</div> -->
 
                 <label for="">Office</label>
-                <input type="number" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">
+                <!--<input type="number" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">-->
+                <select class="form-control" v-model="form.FFUNCCOD" >
+                    <option v-for="functional in functions" :value="functional.FFUNCCOD" >
+                        {{ functional.FFUNCTION }}
+                    </option>
+                </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
@@ -100,6 +116,8 @@ export default {
         props: {
             editData: Object,
             mfos: Object,
+            idmfo: String,
+            functions: Object
         },
         components: {
 
@@ -112,6 +130,7 @@ export default {
         },
         data() {
             return {
+                from_mfo: false,
                 submitted: false,
                 form: useForm({
                     paps_desc: "",
@@ -253,24 +272,32 @@ export default {
         },
 
         mounted() {
+            if(this.idmfo!==undefined){
+                this.from_mfo=true
+
+            }
             this.form.idmfo=this.idmfo
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
                 this.form.paps_desc=this.editData.paps_desc
                 this.form.MOV=this.editData.MOV
-                this.form.plan_period_from=this.editData.plan_period_from
-                this.form.plan_period_to=this.editData.plan_period_to
-                this.form.plan_amount_year1=this.editData.plan_amount_year1
-                this.form.plan_amount_year2=this.editData.plan_amount_year2
-                this.form.plan_amount_year3=this.editData.plan_amount_year3
-                this.form.plan_amount_year4=this.editData.plan_amount_year4
-                this.form.plan_amount_year5=this.editData.plan_amount_year5
-                this.form.plan_amount_year6=this.editData.plan_amount_year6
+                // this.form.plan_period_from=this.editData.plan_period_from
+                // this.form.plan_period_to=this.editData.plan_period_to
+                // this.form.plan_amount_year1=this.editData.plan_amount_year1
+                // this.form.plan_amount_year2=this.editData.plan_amount_year2
+                // this.form.plan_amount_year3=this.editData.plan_amount_year3
+                // this.form.plan_amount_year4=this.editData.plan_amount_year4
+                // this.form.plan_amount_year5=this.editData.plan_amount_year5
+                // this.form.plan_amount_year6=this.editData.plan_amount_year6
                 this.form.FFUNCCOD=this.editData.FFUNCCOD
                 this.form.idmfo=this.editData.idmfo
                 this.form.id=this.editData.id
             } else {
                 this.pageTitle = "Create"
+                if(this.idmfo!=undefined){
+                    this.form.idmfo=this.idmfo
+                    this.from_mfo=true
+                }
                 this.setselect();
             }
 
@@ -278,15 +305,28 @@ export default {
 
         methods: {
             submit() {
+
                 this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
-                    alert('paps/'+this.form.id);
-                    this.form.patch("/paps/"+this.form.id, this.form);
+                    //alert('from mfo: '+this.from_mfo);
+                    if(this.from_mfo==true){
+                        //alert('paps/update/'+this.form.id);
+                        this.form.patch("/paps/update/"+this.form.id, this.form);
+                    }else{
+                        //alert('direct paps/'+this.form.id);
+                        this.form.patch("/paps/"+this.form.id, this.form);
+                    }
+
                 } else {
                     this.form.id=null;
 
-                    this.form.post("/paps/store", this.form);
+                    if(this.from_mfo==true){
+                        this.form.post("/paps/save", this.form);
+                    }else{
+                        this.form.post("/paps/store", this.form);
+                    }
+
                 }
             },
             setselect(){

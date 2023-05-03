@@ -17,7 +17,7 @@ class AddIdimplementationToTargets extends Migration
             $table->integer('idimplementation')
                 ->nullable()
                 ->after('onsite_tag')
-                ->comment('Implementation');
+                ->comment('Implementation Plan ID');
         });
     }
 

@@ -12,5 +12,6 @@ class OrganizationalGoal extends Model
     protected $table='organizational_goals';
     protected $fillable = [
         'goal_description',
+        'FFUNCCOD'
     ];
 }

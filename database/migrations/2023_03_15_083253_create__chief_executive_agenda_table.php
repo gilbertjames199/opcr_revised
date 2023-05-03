@@ -14,10 +14,10 @@ class CreateChiefExecutiveAgendaTable extends Migration
     public function up(){
         Schema::create('chief_executive_agenda', function (Blueprint $table) {
             $table->id();
-            $table->longText('agenda_description');
-            $table->date('yearfrom');
-            $table->date('yearto');
-            $table->string('rationale');
+            $table->longText('agenda_description')->comment('Chief executive agenda description');
+            $table->date('yearfrom')->comment('start year');
+            $table->date('yearto')->comment('end year');
+            $table->longText('rationale')->comment('Rationale');
             $table->timestamps();
         });
     }

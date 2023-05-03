@@ -13,14 +13,18 @@ class CreateHGDGScoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('h_g_d_g_scores', function (Blueprint $table) {
+<<<<<<< HEAD
+        Schema::create('hgdg_scores', function (Blueprint $table) {
+=======
+        Schema::create('hgdg_score', function (Blueprint $table) {
+>>>>>>> 5d1bfcbbf8c103d4f71de2b78fd40ac62703db26
             $table->id();
-            $table->bigInteger('idrevplan')->comment('Revision Plan ID');
-            $table->bigInteger('question_id')->comment(' Question ID');
-            $table->bigInteger('user_id')->comment('User ID');
+            $table->Integer('idrevplan')->comment('Revision Plan ID');
+            $table->Integer('question_id')->comment(' Question ID');
+            $table->Integer('user_id')->comment('User ID');
             $table->decimal('score',12,2)->comment('Item Score');
-            $table->string('result_comment')->comment('Evaluator\'s comment');
-            $table->string('FFUNCCOD')->comment('Office Code');
+            $table->Text('result_comment')->comment('Result comment');
+            $table->string('FFUNCCOD',10)->comment('Office Code');
             $table->timestamps();
         });
     }

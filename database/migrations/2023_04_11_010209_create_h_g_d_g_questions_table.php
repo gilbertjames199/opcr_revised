@@ -13,13 +13,13 @@ class CreateHGDGQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('h_g_d_g_questions', function (Blueprint $table) {
+        Schema::create('hgdg_questions', function (Blueprint $table) {
             $table->id();
-            $table->string('question_number')->comment('Item number of the question');
-            $table->string('question')->comment('HGDG Question');
-            $table->bigInteger('checklist_id')->comment('ID of the checklist');
-            $table->integer('has_subquestion')->comment('Indicate if the question has subquestions (0 -no/1 -yes)');
-            $table->bigInteger('idquestion')->comment('ID of the parent question/subquestion');
+            $table->string('question_number',10)->comment('Item number of the question');
+            $table->Text('question')->comment('HGDG Question');
+            $table->Integer('checklist_id')->comment('ID of the checklist');
+            $table->tinyInteger('has_subquestion')->comment('Indicate if the question has subquestions (0 -no/1 -yes)');
+            $table->bigInteger('question_id')->comment('ID of the parent question/subquestion');
             $table->timestamps();
         });
     }

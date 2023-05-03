@@ -15,10 +15,10 @@ class CreateEightPointAgendaTable extends Migration
     {
         Schema::create('eight_point_agenda', function (Blueprint $table) {
             $table->id();
-            $table->longText('agenda_description');
-            $table->date('yearfrom');
-            $table->date('yearto');
-            $table->string('rationale');
+            $table->longText('agenda_description')->comment('Agenda description');
+            $table->date('yearfrom')->comment('Year From');
+            $table->date('yearto')->comment('Year To');
+            $table->string('rationale')->comment('Rationale');
             $table->timestamps();
         });
     }

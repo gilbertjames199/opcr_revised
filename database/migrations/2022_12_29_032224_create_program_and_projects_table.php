@@ -15,12 +15,12 @@ class CreateProgramAndProjectsTable extends Migration
     {
         Schema::create('program_and_projects', function (Blueprint $table) {
             $table->id();
-            $table->longText('paps_desc')->nullable();
+            $table->Text('paps_desc')->nullable()->comment('PAPS Description');
             $table->integer('tyear')->unsigned()->nullable();
             $table->string('FRAOTYPE',1)->nullable();
             $table->string('FRAODESC',200)->nullable();
             $table->string('FALLTCOD',3)->nullable();
-            $table->string('FFUNCCOD',6)->nullable();
+            $table->string('FFUNCCOD',6)->nullable()->comment('Office Code');
             $table->string('FFUNDCOD',3)->nullable();
             $table->integer('idsource')->unsigned()->nullable();
             $table->integer('idappttype')->unsigned()->nullable();
@@ -30,7 +30,7 @@ class CreateProgramAndProjectsTable extends Migration
             $table->integer('excludetag')->nullable();
             $table->integer('previd')->unsigned()->nullable();
             $table->bigInteger('idpaps')->nullable();
-            $table->bigInteger('idmfo')->nullable();
+            $table->Integer('idmfo')->nullable()->comment('MFO ID');
             $table->timestamps();
         });
     }

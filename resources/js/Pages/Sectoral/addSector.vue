@@ -23,7 +23,12 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.goal_description">{{ form.errors.goal_description }}</div>
 
                 <label for="">SECTOR</label>
-                <input type="text" v-model="form.sector" class="form-control" autocomplete="chrome-off">
+                <!--<input type="text" v-model="form.sector" class="form-control" autocomplete="chrome-off">-->
+                <select class="form-control" v-model="form.sector" >
+                    <option v-for="sector in sectors" :value="sector.id" >
+                        {{ sector.sector_name }}
+                    </option>
+                </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.sectoral">{{ form.errors.goal_sectoral }}</div>
 
 
@@ -46,7 +51,8 @@ import Places from "@/Shared/PlacesShared";
 
 export default {
         props: {
-            editData: Object
+            editData: Object,
+            sectors: Object
         },
         components: {
           //BootstrapModalNoJquery,

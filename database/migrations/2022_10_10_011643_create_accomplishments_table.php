@@ -9,33 +9,34 @@ class CreateAccomplishmentsTable extends Migration
     /**
      * Run the migrations.
      *
+     *$table->foreignId('target_id')->constrained()->nullable()->comment('Target');
      * @return void
      */
     public function up()
     {
         Schema::create('accomplishments', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('idtarget')->nullable();
-            $table->string('accomplishment_qty')->nullable()->comment('Accomplishment quantity');
-            $table->string('actual_period_from')->nullable()->comment('Actual period accomplished -from');
-            $table->string('actual_period_to')->nullable()->comment('Actual period accomplished -to');
-            $table->string('actual_expenditure')->nullable();
-            $table->string('facilitating_timeliness')->nullable();
-            $table->string('facilitating_competency')->nullable();
-            $table->string('facilitating_logistics')->nullable();
-            $table->string('deterring_timeliness')->nullable();
-            $table->string('deterring_concerns')->nullable();
-            $table->string('deterring_logistics')->nullable();
-            $table->string('concerns_timeliness')->nullable();
-            $table->string('concerns_competency')->nullable();
-            $table->string('concerns_logistics')->nullable();
-            $table->string('new_strategy')->nullable();
-            $table->string('remarks')->nullable();
-            $table->date('date_accomplished_from')->nullable();
-            $table->date('date_accomplished_to')->nullable();
-            $table->string('validated_status')->nullable();
-            $table->string('validated_remarks')->nullable();
-            $table->date('validated_date')->nullable();
+            $table->integer('target_id')->nullable()->comment('Target ID');
+            $table->decimal('accomplishment_qty',12,2)->nullable()->comment('Accomplishment quantity');
+            $table->date('actual_period_from')->nullable()->comment('Actual period accomplished -from');
+            $table->date('actual_period_to')->nullable()->comment('Actual period accomplished -to');
+            $table->decimal('actual_expenditure',12,2)->nullable()->comment('Actual expenditure');
+            $table->Text('facilitating_timeliness')->nullable()->comment('Facilitating timeliness');
+            $table->Text('facilitating_competency')->nullable()->comment('Facilitating competency');
+            $table->Text('facilitating_logistics')->nullable()->comment('Facilitting logistics');
+            $table->Text('deterring_timeliness')->nullable()->comment('Deterring timeliness');
+            $table->Text('deterring_concerns')->nullable()->comment('Deterring concerns');
+            $table->Text('deterring_logistics')->nullable()->comment('Deterring logistics');
+            $table->Text('concerns_timeliness')->nullable()->comment('Concerns timeliness');
+            $table->Text('concerns_competency')->nullable()->comment('Concerns competency');
+            $table->Text('concerns_logistics')->nullable()->comment('Concerns logistics');
+            $table->Text('new_strategy')->nullable()->comment('New strategy');
+            $table->Text('remarks')->nullable()->comment('Remarks');
+            $table->date('date_accomplished_from')->nullable()->comment('Date accomplished from');
+            $table->date('date_accomplished_to')->nullable()->comment('Date accomplished to');
+            $table->string('validated_status',10)->nullable()->comment('Validated status -yes, no');
+            $table->longText('validated_remarks')->nullable()->comment('Validated remarks ');
+            $table->date('validated_date')->nullable()->comment('Date validated');
             $table->timestamps();
         });
     }

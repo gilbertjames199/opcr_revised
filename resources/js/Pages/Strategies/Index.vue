@@ -13,12 +13,12 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/strategies/create/${idinteroutcome}`">Add Strategies</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/strategies/create/${idpaps}`">Add Strategies</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
 
-            <Link :href="`/inter_outcome/${idoutcome}`">
+            <Link :href="`/paps/direct`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                     <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -34,13 +34,15 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Outcome Description</th>
+                                <th>Programs and Projects</th>
+                                <th>Strategies</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.strat_desc }}</td>
+                                <td>{{ dat.paps.paps_desc }}</td>
+                                <td>{{ dat.description }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -49,8 +51,8 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/mfos/${dat.id}`">MFOs</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idinteroutcome}/edit`">Edit</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/activities/${dat.id}`">Activities</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idpaps}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
@@ -84,12 +86,13 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
-        idinteroutcome: String,
-        idoutcome: String
+        //idstrat: String,
+        idpaps: String,
+        filters: Object,
     },
     data() {
         return{
-
+            search: this.$props.filters.search,
         }
     },
     components: {
@@ -112,9 +115,10 @@ export default {
             );
         },
         deleteStrat(id) {
+            //alert(this.idpaps);
             let text = "WARNING!\nAre you sure you want to delete the strategy?"+id;
               if (confirm(text) == true) {
-                this.$inertia.delete("/strategies/" + id+"/"+this.idinteroutcome);
+                this.$inertia.delete("/strategies/" + id+"/"+this.idpaps);
             }
         },
         getAccomplishment(tar_id){

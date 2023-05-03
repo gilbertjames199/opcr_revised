@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountAccess;
 use App\Models\OrganizationalGoal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrganizationController extends Controller
 {
+    protected $model;
     public function __construct(OrganizationalGoal $model)
     {
        $this->model = $model;
@@ -16,9 +19,12 @@ class OrganizationController extends Controller
 
     //
     public function index(Request $request){
-
+        $idn = auth()->user()->recid;
         $data = $this->model
                 ->orderBy('created_at', 'desc')
+                ->Join(DB::raw('projects.accountaccess acc'),'acc.FFUNCCOD','=','organizational_goals.FFUNCCOD')
+                ->Join(DB::raw('projects.systemusers sysu'),'sysu.recid','=','acc.iduser')
+                ->where('sysu.recid',$idn)
                 ->paginate(10)
                 ->withQueryString();
         return inertia('Organizational/Index',[
@@ -32,19 +38,22 @@ class OrganizationController extends Controller
     }
 
     public function create(Request $request){
-
-    return inertia('Organizational/addOrganizational',[
-    'can'=>[
-        'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-        'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-    ],
-]);
+        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        $functions = $accounts->pluck('func');
+        return inertia('Organizational/addOrganizational',[
+            'functions'=>$functions,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 
     public function store(Request $request){
 
         $attributes = $request->validate([
             'goal_description' => 'required',
+            'FFUNCCOD'=>'required'
         ]);
         //dd($attributes);
         $this->model->create($attributes);
@@ -55,11 +64,14 @@ class OrganizationController extends Controller
     public function edit(Request $request, $id){
         $data = $this->model->where('id', $id)->first([
             'id',
-            'goal_description'
+            'goal_description',
+            'FFUNCCOD'
         ]);
-
+        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        $functions = $accounts->pluck('func');
         return inertia('Organizational/addOrganizational', [
             "editData" => $data,
+            "functions"=>$functions,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

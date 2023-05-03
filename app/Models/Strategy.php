@@ -11,7 +11,10 @@ class Strategy extends Model
     protected $connection = "mysql";
     protected $table='strategies';
     protected $fillable = [
-        'strat_desc',
+        'description',
         'idpaps'
     ];
+    public function paps(){
+        return $this -> hasOne(ProgramAndProject::class, 'id', 'idpaps');
+    }
 }

@@ -13,10 +13,10 @@ class CreateHGDGChecklistsTable extends Migration
      */
     public function up()
     {
-        Schema::create('h_g_d_g__checklists', function (Blueprint $table) {
+        Schema::create('hgdg_checklists', function (Blueprint $table) {
             $table->id();
-            $table->string('box_number')->comment('Box Number of the Checklist');
-            $table->string('sector')->comment('Indicate the sector/subsector of the HGDG checklist');
+            $table->string('box_number',100)->comment('Box Number and Description of the Checklist');
+            $table->Text('sector')->comment('Indicate the sector/subsector of the HGDG checklist');
             //$table->bigInteger('subsector_id');
             $table->timestamps();
         });

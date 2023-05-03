@@ -16,9 +16,9 @@ class RemoveInteroutcomeFromMfo extends Migration
         Schema::table('major_final_outputs', function (Blueprint $table) {
             //
             $table->dropColumn('idinteroutcome');
-            $table->bigInteger('id_socgoal')->nullable()->after('mfo_desc')->comment('Societal Goal ID');
-            $table->bigInteger('id_sec_outcome')->nullable()->after('mfo_desc')->comment('Sectoral Outcome ID');
-            $table->bigInteger('id_org_outcome')->nullable()->after('mfo_desc')->comment('Organizational Outcome ID');
+            $table->Integer('id_socgoal')->nullable()->after('mfo_desc')->comment('Societal Goal ID');
+            $table->Integer('id_sec_outcome')->nullable()->after('mfo_desc')->comment('Sectoral Outcome ID');
+            $table->Integer('id_org_outcome')->nullable()->after('mfo_desc')->comment('Organizational Outcome ID');
         });
     }
 
