@@ -14,11 +14,28 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class LogFrameController extends Controller
-{
+{   protected $model;
+    public function __construct(AccountAccess $model)
+    {
+        $this->model=$model;
+    }
     public function index(Request $request){
         //dd('logframe');
-        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
-        $functions = $accounts->pluck('func');
+        //dd(auth()->user()->recid);
+        // $accounts = $this->model->where('iduser',auth()->user()->recid)
+        //             ->with('func')->get();
+
+        $functions =$this->model
+                        ->select('ff.FFUNCCOD','FFUNCTION')
+                        ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
+                        ->where('iduser',auth()->user()->recid)
+                        ->get();
+        //dd($functions);
+        //dd($accounts); 1121
+        //$functions = $accounts->pluck('func');
+        //$fa = FFUNCCOD::where('FFUNCCOD','1121')->with('acc')->get();
+        //dd($fa[0]->FFUNCCOD." gaccounce ".$accounts[0]->ffunccod);
+        //dd($fa);
         return inertia('LogFrame/Index', [
             "data"=>$functions,
         ]);

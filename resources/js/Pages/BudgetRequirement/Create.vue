@@ -14,7 +14,7 @@
 
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
-
+                {{ budgets }} {{  form.particulars }}
                 <div class="d-none">
                     <label for="">ID</label>
                     <input type="text" v-model="form.id" class="form-control" autocomplete="chrome-off">
@@ -29,6 +29,7 @@
                             v-model="form.particulars"
                             @select="setCode"
                             @search-change="typed = $event"
+                            :value="form.particulars"
                         >
                         </multiselect>
                     </div>
@@ -48,6 +49,7 @@
                     <option>Personal Services</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.category">{{ form.errors.category }}</div>
+                <!---->
                 <label>CATEGORY 2</label>
                 <select class="form-control" v-model="form.category_gad">
                     <option>GAD</option>
@@ -148,6 +150,11 @@ export default {
             } else {
                 this.pageTitle = "Create"
 
+                this.form.particulars =this.budgets[0];
+                var ind=this.codes.indexOf(parseInt(this.form.particulars));
+                //alert(ind);
+                this.form.particulars=this.accounts[ind];
+                //this.budget_code = this.budgets.indexOf(this.form.account_code.toString());
             }
 
         },

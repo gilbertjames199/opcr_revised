@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class IntermediateOutcomeController extends Controller
 {
+    protected $model;
     public function __construct(IntermediateOutcome $model)
     {
         //$this->middleware(['auth','verified']);
