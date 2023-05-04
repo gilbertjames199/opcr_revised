@@ -294,7 +294,9 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}',[BudgetRequirementController::class,'index']);
         Route::get('/create/{idrev}',[BudgetRequirementController::class,'create']);
         Route::post('/store',[BudgetRequirementController::class,'store']);
-        Route::post('/edit/{idbudget}',[BudgetRequirementController::class,'store']);
+        Route::get('/edit/{idbudget}',[BudgetRequirementController::class,'edit']);
+        Route::delete('/{id}/{idbudget}', [BudgetRequirementController::class, 'destroy']);
+        Route::patch('/update/{idrev}', [BudgetRequirementController::class, 'update']);
     });
     //SubSector
     Route::prefix('/subsector')->group(function(){});

@@ -28,6 +28,7 @@
                             :searchable="true"
                             v-model="form.particulars"
                             @select="setCode"
+                            :value="form.particulars"
                             @search-change="typed = $event"
                         >
                         </multiselect>
@@ -139,6 +140,7 @@ export default {
             this.form.revision_plan_id=this.idrev
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
+                this.form.id = this.editData.id
                 this.form.revision_plan_id=this.editData.revision_plan_id
                 this.form.particulars=this.editData.particulars
                 this.form.account_code=this.editData.account_code
@@ -161,8 +163,10 @@ export default {
                 //alert(this.budgets)
                 //alert(indr);
                 if (this.editData !== undefined) {
+                // alert(this.form.revision_plan_id);
+                // alert(this.form.id);
                     //alert('patch');
-                    this.form.patch("/strategies/", this.form);
+                    this.form.patch("/budget/update/"+this.form.revision_plan_id, this.form);
                 } else {
                     this.form.id=null;
                     //alert('store');

@@ -61,6 +61,7 @@
                                             <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idpaps}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>-->
                                             <li><Link class="dropdown-item" :href="`/budget/edit/${dat.id}`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteBudget(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -122,11 +123,11 @@ export default {
                 }
             );
         },
-        deleteStrat(id) {
+        deleteBudget(id) {
             //alert(this.idpaps);
-            let text = "WARNING!\nAre you sure you want to delete the strategy?"+id;
+            let text = "WARNING!\nAre you sure you want to delete the Budget Requirement?"+id;
               if (confirm(text) == true) {
-                //this.$inertia.delete("/strategies/" + id+"/"+this.idpaps);
+                this.$inertia.delete("/budget/" + id+"/"+this.idrev);
             }
         },
         getAccomplishment(tar_id){
