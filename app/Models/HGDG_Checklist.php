@@ -12,6 +12,6 @@ class HGDG_Checklist extends Model
     protected $table='hgdg_checklists';
     protected $fillable = [
         'box_number',
-        'subsector_id',
+        'sector',
     ];
 }

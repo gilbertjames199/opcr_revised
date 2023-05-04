@@ -38,6 +38,7 @@ use App\Http\Controllers\RAController;
 use App\Http\Controllers\RevisionPlanController;
 use App\Http\Controllers\SocietalGoalController;
 use App\Http\Controllers\IssueController;
+use App\Http\Controllers\HGDGChecklistController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\IntermediateOutcome;
@@ -298,6 +299,16 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}/{idbudget}', [BudgetRequirementController::class, 'destroy']);
         Route::patch('/update/{idrev}', [BudgetRequirementController::class, 'update']);
     });
+
+        //hgdg_checklist
+        Route::prefix('/HGDGChecklist')->group(function(){
+            Route::get('/',[HGDGChecklistController::class,'index']);
+            Route::get('/create',[HGDGChecklistController::class,'create']);
+            Route::post('/',[HGDGChecklistController::class,'store']);
+            Route::get('/{id}/edit', [HGDGChecklistController::class, 'edit']);
+            Route::patch('/{id}', [HGDGChecklistController::class, 'update']);
+            Route::delete('/{id}', [HGDGChecklistController::class, 'destroy']);
+        });
     //SubSector
     Route::prefix('/subsector')->group(function(){});
 });
