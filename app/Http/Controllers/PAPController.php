@@ -55,8 +55,12 @@ class PAPController extends Controller
                         ->select(DB::raw('DISTINCT(tyear)'))
                         ->orderBy('tyear','ASC')
                         ->get();
-        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
-        $functions = $accounts->pluck('func');
+        // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        // $functions = $accounts->pluck('func');
+        $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
             'idmfo'=>$id,
@@ -72,8 +76,12 @@ class PAPController extends Controller
     public function direct_create()
     {
         $mfos= MajorFinalOutput::get();
-        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
-        $functions = $accounts->pluck('func');
+        // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        // $functions = $accounts->pluck('func');
+        $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
         //dd($id);
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
@@ -125,8 +133,12 @@ class PAPController extends Controller
             'idmfo',
             'MOV',
         ]);
-        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
-        $functions = $accounts->pluck('func');
+        // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        // $functions = $accounts->pluck('func');
+        $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
         // dd($data);
         return inertia('PAPS/Create', [
             "editData" => $data,
