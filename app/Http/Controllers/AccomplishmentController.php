@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class AccomplishmentController extends Controller
 {
+    protected $model, $targ;
     public function __construct(Accomplishment $model, Target $targ)
     {
         //$this->middleware(['auth','verified']);

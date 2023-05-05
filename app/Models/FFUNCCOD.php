@@ -17,6 +17,8 @@ class FFUNCCOD extends Model
         'DEPTHEAD',
     ];
 
-
+    public function acc(){
+        return $this -> hasMany(AccountAccess::class, 'ffunccod', 'FFUNCCOD');
+    }
 
 }

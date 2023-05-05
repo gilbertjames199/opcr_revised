@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class IssueController extends Controller
 {
+    protected $model;
     //
     public function __construct(Issue $model)
     {

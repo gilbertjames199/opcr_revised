@@ -5,26 +5,24 @@
 
     <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
     </p>-->
-    <h2>{{ revs.project_title }}</h2>
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Budget Requirement</h3>
+            <h3>HGDG Checklist</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/budget/create/${idrev}`">Add Budget Requirement</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/HGDGChecklist/create`">Add Checklist</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
-
-            <Link :href="`/paps/direct`">
+            <!-- <Link :href="'/Sectoral'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                     <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
                 </svg>
-            </Link>
+            </Link> -->
         </div>
 
         <div class="masonry-sizer col-md-6"></div>
@@ -35,19 +33,16 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Particular</th>
-                                <th>Account Code</th>
-                                <th>Amount</th>
-                                <th>Type</th>
-                                <th>Actions</th>
+                                <th>Box Number</th>
+                                <th>Sector</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dat in data">
-                                <td>{{ dat.particulars }}</td>
-                                <td>{{ dat.account_code }}</td>
-                                <td>{{ dat.amount }}</td>
-                                <td>{{ dat.category }}</td>
+
+                            <tr v-for="dat in data.data">
+                                <td>{{ dat.box_number }}</td>
+                                <td>{{ dat.sector }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -56,12 +51,9 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <!--<li><Link class="dropdown-item" :href="`/budget/${dat.id}`">Budget Requirements</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/implementation/${dat.id}`">Implementation Plan</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idpaps}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>-->
-                                            <li><Link class="dropdown-item" :href="`/budget/edit/${dat.id}`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteBudget(dat.id)">Delete</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/HGDGChecklist/${dat.id}/edit`">Add Questions</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/HGDGChecklist/${dat.id}/edit`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -93,15 +85,11 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 export default {
     props: {
-        data: Object,
-        //idstrat: String,
-        revs: Object,
-        idrev: String,
-        filters: Object,
+        data: Object
     },
     data() {
         return{
-            search: this.$props.filters.search,
+
         }
     },
     components: {
@@ -123,11 +111,10 @@ export default {
                 }
             );
         },
-        deleteBudget(id) {
-            //alert(this.idpaps);
-            let text = "WARNING!\nAre you sure you want to delete the Budget Requirement?"+id;
+        deleteSectoral(id) {
+            let text = "WARNING!\nAre you sure you want to delete the Checklist?"+id;
               if (confirm(text) == true) {
-                this.$inertia.delete("/budget/" + id+"/"+this.idrev);
+                this.$inertia.delete("/HGDGChecklist/" + id);
             }
         },
         getAccomplishment(tar_id){

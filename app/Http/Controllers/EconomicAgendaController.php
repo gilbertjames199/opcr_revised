@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class EconomicAgendaController extends Controller
 {
+    protected $model;
     public function __construct(EconomicAgenda $model)
     {
        $this->model = $model;

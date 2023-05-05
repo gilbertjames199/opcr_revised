@@ -28,6 +28,7 @@
                             :searchable="true"
                             v-model="form.particulars"
                             @select="setCode"
+                            :value="form.particulars"
                             @search-change="typed = $event"
                         >
                         </multiselect>
@@ -48,6 +49,7 @@
                     <option>Personal Services</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.category">{{ form.errors.category }}</div>
+                <!---->
                 <label>CATEGORY 2</label>
                 <select class="form-control" v-model="form.category_gad">
                     <option>GAD</option>
@@ -139,6 +141,7 @@ export default {
             this.form.revision_plan_id=this.idrev
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
+                this.form.id = this.editData.id
                 this.form.revision_plan_id=this.editData.revision_plan_id
                 this.form.particulars=this.editData.particulars
                 this.form.account_code=this.editData.account_code
@@ -148,6 +151,11 @@ export default {
             } else {
                 this.pageTitle = "Create"
 
+                this.form.particulars =this.budgets[0];
+                var ind=this.codes.indexOf(parseInt(this.form.particulars));
+                //alert(ind);
+                this.form.particulars=this.accounts[ind];
+                //this.budget_code = this.budgets.indexOf(this.form.account_code.toString());
             }
 
         },
@@ -161,8 +169,10 @@ export default {
                 //alert(this.budgets)
                 //alert(indr);
                 if (this.editData !== undefined) {
+                // alert(this.form.revision_plan_id);
+                // alert(this.form.id);
                     //alert('patch');
-                    this.form.patch("/strategies/", this.form);
+                    this.form.patch("/budget/update/"+this.form.revision_plan_id, this.form);
                 } else {
                     this.form.id=null;
                     //alert('store');

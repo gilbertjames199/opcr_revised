@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ChiefAgendaController extends Controller
 {
-
+    protected $model;
     public function __construct(ChiefAgenda $model)
     {
        $this->model = $model;

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ELAController extends Controller
 {
+    protected $model;
     public function __construct(ELA $model)
     {
         $this->model = $model;

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class IndicatorController extends Controller
 {
+    protected $model;
     public function __construct(Indicator $model)
     {
         //$this->middleware(['auth','verified']);

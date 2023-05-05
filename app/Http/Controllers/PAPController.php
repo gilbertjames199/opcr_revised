@@ -177,8 +177,8 @@ class PAPController extends Controller
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
                 })
-                ->Join(DB::raw('projects.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
-                ->Join(DB::raw('projects.systemusers sysu'),'sysu.recid','=','acc.iduser')
+                ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
+                ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
                 ->where('sysu.recid',$idn)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
