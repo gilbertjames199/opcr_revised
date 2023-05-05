@@ -42,12 +42,12 @@ __webpack_require__.r(__webpack_exports__);
         replace: true
       });
     },
-    deleteBudget: function deleteBudget(id) {
+    deleteImp: function deleteImp(id) {
       //alert(this.idpaps);
-      var text = "WARNING!\nAre you sure you want to delete the Budget Requirement?" + id;
+      var text = "WARNING!\nAre you sure you want to delete the Implementation Plan?" + id;
 
       if (confirm(text) == true) {
-        this.$inertia["delete"]("/budget/" + id + "/" + this.idrev);
+        this.$inertia["delete"]("/implementation/" + id);
       }
     },
     getAccomplishment: function getAccomplishment(tar_id) {
@@ -404,7 +404,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "text-danger dropdown-item",
       onClick: function onClick($event) {
-        return $options.deleteBudget(dat.id);
+        return $options.deleteImp(dat.id);
       }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -459,7 +459,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
         "class": "text-danger dropdown-item",
         onClick: function onClick($event) {
-          return $options.deleteBudget(act.id);
+          return $options.deleteImp(act.id);
         }
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {

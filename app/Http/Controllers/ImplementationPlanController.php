@@ -266,7 +266,15 @@ class ImplementationPlanController extends Controller
         }
         //dd($rev);
         return redirect('/implementation/'.$request->idrev_plan)
-        ->with('message','Successfully added implementation plan');
+        ->with('message','Successfully updated implementation plan');
     }
-    public function destroy(Request $request){}
+    public function destroy(Request $request, $id){
+        //dd($id);
+        $data = $this->model->findOrFail($request->id);
+
+        $data->delete();
+
+        //dd($request->raao_id);
+        return back()->with('warning', 'Implementation Plan Deleted');
+    }
 }
