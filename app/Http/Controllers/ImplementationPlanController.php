@@ -34,7 +34,7 @@ class ImplementationPlanController extends Controller
                 ->where('idrev_plan',$id)
                 ->where('idstrategy','<>',NULL)
                 ->Join('strategies','strategies.id','implementation_plans.idstrategy')
-                ->Join('issues','issues.id','implementation_plans.idissue')
+                ->leftJoin('issues','issues.id','implementation_plans.idissue')
                 ->get()
                 ->map(function($item){
                     //dd($item->idrev_plan);
