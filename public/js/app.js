@@ -2231,6 +2231,22 @@ var map = {
 	"./Users/Settings.vue": [
 		"./resources/js/Pages/Users/Settings.vue",
 		"resources_js_Pages_Users_Settings_vue"
+	],
+	"./hgdg_checklist/Create": [
+		"./resources/js/Pages/hgdg_checklist/Create.vue",
+		"resources_js_Pages_hgdg_checklist_Create_vue"
+	],
+	"./hgdg_checklist/Create.vue": [
+		"./resources/js/Pages/hgdg_checklist/Create.vue",
+		"resources_js_Pages_hgdg_checklist_Create_vue"
+	],
+	"./hgdg_checklist/Index": [
+		"./resources/js/Pages/hgdg_checklist/Index.vue",
+		"resources_js_Pages_hgdg_checklist_Index_vue"
+	],
+	"./hgdg_checklist/Index.vue": [
+		"./resources/js/Pages/hgdg_checklist/Index.vue",
+		"resources_js_Pages_hgdg_checklist_Index_vue"
 	]
 };
 function webpackAsyncContext(req) {
