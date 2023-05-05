@@ -51,8 +51,11 @@ class MFOController extends Controller
         $SocietalGoals=SocietalGoal::get();
         $SectorOutcomes=Sectoral::get();
         $OrganizationalOutcomes=OrganizationalGoal::get();
-        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
-        $functions = $accounts->pluck('func');
+        $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
+        //$functions = $accounts->pluck('func');
         //dd($accounts);
         return inertia('MFOs/Create', [
             'societalGoals'=>$SocietalGoals,
@@ -96,8 +99,10 @@ class MFOController extends Controller
             'id_sec_outcome',
             'FFUNCCOD'
         ]);
-        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
-        $functions = $accounts->pluck('func');
+        $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
         //dd($idinteroutcome);
         return inertia('MFOs/Create', [
             "editData" => $data,

@@ -201,20 +201,29 @@ class ImplementationPlanController extends Controller
         ]);
     }
     public function act_edit(Request $request, $id){
-        dd($id);
+        //dd($id);
         $data = $this->model->where('id', $id)->first([
             'id',
             'idrev_plan',
-            'idstrategy',
+            'idactivity',
             'idissue',
             'date_from',
             'date_to',
             'cc_topology'
         ]);
         $idrev_plan= $data->idrev_plan;
-        $idstrat= $data->idstrategy;
-        $implans = $this->model->where('idrev_plan',$idrev_plan )->get();
+
+        //Get the strategy ID of the activity
+        //dd($data->idactivity);
+        $idstrat= Activity::select('strategy_id')->findOrFail($data->idactivity);
+        $idstrat=$idstrat->strategy_id;
+        //dd($idstrat);
+        //Get the activities with the strategy ID
         $activities = Activity::where('strategy_id',$idstrat)->get();
+        //dd($activities);
+        //dd($idstrat->strategy_id);
+        $implans = $this->model->where('idrev_plan',$idrev_plan )->get();
+
         $issues = Issue::get();
         $exist_act =ImplementationPlan::where('idrev_plan',$idrev_plan)->get();
         $exist_act = $exist_act->pluck('idactivity');
@@ -224,6 +233,7 @@ class ImplementationPlanController extends Controller
             "activities"=>$activities,
             "issues"=>$issues,
             "exist_act"=>$exist_act,
+            "editData"=>$data,
             "can"=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

@@ -301,7 +301,6 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}/{idbudget}', [BudgetRequirementController::class, 'destroy']);
         Route::patch('/update/{idrev}', [BudgetRequirementController::class, 'update']);
     });
-<<<<<<< HEAD
     //Implementation Plan
     Route::prefix('/implementation')->group(function(){
         Route::get('/{id}',[ImplementationPlanController::class,'index']);
@@ -314,7 +313,6 @@ Route::middleware('auth')->group(function() {
         Route::get('/create/activity/{idstrat}/{idrev_plan}',[ImplementationPlanController::class,'act_create']);
         Route::get('/edit/activity/{id}',[ImplementationPlanController::class,'act_edit']);
     });
-=======
 
         //hgdg_checklist
         Route::prefix('/HGDGChecklist')->group(function(){
@@ -325,7 +323,6 @@ Route::middleware('auth')->group(function() {
             Route::patch('/{id}', [HGDGChecklistController::class, 'update']);
             Route::delete('/{id}', [HGDGChecklistController::class, 'destroy']);
         });
->>>>>>> edae88a44bf7970555a42ffcc1a720f8ce800f44
     //SubSector
     Route::prefix('/subsector')->group(function(){});
 });
