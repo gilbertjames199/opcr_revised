@@ -307,7 +307,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/create/{idrev}',[ImplementationPlanController::class,'create']);
         Route::post('/store',[ImplementationPlanController::class,'store']);
         Route::get('/edit/{id}',[ImplementationPlanController::class,'edit']);
-        Route::delete('/{idrev}/{id}', [ImplementationPlanController::class, 'destroy']);
+        Route::delete('/{id}', [ImplementationPlanController::class, 'destroy']);
         Route::patch('/update/{idrev}', [ImplementationPlanController::class, 'update']);
         //implementation/create/activity/${dat.id}
         Route::get('/create/activity/{idstrat}/{idrev_plan}',[ImplementationPlanController::class,'act_create']);
