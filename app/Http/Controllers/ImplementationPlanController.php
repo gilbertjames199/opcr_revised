@@ -253,7 +253,16 @@ class ImplementationPlanController extends Controller
                 'cc_topology' => $request->cc_topology
             ]);
         }else{
-
+            $data = $this->model->findOrFail($request->id);
+            //dd($request);
+            //dd($request->plan_period);
+            $data->update([
+                'idactivity'=>$request->idactivity,
+                'idissue' => $request->idissue,
+                'date_from' => $request->date_from,
+                'date_to' => $request->date_to,
+                'cc_topology' => $request->cc_topology
+            ]);
         }
         //dd($rev);
         return redirect('/implementation/'.$request->idrev_plan)
