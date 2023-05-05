@@ -21,7 +21,7 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
 
-                <label>ACTIVITY</label>{{ strategies }}
+                <label>ACTIVITY</label><!--{{ activities }}{{ this.form.idactivity }}-->
                 <select class="form-control" v-model="form.idactivity" >
                     <option v-for="activity in activities" :value="activity.id">
                         {{ activity.description }}
@@ -153,7 +153,7 @@ export default {
             submit() {
                 var indr=this.exist_act.indexOf(parseInt(this.form.idactivity));
                 if (this.editData !== undefined) {
-                    this.form.patch("/budget/update/"+this.form.revision_plan_id, this.form);
+                    this.form.patch("/implementation/update/"+this.form.revision_plan_id, this.form);
                 } else {
                     this.form.id=null;
                     if(indr<0){

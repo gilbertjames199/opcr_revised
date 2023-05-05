@@ -73,7 +73,7 @@
                                             </button>
                                             <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
                                                 <li><Link class="dropdown-item" :href="`/implementation/edit/${dat.id}`">Edit</Link></li>
-                                                <li><Link class="text-danger dropdown-item" @click="deleteBudget(dat.id)">Delete</Link></li>
+                                                <li><Link class="text-danger dropdown-item" @click="deleteImp(dat.id)">Delete</Link></li>
                                                 <li><Link class="text-danger dropdown-item" :href="`/implementation/create/activity/${dat.idstrategy}/${dat.idrev_plan}`">{{ dat.idstrategy }} Implementation -Activity</Link></li>
                                             </ul>
                                         </div>
@@ -103,7 +103,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
                                                     <li><Link class="dropdown-item" :href="`/implementation/edit/activity/${act.id}`">Edit</Link></li>
-                                                    <li><Link class="text-danger dropdown-item" @click="deleteBudget(act.id)">Delete</Link></li>
+                                                    <li><Link class="text-danger dropdown-item" @click="deleteImp(act.id)">Delete</Link></li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -169,11 +169,11 @@ export default {
                 }
             );
         },
-        deleteBudget(id) {
+        deleteImp(id) {
             //alert(this.idpaps);
-            let text = "WARNING!\nAre you sure you want to delete the Budget Requirement?"+id;
+            let text = "WARNING!\nAre you sure you want to delete the Implementation Plan?"+id;
               if (confirm(text) == true) {
-                this.$inertia.delete("/budget/" + id+"/"+this.idrev);
+                this.$inertia.delete("/implementation/" + id);
             }
         },
         getAccomplishment(tar_id){
