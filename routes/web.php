@@ -32,6 +32,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SectoralController;
 use App\Http\Controllers\ChiefAgendaController;
 use App\Http\Controllers\EconomicAgendaController;
+use App\Http\Controllers\ImplementationPlanController;
 use App\Http\Controllers\LogFrameController;
 use App\Http\Controllers\ProjectProfileController;
 use App\Http\Controllers\RAController;
@@ -40,6 +41,7 @@ use App\Http\Controllers\SocietalGoalController;
 use App\Http\Controllers\IssueController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
+use App\Models\ImplementationPlan;
 use App\Models\IntermediateOutcome;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -294,7 +296,21 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}',[BudgetRequirementController::class,'index']);
         Route::get('/create/{idrev}',[BudgetRequirementController::class,'create']);
         Route::post('/store',[BudgetRequirementController::class,'store']);
-        Route::post('/edit/{idbudget}',[BudgetRequirementController::class,'store']);
+        Route::get('/edit/{idbudget}',[BudgetRequirementController::class,'edit']);
+        Route::delete('/{id}/{idbudget}', [BudgetRequirementController::class, 'destroy']);
+        Route::patch('/update/{idrev}', [BudgetRequirementController::class, 'update']);
+    });
+    //Implementation Plan
+    Route::prefix('/implementation')->group(function(){
+        Route::get('/{id}',[ImplementationPlanController::class,'index']);
+        Route::get('/create/{idrev}',[ImplementationPlanController::class,'create']);
+        Route::post('/store',[ImplementationPlanController::class,'store']);
+        Route::get('/edit/{id}',[ImplementationPlanController::class,'edit']);
+        Route::delete('/{idrev}/{id}', [ImplementationPlanController::class, 'destroy']);
+        Route::patch('/update/{idrev}', [ImplementationPlanController::class, 'update']);
+        //implementation/create/activity/${dat.id}
+        Route::get('/create/activity/{idstrat}/{idrev_plan}',[ImplementationPlanController::class,'act_create']);
+        Route::get('/edit/activity/{id}',[ImplementationPlanController::class,'act_edit']);
     });
     //SubSector
     Route::prefix('/subsector')->group(function(){});

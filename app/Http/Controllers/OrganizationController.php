@@ -22,8 +22,8 @@ class OrganizationController extends Controller
         $idn = auth()->user()->recid;
         $data = $this->model
                 ->orderBy('created_at', 'desc')
-                ->Join(DB::raw('projects.accountaccess acc'),'acc.FFUNCCOD','=','organizational_goals.FFUNCCOD')
-                ->Join(DB::raw('projects.systemusers sysu'),'sysu.recid','=','acc.iduser')
+                ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','organizational_goals.FFUNCCOD')
+                ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
                 ->where('sysu.recid',$idn)
                 ->paginate(10)
                 ->withQueryString();
@@ -38,8 +38,11 @@ class OrganizationController extends Controller
     }
 
     public function create(Request $request){
-        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
-        $functions = $accounts->pluck('func');
+        $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->Join(DB::Raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
+       // dd($accounts);
+        //$functions = $accounts->pluck('func');
         return inertia('Organizational/addOrganizational',[
             'functions'=>$functions,
             'can'=>[
