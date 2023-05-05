@@ -142,7 +142,8 @@ export default {
         deletePAPS(id) {
             let text = "WARNING!\nAre you sure you want to delete the Program and Projects? "+id;
               if (confirm(text) == true) {
-                this.$inertia.delete("/paps/" + id+"/"+this.idmfo);
+                //this.$inertia.delete("/paps/" + id+"/"+this.idmfo);
+                this.$inertia.delete("/paps/" + id+"/");
             }
         }
     }
