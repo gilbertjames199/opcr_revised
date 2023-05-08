@@ -18,6 +18,7 @@ class CreateHGDGQuestionsTable extends Migration
             $table->string('question_number',10)->comment('Item number of the question');
             $table->Text('question')->comment('HGDG Question');
             $table->Integer('checklist_id')->comment('ID of the checklist');
+            $table->decimal('score')->comment('Possible score for Partially Done');
             $table->tinyInteger('has_subquestion')->comment('Indicate if the question has subquestions (0 -no/1 -yes)');
             $table->bigInteger('question_id')->comment('ID of the parent question/subquestion');
             $table->timestamps();
