@@ -40,6 +40,7 @@ use App\Http\Controllers\RevisionPlanController;
 use App\Http\Controllers\SocietalGoalController;
 use App\Http\Controllers\IssueController;
 use App\Http\Controllers\HGDGChecklistController;
+use App\Http\Controllers\HGDGQuestionController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -314,15 +315,27 @@ Route::middleware('auth')->group(function() {
         Route::get('/edit/activity/{id}',[ImplementationPlanController::class,'act_edit']);
     });
 
-        //hgdg_checklist
-        Route::prefix('/HGDGChecklist')->group(function(){
-            Route::get('/',[HGDGChecklistController::class,'index']);
-            Route::get('/create',[HGDGChecklistController::class,'create']);
-            Route::post('/',[HGDGChecklistController::class,'store']);
-            Route::get('/{id}/edit', [HGDGChecklistController::class, 'edit']);
-            Route::patch('/{id}', [HGDGChecklistController::class, 'update']);
-            Route::delete('/{id}', [HGDGChecklistController::class, 'destroy']);
-        });
+    //hgdg_checklist
+    Route::prefix('/HGDGChecklist')->group(function(){
+        Route::get('/',[HGDGChecklistController::class,'index']);
+        Route::get('/create',[HGDGChecklistController::class,'create']);
+        Route::post('/',[HGDGChecklistController::class,'store']);
+        Route::get('/{id}/edit', [HGDGChecklistController::class, 'edit']);
+        Route::patch('/{id}', [HGDGChecklistController::class, 'update']);
+        Route::delete('/{id}', [HGDGChecklistController::class, 'destroy']);
+    });
+
+    //hgdg_questions
+    Route::prefix('/HGDGQuestions')->group(function(){
+        Route::get('/{checklist_id}',[HGDGQuestionController::class,'index']);
+        Route::get('/create/{checklist_id}',[HGDGQuestionController::class,'create']);
+        Route::post('/store',[HGDGQuestionController::class,'store']);
+        Route::get('/{id}/edit', [HGDGQuestionController::class, 'edit']);
+        Route::patch('/{id}', [HGDGQuestionController::class, 'update']);
+        Route::delete('/delete/{id}', [HGDGQuestionController::class, 'destroy']);
+        //Subquestions
+        Route::get('/create/subquestions/{checklist_id}/{question_id}',[HGDGQuestionController::class,'subcreate']);
+    });
     //SubSector
     Route::prefix('/subsector')->group(function(){});
 });

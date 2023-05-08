@@ -2247,6 +2247,22 @@ var map = {
 	"./hgdg_checklist/Index.vue": [
 		"./resources/js/Pages/hgdg_checklist/Index.vue",
 		"resources_js_Pages_hgdg_checklist_Index_vue"
+	],
+	"./hgdg_question/Create": [
+		"./resources/js/Pages/hgdg_question/Create.vue",
+		"resources_js_Pages_hgdg_question_Create_vue"
+	],
+	"./hgdg_question/Create.vue": [
+		"./resources/js/Pages/hgdg_question/Create.vue",
+		"resources_js_Pages_hgdg_question_Create_vue"
+	],
+	"./hgdg_question/Index": [
+		"./resources/js/Pages/hgdg_question/Index.vue",
+		"resources_js_Pages_hgdg_question_Index_vue"
+	],
+	"./hgdg_question/Index.vue": [
+		"./resources/js/Pages/hgdg_question/Index.vue",
+		"resources_js_Pages_hgdg_question_Index_vue"
 	]
 };
 function webpackAsyncContext(req) {

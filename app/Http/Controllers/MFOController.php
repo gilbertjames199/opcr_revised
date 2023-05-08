@@ -146,6 +146,8 @@ class MFOController extends Controller
                 ->where('sysu.recid',$idn)
                 ->paginate(10)
                 ->withQueryString();
+
+                // dd($data);
         //dd($data);
         //dd($data->pluck('mfo_desc'));
         return inertia('MFOs/Direct',[

@@ -170,7 +170,7 @@ export default {
                     this.form.objective=this.duplicate[0].objective
                     this.form.beneficiaries=this.duplicate[0].beneficiaries
                 }else{
-                    alert('undefined si idpaps!');
+                    //alert('undefined si idpaps!');
                 }
             }
 

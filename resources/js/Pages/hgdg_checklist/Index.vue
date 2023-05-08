@@ -51,7 +51,7 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/HGDGChecklist/${dat.id}/edit`">Add Questions</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/HGDGQuestions/${dat.id}`">Add Questions</Link></li>
                                             <li><Link class="dropdown-item" :href="`/HGDGChecklist/${dat.id}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">Delete</Link></li>
                                         </ul>
@@ -89,15 +89,12 @@ export default {
     },
     data() {
         return{
-
         }
     },
     components: {
         Pagination, Filtering,
     },
-
     methods:{
-
         showCreate(){
             this.$inertia.get(
                 "/targets/create",
@@ -135,7 +132,6 @@ export default {
             accomp.forEach(myFunction);
             function myFunction(item){
                 accSum += parseFloat(item.accomplishment_qty)
-
             }
             var percentt = (accSum/targqty)*100
             percentt=this.format_number(percentt,2,true)

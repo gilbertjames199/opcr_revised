@@ -20,8 +20,8 @@ class CreateImplementationPlansTable extends Migration
             $table->Integer('idactivity')->nullable()->comment('Activity ID');
             $table->Integer('idstrategy')->nullable()->comment('Strategy ID');
             $table->Integer('idissue')->nullable()->comment('Gender Issues ID');
-            $table->date('date_from')->comment('date from');
-            $table->date('date_to')->comment('date to');
+            $table->date('date_from')->nullable()->comment('date from');
+            $table->date('date_to')->nullable()->comment('date to');
             $table->decimal('amount',12,2)->nullable()->comment('Budget/cost of the implementation plan');
             $table->decimal('cc_adaptation',12,2)->nullable()->comment('Budget/cost for climate change adaptation');
             $table->decimal('cc_migitagion',12,2)->nullable()->comment('Budget/cost for climate change mitigation');
