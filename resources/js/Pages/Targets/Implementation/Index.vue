@@ -12,8 +12,7 @@
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
-                <div class="peer">targets
-
+                <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/targets/${imp_id}/implementation/add`">Add Target</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>

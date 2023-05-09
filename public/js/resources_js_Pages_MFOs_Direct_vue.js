@@ -22,7 +22,10 @@ __webpack_require__.r(__webpack_exports__);
     idoutcome: String
   },
   data: function data() {
-    return {};
+    return {
+      mfosel: "",
+      filter: false
+    };
   },
   components: {
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_1__["default"],
