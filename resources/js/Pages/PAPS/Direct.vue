@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Programs and Projects</h3>
+            <h3>Programs and Projects </h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -25,7 +25,15 @@
                 </svg>
             </Link> -->
         </div>
-
+        <filtering v-if="filter" @closeFilter="filter=false">
+            Filter by MFO
+            <select v-model="mfosel" class="form-control" @change="filterData()">
+                <option v-for="mfo in mfos" :value="mfo.id">
+                    {{ mfo.mfo_desc }}
+                </option>
+            </select>
+            <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
+        </filtering>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -94,11 +102,13 @@ export default {
         // idinteroutcome: String,
         // idoutcome: String,
         // idmfo: String,
-        can: Object
+        can: Object,
+        mfos: Object
     },
     data() {
         return{
             search: this.$props.filters.search,
+            filter: false,
         }
     },
     watch: {
@@ -120,11 +130,28 @@ export default {
 
     methods:{
 
-        showCreate(){
+
+        deleteMFO(id) {
+            let text = "WARNING!\nAre you sure you want to delete the PAP?";
+              if (confirm(text) == true) {
+                this.$inertia.delete("/paps/" + id+"/");
+            }
+        },
+        showFilter() {
+            //alert("show filter");
+            this.filter = !this.filter
+        },
+        async clearFilter(){
+            this.mfosel="";
+            this.filterData();
+        },
+        async filterData(){
+            //alert(this.mfosel);
+
             this.$inertia.get(
-                "/targets/create",
+                "/paps/direct",
                 {
-                    raao_id: this.raao_id
+                    mfosel: this.mfosel
                 },
                 {
                     preserveScroll: true,
@@ -132,12 +159,6 @@ export default {
                     replace: true,
                 }
             );
-        },
-        deleteMFO(id) {
-            let text = "WARNING!\nAre you sure you want to delete the PAP?";
-              if (confirm(text) == true) {
-                this.$inertia.delete("/paps/" + id+"/");
-            }
         }
     }
 };

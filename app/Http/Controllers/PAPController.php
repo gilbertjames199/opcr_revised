@@ -20,6 +20,7 @@ class PAPController extends Controller
 
     public function index(Request $request, $id)
     {
+        //dd("not direct");
         $data = ProgramAndProject::where('idmfo',$id)
                 ->with('MFO')
                 ->when($request->search, function($query, $searchItem){
@@ -184,10 +185,14 @@ class PAPController extends Controller
 
     public function direct(Request $request){
         //dd("direct");
+        //dd($request->mfosel);
         $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
+                })
+                ->when($request->mfosel, function($query, $searchItem){
+                    $query->where('idmfo','=',$searchItem);
                 })
                 ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
                 ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
@@ -195,10 +200,12 @@ class PAPController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
-
+        $mfos=MajorFinalOutput::all();
+        //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('PAPS/Direct',[
             "data"=>$data,
+            "mfos"=>$mfos,
             "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),

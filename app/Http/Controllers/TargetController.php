@@ -120,6 +120,14 @@ class TargetController extends Controller
     public function store_i(Request $request){
         //dd("store");
         //dd($request->idpdip);
+
+        // $brg=$request->brgy;
+        // dd($request);
+        // $mun=$request->municipality;
+        // if(!$brg){
+        //     $request->merge(['brgy','-']);
+        // }
+        // dd($request->brgy);
         $attributes = $request->validate(Target::rules(), Target::errorMessages());
         $this->model->create($attributes);
         //dd($attributes);
