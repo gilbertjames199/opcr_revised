@@ -2160,6 +2160,22 @@ var map = {
 		"./resources/js/Pages/Targets/Direct.vue",
 		"resources_js_Pages_Targets_Direct_vue"
 	],
+	"./Targets/Implementation/Create": [
+		"./resources/js/Pages/Targets/Implementation/Create.vue",
+		"resources_js_Pages_Targets_Implementation_Create_vue"
+	],
+	"./Targets/Implementation/Create.vue": [
+		"./resources/js/Pages/Targets/Implementation/Create.vue",
+		"resources_js_Pages_Targets_Implementation_Create_vue"
+	],
+	"./Targets/Implementation/Index": [
+		"./resources/js/Pages/Targets/Implementation/Index.vue",
+		"resources_js_Pages_Targets_Implementation_Index_vue"
+	],
+	"./Targets/Implementation/Index.vue": [
+		"./resources/js/Pages/Targets/Implementation/Index.vue",
+		"resources_js_Pages_Targets_Implementation_Index_vue"
+	],
 	"./Targets/Index": [
 		"./resources/js/Pages/Targets/Index.vue",
 		"resources_js_Pages_Targets_Index_vue"

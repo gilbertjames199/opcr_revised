@@ -99,6 +99,13 @@ Route::middleware('auth')->group(function() {
         Route::get('/{raao_id}/{year}/create', [TargetController::class, 'create']);
         Route::get('/{id}/edit', [TargetController::class, 'edit']);
         Route::get('/return/{target_id}',[TargetController::class,'ret']);
+
+        Route::get('/{imp_id}/implementation',[TargetController::class,'index_i']);
+        Route::get('/{imp_id}/implementation/add',[TargetController::class,'create_i']);
+        Route::post('/{imp_id}/implementation/store',[TargetController::class,'store_i']);
+        Route::get('/{imp_id}/implementation/{id}/edit',[TargetController::class,'edit_i']);
+        Route::patch('/{imp_id}/implementation/update',[TargetController::class,'update_i']);
+        Route::post('/{imp_id}/implementation/delete/{id}/destroy',[TargetController::class,'destroy_i']);
     });
 
     //Organization

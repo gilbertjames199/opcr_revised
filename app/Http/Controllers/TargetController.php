@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ImplementationPlan;
+use App\Models\Indicator;
+use App\Models\ProgramAndProject;
 use App\Models\RAAOHS;
+use App\Models\RevisionPlan;
 use App\Models\Target;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class TargetController extends Controller
 {
+    protected $model;
     public function __construct(Target $model)
     {
         //$this->middleware(['auth','verified']);
@@ -61,6 +66,133 @@ class TargetController extends Controller
             ],
         ]);
     }
+    public function index_i(Request $request, $imp_id){
+        //dd($imp_id);
+        $data = $this->model->where("idimplementation",$imp_id)
+            ->paginate(10);
+
+
+        $implementation = ImplementationPlan::findOrFail($imp_id);
+        $revision =RevisionPlan::findOrFail($implementation->idrev_plan);
+        $idrev_plan = $revision->id;
+        //dd($idrev_plan);
+        //dd($data);
+        //dd($data);
+        return inertia('Targets/Implementation/Index',[
+            'data'=>$data,
+            "imp_id"=>$imp_id,
+            "idrev_plan"=>$idrev_plan,
+            "filters" => $request->only(['search']),
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
+    }
+    public function create_i(Request $request, $imp_id){
+        $implementation_plan = ImplementationPlan::select("*")
+                ->where("implementation_plans.id",$imp_id)
+                ->join('activities','activities.id','implementation_plans.idactivity')
+                ->first();
+                //dd($implementation_plan->idrev_plan);
+        $revision_plan = RevisionPlan::findOrFail($implementation_plan->idrev_plan);
+        $paps = ProgramAndProject::findOrFail($revision_plan->idpaps);
+        $indicator=Indicator::select('id','description')->get();
+        $mun=DB::table('municipalities')
+            ->select('citymunDesc','citymunCode')
+            ->get();
+            //dd($mun);
+        return inertia('Targets/Implementation/Create',[
+            'implementation_plan'=>$implementation_plan,
+            'revision_plan'=>$revision_plan,
+            'paps'=>$paps,
+            "imp_id"=>$imp_id,
+            "filters" => $request->only(['search']),
+            'raao_id'=>$imp_id,
+            "indicator"=>$indicator,
+            'mun'=>$mun,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
+    }
+    public function store_i(Request $request){
+        //dd("store");
+        //dd($request->idpdip);
+        $attributes = $request->validate(Target::rules(), Target::errorMessages());
+        $this->model->create($attributes);
+        //dd($attributes);
+        //dd($attributes);Route::get('/{imp_id}/implementation',[TargetController::class,'index_i']);
+        return redirect('/targets/'.$request->idimplementation.'/implementation')
+                ->with('message','Target added');
+    }
+    public function edit_i(Request $request,$imp_id, $id){
+        //dd("edit: ".$id." imp: ".$imp_id);
+        $implementation_plan = ImplementationPlan::select("*")
+                ->where("implementation_plans.id",$imp_id)
+                ->join('activities','activities.id','implementation_plans.idactivity')
+                ->first();
+                //dd($implementation_plan->idrev_plan);
+        $revision_plan = RevisionPlan::findOrFail($implementation_plan->idrev_plan);
+        $paps = ProgramAndProject::findOrFail($revision_plan->idpaps);
+        $indicator=Indicator::select('id','description')->get();
+        $mun=DB::table('municipalities')
+            ->select('citymunDesc','citymunCode')
+            ->get();
+        $data = $this->model->where('id', $id)->first([
+            'id',
+            'idpdip',
+            'idindicator',
+            'description',
+            'brgy',
+            'municipality',
+            'planned_period_from',
+            'planned_period_to',
+            'planned_budget',
+            'target_qty',
+            'onsite_tag',
+            'idimplementation',
+            'target_qty1',
+            'target_qty2',
+            'target_qty3',
+            'target_qty4'
+        ]);
+            //dd($mun);
+        return inertia('Targets/Implementation/Create',[
+            'implementation_plan'=>$implementation_plan,
+            'editData'=>$data,
+            'revision_plan'=>$revision_plan,
+            'paps'=>$paps,
+            "imp_id"=>$imp_id,
+            "filters" => $request->only(['search']),
+            'raao_id'=>$imp_id,
+            "indicator"=>$indicator,
+            'mun'=>$mun,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
+    }
+    public function update_i(Request $request,$imp_id){
+        //dd("update:  imp: ".$imp_id);
+        $data = $this->model->findOrFail($request->id);
+        //dd($request);
+        $validatedData = $request->validate(Target::rules(), Target::errorMessages());
+        $data->update($validatedData);
+
+        return redirect('/targets/'.$request->idimplementation.'/implementation')
+                ->with('message','Target updated!');
+    }
+    public function destroy_i(Request $request,$imp_id, $id){
+        //dd("destroy i");
+        $data = $this->model->findOrFail($id);
+        $data->delete();
+        //dd($request->raao_id);
+        return redirect('/targets/'.$imp_id.'/implementation')->with('warning', 'Target deleted');
+    }
+
     public function list(Request $request, $raao_id)
     {
         $raao_id1='0';
@@ -99,6 +231,7 @@ class TargetController extends Controller
 
     public function create(Request $request, $raao_id, $year)
     {
+
         if(!$year){
             $today = Carbon::now();
             $year = ''.$today->year.'';
@@ -307,6 +440,7 @@ class TargetController extends Controller
     }
     public function destroy(Request $request)
     {
+        //dd('wrong destroy');
         $data = $this->model->findOrFail($request->id);
         $data->delete();
         //dd($request->raao_id);
