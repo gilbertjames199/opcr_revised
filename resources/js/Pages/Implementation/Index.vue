@@ -104,6 +104,7 @@
                                                 <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
                                                     <li><Link class="dropdown-item" :href="`/implementation/edit/activity/${act.id}`">Edit</Link></li>
                                                     <li><Link class="text-danger dropdown-item" @click="deleteImp(act.id)">Delete</Link></li>
+                                                    <li><Link class="text-danger dropdown-item" :href="`/targets/${act.id}/implementation`">Targets</Link></li>
                                                 </ul>
                                             </div>
                                         </td>

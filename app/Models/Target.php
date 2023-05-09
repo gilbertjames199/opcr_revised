@@ -11,7 +11,7 @@ class Target extends Model
     protected $connection = "mysql";
     protected $table='targets';
     protected $fillable = [
-        'idraao',
+        'idpdip',
         'idooe',
         'idindicator',
         'description',
@@ -22,6 +22,7 @@ class Target extends Model
         'planned_budget',
         'target_qty',
         'onsite_tag',
+        'idimplementation',
         'target_qty1',
         'target_qty2',
         'target_qty3',
@@ -33,7 +34,7 @@ class Target extends Model
     }
     public static function rules(){
         return [
-            'idraao'=>'required|numeric',
+            'idpdip'=>'required|numeric',
             //'idooe'=>'required|numeric',
             'idindicator'=>'required|numeric',
             'description'=> 'required',
@@ -42,6 +43,7 @@ class Target extends Model
             'planned_period_from'=> 'required',
             'planned_period_to'=> 'required',
             'planned_budget'=>'required|numeric',
+            'idimplementation'=>'required',
             'target_qty'=>'required|numeric',
             'onsite_tag'=> 'required',
             'target_qty1'=>'required|numeric',
@@ -53,7 +55,7 @@ class Target extends Model
 
     public static function errorMessages(){
         return [
-            'idraao.required'=>'Programs and Projects field is required',
+            'idpdip.required'=>'Programs and Projects field is required',
             //'idooe.required'=>'required|numeric',
             'idindicator.required'=>'Indicator field is required',
             'description.required'=> 'Target description field is required',
@@ -64,6 +66,7 @@ class Target extends Model
             'planned_budget.required'=>'Plan budget field is required',
             'target_qty.required'=>'Target quantity field is required',
             'onsite_tag.required'=> 'Onsite tag field is required',
+            'idimplementation.required'=>"Implementation plan is required",
             'target_qty1.required'=>'Target quantity (Q1) field is required',
             'target_qty2.required'=>'Target quantity (Q2) field is required',
             'target_qty3.required'=>'Target quantity (Q3) field is required',

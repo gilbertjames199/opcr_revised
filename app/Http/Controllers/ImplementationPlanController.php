@@ -84,6 +84,8 @@ class ImplementationPlanController extends Controller
             ],
         ]);
     }
+
+
     public function create(Request $request, $idrev){
         $revs = RevisionPlan::where('id',$idrev)->first();
         $implans = $this->model->where('idrev_plan',$idrev )->get();
