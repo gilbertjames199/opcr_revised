@@ -52,6 +52,7 @@
 
                 <label for="">MUNICIPALITY </label>
                 <select class="form-control" v-model="form.municipality" @change="loadBar">
+                    <option>-</option>
                     <option v-for="munn in mun">
                         {{ munn.citymunDesc }}
                     </option>
@@ -60,7 +61,7 @@
 
                 <label for="">BARANGAY </label>
                 <select class="form-control" v-model="form.brgy">
-                    <option></option>
+                    <option>-</option>
                     <option v-for="barr in bar">
                         {{ barr.brgyDesc }}
                     </option>
@@ -290,6 +291,12 @@ export default {
             submit() {
                 this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
                 //alert(this.form.target_qty);
+                if(this.form.brgy===""){
+                    this.form.brgy="-"
+                }
+                if(this.form.municipality===""){
+                    this.form.municipality="-"
+                }
                 if (this.editData !== undefined) {
                     this.form.patch("/targets/"+ this.imp_id+'/implementation/update', this.form);
                 } else {
