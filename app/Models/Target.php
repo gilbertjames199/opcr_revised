@@ -30,7 +30,7 @@ class Target extends Model
     ];
     public function accomp()
     {
-        return $this->hasMany(Accomplishment::class,'idtarget','id');
+        return $this->hasMany(Accomplishment::class,'target_id','id');
     }
     public static function rules(){
         return [

@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
       barsel: "",
       munsel: "",
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
-        idtarget: "",
+        target_id: "",
         accomplishment_qty: "",
         actual_period_from: "",
         actual_period_to: "",
@@ -59,7 +59,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     if (this.editData !== undefined) {
       this.pageTitle = "Edit";
-      this.form.idtarget = this.editData.idtarget;
+      this.form.target_id = this.editData.target_id;
       this.form.accomplishment_qty = this.editData.accomplishment_qty;
       this.form.actual_period_from = this.editData.actual_period_from;
       this.form.actual_period_to = this.editData.actual_period_to;
@@ -84,7 +84,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.id = this.editData.id; //this.target_id=this.editData.idtarget
     } else {
       this.pageTitle = "New";
-      this.form.idtarget = this.target_id;
+      this.form.target_id = this.target_id;
     }
   },
   methods: {
@@ -484,7 +484,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Accomplishment ", 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    href: "/accomplishments/".concat($data.form.idtarget, "/list")
+    href: "/accomplishments/".concat($data.form.target_id, "/list")
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_3];
@@ -512,14 +512,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-      return $data.form.idtarget = $event;
+      return $data.form.target_id = $event;
     }),
     "class": "form-control",
     autocomplete: "chrome-off",
     disabled: ""
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.idtarget]]), $data.form.errors.idtarget ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.idtarget), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.target_id]]), $data.form.errors.target_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.target_id), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "number",

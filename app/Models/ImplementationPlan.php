@@ -22,5 +22,6 @@ class ImplementationPlan extends Model
         'cc_adaptation',
         'cc_migitagion',
         'cc_topology',
+        'person_responsible',
     ];
 }

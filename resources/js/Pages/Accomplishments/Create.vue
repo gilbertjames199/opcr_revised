@@ -3,7 +3,7 @@
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Accomplishment </h3>
-            <Link :href="`/accomplishments/${form.idtarget }/list`">
+            <Link :href="`/accomplishments/${form.target_id }/list`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                 <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -25,11 +25,11 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                     <label for="">Target </label>
                     <input type="text"
-                            v-model="form.idtarget"
+                            v-model="form.target_id"
                             class="form-control"
                             autocomplete="chrome-off"
                             disabled>
-                    <div class="fs-6 c-red-500" v-if="form.errors.idtarget">{{ form.errors.idtarget }}</div>
+                    <div class="fs-6 c-red-500" v-if="form.errors.target_id">{{ form.errors.target_id }}</div>
                 </div>
 
 
@@ -254,7 +254,7 @@ export default {
                 barsel: "",
                 munsel: "",
                 form: useForm({
-                    idtarget: "",
+                    target_id: "",
                     accomplishment_qty: "",
                     actual_period_from: "",
                     actual_period_to: "",
@@ -286,7 +286,7 @@ export default {
 
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
-                this.form.idtarget=this.editData.idtarget
+                this.form.target_id=this.editData.target_id
                 this.form.accomplishment_qty=this.editData.accomplishment_qty
                 this.form.actual_period_from=this.editData.actual_period_from
                 this.form.actual_period_to=this.editData.actual_period_to
@@ -312,7 +312,7 @@ export default {
                 //this.target_id=this.editData.idtarget
             } else {
                 this.pageTitle = "New"
-                this.form.idtarget=this.target_id;
+                this.form.target_id=this.target_id;
             }
         },
 
