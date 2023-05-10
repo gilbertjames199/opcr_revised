@@ -15,6 +15,11 @@ class BudgetRequirementController extends Controller
     {
         $this->model=$model;
     }
+    public function getFirstLastName(){
+        $date ='2023-12-31';
+        return convertDateString($date);
+        //return splitName("Gilbert James");
+    }
     public function index(Request $request, $idrev){
         $data = $this->model->where('revision_plan_id','=',$idrev)->get();
         $revs = RevisionPlan::where('id','=',$idrev)->get();

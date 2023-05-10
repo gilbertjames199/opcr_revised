@@ -63,7 +63,7 @@
                                     <td>Targets</td>
                                     <td>Budget</td>
                                     <td>{{  dat.cc_topology }}</td>
-                                    <td>Person Responsible</td>
+                                    <td>{{ dat.person_responsible }}</td>
                                     <td>
                                         <div class="dropdown dropstart" >
                                             <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -93,7 +93,7 @@
                                         <td>Targets</td>
                                         <td>Budget</td>
                                         <td>{{  act.cc_topology }}</td>
-                                        <td>Person Responsible</td>
+                                        <td>{{ act.person_responsible }}</td>
                                         <td>
                                             <div class="dropdown dropstart" >
                                                 <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

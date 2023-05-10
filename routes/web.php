@@ -308,7 +308,11 @@ Route::middleware('auth')->group(function() {
         Route::get('/edit/{idbudget}',[BudgetRequirementController::class,'edit']);
         Route::delete('/{id}/{idbudget}', [BudgetRequirementController::class, 'destroy']);
         Route::patch('/update/{idrev}', [BudgetRequirementController::class, 'update']);
+
+
     });
+    //testing helpers
+    Route::get('test-helper', [BudgetRequirementController::class, 'getFirstLastName']);
     //Implementation Plan
     Route::prefix('/implementation')->group(function(){
         Route::get('/{id}',[ImplementationPlanController::class,'index']);

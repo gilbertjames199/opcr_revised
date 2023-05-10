@@ -25,7 +25,7 @@ class AccomplishmentController extends Controller
                             ->first();*/
         //dd("target description: ".$target_description);
         $data = $this->model
-                ->where('idtarget', $request->idtarget)
+                ->where('target_id', $request->idtarget)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
@@ -65,7 +65,7 @@ class AccomplishmentController extends Controller
                                     ->orWhere('validated_remarks','like','%'.$searchItem.'%');
                                 });
                     })
-                    ->where('idtarget', $id)
+                    ->where('target_id', $id)
                     ->orderBy('created_at', 'desc')
                     ->paginate(10)
                     ->withQueryString();
@@ -105,7 +105,7 @@ class AccomplishmentController extends Controller
         $request->pass='';
 
         //return redirect('/targets')->with('raao_id',$request->idraao)->with('message', 'Target added');
-        return redirect('/accomplishments/'.$request->idtarget.'/list')
+        return redirect('/accomplishments/'.$request->target_id.'/list')
                 ->with('message','Accomplishment added');
         // $attributes = $request->validate([
         //     //'idraao' => 'required',

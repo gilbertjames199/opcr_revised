@@ -29,6 +29,7 @@ class ImplementationPlanController extends Controller
                             'implementation_plans.date_to',
                             'implementation_plans.idstrategy',
                             'implementation_plans.cc_topology',
+                            'implementation_plans.person_responsible',
                             'issues.description AS issue'
                         )
                 ->where('idrev_plan',$id)
@@ -46,7 +47,8 @@ class ImplementationPlanController extends Controller
                                                             'implementation_plans.date_to',
                                                             'implementation_plans.cc_topology',
                                                             'issues.description AS issue',
-                                                            'strategies.id AS stratt_id'
+                                                            'strategies.id AS stratt_id',
+                                                            'implementation_plans.person_responsible',
                                                 )
                                                 ->Join('activities','activities.id','implementation_plans.idactivity')
                                                 ->Join('strategies','strategies.id','=','activities.strategy_id')
@@ -66,6 +68,7 @@ class ImplementationPlanController extends Controller
                         'issue'=>$item->issue,
                         'strategy'=>$item->strategy,
                         'activity_implementation'=>$activity_implementation,
+                        'person_responsible'=>$item->person_responsible,
                     ];
                 });
         //dd($data)
@@ -123,6 +126,7 @@ class ImplementationPlanController extends Controller
             $imp->date_from = $request->date_from;
             $imp->date_to = $request->date_to;
             $imp->cc_topology = $request->cc_topology;
+            $imp->person_responsible = $request->person_responsible;
             $imp->save();
         }else{
             //dd('from A');
@@ -138,6 +142,7 @@ class ImplementationPlanController extends Controller
             $imp->date_from = $request->date_from;
             $imp->date_to = $request->date_to;
             $imp->cc_topology = $request->cc_topology;
+            $imp->person_responsible = $request->person_responsible;
             $imp->save();
         }
 
@@ -177,7 +182,8 @@ class ImplementationPlanController extends Controller
             'idissue',
             'date_from',
             'date_to',
-            'cc_topology'
+            'cc_topology',
+            'person_responsible'
         ]);
         $idrev= $data->idrev_plan;
         $revs = RevisionPlan::where('id',$idrev)->first();
@@ -211,7 +217,8 @@ class ImplementationPlanController extends Controller
             'idissue',
             'date_from',
             'date_to',
-            'cc_topology'
+            'cc_topology',
+            'person_responsible',
         ]);
         $idrev_plan= $data->idrev_plan;
 
@@ -252,7 +259,8 @@ class ImplementationPlanController extends Controller
                 'idissue' => $request->idissue,
                 'date_from' => $request->date_from,
                 'date_to' => $request->date_to,
-                'cc_topology' => $request->cc_topology
+                'cc_topology' => $request->cc_topology,
+                'person_responsible'=>$request->person_responsible
             ]);
         }else{
             $data = $this->model->findOrFail($request->id);
@@ -263,7 +271,8 @@ class ImplementationPlanController extends Controller
                 'idissue' => $request->idissue,
                 'date_from' => $request->date_from,
                 'date_to' => $request->date_to,
-                'cc_topology' => $request->cc_topology
+                'cc_topology' => $request->cc_topology,
+                'person_responsible' =>$request->person_responsible
             ]);
         }
         //dd($rev);
