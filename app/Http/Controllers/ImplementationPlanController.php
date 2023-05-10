@@ -55,14 +55,28 @@ class ImplementationPlanController extends Controller
                                                 ->leftJoin('issues','issues.id','implementation_plans.idissue')
                                                 ->where('idrev_plan',$item->idrev_plan)
                                                 ->where('strategies.id',$item->idstrategy)
-                                                ->get();
+                                                ->get()
+                                                ->map(function($item){
+                                                    return [
+                                                        'id'=>$item->id,
+                                                        'idrev_plan'=>$item->idrev_plan,
+                                                        'date_from'=>convertDateString($item->date_from),
+                                                        'date_to'=>convertDateString($item->date_to),
+                                                        'stratt_id'=>$item->stratt_id,
+                                                        'cc_topology'=>$item->cc_topology,
+                                                        'issue'=>$item->issue,
+                                                        'activity'=>$item->activity,
+                                                        'person_responsible'=>$item->person_responsible,
+                                                    ];
+                                                });
                     //dd($activity_implementation);
                     //->where('idstrategy','=',NULL)
+
                     return [
                         'id'=>$item->id,
                         'idrev_plan'=>$item->idrev_plan,
-                        'date_from'=>$item->date_from,
-                        'date_to'=>$item->date_to,
+                        'date_from'=>convertDateString($item->date_from),
+                        'date_to'=>convertDateString($item->date_to),
                         'idstrategy'=>$item->idstrategy,
                         'cc_topology'=>$item->cc_topology,
                         'issue'=>$item->issue,

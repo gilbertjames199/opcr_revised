@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
 class BudgetRequirementController extends Controller
 {
     protected $model;
@@ -21,8 +22,12 @@ class BudgetRequirementController extends Controller
         //return splitName("Gilbert James");
     }
     public function index(Request $request, $idrev){
+        // $start = microtime(true);
         $data = $this->model->where('revision_plan_id','=',$idrev)->get();
         $revs = RevisionPlan::where('id','=',$idrev)->get();
+        // $end = microtime(true);
+        // $difference = $end - $start;
+        // dd($difference);
         //dd($idrev);
 
         return inertia('BudgetRequirement/Index',[

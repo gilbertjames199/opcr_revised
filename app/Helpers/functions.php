@@ -9,6 +9,10 @@
     }
 
     function convertDateString($date){
-        $formattedDate = date('F d, Y', strtotime($date));
-        return $formattedDate;
+        if($date){
+            $formattedDate = date('F d, Y', strtotime($date));
+            return $formattedDate;
+        }else{
+            return "";
+        }
     }
