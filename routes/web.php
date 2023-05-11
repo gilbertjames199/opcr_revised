@@ -41,6 +41,7 @@ use App\Http\Controllers\SocietalGoalController;
 use App\Http\Controllers\IssueController;
 use App\Http\Controllers\HGDGChecklistController;
 use App\Http\Controllers\HGDGQuestionController;
+use App\Http\Controllers\HGDGScoreController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -299,6 +300,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}',[RevisionPlanController::class,'index']);
         Route::get('/create/{id}',[RevisionPlanController::class,'create']);
         Route::post('/store',[RevisionPlanController::class,'store']);
+        Route::get('/view/project/paps/{id}',[RevisionPlanController::class,'view']);
     });
     //Budget
     Route::prefix('/budget')->group(function(){
@@ -334,6 +336,12 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [HGDGChecklistController::class, 'edit']);
         Route::patch('/{id}', [HGDGChecklistController::class, 'update']);
         Route::delete('/{id}', [HGDGChecklistController::class, 'destroy']);
+    });
+
+    Route::prefix('/HGDGScore')->group(function(){
+        Route::get('/{idrevplan}',[HGDGScoreController::class,'index']);
+        Route::get('/store/hgdg',[HGDGScoreController::class,'store']);
+
     });
 
     //hgdg_questions

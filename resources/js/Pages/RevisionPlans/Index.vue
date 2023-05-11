@@ -36,6 +36,7 @@
                             <tr class="bg-secondary text-white">
                                 <th>Project Title</th>
                                 <th>Office</th>
+                                <th>View</th>
                                 <th>Version</th>
                                 <th>Actions</th>
                             </tr>
@@ -44,6 +45,12 @@
                             <tr v-for="dat in data">
                                 <td>{{ dat.project_title }}</td>
                                 <td>{{ dat.FFUNCTION }}</td>
+                                <td><Link
+                                        class="btn btn-primary btn-sm"
+                                        :href="`/revision/view/project/paps/${dat.id}`">
+                                        View
+                                    </Link>
+                                </td>
                                 <td>{{ dat.version }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
@@ -55,8 +62,8 @@
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
                                             <li><Link class="dropdown-item" :href="`/budget/${dat.id}`">Budget Requirements {{ dat.id }}</Link></li>
                                             <li><Link class="dropdown-item" :href="`/implementation/${dat.id}`">Implementation Plan</Link></li>
-                                            <!--<li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${dat.idpaps}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>-->
+                                            <li><Link class="dropdown-item" :href="`/HGDGScore/${dat.id}`">HGDG Score</Link></li>
+                                            <!--<li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>-->
                                         </ul>
                                     </div>
                                 </td>

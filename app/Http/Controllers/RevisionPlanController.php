@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountAccess;
 use App\Models\HGDG_Checklist;
 use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
@@ -19,8 +20,10 @@ class RevisionPlanController extends Controller
     public function index(Request $request, $idpaps){
         $myid=auth()->user()->recid;
         //dd($idpaps);
-        $data=$this->model
-                ->select('revision_plans.id', 'revision_plans.project_title',
+        // ->select('revision_plans.id', 'revision_plans.project_title',
+        //                     'revision_plans.version','revision_plans.type',
+        //                     'ff.FFUNCTION')
+        $data=RevisionPlan::select('revision_plans.id', 'revision_plans.project_title',
                             'revision_plans.version','revision_plans.type',
                             'ff.FFUNCTION')
                 ->Join(DB::raw('program_and_projects paps'), 'paps.id','=','revision_plans.idpaps')
@@ -90,6 +93,7 @@ class RevisionPlanController extends Controller
             'rationale'=>'required',
             'objective'=>'required',
             'beneficiaries'=>'required',
+            'checklist_id'=>'required',
         ]);
 
         $version = RevisionPlan::where('idpaps','=', $request->idpaps)->max('version');
@@ -113,9 +117,10 @@ class RevisionPlanController extends Controller
         $rev->rationale=$attributes['rationale'];
         $rev->objective=$attributes['objective'];
         $rev->beneficiaries=$attributes['beneficiaries'];
+        //$rev->checklist_id=$attributes['checklist_id'];
         $rev->amount='0.00';
         $rev->attributed_amount='0.00';
-        $rev->checklist_id='0';
+        $rev->checklist_id=$attributes['checklist_id'];
         $rev->hgdg_score='0';
         $rev->version=$version;
         $rev->type='p';
@@ -130,6 +135,17 @@ class RevisionPlanController extends Controller
         //$request->pass='';
         return redirect('/revision/'.$request->idpaps)
                 ->with('message','Revision Plan added');
+    }
+    public function view(Request $request, $id){
+        //dd("view");
+        $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
+        $paps=RevisionPlan::findOrFail($id);
+        return inertia('RevisionPlans/View',[
+            "paps"=>$paps,
+        ]);
     }
 
 

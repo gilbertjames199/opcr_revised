@@ -77,6 +77,14 @@
                 <textarea v-model="form.beneficiaries" style="height:100px;" class="form-control" autocomplete="chrome-off"></textarea>
                 <div class="fs-6 c-red-500" v-if="form.errors.beneficiaries">{{ form.errors.beneficiaries }}</div>
 
+                <label for="">Checklist/Box Number</label>
+                <select type="number" v-model="form.checklist_id" class="form-control" autocomplete="chrome-off">
+                    <option v-for="hgdg in hgdgs" :value="hgdg.id">
+                        {{ hgdg.box_number }}. {{ hgdg.sector }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.checklist_id">{{ form.errors.checklist_id }}</div>
+
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
@@ -99,7 +107,8 @@ export default {
             editData: Object,
             paps: Object,
             duplicate: Object,
-            idpaps: Number
+            idpaps: Number,
+            hgdgs: Object
         },
         components: {
 
@@ -127,6 +136,7 @@ export default {
                     rationale: "",
                     objective: "",
                     beneficiaries: "",
+                    checklist_id: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -150,6 +160,7 @@ export default {
                 this.form.baseline_total=this.editData.baseline_total
                 this.form.rationale=this.editData.rationale
                 this.form.objective=this.editData.objective
+                this.form.checklist_id=this.editData.checklist_id
                 this.form.beneficiaries=this.editData.beneficiaries
 
             } else {
@@ -168,6 +179,7 @@ export default {
                     this.form.baseline_total=this.duplicate[0].baseline_total
                     this.form.rationale=this.duplicate[0].rationale
                     this.form.objective=this.duplicate[0].objective
+                    this.form.checklist_id=this.duplicate[0].checklist_id
                     this.form.beneficiaries=this.duplicate[0].beneficiaries
                 }else{
                     //alert('undefined si idpaps!');
