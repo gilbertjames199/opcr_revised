@@ -2080,6 +2080,14 @@ var map = {
 		"./resources/js/Pages/RevisionPlans/Index.vue",
 		"resources_js_Pages_RevisionPlans_Index_vue"
 	],
+	"./RevisionPlans/View": [
+		"./resources/js/Pages/RevisionPlans/View.vue",
+		"resources_js_Pages_RevisionPlans_View_vue"
+	],
+	"./RevisionPlans/View.vue": [
+		"./resources/js/Pages/RevisionPlans/View.vue",
+		"resources_js_Pages_RevisionPlans_View_vue"
+	],
 	"./SDG/Create": [
 		"./resources/js/Pages/SDG/Create.vue",
 		"resources_js_Pages_SDG_Create_vue"
@@ -2279,6 +2287,14 @@ var map = {
 	"./hgdg_question/Index.vue": [
 		"./resources/js/Pages/hgdg_question/Index.vue",
 		"resources_js_Pages_hgdg_question_Index_vue"
+	],
+	"./hgdg_score/Index": [
+		"./resources/js/Pages/hgdg_score/Index.vue",
+		"resources_js_Pages_hgdg_score_Index_vue"
+	],
+	"./hgdg_score/Index.vue": [
+		"./resources/js/Pages/hgdg_score/Index.vue",
+		"resources_js_Pages_hgdg_score_Index_vue"
 	]
 };
 function webpackAsyncContext(req) {
