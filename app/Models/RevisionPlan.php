@@ -11,6 +11,10 @@ class RevisionPlan extends Model
     protected $connection = "mysql";
     protected $table='revision_plans';
     protected $guarded=[];
+
+    public function checklist(){
+        return $this -> hasOne(HGDG_Checklist::class, 'id', 'checklist_id');
+    }
     // protected $fillable = [
     //     'id',
     //     'idpaps',

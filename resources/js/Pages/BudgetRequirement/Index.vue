@@ -37,7 +37,7 @@
                             <tr class="bg-secondary text-white">
                                 <th>Particular</th>
                                 <th>Account Code</th>
-                                <th>Amount</th>
+                                <th>Amount (Php)</th>
                                 <th>Type</th>
                                 <th>Actions</th>
                             </tr>
@@ -46,7 +46,7 @@
                             <tr v-for="dat in data">
                                 <td>{{ dat.particulars }}</td>
                                 <td>{{ dat.account_code }}</td>
-                                <td>{{ dat.amount }}</td>
+                                <td>{{ format_number_conv(dat.amount,2,true) }}</td>
                                 <td>{{ dat.category }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >

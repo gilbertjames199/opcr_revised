@@ -23,7 +23,10 @@ class BudgetRequirementController extends Controller
     }
     public function index(Request $request, $idrev){
         // $start = microtime(true);
-        $data = $this->model->where('revision_plan_id','=',$idrev)->get();
+        $data = $this->model->where('revision_plan_id','=',$idrev)
+                ->orderBy('category', 'desc')
+                ->orderBy('particulars')
+                ->get();
         $revs = RevisionPlan::where('id','=',$idrev)->get();
         // $end = microtime(true);
         // $difference = $end - $start;
@@ -80,6 +83,7 @@ class BudgetRequirementController extends Controller
         $budg->amount=$attributes['amount'];
         $budg->category=$attributes['category'];
         $budg->category_gad="NON-GAD";
+        $budg->source=$request->source;
         $budg->save();
         $rev=RevisionPlan::find($attributes['revision_plan_id']);
         $revamount = $rev->amount;
@@ -132,12 +136,14 @@ class BudgetRequirementController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         // dd($data);
+        //dd($request);
         $data->update([
             'particulars'=>$request->particulars,
             'account_code'=>$request->account_code,
             'amount'=>$request->amount,
             'category'=>$request->category,
             'category_gad'=>$request->category_gad,
+            'source'=>$request->source,
         ]);
 
         return redirect('/budget/'.$idrev)
