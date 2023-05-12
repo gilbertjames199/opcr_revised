@@ -6,6 +6,7 @@ use App\Models\HGDG_Checklist;
 use App\Models\HGDGQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HGDGQuestionController extends Controller
 {
@@ -33,9 +34,9 @@ class HGDGQuestionController extends Controller
     private function getResults(Request $request, $checklist_id){
         $questions = $this->model->where('question_id',0)
                         ->where('checklist_id', $checklist_id)
-                        ->orderBy('question_number')
+                        ->orderBy(DB::raw('CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(question_number, ".", 1), " ", 1) AS UNSIGNED)'), 'ASC')
                         ->get();
-
+        dd($questions);
         $result = [];
 
         foreach ($questions as $question) {
