@@ -130,7 +130,7 @@
                             </tr>
                             <tr v-if="b_mooe.length>0" >
                                 <td></td>
-                                <td><b>TOTAL</b></td>
+                                <td><b><span v-if="has>1">SUB-</span>TOTAL</b></td>
                                 <td></td>
                                 <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((s_mooe*paps.hgdg_percent),2,true) }}</td>
                                 <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_mooe-(s_mooe*paps.hgdg_percent),2,true) }}</td>
@@ -153,7 +153,7 @@
                             </tr>
                             <tr v-if="b_capital.length>0">
                                 <td></td>
-                                <td><b>TOTAL</b></td>
+                                <td><b><span v-if="has>1">SUB-</span>TOTAL</b></td>
                                 <td></td>
                                 <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((s_capital*paps.hgdg_percent),2,true) }}</td>
                                 <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_capital-(s_capital*paps.hgdg_percent),2,true) }}</td>
@@ -179,7 +179,7 @@
                                 <td>{{ mooe.source }}</td>
                             </tr>
                             <tr v-if="has>1" class="fw-bold bg-light">
-                                <th><b>TOTAL</b></th>
+                                <th><b>GRAND TOTAL</b></th>
                                 <td></td>
                                 <td></td>
                                 <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((paps.amount*paps.hgdg_percent),2,true) }}</td>
