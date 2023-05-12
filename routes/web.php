@@ -340,7 +340,7 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('/HGDGScore')->group(function(){
         Route::get('/{idrevplan}',[HGDGScoreController::class,'index']);
-        Route::get('/store/hgdg',[HGDGScoreController::class,'store']);
+        Route::post('/store/hgdg',[HGDGScoreController::class,'store']);
 
     });
 

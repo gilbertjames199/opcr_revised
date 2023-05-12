@@ -81,7 +81,7 @@ __webpack_require__.r(__webpack_exports__);
       var jsonString = JSON.stringify(this.form.hgdg_scores); //alert("submit"+jsonString);
       //this.form.get("/HGDGScore/store/hgdg", jsonString);
 
-      this.$inertia.get("/HGDGScore/store/hgdg", {
+      this.$inertia.post("/HGDGScore/store/hgdg", {
         scores: jsonString,
         idrevplan: this.idrevplan
       }, {
