@@ -237,7 +237,7 @@ var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 var _hoisted_18 = ["onUpdate:modelValue", "name", "hidden", "value"];
 var _hoisted_19 = ["hidden"];
-var _hoisted_20 = ["hidden", "onUpdate:modelValue"];
+var _hoisted_20 = ["onUpdate:modelValue"];
 
 var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
   colspan: "7"
@@ -370,7 +370,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.setScore($data.form.hgdg_scores[index].score)), 9
     /* TEXT, PROPS */
     , _hoisted_19)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
-      hidden: hgdg_score.has_subquestion != '0',
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return $data.form.hgdg_scores[index].result_comment = $event;
       }

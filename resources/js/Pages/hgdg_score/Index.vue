@@ -77,7 +77,7 @@
                                         />
                                     </th>
                                     <th><div v-bind:hidden="hgdg_score.has_subquestion!='0'">{{ setScore(form.hgdg_scores[index].score) }}</div></th>
-                                    <th><textarea v-bind:hidden="hgdg_score.has_subquestion!='0'" v-model="form.hgdg_scores[index].result_comment"></textarea></th>
+                                    <th><textarea v-model="form.hgdg_scores[index].result_comment"></textarea></th>
                                 </tr>
                                 <tr colspan="7" >
 
