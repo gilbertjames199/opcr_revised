@@ -132,10 +132,10 @@
                                 <td></td>
                                 <td><b>TOTAL</b></td>
                                 <td></td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv((s_mooe*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(s_mooe-(s_mooe*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(s_mooe,2,true) }}</td>
-                                <td v-if="paps.hgdg_percent<0.1">{{ format_number_conv(s_mooe,2,true) }}</td>
+                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((s_mooe*paps.hgdg_percent),2,true) }}</td>
+                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_mooe-(s_mooe*paps.hgdg_percent),2,true) }}</td>
+                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_mooe,2,true) }}</td>
+                                <td v-if="paps.hgdg_percent<0.1" class=" text-decoration-underline">{{ format_number_conv(s_mooe,2,true) }}</td>
                                 <td></td>
                             </tr>
                             <tr v-if="b_capital.length>0" class="fw-bold bg-light">
@@ -155,10 +155,10 @@
                                 <td></td>
                                 <td><b>TOTAL</b></td>
                                 <td></td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv((s_capital*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(s_capital-(s_capital*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(s_capital,2,true) }}</td>
-                                <td v-if="paps.hgdg_percent<0.1">{{ format_number_conv(s_capital,2,true) }}</td>
+                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((s_capital*paps.hgdg_percent),2,true) }}</td>
+                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_capital-(s_capital*paps.hgdg_percent),2,true) }}</td>
+                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_capital,2,true) }}</td>
+                                <td v-if="paps.hgdg_percent<0.1" class=" text-decoration-underline">{{ format_number_conv(s_capital,2,true) }}</td>
                                 <td></td>
                             </tr>
                             <tr v-if="b_ps.length>0">
@@ -182,10 +182,10 @@
                                 <th><b>TOTAL</b></th>
                                 <td></td>
                                 <td></td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv((paps.amount*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(paps.amount-(paps.amount*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(paps.amount,2,true) }}</td>
-                                <td v-if="paps.hgdg_percent<0.1">{{ format_number_conv(paps.amount,2,true) }}</td>
+                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((paps.amount*paps.hgdg_percent),2,true) }}</td>
+                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(paps.amount-(paps.amount*paps.hgdg_percent),2,true) }}</td>
+                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(paps.amount,2,true) }}</td>
+                                <td v-if="paps.hgdg_percent<0.1" class=" text-decoration-underline">{{ format_number_conv(paps.amount,2,true) }}</td>
                                 <td></td>
                             </tr>
                         </tbody>
