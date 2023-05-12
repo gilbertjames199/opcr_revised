@@ -184,7 +184,7 @@ export default {
             let jsonString = JSON.stringify(this.form.hgdg_scores);
             //alert("submit"+jsonString);
             //this.form.get("/HGDGScore/store/hgdg", jsonString);
-            this.$inertia.get(
+            this.$inertia.post(
                 "/HGDGScore/store/hgdg",
                 {
                     scores: jsonString,
