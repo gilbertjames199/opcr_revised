@@ -36,7 +36,7 @@ class HGDGQuestionController extends Controller
                         ->where('checklist_id', $checklist_id)
                         ->orderBy(DB::raw('CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(question_number, ".", 1), " ", 1) AS UNSIGNED)'), 'ASC')
                         ->get();
-        dd($questions);
+       // dd($questions);
         $result = [];
 
         foreach ($questions as $question) {
