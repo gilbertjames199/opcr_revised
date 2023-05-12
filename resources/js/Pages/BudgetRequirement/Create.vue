@@ -56,6 +56,10 @@
                     <option>NON-GAD</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.category_gad">{{ form.errors.category_gad }}</div>
+
+                <label>SOURCE {{ form.source }}</label>
+                <input type="text" class="form-control" v-model="form.source"/>
+                <div class="fs-6 c-red-500" v-if="form.errors.source">{{ form.errors.source }}</div>
                 <!--<input type="text" v-model="searchTerm" @input="filteredAccounts" placeholder="Search">
                 <select class="form-control" v-model="form.particulars" >
                     <option v-for="account in filteredAccounts" :value="account.FTITLE">
@@ -124,6 +128,7 @@ export default {
                     amount: "",
                     category: "",
                     category_gad: "NON-GAD",
+                    source: "",
                     id: null
                 }),
                 pageTitle: "",
@@ -148,6 +153,7 @@ export default {
                 this.form.amount=this.editData.amount
                 this.form.category=this.editData.category
                 this.form.category_gad=this.editData.category_gad
+                this.form.source=this.editData.source
             } else {
                 this.pageTitle = "Create"
 

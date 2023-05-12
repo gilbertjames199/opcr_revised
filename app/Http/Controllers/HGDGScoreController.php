@@ -192,7 +192,10 @@ class HGDGScoreController extends Controller
         }else if($HScore >=20){
             $HPercent =1;
         }
+
+        $bud=floatval($rev_plan->amount)*floatVal($HPercent);
         $rev_plan->update([
+            "attributed_amount"=>$bud,
             "hgdg_score"=>$HScore,
             "hgdg_percent"=>$HPercent
         ]);
