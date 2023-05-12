@@ -85,7 +85,7 @@ class HGDGScoreController extends Controller
 
         $questions = HGDGQuestion::where('question_id',0)
                         ->where('checklist_id', $checklist_id)
-                        ->orderBy('question_number')
+                        ->orderBy(DB::raw('CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(question_number, ".", 1), " ", 1) AS UNSIGNED)'), 'ASC')
                         ->get();
 
         $result = [];
