@@ -107,8 +107,8 @@
                                 <th>Particulars</th>
                                 <th></th>
                                 <th>Account Code</th>
-                                <th v-if="paps.hgdg_percent>0">GAD Amount</th>
-                                <th v-if="paps.hgdg_percent>0">NON-GAD Amount</th>
+                                <th v-if="paps.hgdg_percent>0">GAD</th>
+                                <th v-if="paps.hgdg_percent>0">NON-GAD</th>
                                 <th v-if="paps.hgdg_percent>0">Total</th>
                                 <th v-if="paps.hgdg_percent<0.1">Amount</th>
                                 <th>Source</th>
