@@ -151,7 +151,7 @@
                                 <td v-if="paps.hgdg_percent<0.1">{{ format_number_conv(mooe.amount,2,true) }}</td>
                                 <td>{{ mooe.source }}</td>
                             </tr>
-                            <tr v-if="b_capital.length>0" class="fw-bold">
+                            <tr v-if="b_capital.length>0">
                                 <td></td>
                                 <td><b>TOTAL</b></td>
                                 <td></td>

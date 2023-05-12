@@ -512,8 +512,7 @@ var _hoisted_88 = {
   key: 3
 };
 var _hoisted_89 = {
-  key: 5,
-  "class": "fw-bold"
+  key: 5
 };
 
 var _hoisted_90 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
