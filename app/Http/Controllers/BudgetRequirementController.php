@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
 class BudgetRequirementController extends Controller
 {
     protected $model;
@@ -15,9 +16,21 @@ class BudgetRequirementController extends Controller
     {
         $this->model=$model;
     }
+    public function getFirstLastName(){
+        $date ='2023-12-31';
+        return convertDateString($date);
+        //return splitName("Gilbert James");
+    }
     public function index(Request $request, $idrev){
-        $data = $this->model->where('revision_plan_id','=',$idrev)->get();
+        // $start = microtime(true);
+        $data = $this->model->where('revision_plan_id','=',$idrev)
+                ->orderBy('category', 'desc')
+                ->orderBy('particulars')
+                ->get();
         $revs = RevisionPlan::where('id','=',$idrev)->get();
+        // $end = microtime(true);
+        // $difference = $end - $start;
+        // dd($difference);
         //dd($idrev);
 
         return inertia('BudgetRequirement/Index',[
@@ -70,6 +83,7 @@ class BudgetRequirementController extends Controller
         $budg->amount=$attributes['amount'];
         $budg->category=$attributes['category'];
         $budg->category_gad="NON-GAD";
+        $budg->source=$request->source;
         $budg->save();
         $rev=RevisionPlan::find($attributes['revision_plan_id']);
         $revamount = $rev->amount;
@@ -122,12 +136,14 @@ class BudgetRequirementController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         // dd($data);
+        //dd($request);
         $data->update([
             'particulars'=>$request->particulars,
             'account_code'=>$request->account_code,
             'amount'=>$request->amount,
             'category'=>$request->category,
             'category_gad'=>$request->category_gad,
+            'source'=>$request->source,
         ]);
 
         return redirect('/budget/'.$idrev)

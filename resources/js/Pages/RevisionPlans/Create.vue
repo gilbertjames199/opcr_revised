@@ -26,6 +26,10 @@
                 <input type="text" v-model="form.project_title" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.project_title">{{ form.errors.project_title }}</div>
 
+                <label for="">PROJECT LOCATION</label>
+                <input type="text" v-model="form.project_location" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.project_location">{{ form.errors.project_location }}</div>
+
                 <label for="">LIST OF LGUs COVERED</label>
                 <input type="text" v-model="form.list_of_lgu_covered" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.list_of_lgu_covered">{{ form.errors.list_of_lgu_covered }}</div>
@@ -77,6 +81,14 @@
                 <textarea v-model="form.beneficiaries" style="height:100px;" class="form-control" autocomplete="chrome-off"></textarea>
                 <div class="fs-6 c-red-500" v-if="form.errors.beneficiaries">{{ form.errors.beneficiaries }}</div>
 
+                <label for="">Checklist/Box Number</label>
+                <select type="number" v-model="form.checklist_id" class="form-control" autocomplete="chrome-off">
+                    <option v-for="hgdg in hgdgs" :value="hgdg.id">
+                        {{ hgdg.box_number }}. {{ hgdg.sector }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.checklist_id">{{ form.errors.checklist_id }}</div>
+
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
@@ -99,7 +111,8 @@ export default {
             editData: Object,
             paps: Object,
             duplicate: Object,
-            idpaps: Number
+            idpaps: Number,
+            hgdgs: Object
         },
         components: {
 
@@ -116,6 +129,7 @@ export default {
                 form: useForm({
                     idpaps: "",
                     project_title: this.paps[0].paps_desc,
+                    project_location: "",
                     list_of_lgu_covered: "",
                     date_start: "",
                     date_end: "",
@@ -127,6 +141,7 @@ export default {
                     rationale: "",
                     objective: "",
                     beneficiaries: "",
+                    checklist_id: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -140,6 +155,7 @@ export default {
                 this.pageTitle = "Edit"
                 this.form.idpaps=this.editData.idpaps
                 this.form.project_title=this.editData.project_title
+                this.form.project_location=this.editData.project_location
                 this.form.list_of_lgu_covered=this.editData.list_of_lgu_covered
                 this.form.date_start=this.editData.date_start
                 this.form.date_end=this.editData.date_end
@@ -150,6 +166,7 @@ export default {
                 this.form.baseline_total=this.editData.baseline_total
                 this.form.rationale=this.editData.rationale
                 this.form.objective=this.editData.objective
+                this.form.checklist_id=this.editData.checklist_id
                 this.form.beneficiaries=this.editData.beneficiaries
 
             } else {
@@ -158,6 +175,7 @@ export default {
                 if(this.duplicate!==undefined){
                     this.form.idpaps=this.duplicate[0].idpaps
                     this.form.project_title=this.duplicate[0].project_title
+                    this.form.project_location=this.duplicate[0].project_location
                     this.form.list_of_lgu_covered=this.duplicate[0].list_of_lgu_covered
                     this.form.date_start=this.duplicate[0].date_start
                     this.form.date_end=this.duplicate[0].date_end
@@ -168,9 +186,10 @@ export default {
                     this.form.baseline_total=this.duplicate[0].baseline_total
                     this.form.rationale=this.duplicate[0].rationale
                     this.form.objective=this.duplicate[0].objective
+                    this.form.checklist_id=this.duplicate[0].checklist_id
                     this.form.beneficiaries=this.duplicate[0].beneficiaries
                 }else{
-                    alert('undefined si idpaps!');
+                    //alert('undefined si idpaps!');
                 }
             }
 

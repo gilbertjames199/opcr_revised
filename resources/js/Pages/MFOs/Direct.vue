@@ -91,7 +91,8 @@ export default {
     },
     data() {
         return{
-
+            mfosel: "",
+            filter: false,
         }
     },
     components: {
@@ -118,7 +119,8 @@ export default {
               if (confirm(text) == true) {
                 this.$inertia.delete("/mfos/" + id+"/"+this.idinteroutcome);
             }
-        }
+        },
+
     }
 };
 </script>

@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <Link :href="`/paps/direct`">
+            <Link :href="`/revision/${revs[0].idpaps}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                     <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -63,7 +63,7 @@
                                     <td>Targets</td>
                                     <td>Budget</td>
                                     <td>{{  dat.cc_topology }}</td>
-                                    <td>Person Responsible</td>
+                                    <td>{{ dat.person_responsible }}</td>
                                     <td>
                                         <div class="dropdown dropstart" >
                                             <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -93,7 +93,7 @@
                                         <td>Targets</td>
                                         <td>Budget</td>
                                         <td>{{  act.cc_topology }}</td>
-                                        <td>Person Responsible</td>
+                                        <td>{{ act.person_responsible }}</td>
                                         <td>
                                             <div class="dropdown dropstart" >
                                                 <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -104,6 +104,7 @@
                                                 <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
                                                     <li><Link class="dropdown-item" :href="`/implementation/edit/activity/${act.id}`">Edit</Link></li>
                                                     <li><Link class="text-danger dropdown-item" @click="deleteImp(act.id)">Delete</Link></li>
+                                                    <li><Link class="text-danger dropdown-item" :href="`/targets/${act.id}/implementation`">Targets</Link></li>
                                                 </ul>
                                             </div>
                                         </td>

@@ -10,17 +10,19 @@ class ImplementationPlan extends Model
     use HasFactory;
     protected $connection = "mysql";
     protected $table='implementation_plans';
-    protected $fillable = [
-        'aip_code',
-        'idrev_plan',
-        'idactivity',
-        'idstrategy',
-        'idissue',
-        'date_from',
-        'date_to',
-        'amount',
-        'cc_adaptation',
-        'cc_migitagion',
-        'cc_topology',
-    ];
+    protected $guarded=[];
+    // protected $fillable = [
+    //     'aip_code',
+    //     'idrev_plan',
+    //     'idactivity',
+    //     'idstrategy',
+    //     'idissue',
+    //     'date_from',
+    //     'date_to',
+    //     'amount',
+    //     'cc_adaptation',
+    //     'cc_migitagion',
+    //     'cc_topology',
+    //     'person_responsible',
+    // ];
 }

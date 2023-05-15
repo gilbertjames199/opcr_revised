@@ -40,6 +40,8 @@ use App\Http\Controllers\RevisionPlanController;
 use App\Http\Controllers\SocietalGoalController;
 use App\Http\Controllers\IssueController;
 use App\Http\Controllers\HGDGChecklistController;
+use App\Http\Controllers\HGDGQuestionController;
+use App\Http\Controllers\HGDGScoreController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -98,6 +100,13 @@ Route::middleware('auth')->group(function() {
         Route::get('/{raao_id}/{year}/create', [TargetController::class, 'create']);
         Route::get('/{id}/edit', [TargetController::class, 'edit']);
         Route::get('/return/{target_id}',[TargetController::class,'ret']);
+
+        Route::get('/{imp_id}/implementation',[TargetController::class,'index_i']);
+        Route::get('/{imp_id}/implementation/add',[TargetController::class,'create_i']);
+        Route::post('/{imp_id}/implementation/store',[TargetController::class,'store_i']);
+        Route::get('/{imp_id}/implementation/{id}/edit',[TargetController::class,'edit_i']);
+        Route::patch('/{imp_id}/implementation/update',[TargetController::class,'update_i']);
+        Route::post('/{imp_id}/implementation/delete/{id}/destroy',[TargetController::class,'destroy_i']);
     });
 
     //Organization
@@ -291,6 +300,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}',[RevisionPlanController::class,'index']);
         Route::get('/create/{id}',[RevisionPlanController::class,'create']);
         Route::post('/store',[RevisionPlanController::class,'store']);
+        Route::get('/view/project/paps/{id}',[RevisionPlanController::class,'view']);
     });
     //Budget
     Route::prefix('/budget')->group(function(){
@@ -300,7 +310,11 @@ Route::middleware('auth')->group(function() {
         Route::get('/edit/{idbudget}',[BudgetRequirementController::class,'edit']);
         Route::delete('/{id}/{idbudget}', [BudgetRequirementController::class, 'destroy']);
         Route::patch('/update/{idrev}', [BudgetRequirementController::class, 'update']);
+
+
     });
+    //testing helpers
+    Route::get('test-helper', [BudgetRequirementController::class, 'getFirstLastName']);
     //Implementation Plan
     Route::prefix('/implementation')->group(function(){
         Route::get('/{id}',[ImplementationPlanController::class,'index']);
@@ -314,15 +328,33 @@ Route::middleware('auth')->group(function() {
         Route::get('/edit/activity/{id}',[ImplementationPlanController::class,'act_edit']);
     });
 
-        //hgdg_checklist
-        Route::prefix('/HGDGChecklist')->group(function(){
-            Route::get('/',[HGDGChecklistController::class,'index']);
-            Route::get('/create',[HGDGChecklistController::class,'create']);
-            Route::post('/',[HGDGChecklistController::class,'store']);
-            Route::get('/{id}/edit', [HGDGChecklistController::class, 'edit']);
-            Route::patch('/{id}', [HGDGChecklistController::class, 'update']);
-            Route::delete('/{id}', [HGDGChecklistController::class, 'destroy']);
-        });
+    //hgdg_checklist
+    Route::prefix('/HGDGChecklist')->group(function(){
+        Route::get('/',[HGDGChecklistController::class,'index']);
+        Route::get('/create',[HGDGChecklistController::class,'create']);
+        Route::post('/',[HGDGChecklistController::class,'store']);
+        Route::get('/{id}/edit', [HGDGChecklistController::class, 'edit']);
+        Route::patch('/{id}', [HGDGChecklistController::class, 'update']);
+        Route::delete('/{id}', [HGDGChecklistController::class, 'destroy']);
+    });
+
+    Route::prefix('/HGDGScore')->group(function(){
+        Route::get('/{idrevplan}',[HGDGScoreController::class,'index']);
+        Route::get('/store/hgdg',[HGDGScoreController::class,'store']);
+
+    });
+
+    //hgdg_questions
+    Route::prefix('/HGDGQuestions')->group(function(){
+        Route::get('/{checklist_id}',[HGDGQuestionController::class,'index']);
+        Route::get('/create/{checklist_id}',[HGDGQuestionController::class,'create']);
+        Route::post('/store',[HGDGQuestionController::class,'store']);
+        Route::get('/{id}/edit', [HGDGQuestionController::class, 'edit']);
+        Route::patch('/{id}', [HGDGQuestionController::class, 'update']);
+        Route::delete('/delete/{id}', [HGDGQuestionController::class, 'destroy']);
+        //Subquestions
+        Route::get('/create/subquestions/{checklist_id}/{question_id}',[HGDGQuestionController::class,'subcreate']);
+    });
     //SubSector
     Route::prefix('/subsector')->group(function(){});
 });

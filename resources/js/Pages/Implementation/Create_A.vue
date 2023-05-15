@@ -58,6 +58,10 @@
                 <input type="text" class="form-control" v-model="form.cc_topology"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.cc_topology">{{ form.errors.cc_topology }}</div>
 
+                <label>PERSON RESPONSIBLE</label>
+                <input type="text" class="form-control" v-model="form.person_responsible"/>
+                <div class="fs-6 c-red-500" v-if="form.errors.person_responsible">{{ form.errors.person_responsible }}</div>
+
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
@@ -115,6 +119,7 @@ export default {
                     date_from: "",
                     date_to: "",
                     cc_topology: "",
+                    person_responsible: "",
                     id: null
                 }),
                 pageTitle: "",
@@ -140,7 +145,7 @@ export default {
                 this.form.date_from=this.editData.date_from
                 this.form.date_to=this.editData.date_to
                 this.form.cc_topology=this.editData.cc_topology
-
+                this.form.person_responsible = this.editData.person_responsible
             } else {
                 this.pageTitle = "Create"
 

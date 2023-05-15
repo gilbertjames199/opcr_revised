@@ -196,6 +196,20 @@ createInertiaApp({
                 var numm=parseFloat(number);
                 return numm.toLocaleString('en-US', {useGrouping: include_comma, minimumFractionDigits: num_decimals, maximumFractionDigits: num_decimals});
             },
+            GAD_remark(val){
+                var num=parseFloat(val);
+                var remarks="GAD is insivible";
+                if(num>=4 && num <8){
+                    remarks="Promising GAD prospects (conditional pass)";
+                }else if(num>=8 && num<15 ){
+                    remarks="Gender Sensitive";
+                }else if(num>=15 && num<20){
+                    remarks="Gender-responsive";
+                }else if(num >=20){
+                    remarks="Fully gender-responsive";
+                }
+                return remarks;
+            },
             yearNow(){
                 const d = new Date();
                 let year = d.getFullYear();
@@ -310,6 +324,9 @@ createInertiaApp({
                         ];
 
             },
+            allCaps(val){
+                return val.toUpperCase();
+            }
         }
       })
       .mount(el)

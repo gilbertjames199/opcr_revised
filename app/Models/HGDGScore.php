@@ -11,8 +11,9 @@ class HGDGScore extends Model
     protected $connection = "mysql";
     protected $table='hgdg_score';
     protected $fillable = [
-        'idppa',
+        'idrevplan',
         'question_id',
+        'user_id',
         'score',
         'result_comment',
         'FFUNCCOD',

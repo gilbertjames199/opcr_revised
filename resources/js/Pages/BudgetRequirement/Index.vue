@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <Link :href="`/paps/direct`">
+            <Link :href="`/revision/${revs[0].idpaps}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                     <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -37,7 +37,7 @@
                             <tr class="bg-secondary text-white">
                                 <th>Particular</th>
                                 <th>Account Code</th>
-                                <th>Amount</th>
+                                <th>Amount (Php)</th>
                                 <th>Type</th>
                                 <th>Actions</th>
                             </tr>
@@ -46,7 +46,7 @@
                             <tr v-for="dat in data">
                                 <td>{{ dat.particulars }}</td>
                                 <td>{{ dat.account_code }}</td>
-                                <td>{{ dat.amount }}</td>
+                                <td>{{ format_number_conv(dat.amount,2,true) }}</td>
                                 <td>{{ dat.category }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >

@@ -10,7 +10,7 @@ class Accomplishment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'idtarget',
+        'target_id',
         'accomplishment_qty',
         'actual_period_from',
         'actual_period_to',
@@ -34,7 +34,7 @@ class Accomplishment extends Model
     ];
     public static function rules(){
         return [
-            'idtarget'=>'required|numeric',
+            'target_id'=>'required|numeric',
             'accomplishment_qty'=>'required|numeric',
             'actual_period_from' => 'required',
             'actual_period_to' => 'required',
@@ -60,8 +60,8 @@ class Accomplishment extends Model
 
     public static function errorMessages(){
         return [
-            'idtarget.required'=>'Target field is required',
-            'idtarget.numeric'=>'Target ID field must be a number',
+            'target_id.required'=>'Target field is required',
+            'target_id.numeric'=>'Target ID field must be a number',
             'accomplishment_qty.required'=>'Accomplishment quantity is required',
             'accomplishment_qty.numeric'=>'Accomplishment quantity must be a number',
             'actual_period_from.required' => 'Actual period (from) is required',

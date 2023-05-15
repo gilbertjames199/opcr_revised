@@ -15,6 +15,7 @@ class BudgetRequirement extends Model
         'account_code',
         'amount',
         'category',
-        'category_gad'
+        'category_gad',
+        'source'
     ];
 }
