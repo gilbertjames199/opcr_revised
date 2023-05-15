@@ -20,6 +20,7 @@ class OrganizationController extends Controller
     //
     public function index(Request $request){
         $idn = auth()->user()->recid;
+       // dd($idn);
         $data = $this->model
                 ->orderBy('created_at', 'desc')
                 ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','organizational_goals.FFUNCCOD')
@@ -27,6 +28,7 @@ class OrganizationController extends Controller
                 ->where('sysu.recid',$idn)
                 ->paginate(10)
                 ->withQueryString();
+        //dd($data);
         return inertia('Organizational/Index',[
             "data"=>$data,
             'can'=>[
