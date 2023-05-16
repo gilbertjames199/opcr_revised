@@ -21,10 +21,20 @@ class HGDGQuestionController extends Controller
         $result = $this->getResults($request, $checklist_id);
 
         $json = json_encode($result);
+        $sum = $this->model
+                ->select(DB::raw('sum(score) AS sum'))
+                ->where('has_subquestion',0)
+                ->where('checklist_id', $checklist_id)
+                ->get()
+                ->map(function($item){
+                    return $item->sum;
+                });
+        //dd($sum[0]);
         return inertia('hgdg_question/Index', [
             "questions"=>$result,
             "checklist_id"=>$checklist_id,
             "hgdg_checklist"=>$hgdg_checklist,
+            "sum"=>$sum,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -68,7 +78,7 @@ class HGDGQuestionController extends Controller
         return $result;
     }
     public function create(Request $request, $checklist_id){
-        $questions=$this->model->select('*')->orderBy('question_number')->get();
+        $questions=$this->model->select('*')->where('checklist_id', $checklist_id)->orderBy('question_number')->get();
         //dd($questions);
         return inertia('hgdg_question/Create', [
             "questions"=>$questions,

@@ -34,6 +34,8 @@
                             <tr >
                                 <th>Item Number</th>
                                 <th>Question</th>
+                                <th>Score for Partly Done</th>
+                                <th>Score for Done</th>
                                 <!--<th>Score</th>-->
                                 <th scope="col" style="text-align: right" >ACTION</th>
                             </tr>
@@ -44,6 +46,8 @@
                                 <tr>
                                     <td><b>{{ question.question_number }}</b></td>
                                     <td><b>{{ question.question }}</b></td>
+                                    <td><b>{{ question.score }}</b></td>
+                                    <td><b>{{ question.score*2 }}</b></td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -70,6 +74,8 @@
                                     <tr>
                                         <td>&nbsp;&nbsp;&nbsp;{{ subQuestion.question_number }}</td>
                                         <td>{{ subQuestion.question }}</td>
+                                        <td><b>{{ subQuestion.score }}</b></td>
+                                        <td><b>{{ subQuestion.score*2 }}</b></td>
                                         <div class="dropdown dropstart" >
                                             <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -97,6 +103,8 @@
                                             <tr>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ subSubQuestion.question_number }}</td>
                                                 <td>{{ subSubQuestion.question }}</td>
+                                                <td><b>{{ subSubQuestion.score }}</b></td>
+                                                <td><b>{{ subSubQuestion.score*2 }}</b></td>
                                                 <div class="dropdown dropstart" >
                                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -124,6 +132,8 @@
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ subSubSubQuestion.question_number }}</td>
                                                         <td>{{ subSubSubQuestion.question }}</td>
+                                                        <td><b>{{ subSubSubQuestion.score }}</b></td>
+                                                        <td><b>{{ subSubSubQuestion.score*2 }}</b></td>
                                                         <div class="dropdown dropstart" >
                                                             <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -151,6 +161,8 @@
                                                             <tr>
                                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ subSubSubQuestion.question_number }}</td>
                                                                 <td>{{ subSubSubSubQuestion.question }}</td>
+                                                                <td><b>{{ subSubSubSubQuestion.score }}</b></td>
+                                                                <td><b>{{ subSubSubSubQuestion.score*2 }}</b></td>
                                                                 <div class="dropdown dropstart" >
                                                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -185,8 +197,17 @@
                                     </template>
                                 </template>
                             </template>
+                            <template>
+                                <tr>
+                                    <td>Total</td>
+                                    <td></td>
+                                    <td>{{ sum }}</td>
+                                    <td>{{ sum*2 }}</td>
+                                    <td></td>
+                                </tr>
+                            </template>
                         </tbody>
-                    </table>
+                    </table>{{  sum }}
                 </div>
                 <!--{{ auth }}-->
                 <div class="row justify-content-center">
@@ -222,6 +243,7 @@ export default {
         permissions_all: Object,
         questions: Object,
         hgdg_checklist: Object,
+        sum: Number
     },
     mounted(){
         //this.getPermissionAll();

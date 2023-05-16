@@ -70,7 +70,12 @@
                 <hr style="background-color: black !important; border:1px; height: 1px;">
 
                 <label for="">RATIONALE</label>
-                <textarea v-model="form.rationale" style="height:100px;" class="form-control" autocomplete="chrome-off"></textarea>
+                <div>words remaining: {{ wordsRemaining }} &nbsp;&nbsp; word count: {{ wordCount }}</div>
+                <textarea v-model="form.rationale"
+                            style="height:100px;"
+                            @input="limitWords"
+                            class="form-control"
+                            autocomplete="chrome-off"></textarea>
                 <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
 
                 <label for="">OBJECTIVES</label>
@@ -126,6 +131,8 @@ export default {
         data() {
             return {
                 submitted: false,
+                maxWords: 200,
+                act_words: 0,
                 form: useForm({
                     idpaps: "",
                     project_title: this.paps[0].paps_desc,
@@ -147,7 +154,24 @@ export default {
                 pageTitle: ""
             };
         },
+        computed:{
+            wordsRemaining() {
+                const wordCount = this.form.rationale.trim().split(/\s+/).length;
+                var returner = this.maxWords - wordCount;
 
+                if(this.form.rationale===""){
+                    returner=200;
+                }
+                return returner;
+            },
+            wordCount(){
+                var rtn =this.form.rationale.trim().split(/\s+/).length;
+                if(this.form.rationale===""){
+                    rtn=0;
+                }
+                return rtn;
+            }
+        },
         mounted() {
             this.form.idpaps=this.idpaps;
             //this.form.idinteroutcome=this.idinteroutcome
@@ -199,13 +223,26 @@ export default {
             submit() {
                 //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
                 //alert(this.form.target_qty);
-                if (this.editData !== undefined) {
+                if(this.act_words>this.maxWords){
+                    alert("Rationale exceeds 200 words limit")
+                }else{
+                    if (this.editData !== undefined) {
                     //alert('patch');
-                    this.form.patch("/strategies/", this.form);
-                } else {
-                    this.form.id=null;
-                    //alert('store');
-                    this.form.post("/revision/store", this.form);
+                        this.form.patch("/strategies/", this.form);
+                    } else {
+                        this.form.id=null;
+                        //alert('store');
+                        this.form.post("/revision/store", this.form);
+                    }
+                }
+
+            },
+            limitWords() {
+                const words = this.form.rationale.trim().split(/\s+/);
+                this.act_words=words.length;
+                if (words.length > this.maxWords) {
+                    //alert("Rationale has already 200 words!")
+                    //this.form.rationale = words.slice(0, this.maxWords).join(' ');
                 }
             },
         },
