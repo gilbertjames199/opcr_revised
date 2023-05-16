@@ -45,6 +45,7 @@ use App\Http\Controllers\HGDGScoreController;
 use App\Http\Controllers\ImplementingTeamController;
 use App\Http\Controllers\MonitoringAndEvaluationController;
 use App\Http\Controllers\RiskManangementController;
+use App\Http\Controllers\TeamPlanController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -368,16 +369,24 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [ImplementingTeamController::class, 'update']);
         Route::delete('/{id}', [ImplementingTeamController::class, 'destroy']);
     });
-
-         //Evaluation Mechanism Tool
-         Route::prefix('/EvaluationMechanismTool')->group(function(){
-            Route::get('/',[MonitoringAndEvaluationController::class,'index']);
-            Route::get('/create',[MonitoringAndEvaluationController::class,'create']);
-            Route::post('/',[MonitoringAndEvaluationController::class,'store']);
-            Route::get('/{id}/edit', [MonitoringAndEvaluationController::class, 'edit']);
-            Route::patch('/{id}', [MonitoringAndEvaluationController::class, 'update']);
-            Route::delete('/{id}', [MonitoringAndEvaluationController::class, 'destroy']);
-        });
+    //Revision PLan Implementing Team
+    Route::prefix('/team')->group(function(){
+        Route::get('/{revid}/revision/plan/team',[TeamPlanController::class,'index']);
+        Route::get('/create/{revid}',[TeamPlanController::class,'create']);
+        Route::post('/',[TeamPlanController::class,'store']);
+        Route::get('/{id}/edit', [TeamPlanController::class, 'edit']);
+        Route::patch('/{id}', [TeamPlanController::class, 'update']);
+        Route::delete('/{id}', [TeamPlanController::class, 'destroy']);
+    });
+    //Evaluation Mechanism Tool
+    Route::prefix('/EvaluationMechanismTool')->group(function(){
+        Route::get('/',[MonitoringAndEvaluationController::class,'index']);
+        Route::get('/create',[MonitoringAndEvaluationController::class,'create']);
+        Route::post('/',[MonitoringAndEvaluationController::class,'store']);
+        Route::get('/{id}/edit', [MonitoringAndEvaluationController::class, 'edit']);
+        Route::patch('/{id}', [MonitoringAndEvaluationController::class, 'update']);
+        Route::delete('/{id}', [MonitoringAndEvaluationController::class, 'destroy']);
+    });
 
     //Risk Management
         Route::prefix('/RiskManagement')->group(function(){
