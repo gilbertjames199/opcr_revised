@@ -42,6 +42,9 @@ use App\Http\Controllers\IssueController;
 use App\Http\Controllers\HGDGChecklistController;
 use App\Http\Controllers\HGDGQuestionController;
 use App\Http\Controllers\HGDGScoreController;
+use App\Http\Controllers\ImplementingTeamController;
+use App\Http\Controllers\MonitoringAndEvaluationController;
+use App\Http\Controllers\RiskManangementController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -355,6 +358,37 @@ Route::middleware('auth')->group(function() {
         //Subquestions
         Route::get('/create/subquestions/{checklist_id}/{question_id}',[HGDGQuestionController::class,'subcreate']);
     });
+
+     //Implementing
+     Route::prefix('/ImplementingTeam')->group(function(){
+        Route::get('/',[ImplementingTeamController::class,'index']);
+        Route::get('/create',[ImplementingTeamController::class,'create']);
+        Route::post('/',[ImplementingTeamController::class,'store']);
+        Route::get('/{id}/edit', [ImplementingTeamController::class, 'edit']);
+        Route::patch('/{id}', [ImplementingTeamController::class, 'update']);
+        Route::delete('/{id}', [ImplementingTeamController::class, 'destroy']);
+    });
+
+         //Evaluation Mechanism Tool
+         Route::prefix('/EvaluationMechanismTool')->group(function(){
+            Route::get('/',[MonitoringAndEvaluationController::class,'index']);
+            Route::get('/create',[MonitoringAndEvaluationController::class,'create']);
+            Route::post('/',[MonitoringAndEvaluationController::class,'store']);
+            Route::get('/{id}/edit', [MonitoringAndEvaluationController::class, 'edit']);
+            Route::patch('/{id}', [MonitoringAndEvaluationController::class, 'update']);
+            Route::delete('/{id}', [MonitoringAndEvaluationController::class, 'destroy']);
+        });
+
+    //Risk Management
+        Route::prefix('/RiskManagement')->group(function(){
+        Route::get('/',[RiskManangementController::class,'index']);
+        Route::get('/create',[RiskManangementController::class,'create']);
+        Route::post('/',[RiskManangementController::class,'store']);
+        Route::get('/{id}/edit', [RiskManangementController::class, 'edit']);
+        Route::patch('/{id}', [RiskManangementController::class, 'update']);
+        Route::delete('/{id}', [RiskManangementController::class, 'destroy']);
+     });
+
     //SubSector
     Route::prefix('/subsector')->group(function(){});
 });
