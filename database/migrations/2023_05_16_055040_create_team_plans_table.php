@@ -19,7 +19,7 @@ class CreateTeamPlansTable extends Migration
             ->comment('Revision Plan ID');
             $table->integer('implementing_team_id')->nullable()
             ->comment('Team member ID');
-            $table->string('person_responsible')->nullable()
+            $table->string('role')->nullable()
                 ->comment('Person/s responsible for the activity');
             $table->timestamps();
         });

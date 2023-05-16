@@ -380,8 +380,8 @@ Route::middleware('auth')->group(function() {
     });
     //Evaluation Mechanism Tool
     Route::prefix('/EvaluationMechanismTool')->group(function(){
-        Route::get('/',[MonitoringAndEvaluationController::class,'index']);
-        Route::get('/create',[MonitoringAndEvaluationController::class,'create']);
+        Route::get('/{id}',[MonitoringAndEvaluationController::class,'index']);
+        Route::get('/create/{id}',[MonitoringAndEvaluationController::class,'create']);
         Route::post('/',[MonitoringAndEvaluationController::class,'store']);
         Route::get('/{id}/edit', [MonitoringAndEvaluationController::class, 'edit']);
         Route::patch('/{id}', [MonitoringAndEvaluationController::class, 'update']);

@@ -17,20 +17,16 @@
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
-
-                <label for="">NAME</label>
-                <input type="text" v-model="form.name" class="form-control" autocomplete="positionchrome-off">
+                <input type="hidden" v-model="form.revision_plan_id" class="form-control" autocomplete="chrome-off">
+                <label for="">ASSIGN PERSON</label>
+                <select type="text" v-model="form.implementing_team_id" class="form-control" autocomplete="positionchrome-off">
+                    <option v-for="person in people" :value="person.id">
+                        {{ person.name }}
+                    </option>
+                </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
 
-                <label for="">POSITION</label>
-                <input type="text" v-model="form.position" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.position">{{ form.errors.position }}</div>
-
-                <label for="">COMPETENCY</label>
-                <input type="text" v-model="form.competency" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.competency">{{ form.errorscompetency }}</div>
-
-                <label for="">ROLE</label>
+                <label for="">ROLE IN THE PROJECT</label>
                 <input type="text" v-model="form.role" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.role">{{ form.errors.role }}</div>
 
@@ -54,7 +50,10 @@ import Places from "@/Shared/PlacesShared";
 export default {
         props: {
             editData: Object,
-            sectors: Object
+            people: Object,
+            sectors: Object,
+            revid: String,
+            revs: Object
         },
         components: {
           //BootstrapModalNoJquery,
@@ -70,9 +69,8 @@ export default {
             return {
                 submitted: false,
                 form: useForm({
-                    name: "",
-                    position: "",
-                    competency: "",
+                    revision_plan_id: this.rev_id,
+                    implementing_team_id: "",
                     role: "",
                     id: null
                 }),
@@ -81,15 +79,13 @@ export default {
         },
 
         mounted() {
-
+            this.form.revision_plan_id=this.revid
             if (this.editData !== undefined) {
                 if(this.bari){
                     this.bar=this.bari
                 }
                 this.pageTitle = "Edit"
-                this.form.name=this.editData.name
-                this.form.position=this.editData.position
-                this.form.competency=this.editData.competency
+                this.form.implementing_team_id=this.editData.implementing_team_id
                 this.form.role=this.editData.role
                 this.form.id=this.editData.id
             } else {
@@ -103,9 +99,9 @@ export default {
                 this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
-                    this.form.patch("/ImplementingTeam/" + this.form.id, this.form);
+                    this.form.patch("/team/" + this.form.id, this.form);
                 } else {
-                    this.form.post("/ImplementingTeam");
+                    this.form.post("/team", this.form);
                 }
             },
         },

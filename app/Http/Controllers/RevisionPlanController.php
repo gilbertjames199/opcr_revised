@@ -6,8 +6,11 @@ use App\Models\AccountAccess;
 use App\Models\BudgetRequirement;
 use App\Models\HGDG_Checklist;
 use App\Models\ImplementationPlan;
+use App\Models\Implementing_team;
+use App\Models\Monitoring_and_evaluation;
 use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
+use App\Models\TeamPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -246,6 +249,25 @@ class RevisionPlanController extends Controller
                 ->where('category','Personal Services')
                 ->orderBy('particulars')
                 ->sum('amount');
+
+        //IMPLEMENTING TEAM
+        $team_members = TeamPlan::where('revision_plan_id', $id)
+                        ->get()
+                        ->map(function($item){
+                            $people = Implementing_team::where('id',$item->implementing_team_id)
+                                        ->first();
+                            return [
+                                "id"=>$item->id,
+                                "name"=>$people->name,
+                                "position"=>$people->position,
+                                "competency"=>$people->competency,
+                                "role"=>$item->role
+                            ];
+                        });
+        //MONITORING AND EVALUATION
+        $monitoring = Monitoring_and_evaluation::where('revision_plan_id', $id)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
         return inertia('RevisionPlans/View',[
             "paps"=>$paps,
             "office"=>$functions->FFUNCTION,
@@ -256,6 +278,8 @@ class RevisionPlanController extends Controller
             "s_mooe"=>$s_mooe,
             "s_capital"=>$s_capital,
             "s_ps"=>$s_ps,
+            "team_members"=>$team_members,
+            "monitors"=>$monitoring,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

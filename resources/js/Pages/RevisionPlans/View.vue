@@ -190,6 +190,46 @@
                             </tr>
                         </tbody>
                     </table>
+                    <br>
+                    <h3>
+                        Implementing Team
+                    </h3>
+                    <table table name="tabel" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position/Designation</th>
+                                <th>Competency</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="team_member in team_members">
+                                <td>{{ team_member.name }}</td>
+                                <td>{{ team_member.position }}</td>
+                                <td>{{ team_member.competency }}</td>
+                                <td>{{ team_member.role }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <h3>Monitoring and Evaluation</h3>
+                    <table table name="tabel" class="table table-hover">
+                        <thead>
+                            <th>Evaluation Mechanism/Tools</th>
+                            <th>OPR and their Roles</th>
+                            <th>Target Beneficiaries</th>
+                            <th>Need for External M&E Team or GAD Expert/Consultant</th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="monitor in monitors">
+                                <td>{{ monitor.evaluation_mechanism_tool }}</td>
+                                <td>{{ monitor.opr }}</td>
+                                <td>{{ monitor.target_beneficiaries }}</td>
+                                <td>{{ monitor.gad }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -215,6 +255,8 @@ export default{
         s_mooe: Object,
         s_capital: Object,
         s_ps: Object,
+        team_members: Object,
+        monitors: Object
     },
     computed: {},
     mounted(){

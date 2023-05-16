@@ -42,7 +42,7 @@
                         </thead>
                         <tbody>
 
-                            <tr v-for="dat in data.data">
+                            <tr v-for="dat in data">
                                 <td>{{ dat.name }}</td>
                                 <td>{{ dat.position }}</td>
                                 <td>{{ dat.competency }}</td>
@@ -55,8 +55,8 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/ImplementingTeam/${dat.id}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteImplementingTeam(dat.id)">Delete</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/team/${dat.id}/edit`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteTeam(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -116,10 +116,10 @@ export default {
                 }
             );
         },
-        deleteImplementingTeam(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Implementing Team?"+id;
+        deleteTeam(id) {
+            let text = "WARNING!\nAre you sure you want to remove this person from the project team?"+id;
               if (confirm(text) == true) {
-                this.$inertia.delete("/ImplementingTeam/" + id);
+                this.$inertia.delete("/team/" + id);
             }
         },
         getAccomplishment(tar_id){

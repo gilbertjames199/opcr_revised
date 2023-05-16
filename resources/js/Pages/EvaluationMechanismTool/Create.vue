@@ -17,7 +17,7 @@
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
-
+                <input type="hidden" v-model="form.revision_plan_id" class="form-control" autocomplete="positionchrome-off">
                 <label for="">EVALUATION MECHANISM/TOOLS</label>
                 <input type="text" v-model="form.evaluation_mechanism_tool" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.evaluation_mechanism_tool">{{ form.errors.evaluation_mechanism_tool }}</div>
@@ -31,7 +31,11 @@
                 <div class="fs-6 c-red-500" v-if="form.errorstarget_beneficiaries">{{ form.errorstarget_beneficiaries }}</div>
 
                 <label for="">NEED FOR EXTERNAL M & E TEAM OR GAD EXPERT/CONSULTANT (YES/NO)</label>
-                <input type="text" v-model="form.gad" class="form-control" autocomplete="chrome-off">
+                <select v-model="form.gad" class="form-control" autocomplete="chrome-off">
+                <option>Yes</option>
+                <option>No</option>
+                </select>
+                <!-- <input type="text" v-model="form.gad" class="form-control" autocomplete="chrome-off"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.gad">{{ form.errors.gad }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
@@ -54,7 +58,8 @@ import Places from "@/Shared/PlacesShared";
 export default {
         props: {
             editData: Object,
-            sectors: Object
+            sectors: Object,
+            revision_plan_id: Number
         },
         components: {
           //BootstrapModalNoJquery,
@@ -74,6 +79,7 @@ export default {
                     opr: "",
                     target_beneficiaries: "",
                     gad: "",
+                    revision_plan_id: this.revision_plan_id,
                     id: null
                 }),
                 pageTitle: ""
@@ -89,6 +95,7 @@ export default {
                 this.pageTitle = "Edit"
                 this.form.evaluation_mechanism_tool=this.editData.evaluation_mechanism_tool
                 this.form.opr=this.editData.opr
+                this.form.revision_plan_id=this.editData.revision_plan_id
                 this.form.target_beneficiaries=this.editData.target_beneficiaries
                 this.form.gad=this.editData.gad
                 this.form.id=this.editData.id

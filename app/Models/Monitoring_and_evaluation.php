@@ -15,5 +15,6 @@ class Monitoring_and_evaluation extends Model
         'opr',
         'target_beneficiaries',
         'gad',
+        'revision_plan_id'
     ];
 }
