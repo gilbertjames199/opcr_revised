@@ -702,7 +702,7 @@ var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
-}, "PAPS", -1
+}, "MFO - PAPS", -1
 /* HOISTED */
 );
 
@@ -1839,6 +1839,22 @@ var map = {
 		"./resources/js/Pages/EconomicAgenda/addAgenda.vue",
 		"resources_js_Pages_EconomicAgenda_addAgenda_vue"
 	],
+	"./EvaluationMechanismTool/Create": [
+		"./resources/js/Pages/EvaluationMechanismTool/Create.vue",
+		"resources_js_Pages_EvaluationMechanismTool_Create_vue"
+	],
+	"./EvaluationMechanismTool/Create.vue": [
+		"./resources/js/Pages/EvaluationMechanismTool/Create.vue",
+		"resources_js_Pages_EvaluationMechanismTool_Create_vue"
+	],
+	"./EvaluationMechanismTool/Index": [
+		"./resources/js/Pages/EvaluationMechanismTool/Index.vue",
+		"resources_js_Pages_EvaluationMechanismTool_Index_vue"
+	],
+	"./EvaluationMechanismTool/Index.vue": [
+		"./resources/js/Pages/EvaluationMechanismTool/Index.vue",
+		"resources_js_Pages_EvaluationMechanismTool_Index_vue"
+	],
 	"./Home": [
 		"./resources/js/Pages/Home.vue",
 		"resources_js_Pages_Home_vue"
@@ -1874,6 +1890,38 @@ var map = {
 	"./Implementation/Index.vue": [
 		"./resources/js/Pages/Implementation/Index.vue",
 		"resources_js_Pages_Implementation_Index_vue"
+	],
+	"./ImplementingTeam/Create": [
+		"./resources/js/Pages/ImplementingTeam/Create.vue",
+		"resources_js_Pages_ImplementingTeam_Create_vue"
+	],
+	"./ImplementingTeam/Create.vue": [
+		"./resources/js/Pages/ImplementingTeam/Create.vue",
+		"resources_js_Pages_ImplementingTeam_Create_vue"
+	],
+	"./ImplementingTeam/Index": [
+		"./resources/js/Pages/ImplementingTeam/Index.vue",
+		"resources_js_Pages_ImplementingTeam_Index_vue"
+	],
+	"./ImplementingTeam/Index.vue": [
+		"./resources/js/Pages/ImplementingTeam/Index.vue",
+		"resources_js_Pages_ImplementingTeam_Index_vue"
+	],
+	"./ImplementingTeamRevision/Create": [
+		"./resources/js/Pages/ImplementingTeamRevision/Create.vue",
+		"resources_js_Pages_ImplementingTeamRevision_Create_vue"
+	],
+	"./ImplementingTeamRevision/Create.vue": [
+		"./resources/js/Pages/ImplementingTeamRevision/Create.vue",
+		"resources_js_Pages_ImplementingTeamRevision_Create_vue"
+	],
+	"./ImplementingTeamRevision/Index": [
+		"./resources/js/Pages/ImplementingTeamRevision/Index.vue",
+		"resources_js_Pages_ImplementingTeamRevision_Index_vue"
+	],
+	"./ImplementingTeamRevision/Index.vue": [
+		"./resources/js/Pages/ImplementingTeamRevision/Index.vue",
+		"resources_js_Pages_ImplementingTeamRevision_Index_vue"
 	],
 	"./Indicators/Create": [
 		"./resources/js/Pages/Indicators/Create.vue",
@@ -2106,6 +2154,22 @@ var map = {
 	"./RevisionPlans/View.vue": [
 		"./resources/js/Pages/RevisionPlans/View.vue",
 		"resources_js_Pages_RevisionPlans_View_vue"
+	],
+	"./RiskManagement/Create": [
+		"./resources/js/Pages/RiskManagement/Create.vue",
+		"resources_js_Pages_RiskManagement_Create_vue"
+	],
+	"./RiskManagement/Create.vue": [
+		"./resources/js/Pages/RiskManagement/Create.vue",
+		"resources_js_Pages_RiskManagement_Create_vue"
+	],
+	"./RiskManagement/Index": [
+		"./resources/js/Pages/RiskManagement/Index.vue",
+		"resources_js_Pages_RiskManagement_Index_vue"
+	],
+	"./RiskManagement/Index.vue": [
+		"./resources/js/Pages/RiskManagement/Index.vue",
+		"resources_js_Pages_RiskManagement_Index_vue"
 	],
 	"./SDG/Create": [
 		"./resources/js/Pages/SDG/Create.vue",

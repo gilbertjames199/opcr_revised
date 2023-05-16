@@ -89,8 +89,8 @@
                                 <td>MAJOR FINAL OUTPUTS</td>
                                 <td v-for="mfo in mfos">
                                     <tr >
-                                        <td><b>{{ mfo.mfo_desc }}</b>
-
+                                        <td>
+                                            <Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link>
                                         </td>
                                     </tr>
                                 </td>
@@ -101,7 +101,8 @@
                                     <tr >
                                         <td>
                                             <div v-for="pap in mfo.paps">
-                                                {{ pap.paps_desc }} <span v-if="pap.MOV!=='-'">(<i>MOV: {{ pap.MOV }}</i>)</span>
+                                                <a :href="`/revision/${pap.id}`" target="_blank">{{ pap.paps_desc }}</a><br>
+                                                <span v-if="pap.MOV!=='-'">(<i>MOV: {{ pap.MOV }}</i>)</span>
                                                 <div style="color: white"> .</div>
                                             </div>
                                         </td>

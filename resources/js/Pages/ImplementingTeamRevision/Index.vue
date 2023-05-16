@@ -7,27 +7,24 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Revision Plans </h3>
+            <h3>Implementing Team</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`">Add Revision Plan</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/team/create/${revid}`">Add Implementing Team </Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
-
-            <Link :href="`/paps/direct`">
+            <!-- <Link :href="'/Sectoral'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                     <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
                 </svg>
-            </Link>
+            </Link> -->
         </div>
-        <div class="peers fxw-nw jc-sb ai-c">
-            <h5>Program/Project: <u>{{ paps.paps_desc }}</u></h5>
-        </div>
+
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -36,24 +33,20 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Project Title</th>
-                                <th>Office</th>
-                                <th>View</th>
-                                <th>Version</th>
-                                <th>Actions</th>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Competency</th>
+                                <th>Role</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
+
                             <tr v-for="dat in data">
-                                <td>{{ dat.project_title }}</td>
-                                <td>{{ dat.FFUNCTION }}</td>
-                                <td><Link
-                                        class="btn btn-primary btn-sm"
-                                        :href="`/revision/view/project/paps/${dat.id}`">
-                                        View
-                                    </Link>
-                                </td>
-                                <td>{{ dat.version }}</td>
+                                <td>{{ dat.name }}</td>
+                                <td>{{ dat.position }}</td>
+                                <td>{{ dat.competency }}</td>
+                                <td>{{ dat.role }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -62,12 +55,8 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/budget/${dat.id}`">Budget Requirements {{ dat.id }}</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/implementation/${dat.id}`">Implementation Plan</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/team/${dat.id}/revision/plan/team`">Implementating Team</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/EvaluationMechanismTool/${dat.id}`">Monitoring and Evaluation</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/HGDGScore/${dat.id}`">HGDG Score</Link></li>
-                                            <!--<li><Link class="text-danger dropdown-item" @click="deleteStrat(dat.id)">Delete</Link></li>-->
+                                            <li><Link class="dropdown-item" :href="`/team/${dat.id}/edit`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteTeam(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -100,15 +89,12 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
-        //idstrat: String,
-        idpaps: String,
-        filters: Object,
-        paps: Object,
-        monitors: Object
+        revs: Object,
+        revid: String
     },
     data() {
         return{
-            search: this.$props.filters.search,
+
         }
     },
     components: {
@@ -130,11 +116,10 @@ export default {
                 }
             );
         },
-        deleteStrat(id) {
-            //alert(this.idpaps);
-            let text = "WARNING!\nAre you sure you want to delete the strategy?"+id;
+        deleteTeam(id) {
+            let text = "WARNING!\nAre you sure you want to remove this person from the project team?"+id;
               if (confirm(text) == true) {
-                this.$inertia.delete("/strategies/" + id+"/"+this.idpaps);
+                this.$inertia.delete("/team/" + id);
             }
         },
         getAccomplishment(tar_id){
