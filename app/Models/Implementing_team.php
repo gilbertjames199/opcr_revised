@@ -15,5 +15,6 @@ class Implementing_team extends Model
         'position',
         'competency',
         'role',
+        'FFUNCCOD'
     ];
 }
