@@ -31,7 +31,11 @@
                 <div class="fs-6 c-red-500" v-if="form.errorstarget_beneficiaries">{{ form.errorstarget_beneficiaries }}</div>
 
                 <label for="">NEED FOR EXTERNAL M & E TEAM OR GAD EXPERT/CONSULTANT (YES/NO)</label>
-                <input type="text" v-model="form.gad" class="form-control" autocomplete="chrome-off">
+                <select v-model="form.gad" class="form-control" autocomplete="chrome-off">
+                <option>Yes</option>
+                <option>No</option>
+                </select>
+                <!-- <input type="text" v-model="form.gad" class="form-control" autocomplete="chrome-off"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.gad">{{ form.errors.gad }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
