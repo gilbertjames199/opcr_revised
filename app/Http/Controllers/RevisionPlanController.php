@@ -36,10 +36,13 @@ class RevisionPlanController extends Controller
                 ->where('acc.iduser','=',$myid)
                 ->where('idpaps','=',$idpaps)
                 ->get();
+
+        $paps = ProgramAndProject::where('id', $idpaps)->first();
         //dd($data);
         return inertia('RevisionPlans/Index',[
             'data'=>$data,
             "idpaps"=>$idpaps,
+            "paps"=>$paps,
             "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),

@@ -36,6 +36,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       submitted: false,
+      maxWords: 200,
+      act_words: 0,
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         idpaps: "",
         project_title: this.paps[0].paps_desc,
@@ -56,6 +58,27 @@ __webpack_require__.r(__webpack_exports__);
       }),
       pageTitle: ""
     };
+  },
+  computed: {
+    wordsRemaining: function wordsRemaining() {
+      var wordCount = this.form.rationale.trim().split(/\s+/).length;
+      var returner = this.maxWords - wordCount;
+
+      if (this.form.rationale === "") {
+        returner = 200;
+      }
+
+      return returner;
+    },
+    wordCount: function wordCount() {
+      var rtn = this.form.rationale.trim().split(/\s+/).length;
+
+      if (this.form.rationale === "") {
+        rtn = 0;
+      }
+
+      return rtn;
+    }
   },
   mounted: function mounted() {
     this.form.idpaps = this.idpaps; //this.form.idinteroutcome=this.idinteroutcome
@@ -104,13 +127,25 @@ __webpack_require__.r(__webpack_exports__);
     submit: function submit() {
       //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
       //alert(this.form.target_qty);
-      if (this.editData !== undefined) {
-        //alert('patch');
-        this.form.patch("/strategies/", this.form);
+      if (this.act_words > this.maxWords) {
+        alert("Rationale exceeds 200 words limit");
       } else {
-        this.form.id = null; //alert('store');
+        if (this.editData !== undefined) {
+          //alert('patch');
+          this.form.patch("/strategies/", this.form);
+        } else {
+          this.form.id = null; //alert('store');
 
-        this.form.post("/revision/store", this.form);
+          this.form.post("/revision/store", this.form);
+        }
+      }
+    },
+    limitWords: function limitWords() {
+      var words = this.form.rationale.trim().split(/\s+/);
+      this.act_words = words.length;
+
+      if (words.length > this.maxWords) {//alert("Rationale has already 200 words!")
+        //this.form.rationale = words.slice(0, this.maxWords).join(' ');
       }
     }
   }
@@ -472,7 +507,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[18] || (_cache[18] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[19] || (_cache[19] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
   }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -604,21 +639,26 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.baseline_total]]), $data.form.errors.baseline_total ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.baseline_total), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_39, _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_39, _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "words remaining: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.wordsRemaining) + "    word count: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.wordCount), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
       return $data.form.rationale = $event;
     }),
     style: {
       "height": "100px"
     },
+    onInput: _cache[13] || (_cache[13] = function () {
+      return $options.limitWords && $options.limitWords.apply($options, arguments);
+    }),
     "class": "form-control",
     autocomplete: "chrome-off"
-  }, null, 512
-  /* NEED_PATCH */
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.rationale]]), $data.form.errors.baseline_total ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_41, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.baseline_total), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
-    "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
+    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
       return $data.form.objective = $event;
     }),
     style: {
@@ -631,7 +671,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.objective]]), $data.form.errors.objective ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.objective), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
-    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
+    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
       return $data.form.beneficiaries = $event;
     }),
     style: {
@@ -645,7 +685,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     type: "number",
-    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
+    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
       return $data.form.checklist_id = $event;
     }),
     "class": "form-control",
@@ -664,7 +704,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "hidden",
-    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
+    "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
       return $data.form.id = $event;
     }),
     "class": "form-control",
@@ -674,7 +714,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary mt-3",
-    onClick: _cache[17] || (_cache[17] = function ($event) {
+    onClick: _cache[18] || (_cache[18] = function ($event) {
       return $options.submit();
     }),
     disabled: $data.form.processing

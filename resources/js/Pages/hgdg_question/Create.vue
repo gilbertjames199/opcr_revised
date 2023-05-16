@@ -135,7 +135,7 @@
                 if (this.editData !== undefined) {
                     this.form.patch("/HGDGQuestions/" + this.form.id, this.form);
                 } else {
-                    alert('post!');
+                    //alert('post!');
                     this.form.post("/HGDGQuestions/store", this.form);
                 }
             },

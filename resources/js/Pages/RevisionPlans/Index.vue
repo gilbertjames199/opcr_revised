@@ -25,7 +25,9 @@
                 </svg>
             </Link>
         </div>
-
+        <div class="peers fxw-nw jc-sb ai-c">
+            <h5>Program/Project: <u>{{ paps.paps_desc }}</u></h5>
+        </div>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -99,6 +101,7 @@ export default {
         //idstrat: String,
         idpaps: String,
         filters: Object,
+        paps: Object
     },
     data() {
         return{
