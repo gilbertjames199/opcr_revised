@@ -202,7 +202,7 @@
                         </table>
                         <br>
                     </div>
-                    <h3 v-if="team_members.length>0 ||  paps.implementing_team.length>0">
+                    <h3 v-if="team_members.length>0 ||  paps.implementing_team!==null">
                         Implementing Team
                     </h3>
                     <div align="justify">{{ paps.implementing_team }}</div>
@@ -229,11 +229,11 @@
                         <br>
                     </div>
                     <br>
-                    <h3>Partnership and Sustainability</h3>
+                    <h3 v-if="paps.partnership!==null">Partnership and Sustainability</h3>
                     <div align="justify">{{ paps.partnership }}</div>
                     <br>
                     <br>
-                    <h3 v-if="monitors.length>0 ||  paps.monitoring.length>0">Monitoring and Evaluation</h3>
+                    <h3 v-if="monitors.length>0 ||  paps.monitoring!==null">Monitoring and Evaluation</h3>
                     <div align="justify">{{ paps.monitoring }}</div>
                     <div v-if="monitors.length>0">
 
@@ -258,7 +258,7 @@
                         </table>
                         <br>
                     </div>
-                    <h3 v-if="risks.length>0 ||  paps.risk_management.length>0">Risk Management</h3>
+                    <h3 v-if="risks.length>0 ||  paps.risk_management!==null">Risk Management</h3>
                     <div align="justify">{{ paps.risk_management }}</div>
                     <div v-if="risks.length>0">
                         <table table name="tabel" class="table table-hover table-bordered border-dark">
