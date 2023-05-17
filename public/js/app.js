@@ -2211,6 +2211,22 @@ var map = {
 		"./resources/js/Pages/Sectoral/addSector.vue",
 		"resources_js_Pages_Sectoral_addSector_vue"
 	],
+	"./Signatories/Create": [
+		"./resources/js/Pages/Signatories/Create.vue",
+		"resources_js_Pages_Signatories_Create_vue"
+	],
+	"./Signatories/Create.vue": [
+		"./resources/js/Pages/Signatories/Create.vue",
+		"resources_js_Pages_Signatories_Create_vue"
+	],
+	"./Signatories/Index": [
+		"./resources/js/Pages/Signatories/Index.vue",
+		"resources_js_Pages_Signatories_Index_vue"
+	],
+	"./Signatories/Index.vue": [
+		"./resources/js/Pages/Signatories/Index.vue",
+		"resources_js_Pages_Signatories_Index_vue"
+	],
 	"./SocietalGoals/Index": [
 		"./resources/js/Pages/SocietalGoals/Index.vue",
 		"resources_js_Pages_SocietalGoals_Index_vue"
