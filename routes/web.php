@@ -390,9 +390,9 @@ Route::middleware('auth')->group(function() {
 
     //Risk Management
         Route::prefix('/RiskManagement')->group(function(){
-        Route::get('/',[RiskManangementController::class,'index']);
-        Route::get('/create',[RiskManangementController::class,'create']);
-        Route::post('/',[RiskManangementController::class,'store']);
+        Route::get('/{revid}',[RiskManangementController::class,'index']);
+        Route::get('/create/{revid}',[RiskManangementController::class,'create']);
+        Route::post('/store',[RiskManangementController::class,'store']);
         Route::get('/{id}/edit', [RiskManangementController::class, 'edit']);
         Route::patch('/{id}', [RiskManangementController::class, 'update']);
         Route::delete('/{id}', [RiskManangementController::class, 'destroy']);
