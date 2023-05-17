@@ -326,6 +326,13 @@ createInertiaApp({
             },
             allCaps(val){
                 return val.toUpperCase();
+            },
+            formatMonthYear(date_value){
+                const dateParts = date_value.split('-');
+                const year = dateParts[0];
+                const month = new Date(dateParts[0], dateParts[1] - 1).toLocaleString('en-US', { month: 'long' });
+
+                return `${month} ${year}`;
             }
         }
       })

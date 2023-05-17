@@ -267,7 +267,7 @@ class RevisionPlanController extends Controller
                         });
         //MONITORING AND EVALUATION
         $monitoring = Monitoring_and_evaluation::where('revision_plan_id', $id)
-                        ->orderBy('created_at', 'desc')
+                        ->orderBy('created_at', 'asc')
                         ->get();
         //RISK MANAGEEMNT
         $risks =Risk_manangement::where('revision_plan_id', $id)->get();

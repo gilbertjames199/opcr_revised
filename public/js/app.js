@@ -1243,6 +1243,14 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_8___default()((filepond_plu
         },
         allCaps: function allCaps(val) {
           return val.toUpperCase();
+        },
+        formatMonthYear: function formatMonthYear(date_value) {
+          var dateParts = date_value.split('-');
+          var year = dateParts[0];
+          var month = new Date(dateParts[0], dateParts[1] - 1).toLocaleString('en-US', {
+            month: 'long'
+          });
+          return "".concat(month, " ").concat(year);
         }
       }
     }).mount(el);
