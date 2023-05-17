@@ -21,7 +21,7 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
                 <div>
-                    <label for="">CHART OF ACCOUNTS</label>
+                    <label for="">CHART OF ACCOUNTS chart selected{{ chart_selected }}</label>
                     <div @keyup.enter="addAccount($event)">
                         <multiselect
                             :options="accounts"
@@ -41,7 +41,7 @@
 
                 <!--{{ budget_code }} budgets: {{ budgets }} form.account_code: {{ form.account_code }}-->
                 <label>ACCOUNT CODE budget_code: </label>
-                <input type="number" class="form-control" v-model="form.account_code" readonly/>
+                <input type="number" class="form-control" v-model="form.account_code" @input="searchByAccountCode"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.account_code">{{ form.errors.account_code }}</div>
                 <label>AMOUNT</label>
                 <input type="number" class="form-control" v-model="form.amount"/>
@@ -224,6 +224,13 @@ export default {
                 this.budget_code = this.budgets.indexOf(this.form.account_code.toString());
                 this.form.particulars = this.chart_selected
                 //alert(this.budget_code+" code: "+ this.codes[ind]);
+            },
+            searchByAccountCode(){
+
+                var ind = this.codes.indexOf(this.form.account_code.toString());
+                this.chart_selected=this.accounts[parseInt(ind)];
+                // this.chart_selected=this.form.particulars
+                alert('search by account tgttg! '+ind);
             }
         },
     };
