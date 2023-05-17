@@ -58,7 +58,9 @@ class RevisionPlanController extends Controller
         $paps=ProgramAndProject::where('id',$id)->get();
         $hgdg=HGDG_Checklist::get();
         $count=RevisionPlan::where('idpaps',$id)->count();
-        $duplicate=RevisionPlan::where('idpaps',$id)->get();
+        $max_id =RevisionPlan::where('idpaps', $id)->max('id');
+        //dd($max_id);
+        $duplicate=RevisionPlan::where('id',$max_id)->get();
 
         if($count>0){
             //dd("Duplicate is not empty");
@@ -106,10 +108,10 @@ class RevisionPlanController extends Controller
             'objective'=>'required',
             'beneficiaries'=>'required',
             'checklist_id'=>'required',
-            'implementing_team'=>'required',
+            // 'implementing_team'=>'required',
             'partnership'=>'required',
-            'monitoring'=>'required',
-            'risk_management'=>'required'
+            // 'monitoring'=>'required',
+            // 'risk_management'=>'required'
         ]);
 
         $version = RevisionPlan::where('idpaps','=', $request->idpaps)->max('version');
@@ -134,10 +136,13 @@ class RevisionPlanController extends Controller
         $rev->rationale=$attributes['rationale'];
         $rev->objective=$attributes['objective'];
         $rev->beneficiaries=$attributes['beneficiaries'];
-        $rev->implementing_team=$attributes['implementing_team'];
+        $rev->implementing_team=$request->implementing_team;
         $rev->partnership=$attributes['partnership'];
-        $rev->monitoring=$attributes['monitoring'];
-        $rev->risk_management=$attributes['risk_management'];
+        $rev->monitoring=$request->monitoring;
+        $rev->risk_management=$request->risk_management;
+        // $rev->implementing_team=$attributes['implementing_team'];
+        // $rev->monitoring=$attributes['monitoring'];
+        // $rev->risk_management=$attributes['risk_management'];
         //$rev->checklist_id=$attributes['checklist_id'];
         $rev->amount='0.00';
         $rev->attributed_amount='0.00';

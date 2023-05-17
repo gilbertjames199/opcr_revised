@@ -65,7 +65,7 @@
                             </tr>
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Cost of Program</th>
-                                <th colspan="1">Amount</th>
+                                <th colspan="1">Amount (Php)</th>
                                 <td colspan="2">{{ format_number_conv(paps.amount,2,true) }} </td>
                                 <th colspan="1">Attributed GAD Budget (Php)</th>
                                 <td colspan="2">{{ format_number_conv(paps.attributed_amount,2,true) }}</td>
@@ -92,7 +92,7 @@
                             </tr>
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Beneficiaries</th>
-                                <td colspan="6">{{ paps.beneficiaries }}</td>
+                                <td colspan="6" align="justify">{{ paps.beneficiaries }}</td>
                             </tr>
 
 
@@ -228,6 +228,10 @@
                         </table>
                         <br>
                     </div>
+                    <br>
+                    <h3>Partnership and Sustainability</h3>
+                    <div align="justify">{{ paps.partnership }}</div>
+                    <br>
                     <br>
                     <h3 v-if="monitors.length>0 ||  paps.monitoring.length>0">Monitoring and Evaluation</h3>
                     <div align="justify">{{ paps.monitoring }}</div>
