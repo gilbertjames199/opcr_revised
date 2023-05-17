@@ -67,8 +67,8 @@
                                 <th class="bg-secondary text-white" colspan="1">Cost of Program</th>
                                 <th colspan="1">Amount (Php)</th>
                                 <td colspan="2">{{ format_number_conv(paps.amount,2,true) }} </td>
-                                <th colspan="1">Attributed GAD Budget (Php)</th>
-                                <td colspan="2">{{ format_number_conv(paps.attributed_amount,2,true) }}</td>
+                                <th colspan="1">Attributed GAD Budget (Php) dxxcxc</th>
+                                <td colspan="2">{{ format_number_conv((paps.amount*paps.hgdg_percent),2,true) }}</td>
                             </tr>
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">HGDG Checklist</th>
