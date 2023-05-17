@@ -15,7 +15,7 @@ class AddFFUNCODToImplementingTeam extends Migration
     {
         Schema::table('implementing_teams', function (Blueprint $table) {
 
-            $table->Text('FFUNCOD')->comment('Employees Name')->after('role');
+            $table->Text('FFUNCCOD')->comment('Employees Name')->after('role');
             //
         });
     }
