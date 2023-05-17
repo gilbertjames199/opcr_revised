@@ -88,7 +88,7 @@ class RevisionPlanController extends Controller
 
     }
     public function store(Request $request){
-        //dd($request->idpaps);
+        ///dd($request);
         //$idpaps=$request->idpaps;
         $attributes = $request->validate([
             'idpaps'=>'required',
@@ -106,6 +106,10 @@ class RevisionPlanController extends Controller
             'objective'=>'required',
             'beneficiaries'=>'required',
             'checklist_id'=>'required',
+            'implementing_team'=>'required',
+            'partnership'=>'required',
+            'monitoring'=>'required',
+            'risk_management'=>'required'
         ]);
 
         $version = RevisionPlan::where('idpaps','=', $request->idpaps)->max('version');
@@ -130,6 +134,10 @@ class RevisionPlanController extends Controller
         $rev->rationale=$attributes['rationale'];
         $rev->objective=$attributes['objective'];
         $rev->beneficiaries=$attributes['beneficiaries'];
+        $rev->implementing_team=$attributes['implementing_team'];
+        $rev->partnership=$attributes['partnership'];
+        $rev->monitoring=$attributes['monitoring'];
+        $rev->risk_management=$attributes['risk_management'];
         //$rev->checklist_id=$attributes['checklist_id'];
         $rev->amount='0.00';
         $rev->attributed_amount='0.00';

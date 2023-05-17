@@ -20,6 +20,7 @@ class RiskManangementController extends Controller
         public function index(Request $request, $revid){
             $revs = RevisionPlan::findOrFail($revid);
             $data = $this->model
+                        ->where('revision_plan_id', $revid)
                         ->orderBy('created_at', 'desc')
                         ->paginate(10)
                         ->withQueryString();

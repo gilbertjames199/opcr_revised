@@ -86,6 +86,22 @@
                 <textarea v-model="form.beneficiaries" style="height:100px;" class="form-control" autocomplete="chrome-off"></textarea>
                 <div class="fs-6 c-red-500" v-if="form.errors.beneficiaries">{{ form.errors.beneficiaries }}</div>
 
+                <label for="">IMPLEMENTING TEAM</label>
+                <textarea v-model="form.implementing_team" style="height:100px;" class="form-control" autocomplete="chrome-off"></textarea>
+                <div class="fs-6 c-red-500" v-if="form.errors.implementing_team">{{ form.errors.implementing_team }}</div>
+
+                <label for="">PARTNERSHIPS AND SUSTAINABILITY</label>
+                <textarea v-model="form.partnership" style="height:100px;" class="form-control" autocomplete="chrome-off"></textarea>
+                <div class="fs-6 c-red-500" v-if="form.errors.partnership">{{ form.errors.partnership }}</div>
+
+                <label for="">MONITORING AND EVALUATION</label>
+                <textarea v-model="form.monitoring" style="height:100px;" class="form-control" autocomplete="chrome-off"></textarea>
+                <div class="fs-6 c-red-500" v-if="form.errors.monitoring">{{ form.errors.monitoring }}</div>
+
+                <label for="">RISK MANAGEMENT</label>
+                <textarea v-model="form.risk_management" style="height:100px;" class="form-control" autocomplete="chrome-off"></textarea>
+                <div class="fs-6 c-red-500" v-if="form.errors.risk_management">{{ form.errors.risk_management }}</div>
+
                 <label for="">Checklist/Box Number</label>
                 <select type="number" v-model="form.checklist_id" class="form-control" autocomplete="chrome-off">
                     <option v-for="hgdg in hgdgs" :value="hgdg.id">
@@ -149,6 +165,10 @@ export default {
                     objective: "",
                     beneficiaries: "",
                     checklist_id: "",
+                    implementing_team: "",
+                    partnership: "",
+                    monitoring: "",
+                    risk_management: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -192,6 +212,10 @@ export default {
                 this.form.objective=this.editData.objective
                 this.form.checklist_id=this.editData.checklist_id
                 this.form.beneficiaries=this.editData.beneficiaries
+                this.form.implementing_team=this.editData.implementing_team
+                this.form.partnership=this.editData.partnership
+                this.form.monitoring=this.editData.monitoring
+                this.form.risk_management=this.editData.risk_management
 
             } else {
                 this.pageTitle = "Create"
@@ -212,6 +236,10 @@ export default {
                     this.form.objective=this.duplicate[0].objective
                     this.form.checklist_id=this.duplicate[0].checklist_id
                     this.form.beneficiaries=this.duplicate[0].beneficiaries
+                    this.form.implementing_team=this.duplicate[0].implementing_team
+                    this.form.partnership=this.duplicate[0].partnership
+                    this.form.monitoring=this.duplicate[0].monitoring
+                    this.form.risk_management=this.duplicate[0].risk_management
                 }else{
                     //alert('undefined si idpaps!');
                 }

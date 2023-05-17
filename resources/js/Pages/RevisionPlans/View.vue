@@ -99,166 +99,183 @@
                         </tbody>
                     </table>
                     <br>
-                    <h3>
-                        Estimated Cost/Budgetary Requirements
-                    </h3>
-                    <table name="tabel" class="table table-hover table-bordered border-dark">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th colspan="2">Particulars</th>
-                                <th>Account Code</th>
-                                <th v-if="paps.hgdg_percent>0">GAD</th>
-                                <th v-if="paps.hgdg_percent>0">NON-GAD</th>
-                                <th v-if="paps.hgdg_percent>0">Total</th>
-                                <th v-if="paps.hgdg_percent<0.1">Amount</th>
-                                <th>Source</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-if="b_mooe.length>0" class="fw-bold bg-light">
-                                <td colspan="2"><b>MOOE</b></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr v-if="b_mooe.length>0" v-for="mooe in b_mooe">
-                                <td></td>
-                                <td>{{ mooe.particulars }}</td>
-                                <td>{{ mooe.account_code }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv((mooe.amount*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount-(mooe.amount*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount,2,true) }}</td>
-                                <td v-if="paps.hgdg_percent<0.1">{{ format_number_conv(mooe.amount,2,true) }}</td>
-                                <td>{{ mooe.source }}</td>
-                            </tr>
-                            <tr v-if="b_mooe.length>0" >
-                                <td></td>
-                                <td><b><span v-if="has>1">SUB-</span>TOTAL</b></td>
-                                <td></td>
-                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((s_mooe*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_mooe-(s_mooe*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_mooe,2,true) }}</td>
-                                <td v-if="paps.hgdg_percent<0.1" class=" text-decoration-underline">{{ format_number_conv(s_mooe,2,true) }}</td>
-                                <td></td>
-                            </tr>
-                            <tr v-if="b_capital.length>0" class="fw-bold bg-light">
-                                <td colspan="2"><b>Capital Outlay</b></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr v-if="b_capital.length>0" v-for="mooe in b_capital" >
-                                <td></td>
-                                <td>{{ mooe.particulars }}</td>
-                                <td>{{ mooe.account_code }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv((mooe.amount*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount-(mooe.amount*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount,2,true) }}</td>
-                                <td v-if="paps.hgdg_percent<0.1">{{ format_number_conv(mooe.amount,2,true) }}</td>
-                                <td>{{ mooe.source }}</td>
-                            </tr>
-                            <tr v-if="b_capital.length>0">
-                                <td></td>
-                                <td><b><span v-if="has>1">SUB-</span>TOTAL</b></td>
-                                <td></td>
-                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((s_capital*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_capital-(s_capital*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_capital,2,true) }}</td>
-                                <td v-if="paps.hgdg_percent<0.1" class=" text-decoration-underline">{{ format_number_conv(s_capital,2,true) }}</td>
-                                <td></td>
-                            </tr>
-                            <tr v-if="b_ps.length>0">
-                                <td colspan="2"><b>Personnel Services</b></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr v-if="b_ps.length>0" v-for="mooe in b_ps">
-                                <td></td>
-                                <td>{{ mooe.particulars }}</td>
-                                <td>{{ mooe.account_code }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv((mooe.amount*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount-(mooe.amount*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount,2,true) }}</td>
-                                <td v-if="paps.hgdg_percent<0.1">{{ format_number_conv(mooe.amount,2,true) }}</td>
-                                <td>{{ mooe.source }}</td>
-                            </tr>
-                            <tr v-if="has>1" class="fw-bold bg-light">
-                                <th colspan="3" style="text-align: center"><b>GRAND TOTAL</b></th>
-                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((paps.amount*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(paps.amount-(paps.amount*paps.hgdg_percent),2,true) }}</td>
-                                <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(paps.amount,2,true) }}</td>
-                                <td v-if="paps.hgdg_percent<0.1" class=" text-decoration-underline">{{ format_number_conv(paps.amount,2,true) }}</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <br>
-                    <h3>
+                    <div v-if="b_mooe.length>0 || b_capital.length>0 || b_ps.length>0">
+                        <h3>
+                            Estimated Cost/Budgetary Requirements
+                        </h3>
+                        <table name="tabel" class="table table-hover table-bordered border-dark">
+                            <thead>
+                                <tr class="bg-secondary text-white">
+                                    <th colspan="2">Particulars</th>
+                                    <th>Account Code</th>
+                                    <th v-if="paps.hgdg_percent>0">GAD</th>
+                                    <th v-if="paps.hgdg_percent>0">NON-GAD</th>
+                                    <th v-if="paps.hgdg_percent>0">Total</th>
+                                    <th v-if="paps.hgdg_percent<0.1">Amount</th>
+                                    <th>Source</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-if="b_mooe.length>0" class="fw-bold bg-light">
+                                    <td colspan="2"><b>MOOE</b></td>
+                                    <td></td>
+                                    <td v-if="paps.hgdg_percent>0"></td>
+                                    <td v-if="paps.hgdg_percent>0"></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr v-if="b_mooe.length>0" v-for="mooe in b_mooe">
+                                    <td></td>
+                                    <td>{{ mooe.particulars }}</td>
+                                    <td>{{ mooe.account_code }}</td>
+                                    <td v-if="paps.hgdg_percent>0">{{ format_number_conv((mooe.amount*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount-(mooe.amount*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount,2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent<0.1">{{ format_number_conv(mooe.amount,2,true) }}</td>
+                                    <td>{{ mooe.source }}</td>
+                                </tr>
+                                <tr v-if="b_mooe.length>0" >
+                                    <td></td>
+                                    <td><b><span v-if="has>1">SUB-</span>TOTAL</b></td>
+                                    <td></td>
+                                    <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((s_mooe*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_mooe-(s_mooe*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_mooe,2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent<0.1" class=" text-decoration-underline">{{ format_number_conv(s_mooe,2,true) }}</td>
+                                    <td></td>
+                                </tr>
+                                <tr v-if="b_capital.length>0" class="fw-bold bg-light">
+                                    <td colspan="2"><b>Capital Outlay</b></td>
+                                    <td></td>
+                                    <td v-if="paps.hgdg_percent>0"></td>
+                                    <td v-if="paps.hgdg_percent>0"></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr v-if="b_capital.length>0" v-for="mooe in b_capital" >
+                                    <td></td>
+                                    <td>{{ mooe.particulars }}</td>
+                                    <td>{{ mooe.account_code }}</td>
+                                    <td v-if="paps.hgdg_percent>0">{{ format_number_conv((mooe.amount*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount-(mooe.amount*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount,2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent<0.1">{{ format_number_conv(mooe.amount,2,true) }}</td>
+                                    <td>{{ mooe.source }}</td>
+                                </tr>
+                                <tr v-if="b_capital.length>0">
+                                    <td></td>
+                                    <td><b><span v-if="has>1">SUB-</span>TOTAL</b></td>
+                                    <td></td>
+                                    <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((s_capital*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_capital-(s_capital*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(s_capital,2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent<0.1" class=" text-decoration-underline">{{ format_number_conv(s_capital,2,true) }}</td>
+                                    <td></td>
+                                </tr>
+                                <tr v-if="b_ps.length>0">
+                                    <td colspan="2"><b>Personnel Services</b></td>
+                                    <td></td>
+                                    <td v-if="paps.hgdg_percent>0"></td>
+                                    <td v-if="paps.hgdg_percent>0"></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr v-if="b_ps.length>0" v-for="mooe in b_ps">
+                                    <td></td>
+                                    <td>{{ mooe.particulars }}</td>
+                                    <td>{{ mooe.account_code }}</td>
+                                    <td v-if="paps.hgdg_percent>0">{{ format_number_conv((mooe.amount*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount-(mooe.amount*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0">{{ format_number_conv(mooe.amount,2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent<0.1">{{ format_number_conv(mooe.amount,2,true) }}</td>
+                                    <td>{{ mooe.source }}</td>
+                                </tr>
+                                <tr v-if="has>1" class="fw-bold bg-light">
+                                    <th colspan="3" style="text-align: center"><b>GRAND TOTAL</b></th>
+                                    <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((paps.amount*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(paps.amount-(paps.amount*paps.hgdg_percent),2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(paps.amount,2,true) }}</td>
+                                    <td v-if="paps.hgdg_percent<0.1" class=" text-decoration-underline">{{ format_number_conv(paps.amount,2,true) }}</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+                    <h3 v-if="team_members.length>0 ||  paps.implementing_team.length>0">
                         Implementing Team
                     </h3>
-                    <table table name="tabel" class="table table-hover table-bordered border-dark">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th>Name</th>
-                                <th>Position/Designation</th>
-                                <th>Competency</th>
-                                <th>Role</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="team_member in team_members">
-                                <td>{{ team_member.name }}</td>
-                                <td>{{ team_member.position }}</td>
-                                <td>{{ team_member.competency }}</td>
-                                <td>{{ team_member.role }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <br>
-                    <h3>Monitoring and Evaluation</h3>
-                    <table table name="tabel" class="table table-hover table-bordered border-dark">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th>Evaluation Mechanism/Tools</th>
-                                <th>OPR and their Roles</th>
-                                <th>Target Beneficiaries</th>
-                                <th>Need for External M&E Team or GAD Expert/Consultant</th>
-                            </tr>
+                    <div align="justify">{{ paps.implementing_team }}</div>
+                    <div v-if="team_members.length>0">
 
-                        </thead>
-                        <tbody>
-                            <tr v-for="monitor in monitors">
-                                <td>{{ monitor.evaluation_mechanism_tool }}</td>
-                                <td>{{ monitor.opr }}</td>
-                                <td>{{ monitor.target_beneficiaries }}</td>
-                                <td>{{ monitor.gad }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <h3>Risk Management</h3>
-                    <table table name="tabel" class="table table-hover table-bordered border-dark">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th>Prospective Possible Risks</th>
-                                <th>Person Affected</th>
-                                <th>Management</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="risk in risks">
-                                <td>{{ risk.possible_risk }}</td>
-                                <td>{{ risk.person_affected }}</td>
-                                <td>{{ risk.management }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <table table name="tabel" class="table table-hover table-bordered border-dark">
+                            <thead>
+                                <tr class="bg-secondary text-white">
+                                    <th>Name</th>
+                                    <th>Position/Designation</th>
+                                    <th>Competency</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="team_member in team_members">
+                                    <td>{{ team_member.name }}</td>
+                                    <td>{{ team_member.position }}</td>
+                                    <td>{{ team_member.competency }}</td>
+                                    <td>{{ team_member.role }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+                    <br>
+                    <h3 v-if="monitors.length>0 ||  paps.monitoring.length>0">Monitoring and Evaluation</h3>
+                    <div align="justify">{{ paps.monitoring }}</div>
+                    <div v-if="monitors.length>0">
+
+                        <table table name="tabel" class="table table-hover table-bordered border-dark">
+                            <thead>
+                                <tr class="bg-secondary text-white">
+                                    <th>Evaluation Mechanism/Tools</th>
+                                    <th>OPR and their Roles</th>
+                                    <th>Target Beneficiaries</th>
+                                    <th>Need for External M&E Team or GAD Expert/Consultant</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr v-for="monitor in monitors">
+                                    <td>{{ monitor.evaluation_mechanism_tool }}</td>
+                                    <td>{{ monitor.opr }}</td>
+                                    <td>{{ monitor.target_beneficiaries }}</td>
+                                    <td>{{ monitor.gad }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+                    <h3 v-if="risks.length>0 ||  paps.risk_management.length>0">Risk Management</h3>
+                    <div align="justify">{{ paps.risk_management }}</div>
+                    <div v-if="risks.length>0">
+                        <table table name="tabel" class="table table-hover table-bordered border-dark">
+                            <thead>
+                                <tr class="bg-secondary text-white">
+                                    <th>Prospective Possible Risks</th>
+                                    <th>Person Affected</th>
+                                    <th>Management</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="risk in risks">
+                                    <td>{{ risk.possible_risk }}</td>
+                                    <td>{{ risk.person_affected }}</td>
+                                    <td>{{ risk.management }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+
                 </div>
             </div>
         </div>
