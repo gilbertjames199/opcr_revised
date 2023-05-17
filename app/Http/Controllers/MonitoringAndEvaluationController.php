@@ -21,7 +21,7 @@ class MonitoringAndEvaluationController extends Controller
 
         $data = $this->model
                     ->where('revision_plan_id', $id)
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('created_at', 'asc')
                     ->paginate(10)
                     ->withQueryString();
         $revs = RevisionPlan::findOrFail($id);

@@ -18,34 +18,35 @@
             </h3>
         </div>
         <div class="d-flex justify-content-center ">
-            <h4 class="fw-bold">
+            <h4 class="fw-bold ">
                 <div v-if="paps.type==='p'">PROJECT PROFILE</div>
-                <div v-else>PROJECT DESIGN</div>
+                <div v-else >PROJECT DESIGN</div>
             </h4>
         </div>
 
         <div class="col-12">
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
-                    <table name="tabel" class="table table-hover">
+                    <table name="tabel" class="table table-hover table-bordered border-dark">
                         <tbody>
+                            <!--<tr class="bg-secondary text-white"><td colspan="7"></td></tr>-->
                             <tr>
-                                <th colspan="1">Title</th>
+                                <th class="bg-secondary text-white" colspan="1">Title</th>
                                 <td colspan="6">{{ paps.project_title }}</td>
                             </tr>
                             <tr>
-                                <th colspan="1">Project Location</th>
+                                <th class="bg-secondary text-white" colspan="1">Project Location</th>
                                 <td colspan="6">{{ paps.project_location }}</td>
                             </tr>
                             <tr>
-                                <th colspan="1">Implementation Schedule</th>
+                                <th class="bg-secondary text-white" colspan="1">Implementation Schedule</th>
                                 <th colspan="1">Start</th>
-                                <td colspan="2">{{ paps.date_start }}</td>
+                                <td colspan="2">{{ formatMonthYear(paps.date_start) }}</td>
                                 <th colspan="1">End</th>
-                                <td colspan="2"> {{ paps.date_end }}</td>
+                                <td colspan="2"> {{ formatMonthYear(paps.date_end) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="1">Intended Beneficiaries</th>
+                                <th class="bg-secondary text-white" colspan="1">Intended Beneficiaries</th>
                                 <th colspan="1">Male</th>
                                 <td colspan="1">{{ format_number_conv(paps.beneficiary_male,0,true) }}</td>
                                 <th colspan="1">Female</th>
@@ -54,7 +55,7 @@
                                 <td colspan="1">{{ format_number_conv((paps.beneficiary_male + paps.beneficiary_female),0,true) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="1">Baseline Disaggregated Data</th>
+                                <th class="bg-secondary text-white" colspan="1">Baseline Disaggregated Data</th>
                                 <th colspan="1">Male</th>
                                 <td colspan="1">{{ format_number_conv(paps.baseline_male,0,true) }}</td>
                                 <th colspan="1">Female</th>
@@ -63,34 +64,34 @@
                                 <td colspan="1">{{ format_number_conv(paps.baseline_male + paps.baseline_female,0,true) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="1">Cost of Program</th>
+                                <th class="bg-secondary text-white" colspan="1">Cost of Program</th>
                                 <th colspan="1">Amount</th>
                                 <td colspan="2">{{ format_number_conv(paps.amount,2,true) }} </td>
                                 <th colspan="1">Attributed GAD Budget (Php)</th>
                                 <td colspan="2">{{ format_number_conv(paps.attributed_amount,2,true) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="1">HGDG Checklist</th>
+                                <th class="bg-secondary text-white" colspan="1">HGDG Checklist</th>
                                 <td colspan="3">GAD {{ paps.checklist.box_number }} {{ paps.checklist.sector }}</td>
-                                <th colspan="1">HGDG Score</th>
+                                <th class="bg-secondary text-white" colspan="1">HGDG Score</th>
                                 <td colspan="2">{{ paps.hgdg_score }} -<b>{{ GAD_remark(paps.hgdg_score) }}</b>
                                     <br>({{ paps.hgdg_percent*100 }}%)
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan="1">Rationale</th>
+                                <th class="bg-secondary text-white" colspan="1">Rationale</th>
                                 <td colspan="6" align="justify">
                                     {{ paps.rationale }}
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan="1">Objectives</th>
+                                <th class="bg-secondary text-white" colspan="1">Objectives</th>
                                 <td colspan="6" align="justify">
                                     {{ paps.objective }}
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan="1">Beneficiaries</th>
+                                <th class="bg-secondary text-white" colspan="1">Beneficiaries</th>
                                 <td colspan="6">{{ paps.beneficiaries }}</td>
                             </tr>
 
@@ -101,11 +102,10 @@
                     <h3>
                         Estimated Cost/Budgetary Requirements
                     </h3>
-                    <table name="tabel" class="table table-hover">
+                    <table name="tabel" class="table table-hover table-bordered border-dark">
                         <thead>
-                            <tr>
-                                <th>Particulars</th>
-                                <th></th>
+                            <tr class="bg-secondary text-white">
+                                <th colspan="2">Particulars</th>
                                 <th>Account Code</th>
                                 <th v-if="paps.hgdg_percent>0">GAD</th>
                                 <th v-if="paps.hgdg_percent>0">NON-GAD</th>
@@ -116,7 +116,12 @@
                         </thead>
                         <tbody>
                             <tr v-if="b_mooe.length>0" class="fw-bold bg-light">
-                                <td colspan="7"><b>MOOE</b></td>
+                                <td colspan="2"><b>MOOE</b></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             <tr v-if="b_mooe.length>0" v-for="mooe in b_mooe">
                                 <td></td>
@@ -139,7 +144,12 @@
                                 <td></td>
                             </tr>
                             <tr v-if="b_capital.length>0" class="fw-bold bg-light">
-                                <td colspan="7"><b>Capital Outlay</b></td>
+                                <td colspan="2"><b>Capital Outlay</b></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             <tr v-if="b_capital.length>0" v-for="mooe in b_capital" >
                                 <td></td>
@@ -162,11 +172,12 @@
                                 <td></td>
                             </tr>
                             <tr v-if="b_ps.length>0">
-                                <td colspan="7" >
-                                    <div >
-                                        <b>Personnel Services</b>
-                                    </div>
-                                </td>
+                                <td colspan="2"><b>Personnel Services</b></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             <tr v-if="b_ps.length>0" v-for="mooe in b_ps">
                                 <td></td>
@@ -179,9 +190,7 @@
                                 <td>{{ mooe.source }}</td>
                             </tr>
                             <tr v-if="has>1" class="fw-bold bg-light">
-                                <th><b>GRAND TOTAL</b></th>
-                                <td></td>
-                                <td></td>
+                                <th colspan="3" style="text-align: center"><b>GRAND TOTAL</b></th>
                                 <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv((paps.amount*paps.hgdg_percent),2,true) }}</td>
                                 <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(paps.amount-(paps.amount*paps.hgdg_percent),2,true) }}</td>
                                 <td v-if="paps.hgdg_percent>0" class=" text-decoration-underline">{{ format_number_conv(paps.amount,2,true) }}</td>
@@ -194,9 +203,9 @@
                     <h3>
                         Implementing Team
                     </h3>
-                    <table table name="tabel" class="table table-hover">
+                    <table table name="tabel" class="table table-hover table-bordered border-dark">
                         <thead>
-                            <tr>
+                            <tr class="bg-secondary text-white">
                                 <th>Name</th>
                                 <th>Position/Designation</th>
                                 <th>Competency</th>
@@ -214,12 +223,15 @@
                     </table>
                     <br>
                     <h3>Monitoring and Evaluation</h3>
-                    <table table name="tabel" class="table table-hover">
+                    <table table name="tabel" class="table table-hover table-bordered border-dark">
                         <thead>
-                            <th>Evaluation Mechanism/Tools</th>
-                            <th>OPR and their Roles</th>
-                            <th>Target Beneficiaries</th>
-                            <th>Need for External M&E Team or GAD Expert/Consultant</th>
+                            <tr class="bg-secondary text-white">
+                                <th>Evaluation Mechanism/Tools</th>
+                                <th>OPR and their Roles</th>
+                                <th>Target Beneficiaries</th>
+                                <th>Need for External M&E Team or GAD Expert/Consultant</th>
+                            </tr>
+
                         </thead>
                         <tbody>
                             <tr v-for="monitor in monitors">
@@ -231,9 +243,9 @@
                         </tbody>
                     </table>
                     <h3>Risk Management</h3>
-                    <table table name="tabel" class="table table-hover">
+                    <table table name="tabel" class="table table-hover table-bordered border-dark">
                         <thead>
-                            <tr>
+                            <tr class="bg-secondary text-white">
                                 <th>Prospective Possible Risks</th>
                                 <th>Person Affected</th>
                                 <th>Management</th>

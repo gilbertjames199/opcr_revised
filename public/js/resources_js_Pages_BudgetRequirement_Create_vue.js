@@ -111,13 +111,12 @@ __webpack_require__.r(__webpack_exports__);
         //alert('patch');
         this.form.patch("/budget/update/" + this.form.revision_plan_id, this.form);
       } else {
-        this.form.id = null; //alert('store');
-
-        if (indr < 0) {
-          this.form.post("/budget/store", this.form);
-        } else {
-          alert("Account code already exists!");
-        }
+        this.form.id = null;
+        this.form.post("/budget/store", this.form); //alert('store');
+        // if(indr<0){
+        // }else{
+        //     alert("Account code already exists!");
+        // }
       }
     },
     // reset(){
@@ -142,9 +141,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     searchByAccountCode: function searchByAccountCode() {
       var ind = this.codes.indexOf(this.form.account_code.toString());
-      this.chart_selected = this.accounts[parseInt(ind)]; // this.chart_selected=this.form.particulars
-
-      alert('search by account tgttg! ' + ind);
+      this.chart_selected = this.accounts[parseInt(ind)];
+      this.form.particulars = this.chart_selected; //alert('search by account tgttg! '+ind);
     }
   }
 });
@@ -352,10 +350,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_multiselect = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("multiselect");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Budget Requirements " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.idrev), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Budgetary Requirements " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.idrev), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    href: "/revision/".concat($props.idrev)
+    href: "/budget/".concat($props.idrev)
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_3];

@@ -1,8 +1,8 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Budget Requirements  {{ idrev }}</h3>
-            <Link :href="`/revision/${idrev}`">
+            <h3>{{ pageTitle }} Budgetary Requirements  {{ idrev }}</h3>
+            <Link :href="`/budget/${idrev}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                 <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -195,12 +195,13 @@ export default {
                     this.form.patch("/budget/update/"+this.form.revision_plan_id, this.form);
                 } else {
                     this.form.id=null;
+                    this.form.post("/budget/store", this.form);
                     //alert('store');
-                    if(indr<0){
-                        this.form.post("/budget/store", this.form);
-                    }else{
-                        alert("Account code already exists!");
-                    }
+                    // if(indr<0){
+
+                    // }else{
+                    //     alert("Account code already exists!");
+                    // }
 
                 }
             },
@@ -229,8 +230,8 @@ export default {
 
                 var ind = this.codes.indexOf(this.form.account_code.toString());
                 this.chart_selected=this.accounts[parseInt(ind)];
-                // this.chart_selected=this.form.particulars
-                alert('search by account tgttg! '+ind);
+                this.form.particulars = this.chart_selected
+                //alert('search by account tgttg! '+ind);
             }
         },
     };
