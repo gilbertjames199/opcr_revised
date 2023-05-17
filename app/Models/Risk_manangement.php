@@ -14,5 +14,6 @@ class Risk_manangement extends Model
         'possible_risk',
         'person_affected',
         'management',
+        'revision_plan_id',
     ];
 }

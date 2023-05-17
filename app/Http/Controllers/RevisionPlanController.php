@@ -10,6 +10,7 @@ use App\Models\Implementing_team;
 use App\Models\Monitoring_and_evaluation;
 use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
+use App\Models\Risk_manangement;
 use App\Models\TeamPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -268,6 +269,8 @@ class RevisionPlanController extends Controller
         $monitoring = Monitoring_and_evaluation::where('revision_plan_id', $id)
                         ->orderBy('created_at', 'desc')
                         ->get();
+        //RISK MANAGEEMNT
+        $risks =Risk_manangement::where('revision_plan_id', $id)->get();
         return inertia('RevisionPlans/View',[
             "paps"=>$paps,
             "office"=>$functions->FFUNCTION,
@@ -280,6 +283,7 @@ class RevisionPlanController extends Controller
             "s_ps"=>$s_ps,
             "team_members"=>$team_members,
             "monitors"=>$monitoring,
+            "risks"=>$risks,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

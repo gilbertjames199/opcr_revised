@@ -230,6 +230,23 @@
                             </tr>
                         </tbody>
                     </table>
+                    <h3>Risk Management</h3>
+                    <table table name="tabel" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Prospective Possible Risks</th>
+                                <th>Person Affected</th>
+                                <th>Management</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="risk in risks">
+                                <td>{{ risk.possible_risk }}</td>
+                                <td>{{ risk.person_affected }}</td>
+                                <td>{{ risk.management }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -256,7 +273,8 @@ export default{
         s_capital: Object,
         s_ps: Object,
         team_members: Object,
-        monitors: Object
+        monitors: Object,
+        risks: Object
     },
     computed: {},
     mounted(){

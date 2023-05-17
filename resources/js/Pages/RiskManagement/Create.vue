@@ -17,7 +17,7 @@
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
-
+                <input type="hidden" v-model="form.revision_plan_id" class="form-control" autocomplete="positionchrome-off">
                 <label for="">PROSPECTIVE POSSIBLE RISKS</label>
                 <input type="text" v-model="form.possible_risk" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.possible_risk">{{ form.errors.possible_risk }}</div>
@@ -49,6 +49,7 @@ import Places from "@/Shared/PlacesShared";
 
 export default {
         props: {
+            revs: Object,
             editData: Object,
             sectors: Object
         },
@@ -69,6 +70,7 @@ export default {
                     possible_risk: "",
                     person_affected: "",
                     management: "",
+                    revision_plan_id: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -76,7 +78,7 @@ export default {
         },
 
         mounted() {
-
+            this.form.revision_plan_id=this.revs.id;
             if (this.editData !== undefined) {
                 if(this.bari){
                     this.bar=this.bari
@@ -99,7 +101,9 @@ export default {
                 if (this.editData !== undefined) {
                     this.form.patch("/RiskManagement/" + this.form.id, this.form);
                 } else {
-                    this.form.post("/RiskManagement");
+                    var url="/RiskManagement/store"
+                    // alert('for store '+url);
+                    this.form.post(url);
                 }
             },
         },
