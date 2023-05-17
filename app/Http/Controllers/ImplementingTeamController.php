@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountAccess;
 use App\Models\Implementing_team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ImplementingTeamController extends Controller
 {
@@ -32,8 +34,14 @@ class ImplementingTeamController extends Controller
         }
 
         public function create(Request $request){
+
+            $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
             //dd('create');
         return inertia('ImplementingTeam/Create',[
+            'functions'=>$functions,
         'can'=>[
             'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
             'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -48,6 +56,7 @@ class ImplementingTeamController extends Controller
                 'position' => 'required',
                 'competency' => 'required',
                 'role' => 'required',
+                'FFUNCCOD' => 'required',
             ]);
             //dd($attributes);
             $this->model->create($attributes);
@@ -62,9 +71,14 @@ class ImplementingTeamController extends Controller
                 'position',
                 'competency',
                 'role',
+                'FFUNCCOD',
             ]);
-
+            $functions = AccountAccess::where('iduser',auth()->user()->recid)
+            ->select('ff.FFUNCCOD','ff.FFUNCTION')
+            ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+            ->with('func')->get();
             return inertia('ImplementingTeam/Create', [
+                "functions"=>$functions,
                 "editData" => $data,
                 'can'=>[
                     'can_access_validation' => Auth::user()->can('can_access_validation',User::class),

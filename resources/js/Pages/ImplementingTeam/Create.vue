@@ -34,6 +34,14 @@
                 <input type="text" v-model="form.role" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.role">{{ form.errors.role }}</div>
 
+                <label for="">OFFICE</label>
+                <!--<input type="text" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">-->
+                <select class="form-control" v-model="form.FFUNCCOD" >
+                    <option v-for="functional in functions" :value="functional.FFUNCCOD" >
+                        {{ functional.FFUNCTION }}
+                    </option>
+                </select>
+
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
@@ -54,7 +62,8 @@ import Places from "@/Shared/PlacesShared";
 export default {
         props: {
             editData: Object,
-            sectors: Object
+            sectors: Object,
+            functions: Object,
         },
         components: {
           //BootstrapModalNoJquery,
@@ -74,6 +83,7 @@ export default {
                     position: "",
                     competency: "",
                     role: "",
+                    FFUNCCOD: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -92,6 +102,7 @@ export default {
                 this.form.competency=this.editData.competency
                 this.form.role=this.editData.role
                 this.form.id=this.editData.id
+                this.form.FFUNCCOD = this.editData.FFUNCCOD
             } else {
                 this.pageTitle = "Create"
             }
