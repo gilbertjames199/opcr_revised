@@ -279,6 +279,53 @@
                         </table>
                         <br>
                     </div>
+                    <div v-if="paps.type==='p'">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span v-if="sig_prep">
+                                            Prepared by:<br><br>
+                                            <span v-if="sig_prep" class="text-decoration-underline"><b>{{  sig_prep.name }}</b></span>
+                                            <br>{{ sig_prep.position }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="sig_rev">
+                                            Reviewed by:<br><br>
+                                            <span v-if="sig_rev" class="text-decoration-underline"><b>{{  sig_rev.name }}</b></span>
+                                            <br>{{ sig_rev.position }}
+                                        </span>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>
+                                        <span v-if="Object.keys(sig_app).length>0" >
+                                            <br><br>
+                                            Approved by:<br><br>
+                                            <span v-if="sig_app" class="text-decoration-underline"><b>{{  sig_app[0].name }}</b>
+                                            </span>
+                                            <br>{{ sig_app[0].position }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="Object.keys(sig_app).length>1" >
+                                            <br><br>
+                                            <span v-if="Object.keys(sig_app).length>1">
+                                                Approved by:<br><br>
+                                                <span v-if="sig_app" class="text-decoration-underline"><b>{{  sig_app[1].name }}</b></span>
+                                                <br>{{ sig_app[1].position }}
+                                            </span>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
 
                 </div>
             </div>
@@ -307,7 +354,11 @@ export default{
         s_ps: Object,
         team_members: Object,
         monitors: Object,
-        risks: Object
+        risks: Object,
+        sig_rev: Object,
+        sig_prep: Object,
+        sig_app: Object,
+
     },
     computed: {},
     mounted(){

@@ -47,10 +47,12 @@ use App\Http\Controllers\MonitoringAndEvaluationController;
 use App\Http\Controllers\RiskManangementController;
 use App\Http\Controllers\TeamPlanController;
 use App\Http\Controllers\SignatoryController;
+use App\Http\Controllers\UserOfficeController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
 use App\Models\IntermediateOutcome;
+use App\Models\UserOffice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -66,8 +68,15 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [DashBoardController::class, 'index']);
     });
 
-
-
+    //UserOffice
+    Route::prefix('/office')->group(function(){
+        Route::get('/', [UserOfficeController::class, 'create']);
+        Route::post('/store', [UserOfficeController::class, 'store']);
+        Route::get('/{id}/edit', [UserOfficeController::class, 'edit']);
+        Route::patch('/', [UserOfficeController::class, 'update']);
+        Route::delete('/', [UserOfficeController::class, 'destroy']);
+    });
+    //Accomplishments
     Route::prefix('/accomplishments')->group(function(){
         Route::get('/',[AccomplishmentController::class,'index']);
         Route::get('/{raao_id}/create', [AccomplishmentController::class, 'create']);
@@ -163,8 +172,8 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [SectoralController::class, 'destroy']);
     });
 
-       //Societal
-       Route::prefix('/Societal')->group(function(){
+    //Societal
+    Route::prefix('/Societal')->group(function(){
         Route::get('/',[SocietalGoalController::class,'index']);
         Route::get('/create',[SocietalGoalController::class,'create']);
         Route::post('/',[SocietalGoalController::class,'store']);
@@ -173,8 +182,8 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [SocietalGoalController::class, 'destroy']);
     });
 
-       //Issues
-       Route::prefix('/Issues')->group(function(){
+    //Issues
+    Route::prefix('/Issues')->group(function(){
         Route::get('/',[IssueController::class,'index']);
         Route::get('/create',[IssueController::class,'create']);
         Route::post('/',[IssueController::class,'store']);
@@ -315,8 +324,6 @@ Route::middleware('auth')->group(function() {
         Route::get('/edit/{idbudget}',[BudgetRequirementController::class,'edit']);
         Route::delete('/{id}/{idbudget}', [BudgetRequirementController::class, 'destroy']);
         Route::patch('/update/{idrev}', [BudgetRequirementController::class, 'update']);
-
-
     });
     //testing helpers
     Route::get('test-helper', [BudgetRequirementController::class, 'getFirstLastName']);
@@ -390,7 +397,7 @@ Route::middleware('auth')->group(function() {
     });
 
     //Risk Management
-        Route::prefix('/RiskManagement')->group(function(){
+    Route::prefix('/RiskManagement')->group(function(){
         Route::get('/{revid}',[RiskManangementController::class,'index']);
         Route::get('/create/{revid}',[RiskManangementController::class,'create']);
         Route::post('/store',[RiskManangementController::class,'store']);
