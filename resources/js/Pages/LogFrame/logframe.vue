@@ -85,30 +85,22 @@
                                 </div>
                             </td>
                             </tr>
-                            <tr>
-                                <td>MAJOR FINAL OUTPUTS vxx</td>
-                                <td >
-                                    <tr v-for="mfo in mfos">
+                            <tr v-for="(mfo, index) in mfos" :key="index">
+                                <td rowspan="4" v-if="index == 0">MAJOR FINAL OUTPUTS</td>
+                                <td><Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link></td>
+                                <td class="pL-2" colspan="2">
+                                    <div v-for="pap in mfo.paps">
+                                        <a :href="`/revision/${pap.id}`" target="_blank">{{ pap.paps_desc }}</a><br>
+                                        <span v-if="pap.MOV!=='-'">(<i>MOV: {{ pap.MOV }}</i>)</span>
+                                        <div style="color: white"> .</div>
+                                    </div>
+                                </td>
+                                    <!-- <td v-for="mfo in mfos">
                                         <td>
                                             <Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link>
                                         </td>
+                                    </td> -->
 
-                                    </tr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PROGRAMS AND PROJECTS</td>
-                                <td v-for="mfo in mfos">
-                                    <tr >
-                                        <td>
-                                            <div v-for="pap in mfo.paps">
-                                                <a :href="`/revision/${pap.id}`" target="_blank">{{ pap.paps_desc }}</a><br>
-                                                <span v-if="pap.MOV!=='-'">(<i>MOV: {{ pap.MOV }}</i>)</span>
-                                                <div style="color: white"> .</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </td>
                             </tr>
 
                         </tbody>

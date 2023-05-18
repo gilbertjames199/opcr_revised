@@ -362,6 +362,7 @@
                     </div>
                     <h3 v-if="risks.length>0 ||  paps.risk_management!==null">Risk Management</h3>
                     <div align="justify">{{ paps.risk_management }}</div>
+
                     <div v-if="risks.length>0">
                         <table table name="tabel" class="table table-hover table-bordered border-dark">
                             <thead>
