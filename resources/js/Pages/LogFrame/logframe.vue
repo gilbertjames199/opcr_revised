@@ -86,12 +86,13 @@
                             </td>
                             </tr>
                             <tr>
-                                <td>MAJOR FINAL OUTPUTS</td>
-                                <td v-for="mfo in mfos">
-                                    <tr >
+                                <td>MAJOR FINAL OUTPUTS vxx</td>
+                                <td >
+                                    <tr v-for="mfo in mfos">
                                         <td>
                                             <Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link>
                                         </td>
+
                                     </tr>
                                 </td>
                             </tr>

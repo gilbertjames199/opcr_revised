@@ -7,6 +7,7 @@ use App\Models\ImplementationPlan;
 use App\Models\Issue;
 use App\Models\RevisionPlan;
 use App\Models\Strategy;
+use App\Models\Target;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -57,6 +58,13 @@ class ImplementationPlanController extends Controller
                                                 ->where('strategies.id',$item->idstrategy)
                                                 ->get()
                                                 ->map(function($item){
+                                                    $targets=Target::where('idimplementation', $item->id)
+                                                            ->select('indicators.description AS indicator_description',
+                                                                'targets.description AS target_description',
+                                                                'targets.planned_budget AS budget'
+                                                            )
+                                                            ->join('indicators', 'indicators.id','targets.idindicator')
+                                                            ->get();
                                                     return [
                                                         'id'=>$item->id,
                                                         'idrev_plan'=>$item->idrev_plan,
@@ -67,11 +75,13 @@ class ImplementationPlanController extends Controller
                                                         'issue'=>$item->issue,
                                                         'activity'=>$item->activity,
                                                         'person_responsible'=>$item->person_responsible,
+                                                        'targets'=>$targets,
                                                     ];
                                                 });
                     //dd($activity_implementation);
                     //->where('idstrategy','=',NULL)
 
+                    $targets=Target::where('idimplementation', $item->id)->get();
                     return [
                         'id'=>$item->id,
                         'idrev_plan'=>$item->idrev_plan,
@@ -83,6 +93,7 @@ class ImplementationPlanController extends Controller
                         'strategy'=>$item->strategy,
                         'activity_implementation'=>$activity_implementation,
                         'person_responsible'=>$item->person_responsible,
+                        'targets'=>$targets,
                     ];
                 });
         //dd($data)

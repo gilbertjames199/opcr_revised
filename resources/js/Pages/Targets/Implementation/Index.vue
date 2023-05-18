@@ -106,7 +106,8 @@ export default {
         raao_id: String,
         year: String,
         imp_id: String,
-        idrev_plan: String
+        idrev_plan: String,
+
     },
     data() {
         return{

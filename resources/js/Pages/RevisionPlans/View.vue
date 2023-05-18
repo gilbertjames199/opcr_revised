@@ -99,6 +99,108 @@
                         </tbody>
                     </table>
                     <br>
+                    <div v-if="data.length>0">
+                        <h3>Implementation Plan</h3>
+                        <table class="table table-hover table-bordered border-dark">
+                            <thead>
+                                <tr class="bg-secondary text-white">
+                                    <th>Index</th>
+                                    <th>Strategies/Activities</th>
+                                    <th>Performance Target Indicators</th>
+                                    <th>Gender Issues to be Addressed</th>
+                                    <th>Timeline</th>
+                                    <th>Expected Output</th>
+                                    <th>Budget</th>
+                                    <th>Climate Change Topology Code</th>
+                                    <th>Person Responsible</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!---***********************-->
+                                <template v-for="(dat, index) in data" :key="dat.id">
+                                    <tr style="background-color:lightgrey; font-weight: bold;">
+                                        <td><b>{{ index+1 }}.0 </b></td>
+                                        <td><b>{{ dat.strategy }}</b></td>
+                                        <td>
+                                            <div v-for="target in dat.targets.data">
+                                                {{ target.indicator_description }}
+                                            </div>
+                                        </td>
+                                        <td>{{ dat.issue }}</td>
+                                        <td>
+
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{  dat.cc_topology }}</td>
+                                        <td>{{ dat.person_responsible }}</td>
+                                        <td>
+                                            <div class="dropdown dropstart" >
+                                                <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                                    </svg>
+                                                </button>
+                                                <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                                    <li><Link class="dropdown-item" :href="`/implementation/edit/${dat.id}`">Edit</Link></li>
+                                                    <li><Link class="text-danger dropdown-item" @click="deleteImp(dat.id)">Delete</Link></li>
+                                                    <li><Link class="text-danger dropdown-item" :href="`/implementation/create/activity/${dat.idstrategy}/${dat.idrev_plan}`">{{ dat.idstrategy }} Implementation -Activity</Link></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <template v-if="dat.activity_implementation">
+                                        <tr v-for="(act, subIndex) in dat.activity_implementation" :key="act.id">
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ index+1 }}.{{ subIndex+1 }}&nbsp;&nbsp;&nbsp;</td>
+                                            <td>{{ act.activity }}</td>
+                                            <td>
+                                                <div v-for="target in act.targets">
+                                                    {{ target.indicator_description }}
+                                                </div>
+                                            </td>
+                                            <td>{{ act.issue }}</td>
+                                            <td>
+                                                <div v-if="act.date_from">
+                                                    {{ act.date_from }} - {{ act.date_to }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div v-for="target in act.targets">
+                                                    {{ target.target_description }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div v-for="target in act.targets">
+                                                    <div v-if="target.budget>0">
+                                                        {{ format_number_conv(target.budget,2,true) }}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{  act.cc_topology }}</td>
+                                            <td>{{ act.person_responsible }}</td>
+                                            <td>
+                                                <div class="dropdown dropstart" >
+                                                    <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                                        </svg>
+                                                    </button>
+                                                    <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                                        <li><Link class="dropdown-item" :href="`/implementation/edit/activity/${act.id}`">Edit</Link></li>
+                                                        <li><Link class="text-danger dropdown-item" @click="deleteImp(act.id)">Delete</Link></li>
+                                                        <li><Link class="text-danger dropdown-item" :href="`/targets/${act.id}/implementation`">Targets</Link></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </template>
+                                <!--********************-->
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
                     <div v-if="b_mooe.length>0 || b_capital.length>0 || b_ps.length>0">
                         <h3>
                             Estimated Cost/Budgetary Requirements
@@ -358,7 +460,7 @@ export default{
         sig_rev: Object,
         sig_prep: Object,
         sig_app: Object,
-
+        data: Object
     },
     computed: {},
     mounted(){

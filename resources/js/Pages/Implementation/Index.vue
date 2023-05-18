@@ -53,15 +53,17 @@
                                 <tr style="background-color:lightgrey; font-weight: bold;">
                                     <td><b>{{ index+1 }}.0 </b></td>
                                     <td><b>{{ dat.strategy }}</b></td>
-                                    <td>Indicator</td>
-                                    <td>{{ dat.issue }}</td>
                                     <td>
-                                        <div v-if="dat.date_from">
-                                            {{ dat.date_from }} - {{ dat.date_to }}
+                                        <div v-for="target in dat.targets.data">
+                                            {{ target.indicator_description }}
                                         </div>
                                     </td>
-                                    <td>Targets</td>
-                                    <td>Budget</td>
+                                    <td>{{ dat.issue }}</td>
+                                    <td>
+
+                                    </td>
+                                    <td></td>
+                                    <td></td>
                                     <td>{{  dat.cc_topology }}</td>
                                     <td>{{ dat.person_responsible }}</td>
                                     <td>
@@ -83,15 +85,29 @@
                                     <tr v-for="(act, subIndex) in dat.activity_implementation" :key="act.id">
                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ index+1 }}.{{ subIndex+1 }}&nbsp;&nbsp;&nbsp;</td>
                                         <td>{{ act.activity }}</td>
-                                        <td>Indicator</td>
+                                        <td>
+                                            <div v-for="target in act.targets">
+                                                {{ target.indicator_description }}
+                                            </div>
+                                        </td>
                                         <td>{{ act.issue }}</td>
                                         <td>
                                             <div v-if="act.date_from">
                                                 {{ act.date_from }} - {{ act.date_to }}
                                             </div>
                                         </td>
-                                        <td>Targets</td>
-                                        <td>Budget</td>
+                                        <td>
+                                            <div v-for="target in act.targets">
+                                                {{ target.target_description }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div v-for="target in act.targets">
+                                                <div v-if="target.budget>0">
+                                                    {{ format_number_conv(target.budget,2,true) }}
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td>{{  act.cc_topology }}</td>
                                         <td>{{ act.person_responsible }}</td>
                                         <td>
