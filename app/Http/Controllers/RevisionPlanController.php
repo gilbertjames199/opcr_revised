@@ -11,6 +11,7 @@ use App\Models\Monitoring_and_evaluation;
 use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
 use App\Models\Risk_manangement;
+use App\Models\Signatory;
 use App\Models\TeamPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -284,6 +285,18 @@ class RevisionPlanController extends Controller
                         ->get();
         //RISK MANAGEEMNT
         $risks =Risk_manangement::where('revision_plan_id', $id)->get();
+
+        //PREPARED
+        $sig_prep = Signatory::where('revision_plan_id', $id)
+                    ->where('acted','Prepared')->first();
+
+        //REVIEWED
+        $sig_rev = Signatory::where('revision_plan_id', $id)
+                    ->where('acted','Reviewed')->first();
+
+        //APPROVED
+        $sig_app =  Signatory::where('revision_plan_id', $id)
+                    ->where('acted','Approved')->get();
         return inertia('RevisionPlans/View',[
             "paps"=>$paps,
             "office"=>$functions->FFUNCTION,
@@ -297,6 +310,9 @@ class RevisionPlanController extends Controller
             "team_members"=>$team_members,
             "monitors"=>$monitoring,
             "risks"=>$risks,
+            "sig_rev"=>$sig_rev,
+            "sig_prep"=>$sig_prep,
+            "sig_app"=>$sig_app,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

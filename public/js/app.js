@@ -2315,6 +2315,14 @@ var map = {
 		"./resources/js/Pages/Time_Sheets/New.vue",
 		"resources_js_Pages_Time_Sheets_New_vue"
 	],
+	"./UserOffice/Set": [
+		"./resources/js/Pages/UserOffice/Set.vue",
+		"resources_js_Pages_UserOffice_Set_vue"
+	],
+	"./UserOffice/Set.vue": [
+		"./resources/js/Pages/UserOffice/Set.vue",
+		"resources_js_Pages_UserOffice_Set_vue"
+	],
 	"./Users/BootstrapModalNoJquery": [
 		"./resources/js/Pages/Users/BootstrapModalNoJquery.vue",
 		"resources_js_Pages_Users_BootstrapModalNoJquery_vue"
