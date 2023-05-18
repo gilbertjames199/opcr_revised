@@ -46,6 +46,7 @@ use App\Http\Controllers\ImplementingTeamController;
 use App\Http\Controllers\MonitoringAndEvaluationController;
 use App\Http\Controllers\RiskManangementController;
 use App\Http\Controllers\TeamPlanController;
+use App\Http\Controllers\SignatoryController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -397,6 +398,16 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [RiskManangementController::class, 'update']);
         Route::delete('/{id}', [RiskManangementController::class, 'destroy']);
      });
+
+        //Signatories
+        Route::prefix('/Signatories')->group(function(){
+            Route::get('/{revid}',[SignatoryController::class,'index']);
+            Route::get('/create/{revid}',[SignatoryController::class,'create']);
+            Route::post('/store',[SignatoryController::class,'store']);
+            Route::get('/{id}/edit', [SignatoryController::class, 'edit']);
+            Route::patch('/{id}', [SignatoryController::class, 'update']);
+            Route::delete('/{id}', [SignatoryController::class, 'destroy']);
+         });
 
     //SubSector
     Route::prefix('/subsector')->group(function(){});

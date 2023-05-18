@@ -54,7 +54,7 @@
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.category">{{ form.errors.category }}</div>
                 <!---->
-                <label>SOURCE {{ form.source }}</label>
+                <label>SOURCE </label>
                 <input type="text" class="form-control" v-model="form.source"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.source">{{ form.errors.source }}</div>
 
