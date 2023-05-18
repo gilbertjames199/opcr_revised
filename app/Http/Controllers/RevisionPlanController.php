@@ -12,6 +12,7 @@ use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
 use App\Models\Risk_manangement;
 use App\Models\Signatory;
+use App\Models\Target;
 use App\Models\TeamPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -297,6 +298,77 @@ class RevisionPlanController extends Controller
         //APPROVED
         $sig_app =  Signatory::where('revision_plan_id', $id)
                     ->where('acted','Approved')->get();
+        //IMPLEMENTATION PLAN
+        //$implementation_plan = new ImplementationPlan();
+        $data=ImplementationPlan::select('implementation_plans.id AS id',
+                            'strategies.description AS strategy',
+                            'implementation_plans.idrev_plan',
+                            'implementation_plans.date_from',
+                            'implementation_plans.date_to',
+                            'implementation_plans.idstrategy',
+                            'implementation_plans.cc_topology',
+                            'implementation_plans.person_responsible',
+                            'issues.description AS issue'
+                        )
+                ->where('idrev_plan',$id)
+                ->where('idstrategy','<>',NULL)
+                ->Join('strategies','strategies.id','implementation_plans.idstrategy')
+                ->leftJoin('issues','issues.id','implementation_plans.idissue')
+                ->get()
+                ->map(function($item){
+                    //dd($item->idrev_plan);
+                    $activity_implementation=ImplementationPlan::select('implementation_plans.id AS id',
+                                                            'activities.description AS activity',
+                                                            'implementation_plans.idrev_plan',
+                                                            'implementation_plans.date_from',
+                                                            'implementation_plans.date_to',
+                                                            'implementation_plans.cc_topology',
+                                                            'issues.description AS issue',
+                                                            'strategies.id AS stratt_id',
+                                                            'implementation_plans.person_responsible',
+                                                )
+                                                ->Join('activities','activities.id','implementation_plans.idactivity')
+                                                ->Join('strategies','strategies.id','=','activities.strategy_id')
+                                                ->leftJoin('issues','issues.id','implementation_plans.idissue')
+                                                ->where('idrev_plan',$item->idrev_plan)
+                                                ->where('strategies.id',$item->idstrategy)
+                                                ->get()
+                                                ->map(function($item){
+                                                    $targets=Target::where('idimplementation', $item->id)
+                                                            ->select('indicators.description AS indicator_description',
+                                                                'targets.description AS target_description',
+                                                                'targets.planned_budget AS budget'
+                                                            )
+                                                            ->join('indicators', 'indicators.id','targets.idindicator')
+                                                            ->get();
+                                                    return [
+                                                        'id'=>$item->id,
+                                                        'idrev_plan'=>$item->idrev_plan,
+                                                        'date_from'=>convertDateString($item->date_from),
+                                                        'date_to'=>convertDateString($item->date_to),
+                                                        'stratt_id'=>$item->stratt_id,
+                                                        'cc_topology'=>$item->cc_topology,
+                                                        'issue'=>$item->issue,
+                                                        'activity'=>$item->activity,
+                                                        'person_responsible'=>$item->person_responsible,
+                                                        'targets'=>$targets,
+                                                    ];
+                                                });
+                    $targets=Target::where('idimplementation', $item->id)->get();
+                    return [
+                        'id'=>$item->id,
+                        'idrev_plan'=>$item->idrev_plan,
+                        'date_from'=>convertDateString($item->date_from),
+                        'date_to'=>convertDateString($item->date_to),
+                        'idstrategy'=>$item->idstrategy,
+                        'cc_topology'=>$item->cc_topology,
+                        'issue'=>$item->issue,
+                        'strategy'=>$item->strategy,
+                        'activity_implementation'=>$activity_implementation,
+                        'person_responsible'=>$item->person_responsible,
+                        'targets'=>$targets,
+                    ];
+                });
         return inertia('RevisionPlans/View',[
             "paps"=>$paps,
             "office"=>$functions->FFUNCTION,
@@ -313,6 +385,7 @@ class RevisionPlanController extends Controller
             "sig_rev"=>$sig_rev,
             "sig_prep"=>$sig_prep,
             "sig_app"=>$sig_app,
+            "data"=>$data,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
