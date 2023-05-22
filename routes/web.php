@@ -48,6 +48,11 @@ use App\Http\Controllers\RiskManangementController;
 use App\Http\Controllers\TeamPlanController;
 use App\Http\Controllers\SignatoryController;
 use App\Http\Controllers\UserOfficeController;
+use App\Http\Controllers\OPCRController;
+use App\Http\Controllers\OPCRPAPSController;
+use App\Http\Controllers\OutputController;
+use App\Http\Controllers\PerformanceController;
+use App\Http\Controllers\SuccessIndicatorController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -415,6 +420,53 @@ Route::middleware('auth')->group(function() {
             Route::patch('/{id}', [SignatoryController::class, 'update']);
             Route::delete('/{id}', [SignatoryController::class, 'destroy']);
          });
+
+         //OPCR
+         Route::prefix('/OPCR')->group(function(){
+            Route::get('/',[OPCRController::class,'index']);
+            Route::get('/{idstrat}',[OPCRController::class,'showlog']);
+        });
+
+            //Route::patch('/', [PAPController::class, 'update']);
+    Route::prefix('/OPCRpaps')->group(function(){
+        Route::get('/direct',[OPCRPAPSController::class,'direct']);
+        Route::get('/direct/create',[OPCRPAPSController::class,'direct_create']);
+        Route::get('/{id}',[OPCRPAPSController::class,'index']);
+        Route::get('/create/{id}',[OPCRPAPSController::class,'create']);
+        Route::post('/save',[OPCRPAPSController::class,'save']);
+        Route::post('/store',[OPCRPAPSController::class,'store']);
+        Route::get('/{id}/{idmfo}/edit', [OPCRPAPSController::class, 'edit']);
+        Route::patch('/{id}', [OPCRPAPSController::class, 'update']);
+        Route::patch('/update/{id}', [OPCRPAPSController::class, 'updated']);
+        Route::delete('/{id}', [OPCRPAPSController::class, 'destroy']);
+    });
+
+    Route::prefix('/output')->group(function(){
+        Route::get('/{id}',[OutputController::class,'index']);
+        Route::get('/create/{id}',[OutputController::class,'create']);
+        Route::post('/store',[OutputController::class,'store']);
+        Route::get('/{id}/edit', [OutputController::class, 'edit']);
+        Route::patch('/{id}', [OutputController::class, 'update']);
+        Route::delete('/{id}', [OutputController::class, 'destroy']);
+    });
+
+    Route::prefix('/Performance')->group(function(){
+        Route::get('/{id}',[PerformanceController::class,'index']);
+        Route::get('/create/{id}',[PerformanceController::class,'create']);
+        Route::post('/store',[PerformanceController::class,'store']);
+        Route::get('/{id}/edit', [PerformanceController::class, 'edit']);
+        Route::patch('/{id}', [PerformanceController::class, 'update']);
+        Route::delete('/{id}', [PerformanceController::class, 'destroy']);
+    });
+
+    Route::prefix('/SuccessIndicator')->group(function(){
+        Route::get('/{id}',[SuccessIndicatorController::class,'index']);
+        Route::get('/create/{id}',[SuccessIndicatorController::class,'create']);
+        Route::post('/store',[SuccessIndicatorController::class,'store']);
+        Route::get('/{id}/edit', [SuccessIndicatorController::class, 'edit']);
+        Route::patch('/{id}', [SuccessIndicatorController::class, 'update']);
+        Route::delete('/{id}', [SuccessIndicatorController::class, 'destroy']);
+    });
 
     //SubSector
     Route::prefix('/subsector')->group(function(){});
