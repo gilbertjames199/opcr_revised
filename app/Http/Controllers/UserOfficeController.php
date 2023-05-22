@@ -15,7 +15,7 @@ class UserOfficeController extends Controller
     }
     public function create(Request $request){
         $offices = FFUNCCOD::all();
-        dd($offices);
+        //dd($offices);
         return inertia('UserOffice/Set', [
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),

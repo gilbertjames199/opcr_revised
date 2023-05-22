@@ -99,6 +99,82 @@
                         </tbody>
                     </table>
                     <br>
+                    <div v-if="data.length>0">
+                        <h3>Implementation Plan</h3>
+                        <table class="table table-hover table-bordered border-dark">
+                            <thead>
+                                <tr class="bg-secondary text-white">
+
+                                    <th>Strategies/Activities</th>
+                                    <th>Performance Target Indicators</th>
+                                    <th>Gender Issues to be Addressed</th>
+                                    <th>Timeline</th>
+                                    <th>Expected Output</th>
+                                    <th>Budget</th>
+                                    <th>Climate Change Topology Code</th>
+                                    <th>Person Responsible</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!---***********************-->
+                                <template v-for="(dat, index) in data" :key="dat.id">
+                                    <tr style="background-color:lightgrey; font-weight: bold;">
+
+                                        <td><b>{{ dat.strategy }}</b></td>
+                                        <td>
+                                            <div v-for="target in dat.targets.data">
+                                                {{ target.indicator_description }}
+                                            </div>
+                                        </td>
+                                        <td>{{ dat.issue }}</td>
+                                        <td>
+
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{  dat.cc_topology }}</td>
+                                        <td>{{ dat.person_responsible }}</td>
+
+                                    </tr>
+                                    <template v-if="dat.activity_implementation">
+                                        <tr v-for="(act, subIndex) in dat.activity_implementation" :key="act.id">
+
+                                            <td>{{ act.activity }}</td>
+                                            <td>
+                                                <div v-for="target in act.targets">
+                                                    {{ target.indicator_description }}
+                                                </div>
+                                            </td>
+                                            <td>{{ act.issue }}</td>
+                                            <td>
+                                                <div v-if="act.date_from">
+                                                    {{ act.date_from }} - {{ act.date_to }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div v-for="target in act.targets">
+                                                    {{ target.target_description }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div v-for="target in act.targets">
+                                                    <div v-if="target.budget>0">
+                                                        {{ format_number_conv(target.budget,2,true) }}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{  act.cc_topology }}</td>
+                                            <td>{{ act.person_responsible }}</td>
+
+                                        </tr>
+                                    </template>
+                                </template>
+                                <!--********************-->
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
                     <div v-if="b_mooe.length>0 || b_capital.length>0 || b_ps.length>0">
                         <h3>
                             Estimated Cost/Budgetary Requirements
@@ -359,7 +435,7 @@ export default{
         sig_rev: Object,
         sig_prep: Object,
         sig_app: Object,
-
+        data: Object
     },
     computed: {},
     mounted(){
