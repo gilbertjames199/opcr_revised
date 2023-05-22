@@ -53,6 +53,7 @@ use App\Http\Controllers\OPCRPAPSController;
 use App\Http\Controllers\OutputController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\SuccessIndicatorController;
+use App\Http\Controllers\OfficeAccountableController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -466,6 +467,16 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [SuccessIndicatorController::class, 'edit']);
         Route::patch('/{id}', [SuccessIndicatorController::class, 'update']);
         Route::delete('/{id}', [SuccessIndicatorController::class, 'destroy']);
+    });
+
+
+    Route::prefix('/OfficeAccountable')->group(function(){
+        Route::get('/{id}',[OfficeAccountableController::class,'index']);
+        Route::get('/create/{id}',[OfficeAccountableController::class,'create']);
+        Route::post('/store',[OfficeAccountableController::class,'store']);
+        Route::get('/{id}/edit', [OfficeAccountableController::class, 'edit']);
+        Route::patch('/{id}', [OfficeAccountableController::class, 'update']);
+        Route::delete('/{id}', [OfficeAccountableController::class, 'destroy']);
     });
 
     //SubSector
