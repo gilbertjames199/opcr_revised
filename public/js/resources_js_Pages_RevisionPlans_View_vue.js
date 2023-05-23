@@ -752,7 +752,7 @@ var _hoisted_132 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 
 var _hoisted_133 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   colspan: "2"
-}, "SUB TOTAL (NON-GAD) ", -1
+}, "SUB TOTAL (GAD) ", -1
 /* HOISTED */
 );
 
