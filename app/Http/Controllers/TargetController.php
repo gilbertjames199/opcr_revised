@@ -119,7 +119,7 @@ class TargetController extends Controller
     }
     public function store_i(Request $request){
         //dd("store");
-        //dd($request->idpdip);
+        //dd($request);
 
         // $brg=$request->brgy;
         // dd($request);
@@ -130,10 +130,30 @@ class TargetController extends Controller
         // dd($request->brgy);
         $attributes = $request->validate(Target::rules(), Target::errorMessages());
         $this->model->create($attributes);
+
+        $this->updateRevisionPlanAmount($request->idimplementation);
         //dd($attributes);
         //dd($attributes);Route::get('/{imp_id}/implementation',[TargetController::class,'index_i']);
         return redirect('/targets/'.$request->idimplementation.'/implementation')
                 ->with('message','Target added');
+    }
+    public function updateRevisionPlanAmount($id){
+        $implementation_plan = ImplementationPlan::where('id', $id)->first();
+        $revision_plan_id=$implementation_plan->idrev_plan;
+
+        $imp_amount = DB::table('targets')
+                ->where('implementation_plans.idrev_plan',$revision_plan_id)
+                ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                ->select('targets.*', 'implementation_plans.*')
+                ->sum('targets.planned_budget');
+
+        //dd($imp_amount);
+        $rev=RevisionPlan::find($revision_plan_id);
+        $rev->amount = $imp_amount;
+        $percent = floatval($rev->hgdg_percent);
+        $att=floatval($imp_amount)*$percent;
+        $rev->attributed_amount	=$att;
+        $rev->save();
     }
     public function edit_i(Request $request,$imp_id, $id){
         //dd("edit: ".$id." imp: ".$imp_id);
@@ -189,7 +209,7 @@ class TargetController extends Controller
         //dd($request);
         $validatedData = $request->validate(Target::rules(), Target::errorMessages());
         $data->update($validatedData);
-
+        $this->updateRevisionPlanAmount($request->idimplementation);
         return redirect('/targets/'.$request->idimplementation.'/implementation')
                 ->with('message','Target updated!');
     }
@@ -197,6 +217,7 @@ class TargetController extends Controller
         //dd("destroy i");
         $data = $this->model->findOrFail($id);
         $data->delete();
+        $this->updateRevisionPlanAmount($imp_id);
         //dd($request->raao_id);
         return redirect('/targets/'.$imp_id.'/implementation')->with('warning', 'Target deleted');
     }

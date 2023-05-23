@@ -45,7 +45,11 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data">
-                                <td>{{ dat.project_title }}</td>
+                                <td>{{ dat.project_title }}
+                                    <span style="color:red; font-weight: bold">
+                                        {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
+                                    </span>
+                                </td>
                                 <td>{{ dat.FFUNCTION }}</td>
                                 <td><Link
                                         class="btn btn-primary btn-sm"
@@ -162,6 +166,21 @@ export default {
             var percentt = (accSum/targqty)*100
             percentt=this.format_number(percentt,2,true)
             return percentt;
+        },
+        amountStatus(budget, imp_amount){
+            var status_now="";
+            var showAmount ="";
+            var bdg = parseFloat(budget);
+            var imp = parseFloat(imp_amount);
+            //showAmount ="Budget is "+budget+" \n imp amount is "+imp_amount + " "
+            if(bdg>imp){
+                //alert('budget is greater than impamount');
+                status_now=showAmount+"Warning: total amount of budgetary requirement is greater than the total implementation plans amount."
+            }
+            if(bdg<imp){
+                status_now=showAmount+"Warning: total amount of implementation plans is greater than the total  amount of budgetary requirement."
+            }
+            return status_now;
         }
     }
 };

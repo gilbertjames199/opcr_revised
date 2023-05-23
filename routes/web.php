@@ -31,6 +31,7 @@ use App\Http\Controllers\StrategyController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SectoralController;
 use App\Http\Controllers\ChiefAgendaController;
+use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\EconomicAgendaController;
 use App\Http\Controllers\ImplementationPlanController;
 use App\Http\Controllers\LogFrameController;
@@ -418,6 +419,16 @@ Route::middleware('auth')->group(function() {
 
     //SubSector
     Route::prefix('/subsector')->group(function(){});
+
+    //DIVISIONS
+    Route::prefix('divisions')->group(function(){
+        Route::get('/{FFUNCCOD}',[DivisionController::class,'index']);
+        Route::get('/create/{FFUNCCOD}',[DivisionController::class,'create']);
+        Route::post('/store',[DivisionController::class,'store']);
+        Route::get('/{id}/edit', [DivisionController::class, 'edit']);
+        Route::patch('/{id}', [DivisionController::class, 'update']);
+        Route::delete('/{id}', [DivisionController::class, 'destroy']);
+    });
 });
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);
@@ -492,4 +503,5 @@ Route::prefix('print')->group(function(){
     });
     Route::get('/jasadmin',[RAAOController::class,'raao_jasper_admin']);
     Route::get('/jasuser',[RAAOController::class,'raao_jasper_user']);
+    Route::get('/LogFrame/{FFUNCCOD}',[LogFrameController::class,'printLog']);
 });

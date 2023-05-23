@@ -107,19 +107,19 @@
                     </table>
                 </div>
                 <!--
-                <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
+                        </div>
                     </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <p >
-                            {{ data.from }} to {{ data.to }} of
-                            {{ data.total }} entries
-                        </p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <p >
+                                {{ data.from }} to {{ data.to }} of
+                                {{ data.total }} entries
+                            </p>
+                        </div>
                     </div>
-                </div>
                 -->
             </div>
         </div>
