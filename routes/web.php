@@ -31,6 +31,7 @@ use App\Http\Controllers\StrategyController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SectoralController;
 use App\Http\Controllers\ChiefAgendaController;
+use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\EconomicAgendaController;
 use App\Http\Controllers\ImplementationPlanController;
 use App\Http\Controllers\LogFrameController;
@@ -53,6 +54,7 @@ use App\Http\Controllers\OPCRPAPSController;
 use App\Http\Controllers\OutputController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\SuccessIndicatorController;
+use App\Http\Controllers\OfficeAccountableController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -468,8 +470,28 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [SuccessIndicatorController::class, 'destroy']);
     });
 
+
+    Route::prefix('/OfficeAccountable')->group(function(){
+        Route::get('/{id}',[OfficeAccountableController::class,'index']);
+        Route::get('/create/{id}',[OfficeAccountableController::class,'create']);
+        Route::post('/store',[OfficeAccountableController::class,'store']);
+        Route::get('/{id}/edit', [OfficeAccountableController::class, 'edit']);
+        Route::patch('/{id}', [OfficeAccountableController::class, 'update']);
+        Route::delete('/{id}', [OfficeAccountableController::class, 'destroy']);
+    });
+
     //SubSector
     Route::prefix('/subsector')->group(function(){});
+
+    //DIVISIONS
+    Route::prefix('divisions')->group(function(){
+        Route::get('/{FFUNCCOD}',[DivisionController::class,'index']);
+        Route::get('/create/{FFUNCCOD}',[DivisionController::class,'create']);
+        Route::post('/store',[DivisionController::class,'store']);
+        Route::get('/{id}/edit', [DivisionController::class, 'edit']);
+        Route::patch('/{id}', [DivisionController::class, 'update']);
+        Route::delete('/{id}', [DivisionController::class, 'destroy']);
+    });
 });
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);
@@ -544,4 +566,5 @@ Route::prefix('print')->group(function(){
     });
     Route::get('/jasadmin',[RAAOController::class,'raao_jasper_admin']);
     Route::get('/jasuser',[RAAOController::class,'raao_jasper_user']);
+    Route::get('/LogFrame/{FFUNCCOD}',[LogFrameController::class,'printLog']);
 });

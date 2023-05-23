@@ -99,6 +99,22 @@ __webpack_require__.r(__webpack_exports__);
       this.form.id = this.editData.id;
     } else {
       this.pageTitle = "Create";
+      this.form.planned_budget = 0;
+      this.form.target_qty1 = 0;
+      this.form.target_qty2 = 0;
+      this.form.target_qty3 = 0;
+      this.form.target_qty4 = 0;
+      this.form.brgy = "-";
+      this.form.municipality = "-";
+      this.form.onsite_tag = "No";
+      var currentDate = new Date();
+      var currentYear = currentDate.getFullYear();
+      var january1 = new Date(currentYear, 0, 2);
+      var formattedDate = january1.toISOString().split('T')[0];
+      var december31 = new Date(currentYear, 11, 31);
+      var formattedDate2 = december31.toISOString().split('T')[0];
+      this.form.planned_period_from = formattedDate;
+      this.form.planned_period_to = formattedDate2;
     }
   },
   methods: {

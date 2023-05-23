@@ -41,7 +41,33 @@ class RevisionPlanController extends Controller
                 ->Join(DB::raw('fms.accountaccess acc'),'acc.ffunccod','=','ff.FFUNCCOD')
                 ->where('acc.iduser','=',$myid)
                 ->where('idpaps','=',$idpaps)
-                ->get();
+                ->get()
+                ->map(function($item){
+                    $budgetary_requirement =BudgetRequirement::where('revision_plan_id',$item->id)
+                                            ->sum('amount');
+                    // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
+                    //                 ->join('targets', 'targets.id','implementation_plans.id')
+                    //                 ->sum('targets.planned_budget');
+                    // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
+                    //                 ->join('targets', 'targets.id','implementation_plans.id')
+                    //                 ->get();
+                    $imp_amount = DB::table('targets')
+                                    ->where('implementation_plans.idrev_plan',$item->id)
+                                    ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                                    ->select('targets.*', 'implementation_plans.*')
+                                    ->sum('targets.planned_budget');
+
+
+                    return [
+                        'FFUNCTION'=>$item->FFUNCTION,
+                        'id'=>$item->id,
+                        'project_title'=>$item->project_title,
+                        'type'=>$item->type,
+                        'version'=>$item->version,
+                        'budget_sum'=>$budgetary_requirement,
+                        'imp_amount'=>$imp_amount
+                    ];
+                });
 
         $paps = ProgramAndProject::where('id', $idpaps)->first();
         //dd($data);
@@ -239,32 +265,97 @@ class RevisionPlanController extends Controller
                 });
         //dd($functions->FFUNCTION);
         //BUDGET REQUIREMENT
-        $mooe = BudgetRequirement::where('revision_plan_id','=',$id)
-                ->where('category','Maintenance, Operating, and Other Expenses')
-                ->orderBy('particulars')
-                ->get();
-        $s_mooe = BudgetRequirement::where('revision_plan_id','=',$id)
-                ->where('category','Maintenance, Operating, and Other Expenses')
-                ->orderBy('particulars')
-                ->sum('amount');
+        // $mooe = BudgetRequirement::where('revision_plan_id','=',$id)
+        //         ->where('category','Maintenance, Operating, and Other Expenses')
+        //         ->orderBy('particulars')
+        //         ->get();
+        // $s_mooe = BudgetRequirement::where('revision_plan_id','=',$id)
+        //         ->where('category','Maintenance, Operating, and Other Expenses')
+        //         ->orderBy('particulars')
+        //         ->sum('amount');
 
-        $capital=BudgetRequirement::where('revision_plan_id','=',$id)
-                ->where('category','Capital Outlay')
-                ->orderBy('particulars')
-                ->get();
+        // $capital=BudgetRequirement::where('revision_plan_id','=',$id)
+        //         ->where('category','Capital Outlay')
+        //         ->orderBy('particulars')
+        //         ->get();
 
-        $s_capital = BudgetRequirement::where('revision_plan_id','=',$id)
-                ->where('category','Capital Outlay')
-                ->orderBy('particulars')
-                ->sum('amount');
-        $ps=BudgetRequirement::where('revision_plan_id','=',$id)
-                ->where('category','Personal Services')
-                ->orderBy('particulars')
-                ->get();
-        $s_ps=BudgetRequirement::where('revision_plan_id','=',$id)
-                ->where('category','Personal Services')
-                ->orderBy('particulars')
-                ->sum('amount');
+        // $s_capital = BudgetRequirement::where('revision_plan_id','=',$id)
+        //         ->where('category','Capital Outlay')
+        //         ->orderBy('particulars')
+        //         ->sum('amount');
+        // $ps=BudgetRequirement::where('revision_plan_id','=',$id)
+        //         ->where('category','Personal Services')
+        //         ->orderBy('particulars')
+        //         ->get();
+        // $s_ps=BudgetRequirement::where('revision_plan_id','=',$id)
+        //         ->where('category','Personal Services')
+        //         ->orderBy('particulars')
+        //         ->sum('amount');
+
+        //MOOE
+        $mooe_gad = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->where('category_gad','GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $mooe_non = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->where('category_gad','NON-GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $s_mooe_gad = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->where('category_gad','GAD')
+                    ->sum('amount');
+        $s_mooe_non = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->where('category_gad','NON-GAD')
+                    ->sum('amount');
+        //Capital Outlay
+        $cap_gad = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Capital Outlay')
+                    ->where('category_gad','GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $cap_non = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Capital Outlay')
+                    ->where('category_gad','NON-GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $s_cap_gad = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Capital Outlay')
+                    ->where('category_gad','GAD')
+                    ->sum('amount');
+        $s_cap_non = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Capital Outlay')
+                    ->where('category_gad','NON-GAD')
+                    ->sum('amount');
+        //Personnel Services
+        $ps_gad = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Personnel Services')
+                    ->where('category_gad','GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $ps_non = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Personnel Services')
+                    ->where('category_gad','NON-GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $s_ps_gad = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Personnel Services')
+                    ->where('category_gad','GAD')
+                    ->sum('amount');
+        $s_ps_non = BudgetRequirement::where('revision_plan_id','=',$id)
+                    ->where('category','Personnel Services')
+                    ->where('category_gad','NON-GAD')
+                    ->sum('amount');
+
 
         //IMPLEMENTING TEAM
         $team_members = TeamPlan::where('revision_plan_id', $id)
@@ -369,16 +460,29 @@ class RevisionPlanController extends Controller
                         'targets'=>$targets,
                     ];
                 });
+        $imp_amount = DB::table('targets')
+                ->where('implementation_plans.idrev_plan',$id)
+                ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                ->select('targets.*', 'implementation_plans.*')
+                ->sum('targets.planned_budget');
         return inertia('RevisionPlans/View',[
             "paps"=>$paps,
             "office"=>$functions->FFUNCTION,
             "implementation"=>$implement,
-            "b_mooe"=>$mooe,
-            "b_capital"=>$capital,
-            "b_ps"=>$ps,
-            "s_mooe"=>$s_mooe,
-            "s_capital"=>$s_capital,
-            "s_ps"=>$s_ps,
+
+            "mooe_gad"=>$mooe_gad,
+            "mooe_non"=>$mooe_non,
+            "cap_gad"=>$cap_gad,
+            "cap_non"=>$cap_non,
+            "ps_gad"=>$ps_gad,
+            "ps_non"=>$ps_non,
+            "s_mooe_gad"=>$s_mooe_gad,
+            "s_mooe_non"=>$s_mooe_non,
+            "s_cap_gad"=>$s_cap_gad,
+            "s_cap_non"=>$s_cap_non,
+            "s_ps_gad"=>$s_ps_gad,
+            "s_ps_non"=>$s_ps_non,
+
             "team_members"=>$team_members,
             "monitors"=>$monitoring,
             "risks"=>$risks,
@@ -386,6 +490,7 @@ class RevisionPlanController extends Controller
             "sig_prep"=>$sig_prep,
             "sig_app"=>$sig_app,
             "data"=>$data,
+            "imp_amount"=>$imp_amount,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

@@ -1342,6 +1342,19 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_8___default()((filepond_plu
             month: 'long'
           });
           return "".concat(month, " ").concat(year);
+        },
+        getImagePath: function getImagePath(filename) {
+          return "/images/".concat(filename);
+        },
+        getSum: function getSum(n1, n2) {
+          var n3 = parseFloat(n1) + parseFloat(n2); //alert(n1);
+
+          return this.format_number_conv(n3, 2, true);
+        },
+        getDifference: function getDifference(n1, n2) {
+          var n3 = parseFloat(n1) - parseFloat(n2); //alert(n1+" --- ");
+
+          return this.format_number_conv(n3, 2, true);
         }
       }
     }).mount(el);
@@ -1906,6 +1919,22 @@ var map = {
 		"./resources/js/Pages/ChiefAgenda/addAgenda.vue",
 		"resources_js_Pages_ChiefAgenda_addAgenda_vue"
 	],
+	"./Division/Create": [
+		"./resources/js/Pages/Division/Create.vue",
+		"resources_js_Pages_Division_Create_vue"
+	],
+	"./Division/Create.vue": [
+		"./resources/js/Pages/Division/Create.vue",
+		"resources_js_Pages_Division_Create_vue"
+	],
+	"./Division/Index": [
+		"./resources/js/Pages/Division/Index.vue",
+		"resources_js_Pages_Division_Index_vue"
+	],
+	"./Division/Index.vue": [
+		"./resources/js/Pages/Division/Index.vue",
+		"resources_js_Pages_Division_Index_vue"
+	],
 	"./ELA/Create": [
 		"./resources/js/Pages/ELA/Create.vue",
 		"resources_js_Pages_ELA_Create_vue"
@@ -2125,6 +2154,22 @@ var map = {
 	"./OPCRPaps/Direct.vue": [
 		"./resources/js/Pages/OPCRPaps/Direct.vue",
 		"resources_js_Pages_OPCRPaps_Direct_vue"
+	],
+	"./OfficeAccountable/Create": [
+		"./resources/js/Pages/OfficeAccountable/Create.vue",
+		"resources_js_Pages_OfficeAccountable_Create_vue"
+	],
+	"./OfficeAccountable/Create.vue": [
+		"./resources/js/Pages/OfficeAccountable/Create.vue",
+		"resources_js_Pages_OfficeAccountable_Create_vue"
+	],
+	"./OfficeAccountable/Index": [
+		"./resources/js/Pages/OfficeAccountable/Index.vue",
+		"resources_js_Pages_OfficeAccountable_Index_vue"
+	],
+	"./OfficeAccountable/Index.vue": [
+		"./resources/js/Pages/OfficeAccountable/Index.vue",
+		"resources_js_Pages_OfficeAccountable_Index_vue"
 	],
 	"./Organizational/Index": [
 		"./resources/js/Pages/Organizational/Index.vue",

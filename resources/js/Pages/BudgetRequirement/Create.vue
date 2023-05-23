@@ -33,7 +33,8 @@
                         >
                         </multiselect>
                     </div>
-                    <div class="fs-6 c-red-500" v-if="form.errors.particulars">{{ form.errors.particulars }}</div>
+                    <!--<div class="fs-6 c-red-500" v-if="form.errors.particulars">{{ form.errors.particulars }}</div>-->
+
                 </div>
                 <label>PARTICULARS: </label>
                 <input type="text" class="form-control" v-model="form.particulars" />
@@ -50,7 +51,7 @@
                 <select class="form-control" v-model="form.category">
                     <option>Capital Outlay</option>
                     <option>Maintenance, Operating, and Other Expenses</option>
-                    <option>Personal Services</option>
+                    <option>Personnel Services</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.category">{{ form.errors.category }}</div>
                 <!---->
@@ -58,8 +59,9 @@
                 <input type="text" class="form-control" v-model="form.source"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.source">{{ form.errors.source }}</div>
 
-                <label style="visibility: hidden">CATEGORY 2</label>
-                <select class="form-control" v-model="form.category_gad" style="visibility: hidden">
+                <!--style="visibility: hidden"-->
+                <label >GAD/NON-GAD</label>
+                <select class="form-control" v-model="form.category_gad" >
                     <option>GAD</option>
                     <option>NON-GAD</option>
                 </select>
@@ -78,8 +80,6 @@
                     </options>
                 </model-select>-->
                 <!--{{ accounts[0].FTITLE }}<input type="text" v-model="form.project_title" class="form-control" autocomplete="chrome-off">-->
-
-
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
@@ -134,7 +134,7 @@ export default {
                     account_code: "",
                     amount: "",
                     category: "",
-                    category_gad: "NON-GAD",
+                    category_gad: "",
                     source: "",
                     id: null
                 }),

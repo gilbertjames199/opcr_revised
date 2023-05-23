@@ -256,6 +256,25 @@ export default {
                 this.form.id=this.editData.id
             } else {
                 this.pageTitle = "Create"
+                this.form.planned_budget=0
+                this.form.target_qty1=0
+                this.form.target_qty2=0
+                this.form.target_qty3=0
+                this.form.target_qty4=0
+                this.form.brgy="-"
+                this.form.municipality="-"
+                this.form.onsite_tag="No"
+
+                const currentDate = new Date();
+                const currentYear = currentDate.getFullYear();
+
+                const january1 = new Date(currentYear, 0, 2);
+                const formattedDate = january1.toISOString().split('T')[0];
+
+                const december31 = new Date(currentYear, 11, 31);
+                const formattedDate2 = december31.toISOString().split('T')[0];
+                this.form.planned_period_from=formattedDate;
+                this.form.planned_period_to=formattedDate2;
             }
 
         },

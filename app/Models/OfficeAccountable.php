@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Division extends Model
+class OfficeAccountable extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='divisions';
-    protected $guarded = [];
+    protected $table='office_accountables';
+    protected $fillable = [
+        'office_accountable',
+        'idpaps',
+    ];
 }

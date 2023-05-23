@@ -23,21 +23,107 @@ class BudgetRequirementController extends Controller
     }
     public function index(Request $request, $idrev){
         // $start = microtime(true);
-        $data = $this->model->where('revision_plan_id','=',$idrev)
-                ->orderBy('category', 'desc')
-                ->orderBy('particulars')
-                ->get();
+        // $data = $this->model->where('revision_plan_id','=',$idrev)
+        //         ->orderBy('category', 'desc')
+        //         ->orderBy('particulars')
+        //         ->get();
         $revs = RevisionPlan::where('id','=',$idrev)->get();
         // $end = microtime(true);
         // $difference = $end - $start;
         // dd($difference);
         //dd($idrev);
 
+        //MOOE
+        $mooe_gad = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->where('category_gad','GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $mooe_non = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->where('category_gad','NON-GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $s_mooe_gad = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->where('category_gad','GAD')
+                    ->sum('amount');
+        $s_mooe_non = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->where('category_gad','NON-GAD')
+                    ->sum('amount');
+        //Capital Outlay
+        $cap_gad = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Capital Outlay')
+                    ->where('category_gad','GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $cap_non = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Capital Outlay')
+                    ->where('category_gad','NON-GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $s_cap_gad = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Capital Outlay')
+                    ->where('category_gad','GAD')
+                    ->sum('amount');
+        $s_cap_non = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Capital Outlay')
+                    ->where('category_gad','NON-GAD')
+                    ->sum('amount');
+        //Personnel Services
+        $ps_gad = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Personnel Services')
+                    ->where('category_gad','GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $ps_non = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Personnel Services')
+                    ->where('category_gad','NON-GAD')
+                    ->orderBy('category', 'desc')
+                    ->orderBy('particulars')
+                    ->get();
+        $s_ps_gad = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Personnel Services')
+                    ->where('category_gad','GAD')
+                    ->sum('amount');
+        $s_ps_non = $this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category','Personnel Services')
+                    ->where('category_gad','NON-GAD')
+                    ->sum('amount');
+        //TOTAL GAD Amount
+        $GAD_total =$this->model->where('revision_plan_id','=',$idrev)
+                    ->where('category_gad','GAD')
+                    ->sum('amount');
+
+        $BUD_total =$this->model->where('revision_plan_id','=',$idrev)
+                    ->sum('amount');
+        //dd($GAD_total);
         return inertia('BudgetRequirement/Index',[
-            'data'=>$data,
+            "mooe_gad"=>$mooe_gad,
+            "mooe_non"=>$mooe_non,
+            "cap_gad"=>$cap_gad,
+            "cap_non"=>$cap_non,
+            "ps_gad"=>$ps_gad,
+            "ps_non"=>$ps_non,
             "idrev"=>$idrev,
             "revs"=>$revs,
+
+            "s_mooe_gad"=>$s_mooe_gad,
+            "s_mooe_non"=>$s_mooe_non,
+            "s_cap_gad"=>$s_cap_gad,
+            "s_cap_non"=>$s_cap_non,
+            "s_ps_gad"=>$s_ps_gad,
+            "s_ps_non"=>$s_ps_non,
+
             "filters" => $request->only(['search']),
+            "GAD_total"=>$GAD_total,
+            "BUD_total"=>$BUD_total,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -72,7 +158,7 @@ class BudgetRequirementController extends Controller
             'account_code'=>'required',
             'amount'=>'required',
             'category'=>'required',
-            //'category_gad'=>'required',
+            'category_gad'=>'required',
         ]);
 
         $budg=new BudgetRequirement();
@@ -82,13 +168,16 @@ class BudgetRequirementController extends Controller
         $budg->account_code=$attributes['account_code'];
         $budg->amount=$attributes['amount'];
         $budg->category=$attributes['category'];
-        $budg->category_gad="NON-GAD";
+        $budg->category_gad=$attributes['category_gad'];
         $budg->source=$request->source;
         $budg->save();
-        $rev=RevisionPlan::find($attributes['revision_plan_id']);
-        $revamount = $rev->amount;
-        $rev->amount = $revamount + $famount;
-        $rev->save();
+
+        $budgetary_requirement =BudgetRequirement::where('revision_plan_id',$attributes['revision_plan_id'])
+                                ->sum('amount');
+
+        // $rev=RevisionPlan::find($attributes['revision_plan_id']);
+        // $rev->amount = $budgetary_requirement;
+        // $rev->save();
         $msg="Successfully added budget requirement.";
 
 
@@ -145,21 +234,35 @@ class BudgetRequirementController extends Controller
             'category_gad'=>$request->category_gad,
             'source'=>$request->source,
         ]);
-
+        $budgetary_requirement =BudgetRequirement::where('revision_plan_id',$request->revision_plan_id)
+                                            ->sum('amount');
+        // $rev=RevisionPlan::find($request->revision_plan_id);
+        // $rev->amount = $budgetary_requirement;
+        // $rev->save();
         return redirect('/budget/'.$idrev)
                 ->with('message','Budget Requirement updated');
     }
 
     public function destroy(Request $request){
-        $revision_plan_id = BudgetRequirement::where('id',$request->id)->get();
-        // $revision_plan_id -> revision_plan_id;
+        //GET Revision Plan ID
+        $revision_plan_id = BudgetRequirement::where('id',$request->id)->first();
+        $revision_plan_id=$revision_plan_id->revision_plan_id;
 
+        //DELETE BUDGET REQUIREMENT
         $data = $this->model->findOrFail($request->id);
-
         $data->delete();
 
-        //dd($request->raao_id);
-        return back()->with('warning', 'Budget Requirement Deleted');
+        //GET THE TOTAL BUDGETARY REQUIREMENT
+        // $budgetary_requirement =BudgetRequirement::where('revision_plan_id',$revision_plan_id)
+        //                                     ->sum('amount');
 
+        //UPDATE THE TOTAL AMOUNT OF THE REVISION PLAN
+        // $rev=RevisionPlan::find($revision_plan_id);
+        // $rev->amount = $budgetary_requirement;
+        // $rev->save();
+
+        //return back()->with('warning', 'Budget Requirement Deleted');
+        return redirect('/budget/'.$revision_plan_id)
+                ->with('message','Budget Requirement updated');
     }
 }

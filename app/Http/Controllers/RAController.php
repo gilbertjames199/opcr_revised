@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class RAController extends Controller
 {
+    protected $model;
     public function __construct(ResearchAgenda $model )
     {
         $this->model = $model;
