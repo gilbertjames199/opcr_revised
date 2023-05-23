@@ -297,7 +297,7 @@
                                 <tr v-if="cap_gad.length>0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
-                                    <th colspan="2" >SUB TOTAL (NON-GAD) </th>
+                                    <th colspan="2" >SUB TOTAL (GAD) </th>
                                     <th>{{ format_number_conv(s_cap_gad,2,true) }}</th>
                                     <td></td>
                                 </tr>
