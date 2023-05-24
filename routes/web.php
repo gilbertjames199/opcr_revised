@@ -54,6 +54,9 @@ use App\Http\Controllers\OutputController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\SuccessIndicatorController;
 use App\Http\Controllers\OfficeAccountableController;
+use App\Http\Controllers\RatingController;
+use App\Http\Controllers\QualityController;
+use App\Http\Controllers\TimelinessController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -478,6 +481,34 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [OfficeAccountableController::class, 'update']);
         Route::delete('/{id}', [OfficeAccountableController::class, 'destroy']);
     });
+
+    Route::prefix('/Rating')->group(function(){
+        Route::get('/{id}',[RatingController::class,'index']);
+        Route::get('/create/{id}',[RatingController::class,'create']);
+        Route::post('/store',[RatingController::class,'store']);
+        Route::get('/{id}/edit', [RatingController::class, 'edit']);
+        Route::patch('/{id}', [RatingController::class, 'update']);
+        Route::delete('/{id}', [RatingController::class, 'destroy']);
+    });
+
+    Route::prefix('/Quality')->group(function(){
+        Route::get('/{id}',[QualityController::class,'index']);
+        Route::get('/create/{id}',[QualityController::class,'create']);
+        Route::post('/store',[QualityController::class,'store']);
+        Route::get('/{id}/edit', [QualityController::class, 'edit']);
+        Route::patch('/{id}', [QualityController::class, 'update']);
+        Route::delete('/{id}', [QualityController::class, 'destroy']);
+    });
+
+    Route::prefix('/Timeliness')->group(function(){
+        Route::get('/{id}',[TimelinessController::class,'index']);
+        Route::get('/create/{id}',[TimelinessController::class,'create']);
+        Route::post('/store',[TimelinessController::class,'store']);
+        Route::get('/{id}/edit', [TimelinessController::class, 'edit']);
+        Route::patch('/{id}', [TimelinessController::class, 'update']);
+        Route::delete('/{id}', [TimelinessController::class, 'destroy']);
+    });
+
 
     //SubSector
     Route::prefix('/subsector')->group(function(){});

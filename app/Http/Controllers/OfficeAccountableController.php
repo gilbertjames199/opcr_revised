@@ -58,7 +58,7 @@ class OfficeAccountableController extends Controller
             //dd($attributes);
             $this->model->create($attributes);
             return redirect('/OfficeAccountable/'.$id)
-                    ->with('message','Signatories added');
+                    ->with('message','Office/Individual Account added');
         }
 
         public function edit(Request $request, $id){
