@@ -58,6 +58,9 @@ use App\Http\Controllers\OfficeAccountableController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\QualityController;
 use App\Http\Controllers\TimelinessController;
+use App\Http\Controllers\QualityRemarksController;
+use App\Http\Controllers\RatingRemarksController;
+use App\Http\Controllers\TimelinessRemarksController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -510,6 +513,33 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [TimelinessController::class, 'destroy']);
     });
 
+    Route::prefix('/QualityRemarks')->group(function(){
+        Route::get('/{id}',[QualityRemarksController::class,'index']);
+        Route::get('/create/{id}',[QualityRemarksController::class,'create']);
+        Route::post('/store',[QualityRemarksController::class,'store']);
+        Route::get('/{id}/edit', [QualityRemarksController::class, 'edit']);
+        Route::patch('/{id}', [QualityRemarksController::class, 'update']);
+        Route::delete('/{id}', [QualityRemarksController::class, 'destroy']);
+    });
+
+    Route::prefix('/RatingRemarks')->group(function(){
+        Route::get('/{id}',[RatingRemarksController::class,'index']);
+        Route::get('/create/{id}',[RatingRemarksController::class,'create']);
+        Route::post('/store',[RatingRemarksController::class,'store']);
+        Route::get('/{id}/edit', [RatingRemarksController::class, 'edit']);
+        Route::patch('/{id}', [RatingRemarksController::class, 'update']);
+        Route::delete('/{id}', [RatingRemarksController::class, 'destroy']);
+    });
+
+
+    Route::prefix('/TimelinessRemarks')->group(function(){
+        Route::get('/{id}',[TimelinessRemarksController::class,'index']);
+        Route::get('/create/{id}',[TimelinessRemarksController::class,'create']);
+        Route::post('/store',[TimelinessRemarksController::class,'store']);
+        Route::get('/{id}/edit', [TimelinessRemarksController::class, 'edit']);
+        Route::patch('/{id}', [TimelinessRemarksController::class, 'update']);
+        Route::delete('/{id}', [TimelinessRemarksController::class, 'destroy']);
+    });
 
     //SubSector
     Route::prefix('/subsector')->group(function(){});

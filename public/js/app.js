@@ -2323,6 +2323,22 @@ var map = {
 		"./resources/js/Pages/Quality/Index.vue",
 		"resources_js_Pages_Quality_Index_vue"
 	],
+	"./QualityRemarks/Create": [
+		"./resources/js/Pages/QualityRemarks/Create.vue",
+		"resources_js_Pages_QualityRemarks_Create_vue"
+	],
+	"./QualityRemarks/Create.vue": [
+		"./resources/js/Pages/QualityRemarks/Create.vue",
+		"resources_js_Pages_QualityRemarks_Create_vue"
+	],
+	"./QualityRemarks/Index": [
+		"./resources/js/Pages/QualityRemarks/Index.vue",
+		"resources_js_Pages_QualityRemarks_Index_vue"
+	],
+	"./QualityRemarks/Index.vue": [
+		"./resources/js/Pages/QualityRemarks/Index.vue",
+		"resources_js_Pages_QualityRemarks_Index_vue"
+	],
 	"./RAAO/Index": [
 		"./resources/js/Pages/RAAO/Index.vue",
 		"resources_js_Pages_RAAO_Index_vue"
@@ -2346,6 +2362,22 @@ var map = {
 	"./Rating/Index.vue": [
 		"./resources/js/Pages/Rating/Index.vue",
 		"resources_js_Pages_Rating_Index_vue"
+	],
+	"./RatingRemarks/Create": [
+		"./resources/js/Pages/RatingRemarks/Create.vue",
+		"resources_js_Pages_RatingRemarks_Create_vue"
+	],
+	"./RatingRemarks/Create.vue": [
+		"./resources/js/Pages/RatingRemarks/Create.vue",
+		"resources_js_Pages_RatingRemarks_Create_vue"
+	],
+	"./RatingRemarks/Index": [
+		"./resources/js/Pages/RatingRemarks/Index.vue",
+		"resources_js_Pages_RatingRemarks_Index_vue"
+	],
+	"./RatingRemarks/Index.vue": [
+		"./resources/js/Pages/RatingRemarks/Index.vue",
+		"resources_js_Pages_RatingRemarks_Index_vue"
 	],
 	"./ResearchAgenda/Create": [
 		"./resources/js/Pages/ResearchAgenda/Create.vue",
@@ -2570,6 +2602,22 @@ var map = {
 	"./Timeliness/Index.vue": [
 		"./resources/js/Pages/Timeliness/Index.vue",
 		"resources_js_Pages_Timeliness_Index_vue"
+	],
+	"./TimelinessRemarks/Create": [
+		"./resources/js/Pages/TimelinessRemarks/Create.vue",
+		"resources_js_Pages_TimelinessRemarks_Create_vue"
+	],
+	"./TimelinessRemarks/Create.vue": [
+		"./resources/js/Pages/TimelinessRemarks/Create.vue",
+		"resources_js_Pages_TimelinessRemarks_Create_vue"
+	],
+	"./TimelinessRemarks/Index": [
+		"./resources/js/Pages/TimelinessRemarks/Index.vue",
+		"resources_js_Pages_TimelinessRemarks_Index_vue"
+	],
+	"./TimelinessRemarks/Index.vue": [
+		"./resources/js/Pages/TimelinessRemarks/Index.vue",
+		"resources_js_Pages_TimelinessRemarks_Index_vue"
 	],
 	"./UserOffice/Set": [
 		"./resources/js/Pages/UserOffice/Set.vue",

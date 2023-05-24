@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProgramAndProject;
-use App\Models\rating;
+use App\Models\TimelinessRemarks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RatingController extends Controller
+class TimelinessRemarksController extends Controller
 {
     //
     protected $model;
-    public function __construct(rating $model)
+    public function __construct(TimelinessRemarks $model)
     {
         $this->model=$model;
     }
@@ -22,7 +22,7 @@ class RatingController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->paginate(10)
                     ->withQueryString();
-        return inertia('Rating/Index',[
+        return inertia('TimelinessRemarks/Index',[
             "data"=>$data,
             "idpaps"=>$idpaps,
             "paps"=>$paps,
@@ -37,7 +37,7 @@ class RatingController extends Controller
 
         $paps = ProgramAndProject::findOrFail($idpaps);
         // dd($paps);
-        return inertia('Rating/Create',[
+        return inertia('TimelinessRemarks/Create',[
             'paps'=>$paps,
             'idpaps'=>$idpaps,
             'can'=>[
@@ -51,28 +51,24 @@ class RatingController extends Controller
         // dd($request);
         $id = $request->idpaps;
         $attributes = $request->validate([
-            'numerical_rating' => 'required',
-            'adjectival_rating' => 'required',
-            'efficiency_quantity' => 'required',
+            'timeliness_remarks' => 'required',
             'idpaps'=>'required',
         ]);
 
         //dd($attributes);
         $this->model->create($attributes);
-        return redirect('/Rating/'.$id)
-                ->with('message','Rating added');
+        return redirect('/TimelinessRemarks/'.$id)
+                ->with('message','Timeliness Remark added');
     }
 
     public function edit(Request $request, $id){
         $data = $this->model->where('id', $id)->first([
             'id',
-            'numerical_rating',
-            'adjectival_rating',
-            'efficiency_quantity',
+            'timeliness_remarks',
             'idpaps'
         ]);
         $paps = ProgramAndProject::findOrFail($data->idpaps);
-        return inertia('Rating/Create', [
+        return inertia('TimelinessRemarks/Create', [
             "editData" => $data,
             'paps'=>$paps,
             'idpaps'=>$data->idpaps,
@@ -90,14 +86,12 @@ class RatingController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
-            'numerical_rating'=>$request->numerical_rating,
-            'adjectival_rating'=>$request->adjectival_rating,
-            'efficiency_quantiy'=>$request->efficiency_quantiy,
+            'timeliness_remarks'=>$request->timeliness_remarks,
             'idpaps'=>$request->idpaps
         ]);
 
-        return redirect('/Rating/'.$request->idpaps)
-                ->with('message','Rating updated');
+        return redirect('/TimelinessRemarks/'.$request->idpaps)
+                ->with('message','Timeliness Remarks updated');
     }
 
     public function destroy(Request $request){
@@ -105,7 +99,7 @@ class RatingController extends Controller
         $id = $data->idpaps;
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/Rating/'.$id)->with('warning', 'Rating Deleted');
+        return redirect('/TimelinessRemarks/'.$id)->with('warning', 'Timeliness Remarks Deleted');
 
     }
 }

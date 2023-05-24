@@ -7,33 +7,30 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Programs and Projects - OPCR</h3>
+            <h3>Quality Remarks</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
+                    <Link class="btn btn-primary btn-sm" :href="`/QualityRemarks/create/${idpaps}`">Add Quality Remarks</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
+                <Link :href="`/OPCRpaps/direct`">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                    </svg>
+                </Link>
             </div>
-
-            <!-- <Link :href="`/inter_outcome/${idoutcome}`">
+            <!-- <Link :href="'/Sectoral'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                     <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
                 </svg>
             </Link> -->
         </div>
-        <filtering v-if="filter" @closeFilter="filter=false">
-            Filter by MFO
-            <select v-model="mfosel" class="form-control" @change="filterData()">
-                <option v-for="mfo in mfos" :value="mfo.id">
-                    {{ mfo.mfo_desc }}
-                </option>
-            </select>
-            <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
-        </filtering>
+
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -42,37 +39,14 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Major Final Output</th>
-                                <th>PAPS Description</th>
-                                <th>Means of Verification</th>
+                                <th>Quality Remarks</th>
                                 <th>Action</th>
-                                <th>Remarks</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dat in data.data" :key="dat.id">
-                                <td>{{ dat.m_f_o.mfo_desc }}</td>
-                                <td>{{ dat.paps_desc }}</td>
-                                <td>{{ dat.MOV }}</td>
-                                <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                            </svg>
-                                        </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/output/${dat.id}`">Add Outputs</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/Performance/${dat.id}`">Performance Measures</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/SuccessIndicator/${dat.id}`">Success Indicator</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/OfficeAccountable/${dat.id}`">Office/Individual Accountable</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/Rating/${dat.id}`">Ratings</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/Quality/${dat.id}`">Quality</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/Timeliness/${dat.id}`">Timeliness</Link></li>
-                                        </ul>
-                                    </div>
-                                </td>
 
+                            <tr v-for="dat in data.data">
+                                <td>{{ dat.quality_remarks }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -80,10 +54,9 @@
                                             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/RatingRemarks/${dat.id}`">Ratings Remarks</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/QualityRemarks/${dat.id}`">Quality Remarks</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/TimelinessRemarks/${dat.id}`">Timeliness Remarks</Link></li>
+                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                            <li><Link class="dropdown-item" :href="`/QualityRemarks/${dat.id}/edit`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteOutput(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -91,7 +64,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
@@ -117,32 +89,13 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
-        filters: Object,
-        // idinteroutcome: String,
-        // idoutcome: String,
-        // idmfo: String,
-        idpaps: Number,
-        can: Object,
-        mfos: Object
+        paps: Object,
+        idpaps: String
     },
     data() {
         return{
-            search: this.$props.filters.search,
-            filter: false,
+
         }
-    },
-    watch: {
-            search: _.debounce(function (value) {
-            this.$inertia.get(
-                "/paps/direct",
-                { search: value },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        }, 300),
     },
     components: {
         Pagination, Filtering,
@@ -150,28 +103,11 @@ export default {
 
     methods:{
 
-
-        deleteMFO(id) {
-            let text = "WARNING!\nAre you sure you want to delete the PAP?";
-              if (confirm(text) == true) {
-                this.$inertia.delete("/paps/" + id+"/");
-            }
-        },
-        showFilter() {
-            //alert("show filter");
-            this.filter = !this.filter
-        },
-        async clearFilter(){
-            this.mfosel="";
-            this.filterData();
-        },
-        async filterData(){
-            //alert(this.mfosel);
-
+        showCreate(){
             this.$inertia.get(
-                "/paps/direct",
+                "/targets/create",
                 {
-                    mfosel: this.mfosel
+                    raao_id: this.raao_id
                 },
                 {
                     preserveScroll: true,
@@ -179,6 +115,36 @@ export default {
                     replace: true,
                 }
             );
+        },
+        deleteOutput(id) {
+            let text = "WARNING!\nAre you sure you want to delete the Quality Remarks?"+id;
+              if (confirm(text) == true) {
+                this.$inertia.delete("/QualityRemarks/" + id);
+            }
+        },
+        getAccomplishment(tar_id){
+            this.$inertia.get(
+                "/accomplishments",
+                {
+                    idtarget: tar_id
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        },
+        getPercent(accomp, targqty){
+            var accSum=0;
+            accomp.forEach(myFunction);
+            function myFunction(item){
+                accSum += parseFloat(item.accomplishment_qty)
+
+            }
+            var percentt = (accSum/targqty)*100
+            percentt=this.format_number(percentt,2,true)
+            return percentt;
         }
     }
 };
