@@ -333,6 +333,19 @@ createInertiaApp({
                 const month = new Date(dateParts[0], dateParts[1] - 1).toLocaleString('en-US', { month: 'long' });
 
                 return `${month} ${year}`;
+            },
+            getImagePath(filename) {
+                return `/images/${filename}`;
+            },
+            getSum(n1, n2){
+                var n3 = parseFloat(n1)+parseFloat(n2);
+                //alert(n1);
+                return this.format_number_conv(n3,2,true);
+            },
+            getDifference(n1, n2){
+                var n3 =parseFloat(n1)-parseFloat(n2);
+                //alert(n1+" --- ");
+                return this.format_number_conv(n3,2,true);
             }
         }
       })

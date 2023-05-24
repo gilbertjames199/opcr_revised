@@ -53,7 +53,7 @@
 
                 <label for="">OFFICE</label>
                 <!--<input type="text" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">-->
-                <select class="form-control" v-model="form.FFUNCCOD" >
+                <select class="form-control" v-model="form.FFUNCCOD"  @change="loadDivisions(select_mun)">
                     <option v-for="functional in functions" :value="functional.FFUNCCOD" >
                         {{ functional.FFUNCTION }}
                     </option>
@@ -106,6 +106,7 @@ export default {
                     FFUNCCOD: "",
                     id: null
                 }),
+                select_FFUNCCOD: "",
                 pageTitle: ""
             };
         },
