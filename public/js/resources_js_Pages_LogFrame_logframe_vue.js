@@ -32,8 +32,14 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   data: function data() {
-    return {//search: this.$props.filters.search,
+    return {
+      //search: this.$props.filters.search,
+      mfo_rowspan: 0
     };
+  },
+  mounted: function mounted() {
+    //this.isOne();
+    this.mfo_rowspan = this.mfos.length;
   },
   watch: {
     search: _.debounce(function (value) {
@@ -214,10 +220,7 @@ var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 var _hoisted_22 = {
   colspan: "4"
 };
-var _hoisted_23 = {
-  key: 0,
-  rowspan: "4"
-};
+var _hoisted_23 = ["rowspan"];
 var _hoisted_24 = {
   "class": "pL-2",
   colspan: "2"
@@ -293,7 +296,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ))])]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.mfos, function (mfo, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: index
-    }, [index == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_23, "MAJOR FINAL OUTPUTS")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    }, [index == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", {
+      key: 0,
+      rowspan: $data.mfo_rowspan
+    }, "MAJOR FINAL OUTPUTS", 8
+    /* PROPS */
+    , _hoisted_23)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       href: "/paps/".concat(mfo.id)
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -317,7 +325,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       ), _hoisted_29])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_30]);
     }), 256
     /* UNKEYED_FRAGMENT */
-    ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td v-for=\"mfo in mfos\">\r\n                                        <td>\r\n                                            <Link :href=\"`/paps/${mfo.id}`\"><b>{{ mfo.mfo_desc }}</b></Link>\r\n                                        </td>\r\n                                    </td> ")]);
+    ))])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                    <div class=\"row justify-content-center\">\r\n                        <div class=\"col-md-12\">\r\n                            <pagination :next=\"data.next_page_url\" :prev=\"data.prev_page_url\" />\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row justify-content-center\">\r\n                        <div class=\"col-md-12\">\r\n                            <p >\r\n                                {{ data.from }} to {{ data.to }} of\r\n                                {{ data.total }} entries\r\n                            </p>\r\n                        </div>\r\n                    </div>\r\n                ")])])])], 64

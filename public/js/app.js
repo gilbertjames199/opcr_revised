@@ -1343,6 +1343,14 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_8___default()((filepond_plu
           });
           return "".concat(month, " ").concat(year);
         },
+        formatMonth: function formatMonth(date_value) {
+          var dateParts = date_value.split('-');
+          var year = dateParts[0];
+          var month = new Date(dateParts[0], dateParts[1] - 1).toLocaleString('en-US', {
+            month: 'long'
+          });
+          return "".concat(month);
+        },
         getImagePath: function getImagePath(filename) {
           return "/images/".concat(filename);
         },
@@ -2155,6 +2163,22 @@ var map = {
 		"./resources/js/Pages/Monitoring/Index.vue",
 		"resources_js_Pages_Monitoring_Index_vue"
 	],
+	"./OPCR/Form/Create": [
+		"./resources/js/Pages/OPCR/Form/Create.vue",
+		"resources_js_Pages_OPCR_Form_Create_vue"
+	],
+	"./OPCR/Form/Create.vue": [
+		"./resources/js/Pages/OPCR/Form/Create.vue",
+		"resources_js_Pages_OPCR_Form_Create_vue"
+	],
+	"./OPCR/Form/Index": [
+		"./resources/js/Pages/OPCR/Form/Index.vue",
+		"resources_js_Pages_OPCR_Form_Index_vue"
+	],
+	"./OPCR/Form/Index.vue": [
+		"./resources/js/Pages/OPCR/Form/Index.vue",
+		"resources_js_Pages_OPCR_Form_Index_vue"
+	],
 	"./OPCR/Index": [
 		"./resources/js/Pages/OPCR/Index.vue",
 		"resources_js_Pages_OPCR_Index_vue"
@@ -2162,6 +2186,22 @@ var map = {
 	"./OPCR/Index.vue": [
 		"./resources/js/Pages/OPCR/Index.vue",
 		"resources_js_Pages_OPCR_Index_vue"
+	],
+	"./OPCR/List/Create": [
+		"./resources/js/Pages/OPCR/List/Create.vue",
+		"resources_js_Pages_OPCR_List_Create_vue"
+	],
+	"./OPCR/List/Create.vue": [
+		"./resources/js/Pages/OPCR/List/Create.vue",
+		"resources_js_Pages_OPCR_List_Create_vue"
+	],
+	"./OPCR/List/Index": [
+		"./resources/js/Pages/OPCR/List/Index.vue",
+		"resources_js_Pages_OPCR_List_Index_vue"
+	],
+	"./OPCR/List/Index.vue": [
+		"./resources/js/Pages/OPCR/List/Index.vue",
+		"resources_js_Pages_OPCR_List_Index_vue"
 	],
 	"./OPCR/OPCR": [
 		"./resources/js/Pages/OPCR/OPCR.vue",
