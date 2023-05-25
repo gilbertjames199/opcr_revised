@@ -1,21 +1,20 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\ProgramAndProject;
-use App\Models\Output;
+use App\Models\Timeliness;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
-class OutputController extends Controller
+class TimelinessController extends Controller
 {
     //
     protected $model;
-    public function __construct(Output $model)
+    public function __construct(Timeliness $model)
     {
         $this->model=$model;
     }
-
     public function index(Request $request, $idpaps){
         $paps = ProgramAndProject::findOrFail($idpaps);
         $data = $this->model
@@ -23,7 +22,7 @@ class OutputController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->paginate(10)
                     ->withQueryString();
-        return inertia('Outputs/Index',[
+        return inertia('Timeliness/Index',[
             "data"=>$data,
             "idpaps"=>$idpaps,
             "paps"=>$paps,
@@ -35,9 +34,10 @@ class OutputController extends Controller
     }
 
     public function create(Request $request, $idpaps){
-        //dd('create');
+
         $paps = ProgramAndProject::findOrFail($idpaps);
-        return inertia('Outputs/Create',[
+        // dd($paps);
+        return inertia('Timeliness/Create',[
             'paps'=>$paps,
             'idpaps'=>$idpaps,
             'can'=>[
@@ -51,26 +51,27 @@ class OutputController extends Controller
         // dd($request);
         $id = $request->idpaps;
         $attributes = $request->validate([
-            'Outputs' => 'required',
+            'timeliness' => 'required',
             'idpaps'=>'required',
         ]);
 
         //dd($attributes);
         $this->model->create($attributes);
-        return redirect('/output/'.$id)
-                ->with('message','Output added');
+        return redirect('/Timeliness/'.$id)
+                ->with('message','Timeliness added');
     }
 
     public function edit(Request $request, $id){
         $data = $this->model->where('id', $id)->first([
             'id',
-            'Outputs',
+            'timeliness',
             'idpaps'
         ]);
         $paps = ProgramAndProject::findOrFail($data->idpaps);
-        return inertia('Outputs/Create', [
+        return inertia('Timeliness/Create', [
             "editData" => $data,
             'paps'=>$paps,
+            'idpaps'=>$data->idpaps,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -85,12 +86,12 @@ class OutputController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
-            'Outputs'=>$request->Outputs,
+            'timeliness'=>$request->timeliness,
             'idpaps'=>$request->idpaps
         ]);
 
-        return redirect('/output/'.$request->idpaps)
-                ->with('message','Output updated');
+        return redirect('/Timeliness/'.$request->idpaps)
+                ->with('message','Timeliness updated');
     }
 
     public function destroy(Request $request){
@@ -98,9 +99,7 @@ class OutputController extends Controller
         $id = $data->idpaps;
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/output/'.$id)->with('warning', 'Output Deleted');
+        return redirect('/Timeliness/'.$id)->with('warning', 'Timeliness Deleted');
 
     }
-
-
 }

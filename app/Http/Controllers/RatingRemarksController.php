@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OfficeAccountable;
 use App\Models\ProgramAndProject;
+use App\Models\RatingRemarks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class OfficeAccountableController extends Controller
+class RatingRemarksController extends Controller
 {
         //
         protected $model;
-        public function __construct(OfficeAccountable $model)
+        public function __construct(RatingRemarks $model)
         {
             $this->model=$model;
         }
@@ -22,7 +22,7 @@ class OfficeAccountableController extends Controller
                         ->orderBy('created_at', 'desc')
                         ->paginate(10)
                         ->withQueryString();
-            return inertia('OfficeAccountable/Index',[
+            return inertia('RatingRemarks/Index',[
                 "data"=>$data,
                 "idpaps"=>$idpaps,
                 "paps"=>$paps,
@@ -37,7 +37,7 @@ class OfficeAccountableController extends Controller
 
             $paps = ProgramAndProject::findOrFail($idpaps);
             // dd($paps);
-            return inertia('OfficeAccountable/Create',[
+            return inertia('RatingRemarks/Create',[
                 'paps'=>$paps,
                 'idpaps'=>$idpaps,
                 'can'=>[
@@ -51,24 +51,24 @@ class OfficeAccountableController extends Controller
             // dd($request);
             $id = $request->idpaps;
             $attributes = $request->validate([
-                'office_accountable' => 'required',
+                'rating_remarks' => 'required',
                 'idpaps'=>'required',
             ]);
 
             //dd($attributes);
             $this->model->create($attributes);
-            return redirect('/OfficeAccountable/'.$id)
-                    ->with('message','Office/Individual Account added');
+            return redirect('/RatingRemarks/'.$id)
+                    ->with('message','Rating Remarks added');
         }
 
         public function edit(Request $request, $id){
             $data = $this->model->where('id', $id)->first([
                 'id',
-                'office_accountable',
+                'rating_remarks',
                 'idpaps'
             ]);
             $paps = ProgramAndProject::findOrFail($data->idpaps);
-            return inertia('OfficeAccountable/Create', [
+            return inertia('RatingRemarks/Create', [
                 "editData" => $data,
                 'paps'=>$paps,
                 'idpaps'=>$data->idpaps,
@@ -86,12 +86,12 @@ class OfficeAccountableController extends Controller
             $data = $this->model->findOrFail($request->id);
             //dd($request->plan_period);
             $data->update([
-                'office_accountable'=>$request->office_accountable,
+                'rating_remarks'=>$request->rating_remarks,
                 'idpaps'=>$request->idpaps
             ]);
 
-            return redirect('/OfficeAccountable/'.$request->idpaps)
-                    ->with('message','Office/Individual Accountable updated');
+            return redirect('/RatingRemarks/'.$request->idpaps)
+                    ->with('message','Rating Remarks updated');
         }
 
         public function destroy(Request $request){
@@ -99,7 +99,7 @@ class OfficeAccountableController extends Controller
             $id = $data->idpaps;
             $data->delete();
             //dd($request->raao_id);
-            return redirect('/OfficeAccountable/'.$id)->with('warning', 'Office/Individual Accountable Deleted');
+            return redirect('/RatingRemarks/'.$id)->with('warning', 'Rating Remarks Deleted');
 
         }
 }
