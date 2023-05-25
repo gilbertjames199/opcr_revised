@@ -86,7 +86,7 @@
                             </td>
                             </tr>
                             <tr v-for="(mfo, index) in mfos" :key="index">
-                                <td rowspan="4" v-if="index == 0">MAJOR FINAL OUTPUTS</td>
+                                <td :rowspan="mfo_rowspan" v-if="index == 0">MAJOR FINAL OUTPUTS</td>
                                 <td><Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link></td>
                                 <td class="pL-2" colspan="2">
                                     <div v-for="pap in mfo.paps">
@@ -95,14 +95,7 @@
                                         <div style="color: white"> .</div>
                                     </div>
                                 </td>
-                                    <!-- <td v-for="mfo in mfos">
-                                        <td>
-                                            <Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link>
-                                        </td>
-                                    </td> -->
-
                             </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -140,6 +133,7 @@ export default {
         sec_goal: Object,
         mfos: Object,
         office: String,
+
         // idinteroutcome: String,
         // idmfo: String,
         // can: Object,
@@ -148,7 +142,12 @@ export default {
     data() {
         return{
             //search: this.$props.filters.search,
+            mfo_rowspan: 0,
         }
+    },
+    mounted(){
+        //this.isOne();
+        this.mfo_rowspan=this.mfos.length;
     },
     watch: {
             search: _.debounce(function (value) {

@@ -55,6 +55,8 @@ use App\Http\Controllers\OutputController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\SuccessIndicatorController;
 use App\Http\Controllers\OfficeAccountableController;
+use App\Http\Controllers\OfficePerformanceCommitmentRatingController;
+use App\Http\Controllers\OfficePerformanceCommitmentRatingListController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -491,6 +493,25 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [DivisionController::class, 'edit']);
         Route::patch('/{id}', [DivisionController::class, 'update']);
         Route::delete('/{id}', [DivisionController::class, 'destroy']);
+    });
+
+    //Office Performance Commitment Rating Form
+    Route::prefix('/opcr/form')->group(function(){
+        Route::get('/{opcr_id}/{FFUNCCOD}',[OfficePerformanceCommitmentRatingController::class,'index']);
+        Route::get('/create/{FFUNCCOD}',[OfficePerformanceCommitmentRatingController::class,'create']);
+        Route::post('/store',[OfficePerformanceCommitmentRatingController::class,'store']);
+        Route::get('/{id}/edit', [OfficePerformanceCommitmentRatingController::class, 'edit']);
+        Route::patch('/{id}', [OfficePerformanceCommitmentRatingController::class, 'update']);
+        Route::delete('/{id}', [OfficePerformanceCommitmentRatingController::class, 'destroy']);
+    });
+    //OPCR List
+    Route::prefix('opcrlist')->group(function(){
+        Route::get('/{FFUNCCOD}',[OfficePerformanceCommitmentRatingListController::class,'index']);
+        Route::get('/create/{FFUNCCOD}',[OfficePerformanceCommitmentRatingListController::class,'create']);
+        Route::post('/store',[OfficePerformanceCommitmentRatingListController::class,'store']);
+        Route::get('/{id}/edit', [OfficePerformanceCommitmentRatingListController::class, 'edit']);
+        Route::patch('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'update']);
+        Route::delete('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'destroy']);
     });
 });
 Route::prefix('print')->group(function(){
