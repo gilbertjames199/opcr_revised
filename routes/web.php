@@ -61,6 +61,7 @@ use App\Http\Controllers\TimelinessController;
 use App\Http\Controllers\QualityRemarksController;
 use App\Http\Controllers\RatingRemarksController;
 use App\Http\Controllers\TimelinessRemarksController;
+use App\Http\Controllers\MonitoringController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -539,6 +540,15 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [TimelinessRemarksController::class, 'edit']);
         Route::patch('/{id}', [TimelinessRemarksController::class, 'update']);
         Route::delete('/{id}', [TimelinessRemarksController::class, 'destroy']);
+    });
+
+    Route::prefix('/Monitoring')->group(function(){
+        Route::get('/{id}',[MonitoringController::class,'index']);
+        Route::get('/create/{id}',[MonitoringController::class,'create']);
+        Route::post('/store',[MonitoringController::class,'store']);
+        Route::get('/{id}/edit', [MonitoringController::class, 'edit']);
+        Route::patch('/{id}', [MonitoringController::class, 'update']);
+        Route::delete('/{id}', [MonitoringController::class, 'destroy']);
     });
 
     //SubSector

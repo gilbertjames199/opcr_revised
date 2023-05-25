@@ -2139,6 +2139,22 @@ var map = {
 		"./resources/js/Pages/MFOs/Index.vue",
 		"resources_js_Pages_MFOs_Index_vue"
 	],
+	"./Monitoring/Create": [
+		"./resources/js/Pages/Monitoring/Create.vue",
+		"resources_js_Pages_Monitoring_Create_vue"
+	],
+	"./Monitoring/Create.vue": [
+		"./resources/js/Pages/Monitoring/Create.vue",
+		"resources_js_Pages_Monitoring_Create_vue"
+	],
+	"./Monitoring/Index": [
+		"./resources/js/Pages/Monitoring/Index.vue",
+		"resources_js_Pages_Monitoring_Index_vue"
+	],
+	"./Monitoring/Index.vue": [
+		"./resources/js/Pages/Monitoring/Index.vue",
+		"resources_js_Pages_Monitoring_Index_vue"
+	],
 	"./OPCR/Index": [
 		"./resources/js/Pages/OPCR/Index.vue",
 		"resources_js_Pages_OPCR_Index_vue"
