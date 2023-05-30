@@ -51,7 +51,7 @@
                     >
                 </li>-->
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/OPCRStandard" :class="{'active': $page.url === '/logframe'}">
+                    <Link class="sidebar-link" href="/OPCRStandard" :class="{'active': $page.url === '/OPCRStandard'}">
                         <span></span>
                         <span class="icon-holder">
                             <!--<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
