@@ -20,7 +20,10 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     editData: Object,
     paps: Object,
-    idpaps: String
+    idpaps: String,
+    idmfo: String,
+    mfos: Object,
+    ismfo: String
   },
   components: {
     Places: function Places() {
@@ -36,6 +39,7 @@ __webpack_require__.r(__webpack_exports__);
       submitted: false,
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         idpaps: null,
+        idmfo: null,
         description: "",
         id: null
       }),
@@ -44,11 +48,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.form.idpaps = this.idpaps;
-    this.form.idinteroutcome = this.idinteroutcome;
+    this.form.idmfo = this.idmfo;
 
     if (this.editData !== undefined) {
       this.pageTitle = "Edit";
       this.form.idpaps = this.idpaps;
+      this.form.idmfo = this.idmfo;
       this.form.description = this.editData.description;
       this.form.id = this.editData.id;
     } else {
@@ -61,10 +66,10 @@ __webpack_require__.r(__webpack_exports__);
       //alert(this.form.target_qty);
       if (this.editData !== undefined) {
         //alert('patch');
-        this.form.patch("/strategies/", this.form);
+        this.form.patch("/strategies", this.form);
       } else {
-        this.form.id = null; //alert('store');
-
+        this.form.id = null;
+        alert('store');
         this.form.post("/strategies/store", this.form);
       }
     }
@@ -190,26 +195,40 @@ var _hoisted_8 = {
   key: 0,
   "class": "fs-6 c-red-500"
 };
+var _hoisted_9 = {
+  key: 0
+};
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
 }, "PROGRAMS AND PROJECTS", -1
 /* HOISTED */
 );
 
-var _hoisted_10 = ["value"];
+var _hoisted_11 = ["value"];
+var _hoisted_12 = {
+  key: 1
+};
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": ""
+}, "MAJOR FINAL OUTPUTS", -1
+/* HOISTED */
+);
+
+var _hoisted_14 = ["value"];
+
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
 }, "STRATEGY DESCRIPTION ", -1
 /* HOISTED */
 );
 
-var _hoisted_12 = {
-  key: 0,
+var _hoisted_16 = {
+  key: 2,
   "class": "fs-6 c-red-500"
 };
-var _hoisted_13 = ["disabled"];
+var _hoisted_17 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
@@ -227,7 +246,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
   }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -241,7 +260,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.id]]), $data.form.errors.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.idooe), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("PAPS"), $props.ismfo === '0' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.form.idpaps = $event;
@@ -251,25 +270,40 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       value: pap.id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(pap.paps_desc), 9
     /* TEXT, PROPS */
-    , _hoisted_10);
+    , _hoisted_11);
   }), 256
   /* UNKEYED_FRAGMENT */
   ))], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.idpaps]]), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.idpaps]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("MFO"), $props.ismfo === '1' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "class": "form-control",
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $data.form.idmfo = $event;
+    })
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.mfos, function (mfo) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      value: mfo.id
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(mfo.mfo_desc), 9
+    /* TEXT, PROPS */
+    , _hoisted_14);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  ))], 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.idmfo]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.form.description = $event;
     }),
     "class": "form-control",
     autocomplete: "chrome-off"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.description]]), $data.form.errors.description ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.description), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.description]]), $data.form.errors.description ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.description), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "hidden",
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.form.id = $event;
     }),
     "class": "form-control",
@@ -279,13 +313,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary mt-3",
-    onClick: _cache[4] || (_cache[4] = function ($event) {
+    onClick: _cache[5] || (_cache[5] = function ($event) {
       return $options.submit();
     }),
     disabled: $data.form.processing
   }, " Save changes ", 8
   /* PROPS */
-  , _hoisted_13)], 32
+  , _hoisted_17)], 32
   /* HYDRATE_EVENTS */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{  form }} ")]);
 }

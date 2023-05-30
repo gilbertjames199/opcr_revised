@@ -45,6 +45,14 @@
                 <label for="">Means of Verification	</label>
                 <input type="text" v-model="form.MOV" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.MOV">{{ form.errors.MOV }}</div>
+
+                <label for="">Type</label>
+                <select class="form-control form-select" v-model="form.type" >
+                    <option>Activity</option>
+                    <option>Program</option>
+                    <option>Project</option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.type">{{ form.errors.type }}</div>
                 <!-- <div>PLAN PERIOD</div>
 
                 <label for="">From</label>
@@ -134,33 +142,8 @@ export default {
                 submitted: false,
                 form: useForm({
                     paps_desc: "",
-
-                    // tyear: "",
-                    // FRAOTYPE: "",
-                    // FRAODESC: "",
-                    // FALLTCOD: "",
-                    // FFUNCCOD: "",
-                    // FFUNDCOD: "",
-                    // idsource: "",
-                    // idappttype: "",
-                    // idprogram: "",
-                    // aipcode: "",
-                    // date_created: "",
-                    // excludetag: "",
-                    // previd: "",
-                    // idpaps: "",
-                    // idmfo: "",
-                    // paps_desc	: "",
-                    // plan_period_from	: "",
-                    // plan_period_to	: "",
-                    // plan_amount_year1	: "",
-                    // plan_amount_year2	: "",
-                    // plan_amount_year3	: "",
-                    // plan_amount_year4	: "",
-                    // plan_amount_year5	: "",
-                    // plan_amount_year6	: "",
+                    type: "",
                     FFUNCCOD	: "",
-                    // aipcode	: "",
                     idmfo	: "",
                     MOV: "",
                     id: null
@@ -281,14 +264,7 @@ export default {
                 this.pageTitle = "Edit"
                 this.form.paps_desc=this.editData.paps_desc
                 this.form.MOV=this.editData.MOV
-                // this.form.plan_period_from=this.editData.plan_period_from
-                // this.form.plan_period_to=this.editData.plan_period_to
-                // this.form.plan_amount_year1=this.editData.plan_amount_year1
-                // this.form.plan_amount_year2=this.editData.plan_amount_year2
-                // this.form.plan_amount_year3=this.editData.plan_amount_year3
-                // this.form.plan_amount_year4=this.editData.plan_amount_year4
-                // this.form.plan_amount_year5=this.editData.plan_amount_year5
-                // this.form.plan_amount_year6=this.editData.plan_amount_year6
+                this.form.type=this.editData.type
                 this.form.FFUNCCOD=this.editData.FFUNCCOD
                 this.form.idmfo=this.editData.idmfo
                 this.form.id=this.editData.id

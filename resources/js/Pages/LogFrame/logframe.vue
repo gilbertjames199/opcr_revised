@@ -6,11 +6,19 @@
     <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
     </p>-->
     <div class="row gap-20 masonry pos-r">
-        <div>
+        <div class="peers fxw-nw jc-sb ai-c">
             <h2>{{ office }}</h2>
+            &nbsp;
+            <Link :href="`/logframe`">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                </svg>
+            </Link>
         </div>
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>LOGICAL FRAMEWORK</h3>
+
             <!--
             <div class="peers">
                 <div class="peer mR-10">
@@ -86,7 +94,7 @@
                             </td>
                             </tr>
                             <tr v-for="(mfo, index) in mfos" :key="index">
-                                <td rowspan="4" v-if="index == 0">MAJOR FINAL OUTPUTS</td>
+                                <td :rowspan="mfo_rowspan" v-if="index == 0">MAJOR FINAL OUTPUTS</td>
                                 <td><Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link></td>
                                 <td class="pL-2" colspan="2">
                                     <div v-for="pap in mfo.paps">
@@ -95,14 +103,7 @@
                                         <div style="color: white"> .</div>
                                     </div>
                                 </td>
-                                    <!-- <td v-for="mfo in mfos">
-                                        <td>
-                                            <Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link>
-                                        </td>
-                                    </td> -->
-
                             </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -140,6 +141,7 @@ export default {
         sec_goal: Object,
         mfos: Object,
         office: String,
+
         // idinteroutcome: String,
         // idmfo: String,
         // can: Object,
@@ -148,7 +150,12 @@ export default {
     data() {
         return{
             //search: this.$props.filters.search,
+            mfo_rowspan: 0,
         }
+    },
+    mounted(){
+        //this.isOne();
+        this.mfo_rowspan=this.mfos.length;
     },
     watch: {
             search: _.debounce(function (value) {

@@ -61,6 +61,8 @@
                                             <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
                                             <li><Link class="dropdown-item" :href="`/divisions/${functional.FFUNCCOD}`">Divisions</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/opcrlist/${functional.FFUNCCOD}`">OPCR</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/revision/general/administration/services/${functional.FFUNCCOD}/plan`">GAS Profile/Design</Link></li>
                                             <li><Link class="dropdown-item" :href="`/logframe/${functional.FFUNCCOD}`">View Logframe</Link></li>
                                         </ul>
                                     </div>

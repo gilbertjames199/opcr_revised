@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Accomplishment;
+use App\Models\Activity;
 use App\Models\ImplementationPlan;
 use App\Models\Indicator;
+use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use App\Models\RAAOHS;
 use App\Models\RevisionPlan;
+use App\Models\Strategy;
 use App\Models\Target;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -90,13 +94,30 @@ class TargetController extends Controller
         ]);
     }
     public function create_i(Request $request, $imp_id){
+        //FIND the implementation plan
         $implementation_plan = ImplementationPlan::select("*")
                 ->where("implementation_plans.id",$imp_id)
                 ->join('activities','activities.id','implementation_plans.idactivity')
                 ->first();
                 //dd($implementation_plan->idrev_plan);
         $revision_plan = RevisionPlan::findOrFail($implementation_plan->idrev_plan);
-        $paps = ProgramAndProject::findOrFail($revision_plan->idpaps);
+
+        //FIND THE STRATEGY of the parent activity of the implementation plan
+        $act = Activity::findOrFail($implementation_plan->idactivity);
+        $strat = Strategy::findOrFail($act->strategy_id);
+
+        //FIND PAPS or MFO
+        $paps=[];
+        $mfos=[];
+        if($strat->idpaps!='0'){
+            //dd('dili zero si idpaps: '.$revision_plan->idpaps.' idmfo: '.$revision_plan->idmfo);
+            $paps = ProgramAndProject::findOrFail($revision_plan->idpaps);
+        }else{
+            //dd('dili zero si idmfo: '.$revision_plan->idmfo.' idpaps: '.$revision_plan->idpaps);
+            $mfos = MajorFinalOutput::findOrFail($revision_plan->idmfo);
+        }
+
+        //dd('paps crfeate i');
         $indicator=Indicator::select('id','description')->get();
         $mun=DB::table('municipalities')
             ->select('citymunDesc','citymunCode')
@@ -106,6 +127,7 @@ class TargetController extends Controller
             'implementation_plan'=>$implementation_plan,
             'revision_plan'=>$revision_plan,
             'paps'=>$paps,
+            'mfos'=>$mfos,
             "imp_id"=>$imp_id,
             "filters" => $request->only(['search']),
             'raao_id'=>$imp_id,
@@ -128,6 +150,7 @@ class TargetController extends Controller
         //     $request->merge(['brgy','-']);
         // }
         // dd($request->brgy);
+        //dd($request);
         $attributes = $request->validate(Target::rules(), Target::errorMessages());
         $this->model->create($attributes);
 
@@ -156,18 +179,7 @@ class TargetController extends Controller
         $rev->save();
     }
     public function edit_i(Request $request,$imp_id, $id){
-        //dd("edit: ".$id." imp: ".$imp_id);
-        $implementation_plan = ImplementationPlan::select("*")
-                ->where("implementation_plans.id",$imp_id)
-                ->join('activities','activities.id','implementation_plans.idactivity')
-                ->first();
-                //dd($implementation_plan->idrev_plan);
-        $revision_plan = RevisionPlan::findOrFail($implementation_plan->idrev_plan);
-        $paps = ProgramAndProject::findOrFail($revision_plan->idpaps);
-        $indicator=Indicator::select('id','description')->get();
-        $mun=DB::table('municipalities')
-            ->select('citymunDesc','citymunCode')
-            ->get();
+
         $data = $this->model->where('id', $id)->first([
             'id',
             'idpdip',
@@ -187,16 +199,46 @@ class TargetController extends Controller
             'target_qty4'
         ]);
             //dd($mun);
+        //FIND the implementation plan
+        $implementation_plan = ImplementationPlan::select("*")
+                ->where("implementation_plans.id",$imp_id)
+                ->join('activities','activities.id','implementation_plans.idactivity')
+                ->first();
+                //dd($implementation_plan->idrev_plan);
+        $revision_plan = RevisionPlan::findOrFail($implementation_plan->idrev_plan);
+
+        //FIND THE STRATEGY of the parent activity of the implementation plan
+        $act = Activity::findOrFail($implementation_plan->idactivity);
+        $strat = Strategy::findOrFail($act->strategy_id);
+
+        //FIND PAPS or MFO
+        $paps=[];
+        $mfos=[];
+        if($strat->idpaps!='0'){
+            //dd('dili zero si idpaps: '.$revision_plan->idpaps.' idmfo: '.$revision_plan->idmfo);
+            $paps = ProgramAndProject::findOrFail($revision_plan->idpaps);
+        }else{
+            //dd('dili zero si idmfo: '.$revision_plan->idmfo.' idpaps: '.$revision_plan->idpaps);
+            $mfos = MajorFinalOutput::findOrFail($revision_plan->idmfo);
+        }
+
+        //dd('paps crfeate i');
+        $indicator=Indicator::select('id','description')->get();
+        $mun=DB::table('municipalities')
+            ->select('citymunDesc','citymunCode')
+            ->get();
+            //dd($mun);
         return inertia('Targets/Implementation/Create',[
             'implementation_plan'=>$implementation_plan,
-            'editData'=>$data,
             'revision_plan'=>$revision_plan,
             'paps'=>$paps,
+            'mfos'=>$mfos,
             "imp_id"=>$imp_id,
             "filters" => $request->only(['search']),
             'raao_id'=>$imp_id,
             "indicator"=>$indicator,
             'mun'=>$mun,
+            'editData'=>$data,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -215,11 +257,25 @@ class TargetController extends Controller
     }
     public function destroy_i(Request $request,$imp_id, $id){
         //dd("destroy i");
-        $data = $this->model->findOrFail($id);
-        $data->delete();
+        $count_accomp = Accomplishment::where('target_id', $id)->count();
+        //$count_strat = Strategy::where('idpaps', $id)->count();
+        $msg="";
+        $status ="";
+        if($count_accomp>0){
+            $msg="Unable to delete!";
+            $status ="error";
+        }else{
+            $msg="Target Successfully deleted!";
+            $status ="message";
+            $data = $this->model->findOrFail($id);
+            $data->delete();
+        }
+        //dd($request->raao_id);
+
+
         $this->updateRevisionPlanAmount($imp_id);
         //dd($request->raao_id);
-        return redirect('/targets/'.$imp_id.'/implementation')->with('warning', 'Target deleted');
+        return redirect('/targets/'.$imp_id.'/implementation')->with($status, $msg);
     }
 
     public function list(Request $request, $raao_id)
@@ -470,10 +526,21 @@ class TargetController extends Controller
     public function destroy(Request $request)
     {
         //dd('wrong destroy');
-        $data = $this->model->findOrFail($request->id);
-        $data->delete();
+        $count_accomp = Accomplishment::where('target_id', $id)->count();
+        //$count_strat = Strategy::where('idpaps', $id)->count();
+        $msg="";
+        $status ="";
+        if($count_accomp>0){
+            $msg="Unable to delete!";
+            $status ="error";
+        }else{
+            $msg="Program/Project/Activity Successfully deleted!";
+            $status ="message";
+            $data = $this->model->findOrFail($request->id);
+            $data->delete();
+        }
         //dd($request->raao_id);
-        return redirect('/targets?id_raao='.$request->raao_id)->with('warning', 'Target deleted');
+        return redirect('/targets?id_raao='.$request->raao_id)->with($status, $msg);
     }
     public function ret(Request $request, $target_id)
     {

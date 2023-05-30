@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\ImplementationPlan;
 use App\Models\Strategy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,10 +16,14 @@ class ActivityController extends Controller
         $this->model=$model;
     }
     public function index(Request $request, $idstrat){
-        $strat= Strategy::first('id',$idstrat)->get();
-        $myid=$strat->pluck('idpaps');
-        $idpaps=$myid[0];
 
+        $strat= Strategy::findOrFail($idstrat);
+        //dd($idstrat);
+        $myidpaps=$strat->idpaps;
+        $myidmfo=$strat->idmfo;
+        //dd($myidmfo);
+        $idpaps=$myidpaps;
+        $idmfo=$myidmfo;
         $data = $this->model->with('strat')
                 ->where('strategy_id',$idstrat)
                 ->when($request->search, function($query, $searchItem){
@@ -99,9 +104,21 @@ class ActivityController extends Controller
 
     public function destroy(Request $request, $id, $strategy_id)
     {
-        $data = $this->model->findOrFail($id);
-        $data->delete();
+        $msg="";
+        $status="";
+        $implementation = ImplementationPlan::where('idactivity', $id)->count();
+
+        if($implementation>0){
+            $status="error";
+            $msg ="Unable to delete!";
+        }else{
+            $status="message";
+            $msg ="Activity deleted";
+            $data = $this->model->findOrFail($id);
+            $data->delete();
+        }
+        //dd('hahhah '.$msg);
         //dd($request->raao_id);
-        return redirect('/activities/'.$strategy_id)->with('warning', 'Activity deleted');
+        return redirect('/activities/'.$strategy_id)->with($status, $msg);
     }
 }

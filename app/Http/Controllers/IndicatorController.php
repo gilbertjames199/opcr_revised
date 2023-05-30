@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Indicator;
+use App\Models\Target;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -67,15 +68,22 @@ class IndicatorController extends Controller
 
     public function destroy(Request $request){
         //dd($request->id);
-        $data = $this->model->findOrFail($request->id);
-        $data->delete();
-        $data=$this->model->paginate(10);
-        return inertia('Indicators/Index',["data"=>$data,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-            ],
-        ]);
+        $msg="";
+        $status="";
+        $count_target = Target::where('idindicator', $request->id)->count();
+
+        if($count_target>0){
+            $status="error";
+            $msg ="Unable to delete!";
+        }else{
+            $status="message";
+            $msg ="Activity deleted";
+            $data = $this->model->findOrFail($request->id);
+            $data->delete();
+            //$data=$this->model->paginate(10);
+        }
+
+        return redirect('/indicators')->with($status, $msg);
     }
 
     public function edit(Request $request, $id){

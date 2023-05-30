@@ -51,17 +51,17 @@
                     >
                 </li>-->
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/OPCR" :class="{'active': $page.url === '/logframe'}">
+                    <Link class="sidebar-link" href="/OPCRStandard" :class="{'active': $page.url === '/logframe'}">
                         <span></span>
                         <span class="icon-holder">
                             <!--<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
                             </svg>-->
-                            <svg class="svg-icon" style="width: 23; height: 23;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1024 448l-100.928 0C895.424 269.76 754.24 128.576 576 100.928L576 0l-128 0 0 100.928C269.76 128.576 128.576 269.76 100.928 448L0 448l0 128 100.928 0C128.576 754.24 269.76 895.424 448 923.072L448 1024l128 0 0-100.928C754.24 895.424 895.424 754.24 923.072 576L1024 576 1024 448zM792.832 448 693.056 448c-19.296-54.56-62.496-97.792-117.056-117.056l0-99.776C683.52 255.68 768.32 340.48 792.832 448zM512 576c-35.36 0-64-28.64-64-64 0-35.36 28.64-64 64-64 35.36 0 64 28.64 64 64C576 547.36 547.36 576 512 576zM448 231.168l0 99.776c-54.56 19.296-97.792 62.496-117.056 117.056l-99.776 0C255.68 340.48 340.48 255.68 448 231.168zM231.168 576l99.776 0c19.296 54.56 62.496 97.792 117.056 117.056l0 99.776C340.48 768.32 255.68 683.52 231.168 576zM576 792.832 576 693.056c54.56-19.296 97.792-62.496 117.056-117.056l99.776 0C768.32 683.52 683.52 768.32 576 792.832z"  />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
+                                <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z"/>
                             </svg>
                         </span>
-                        <span class="title">OPCR</span>
+                        <span class="title">OPCR Standard</span>
                     </Link>
                 </li>
 
@@ -72,8 +72,9 @@
                             <!--<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
                             </svg>-->
-                            <svg class="svg-icon" style="width: 23; height: 23;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1024 448l-100.928 0C895.424 269.76 754.24 128.576 576 100.928L576 0l-128 0 0 100.928C269.76 128.576 128.576 269.76 100.928 448L0 448l0 128 100.928 0C128.576 754.24 269.76 895.424 448 923.072L448 1024l128 0 0-100.928C754.24 895.424 895.424 754.24 923.072 576L1024 576 1024 448zM792.832 448 693.056 448c-19.296-54.56-62.496-97.792-117.056-117.056l0-99.776C683.52 255.68 768.32 340.48 792.832 448zM512 576c-35.36 0-64-28.64-64-64 0-35.36 28.64-64 64-64 35.36 0 64 28.64 64 64C576 547.36 547.36 576 512 576zM448 231.168l0 99.776c-54.56 19.296-97.792 62.496-117.056 117.056l-99.776 0C255.68 340.48 340.48 255.68 448 231.168zM231.168 576l99.776 0c19.296 54.56 62.496 97.792 117.056 117.056l0 99.776C340.48 768.32 255.68 683.52 231.168 576zM576 792.832 576 693.056c54.56-19.296 97.792-62.496 117.056-117.056l99.776 0C768.32 683.52 683.52 768.32 576 792.832z"  />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-border-outer" viewBox="0 0 16 16">
+                                <path d="M7.5 1.906v.938h1v-.938h-1zm0 1.875v.938h1V3.78h-1zm0 1.875v.938h1v-.938h-1zM1.906 8.5h.938v-1h-.938v1zm1.875 0h.938v-1H3.78v1zm1.875 0h.938v-1h-.938v1zm2.813 0v-.031H8.5V7.53h-.031V7.5H7.53v.031H7.5v.938h.031V8.5h.938zm.937 0h.938v-1h-.938v1zm1.875 0h.938v-1h-.938v1zm1.875 0h.938v-1h-.938v1zM7.5 9.406v.938h1v-.938h-1zm0 1.875v.938h1v-.938h-1zm0 1.875v.938h1v-.938h-1z"/>
+                                <path d="M0 0v16h16V0H0zm1 1h14v14H1V1z"/>
                             </svg>
                         </span>
                         <span class="title">LOGFRAME</span>
@@ -178,31 +179,36 @@
                         <span class="title">Major Final Output</span>
                     </Link>
                 </li>
-
-                <li class="nav-item">
-                    <Link class="sidebar-link" href="/paps/direct" :class="{'active': $page.url === '/paps/direct'}">
-                        <span></span>
+                <!--PPA Profile/Design-->
+                <li  class="nav-item dropdown" >
+                    <a class="dropdown-toggle" href="javascript:void(0);">
                         <span class="icon-holder">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-grid-1x2-fill" viewBox="0 0 16 16">
-                                <path d="M0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V1zm0 9a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
                             </svg>
                         </span>
-                        <span class="title">MFO - PAPS</span>
-                    </Link>
-                </li>
-
-                <li class="nav-item">
-                    <Link class="sidebar-link" href="/OPCRpaps/direct" :class="{'active': $page.url === '/OPCRpaps/direct'}">
-                        <span></span>
-                        <span class="icon-holder">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-grid-1x2-fill" viewBox="0 0 16 16">
-                                <path d="M0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V1zm0 9a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5z"/>
+                        <span class="title">PPA Profiles/Designs</span>
+                        <span class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                         </span>
-                        <span class="title">OPCR - PAPS</span>
-                    </Link>
+                    </a>
+                    <ul  class="dropdown-menu">
+                        <li>
+                            <Link class="sidebar-link" href="/paps/direct" :class="{'active': $page.url === '/paps/direct'}">
+
+                                <span class="title">MFO - PAPS</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="sidebar-link" href="/OPCRpaps/direct" :class="{'active': $page.url === '/OPCRpaps/direct'}">
+
+                                <span class="title">OPCR - PAPS</span>
+                            </Link>
+                        </li>
+
+                    </ul>
                 </li>
 
                 <!--
@@ -232,7 +238,97 @@
                 -->
                 <hr >
 
-                <li class="nav-item">
+                <!--Agenda/Goals-->
+                <li  class="nav-item dropdown" >
+                    <a class="dropdown-toggle" href="javascript:void(0);">
+                        <span class="icon-holder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-clipboard-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10 1.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1Zm-5 0A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5v1A1.5 1.5 0 0 1 9.5 4h-3A1.5 1.5 0 0 1 5 2.5v-1Zm-2 0h1v1A2.5 2.5 0 0 0 6.5 5h3A2.5 2.5 0 0 0 12 2.5v-1h1a2 2 0 0 1 2 2V14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3.5a2 2 0 0 1 2-2Z"/>
+                            </svg>
+                        </span>
+                        <span class="title">Agenda</span>
+                        <span class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <ul  class="dropdown-menu">
+                        <li>
+                            <Link class="sidebar-link" href="/ChiefAgenda" :class="{'active': $page.url === '/ChiefAgenda'}">
+                                <span class="title">Chief Executive Agenda</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="sidebar-link" href="/EconomicAgenda" :class="{'active': $page.url === '/EconomicAgenda'}">
+                                <span class="title">Socio-Economic Agenda</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="sidebar-link" href="/SDG" :class="{'active': $page.url === '/SDG'}">
+                                <span class="title">Sustainable Devt Goals</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="sidebar-link" href="/ELA" :class="{'active': $page.url === '/ELA'}">
+                                <span class="title">Executive Legislative Agenda</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="sidebar-link" href="/ResearchAgenda" :class="{'active': $page.url === '/ResearchAgenda'}">
+                                <span class="title">Research Agenda</span>
+                            </Link>
+                        </li>
+                    </ul>
+                </li>
+
+                <!--Other Libraries-->
+                <li  class="nav-item dropdown" >
+                    <a class="dropdown-toggle" href="javascript:void(0);">
+                        <span class="icon-holder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book-fill" viewBox="0 0 16 16">
+                                <path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                            </svg>
+                        </span>
+                        <span class="title">Libraries</span>
+                        <span class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <ul  class="dropdown-menu">
+                        <li>
+                            <Link class="sidebar-link" href="/HGDGChecklist" :class="{'active': $page.url === '/HGDGChecklist'}">
+                                <span class="title">HGDG Checklist</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="sidebar-link" href="/Issues" :class="{'active': $page.url === '/Issues'}">
+
+                                <span class="title">GAD Related Issues</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="sidebar-link" href="/ImplementingTeam" :class="{'active': $page.url === '/ImplementingTeam'}">
+
+                                <span class="title">Implementing Team</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="sidebar-link" href="/indicators" :class="{'active': $page.url === '/indicators'}">
+                                <span class="title">Indicators</span>
+                            </Link>
+                        </li>
+                        <!-- <li>
+                            <Link class="sidebar-link" href="/indicators" :class="{'active': $page.url === '/indicators'}">
+                                <span class="title">Divisions</span>
+                            </Link>
+                        </li> -->
+                    </ul>
+                </li>
+                <!--CEA human na-->
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/ChiefAgenda" :class="{'active': $page.url === '/ChiefAgenda'}">
                         <span></span>
                         <span class="icon-holder">
@@ -242,9 +338,9 @@
                         </span>
                         <span class="title">Chief Executive Agenda</span>
                     </Link>
-                </li>
-
-                <li class="nav-item">
+                </li> -->
+                <!--Socio Economic-->
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/EconomicAgenda" :class="{'active': $page.url === '/EconomicAgenda'}">
                         <span></span>
                         <span class="icon-holder">
@@ -254,12 +350,13 @@
                             </svg>
                         </span>
                         <span class="title text-wrap">
-                            <!--<p class="text-truncate"></p>-->
+                            <p class="text-truncate"></p>
                             Socio-Economic Agenda
                         </span>
                     </Link>
-                </li>
-                <li class="nav-item">
+                </li> -->
+                <!--SDG-->
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/SDG" :class="{'active': $page.url === '/SDG'}">
                         <span></span>
                         <span class="icon-holder">
@@ -270,8 +367,9 @@
                         </span>
                         <span class="title">Sustainable Development Goals</span>
                     </Link>
-                </li>
-                <li class="nav-item">
+                </li> -->
+                <!--ELA-->
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/ELA" :class="{'active': $page.url === '/ELA'}">
                         <span></span>
                         <span class="icon-holder">
@@ -281,8 +379,9 @@
                         </span>
                         <span class="title">Executive Legislative Agenda</span>
                     </Link>
-                </li>
-                <li class="nav-item">
+                </li> -->
+                <!--Research-->
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/ResearchAgenda" :class="{'active': $page.url === '/ResearchAgenda'}">
                         <span></span>
                         <span class="icon-holder">
@@ -295,7 +394,8 @@
                         </span>
                         <span class="title">Research Agenda</span>
                     </Link>
-                </li>
+                </li> -->
+
                 <hr >
             </ul>
         </div>

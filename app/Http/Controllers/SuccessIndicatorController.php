@@ -58,7 +58,7 @@ class SuccessIndicatorController extends Controller
         //dd($attributes);
         $this->model->create($attributes);
         return redirect('/SuccessIndicator/'.$id)
-                ->with('message','Signatories added');
+                ->with('message','Success Indicator added');
     }
 
     public function edit(Request $request, $id){

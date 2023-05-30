@@ -55,6 +55,18 @@ use App\Http\Controllers\OutputController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\SuccessIndicatorController;
 use App\Http\Controllers\OfficeAccountableController;
+use App\Http\Controllers\OfficePerformanceCommitmentRatingController;
+use App\Http\Controllers\OfficePerformanceCommitmentRatingListController;
+use App\Http\Controllers\RatingController;
+use App\Http\Controllers\QualityController;
+use App\Http\Controllers\TimelinessController;
+use App\Http\Controllers\QualityRemarksController;
+use App\Http\Controllers\RatingRemarksController;
+use App\Http\Controllers\TimelinessRemarksController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\MonitoringController;
+>>>>>>> 84661431c1b5e32bbe9820163346aa3f57dffc82
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -265,13 +277,17 @@ Route::middleware('auth')->group(function() {
     });
     //Strategies
     Route::prefix('/strategies')->group(function(){
-        Route::get('/{id}',[StrategyController::class,'index']);
-        Route::get('/create/{id}',[StrategyController::class,'create']);
+        Route::get('/{id}/{ismfo}/strat/mfo',[StrategyController::class,'index']);
+        Route::get('/create/{id}/{ismfo}',[StrategyController::class,'create']);
         Route::post('/store',[StrategyController::class,'store']);
         Route::post('/update',[StrategyController::class,'update']);
         Route::delete('/{id}/{idpaps}', [StrategyController::class, 'destroy']);
         Route::get('/{id}/{idinteroutcome}/edit', [StrategyController::class, 'edit']);
         Route::patch('/', [StrategyController::class, 'update']);
+    });
+    //MFOStrategies
+    Route::prefix('/mfostrategies')->group(function(){
+
     });
     //Activities
     Route::prefix('/activities')->group(function(){
@@ -298,6 +314,13 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}/{idoutcome}', [MFOController::class, 'destroy']);
         Route::get('/{id}',[MFOController::class,'index']);
     });
+    //MFO Revision Plans
+    Route::prefix('/mforevision')->group(function(){
+        Route::get('/{id}',[RevisionPlanController::class,'mfo_index']);
+        Route::get('/create/{id}',[RevisionPlanController::class,'mfo_create']);
+        Route::post('/store',[RevisionPlanController::class,'mfo_store']);
+        Route::get('/view/project/mfo/{id}',[RevisionPlanController::class,'view']);
+    });
     //Route::patch('/', [PAPController::class, 'update']);
     Route::prefix('/paps')->group(function(){
         Route::get('/direct',[PAPController::class,'direct']);
@@ -322,6 +345,10 @@ Route::middleware('auth')->group(function() {
         Route::get('/create/{id}',[RevisionPlanController::class,'create']);
         Route::post('/store',[RevisionPlanController::class,'store']);
         Route::get('/view/project/paps/{id}',[RevisionPlanController::class,'view']);
+        Route::get('/general/administration/services/{FFUNCCOD}/plan',[RevisionPlanController::class,'gas']);
+        Route::get('/general/administration/services/create/{FFUNCCOD}/plan',[RevisionPlanController::class,'gas_create']);
+        Route::post('/general/administration/services/{FFUNCCOD}/plan/store',[RevisionPlanController::class,'gas_store']);
+
     });
     //Budget
     Route::prefix('/budget')->group(function(){
@@ -424,9 +451,9 @@ Route::middleware('auth')->group(function() {
          });
 
          //OPCR
-         Route::prefix('/OPCR')->group(function(){
+         Route::prefix('/OPCRStandard')->group(function(){
             Route::get('/',[OPCRController::class,'index']);
-            Route::get('/{idstrat}',[OPCRController::class,'showlog']);
+            Route::get('/{idstrat}',[OPCRController::class,'showopcr']);
         });
 
             //Route::patch('/', [PAPController::class, 'update']);
@@ -480,6 +507,70 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [OfficeAccountableController::class, 'destroy']);
     });
 
+    Route::prefix('/Rating')->group(function(){
+        Route::get('/{id}',[RatingController::class,'index']);
+        Route::get('/create/{id}',[RatingController::class,'create']);
+        Route::post('/store',[RatingController::class,'store']);
+        Route::get('/{id}/edit', [RatingController::class, 'edit']);
+        Route::patch('/{id}', [RatingController::class, 'update']);
+        Route::delete('/{id}', [RatingController::class, 'destroy']);
+    });
+
+    Route::prefix('/Quality')->group(function(){
+        Route::get('/{id}',[QualityController::class,'index']);
+        Route::get('/create/{id}',[QualityController::class,'create']);
+        Route::post('/store',[QualityController::class,'store']);
+        Route::get('/{id}/edit', [QualityController::class, 'edit']);
+        Route::patch('/{id}', [QualityController::class, 'update']);
+        Route::delete('/{id}', [QualityController::class, 'destroy']);
+    });
+
+    Route::prefix('/Timeliness')->group(function(){
+        Route::get('/{id}',[TimelinessController::class,'index']);
+        Route::get('/create/{id}',[TimelinessController::class,'create']);
+        Route::post('/store',[TimelinessController::class,'store']);
+        Route::get('/{id}/edit', [TimelinessController::class, 'edit']);
+        Route::patch('/{id}', [TimelinessController::class, 'update']);
+        Route::delete('/{id}', [TimelinessController::class, 'destroy']);
+    });
+
+    Route::prefix('/QualityRemarks')->group(function(){
+        Route::get('/{id}',[QualityRemarksController::class,'index']);
+        Route::get('/create/{id}',[QualityRemarksController::class,'create']);
+        Route::post('/store',[QualityRemarksController::class,'store']);
+        Route::get('/{id}/edit', [QualityRemarksController::class, 'edit']);
+        Route::patch('/{id}', [QualityRemarksController::class, 'update']);
+        Route::delete('/{id}', [QualityRemarksController::class, 'destroy']);
+    });
+
+    Route::prefix('/RatingRemarks')->group(function(){
+        Route::get('/{id}',[RatingRemarksController::class,'index']);
+        Route::get('/create/{id}',[RatingRemarksController::class,'create']);
+        Route::post('/store',[RatingRemarksController::class,'store']);
+        Route::get('/{id}/edit', [RatingRemarksController::class, 'edit']);
+        Route::patch('/{id}', [RatingRemarksController::class, 'update']);
+        Route::delete('/{id}', [RatingRemarksController::class, 'destroy']);
+    });
+
+
+    Route::prefix('/TimelinessRemarks')->group(function(){
+        Route::get('/{id}',[TimelinessRemarksController::class,'index']);
+        Route::get('/create/{id}',[TimelinessRemarksController::class,'create']);
+        Route::post('/store',[TimelinessRemarksController::class,'store']);
+        Route::get('/{id}/edit', [TimelinessRemarksController::class, 'edit']);
+        Route::patch('/{id}', [TimelinessRemarksController::class, 'update']);
+        Route::delete('/{id}', [TimelinessRemarksController::class, 'destroy']);
+    });
+
+    Route::prefix('/Monitoring')->group(function(){
+        Route::get('/{id}',[MonitoringController::class,'index']);
+        Route::get('/create/{id}',[MonitoringController::class,'create']);
+        Route::post('/store',[MonitoringController::class,'store']);
+        Route::get('/{id}/edit', [MonitoringController::class, 'edit']);
+        Route::patch('/{id}', [MonitoringController::class, 'update']);
+        Route::delete('/{id}', [MonitoringController::class, 'destroy']);
+    });
+
     //SubSector
     Route::prefix('/subsector')->group(function(){});
 
@@ -491,6 +582,25 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [DivisionController::class, 'edit']);
         Route::patch('/{id}', [DivisionController::class, 'update']);
         Route::delete('/{id}', [DivisionController::class, 'destroy']);
+    });
+
+    //Office Performance Commitment Rating Form
+    Route::prefix('/opcr/form')->group(function(){
+        Route::get('/{opcr_id}/{FFUNCCOD}',[OfficePerformanceCommitmentRatingController::class,'index']);
+        Route::get('/create/{FFUNCCOD}',[OfficePerformanceCommitmentRatingController::class,'create']);
+        Route::post('/store',[OfficePerformanceCommitmentRatingController::class,'store']);
+        Route::get('/{id}/edit', [OfficePerformanceCommitmentRatingController::class, 'edit']);
+        Route::patch('/{id}', [OfficePerformanceCommitmentRatingController::class, 'update']);
+        Route::delete('/{id}', [OfficePerformanceCommitmentRatingController::class, 'destroy']);
+    });
+    //OPCR List
+    Route::prefix('opcrlist')->group(function(){
+        Route::get('/{FFUNCCOD}',[OfficePerformanceCommitmentRatingListController::class,'index']);
+        Route::get('/create/{FFUNCCOD}',[OfficePerformanceCommitmentRatingListController::class,'create']);
+        Route::post('/store',[OfficePerformanceCommitmentRatingListController::class,'store']);
+        Route::get('/{id}/edit', [OfficePerformanceCommitmentRatingListController::class, 'edit']);
+        Route::patch('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'update']);
+        Route::delete('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'destroy']);
     });
 });
 Route::prefix('print')->group(function(){

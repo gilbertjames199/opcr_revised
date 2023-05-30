@@ -15,6 +15,7 @@ class ProgramAndProject extends Model
         'FFUNCCOD',
         'idmfo',
         'MOV',
+        'type'
     ];
     public static function rules(){
         return [
@@ -23,6 +24,7 @@ class ProgramAndProject extends Model
             //'aipcode'=> 'required',
             'idmfo'=> 'required|numeric',
             'MOV'=>'required',
+            'type'=>'required'
         ];
     }
 
@@ -33,7 +35,8 @@ class ProgramAndProject extends Model
             'FFUNCCOD.numeric' => 'The office/department must be a number',
             'idmfo.required' => 'The MFO is required',
             'idmfo.numeric' => 'The MFO must be a number',
-            'MOV.required' => 'The MOV is required'
+            'MOV.required' => 'The MOV is required',
+            'type.required'=>'Type is required'
         ];
     }
 

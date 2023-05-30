@@ -59,7 +59,7 @@ class PerformanceController extends Controller
         //dd($attributes);
         $this->model->create($attributes);
         return redirect('/Performance/'.$id)
-                ->with('message','Signatories added');
+                ->with('message','Performance Measure added');
     }
 
     public function edit(Request $request, $id){
@@ -91,7 +91,7 @@ class PerformanceController extends Controller
         ]);
 
         return redirect('/Performance/'.$request->idpaps)
-                ->with('message','Signatories updated');
+                ->with('message','Performance Measure updated');
     }
 
     public function destroy(Request $request){
@@ -99,7 +99,7 @@ class PerformanceController extends Controller
         $id = $data->idpaps;
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/Performance/'.$id)->with('warning', 'Signatories Deleted');
+        return redirect('/Performance/'.$id)->with('warning', 'Performance Measure Deleted');
 
     }
 }

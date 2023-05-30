@@ -19,13 +19,25 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
 
-                <label for="">PROGRAMS AND PROJECTS</label>
 
-                <select class="form-control" v-model="form.idpaps" >
-                    <option v-for="pap in paps" :value="pap.id" >
-                        {{ pap.paps_desc }}
-                    </option>
-                </select>
+                <!--PAPS-->
+                <div v-if="ismfo==='0'">
+                    <label for="">PROGRAMS AND PROJECTS</label>
+                    <select class="form-control" v-model="form.idpaps" >
+                        <option v-for="pap in paps" :value="pap.id" >
+                            {{ pap.paps_desc }}
+                        </option>
+                    </select>
+                </div>
+                <!--MFO-->
+                <div v-if="ismfo==='1'">
+                    <label for="">MAJOR FINAL OUTPUTS</label>
+                    <select class="form-control" v-model="form.idmfo" >
+                        <option v-for="mfo in mfos" :value="mfo.id" >
+                            {{ mfo.mfo_desc }}
+                        </option>
+                    </select>
+                </div>
 
                 <label for="">STRATEGY DESCRIPTION </label>
                 <input type="text" v-model="form.description" class="form-control" autocomplete="chrome-off">
@@ -52,7 +64,10 @@ export default {
         props: {
             editData: Object,
             paps: Object,
-            idpaps: String
+            idpaps: String,
+            idmfo: String,
+            mfos: Object,
+            ismfo: String,
         },
         components: {
 
@@ -68,6 +83,7 @@ export default {
                 submitted: false,
                 form: useForm({
                     idpaps: null,
+                    idmfo: null,
                     description: "",
                     id: null
                 }),
@@ -77,10 +93,11 @@ export default {
 
         mounted() {
             this.form.idpaps=this.idpaps;
-            this.form.idinteroutcome=this.idinteroutcome
+            this.form.idmfo=this.idmfo;
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
                 this.form.idpaps=this.idpaps
+                this.form.idmfo=this.idmfo
                 this.form.description=this.editData.description
                 this.form.id=this.editData.id
             } else {
@@ -95,10 +112,10 @@ export default {
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
                     //alert('patch');
-                    this.form.patch("/strategies/", this.form);
+                    this.form.patch("/strategies", this.form);
                 } else {
                     this.form.id=null;
-                    //alert('store');
+                    alert('store');
                     this.form.post("/strategies/store", this.form);
                 }
             },

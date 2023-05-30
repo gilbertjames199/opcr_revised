@@ -19,8 +19,8 @@
                 <input type="hidden" required>
                 <input type="hidden" v-model="form.idpaps" class="form-control" autocomplete="positionchrome-off">
                 <label for="">Performance Measure</label>
-                <input type="text" v-model="form.erformance" class="form-control" autocomplete="positionchrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.erformance">{{ form.errors.erformance }}</div>
+                <input type="text" v-model="form.performance" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.performance">{{ form.errors.performance }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 

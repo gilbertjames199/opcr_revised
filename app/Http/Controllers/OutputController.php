@@ -58,7 +58,7 @@ class OutputController extends Controller
         //dd($attributes);
         $this->model->create($attributes);
         return redirect('/output/'.$id)
-                ->with('message','Signatories added');
+                ->with('message','Output added');
     }
 
     public function edit(Request $request, $id){
@@ -90,7 +90,7 @@ class OutputController extends Controller
         ]);
 
         return redirect('/output/'.$request->idpaps)
-                ->with('message','Signatories updated');
+                ->with('message','Output updated');
     }
 
     public function destroy(Request $request){
@@ -98,7 +98,7 @@ class OutputController extends Controller
         $id = $data->idpaps;
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/output/'.$id)->with('warning', 'Signatories Deleted');
+        return redirect('/output/'.$id)->with('warning', 'Output Deleted');
 
     }
 
