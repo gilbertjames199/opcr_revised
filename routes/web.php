@@ -63,6 +63,10 @@ use App\Http\Controllers\TimelinessController;
 use App\Http\Controllers\QualityRemarksController;
 use App\Http\Controllers\RatingRemarksController;
 use App\Http\Controllers\TimelinessRemarksController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\MonitoringController;
+>>>>>>> 84661431c1b5e32bbe9820163346aa3f57dffc82
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -447,9 +451,9 @@ Route::middleware('auth')->group(function() {
          });
 
          //OPCR
-         Route::prefix('/OPCR')->group(function(){
+         Route::prefix('/OPCRStandard')->group(function(){
             Route::get('/',[OPCRController::class,'index']);
-            Route::get('/{idstrat}',[OPCRController::class,'showlog']);
+            Route::get('/{idstrat}',[OPCRController::class,'showopcr']);
         });
 
             //Route::patch('/', [PAPController::class, 'update']);
@@ -556,6 +560,15 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [TimelinessRemarksController::class, 'edit']);
         Route::patch('/{id}', [TimelinessRemarksController::class, 'update']);
         Route::delete('/{id}', [TimelinessRemarksController::class, 'destroy']);
+    });
+
+    Route::prefix('/Monitoring')->group(function(){
+        Route::get('/{id}',[MonitoringController::class,'index']);
+        Route::get('/create/{id}',[MonitoringController::class,'create']);
+        Route::post('/store',[MonitoringController::class,'store']);
+        Route::get('/{id}/edit', [MonitoringController::class, 'edit']);
+        Route::patch('/{id}', [MonitoringController::class, 'update']);
+        Route::delete('/{id}', [MonitoringController::class, 'destroy']);
     });
 
     //SubSector

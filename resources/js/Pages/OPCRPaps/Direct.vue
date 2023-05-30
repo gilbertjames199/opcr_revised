@@ -62,13 +62,14 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/output/${dat.id}`">Add Outputs</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/output/${dat.id}`">Outputs</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Performance/${dat.id}`">Performance Measures</Link></li>
                                             <li><Link class="dropdown-item" :href="`/SuccessIndicator/${dat.id}`">Success Indicator</Link></li>
                                             <li><Link class="dropdown-item" :href="`/OfficeAccountable/${dat.id}`">Office/Individual Accountable</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Rating/${dat.id}`">Ratings</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Quality/${dat.id}`">Quality</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Timeliness/${dat.id}`">Timeliness</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/Monitoring/${dat.id}`">Monitoring</Link></li>
                                         </ul>
                                     </div>
                                 </td>
