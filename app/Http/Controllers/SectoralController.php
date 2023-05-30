@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MajorFinalOutput;
 use App\Models\Sector;
 use Illuminate\Http\Request;
 use App\Models\Sectoral;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class SectoralController extends Controller
 {
-
+    protected $model;
     public function __construct(Sectoral $model)
     {
        $this->model = $model;
@@ -88,10 +89,21 @@ class SectoralController extends Controller
     }
 
     public function destroy(Request $request){
-        $data = $this->model->findOrFail($request->id);
-        $data->delete();
+        $count_mfo =MajorFinalOutput::where('id_sec_outcome', $request->id)->count();
+        $msg="";
+        $status ="";
+        if($count_mfo>0){
+            $msg="Unable to delete!";
+            $status ="error";
+        }else{
+            $msg="Sectoral outcome deleted";
+            $status ="message";
+            $data = $this->model->findOrFail($request->id);
+            $data->delete();
+
+        }
         //dd($request->raao_id);
-        return redirect('/Sectoral')->with('warning', 'Sectoral Goal Deleted');
+        return redirect('/Sectoral')->with($status, $msg);
 
     }
 }

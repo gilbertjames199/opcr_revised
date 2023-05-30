@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountAccess;
+use App\Models\MajorFinalOutput;
 use App\Models\OrganizationalGoal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,8 +73,11 @@ class OrganizationController extends Controller
             'goal_description',
             'FFUNCCOD'
         ]);
-        $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
-        $functions = $accounts->pluck('func');
+        //dd($data);
+        //$accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
+        $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->Join(DB::Raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
         return inertia('Organizational/addOrganizational', [
             "editData" => $data,
             "functions"=>$functions,
@@ -97,10 +101,21 @@ class OrganizationController extends Controller
     }
 
     public function destroy(Request $request){
-        $data = $this->model->findOrFail($request->id);
-        $data->delete();
+        $count_mfo =MajorFinalOutput::where('id_sec_outcome', $request->id)->count();
+        $msg="";
+        $status ="";
+        if($count_mfo>0){
+            $msg="Unable to delete!";
+            $status ="error";
+        }else{
+            $msg="Organizational Goal Deleted";
+            $status ="message";
+            $data = $this->model->findOrFail($request->id);
+            $data->delete();
+        }
+
         //dd($request->raao_id);
-        return redirect('/Organization')->with('warning', 'Organizational Goal Deleted');
+        return redirect('/Organization')->with($status, $msg);
 
     }
 }

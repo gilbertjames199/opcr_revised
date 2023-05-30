@@ -13,12 +13,18 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/strategies/create/${idpaps}`">Add Strategies</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/strategies/create/${idpaps}/${ismfo}`">Add Strategies</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
 
-            <Link :href="`/paps/direct`">
+            <Link v-if="ismfo==='0'" :href="`/paps/direct`">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                </svg>
+            </Link>
+            <Link v-if="ismfo==='1'" :href="`/mfos/direct`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                     <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -34,14 +40,20 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Programs and Projects</th>
+                                <th>
+                                    <span v-if="ismfo==='1'">Major Final Outputs</span>
+                                    <span v-else>Programs and Projects</span>
+                                </th>
                                 <th>Strategies</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.paps.paps_desc }}</td>
+                                <td>
+                                    <span v-if="ismfo==='1'">{{ dat.mfos.mfo_desc }}</span>
+                                    <span v-else>{{ dat.paps.paps_desc }}</span>
+                                </td>
                                 <td>{{ dat.description }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
@@ -89,6 +101,7 @@ export default {
         //idstrat: String,
         idpaps: String,
         filters: Object,
+        ismfo: String,
     },
     data() {
         return{

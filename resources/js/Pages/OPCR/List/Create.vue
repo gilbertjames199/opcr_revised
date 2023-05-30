@@ -69,6 +69,7 @@ export default {
                     date_to:            "",
                     year:               "",
                     FFUNCCOD:           "",
+                    allotment: "",
                     id:                 null
                 }),
                 pageTitle:                  ""
@@ -84,6 +85,7 @@ export default {
                 this.form.date_to               =this.editData.date_to
                 this.form.year                  =this.editData.year
                 this.form.FFUNCCOD              =this.editData.FFUNCCOD
+                this.form.allotment              =this.editData.allotment
                 this.form.id                    =this.editData.id
             } else {
                 this.pageTitle                  = "Create"
@@ -91,7 +93,7 @@ export default {
                 this.form.FFUNCCOD = this.FFUNCCOD;
                 this.form.year = currentDate.getFullYear();
             }
-
+            this.form.allotment              ="0.00"
         },
 
         methods: {

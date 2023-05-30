@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\AccountAccess;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
+use App\Models\RevisionPlan;
+use App\Models\Strategy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -133,6 +135,7 @@ class PAPController extends Controller
             'FFUNCCOD',
             'idmfo',
             'MOV',
+            'type',
         ]);
         // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
         // $functions = $accounts->pluck('func');
@@ -177,10 +180,21 @@ class PAPController extends Controller
     }
     public function destroy(Request $request, $id)
     {
-        $data = $this->model->findOrFail($id);
-        $data->delete();
+        $count_rev = RevisionPlan::where('idpaps', $id)->count();
+        $count_strat = Strategy::where('idpaps', $id)->count();
+        $msg="";
+        $status ="";
+        if($count_rev>0 || $count_strat>0){
+            $msg="Unable to delete!";
+            $status ="error";
+        }else{
+            $msg="Program/Project/Activity Successfully deleted!";
+            $status ="message";
+            $data = $this->model->findOrFail($id);
+            $data->delete();
+        }
         //dd($request->raao_id);
-        return redirect('/paps/direct')->with('warning', 'PAPS deleted');
+        return redirect('/paps/direct')->with($status, $msg);
     }
 
     public function direct(Request $request){

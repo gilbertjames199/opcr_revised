@@ -12,9 +12,13 @@ class Strategy extends Model
     protected $table='strategies';
     protected $fillable = [
         'description',
-        'idpaps'
+        'idpaps',
+        'idmfo'
     ];
     public function paps(){
         return $this -> hasOne(ProgramAndProject::class, 'id', 'idpaps');
+    }
+    public function mfos(){
+        return $this -> hasOne(MajorFinalOutput::class, 'id', 'idmfo');
     }
 }

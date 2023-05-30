@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ImplementationPlan;
 use App\Models\Issue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,10 +82,23 @@ class IssueController extends Controller
     }
 
     public function destroy(Request $request){
-        $data = $this->model->findOrFail($request->id);
-        $data->delete();
+        //dd('iissue');
+        //dd(ImplementationPlan);
+        $count_imp = ImplementationPlan::where('idissue', $request->id)->count();
+
+        $msg="";
+        $status ="";
+        if($count_imp>0 ){
+            $msg="Unable to delete!";
+            $status ="error";
+        }else{
+            $msg="GAD Issue successfully deleted!";
+            $status ="message";
+            $data = $this->model->findOrFail($request->id);
+            $data->delete();
+        }
         //dd($request->raao_id);
-        return redirect('/Issues')->with('warning', 'Issues Deleted');
+        return redirect('/Issues')->with($status, $msg);
 
     }
 

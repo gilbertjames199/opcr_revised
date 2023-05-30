@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HGDG_Checklist;
 use App\Models\HGDGQuestion;
+use App\Models\HGDGScore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -172,27 +173,28 @@ class HGDGQuestionController extends Controller
     }
     public function destroy(Request $request, $id){
         //dd($id);
-        $data=$this->model->findOrFail($id);
-        //$cid = $data->checklist_id;
-        $qid = $data->question_id;
-        //dd($qid);
-        //@csrf_field();
 
-        $data->delete();
-
-        $count = $this->model->where("question_id", $qid)->count();
-        //dd($count);
-        if($count<1){
-
-            $pq = $this->model->findOrFail($qid);
-            //dd($pq);
-            $pq->update([
-                "has_subquestion"=>"0"
-            ]);
-
+        $count_score = HGDGScore::where('question_id', $id)->count();
+        $msg="";
+        $status ="";
+        if($count_score>0){
+            $msg="Unable to delete!";
+            $status ="error";
+        }else{
+            $msg="Checklist successfully deleted!";
+            $status ="message";
+            $data=$this->model->findOrFail($id);
+            $qid = $data->question_id;
+            $data->delete();
+            $count = $this->model->where("question_id", $qid)->count();
+            if($count<1){
+                $pq = $this->model->findOrFail($qid);
+                $pq->update([
+                    "has_subquestion"=>"0"
+                ]);
+            }
         }
-
-        return back()->with('warning', 'Question Deleted');
+        return back()->with($status, $msg);
         // return redirect('/HGDGQuestions/'.$cid)
         //         ->with('message','Question updated!!');
     }

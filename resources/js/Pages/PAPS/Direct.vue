@@ -61,7 +61,7 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}`">Add Strategies</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${ismfo}/strat/mfo`">Strategies</Link></li>
                                             <li><Link class="dropdown-item" :href="`/revision/${dat.id}`">Revision Plans</Link></li>
                                             <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li>
@@ -109,6 +109,7 @@ export default {
         return{
             search: this.$props.filters.search,
             filter: false,
+            ismfo: 0,
         }
     },
     watch: {
