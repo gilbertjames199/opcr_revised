@@ -39,7 +39,7 @@
             </Link>
         </div>
 
-        <div class="masonry-sizer col-md-12">
+        <div class="masonry-sizer col-md-12" v-if="revs[0].scope!=='GAS'">
             <table class="table table-hover table-bordered border-dark">
                 <thead>
                     <tr class="bg-secondary text-white">
