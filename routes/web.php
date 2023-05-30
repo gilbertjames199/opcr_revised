@@ -63,10 +63,7 @@ use App\Http\Controllers\TimelinessController;
 use App\Http\Controllers\QualityRemarksController;
 use App\Http\Controllers\RatingRemarksController;
 use App\Http\Controllers\TimelinessRemarksController;
-<<<<<<< HEAD
-=======
 use App\Http\Controllers\MonitoringController;
->>>>>>> 84661431c1b5e32bbe9820163346aa3f57dffc82
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
