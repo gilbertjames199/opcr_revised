@@ -50,7 +50,7 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
                                             <li><Link class="dropdown-item" :href="`/paps/${dat.id}`">Programs and Projects</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/mforevision/${dat.id}`">Revision Plans</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/mforevision/${dat.id}`">MFO Profile</Link></li>
                                             <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${ismfo}/strat/mfo`">Strategies</Link></li>
                                             <li><Link class="dropdown-item" :href="`/mfos/${dat.id}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li>
