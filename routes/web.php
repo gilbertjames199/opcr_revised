@@ -55,21 +55,15 @@ use App\Http\Controllers\OutputController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\SuccessIndicatorController;
 use App\Http\Controllers\OfficeAccountableController;
-<<<<<<< HEAD
 use App\Http\Controllers\OfficePerformanceCommitmentRatingController;
 use App\Http\Controllers\OfficePerformanceCommitmentRatingListController;
-=======
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\QualityController;
 use App\Http\Controllers\TimelinessController;
 use App\Http\Controllers\QualityRemarksController;
 use App\Http\Controllers\RatingRemarksController;
 use App\Http\Controllers\TimelinessRemarksController;
-<<<<<<< HEAD
 use App\Http\Controllers\MonitoringController;
-=======
->>>>>>> 1f04f3fdbe8273d78be7bcaa7842b5b3e165a24c
->>>>>>> 9a354bf518b4f98953339a72b8cf256e58d1197d
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -439,9 +433,9 @@ Route::middleware('auth')->group(function() {
          });
 
          //OPCR
-         Route::prefix('/OPCR')->group(function(){
+         Route::prefix('/OPCRStandard')->group(function(){
             Route::get('/',[OPCRController::class,'index']);
-            Route::get('/{idstrat}',[OPCRController::class,'showlog']);
+            Route::get('/{idstrat}',[OPCRController::class,'showopcr']);
         });
 
             //Route::patch('/', [PAPController::class, 'update']);
