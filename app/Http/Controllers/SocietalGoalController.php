@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MajorFinalOutput;
 use App\Models\SocietalGoal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SocietalGoalController extends Controller
 {
+    protected $model;
     public function __construct(SocietalGoal $model)
     {
        $this->model = $model;
@@ -33,12 +35,12 @@ class SocietalGoalController extends Controller
 
     public function create(Request $request){
         //dd('create');
-    return inertia('SocietalGoals/addSocietalGoals',[
-    'can'=>[
-        'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-        'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-    ],
-]);
+        return inertia('SocietalGoals/addSocietalGoals',[
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 
     public function store(Request $request){
@@ -81,10 +83,16 @@ class SocietalGoalController extends Controller
     }
 
     public function destroy(Request $request){
-        $data = $this->model->findOrFail($request->id);
-        $data->delete();
-        //dd($request->raao_id);
-        return redirect('/Societal')->with('warning', 'Societal Goals Deleted');
+        $count_mfo =MajorFinalOutput::where('id_socgoal', $request->id)->count();
+        $msg="";
+        if($count_mfo>0){
+            $msg ="Unable to delete";
+        }else{
+            $data = $this->model->findOrFail($request->id);
+            $data->delete();
+            $msg ="Societal Goal Deleted";
+        }
+        return redirect('/Societal')->with('error', $msg);
 
     }
 }

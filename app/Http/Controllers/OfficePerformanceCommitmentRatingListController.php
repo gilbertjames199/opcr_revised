@@ -43,12 +43,14 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         ]);
     }
     public function store(Request $request){
+        //dd($request);
         $attributes = $request->validate([
             'semester'=> 'required',
             'date_from' => 'required',
             'date_to' => 'required',
             'year'  => 'required',
-            'FFUNCCOD'=>'required'
+            'FFUNCCOD'=>'required',
+            'allotment'=>'required'
         ]);
         $found = $this->model->where('year', $request->year)
                                 ->where('semester', $request->semester)
@@ -89,10 +91,13 @@ class OfficePerformanceCommitmentRatingListController extends Controller
             'year'                 =>$request->year,
             'FFUNCCOD'                 =>$request->FFUNCCOD,
             'id'                        =>$request->id,
+            'allotment'=>$request->allotment,
         ]);
 
         return redirect('/opcrlist/'.$request->FFUNCCOD)
                 ->with('message','Added new OPCR!');
     }
-    public function destroy(Request $request){}
+    public function destroy(Request $request){
+
+    }
 }

@@ -274,13 +274,17 @@ Route::middleware('auth')->group(function() {
     });
     //Strategies
     Route::prefix('/strategies')->group(function(){
-        Route::get('/{id}',[StrategyController::class,'index']);
-        Route::get('/create/{id}',[StrategyController::class,'create']);
+        Route::get('/{id}/{ismfo}/strat/mfo',[StrategyController::class,'index']);
+        Route::get('/create/{id}/{ismfo}',[StrategyController::class,'create']);
         Route::post('/store',[StrategyController::class,'store']);
         Route::post('/update',[StrategyController::class,'update']);
         Route::delete('/{id}/{idpaps}', [StrategyController::class, 'destroy']);
         Route::get('/{id}/{idinteroutcome}/edit', [StrategyController::class, 'edit']);
         Route::patch('/', [StrategyController::class, 'update']);
+    });
+    //MFOStrategies
+    Route::prefix('/mfostrategies')->group(function(){
+
     });
     //Activities
     Route::prefix('/activities')->group(function(){
@@ -307,6 +311,13 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}/{idoutcome}', [MFOController::class, 'destroy']);
         Route::get('/{id}',[MFOController::class,'index']);
     });
+    //MFO Revision Plans
+    Route::prefix('/mforevision')->group(function(){
+        Route::get('/{id}',[RevisionPlanController::class,'mfo_index']);
+        Route::get('/create/{id}',[RevisionPlanController::class,'mfo_create']);
+        Route::post('/store',[RevisionPlanController::class,'mfo_store']);
+        Route::get('/view/project/mfo/{id}',[RevisionPlanController::class,'view']);
+    });
     //Route::patch('/', [PAPController::class, 'update']);
     Route::prefix('/paps')->group(function(){
         Route::get('/direct',[PAPController::class,'direct']);
@@ -331,6 +342,10 @@ Route::middleware('auth')->group(function() {
         Route::get('/create/{id}',[RevisionPlanController::class,'create']);
         Route::post('/store',[RevisionPlanController::class,'store']);
         Route::get('/view/project/paps/{id}',[RevisionPlanController::class,'view']);
+        Route::get('/general/administration/services/{FFUNCCOD}/plan',[RevisionPlanController::class,'gas']);
+        Route::get('/general/administration/services/create/{FFUNCCOD}/plan',[RevisionPlanController::class,'gas_create']);
+        Route::post('/general/administration/services/{FFUNCCOD}/plan/store',[RevisionPlanController::class,'gas_store']);
+
     });
     //Budget
     Route::prefix('/budget')->group(function(){

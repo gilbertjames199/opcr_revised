@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BudgetRequirement;
 use App\Models\MajorFinalOutput;
 use App\Models\OfficeAccountable;
 use App\Models\OfficePerformanceCommitmentRating;
+use App\Models\OfficePerformanceCommitmentRatingList;
 use App\Models\ProgramAndProject;
+use App\Models\RevisionPlan;
 use App\Models\SuccessIndicator;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +24,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
     public function index(Request $request, $opcr_id, $FFUNCCOD){
         //Check if the OPCR Form for the OPCR List is empty or not
         $opcr = $this->model->where('opcr_id', $opcr_id)->get();
+        $list = OfficePerformanceCommitmentRatingList::where('id',$opcr_id)->first();
+
+        $my_year = Carbon::parse($list->date_to)->format('Y');
+        //dd($my_year);
         $cnt = $opcr->count();
 
         //dd($FFUNCCOD);
@@ -69,6 +77,26 @@ class OfficePerformanceCommitmentRatingController extends Controller
             }
             //dd('COUNT: '.$cnt);
         }
+        //REVISION PLAN ID
+        $revision_plan = RevisionPlan::where('idmfo','0')
+                            ->where('idpaps','0')
+                            ->where('FFUNCCOD', $FFUNCCOD)
+                            ->where('year_period', $my_year)
+                            ->first();
+        $mooe="0.00";
+        $ps = "0.00";
+        if($revision_plan){
+            $mooe = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->sum('amount');
+
+            $ps =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                    ->where('category','Personnel Services')
+                    ->sum('amount');
+
+        }else{
+            //dd("empty no ps budget");
+        }
         //$opcr = $this->model->where('FFUNCCOD', $FFUNCCOD)->get();
         $opcrs = $this->model->select('office_performance_commitment_ratings.id',
                         'office_performance_commitment_ratings.success_indicator_id',
@@ -98,6 +126,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
         return inertia('OPCR/Form/Index',[
             "opcrs"=>$opcrs,
             "FFUNCCOD"=>$FFUNCCOD,
+            "mooe"=>$mooe,
+            "ps"=>$ps,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

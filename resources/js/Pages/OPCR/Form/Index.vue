@@ -53,14 +53,25 @@
 
                                 <tr v-for="(opcr, index) in form.opcrs" :key="index">
                                     <td v-if="index === 0 || opcr.mfo_desc !== opcrs[index - 1].mfo_desc"
-                                    :rowspan="getRowspan(opcr.mfo_desc, index)">
+                                        :rowspan="getRowspan(opcr.mfo_desc, index)"
+                                        style="vertical-align:middle"
+                                    >
                                         {{ opcr.mfo_desc }}
                                     </td>
-                                    <td>{{ opcr.success_indicator }}</td>
-                                    <td :rowspan="form.opcrs.length" v-if="index===0" style="vertical-align:middle">
-                                        PS = 8,048,758 <br>MOOE=P3,082,250
+                                    <td v-if="index === 0 || opcr.success_indicator !== opcrs[index - 1].success_indicator"
+                                        :rowspan="getRowspanIndicator(opcr.success_indicator, index)"
+                                        style="vertical-align:middle">
+                                        {{ opcr.success_indicator }}
                                     </td>
-                                    <td >{{ opcr.office_accountable }}</td>
+                                    <td :rowspan="form.opcrs.length" v-if="index===0" style="vertical-align:middle">
+                                        PS = {{ halfSem(ps) }} <br>(annual={{ format_number_conv(ps)  }}) <br><br>MOOE = {{ halfSem(mooe) }} (annual={{ format_number_conv(mooe)  }})
+                                    </td>
+                                    <td v-if="index === 0 || opcr.office_accountable !== opcrs[index - 1].office_accountable"
+                                        :rowspan="getRowspan2(opcr.office_accountable, index)"
+                                        style="vertical-align:middle"
+                                    >
+                                        {{ opcr.office_accountable }}
+                                    </td>
                                     <td><textarea v-model="form.opcrs[index].accomplishments"></textarea></td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input"  type="number" min="1" max="5" step="1">
@@ -75,10 +86,49 @@
                                     <td>{{ getAverage(index) }}</td>
                                     <td><input type="text" v-model="form.opcrs[index].remarks" /></td>
                                 </tr>
+                                <tr>
+                                    <td colspan="5"></td>
+                                    <td colspan="3">TOTAL RATING</td>
+                                    <td>{{ getTotalAverage() }}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5"></td>
+                                    <td colspan="3">FINAL AVERAGE RATING</td>
+                                    <td>{{ getAverageAll() }}</td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </table>
                     </form>
 
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered border-dark">
+                        <tbody>
+                            <tr>
+                                <td>Assessed by PMT Secretariat:</td>
+                                <td>Reviewed by:</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <br><br>
+                                    <strong>ALICIA M. GRACIADAS</strong>
+                                </td>
+                                <td class="text-center font-weight-bold"><br><br>
+                                    <strong>FATIMA P. MONTEJO</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" style="font-size: 12px">PMT Head Secretariat</td>
+                                <td class="text-center" style="font-size: 12px">PMT Chairperson</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size: 12px">Date:</td>
+                                <td style="font-size: 12px">Date:</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
@@ -113,10 +163,13 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         opcrs: Object,
-        FFUNCCOD: String
+        FFUNCCOD: String,
+        mooe: Number,
+        ps: Number,
     },
     data() {
         return{
+            total_ave: 0,
             form: useForm({
                 opcrs: [],
             })
@@ -133,7 +186,10 @@ export default {
     },
     methods:{
 
-
+        halfSem(amount){
+            var ret = parseFloat(amount)/2;
+            return this.format_number_conv(ret,2,true);
+        },
         deleteEla(id) {
             let text = "WARNING!\nAre you sure you want to delete the Executive Legislative Agenda?"+id;
               if (confirm(text) == true) {
@@ -149,11 +205,58 @@ export default {
                     //alert('equal '+this.opcrs[i].mfo_desc + '\n row: '+ row.mfo_length);
                     count=parseFloat(count)+1;
                 } else {
-                    //break;
+                    break;
                 }
             }
 
             return count;
+        },
+        getRowspan2(row, ind) {
+            let count = 1;
+            const index = ind;
+
+            for (let i = parseFloat(index) + 1; i < this.opcrs.length; i++) {
+                if (this.opcrs[i].office_accountable === row) {
+                    //alert('equal '+this.opcrs[i].mfo_desc + '\n row: '+ row.mfo_length);
+                    count=parseFloat(count)+1;
+                } else {
+                    break;
+                }
+            }
+
+            return count;
+        },
+        getRowspanIndicator(row, ind) {
+            let count = 1;
+            const index = ind;
+
+            for (let i = parseFloat(index) + 1; i < this.opcrs.length; i++) {
+                if (this.opcrs[i].success_indicator === row) {
+                    //alert('equal '+this.opcrs[i].mfo_desc + '\n row: '+ row.mfo_length);
+                    count=parseFloat(count)+1;
+                } else {
+                    break;
+                }
+            }
+
+            return count;
+        },
+        getTotalAverage(){
+            var total=0;
+            for(let i =0; i<this.form.opcrs.length; i++){
+                var rat_e= this.form.opcrs[i].rating_e;
+                var rat_q = this.form.opcrs[i].rating_q;
+                var rat_t = this.form.opcrs[i].rating_t;
+                var avee = parseFloat(rat_e)+parseFloat(rat_q)+parseFloat(rat_t)
+                total = total +(avee/3);
+            }
+            this.total_ave=total;
+            return this.format_number_conv(total,2,true);
+
+        },
+        getAverageAll(){
+            var aver = parseFloat(this.total_ave)/(parseFloat(this.form.opcrs.length));
+            return this.format_number_conv(aver,2,true)
         },
         numberInput(value) {
             if (value < 1) {
@@ -170,6 +273,9 @@ export default {
         getAverage(ind){
             if(parseFloat(this.opcrs[ind].rating_e)>5){
                 this.opcrs[ind].rating_e=5;
+            }
+            if(this.opcrs[ind].rating_e==""){
+                this.opcrs[ind].rating_e=1;
             }
             if(parseFloat(this.opcrs[ind].rating_e)<1){
                 this.opcrs[ind].rating_e=1;

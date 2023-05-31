@@ -306,11 +306,19 @@ class ImplementationPlanController extends Controller
     }
     public function destroy(Request $request, $id){
         //dd($id);
-        $data = $this->model->findOrFail($request->id);
-
-        $data->delete();
-
+        $count_target = Target::where('idimplementation', $id)->count();
+        $msg="";
+        $status ="";
+        if($count_target>0 ){
+            $msg="Unable to delete!";
+            $status ="error";
+        }else{
+            $msg="Implementation plan deleted";
+            $status ="message";
+            $data = $this->model->findOrFail($request->id);
+            $data->delete();
+        }
         //dd($request->raao_id);
-        return back()->with('warning', 'Implementation Plan Deleted');
+        return back()->with($status, $msg);
     }
 }

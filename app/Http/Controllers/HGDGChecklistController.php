@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\HGDG_Checklist;
+use App\Models\HGDGQuestion;
+use App\Models\RevisionPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HGDGChecklistController extends Controller
 {
-
+    protected $model;
     //
     public function __construct(HGDG_Checklist $model)
     {
@@ -33,12 +35,12 @@ class HGDGChecklistController extends Controller
 
     public function create(Request $request){
         //dd('create');
-    return inertia('hgdg_checklist/Create',[
-    'can'=>[
-        'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-        'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-    ],
-    ]);
+        return inertia('hgdg_checklist/Create',[
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
     }
 
     public function store(Request $request){
@@ -85,10 +87,21 @@ class HGDGChecklistController extends Controller
 
 
     public function destroy(Request $request){
-        $data = $this->model->findOrFail($request->id);
-        $data->delete();
+        $count_rev = RevisionPlan::where('checklist_id', $request->id)->count();
+        $count_question = HGDGQuestion::where('checklist_id', $request->id)->count();
+        $msg="";
+        $status ="";
+        if($count_rev>0 || $count_question>0){
+            $msg="Unable to delete!";
+            $status ="error";
+        }else{
+            $msg="Checklist successfully deleted!";
+            $status ="message";
+            $data = $this->model->findOrFail($request->id);
+            $data->delete();
+        }
         //dd($request->raao_id);
-        return redirect('/HGDGChecklist')->with('warning', 'Checklist Deleted');
+        return redirect('/HGDGChecklist')->with($status, $msg);
 
     }
 }

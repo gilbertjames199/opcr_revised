@@ -199,9 +199,16 @@ class HGDGScoreController extends Controller
             "hgdg_score"=>$HScore,
             "hgdg_percent"=>$HPercent
         ]);
+        $scope = $rev_plan->scope;
+        if($scope=='GAS'){
 
-        return redirect('/revision/'.$rev_plan->idpaps)
+            return redirect('/revision/general/administration/services/'.$rev_plan->FFUNCCOD.'/plan')
                 ->with('message','HGDG Evaluation Done');
+        }else{
+            return redirect('/revision/'.$rev_plan->idpaps)
+                ->with('message','HGDG Evaluation Done');
+        }
+
     }
 
 }

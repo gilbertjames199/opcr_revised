@@ -15,6 +15,8 @@
         </div> -->
 
         <div class="col-md-8">
+            <!-- <span v-if="mfos.id">fdfdfd</span> {{ mfos.id }} <span v-if="paps.id">fdfdfd</span> {{ paps.id }}
+           <br> {{ mfos }}<br>{{ paps }} -->
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
                 <div class="d-none">
@@ -28,8 +30,11 @@
                         class="form-control d-none"
                         autocomplete="chrome-off"
                         disabled>
-                <label for="">Program/Project </label>
-                <input type="text" v-model="paps_desc" class="form-control" autocomplete="chrome-off">
+
+                <div v-if="paps">
+                    <label for="">Program/Project </label>
+                    <input type="text" v-model="paps_desc" class="form-control" autocomplete="chrome-off">
+                </div>
 
                 <label for="">Revision Plan </label>
                 <input type="text" v-model="revision_plan.project_title" class="form-control" autocomplete="chrome-off">
@@ -187,6 +192,8 @@ export default {
             paps: Object,
             implementation_plan: Object,
             revision_plan: Object,
+            idmfo: String,
+            mfos: String
         },
         components: {
           //BootstrapModalNoJquery,
@@ -206,6 +213,7 @@ export default {
                 munsel: "",
                 form: useForm({
                     idpdip: this.paps.id,
+                    idmfo: this.mfos.id,
                     idooe: "",
                     idindicator: "",
                     description: "",
@@ -275,6 +283,17 @@ export default {
                 const formattedDate2 = december31.toISOString().split('T')[0];
                 this.form.planned_period_from=formattedDate;
                 this.form.planned_period_to=formattedDate2;
+                if(this.mfos.id){
+                    this.form.idmfo=this.mfos.id
+                    this.paps_desc=this.mfos.mfo_desc
+                }else{
+                    this.form.idmfo="0"
+                }
+                if(this.paps.id){
+                    this.form.idpdip=this.paps.id
+                }else{
+                    this.form.idpdip="0"
+                }
             }
 
         },
@@ -324,6 +343,10 @@ export default {
                     this.form.post("/targets/"+this.imp_id+"/implementation/store", this.form);
                 }
             },
+            count(obj){
+                var vall =Object.length(obj);
+                return vall;
+            }
         },
     };
     </script>
