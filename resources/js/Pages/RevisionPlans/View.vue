@@ -124,7 +124,7 @@
                     <br>
                     <!--IMPLEMENTATION PLAN-->
                     <div v-if="data.length>0">
-                        <h3><Link :href="`/implementation/${paps.id}`">Implementation Plan fsfdsfsfdf</Link></h3>
+                        <h3><Link :href="`/implementation/${paps.id}`">Implementation Plan</Link></h3>
                         <table class="table table-hover table-bordered border-dark">
                             <thead>
                                 <tr class="bg-secondary text-white">

@@ -471,7 +471,7 @@ var _hoisted_59 = {
   key: 0
 };
 
-var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Implementation Plan fsfdsfsfdf");
+var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Implementation Plan");
 
 var _hoisted_61 = {
   "class": "table table-hover table-bordered border-dark"
