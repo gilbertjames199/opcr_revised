@@ -149,7 +149,7 @@ class HGDGScoreController extends Controller
         return $this->new_res;
     }
     public function store(Request $request){
-        //get the updated score value fresh from VUEJS
+        //get the updated score value from VUEJS
         $hgdg_scores = $request->scores;
 
         //Get the Revision Plan ID
@@ -201,7 +201,6 @@ class HGDGScoreController extends Controller
         ]);
         $scope = $rev_plan->scope;
         if($scope=='GAS'){
-
             return redirect('/revision/general/administration/services/'.$rev_plan->FFUNCCOD.'/plan')
                 ->with('message','HGDG Evaluation Done');
         }else{

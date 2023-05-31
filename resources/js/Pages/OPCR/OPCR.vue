@@ -70,9 +70,26 @@
                                     <td>{{ item.performance }}</td>
                                     <td>{{ item.success_indicator }}</td>
                                     <td>{{ item.office_accountable }}</td>
-                                    <td class="p-0"><div class="border-bottom border-dark text-center" v-for="(item, index1) in item.numerical_rating " :key="index1">{{ item }}</div></td>
-                                    <td class="p-0"><div class="border-bottom border-dark text-center" v-for="(item, index2) in item.adjectival_rating " :key="index2">{{ item }}</div></td>
-                                    <td class="p-0 text-nowrap"><div class="border-bottom border-dark text-center" v-for="(item, index3) in item.efficiency_quantity " :key="index3">{{ item }}</div></td>
+                                    <td class="p-0" style="flex: 1; position: relative; border: 1px solid #000;padding: 0;">
+                                        <div class="border-bottom border-dark text-center"
+                                            style="box-sizing: border-box; height: 20%; border-bottom: 1px solid #000; padding: 20%;"
+                                            v-for="(item, index1) in item.numerical_rating"
+                                            :key="index1">
+                                                {{ item }}
+                                        </div>
+                                    </td>
+                                    <td class="p-0" >
+                                        <div class="border-bottom border-dark text-center"
+                                            style="box-sizing: border-box; height: 20%; border-bottom: 1px solid #000; padding: 20%;"
+                                            v-for="(item, index2) in item.adjectival_rating" :key="index2">
+                                                {{ item }}
+                                        </div>
+                                    </td>
+                                    <td class="p-0 text-nowrap" style="flex: 1; position: relative; border: 1px solid #000;padding: 0;">
+                                        <div style="box-sizing: border-box; height: 20%; border-bottom: 1px solid #000; padding: 20%;" class="border-bottom border-dark text-center" v-for="(item, index3) in item.efficiency_quantity " :key="index3">
+                                            {{ item }}
+                                        </div>
+                                    </td>
                                     <td>{{ item.rating_remarks }}</td>
                                     <td class="p-0"><div class="border-bottom border-dark text-center" v-for="(item, index4) in item.qualities " :key="index4">{{ item }}</div></td>
                                     <td>{{ item.quality_remarks }}</td>
