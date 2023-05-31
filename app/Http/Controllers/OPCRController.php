@@ -125,5 +125,8 @@ class OPCRController extends Controller
             "FFUNCCOD"=>$office,
         ]);
     }
+    public function showOpcr2(Request $request, $FFUNCCOD){
+
+    }
 
 }
