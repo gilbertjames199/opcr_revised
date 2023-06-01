@@ -43,7 +43,7 @@
                 <div class="table-responsive" id="draggableTable" ref="draggableTable" >
                     <table class="table table-sm table-bordered border-dark table-hover">
                         <thead>
-                            <tr class="bg-secondary text-white text-center">
+                            <tr class="bg-secondary text-white text-center text-nowrap">
                                 <th>MFO</th>
                                 <th>PAPS</th>
                                 <th>OUTPUT</th>
@@ -70,27 +70,23 @@
                                     <td>{{ item.performance }}</td>
                                     <td>{{ item.success_indicator }}</td>
                                     <td>{{ item.office_accountable }}</td>
-                                    <td class="p-0" style="flex: 1; position: relative; border: 1px solid #000;padding: 0;">
-                                        <div class="border-bottom border-dark text-center"
-                                            style="box-sizing: border-box; height: 20%; border-bottom: 1px solid #000; padding: 20%;"
-                                            v-for="(item, index1) in item.numerical_rating"
+                                    <td class="p-0">
+                                        <div class="border-bottom border-dark text-center" v-for="(item, index1) in item.numerical_rating"
                                             :key="index1">
                                                 {{ item }}
                                         </div>
                                     </td>
-                                    <td class="p-0" >
-                                        <div class="border-bottom border-dark text-center"
-                                            style="box-sizing: border-box; height: 20%; border-bottom: 1px solid #000; padding: 20%;"
-                                            v-for="(item, index2) in item.adjectival_rating" :key="index2">
+                                    <td class="p-0">
+                                        <div class="border-bottom border-dark text-center" v-for="(item, index2) in item.adjectival_rating" :key="index2">
                                                 {{ item }}
                                         </div>
                                     </td>
-                                    <td class="p-0 text-nowrap" style="flex: 1; position: relative; border: 1px solid #000;padding: 0;">
-                                        <div style="box-sizing: border-box; height: 20%; border-bottom: 1px solid #000; padding: 20%;" class="border-bottom border-dark text-center" v-for="(item, index3) in item.efficiency_quantity " :key="index3">
+                                    <td class="p-0">
+                                        <div class="border-bottom border-dark text-center" v-for="(item, index3) in item.efficiency_quantity " :key="index3">
                                             {{ item }}
                                         </div>
                                     </td>
-                                    <td>{{ item.rating_remarks }}</td>
+                                    <td class="custom-width">{{ item.rating_remarks }}</td>
                                     <td class="p-0"><div class="border-bottom border-dark text-center" v-for="(item, index4) in item.qualities " :key="index4">{{ item }}</div></td>
                                     <td>{{ item.quality_remarks }}</td>
                                     <td class="p-0 text-nowrap"><div class="border-bottom border-dark text-center" v-for="(item, index5) in item.timeliness " :key="index5">{{ item }}</div></td>
@@ -102,7 +98,7 @@
                     </table>
                 </div>
             </div>
-                <div class="row justify-content-center">
+                <!-- <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
                     </div>
@@ -114,7 +110,7 @@
                             {{ data.total }} entries
                         </p>
                     </div>
-                </div>
+                </div> -->
 
             </div>
         </div>
@@ -239,5 +235,9 @@ export default {
   left: 0;
   z-index: 1;
 
+}
+
+.custom-width{
+    width: 50px;
 }
 </style>
