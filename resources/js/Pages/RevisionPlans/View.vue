@@ -96,7 +96,7 @@
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">HGDG Checklist</th>
                                 <td colspan="3">GAD {{ paps.checklist.box_number }} {{ paps.checklist.sector }}</td>
-                                <th class="bg-secondary text-white" colspan="1">HGDG Score</th>
+                                <th class="bg-secondary text-white" colspan="1"><Link :href="`/HGDGScore/${paps.id}`" style="color:white">HGDG Score </Link></th>
                                 <td colspan="2">{{ paps.hgdg_score }} -<b>{{ GAD_remark(paps.hgdg_score) }}</b>
                                     <br>({{ paps.hgdg_percent*100 }}%)
                                 </td>

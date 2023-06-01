@@ -21,8 +21,9 @@ class HGDGScoreController extends Controller
         $count = $this->model->where('idrevplan',$idrevplan)->count();
         $revplan = RevisionPlan::find($idrevplan);
         $uid = auth()->user()->recid;
+
         //dd($uid);
-        //dd("revplan: ".$revplan->checklist_id);
+        //dd($revplan);
         $checklist_id=$revplan->checklist_id;
         $hgdg_checklist =HGDG_Checklist::find($checklist_id);
         $hgdg_questions=$this->getResults($request, $checklist_id);
@@ -70,11 +71,18 @@ class HGDGScoreController extends Controller
                     ];
                 });
         //dd($scores);
+        $idpaps=$revplan->idpaps;
+        $idmfo=$revplan->idmfo;
+        $scope=$revplan->scope;
         return inertia('hgdg_score/Index',[
             "questions"=>$scores,
             "checklist_id"=>$checklist_id,
             "hgdg_checklist"=>$hgdg_checklist,
             "idrevplan"=>$idrevplan,
+            "idpaps"=>$idpaps,
+            "idmfo"=>$idmfo,
+            "scope"=>$scope,
+            "FFUNCCOD"=>$revplan->FFUNCCOD,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -204,8 +212,15 @@ class HGDGScoreController extends Controller
             return redirect('/revision/general/administration/services/'.$rev_plan->FFUNCCOD.'/plan')
                 ->with('message','HGDG Evaluation Done');
         }else{
-            return redirect('/revision/'.$rev_plan->idpaps)
+            if($request->idpaps==0){
+                //dd('idpaps 0');
+                return redirect('/mforevision/'.$rev_plan->idmfo)
                 ->with('message','HGDG Evaluation Done');
+            }else{
+                return redirect('/revision/'.$rev_plan->idpaps)
+                ->with('message','HGDG Evaluation Done');
+            }
+
         }
 
     }
