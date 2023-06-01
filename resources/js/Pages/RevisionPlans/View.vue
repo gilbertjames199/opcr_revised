@@ -193,7 +193,9 @@
 
                                         </tr>
                                     </template>
-                                    <tr>
+
+                                </template>
+                                <tr>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -202,7 +204,6 @@
                                         <td></td>
                                         <td></td>
                                     </tr>
-                                </template>
                                 <!--********************-->
                             </tbody>
                         </table>

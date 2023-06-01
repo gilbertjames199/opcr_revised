@@ -4,9 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountAccess;
 use App\Models\MajorFinalOutput;
+use App\Models\Monitoring;
+use App\Models\OfficeAccountable;
+use App\Models\Output;
 use App\Models\ProgramAndProject;
+use App\Models\Quality;
+use App\Models\QualityRemarks;
+use App\Models\rating;
+use App\Models\RatingRemarks;
 use App\Models\RevisionPlan;
 use App\Models\Strategy;
+use App\Models\SuccessIndicator;
+use App\Models\Target;
+use App\Models\Timeliness;
+use App\Models\TimelinessRemarks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -182,9 +193,26 @@ class PAPController extends Controller
     {
         $count_rev = RevisionPlan::where('idpaps', $id)->count();
         $count_strat = Strategy::where('idpaps', $id)->count();
+        $count_success = SuccessIndicator::where('idpaps', $id)->count();
+        $count_targets =Target::where('idpdip', $id)->count();
+        $count_output =Output::where('idpaps', $id)->count();
+        $count_off = OfficeAccountable::where('idpaps', $id)->count();
+        $count_rating = rating::where('idpaps', $id)->count();
+        $count_rating_rem =RatingRemarks::where('idpaps', $id)->count();
+        $count_quality = Quality::where('idpaps', $id)->count();
+        $count_qual_rem = QualityRemarks::where('idpaps', $id)->count();
+        $count_time = Timeliness::where('idpaps', $id)->count();
+        $count_time_rem = TimelinessRemarks::where('idpaps', $id)->count();
+        $count_mon = Monitoring::where('idpaps', $id)->count();
+
         $msg="";
+
         $status ="";
-        if($count_rev>0 || $count_strat>0){
+        if($count_rev>0 || $count_strat>0 || $count_success>0 || $count_targets>0 ||
+            $count_output>0 || $count_off>0 || $count_rating>0 || $count_rating_rem>0 ||
+            $count_quality>0 || $count_qual_rem>0 || $count_time>0 || $count_time_rem>0 ||
+            $count_mon>0
+        ){
             $msg="Unable to delete!";
             $status ="error";
         }else{
