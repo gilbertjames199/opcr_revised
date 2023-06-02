@@ -201,7 +201,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
     }
     public function print_class(Request $request){
         $opcr_id=request('opcr_id');
-        dd($opcr_id);
+        //dsdd($opcr_id);
         $FFUNCCOD = $request->FFUNCCOD;
 
         $mooe=$request->mooe;
