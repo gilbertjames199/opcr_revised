@@ -199,4 +199,59 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     });
         return $mfos;
     }
+    public function print_class(Request $request){
+        $opcr_id=$request->opcr_id;
+        $FFUNCCOD = $request->FFUNCCOD;
+
+        $mooe=$request->mooe;
+        $ps =$request->ps;
+
+        //$opcr = $this->model->where('FFUNCCOD', $FFUNCCOD)->get();
+        $opcrs = $this->model->select('office_performance_commitment_ratings.id',
+                        'office_performance_commitment_ratings.success_indicator_id',
+                        'office_performance_commitment_ratings.accomplishments',
+                        'office_performance_commitment_ratings.rating_q',
+                        'office_performance_commitment_ratings.rating_e',
+                        'office_performance_commitment_ratings.rating_t',
+                        'office_performance_commitment_ratings.remarks',
+                        'office_performance_commitment_ratings.FFUNCCOD',
+                        'office_performance_commitment_ratings.opcr_id',
+                        'SU.success_indicator',
+                        'off.office_accountable',
+                        'PAPS.paps_desc',
+                        'mfo.mfo_desc',
+                        'mfo.created_at'
+                    )
+                    ->leftjoin('success_indicators AS SU','SU.id', 'office_performance_commitment_ratings.success_indicator_id')
+                    ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
+                    ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
+                    ->leftjoin('major_final_outputs AS mfo','mfo.id', 'PAPS.idmfo')
+                    ->orderBy('mfo.created_at', 'desc')
+                    ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
+                    ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
+                    ->get()
+                    ->map(function($item)use($mooe,$FFUNCCOD, $ps){
+                        return [
+                            "id"=>$item->id,
+                            "success_indicator_id"=>$item->success_indicator_id,
+                            "accomplishments"=>$item->accomplishments,
+                            "rating_q"=>$item->rating_q,
+                            "rating_e"=>$item->rating_e,
+                            "rating_t"=>$item->rating_t,
+                            "remarks"=>$item->remarks,
+                            "FFUNCCOD"=>$item->FFUNCCOD,
+                            "opcr_id"=>$item->opcr_id,
+                            "success_indicator"=>$item->success_indicator,
+                            "office_accountable"=>$item->office_accountable,
+                            "paps_desc"=>$item->paps_desc,
+                            "mfo_desc"=>$item->mfo_desc,
+                            "ps"=>$ps,
+                            "mooe"=>$mooe,
+                            "FFUNCCOD"=>$FFUNCCOD
+                        ];
+                    });
+        //return $opcrs;
+        //return $mfos;
+        return $opcrs;
+    }
 }
