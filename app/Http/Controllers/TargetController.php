@@ -118,7 +118,7 @@ class TargetController extends Controller
         }
 
         //dd('paps crfeate i');
-        $indicator=Indicator::select('id','description')->get();
+        $indicator=Indicator::select('id','description')->orderBy('description','ASC')->get();
         $mun=DB::table('municipalities')
             ->select('citymunDesc','citymunCode')
             ->get();
