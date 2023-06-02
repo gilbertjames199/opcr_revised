@@ -200,7 +200,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
         return $mfos;
     }
     public function print_class(Request $request){
-        $opcr_id=$request->opcr_id;
+        $opcr_id=request('opcr_id');
+        dd($opcr_id);
         $FFUNCCOD = $request->FFUNCCOD;
 
         $mooe=$request->mooe;
@@ -227,8 +228,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
                     ->leftjoin('major_final_outputs AS mfo','mfo.id', 'PAPS.idmfo')
                     ->orderBy('mfo.created_at', 'desc')
-                    ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
-                    ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
+                    // ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
+                    // ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
                     ->get()
                     ->map(function($item)use($mooe,$FFUNCCOD, $ps){
                         return [
