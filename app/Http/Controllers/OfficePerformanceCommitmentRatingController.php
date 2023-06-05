@@ -232,6 +232,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     // ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
                     ->get()
                     ->map(function($item)use($mooe,$FFUNCCOD, $ps){
+                        dd($item);
                         return [
                             "id"=>$item->id,
                             "success_indicator_id"=>$item->success_indicator_id,
