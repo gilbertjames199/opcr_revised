@@ -2080,6 +2080,22 @@ var map = {
 		"./resources/js/Pages/Monitoring/Index.vue",
 		"resources_js_Pages_Monitoring_Index_vue"
 	],
+	"./OPCR/Accomplishment/Create": [
+		"./resources/js/Pages/OPCR/Accomplishment/Create.vue",
+		"resources_js_Pages_OPCR_Accomplishment_Create_vue"
+	],
+	"./OPCR/Accomplishment/Create.vue": [
+		"./resources/js/Pages/OPCR/Accomplishment/Create.vue",
+		"resources_js_Pages_OPCR_Accomplishment_Create_vue"
+	],
+	"./OPCR/Accomplishment/Index": [
+		"./resources/js/Pages/OPCR/Accomplishment/Index.vue",
+		"resources_js_Pages_OPCR_Accomplishment_Index_vue"
+	],
+	"./OPCR/Accomplishment/Index.vue": [
+		"./resources/js/Pages/OPCR/Accomplishment/Index.vue",
+		"resources_js_Pages_OPCR_Accomplishment_Index_vue"
+	],
 	"./OPCR/Form/Create": [
 		"./resources/js/Pages/OPCR/Form/Create.vue",
 		"resources_js_Pages_OPCR_Form_Create_vue"
@@ -2127,6 +2143,22 @@ var map = {
 	"./OPCR/OPCR.vue": [
 		"./resources/js/Pages/OPCR/OPCR.vue",
 		"resources_js_Pages_OPCR_OPCR_vue"
+	],
+	"./OPCR/Target/Create": [
+		"./resources/js/Pages/OPCR/Target/Create.vue",
+		"resources_js_Pages_OPCR_Target_Create_vue"
+	],
+	"./OPCR/Target/Create.vue": [
+		"./resources/js/Pages/OPCR/Target/Create.vue",
+		"resources_js_Pages_OPCR_Target_Create_vue"
+	],
+	"./OPCR/Target/Index": [
+		"./resources/js/Pages/OPCR/Target/Index.vue",
+		"resources_js_Pages_OPCR_Target_Index_vue"
+	],
+	"./OPCR/Target/Index.vue": [
+		"./resources/js/Pages/OPCR/Target/Index.vue",
+		"resources_js_Pages_OPCR_Target_Index_vue"
 	],
 	"./OPCRPaps/Direct": [
 		"./resources/js/Pages/OPCRPaps/Direct.vue",
