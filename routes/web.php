@@ -603,7 +603,9 @@ Route::middleware('auth')->group(function() {
 });
 
 
-
+Route::prefix('printOPCR')->group(function(){
+    Route::get('/{idstrat}',[OPCRController::class,'OPCRprint']);
+});
 
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);
