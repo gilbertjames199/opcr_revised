@@ -600,6 +600,10 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'destroy']);
     });
 });
+
+
+
+
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);
     Route::get('/RaaoData/xyz',[RAAOController::class,'rrr']);

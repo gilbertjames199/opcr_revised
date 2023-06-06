@@ -35,16 +35,79 @@
             </Link> -->
         </div>
 
-        <div class="masonry-sizer col-md-6"></div>
-        <div class="masonry-item w-100">
+        <div class="col-12">
+        <div class="col bgc-white bd p-20">
+            <div class="table-responsive" id="draggableTable" ref="draggableTable">
+                <table class="table table-bordered border-dark table-hover">
+                    <thead class="bgc-grey-800 text-light  text-nowrap">
+                        <tr class="bg-secondary text-white text-center ">
+                                <th width="5%"><small>MFO</small></th>
+                                <th width="5%">PAPS</th>
+                                <th width="5%">OUTPUT</th>
+                                <th width="5%">Performance Measures</th>
+                                <th width="5%">Success Indicator<br>(Target + Measures)</th>
+                                <th width="5%">Office/<br>Individual Accountable</th>
+                                <th width="5%">Numerical Rating</th>
+                                <th width="5%">Adjectival Rating</th>
+                                <th width="5%">Efficiency Rating</th>
+                                <th width="5%">Remarks</th>
+                                <th width="5%">Quality</th>
+                                <th width="5%">Remarks</th>
+                                <th width="5%">Timeliness</th>
+                                <th width="5%">Remarks</th>
+                                <th width="30%">How to Monitor?</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <template v-for="(dat, key) in data" :key="key">
+                                <tr v-for="(item, index) in dat" :key="index">
+                                    <td :rowspan="dat.length" v-if="index==0">{{ key }}</td>
+                                    <td>{{ item.paps_desc }}</td>
+                                    <td>{{ item.Outputs }}</td>
+                                    <td>{{ item.performance }}</td>
+                                    <td>{{ item.success_indicator }}</td>
+                                    <td>{{ item.office_accountable }}</td>
+                                    <td class="p-0">
+                                        <div class="border-bottom border-dark text-center" v-for="(item, index1) in item.numerical_rating"
+                                            :key="index1">
+                                                {{ item }}
+                                        </div>
+                                    </td>
+                                    <td class="p-0">
+                                        <div class="border-bottom border-dark text-center" v-for="(item, index2) in item.adjectival_rating" :key="index2">
+                                                {{ item }}
+                                        </div>
+                                    </td>
+                                    <td class="p-0">
+                                        <div class="border-bottom border-dark text-center" v-for="(item, index3) in item.efficiency_quantity " :key="index3">
+                                            {{ item }}
+                                        </div>
+                                    </td>
+                                    <td>{{ item.rating_remarks }}</td>
+                                    <td class="p-0"><div class="border-bottom border-dark text-center" v-for="(item, index4) in item.qualities " :key="index4">{{ item }}</div></td>
+                                    <td>{{ item.quality_remarks }}</td>
+                                    <td class="p-0 text-nowrap"><div class="border-bottom border-dark text-center" v-for="(item, index5) in item.timeliness " :key="index5">{{ item }}</div></td>
+                                    <td>{{ item.timeliness_remarks }}</td>
+                                    <td>{{ item.monitoring }}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                        </table>
+                        </div>
+                        </div>
+                        </div>
+
+
+        <!-- <div class="masonry-item w-200">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
                 <div style="width: 100%; overflow-x: auto;">
                 <div class="table-responsive" id="draggableTable" ref="draggableTable" >
                     <table class="table table-sm table-bordered border-dark table-hover">
                         <thead>
-                            <tr class="bg-secondary text-white text-center text-nowrap">
-                                <th>MFO</th>
+                            <tr class="bg-secondary text-white text-center">
+                                <th><small>MFO</small></th>
                                 <th>PAPS</th>
                                 <th>OUTPUT</th>
                                 <th>Performance Measures</th>
@@ -86,10 +149,10 @@
                                             {{ item }}
                                         </div>
                                     </td>
-                                    <td class="custom-width">{{ item.rating_remarks }}</td>
+                                    <td>{{ item.rating_remarks }}</td>
                                     <td class="p-0"><div class="border-bottom border-dark text-center" v-for="(item, index4) in item.qualities " :key="index4">{{ item }}</div></td>
                                     <td>{{ item.quality_remarks }}</td>
-                                    <td class="p-0 text-nowrap"><div class="border-bottom border-dark text-center" v-for="(item, index5) in item.timeliness " :key="index5">{{ item }}</div></td>
+                                    <td ><div class="border-bottom border-dark text-center" v-for="(item, index5) in item.timeliness " :key="index5">{{ item }}</div></td>
                                     <td>{{ item.timeliness_remarks }}</td>
                                     <td>{{ item.monitoring }}</td>
                                 </tr>
@@ -97,7 +160,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> -->
                 <!-- <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
@@ -112,8 +175,8 @@
                     </div>
                 </div> -->
 
-            </div>
-        </div>
+            <!-- </div> -->
+        <!-- </div> -->
 
     </div>
 </template>
