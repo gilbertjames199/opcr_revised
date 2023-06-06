@@ -622,6 +622,12 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [OpcrAccomplishmentController::class, 'destroy']);
     });
 });
+
+
+Route::prefix('printOPCR')->group(function(){
+    Route::get('/{idstrat}',[OPCRController::class,'OPCRprint']);
+});
+
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);
     Route::get('/RaaoData/xyz',[RAAOController::class,'rrr']);
