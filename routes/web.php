@@ -68,6 +68,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
 use App\Models\IntermediateOutcome;
+use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\UserOffice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -678,4 +679,7 @@ Route::prefix('print')->group(function(){
     Route::get('/jasadmin',[RAAOController::class,'raao_jasper_admin']);
     Route::get('/jasuser',[RAAOController::class,'raao_jasper_user']);
     Route::get('/LogFrame/{FFUNCCOD}',[LogFrameController::class,'printLog']);
+});
+Route::prefix('opcr/print')->group(function(){
+    Route::get('/rating/form', [OfficePerformanceCommitmentRatingController::class,'print_class']);
 });
