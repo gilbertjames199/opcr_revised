@@ -7,6 +7,8 @@ use App\Models\MajorFinalOutput;
 use App\Models\OfficeAccountable;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
+use App\Models\OpcrAccomplishment;
+use App\Models\OpcrTarget;
 use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
 use App\Models\SuccessIndicator;
@@ -252,9 +254,57 @@ class OfficePerformanceCommitmentRatingController extends Controller
                             "FFUNCCOD"=>$FFUNCCOD
                         ];
                     });
+        $data=MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
+                        ->get()
+                        ->map(function($item)use($mooe, $ps, $opcr_id){
+                            $paps = ProgramAndProject::where('idmfo', $item->id)
+                                ->get()
+                                ->map(function($item)use($mooe, $ps, $opcr_id){
+                                    $success_indicator = SuccessIndicator::where("idpaps",$item->id)->get();
+                                    $off = OfficeAccountable::where("idpaps", $item->id)->get();
+                                    $office_accountable = $off->pluck('office_accountable');
+                                    $targets = OpcrTarget::select("opcr_accomplishments.actual_accomplishments",
+                                                "opcr_accomplishments.quantity",
+                                                "opcr_targets.target_success_indicator",
+                                                "opcr_targets.quantity AS target_quantity"
+                                                )
+                                                ->leftJoin("opcr_accomplishments", "opcr_accomplishments.opcr_target_id", "opcr_targets.id")
+                                                ->where("opcr_targets.idpaps", $item->id)
+                                                ->where("opcr_targets.office_performance_commitment_rating_list_id", $opcr_id)
+                                                ->get()
+                                                ->map(function($item){
+                                                    //$accomplishments = OpcrAccomplishment::where('opcr_target_id', $item->opcr_target_id)->first();
+                                                    return [
+                                                        'target_success_indicator'=>$item->target_success_indicator,
+                                                        'quantity'=>$item->target_quantity,
+                                                        'actual_accomplishment'=>$item->actual_accomplishments,
+                                                        'quantity_accomplished'=>$item->quantity,
+                                                    ];
+                                                });
+
+                                    return [
+                                        "paps"=>$item->paps_desc,
+                                        "success_indicator"=>$success_indicator,
+                                        "office_accountable"=>$office_accountable,
+                                        "targets"=>$targets,
+                                    ];
+                                });
+                            return [
+                                "mfo_id"=>$item->mfo_id,
+                                "mfo_desc"=>$item->mfo_desc,
+                                "mooe"=>$mooe,
+                                "ps"=>$ps,
+                                "paps"=>$paps,
+                            ];
+                        });
         //return $opcrs;
         //return $mfos;
         //dd($opcrs);
-        return $opcrs;
+        $datum =[
+            'mooe'=>$mooe,
+            'ps'=>$ps,
+            'mfo'=>$data
+        ];
+        return $datum;
     }
 }
