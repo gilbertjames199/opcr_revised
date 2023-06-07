@@ -56,6 +56,7 @@
                                             <li><Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">Edit</Link></li>
                                             <li><Link class="dropdown-item" :href="`/opcr/form/${opcr_list.id}/${FFUNCCOD}`">Rating</Link></li>
                                             <li><Link class="dropdown-item" :href="`/opcrtarget/${opcr_list.id}`">Target</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/opcraccomplishment/${opcr_list.id}`">Accomplishment</Link></li>
                                             <!-- <li><Link class="text-danger dropdown-item" @click="deleteRA(dat.id)">Delete</Link></li> -->
                                         </ul>
                                     </div>

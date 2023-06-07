@@ -63,7 +63,8 @@ __webpack_require__.r(__webpack_exports__);
         alert("Target");
       } else {
         if (this.editData !== undefined) {
-          this.form.patch("/opcrtarget", this.form);
+          //alert('update accompl');
+          this.form.patch("/opcraccomplishment", this.form);
         } else {
           this.form.post("/opcraccomplishment/store");
         }

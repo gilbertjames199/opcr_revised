@@ -55,9 +55,9 @@
                                     {{ dat.target_success_indicator }}
                                 </td>
                                 <td>{{ dat.target_quantity }}</td>
-                                <td>{{ dat.actual_accomplishments }} {{ dat.id }}</td>
-                                <td>{{  dat.quantity }}</td>
-                                <td>{{ getPercentage(dat.target_quantity, dat.quantity) }} %</td>
+                                <td>{{ dat.actual_accomplishments }} </td>
+                                <td>{{  dat.accomplishment_quantity }}</td>
+                                <td>{{ getPercentage(dat.target_quantity, dat.accomplishment_quantity) }} %</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -66,11 +66,11 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li v-if="dat.id"><Link class="dropdown-item" :href="`/opcrtarget/${dat.id}/edit`">Edit</Link></li>
-                                            <li v-if="dat.id"><Link class="text-danger dropdown-item" @click="deleteTarget(dat.id)">Delete </Link></li>
+                                            <li v-if="dat.id"><Link class="dropdown-item" :href="`/opcraccomplishment/${dat.id}/edit`">Edit</Link></li>
+                                            <li v-if="dat.id"><Link class="text-danger dropdown-item" @click="deleteAccomplishment(dat.id)">Delete </Link></li>
                                             <li>
-                                                <Link class="text-danger dropdown-item" @click="createAccomplishments(dat.idpaps, dat.idtarget)">
-                                                    Add Accomplishment {{ dat.idpaps }} - {{ dat.idtarget }}
+                                                <Link class="text-danger dropdown-item" @click="createAccomplishments(dat.idpaps, dat.idtarget, dat.actual_accomplishments)">
+                                                    Add Accomplishment <!-- {{ dat.idpaps }} - {{ dat.idtarget }} -->
                                                 </Link>
                                             </li>
                                             <!-- <li><Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">Edit</Link></li>
@@ -129,23 +129,29 @@ export default {
     methods:{
 
 
-        deleteTarget(id) {
+        deleteAccomplishment(id) {
             let text = "WARNING!\nAre you sure you want to delete the Target?";
               if (confirm(text) == true) {
-                this.$inertia.delete("/opcrtarget/" + id);
+                this.$inertia.delete("/opcraccomplishment/" + id);
             }
         },
-        createAccomplishments(idpaps, idtarget){
+        createAccomplishments(idpaps, idtarget, actual_accomp){
             //alert(idpaps);
             if(idtarget===null){
-                alert('This PPA has target! Add target for the PPA first!');
+                alert('This PPA has no target! Add target to this PPA first!');
             }else{
-                this.$inertia.get("/opcraccomplishment/create/" + this.opcr_list_id,
-                    {
-                        "idpaps": idpaps,
-                        "idtarget": idtarget,
-                    }
-                );
+                //alert(actual_accomp);
+                if(actual_accomp===""){
+                    this.$inertia.get("/opcraccomplishment/create/" + this.opcr_list_id,
+                        {
+                            "idpaps": idpaps,
+                            "idtarget": idtarget,
+                        }
+                    );
+                }else{
+                    alert("The target has already an accomplishment . Delete the accomplishment to add a new accomplishment!")
+                }
+
             }
 
         },
@@ -179,25 +185,28 @@ export default {
                 v_a=0;
             }
             if(v_t<1){
+                //alert("v_t: "+v_t);
+                v_t=1;
+            }
+            if(isNaN(v_t)){
                 v_t=1;
             }
             var ans = 100*(v_a/v_t);
             var rrr = this.format_number_conv(ans,2,true);
-            return v_a;
+            return rrr;
         },
         getRowspanTarget(row, ind){
             let count = 1;
             const index = ind;
 
             for (let i = parseFloat(index) + 1; i < this.data.length; i++) {
-                if (this.data[i].target_success_indicator === row) {
-                    //alert('equal '+this.opcrs[i].mfo_desc + '\n row: '+ row.mfo_length);
-                    count=parseFloat(count)+1;
-                } else {
-                    break;
-                }
+                    if (this.data[i].target_success_indicator === row) {
+                        //alert('equal '+this.opcrs[i].mfo_desc + '\n row: '+ row.mfo_length);
+                        count=parseFloat(count)+1;
+                    } else {
+                        break;
+                    }
             }
-
             return count;
         }
     }

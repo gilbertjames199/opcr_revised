@@ -31,22 +31,27 @@ __webpack_require__.r(__webpack_exports__);
     Filtering: _Shared_Filter__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   methods: {
-    deleteTarget: function deleteTarget(id) {
+    deleteAccomplishment: function deleteAccomplishment(id) {
       var text = "WARNING!\nAre you sure you want to delete the Target?";
 
       if (confirm(text) == true) {
-        this.$inertia["delete"]("/opcrtarget/" + id);
+        this.$inertia["delete"]("/opcraccomplishment/" + id);
       }
     },
-    createAccomplishments: function createAccomplishments(idpaps, idtarget) {
+    createAccomplishments: function createAccomplishments(idpaps, idtarget, actual_accomp) {
       //alert(idpaps);
       if (idtarget === null) {
-        alert('This PPA has target! Add target for the PPA first!');
+        alert('This PPA has no target! Add target to this PPA first!');
       } else {
-        this.$inertia.get("/opcraccomplishment/create/" + this.opcr_list_id, {
-          "idpaps": idpaps,
-          "idtarget": idtarget
-        });
+        //alert(actual_accomp);
+        if (actual_accomp === "") {
+          this.$inertia.get("/opcraccomplishment/create/" + this.opcr_list_id, {
+            "idpaps": idpaps,
+            "idtarget": idtarget
+          });
+        } else {
+          alert("The target has already an accomplishment . Delete the accomplishment to add a new accomplishment!");
+        }
       }
     },
     getRowspanPaps: function getRowspanPaps(row, ind) {
@@ -81,12 +86,17 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (v_t < 1) {
+        //alert("v_t: "+v_t);
+        v_t = 1;
+      }
+
+      if (isNaN(v_t)) {
         v_t = 1;
       }
 
       var ans = 100 * (v_a / v_t);
       var rrr = this.format_number_conv(ans, 2, true);
-      return v_a;
+      return rrr;
     },
     getRowspanTarget: function getRowspanTarget(row, ind) {
       var count = 1;
@@ -272,7 +282,9 @@ var _hoisted_23 = {
 
 var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Delete ");
 
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add Accomplishment ");
+
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -280,7 +292,7 @@ var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -341,15 +353,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT, PROPS */
     , _hoisted_17)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.target_quantity), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.actual_accomplishments) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.id), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.actual_accomplishments), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.quantity), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.accomplishment_quantity), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentage(dat.target_quantity, dat.quantity)) + " %", 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentage(dat.target_quantity, dat.accomplishment_quantity)) + " %", 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_20, [dat.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "dropdown-item",
-      href: "/opcrtarget/".concat(dat.id, "/edit")
+      href: "/opcraccomplishment/".concat(dat.id, "/edit")
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
         return [_hoisted_22];
@@ -362,7 +374,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["href"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), dat.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "text-danger dropdown-item",
       onClick: function onClick($event) {
-        return $options.deleteTarget(dat.id);
+        return $options.deleteAccomplishment(dat.id);
       }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -376,13 +388,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "text-danger dropdown-item",
       onClick: function onClick($event) {
-        return $options.createAccomplishments(dat.idpaps, dat.idtarget);
+        return $options.createAccomplishments(dat.idpaps, dat.idtarget, dat.actual_accomplishments);
       }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add Accomplishment " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.idpaps) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.idtarget), 1
-        /* TEXT */
-        )];
+        return [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dat.idpaps }} - {{ dat.idtarget }} ")];
       }),
       _: 2
       /* DYNAMIC */
@@ -392,7 +402,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"dropdown-item\" :href=\"`/opcrlist/${opcr_list.id}/edit`\">Edit</Link></li>\n                                            <li><Link class=\"dropdown-item\" :href=\"`/opcr/form/${opcr_list.id}/${FFUNCCOD}`\">Rating</Link></li>\n                                            <li><Link class=\"dropdown-item\" :href=\"`/opcrtarget/${opcr_list.id}`\">Target</Link></li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ")])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])]), _hoisted_25, _hoisted_26])])])], 64
+  ))])])]), _hoisted_26, _hoisted_27])])])], 64
   /* STABLE_FRAGMENT */
   );
 }
