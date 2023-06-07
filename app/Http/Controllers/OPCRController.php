@@ -155,12 +155,12 @@ class OPCRController extends Controller
                     'ratings.numerical_rating',
                     'ratings.adjectival_rating',
                     'ratings.efficiency_quantity',
-                    'rating_remarks.rating_remarks',
-                    'qualities.qualities',
-                    'quality_remarks.quality_remarks',
-                    'timelinesses.timeliness',
-                    'timeliness_remarks.timeliness_remarks',
-                    'monitorings.monitoring'
+                    // 'rating_remarks.rating_remarks',
+                    // 'qualities.qualities',
+                    // 'quality_remarks.quality_remarks',
+                    // 'timelinesses.timeliness',
+                    // 'timeliness_remarks.timeliness_remarks',
+                    // 'monitorings.monitoring'
                     )
                     // ->selectRaw("
                     // GROUP_CONCAT(DISTINCT ratings.numerical_rating SEPARATOR ',') AS numerical_ratings
@@ -170,28 +170,28 @@ class OPCRController extends Controller
                     ->leftJoin('performances', 'program_and_projects.id', '=', 'performances.idpaps')
                     ->leftJoin('success_indicators', 'program_and_projects.id', '=', 'success_indicators.idpaps')
                     ->leftJoin('office_accountables', 'program_and_projects.id', '=', 'office_accountables.idpaps')
-                    ->leftJoinSub($ratingSub, 'ratings', 'program_and_projects.id', '=', 'ratings.idpaps')
-                    ->leftJoin('rating_remarks', 'program_and_projects.id', '=', 'rating_remarks.idpaps')
-                    ->leftJoinSub($qualitySub, 'qualities', 'program_and_projects.id', '=', 'qualities.idpaps')
-                    ->leftJoin('quality_remarks', 'program_and_projects.id', '=', 'quality_remarks.idpaps')
-                    ->leftJoinSub($timelinessSub, 'timelinesses', 'program_and_projects.id', '=', 'timelinesses.idpaps')
-                    ->leftJoin('timeliness_remarks', 'program_and_projects.id', '=', 'timeliness_remarks.idpaps')
-                    ->leftJoin('monitorings', 'program_and_projects.id', '=', 'monitorings.idpaps')
+                    ->leftJoin('ratings', 'program_and_projects.id', '=', 'ratings.idpaps')
+                    // ->leftJoin('rating_remarks', 'program_and_projects.id', '=', 'rating_remarks.idpaps')
+                    // ->leftJoinSub($qualitySub, 'qualities', 'program_and_projects.id', '=', 'qualities.idpaps')
+                    // ->leftJoin('quality_remarks', 'program_and_projects.id', '=', 'quality_remarks.idpaps')
                     // ->leftJoinSub($timelinessSub, 'timelinesses', 'program_and_projects.id', '=', 'timelinesses.idpaps')
-                    ->get()
-                    ->groupBy('mfo_desc');
-                    // dd($results);
-                    foreach ($results as $key => $row) {
+                    // ->leftJoin('timeliness_remarks', 'program_and_projects.id', '=', 'timeliness_remarks.idpaps')
+                    // ->leftJoin('monitorings', 'program_and_projects.id', '=', 'monitorings.idpaps')
+                    ->get();
 
-                    foreach ($row as $key => $value) {
-                        // dd($value['numerical_ratings']);
-                        $value->numerical_rating = explode(',',$value->numerical_rating);
-                        $value->adjectival_rating = explode(',',$value->adjectival_rating);
-                        $value->efficiency_quantity = explode(',',$value->efficiency_quantity);
-                        $value->qualities = explode(',',$value->qualities);
-                        $value->timeliness = explode(',', $value->timeliness);
-                    }
-                 }
+                    // ->groupBy('mfo_desc')
+                    // dd($results);
+                //     foreach ($results as $key => $row) {
+
+                //     foreach ($row as $key => $value) {
+                //         // dd($value['numerical_ratings']);
+                //         $value->numerical_rating = explode(',',$value->numerical_rating);
+                //         $value->adjectival_rating = explode(',',$value->adjectival_rating);
+                //         $value->efficiency_quantity = explode(',',$value->efficiency_quantity);
+                //         $value->qualities = explode(',',$value->qualities);
+                //         $value->timeliness = explode(',', $value->timeliness);
+                //     }
+                //  }
                 // dd($results);
                  return $results;
             }
