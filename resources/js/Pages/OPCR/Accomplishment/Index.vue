@@ -127,8 +127,6 @@ export default {
     },
 
     methods:{
-
-
         deleteAccomplishment(id) {
             let text = "WARNING!\nAre you sure you want to delete the Target?";
               if (confirm(text) == true) {
