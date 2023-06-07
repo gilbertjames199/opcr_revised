@@ -178,7 +178,7 @@ class OPCRController extends Controller
             ->leftJoin('monitorings', 'program_and_projects.id', '=', 'monitorings.idpaps')
             // ->leftJoinSub($timelinessSub, 'timelinesses', 'program_and_projects.id', '=', 'timelinesses.idpaps')
             ->get()
-            ->groupBy('mfo_desc');
+            ->groupBy('paps_desc');
             // dd($results);
         foreach ($results as $key => $row) {
 
