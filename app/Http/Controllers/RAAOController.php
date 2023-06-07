@@ -667,6 +667,8 @@ class RAAOController extends Controller
         return $targ_qty1;
     }
     public function raao_jasper_3(Request $request){
+        // ->Join(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
+        //             ->Join(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
         $data_new=DB::connection('mysql2')
                     ->table(DB::raw('(select raaohs.tyear,
                                     raaohs.aipcode,
@@ -691,8 +693,8 @@ class RAAOController extends Controller
                             DB::raw('group_concat(i.description) as description'),
                             DB::raw('(100*(b.obligations/b.appropriation)) as utilization'))
                     ->leftJoin(DB::raw('(select idraao,sum(if(entrytype=\'1\', famount,0)) as appropriation ,sum(if(entrytype=\'3\', famount,0)) as obligations from raaods group by idraao) b'),'a.recid','=','b.idraao')
-                    ->Join(DB::raw('rrr.targets t'),'t.idraao','=','b.idraao')
-                    ->Join(DB::raw('rrr.indicators i'),'t.idindicator','=','i.id')
+                    ->Join(DB::raw('eppdo.targets t'),'t.idraao','=','b.idraao')
+                    ->Join(DB::raw('eppdo.indicators i'),'t.idindicator','=','i.id')
                     ->groupBy('a.recid')
                     ->get()
                     ->map(function($item){
