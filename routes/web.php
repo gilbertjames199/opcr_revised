@@ -64,11 +64,14 @@ use App\Http\Controllers\QualityRemarksController;
 use App\Http\Controllers\RatingRemarksController;
 use App\Http\Controllers\TimelinessRemarksController;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\OpcrAccomplishmentController;
+use App\Http\Controllers\OpcrTargetController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
 use App\Models\IntermediateOutcome;
 use App\Models\OfficePerformanceCommitmentRating;
+use App\Models\OpcrAccomplishment;
 use App\Models\UserOffice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -600,7 +603,31 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'update']);
         Route::delete('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'destroy']);
     });
+    //OPCR Target
+    Route::prefix('opcrtarget')->group(function(){
+        Route::get('/{opcr_list_id}',[OpcrTargetController::class,'index']);
+        Route::get('/create/{opcr_list_id}',[OpcrTargetController::class,'create']);
+        Route::post('/store',[OpcrTargetController::class,'store']);
+        Route::get('/{opcr_list_id}/edit', [OpcrTargetController::class, 'edit']);
+        Route::patch('/', [OpcrTargetController::class, 'update']);
+        Route::delete('/{id}', [OpcrTargetController::class, 'destroy']);
+    });
+    //OPCR Accomplishment
+    Route::prefix('opcraccomplishment')->group(function(){
+        Route::get('/{opcr_list_id}',[OpcrAccomplishmentController::class,'index']);
+        Route::get('/create/{opcr_list_id}',[OpcrAccomplishmentController::class,'create']);
+        Route::post('/store',[OpcrAccomplishmentController::class,'store']);
+        Route::get('/{opcr_list_id}/edit', [OpcrAccomplishmentController::class, 'edit']);
+        Route::patch('/', [OpcrAccomplishmentController::class, 'update']);
+        Route::delete('/{id}', [OpcrAccomplishmentController::class, 'destroy']);
+    });
 });
+
+
+Route::prefix('printOPCR')->group(function(){
+    Route::get('/{idstrat}',[OPCRController::class,'OPCRprint']);
+});
+
 Route::prefix('print')->group(function(){
     Route::get('/RaaoData2',[RAAOController::class,'raao_jasper']);
     Route::get('/RaaoData/xyz',[RAAOController::class,'rrr']);
