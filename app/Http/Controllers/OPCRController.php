@@ -135,7 +135,6 @@ class OPCRController extends Controller
             GROUP_CONCAT(adjectival_rating SEPARATOR ',') as adjectival_rating,
             GROUP_CONCAT(efficiency_quantity SEPARATOR ',') as efficiency_quantity
             FROM `ratings` GROUP BY idpaps";
-
         $qualitySub = "SELECT
             idpaps,
             GROUP_CONCAT(quality SEPARATOR ',') as qualities
@@ -179,7 +178,7 @@ class OPCRController extends Controller
             ->leftJoin('monitorings', 'program_and_projects.id', '=', 'monitorings.idpaps')
             // ->leftJoinSub($timelinessSub, 'timelinesses', 'program_and_projects.id', '=', 'timelinesses.idpaps')
             ->get()
-            ->groupBy('mfo_desc');
+            ->groupBy('paps_desc');
             // dd($results);
         foreach ($results as $key => $row) {
 
