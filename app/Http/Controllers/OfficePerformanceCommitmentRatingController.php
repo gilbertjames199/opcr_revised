@@ -557,11 +557,29 @@ class OfficePerformanceCommitmentRatingController extends Controller
         ];
     }
     public function print_mfo(Request $request){
-        $mfos = MajorFinalOutput::where('FFUNCCOD', $request->FFUNCCOD)->get();
+        $mfos = MajorFinalOutput::where('FFUNCCOD', $request->FFUNCCOD)
+                ->get()
+                ->map(function($item)use($request){
+                    return [
+                        'idmfo'=>$item->id,
+                        'mfo_desc'=>$request->item_desc,
+                        'FFUNCCOD'=>$request->FFUNCCOD,
+                        'opcr_id'=>$request->opcr_id,
+                    ];
+                });
         return $mfos;
     }
     public function print_paps(Request $request){
-        $paps = ProgramAndProject::where('idmfo', $request->id)->get();
+        $paps = ProgramAndProject::where('idmfo', $request->idmfo)
+                ->get()
+                ->map(function($item)use($request){
+                    return [
+                        'idpaps'=>$item->id,
+                        'paps_desc'=>$item->paps_desc,
+                        'FFUNCCOD'=>$request->FFUNCCOD,
+                        'opcr_id'=>$request->opcr_id,
+                    ];
+                });
         return $paps;
     }
     public function print_success_targets(Request $request){
