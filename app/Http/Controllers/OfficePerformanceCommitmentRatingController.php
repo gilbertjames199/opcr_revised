@@ -129,10 +129,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //return $opcrs;
         //return $mfos;
         //********************************************** */
-        $head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+        $dept_head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
                         ->where('role','like','%Department Head%')
-                        ->first();
-        $dept_head = Str::upper($head->name);
+                        ->first()->name;
+        //$dept_head = Str::upper($head->name);
         $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
         $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
         $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
