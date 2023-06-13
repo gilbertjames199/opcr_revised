@@ -169,10 +169,15 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 export default {
     props: {
-        opcrs: Object,
+        opcr_id: String,
         FFUNCCOD: String,
         mooe: Number,
         ps: Number,
+        opcr_date: String,
+        ave: String,
+        total: String,
+        dept_head: String,
+        opcrs: Object,
     },
     data() {
         return{

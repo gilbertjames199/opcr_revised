@@ -705,4 +705,5 @@ Route::prefix('print')->group(function(){
 });
 Route::prefix('opcr/print')->group(function(){
     Route::get('/rating/form', [OfficePerformanceCommitmentRatingController::class,'print_class']);
+    Route::get('/rating', [OfficePerformanceCommitmentRatingController::class,'print_class3']);
 });

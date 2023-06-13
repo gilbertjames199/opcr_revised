@@ -19,10 +19,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    opcrs: Object,
+    opcr_id: String,
     FFUNCCOD: String,
     mooe: Number,
-    ps: Number
+    ps: Number,
+    opcr_date: String,
+    ave: String,
+    total: String,
+    dept_head: String,
+    opcrs: Object
   },
   data: function data() {
     return {
