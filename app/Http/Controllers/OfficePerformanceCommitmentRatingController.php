@@ -128,8 +128,41 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     ->get();
         //return $opcrs;
         //return $mfos;
+        //********************************************** */
+        $head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                        ->where('role','like','%Department Head%')
+                        ->first();
+        $dept_head = Str::upper($head->name);
+        $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+        $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+        $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+        $start = $dateStart->format('F');
+        $end= $dateEnd->format('F Y');
+        $opcr_date=$start." to ".$end;
+        $opcr_date = Str::upper($opcr_date);
+        //dd($opcr_date);
+        //$date_now = Carbon::now()->format('F d, Y');
+
+        $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
+                        ->where('opcr_id', $opcr_id)
+                        ->first()->average_sum;
+        $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+
+        $total = number_format($averageSum,2);
+        $ave_pre = $total/$count;
+        $ave = number_format($ave_pre,2);
+        //dd($ave);
+
+        //********************************************* */
         return inertia('OPCR/Form/Index',[
-            "opcrs"=>$opcrs,
+            'total'=>$total,
+            'ave'=>$ave,
+            'dept_head'=>$dept_head,
+            'opcr_date'=>$opcr_date,
+            'opcr_id'=>$opcr_id,
+            'mooe'=>$mooe,
+            'ps'=>$ps,
+            'opcrs'=>$opcrs,
             "FFUNCCOD"=>$FFUNCCOD,
             "mooe"=>$mooe,
             "ps"=>$ps,
@@ -211,17 +244,29 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // $ps=$request->ps;
         // $FFUNCCOD=$request->FFUNCCOD;
         //dsdd($opcr_id);
-        //dd("print class");
-        $total=$request->total;
-        $ave=$request->ave;
-        $dept_head=$request->dept_head;
+        //dd("print class");\
 
-        $opcr_date=$request->opcr_date;
+        // $total=$request->total;
+        // $ave=$request->ave;
+        // $dept_head=$request->dept_head;
 
-        $mooe=$request->mooe;
-        $ps =$request->ps;
-        $FFUNCCOD = $request->FFUNCCOD;
-        $opcr_id=$request->opcr_id;
+        // $opcr_date=$request->opcr_date;
+
+        // $mooe=$request->mooe;
+        // $ps =$request->ps;
+        // $FFUNCCOD = $request->FFUNCCOD;
+        // $opcr_id=$request->opcr_id;
+
+        $total="55";
+        $ave="3.0";
+        $dept_head="JOYZEL R. ODI";
+
+        $opcr_date="JULY TO DECEMBER 2023";
+
+        $mooe="8,951,455.00";
+        $ps ="4,533,455.00";
+        $FFUNCCOD = "1121";
+        $opcr_id="2";
 
         // $head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
         //                 ->where('role','like','%Department Head%')
@@ -299,6 +344,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //return $opcrs;
         //return $mfos;
         //dd($opcrs);
+
         $datum =[
             'total'=>$total,
             'ave'=>$ave,
@@ -307,7 +353,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'opcr_date'=>$opcr_date,
             'mooe'=>$mooe,
             'ps'=>$ps,
-            'mfo'=>$data
+            'mfo'=>$data,
+            'FFUNCCOD'=>$FFUNCCOD,
+            'opcr_id'=>$opcr_id,
         ];
         return $datum;
     }
@@ -402,5 +450,74 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'mfo'=>$data
         ];
         return $datum;
+    }
+    public function print_class3(Request $request){
+        // $total=$request->total;
+        // $ave=$request->ave;
+        // $dept_head=$request->dept_head;
+
+        // $opcr_date=$request->opcr_date;
+
+        // $mooe=$request->mooe;
+        // $ps =$request->ps;
+        // $FFUNCCOD = $request->FFUNCCOD;
+        // $opcr_id=$request->opcr_id;
+        // $dept_name= $request->dept_name;
+        $total="55";
+        $ave="3.0";
+        $dept_head="JOYZEL R. ODI";
+
+        $opcr_date="JULY TO DECEMBER 2023";
+
+        $mooe="8,951,455.00";
+        $ps ="4,533,455.00";
+        $FFUNCCOD = "1121";
+        $opcr_id="2";
+        $dept_name="Department Name";
+        $data = ProgramAndProject::select('major_final_outputs.mfo_desc',
+                    'opcr_targets.target_success_indicator',
+                    'office_performance_commitment_ratings.rating_t',
+                    'office_performance_commitment_ratings.rating_e',
+                    'office_performance_commitment_ratings.rating_q',
+                    'office_performance_commitment_ratings.remarks',
+                    'office_accountables.office_accountable',
+                    'opcr_accomplishments.actual_accomplishments',
+                )
+                ->where('program_and_projects.FFUNCCOD', $FFUNCCOD)
+                ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
+                ->leftjoin('success_indicators','success_indicators.idpaps','program_and_projects.id')
+                ->leftjoin('office_performance_commitment_ratings',
+                    'office_performance_commitment_ratings.success_indicator_id',
+                    'success_indicators.id'
+                )
+                ->leftjoin('opcr_targets', 'opcr_targets.idpaps','program_and_projects.id')
+                ->leftjoin('opcr_accomplishments', 'opcr_accomplishments.idpaps','program_and_projects.id')
+                ->leftjoin('office_accountables', 'office_accountables.idpaps', 'program_and_projects.id')
+                ->join('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
+                ->orderBy('major_final_outputs.mfo_desc', 'asc')
+                ->orderBy('program_and_projects.paps_desc','asc')
+                ->get()
+                ->map(function($item)use($total, $ave, $dept_name, $dept_head, $opcr_date, $mooe, $ps, $FFUNCCOD, $opcr_id){
+                    return [
+                        "total"=>$total,
+                        "ave"=>$ave,
+                        "dept_head"=>$dept_head,
+                        "opcr_date"=>$opcr_date,
+                        "mooe"=>$mooe,
+                        "ps"=>$ps,
+                        "FFUNCCOD"=>$FFUNCCOD,
+                        "opcr_id"=>$opcr_id,
+                        "mfo_desc"=>$item->mfo_desc,
+                        "target_success_indicator"=>$item->target_success_indicator,
+                        "rating_t"=>$item->rating_t,
+                        "rating_e"=>$item->rating_e,
+                        "rating_q"=>$item->rating_q,
+                        "remarks"=>$item->remarks,
+                        "office_accountable"=>$item->office_accountable,
+                        "actual_accomplishments"=>$item->actual_accomplishments,
+                        "dept_name"=>$dept_name
+                    ];
+                });
+        return $data;
     }
 }
