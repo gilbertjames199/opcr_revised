@@ -520,4 +520,72 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 });
         return $data;
     }
+    public function print_main(Request $request){
+        $total=$request->total;
+        $ave=$request->ave;
+        $dept_head=$request->dept_head;
+
+        $opcr_date=$request->opcr_date;
+
+        $mooe=$request->mooe;
+        $ps =$request->ps;
+        $FFUNCCOD = $request->FFUNCCOD;
+        $opcr_id=$request->opcr_id;
+
+        // $total="55";
+        // $ave="3.0";
+        // $dept_head="JOYZEL R. ODI";
+
+        // $opcr_date="JULY TO DECEMBER 2023";
+
+        // $mooe="8,951,455.00";
+        // $ps ="4,533,455.00";
+        // $FFUNCCOD = "1121";
+        // $opcr_id="2";
+
+        $date_now = Carbon::now()->format('F d, Y');
+        return [
+            'total'=>$total,
+            'ave'=>$ave,
+            'dept_head'=>$dept_head,
+            'date_now'=>$date_now,
+            'opcr_date'=>$opcr_date,
+            'mooe'=>$mooe,
+            'ps'=>$ps,
+            'FFUNCCOD'=>$FFUNCCOD,
+            'opcr_id'=>$opcr_id,
+        ];
+    }
+    public function print_mfo(Request $request){
+        $mfos = MajorFinalOutput::where('FFUNCCOD', $request->FFUNCCOD)->get();
+        return $mfos;
+    }
+    public function print_paps(Request $request){
+        $paps = ProgramAndProject::where('idmfo', $request->id)->get();
+        return $paps;
+    }
+    public function print_success_targets(Request $request){
+        $idpaps = $request->id;
+        $opcr_id= $request->opcr_id;
+
+        $targets = OpcrTarget::select("opcr_accomplishments.actual_accomplishments",
+                        "opcr_accomplishments.quantity",
+                        "opcr_targets.target_success_indicator",
+                        "opcr_targets.quantity AS target_quantity"
+                        )
+                        ->leftJoin("opcr_accomplishments", "opcr_accomplishments.opcr_target_id", "opcr_targets.id")
+                        ->where("opcr_targets.idpaps", $idpaps)
+                        ->where("opcr_targets.office_performance_commitment_rating_list_id", $opcr_id)
+                        ->get()
+                        ->map(function($item){
+                            //$accomplishments = OpcrAccomplishment::where('opcr_target_id', $item->opcr_target_id)->first();
+                            return [
+                                'target_success_indicator'=>$item->target_success_indicator,
+                                'quantity'=>$item->target_quantity,
+                                'actual_accomplishment'=>$item->actual_accomplishments,
+                                'quantity_accomplished'=>$item->quantity,
+                            ];
+                        });
+        return $targets;
+    }
 }
