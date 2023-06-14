@@ -166,7 +166,12 @@ createInertiaApp({
                         "2098",
                         "2099",
                         "2100",
-                ]
+                ],
+                get jasper_ip() {
+                    var lo="http://192.168.6.23:8080/";
+                    var gl="http://122.54.19.171:8080/";
+                    return gl;
+                },
             }
         },
         methods: {
