@@ -546,6 +546,18 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $total = number_format($averageSum,2);
         $ave_pre = $total/$count;
         $ave = number_format($ave_pre,2);
+
+        //PG Department Head
+        //********************************************** */
+        $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                        ->where('role','like','%Department Head%')
+                        ->count();
+        $dept_head="N/A";
+        if($count_pgdh>0){
+            $dept_head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                        ->where('role','like','%Department Head%')
+                        ->first()->name;
+        }
         // $total="55";
         // $ave="3.0";
         // $dept_head="JOYZEL R. ODI";
