@@ -558,6 +558,42 @@ class OfficePerformanceCommitmentRatingController extends Controller
                         ->where('role','like','%Department Head%')
                         ->first()->name;
         }
+
+        //OPCR LIST
+        $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+
+        //OPCR DATE
+        $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+        $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+        $start = $dateStart->format('F');
+        $end= $dateEnd->format('F Y');
+        $opcr_date=$start." to ".$end;
+        $opcr_date = Str::upper($opcr_date);
+
+        //YEAR NOW
+        $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
+
+        //REVISION PLAN ID/ GET MOOE & PS
+        $revision_plan = RevisionPlan::where('idmfo','0')
+                            ->where('idpaps','0')
+                            ->where('FFUNCCOD', $FFUNCCOD)
+                            ->where('year_period', $my_year)
+                            ->first();
+        $mooe="0.00";
+        $ps = "0.00";
+        if($revision_plan){
+            $mooe = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->sum('amount');
+
+            $ps =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                    ->where('category','Personnel Services')
+                    ->sum('amount');
+
+        }else{
+            //dd("empty no ps budget");
+        }
+
         // $total="55";
         // $ave="3.0";
         // $dept_head="JOYZEL R. ODI";
