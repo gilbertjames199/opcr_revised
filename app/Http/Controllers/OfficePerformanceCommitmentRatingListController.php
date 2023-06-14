@@ -80,8 +80,8 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                                         ->sum('amount');
                                 $mooe2 = number_format($mooe1,2);
                                 $ps2 = number_format($ps1, 2);
-                                $mooe = number_format(($mooe2/2),2,'.','');
-                                $ps = number_format(($ps2/2),2,'.','');
+                                $mooe = number_format(($mooe2/2),2);
+                                $ps = number_format(($ps2/2),2);
                             }else{
                                 //dd("empty no ps budget");
                             }
