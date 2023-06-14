@@ -710,6 +710,8 @@ Route::prefix('opcr/print')->group(function(){
     Route::get('/mfo', [OfficePerformanceCommitmentRatingController::class,'print_mfo']);
     Route::get('/paps', [OfficePerformanceCommitmentRatingController::class,'print_paps']);
     Route::get('/targets', [OfficePerformanceCommitmentRatingController::class,'print_success_targets']);
+    Route::get('/rating', [OfficePerformanceCommitmentRatingController::class,'print_rating']);
+    Route::get('/office', [OfficePerformanceCommitmentRatingController::class,'print_office']);
 });
 
 

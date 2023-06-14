@@ -562,7 +562,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 ->map(function($item)use($request){
                     return [
                         'idmfo'=>$item->id,
-                        'mfo_desc'=>$request->item_desc,
+                        'mfo_desc'=>$item->mfo_desc,
                         'FFUNCCOD'=>$request->FFUNCCOD,
                         'opcr_id'=>$request->opcr_id,
                     ];
@@ -583,7 +583,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         return $paps;
     }
     public function print_success_targets(Request $request){
-        $idpaps = $request->id;
+        $idpaps = $request->idpaps;
         $opcr_id= $request->opcr_id;
 
         $targets = OpcrTarget::select("opcr_accomplishments.actual_accomplishments",
@@ -605,5 +605,37 @@ class OfficePerformanceCommitmentRatingController extends Controller
                             ];
                         });
         return $targets;
+    }
+    
+    public function print_rating(Request $request){
+        $idpaps = $request->idpaps;
+        $opcr_id= $request->opcr_id;
+        $success_indicator = SuccessIndicator::where("idpaps",$idpaps)
+                                ->where('opcr_id', $opcr_id)
+                                ->join('office_performance_commitment_ratings',
+                                        'office_performance_commitment_ratings.success_indicator_id',
+                                        'success_indicators.id'
+                                    )
+                                ->get()
+                                ->map(function($item){
+                                    $rating_q=number_format($item->rating_q,2);
+                                    $rating_e=number_format($item->rating_e,2);
+                                    $rating_t=number_format($item->rating_t,2);
+                                    $sum = ($rating_e+$rating_q+$rating_t)/3;
+                                    $ave=number_format($sum,2,'.','');
+                                    return [
+                                        'rating_q'=>$rating_q,
+                                        'rating_e'=>$rating_e,
+                                        'rating_t'=>$rating_t,
+                                        'ave'=>$ave,
+                                        'remarks'=>$item->remarks,
+                                    ];
+                                });
+        return $success_indicator;
+    }
+    public function print_office(Request $request){
+        $idpaps = $request->idpaps;
+        $office_accountable = OfficeAccountable::where('idpaps', $idpaps)->get();
+        return $office_accountable;
     }
 }
