@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FFUNCCOD;
+use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,10 +21,22 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                         ->orderBy('semester', 'desc')
                         ->get();
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
+
+        //TOTAL AND AVERAGE
+
+
+
+        // 'total'=>$total,
+        //     'ave'=>$ave,
+        //     'dept_head'=>$dept_head,
+        //     'opcr_date'=>$opcr_date,
+        //     'mooe'=>$mooe,
+        //     'ps'=>$ps,
         return inertia('OPCR/List/Index',[
             "opcr_lists"=>$opcr_lists,
             "FFUNCCOD"=>$FFUNCCOD,
             "office"=>$office,
+
             // 'can'=>[
             //     'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
             //     'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

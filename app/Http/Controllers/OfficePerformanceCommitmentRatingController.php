@@ -129,9 +129,16 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //return $opcrs;
         //return $mfos;
         //********************************************** */
-        $dept_head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+        $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                        ->where('role','like','%Department Head%')
+                        ->count();
+        $dept_head="N/A";
+        if($count_pgdh>0){
+            $dept_head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
                         ->where('role','like','%Department Head%')
                         ->first()->name;
+        }
+
         //$dept_head = Str::upper($head->name);
         $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
         $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
@@ -164,8 +171,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'ps'=>$ps,
             'opcrs'=>$opcrs,
             "FFUNCCOD"=>$FFUNCCOD,
-            "mooe"=>$mooe,
-            "ps"=>$ps,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -532,6 +537,15 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $FFUNCCOD = $request->FFUNCCOD;
         $opcr_id=$request->opcr_id;
 
+        //TOTAL & AVERAGE
+        $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
+                        ->where('opcr_id', $opcr_id)
+                        ->first()->average_sum;
+        $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+
+        $total = number_format($averageSum,2);
+        $ave_pre = $total/$count;
+        $ave = number_format($ave_pre,2);
         // $total="55";
         // $ave="3.0";
         // $dept_head="JOYZEL R. ODI";
@@ -606,7 +620,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                         });
         return $targets;
     }
-    
+
     public function print_rating(Request $request){
         $idpaps = $request->idpaps;
         $opcr_id= $request->opcr_id;
