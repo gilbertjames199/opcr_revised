@@ -35,6 +35,18 @@ __webpack_require__.r(__webpack_exports__);
       if (confirm(text) == true) {
         this.$inertia["delete"]("/ResearchAgenda/" + id);
       }
+    },
+    goToRep: function goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
+      //alert("opcr_id: " + id);
+      var linkt = "abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+      var jasper_ip = this.jasper_ip;
+      var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2FPlanningSystem%2FOPCR%2FZ_OPCR_List%2FMAIN&standAlone=true&ParentFolderUri=%2Freports%2FPlanningSystem%2FOPCR%2FZ_OPCR_List&decorate=no&output=pdf';
+      var params = '&total=' + total + '&ave=' + ave + '&dept_head=' + dept_head + '&opcr_date=' + opcr_date + '&mooe=' + mooe + '&ps=' + ps + '&FFUNCCOD=' + FFUNCCOD + '&opcr_id=' + id;
+      var linkl = linkt + jasper_ip + jasper_link + params;
+      var link = document.createElement('a');
+      link.href = '/opcr/form/print/o/p/c/r?link=' + encodeURIComponent(linkl);
+      link.target = '_blank';
+      link.click();
     }
   }
 });
@@ -209,7 +221,9 @@ var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNo
 
 var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Accomplishment");
 
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_26 = ["onClick"];
+
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -217,7 +231,7 @@ var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -327,10 +341,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
     }, 1032
     /* PROPS, DYNAMIC_SLOTS */
-    , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"text-danger dropdown-item\" @click=\"deleteRA(dat.id)\">Delete</Link></li> ")])])])]);
+    , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, opcr_id)"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      "class": "dropdown-item",
+      onClick: function onClick($event) {
+        return $options.goToRep(opcr_list.FFUNCCOD, opcr_list.total, opcr_list.ave, opcr_list.dept_head, opcr_list.opcr_date, opcr_list.mooe, opcr_list.ps, opcr_list.id);
+      }
+    }, " Download PDF " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(opcr_list.id), 9
+    /* TEXT, PROPS */
+    , _hoisted_26)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"text-danger dropdown-item\" @click=\"deleteRA(dat.id)\">Delete</Link></li> ")])])])]);
   }), 256
   /* UNKEYED_FRAGMENT */
-  ))])])]), _hoisted_26, _hoisted_27])])])], 64
+  ))])])]), _hoisted_27, _hoisted_28])])])], 64
   /* STABLE_FRAGMENT */
   );
 }

@@ -234,9 +234,7 @@ var _hoisted_24 = {
 
 var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Delete ");
 
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add Target ");
-
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -244,7 +242,7 @@ var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -351,7 +349,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [_hoisted_26];
+        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add Target -dat.id " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.id), 1
+        /* TEXT */
+        )];
       }),
       _: 2
       /* DYNAMIC */
@@ -361,7 +361,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"dropdown-item\" :href=\"`/opcrlist/${opcr_list.id}/edit`\">Edit</Link></li>\n                                            <li><Link class=\"dropdown-item\" :href=\"`/opcr/form/${opcr_list.id}/${FFUNCCOD}`\">Rating</Link></li>\n                                            <li><Link class=\"dropdown-item\" :href=\"`/opcrtarget/${opcr_list.id}`\">Target</Link></li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ")])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])]), _hoisted_27, _hoisted_28])])])], 64
+  ))])])]), _hoisted_26, _hoisted_27])])])], 64
   /* STABLE_FRAGMENT */
   );
 }

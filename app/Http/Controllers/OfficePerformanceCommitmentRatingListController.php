@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BudgetRequirement;
 use App\Models\FFUNCCOD;
+use App\Models\Implementing_team;
+use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
+use App\Models\RevisionPlan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class OfficePerformanceCommitmentRatingListController extends Controller
 {
@@ -18,12 +24,93 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         $opcr_lists = $this->model->where('FFUNCCOD',$FFUNCCOD)
                         ->orderBy('year', 'desc')
                         ->orderBy('semester', 'desc')
-                        ->get();
+                        ->get()->map(function($item)use($FFUNCCOD){
+                            $opcr_id=$item->id;
+                            //TOTAL & AVERAGE
+                            $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
+                                            ->where('opcr_id', $opcr_id)
+                                            ->first()->average_sum;
+                            $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+
+                            $total = number_format($averageSum,2);
+                            $ave_pre = $total/$count;
+                            $ave = number_format($ave_pre,2);
+
+                            //PG Department Head
+                            //********************************************** */
+                            $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                                            ->where('role','like','%Department Head%')
+                                            ->count();
+                            $dept_head="N/A";
+                            if($count_pgdh>0){
+                                $dept_head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                                            ->where('role','like','%Department Head%')
+                                            ->first()->name;
+                            }
+
+                            //OPCR LIST
+                            $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+
+                            //OPCR DATE
+                            $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+                            $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+                            $start = $dateStart->format('F');
+                            $end= $dateEnd->format('F Y');
+                            $opcr_date=$start." to ".$end;
+                            $opcr_date = Str::upper($opcr_date);
+
+                            //YEAR NOW
+                            $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
+
+                            //REVISION PLAN ID/ GET MOOE & PS
+                            $revision_plan = RevisionPlan::where('idmfo','0')
+                                                ->where('idpaps','0')
+                                                ->where('FFUNCCOD', $FFUNCCOD)
+                                                ->where('year_period', $my_year)
+                                                ->first();
+                            $mooe="0.00";
+                            $ps = "0.00";
+                            if($revision_plan){
+                                $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                                        ->where('category','Maintenance, Operating, and Other Expenses')
+                                        ->sum('amount');
+
+                                $ps1 =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                                        ->where('category','Personnel Services')
+                                        ->sum('amount');
+                                $mooe2 = (float)$mooe1;
+                                $ps2 = (float)$ps1;
+                                $mooe2 = $mooe2/2;
+                                $ps2 = $ps2/2;
+                                $mooe = number_format($mooe,2);
+                                $ps = number_format($ps2,2);
+                            }else{
+                                //dd("empty no ps budget");
+                            }
+                            return [
+                                'id'=>$item->id,
+                                'semester'=>$item->semester,
+                                'date_from'=>$item->date_from,
+                                'date_to'=>$item->date_to,
+                                'year'=>$item->year,
+                                'FFUNCCOD'=>$item->FFUNCCOD,
+                                'allotment'=>$item->allotment,
+                                'total'=>$total,
+                                'ave'=>$ave,
+                                'dept_head'=>$dept_head,
+                                'opcr_date'=>$opcr_date,
+                                'mooe'=>$mooe,
+                                'ps'=>$ps,
+                            ];
+                        });
+        //dd($opcr_lists);
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
+
         return inertia('OPCR/List/Index',[
             "opcr_lists"=>$opcr_lists,
             "FFUNCCOD"=>$FFUNCCOD,
             "office"=>$office,
+
             // 'can'=>[
             //     'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
             //     'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
