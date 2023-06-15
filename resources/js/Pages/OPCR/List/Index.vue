@@ -41,7 +41,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="opcr_list in opcr_lists">
-                                <td>OPCR {{ opcr_list.id }} {{ goToRep(opcr_list.FFUNCCOD, opcr_list.total, opcr_list.ave, opcr_list.dept_head, opcr_list.opcr_date, opcr_list.mooe, opcr_list.ps, opcr_list.opcr_id) }}</td>
+                                <td>OPCR</td>
                                 <td>{{ office.FFUNCTION }} </td>
                                 <td>{{ opcr_list.semester }}</td>
                                 <td>{{ formatMonth(opcr_list.date_from) }} to {{ formatMonthYear(opcr_list.date_to) }}</td>
@@ -59,9 +59,17 @@
                                             <li><Link class="dropdown-item" :href="`/opcraccomplishment/${opcr_list.id}`">Accomplishment</Link></li>
                                             <li>
                                                 <!--goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, opcr_id)-->
-                                                <button class="btn btn-primary btn-sm mL-2 text-white"
-                                                    @click="goToRep(opcr_list.FFUNCCOD, opcr_list.total, opcr_list.ave, opcr_list.dept_head, opcr_list.opcr_date, opcr_list.mooe, opcr_list.ps, opcr_list.id)">
-                                                    Download PDF
+                                                <button class="dropdown-item"
+                                                    @click="goToRep(opcr_list.FFUNCCOD,
+                                                                opcr_list.total,
+                                                                opcr_list.ave,
+                                                                opcr_list.dept_head,
+                                                                opcr_list.opcr_date,
+                                                                opcr_list.mooe,
+                                                                opcr_list.ps,
+                                                                opcr_list.id
+                                                            )">
+                                                    Download PDF {{ opcr_list.id }}
                                                 </button>
                                             </li>
                                             <!-- <li><Link class="text-danger dropdown-item" @click="deleteRA(dat.id)">Delete</Link></li> -->
@@ -121,15 +129,19 @@ export default {
                 this.$inertia.delete("/ResearchAgenda/" + id);
             }
         },
-        goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, opcr_id){
-            alert("opcr_id: "+opcr_id);
+        goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
+            //alert("opcr_id: " + id);
+            var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
             var jasper_ip = this.jasper_ip;
-            var jasper_link='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2FPlanningSystem%2FOPCR%2FZ_OPCR_List%2FMAIN&standAlone=true&ParentFolderUri=%2Freports%2FPlanningSystem%2FOPCR%2FZ_OPCR_List&decorate=no&output=pdf';
-            var params = '&total='+total + '&ave=' + ave + '&dept_head=' + dept_head +
-                            '&opcr_date=' + opcr_date + '&mooe='+mooe + '&ps='+ps+
-                            '&FFUNCCOD='+FFUNCCOD+'&opcr_id='+opcr_id;
-            var link = jasper_ip + jasper_link + params;
-            return link;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2FPlanningSystem%2FOPCR%2FZ_OPCR_List%2FMAIN&standAlone=true&ParentFolderUri=%2Freports%2FPlanningSystem%2FOPCR%2FZ_OPCR_List&decorate=no&output=pdf';
+            var params = '&total=' + total + '&ave=' + ave + '&dept_head=' + dept_head +
+                '&opcr_date=' + opcr_date + '&mooe=' + mooe + '&ps=' + ps +
+                '&FFUNCCOD=' + FFUNCCOD + '&opcr_id=' + id;
+            var linkl = linkt+jasper_ip + jasper_link + params;
+            const link = document.createElement('a');
+            link.href='/opcr/form/print/o/p/c/r?link=' + encodeURIComponent(linkl);
+            link.target = '_blank';
+            link.click();
         }
 
     }

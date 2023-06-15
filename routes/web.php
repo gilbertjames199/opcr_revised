@@ -593,6 +593,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [OfficePerformanceCommitmentRatingController::class, 'edit']);
         Route::patch('/{id}', [OfficePerformanceCommitmentRatingController::class, 'update']);
         Route::delete('/{id}', [OfficePerformanceCommitmentRatingController::class, 'destroy']);
+        Route::get('/print/o/p/c/r', [OfficePerformanceCommitmentRatingController::class, 'print']);
     });
     //OPCR List
     Route::prefix('opcrlist')->group(function(){

@@ -78,10 +78,12 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                                 $ps1 =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
                                         ->where('category','Personnel Services')
                                         ->sum('amount');
-                                $mooe2 = number_format($mooe1,2);
-                                $ps2 = number_format($ps1, 2);
-                                $mooe = number_format(($mooe2/2),2);
-                                $ps = number_format(($ps2/2),2);
+                                $mooe2 = (float)$mooe1;
+                                $ps2 = (float)$ps1;
+                                $mooe2 = $mooe2/2;
+                                $ps2 = $ps2/2;
+                                $mooe = number_format($mooe,2);
+                                $ps = number_format($ps2,2);
                             }else{
                                 //dd("empty no ps budget");
                             }

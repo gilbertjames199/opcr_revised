@@ -644,4 +644,15 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $office_accountable = OfficeAccountable::where('idpaps', $idpaps)->get();
         return $office_accountable;
     }
+
+    public function print(Request $request){
+        $link=$request->link;
+        $link=str_replace("abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-", "",$link);
+
+        $link="http://".$link;
+        //dd($link);
+        return inertia('OPCR/Form/Print', [
+            "link" => $link,
+        ]);
+    }
 }
