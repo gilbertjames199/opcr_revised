@@ -170,7 +170,8 @@ createInertiaApp({
                 get jasper_ip() {
                     var lo="192.168.6.23:8080/";
                     var gl="122.54.19.171:8080/";
-                    return gl;
+                    var nw = "122.53.120.27:8080/"
+                    return nw;
                 },
             }
         },
