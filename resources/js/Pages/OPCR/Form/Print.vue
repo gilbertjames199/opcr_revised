@@ -5,7 +5,6 @@
 
     <div class="row gap-10 masonry pos-r">
         <!--<h1>JASPER REPORTS</h1>-->
-        {{ link }}
         <iframe :src="link" style="width:100%; height:700px" />
     </div>
 </template>
