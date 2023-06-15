@@ -294,13 +294,7 @@ class OPCRController extends Controller
         $mfos =MajorFinalOutput::select("mfo_desc","id")->selectRaw("'$functions' as FUNCTION, '$MOOE' as MOOE, '$PS' as PS")->where('FFUNCCOD', $request->id)
         ->get();
 
-        // dd($request->FUNCTION);
-        $data=[
-            "MOOE"=>$request->MOOE,
-            "PS"=>$request->PS,
-            "Function"=>strtoupper($functions),
-            "MFO"=>$mfos,
-        ];
+
         return $mfos;
 
     }
@@ -354,6 +348,10 @@ class OPCRController extends Controller
         ->get();
 
         return $timeliness;
+    }
+
+    public function viewOPCR(Request $request){
+
     }
 
 }

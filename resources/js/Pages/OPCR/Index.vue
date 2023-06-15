@@ -60,7 +60,20 @@
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit
                                             <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
-                                            <li><Link class="dropdown-item" :href="`/OPCRStandard/${functional.FFUNCCOD}`">View OPCR Standard</Link></li>
+                                            <li>
+                                                <!-- <button class="dropdown-item"
+                                                @click="@goToRep()"
+
+                                                >
+
+
+
+
+                                            </button> -->
+
+
+
+                                                <Link class="dropdown-item" :href="`/OPCRStandard/${functional.FFUNCCOD}`">View OPCR Standard</Link></li>
                                             <li><Link class="dropdown-item" :href="`/opcrlist/${functional.FFUNCCOD}`">OPCR Form</Link></li>
 
                                         </ul>

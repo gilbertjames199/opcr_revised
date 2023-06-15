@@ -622,6 +622,11 @@ Route::middleware('auth')->group(function() {
         Route::patch('/', [OpcrAccomplishmentController::class, 'update']);
         Route::delete('/{id}', [OpcrAccomplishmentController::class, 'destroy']);
     });
+
+    Route::prefix('viewOPCR')->group(function(){
+        Route::get('/FFUNCOD',[OPCRController::class,'viewOPCR']);
+
+    });
 });
 
 
