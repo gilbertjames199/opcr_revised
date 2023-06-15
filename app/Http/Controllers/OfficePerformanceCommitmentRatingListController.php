@@ -45,9 +45,10 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                                             ->count();
                             $dept_head="N/A";
                             if($count_pgdh>0){
-                                $dept_head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                                $dh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
                                             ->where('role','like','%Department Head%')
                                             ->first()->name;
+                                $dept_head = Str::upper($dh);
                             }
 
                             //OPCR LIST
