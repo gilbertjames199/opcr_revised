@@ -40,13 +40,21 @@ __webpack_require__.r(__webpack_exports__);
       //alert("opcr_id: " + id);
       var linkt = "abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
       var jasper_ip = this.jasper_ip;
-      var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2FPlanningSystem%2FOPCR%2FZ_OPCR_List%2FMAIN&standAlone=true&ParentFolderUri=%2Freports%2FPlanningSystem%2FOPCR%2FZ_OPCR_List&decorate=no&output=pdf';
+      var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Fform%2FMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR%2Fform&decorate=no&output=pdf';
       var params = '&total=' + total + '&ave=' + ave + '&dept_head=' + dept_head + '&opcr_date=' + opcr_date + '&mooe=' + mooe + '&ps=' + ps + '&FFUNCCOD=' + FFUNCCOD + '&opcr_id=' + id;
       var linkl = linkt + jasper_ip + jasper_link + params;
       var link = document.createElement('a');
       link.href = '/opcr/form/print/o/p/c/r?link=' + encodeURIComponent(linkl);
       link.target = '_blank';
       link.click();
+    },
+    viewlink: function viewlink(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
+      var linkt = "abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+      var jasper_ip = this.jasper_ip;
+      var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Fform%2FMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR%2Fform&decorate=no&output=pdf';
+      var params = '&total=' + total + '&ave=' + ave + '&dept_head=' + dept_head + '&opcr_date=' + opcr_date + '&mooe=' + mooe + '&ps=' + ps + '&FFUNCCOD=' + FFUNCCOD + '&opcr_id=' + id;
+      var linkl = linkt + jasper_ip + jasper_link + params;
+      return linkl;
     }
   }
 });
@@ -181,7 +189,7 @@ var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "OPCR", -1
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "OPCR ", -1
 /* HOISTED */
 );
 
