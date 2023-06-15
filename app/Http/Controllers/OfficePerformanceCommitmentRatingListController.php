@@ -31,7 +31,9 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                                             ->where('opcr_id', $opcr_id)
                                             ->first()->average_sum;
                             $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
-
+                            if($count<1){
+                                $count=1;
+                            }
                             $total = number_format($averageSum,2);
                             $ave_pre = $total/$count;
                             $ave = number_format($ave_pre,2);
@@ -43,9 +45,10 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                                             ->count();
                             $dept_head="N/A";
                             if($count_pgdh>0){
-                                $dept_head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                                $dh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
                                             ->where('role','like','%Department Head%')
                                             ->first()->name;
+                                $dept_head = Str::upper($dh);
                             }
 
                             //OPCR LIST
@@ -82,7 +85,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                                 $ps2 = (float)$ps1;
                                 $mooe2 = $mooe2/2;
                                 $ps2 = $ps2/2;
-                                $mooe = number_format($mooe,2);
+                                $mooe = number_format($mooe2,2);
                                 $ps = number_format($ps2,2);
                             }else{
                                 //dd("empty no ps budget");
