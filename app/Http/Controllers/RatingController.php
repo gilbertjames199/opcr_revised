@@ -92,10 +92,10 @@ class RatingController extends Controller
         $data->update([
             'numerical_rating'=>$request->numerical_rating,
             'adjectival_rating'=>$request->adjectival_rating,
-            'efficiency_quantiy'=>$request->efficiency_quantiy,
+            'efficiency_quantity'=>$request->efficiency_quantity,
             'idpaps'=>$request->idpaps
         ]);
-
+        // dd($data);
         return redirect('/Rating/'.$request->idpaps)
                 ->with('message','Rating updated');
     }

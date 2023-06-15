@@ -626,7 +626,12 @@ Route::middleware('auth')->group(function() {
 
 
 Route::prefix('printOPCR')->group(function(){
-    Route::get('/{idstrat}',[OPCRController::class,'OPCRprint']);
+    Route::get('/FFUNCOD',[OPCRController::class,'OPCRprint']);
+    Route::get('/FFUNCOD',[OPCRController::class,'MFO']);
+    Route::get('/PAPS',[OPCRController::class,'PAPS']);
+    Route::get('/Rating',[OPCRController::class,'Rating']);
+    Route::get('/Quality',[OPCRController::class,'Quality']);
+    Route::get('/Timeliness',[OPCRController::class,'Timeliness']);
 });
 
 Route::prefix('print')->group(function(){
