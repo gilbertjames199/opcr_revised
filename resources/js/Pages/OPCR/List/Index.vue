@@ -12,7 +12,7 @@
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/opcrlist/create/${FFUNCCOD}`">Create OPCR</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                    <!-- <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
                 </div>
                 &nbsp;
                 <Link :href="`/OPCRStandard`">
@@ -60,7 +60,7 @@
                                             <li>
                                                 <!--goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, opcr_id)-->
                                                 <button class="dropdown-item"
-                                                    @click="goToRep(opcr_list.FFUNCCOD,
+                                                    @click="showModal(opcr_list.FFUNCCOD,
                                                                 opcr_list.total,
                                                                 opcr_list.ave,
                                                                 opcr_list.dept_head,
@@ -69,7 +69,7 @@
                                                                 opcr_list.ps,
                                                                 opcr_list.id
                                                             )">
-                                                    Download PDF {{ opcr_list.id }}
+                                                    Download PDF
                                                 </button>
                                             </li>
                                             <!-- <li><Link class="text-danger dropdown-item" @click="deleteRA(dat.id)">Delete</Link></li> -->
@@ -97,7 +97,12 @@
 
             </div>
         </div>
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
 
+                <iframe :src="my_link" style="width:100%; height:400px" />
+            </div>
+        </Modal>
     </div>
 
 </template>
@@ -105,6 +110,8 @@
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
+
 export default {
     props: {
         opcr_lists: Object,
@@ -113,16 +120,15 @@ export default {
     },
     data() {
         return{
-
+            my_link: "",
+            displayModal: false,
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal
     },
 
     methods:{
-
-
         deleteRA(id) {
             let text = "WARNING!\nAre you sure you want to delete the Research Agenda?";
               if (confirm(text) == true) {
@@ -144,15 +150,24 @@ export default {
             link.click();
         },
         viewlink(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id){
-            var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            //var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            var linkt="http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Fform%2FMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR%2Fform&decorate=no&output=pdf';
             var params = '&total=' + total + '&ave=' + ave + '&dept_head=' + dept_head +
                 '&opcr_date=' + opcr_date + '&mooe=' + mooe + '&ps=' + ps +
                 '&FFUNCCOD=' + FFUNCCOD + '&opcr_id=' + id;
             var linkl = linkt+jasper_ip + jasper_link + params;
+
             return linkl;
-        }
+        },
+        showModal(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
+            this.my_link = this.viewlink(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id);
+            this.displayModal = true;
+        },
+        hideModal() {
+            this.displayModal = false;
+        },
 
     }
 };

@@ -64,7 +64,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
 
                             //YEAR NOW
                             $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
-
+                            //dd($my_year);
                             //REVISION PLAN ID/ GET MOOE & PS
                             $revision_plan = RevisionPlan::where('idmfo','0')
                                                 ->where('idpaps','0')
