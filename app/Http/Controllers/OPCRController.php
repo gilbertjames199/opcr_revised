@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\FFUNCCOD;
 use App\Models\AccountAccess;
+use App\Models\BudgetRequirement;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring;
 use App\Models\OfficeAccountable;
@@ -13,9 +14,11 @@ use App\Models\Quality;
 use App\Models\QualityRemarks;
 use App\Models\rating;
 use App\Models\RatingRemarks;
+use App\Models\RevisionPlan;
 use App\Models\SuccessIndicator;
 use App\Models\Timeliness;
 use App\Models\TimelinessRemarks;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\FuncCall;
@@ -37,8 +40,40 @@ class OPCRController extends Controller
                         ->where('iduser',auth()->user()->recid)
                         ->get();
 
+
+                        //YEAR NOW
+                        $my_year = now()->year;
+
+                        // dd($my_year);
+
+                        //REVISION PLAN ID/ GET MOOE & PS
+                        $revision_plan = RevisionPlan::where('idmfo','0')
+                                            ->where('idpaps','0')
+                                            ->where('FFUNCCOD', $request->id)
+                                            ->where('year_period', $my_year)
+                                            ->first();
+                        $mooe="0.00";
+                        $ps = "0.00";
+                        if($revision_plan){
+                            $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                                    ->where('category','Maintenance, Operating, and Other Expenses')
+                                    ->sum('amount');
+
+                            $ps1 =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                                    ->where('category','Personnel Services')
+                                    ->sum('amount');
+                            $mooe2 = (float)$mooe1;
+                            $ps2 = (float)$ps1;
+                            $mooe = number_format($mooe2,2);
+                            $ps = number_format($ps2,2);
+                        }else{
+                            //dd("empty no ps budget");
+                        }
+
         return inertia('OPCR/Index', [
             "data"=>$functions,
+            "MOOE"=>$mooe,
+            "PS"=>$ps,
         ]);
     }
 
