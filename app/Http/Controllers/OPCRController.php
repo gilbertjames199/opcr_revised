@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\FFUNCCOD;
 use App\Models\AccountAccess;
+use App\Models\BudgetRequirement;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring;
 use App\Models\OfficeAccountable;
@@ -13,9 +14,11 @@ use App\Models\Quality;
 use App\Models\QualityRemarks;
 use App\Models\rating;
 use App\Models\RatingRemarks;
+use App\Models\RevisionPlan;
 use App\Models\SuccessIndicator;
 use App\Models\Timeliness;
 use App\Models\TimelinessRemarks;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\FuncCall;
@@ -30,24 +33,47 @@ class OPCRController extends Controller
     }
 
     public function index(Request $request){
-        //dd('logframe');
-        //dd(auth()->user()->recid);
-        // $accounts = $this->model->where('iduser',auth()->user()->recid)
-        //             ->with('func')->get();
 
         $functions =$this->model
                         ->select('ff.FFUNCCOD','FFUNCTION')
                         ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
                         ->where('iduser',auth()->user()->recid)
                         ->get();
-        //dd($functions);
-        //dd($accounts); 1121
-        //$functions = $accounts->pluck('func');
-        //$fa = FFUNCCOD::where('FFUNCCOD','1121')->with('acc')->get();
-        //dd($fa[0]->FFUNCCOD." gaccounce ".$accounts[0]->ffunccod);
-        //dd($fa);
+
+
+                        //YEAR NOW
+                        $my_year = now()->year;
+
+                        // dd($my_year);
+
+                        //REVISION PLAN ID/ GET MOOE & PS
+                        $revision_plan = RevisionPlan::where('idmfo','0')
+                                            ->where('idpaps','0')
+                                            ->where('FFUNCCOD', $request->id)
+                                            ->where('year_period', $my_year)
+                                            ->first();
+                        $mooe="0.00";
+                        $ps = "0.00";
+                        if($revision_plan){
+                            $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                                    ->where('category','Maintenance, Operating, and Other Expenses')
+                                    ->sum('amount');
+
+                            $ps1 =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                                    ->where('category','Personnel Services')
+                                    ->sum('amount');
+                            $mooe2 = (float)$mooe1;
+                            $ps2 = (float)$ps1;
+                            $mooe = number_format($mooe2,2);
+                            $ps = number_format($ps2,2);
+                        }else{
+                            //dd("empty no ps budget");
+                        }
+
         return inertia('OPCR/Index', [
             "data"=>$functions,
+            "MOOE"=>$mooe,
+            "PS"=>$ps,
         ]);
     }
 
@@ -294,13 +320,7 @@ class OPCRController extends Controller
         $mfos =MajorFinalOutput::select("mfo_desc","id")->selectRaw("'$functions' as FUNCTION, '$MOOE' as MOOE, '$PS' as PS")->where('FFUNCCOD', $request->id)
         ->get();
 
-        // dd($request->FUNCTION);
-        $data=[
-            "MOOE"=>$request->MOOE,
-            "PS"=>$request->PS,
-            "Function"=>strtoupper($functions),
-            "MFO"=>$mfos,
-        ];
+
         return $mfos;
 
     }
@@ -354,6 +374,18 @@ class OPCRController extends Controller
         ->get();
 
         return $timeliness;
+    }
+
+    public function viewOPCR(Request $request){
+        $link=$request->link;
+        $link=str_replace("abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-", "",$link);
+
+        $link="http://".$link;
+        // dd($link);
+        // dd($link);
+        return inertia('OPCR/Form/Print', [
+            "link" => $link,
+        ]);
     }
 
 }
