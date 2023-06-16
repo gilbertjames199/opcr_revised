@@ -30,22 +30,13 @@ class OPCRController extends Controller
     }
 
     public function index(Request $request){
-        //dd('logframe');
-        //dd(auth()->user()->recid);
-        // $accounts = $this->model->where('iduser',auth()->user()->recid)
-        //             ->with('func')->get();
 
         $functions =$this->model
                         ->select('ff.FFUNCCOD','FFUNCTION')
                         ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
                         ->where('iduser',auth()->user()->recid)
                         ->get();
-        //dd($functions);
-        //dd($accounts); 1121
-        //$functions = $accounts->pluck('func');
-        //$fa = FFUNCCOD::where('FFUNCCOD','1121')->with('acc')->get();
-        //dd($fa[0]->FFUNCCOD." gaccounce ".$accounts[0]->ffunccod);
-        //dd($fa);
+
         return inertia('OPCR/Index', [
             "data"=>$functions,
         ]);
@@ -351,7 +342,15 @@ class OPCRController extends Controller
     }
 
     public function viewOPCR(Request $request){
+        $link=$request->link;
+        $link=str_replace("abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-", "",$link);
 
+        $link="http://".$link;
+        // dd($link);
+        // dd($link);
+        return inertia('OPCR/Form/Print', [
+            "link" => $link,
+        ]);
     }
 
 }

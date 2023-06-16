@@ -61,19 +61,14 @@
                                             <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
                                             <li>
-                                                <!-- <button class="dropdown-item"
-                                                @click="@goToRep()"
-
-                                                >
-
-
-
-
-                                            </button> -->
+                                                <button class="dropdown-item"
+                                                @click="getToRep(data)"
+                                                > View OPCR Standard
+                                            </button>
+                                            </li>
 
 
-
-                                                <Link class="dropdown-item" :href="`/OPCRStandard/${functional.FFUNCCOD}`">View OPCR Standard</Link></li>
+                                                <!-- <Link class="dropdown-item" :href="`/OPCRStandard/${functional.FFUNCCOD}`">View OPCR Standard</Link></li> -->
                                             <li><Link class="dropdown-item" :href="`/opcrlist/${functional.FFUNCCOD}`">OPCR Form</Link></li>
 
                                         </ul>
@@ -156,6 +151,18 @@ export default {
               if (confirm(text) == true) {
                 this.$inertia.delete("/paps/" + id+"/"+this.idmfo);
             }
+        },
+        getToRep(data){
+            // alert(data[0].FFUNCCOD);
+            var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR_Standard&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Standard%2FOPCR&standAlone=true&decorate=no&output=pdf';
+            var params = '&id=' + data[0].FFUNCCOD + '&FUNCTION=' + data[0].FFUNCTION;
+            const link = document.createElement('a');
+            var link1 = linkt + jasper_ip +jasper_link + params;
+            link.href='/viewOPCR/FFUNCOD?link=' + encodeURIComponent(link1);
+            link.target = '_blank';
+            link.click();
         }
     }
 };
