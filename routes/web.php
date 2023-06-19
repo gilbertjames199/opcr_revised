@@ -727,7 +727,7 @@ Route::prefix('opcr/print')->group(function(){
     Route::get('/office', [OfficePerformanceCommitmentRatingController::class,'print_office']);
 });
 Route::prefix('printlog')->group(function(){
-    Route::get('/{FFUNCCOD}',[LogFrameController::class,'showlog']);
+    Route::get('/{FFUNCCOD}',[LogFrameController::class,'printlogpublic']);
 });
 
 

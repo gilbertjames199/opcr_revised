@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountAccess;
 use App\Models\MajorFinalOutput;
 use App\Models\Sector;
 use Illuminate\Http\Request;
 use App\Models\Sectoral;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SectoralController extends Controller
 {
@@ -36,9 +38,13 @@ class SectoralController extends Controller
     }
 
     public function create(Request $request){
+        $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->Join(DB::Raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
         $sectors = Sector::get();
         return inertia('Sectoral/addSector',[
             'sectors'=>$sectors,
+            'functions'=>$functions,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -51,6 +57,7 @@ class SectoralController extends Controller
         $attributes = $request->validate([
             'goal_description' => 'required',
             'sector' => 'required',
+            'FFUNCCOD'=> 'required',
         ]);
         //dd($attributes);
         $this->model->create($attributes);
@@ -59,15 +66,20 @@ class SectoralController extends Controller
     }
 
     public function edit(Request $request, $id){
+        $functions = AccountAccess::where('iduser',auth()->user()->recid)
+                    ->Join(DB::Raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func')->get();
         $data = $this->model->where('id', $id)->first([
             'id',
             'goal_description',
             'sector',
+            'FFUNCCOD'
         ]);
         $sectors = Sector::get();
         return inertia('Sectoral/addSector', [
             "editData" => $data,
             'sectors'=>$sectors,
+            'functions'=>$functions,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

@@ -13,6 +13,7 @@ class Sectoral extends Model
     protected $fillable = [
         'goal_description',
         'sector',
+        'FFUNCCOD'
     ];
 
     public function sectors(){
