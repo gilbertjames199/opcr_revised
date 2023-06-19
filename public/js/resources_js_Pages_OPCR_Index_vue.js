@@ -352,7 +352,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         src: $data.my_link,
         style: {
           "width": "100%",
-          "height": "400px"
+          "height": "500px"
         }
       }, null, 8
       /* PROPS */
