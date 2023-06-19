@@ -62,7 +62,7 @@
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
                                             <li>
                                                 <button class="dropdown-item"
-                                                @click="getToRep(data,
+                                                @click="showModal(data,
                                                 MOOE,
                                                 PS)"
                                                 > View OPCR Standard
@@ -97,12 +97,18 @@
 
             </div>
         </div>
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
 
+                <iframe :src="my_link" style="width:100%; height:400px" />
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
@@ -115,6 +121,8 @@ export default {
     },
     data() {
         return{
+            my_link: "",
+            displayModal: false,
             //search: this.$props.filters.search,
         }
     },
@@ -132,7 +140,7 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal,
     },
 
     methods:{
@@ -158,16 +166,23 @@ export default {
         },
         getToRep(data, MOOE, PS){
             // alert(data[0].FFUNCCOD);
-            var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            var linkt="http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR_Standard&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Standard%2FOPCR&standAlone=true&decorate=no&output=pdf';
             var params = '&id=' + data[0].FFUNCCOD + '&FUNCTION=' + data[0].FFUNCTION + '&MOOE=' + MOOE + '&PS=' + PS;
-            const link = document.createElement('a');
             var link1 = linkt + jasper_ip +jasper_link + params;
-            link.href='/viewOPCR/FFUNCOD?link=' + encodeURIComponent(link1);
-            link.target = '_blank';
-            link.click();
-        }
+            return link1;
+        },
+
+        showModal(data, MOOE, PS){
+            this.my_link = this.getToRep(data, MOOE, PS);
+            this.displayModal = true;
+        },
+
+        hideModal() {
+            this.displayModal = false;
+        },
+
     }
 };
 </script>
