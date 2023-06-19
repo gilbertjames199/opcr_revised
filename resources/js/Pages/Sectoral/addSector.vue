@@ -29,8 +29,16 @@
                         {{ sector.sector_name }}
                     </option>
                 </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.sectoral">{{ form.errors.goal_sectoral }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.sector">{{ form.errors.sector }}</div>
 
+                <label for="">OFFICES</label>
+                <!--<input type="text" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">-->
+                <select class="form-control form-select" v-model="form.FFUNCCOD" >
+                    <option v-for="functional in functions" :value="functional.FFUNCCOD" >
+                        {{ functional.FFUNCTION }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
@@ -52,7 +60,8 @@ import Places from "@/Shared/PlacesShared";
 export default {
         props: {
             editData: Object,
-            sectors: Object
+            sectors: Object,
+            functions: Object,
         },
         components: {
           //BootstrapModalNoJquery,
@@ -70,6 +79,7 @@ export default {
                 form: useForm({
                     goal_description: "",
                     sector: "",
+                    FFUNCCOD: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -86,6 +96,7 @@ export default {
                 this.form.goal_description=this.editData.goal_description
                 this.form.sector=this.editData.sector
                 this.form.id=this.editData.id
+                this.form.FFUNCCOD = this.editData.FFUNCCOD
             } else {
                 this.pageTitle = "Create"
             }

@@ -5,7 +5,7 @@
 
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>OPCR Targets</h3>
+            <h3>OPCR Targets Targets</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -21,6 +21,9 @@
                         <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
                     </svg>
                 </Link>
+                <div>
+                    viewlink: {{ viewlink }}
+                </div>
             </div>
         </div>
 
@@ -100,19 +103,28 @@
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
+
 export default {
     props: {
         opcr_list_id: String,
         data: Object,
-        FFUNCCOD: String
+        FFUNCCOD: String,
+        total: String,
+        ave: String,
+        dept_head: String,
+        opcr_date: String,
+        mooe: String,
+        ps: String,
     },
     data() {
         return{
-
+            my_link: "",
+            displayModal: false,
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal
     },
 
     methods:{
@@ -149,7 +161,27 @@ export default {
 
             return count;
 
-        }
+        },
+        viewlink(){
+            //var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            //FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Ftarget%2FOPCR_TARGET&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR%2Ftarget&decorate=no&output=pdf';
+            var params = '&total=' + this.total + '&ave=' + this.ave + '&dept_head=' + this.dept_head +
+                '&opcr_date=' + this.opcr_date + '&mooe=' + this.mooe + '&ps=' + this.ps +
+                '&FFUNCCOD=' + this.FFUNCCOD + '&opcr_id=' + this.opcr_list_id;
+            var linkl = linkt+jasper_ip + jasper_link + params;
+
+            return linkl;
+        },
+        showModal(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
+            this.my_link = this.viewlink(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id);
+            this.displayModal = true;
+        },
+        hideModal() {
+            this.displayModal = false;
+        },
     }
 };
 </script>
