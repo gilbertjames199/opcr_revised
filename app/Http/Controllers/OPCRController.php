@@ -248,67 +248,6 @@ class OPCRController extends Controller
         });
 
         return $mfos;
-
-        // $timelinessSub = "SELECT idpaps, GROUP_CONCAT(timeliness SEPARATOR ',') as timeliness
-        //     FROM `timelinesses`
-        //     GROUP by idpaps";
-        // $ratingSub = "SELECT
-        //     idpaps,
-        //     GROUP_CONCAT(numerical_rating SEPARATOR ',') as numerical_rating ,
-        //     GROUP_CONCAT(adjectival_rating SEPARATOR ',') as adjectival_rating,
-        //     GROUP_CONCAT(efficiency_quantity SEPARATOR ',') as efficiency_quantity
-        //     FROM `ratings` GROUP BY idpaps";
-        // $qualitySub = "SELECT
-        //     idpaps,
-        //     GROUP_CONCAT(quality SEPARATOR ',') as qualities
-        //     FROM `qualities` GROUP BY idpaps";
-        // $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
-        // $office=$functions->pluck('FFUNCTION');
-        // $results = DB::table('major_final_outputs')
-        //     ->select(
-        //         'major_final_outputs.id',
-        //         'major_final_outputs.mfo_desc',
-        //         'program_and_projects.id',
-        //         'program_and_projects.paps_desc',
-        //         'outputs.Outputs',
-        //         'performances.performance',
-        //         'success_indicators.success_indicator',
-        //         'office_accountables.office_accountable',
-        //         // 'ratings.numerical_rating',
-        //         // 'ratings.adjectival_rating',
-        //         // 'ratings.efficiency_quantity',
-        //         // 'rating_remarks.rating_remarks',
-        //         // 'qualities.qualities',
-        //         // 'quality_remarks.quality_remarks',
-        //         // 'timelinesses.timeliness',
-        //         // 'timeliness_remarks.timeliness_remarks',
-        //         // 'monitorings.monitoring'
-        //     )
-        //     ->leftJoin('program_and_projects', 'major_final_outputs.id', '=', 'program_and_projects.idmfo')
-        //     ->leftJoin('outputs', 'program_and_projects.id', '=', 'outputs.idpaps')
-        //     ->leftJoin('performances', 'program_and_projects.id', '=', 'performances.idpaps')
-        //     ->leftJoin('success_indicators', 'program_and_projects.id', '=', 'success_indicators.idpaps')
-        //     ->leftJoin('office_accountables', 'program_and_projects.id', '=', 'office_accountables.idpaps')
-        //     // ->leftJoinSub($ratingSub, 'ratings', 'program_and_projects.id', '=', 'ratings.idpaps')
-        //     // ->leftJoin('rating_remarks', 'program_and_projects.id', '=', 'rating_remarks.idpaps')
-        //     // ->leftJoinSub($qualitySub, 'qualities', 'program_and_projects.id', '=', 'qualities.idpaps')
-        //     // ->leftJoin('quality_remarks', 'program_and_projects.id', '=', 'quality_remarks.idpaps')
-        //     // ->leftJoinSub($timelinessSub, 'timelinesses', 'program_and_projects.id', '=', 'timelinesses.idpaps')
-        //     // ->leftJoin('timeliness_remarks', 'program_and_projects.id', '=', 'timeliness_remarks.idpaps')
-        //     // ->leftJoin('monitorings', 'program_and_projects.id', '=', 'monitorings.idpaps')
-        //     ->get();
-        // //     ->groupBy('mfo_desc');
-        // // foreach ($results as $key => $row) {
-
-        // //     foreach ($row as $key => $value) {
-        // //         $value->numerical_rating = explode(',',$value->numerical_rating);
-        // //         $value->adjectival_rating = explode(',',$value->adjectival_rating);
-        // //         $value->efficiency_quantity = explode(',',$value->efficiency_quantity);
-        // //         $value->qualities = explode(',',$value->qualities);
-        // //         $value->timeliness = explode(',', $value->timeliness);
-        // //     }
-        // // }
-        // return $results;
     }
 
 

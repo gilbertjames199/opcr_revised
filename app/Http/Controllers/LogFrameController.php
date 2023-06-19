@@ -150,4 +150,13 @@ class LogFrameController extends Controller
         ];
         return $my_object;
     }
+
+    public function SocGOAL(Request $request){
+
+        // dd($request->id);
+        $socgoal=SocietalGoal::where('id', $request->id)
+        ->get();
+
+        return $socgoal;
+    }
 }
