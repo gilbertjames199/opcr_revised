@@ -107,17 +107,12 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                             ];
                         });
         //dd($opcr_lists);
-        $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
+        $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->map(function($item)use($request){});
 
         return inertia('OPCR/List/Index',[
             "opcr_lists"=>$opcr_lists,
             "FFUNCCOD"=>$FFUNCCOD,
             "office"=>$office,
-
-            // 'can'=>[
-            //     'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-            //     'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-            // ],
         ]);
     }
     public function create(Request $request, $FFUNCCOD){

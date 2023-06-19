@@ -5,14 +5,17 @@
 
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>OPCR Targets Targets</h3>
+            <h3>OPCR Targets </h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
-                <div class="peer">
+                <div class="peer mR-10">
                     <Link class="btn btn-primary btn-sm" :href="`/opcrtarget/create/${opcr_list_id}`">Create OPCR</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                </div>
+                <div class="peer">
+                    <button @click="showModal()" class="btn btn-primary btn-sm text-white" >Print</button>
                 </div>
                 &nbsp;
                 <Link :href="`/opcrlist/${FFUNCCOD}`">
@@ -21,9 +24,7 @@
                         <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
                     </svg>
                 </Link>
-                <div>
-                    viewlink: {{ viewlink }}
-                </div>
+
             </div>
         </div>
 
@@ -95,7 +96,12 @@
 
             </div>
         </div>
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
 
+                <iframe :src="my_link" style="width:100%; height:400px" />
+            </div>
+        </Modal>
     </div>
 
 </template>
@@ -176,7 +182,7 @@ export default {
             return linkl;
         },
         showModal(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
-            this.my_link = this.viewlink(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id);
+            this.my_link = this.viewlink();
             this.displayModal = true;
         },
         hideModal() {
