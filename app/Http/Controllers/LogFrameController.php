@@ -117,4 +117,37 @@ class LogFrameController extends Controller
         ];
         return $my_object;
     }
+    public function printlogpublic($FFUNCCOD){
+        $soc_goal= SocietalGoal::get();
+        //econ
+        $sec_goal_econ = Sectoral::Join('sectors','sectors.id','sectoral_goals.sector')
+                        ->where('sectors.sector_name','LIKE','%Econ%')
+                        ->get();
+        $sec_goal_soc = Sectoral::Join('sectors','sectors.id','sectoral_goals.sector')
+                        ->where('sectors.sector_name','LIKE','%Social%')
+                        ->get();
+        $sec_goal_gen = Sectoral::Join('sectors','sectors.id','sectoral_goals.sector')
+                        ->where('sectors.sector_name','LIKE','%General%')
+                        ->get();
+        $sec_goal=Sectoral::Join('sectors','sectors.id','sectoral_goals.sector')
+                    ->get();
+
+        $organizational=OrganizationalGoal::where('FFUNCCOD', $FFUNCCOD)->get();
+
+        $mfos = MajorFinalOutput::where('FFUNCCOD',$FFUNCCOD)->with('paps')->get();
+        //$id= auth()->user()->recid;
+        $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
+        $office=$functions->pluck('FFUNCTION');
+        $my_object =[
+            "soc_goal"=>  $soc_goal,
+            "sec_goal_econ"=>  $sec_goal_econ,
+            "sec_goal_soc"=>  $sec_goal_soc,
+            "sec_goal_gen"=>  $sec_goal_gen,
+            "sec_goal"=>  $sec_goal,
+            "organizational"=>  $organizational,
+            "mfos"=>  $mfos,
+            "office"=>  $office,
+        ];
+        return $my_object;
+    }
 }
