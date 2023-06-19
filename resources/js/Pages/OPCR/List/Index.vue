@@ -127,7 +127,6 @@ export default {
     components: {
         Pagination, Filtering, Modal
     },
-
     methods:{
         deleteRA(id) {
             let text = "WARNING!\nAre you sure you want to delete the Research Agenda?";
@@ -168,7 +167,6 @@ export default {
         hideModal() {
             this.displayModal = false;
         },
-
     }
 };
 </script>
