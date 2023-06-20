@@ -113,11 +113,6 @@ class OfficePerformanceCommitmentRatingListController extends Controller
             "opcr_lists"=>$opcr_lists,
             "FFUNCCOD"=>$FFUNCCOD,
             "office"=>$office,
-
-            // 'can'=>[
-            //     'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-            //     'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-            // ],
         ]);
     }
     public function create(Request $request, $FFUNCCOD){
