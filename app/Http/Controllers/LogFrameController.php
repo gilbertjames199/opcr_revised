@@ -7,6 +7,7 @@ use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\OrganizationalGoal;
 use App\Models\Outcome;
+use App\Models\ProgramAndProject;
 use App\Models\Sectoral;
 use App\Models\SocietalGoal;
 use Illuminate\Http\Request;
@@ -153,10 +154,34 @@ class LogFrameController extends Controller
 
     public function SocGOAL(Request $request){
 
-        // dd($request->id);
-        $socgoal=SocietalGoal::where('id', $request->id)
-        ->get();
+        // // dd($request->id);
+    $functions = strtoupper($request->FUNCTION);
+    $FFUNCOD = $request->id;
 
-        return $socgoal;
+    $result = DB::table('sectoral_goals as a')
+    ->select('a.id', 'a.sector', 'a.FFUNCCOD', 'a.goal_description as sectoral_description', 'c.goal_description as organizational_description', 'b.description as societal_description')
+    ->leftJoin('organizational_goals as c', 'c.FFUNCCOD', '=', 'a.FFUNCCOD')
+    ->leftJoin('societal_goals as b', function ($join) {
+        $join->on('b.id', '=', DB::raw('(SELECT MAX(X.id) FROM societal_goals X)'));
+    })
+    ->selectRaw("'$functions' as FUNCTION")
+    ->where('a.FFUNCCOD', $FFUNCOD)
+    ->get();
+        return $result;
+    }
+
+    public function mfo(Request $request){
+            $mfos =MajorFinalOutput::select("mfo_desc","id")->where('FFUNCCOD', $request->id)
+            ->get();
+            return $mfos;
+    }
+
+    public function paps(Request $request){
+
+
+        $paps = ProgramAndProject::select("paps_desc","id","MOV")
+        ->where('idmfo', $request->idmfo)
+        ->get();
+        return $paps;
     }
 }

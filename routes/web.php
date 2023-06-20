@@ -301,7 +301,7 @@ Route::middleware('auth')->group(function() {
     });
     //LOGFRAME
     Route::prefix('/logframe')->group(function(){
-        Route::get('/SocGoal',[LogFrameController::class,'SocGoal']);
+
         Route::get('/',[LogFrameController::class,'index']);
         Route::get('/{idstrat}',[LogFrameController::class,'showlog']);
 
@@ -715,6 +715,7 @@ Route::prefix('print')->group(function(){
     Route::get('/jasadmin',[RAAOController::class,'raao_jasper_admin']);
     Route::get('/jasuser',[RAAOController::class,'raao_jasper_user']);
     Route::get('/LogFrame/{FFUNCCOD}',[LogFrameController::class,'printLog']);
+
 });
 Route::prefix('opcr/print')->group(function(){
     Route::get('/rating/form', [OfficePerformanceCommitmentRatingController::class,'print_class']);
@@ -727,7 +728,12 @@ Route::prefix('opcr/print')->group(function(){
     Route::get('/office', [OfficePerformanceCommitmentRatingController::class,'print_office']);
 });
 Route::prefix('printlog')->group(function(){
+    Route::get('/SocGoal',[LogFrameController::class,'SocGoal']);
+    Route::get('/logframeMFO',[LogFrameController::class,'mfo']);
+    Route::get('/logframePAPS',[LogFrameController::class,'paps']);
     Route::get('/{FFUNCCOD}',[LogFrameController::class,'printlogpublic']);
+
+
 });
 
 
