@@ -182,7 +182,6 @@ export default {
         hideModal() {
             this.displayModal = false;
         },
-
     }
 };
 </script>

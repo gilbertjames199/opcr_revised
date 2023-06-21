@@ -152,23 +152,23 @@ class LogFrameController extends Controller
         return $my_object;
     }
 
-    public function SocGOAL(Request $request){
+    // public function SocGOAL(Request $request){
 
-        // // dd($request->id);
-    $functions = strtoupper($request->FUNCTION);
-    $FFUNCOD = $request->id;
+    //     // // dd($request->id);
+    // $functions = strtoupper($request->FUNCTION);
+    // $FFUNCOD = $request->id;
 
-    $result = DB::table('sectoral_goals as a')
-    ->select('a.id', 'a.sector', 'a.FFUNCCOD', 'a.goal_description as sectoral_description', 'c.goal_description as organizational_description', 'b.description as societal_description')
-    ->leftJoin('organizational_goals as c', 'c.FFUNCCOD', '=', 'a.FFUNCCOD')
-    ->leftJoin('societal_goals as b', function ($join) {
-        $join->on('b.id', '=', DB::raw('(SELECT MAX(X.id) FROM societal_goals X)'));
-    })
-    ->selectRaw("'$functions' as FUNCTION")
-    ->where('a.FFUNCCOD', $FFUNCOD)
-    ->get();
-        return $result;
-    }
+    // $result = DB::table('sectoral_goals as a')
+    // ->select('a.id', 'a.sector', 'a.FFUNCCOD', 'a.goal_description as sectoral_description', 'c.goal_description as organizational_description', 'b.description as societal_description')
+    // ->leftJoin('organizational_goals as c', 'c.FFUNCCOD', '=', 'a.FFUNCCOD')
+    // ->leftJoin('societal_goals as b', function ($join) {
+    //     $join->on('b.id', '=', DB::raw('(SELECT MAX(X.id) FROM societal_goals X)'));
+    // })
+    // ->selectRaw("'$functions' as FUNCTION")
+    // ->where('a.FFUNCCOD', $FFUNCOD)
+    // ->get();
+    //     return $result;
+    // }
 
     public function mfo(Request $request){
             $mfos =MajorFinalOutput::select("mfo_desc","id")->where('FFUNCCOD', $request->id)
@@ -177,11 +177,33 @@ class LogFrameController extends Controller
     }
 
     public function paps(Request $request){
-
-
         $paps = ProgramAndProject::select("paps_desc","id","MOV")
         ->where('idmfo', $request->idmfo)
         ->get();
         return $paps;
+    }
+
+    public function sectoral(Request $request){
+        $sectoral = Sectoral::select("goal_description as SectoralDescription","id")
+        ->where('FFUNCCOD', $request->id)
+        ->get();
+        return $sectoral;
+    }
+
+    public function organizational(Request $request){
+        $organizational = OrganizationalGoal::select("goal_description as organizationalOutcome","id")
+        ->where('FFUNCCOD', $request->id)
+        ->get();
+        return $organizational;
+    }
+
+    public function socgoals(Request $request){
+        $FFUNCOD = $request->id;
+        $functions = $request->FUNCTION;
+        $socgoals = SocietalGoal::select("description","id")
+        ->selectRaw("'$FFUNCOD' as FFUNCOD, '$functions' as FUNCTION")
+
+        ->get();
+        return $socgoals;
     }
 }
