@@ -28,7 +28,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="functional in data">
-                                <td>{{ functional.FFUNCTION }}</td>
+                                <td>{{ functional.FFUNCTION }}*</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
