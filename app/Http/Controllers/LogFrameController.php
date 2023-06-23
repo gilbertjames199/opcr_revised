@@ -31,6 +31,8 @@ class LogFrameController extends Controller
                         ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
                         ->where('iduser',auth()->user()->recid)
                         ->get();
+        // $acc_access = $this->model->where('FFUNCCOD','1031')->get()->pluck('iduser');
+        // dd($acc_access);
         //dd($functions);
         //dd($accounts); 1121
         //$functions = $accounts->pluck('func');
@@ -200,9 +202,8 @@ class LogFrameController extends Controller
     public function socgoals(Request $request){
         $FFUNCOD = $request->id;
         $functions = $request->FUNCTION;
-        $socgoals = SocietalGoal::
-        select(DB::raw('"'.$functions.'" as FUNCTION'), "description","id")
-        ->selectRaw("'$FFUNCOD' as FFUNCOD'")
+        $socgoals = SocietalGoal::select(DB::raw('"'.$functions.'" as FUNCTION'), "description","id")
+        ->selectRaw("'$FFUNCOD' as FFUNCOD")
 
         ->get();
         return $socgoals;

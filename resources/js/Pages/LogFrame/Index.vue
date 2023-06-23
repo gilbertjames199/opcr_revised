@@ -47,7 +47,7 @@
                                                     > View Logframe
                                                 </button>
                                                 <button class="dropdown-item"
-                                                    v-if="functional.FFUNCCOD==1031"
+                                                    v-if="functional.FFUNCCOD==='1031'"
                                                     @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)"
                                                     > View Logframe
                                                 </button>
@@ -155,7 +155,7 @@ export default {
         },
 
         showModal(ffunccod, ffunction){
-            alert(ffunccod+"\n"+ffunction);
+            // alert(ffunccod+"\n"+ffunction);
             this.my_link = this.getToRep(ffunccod, ffunction);
             this.displayModal = true;
         },
