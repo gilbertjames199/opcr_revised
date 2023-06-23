@@ -75,7 +75,7 @@ __webpack_require__.r(__webpack_exports__);
       return link1;
     },
     showModal: function showModal(ffunccod, ffunction) {
-      alert(ffunccod + "\n" + ffunction);
+      // alert(ffunccod+"\n"+ffunction);
       this.my_link = this.getToRep(ffunccod, ffunction);
       this.displayModal = true;
     },
