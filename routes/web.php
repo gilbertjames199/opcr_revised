@@ -734,8 +734,10 @@ Route::prefix('printlog')->group(function(){
     Route::get('/logframeSocGoals',[LogFrameController::class,'socgoals']);
     Route::get('/logframeSectoral',[LogFrameController::class,'sectoral']);
     Route::get('/logframeOrganizational',[LogFrameController::class,'organizational']);
-    Route::get('/{FFUNCCOD}',[LogFrameController::class,'printlogpublic']);
+    Route::get('/logframeSectorsFiltered',[LogFrameController::class,'sectorFiltered']);
+    Route::get('/logframeSectors',[LogFrameController::class,'sectoralClassified']);
 
+    Route::get('/{FFUNCCOD}',[LogFrameController::class,'printlogpublic']);
 
 });
 

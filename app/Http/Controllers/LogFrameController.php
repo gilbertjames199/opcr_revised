@@ -8,6 +8,7 @@ use App\Models\MajorFinalOutput;
 use App\Models\OrganizationalGoal;
 use App\Models\Outcome;
 use App\Models\ProgramAndProject;
+use App\Models\Sector;
 use App\Models\Sectoral;
 use App\Models\SocietalGoal;
 use Illuminate\Http\Request;
@@ -207,5 +208,18 @@ class LogFrameController extends Controller
 
         ->get();
         return $socgoals;
+    }
+
+    public function sectoralClassified(Request $request){
+        //dd('sectoral classified');
+        $data = Sector::select('id AS sector_id','sector_name')->get();
+        return $data;
+    }
+    public function sectorFiltered(Request $request){
+        $sectoral = Sectoral::select("goal_description as SectoralDescription","id", "sector")
+                    ->where('FFUNCCOD', $request->id)
+                    ->where('sector', $request->sector_id)
+                    ->get();
+        return $sectoral;
     }
 }
