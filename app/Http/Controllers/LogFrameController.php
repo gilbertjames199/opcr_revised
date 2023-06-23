@@ -31,7 +31,13 @@ class LogFrameController extends Controller
                         ->select('ff.FFUNCCOD','FFUNCTION')
                         ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
                         ->where('iduser',auth()->user()->recid)
-                        ->get();
+                        ->get()->map(function($item){
+                            $FFUNCTION = trim($item->FFUNCTION);
+                            return [
+                                'FFUNCCOD'=>$item->FFUNCCOD,
+                                'FFUNCTION'=>$FFUNCTION
+                            ];
+                        });
         // $acc_access = $this->model->where('FFUNCCOD','1031')->get()->pluck('iduser');
         // dd($acc_access);
         //dd($functions);
