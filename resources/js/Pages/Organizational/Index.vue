@@ -14,7 +14,6 @@
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/Organization/create`">Add Organizational Outcomes</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
             <!-- <Link :href="'/Organization'">

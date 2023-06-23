@@ -26,6 +26,9 @@ class OPCRPAPSController extends Controller
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
                 })
+                ->when($request->mfosel, function($query, $searchItem){
+                    $query->where('idmfo','=',$searchItem);
+                })
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
@@ -47,6 +50,7 @@ class OPCRPAPSController extends Controller
     public function direct(Request $request){
         //dd("direct");
         //dd($request->mfosel);
+        // dd($request->mfosel);
         $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
                 ->when($request->search, function($query, $searchItem){

@@ -42,7 +42,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   watch: {
     search: _.debounce(function (value) {
-      this.$inertia.get("/paps/direct", {
+      this.$inertia.get("/OPCRpaps/direct", {
         search: value
       }, {
         preserveScroll: true,
@@ -96,7 +96,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 //alert(this.mfosel);
-                _this2.$inertia.get("/paps/direct", {
+                _this2.$inertia.get("/OPCRpaps/direct", {
                   mfosel: _this2.mfosel
                 }, {
                   preserveScroll: true,
