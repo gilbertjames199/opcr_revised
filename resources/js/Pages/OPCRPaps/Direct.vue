@@ -28,8 +28,8 @@
         <filtering v-if="filter" @closeFilter="filter=false">
             Filter by MFO
             <select v-model="mfosel" class="form-control" @change="filterData()">
-                <option v-for="dat in data.data" :key="dat.idmfo">
-                    {{ dat.m_f_o.mfo_desc }}
+                <option v-for="mfo in mfos" :value="mfo.id">
+                    {{ mfo.mfo_desc }}
                 </option>
             </select>
             <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
