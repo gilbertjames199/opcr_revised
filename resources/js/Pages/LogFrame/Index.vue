@@ -62,7 +62,13 @@
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
                                             <li><Link class="dropdown-item" :href="`/divisions/${functional.FFUNCCOD}`">Divisions</Link></li>
                                             <li><Link class="dropdown-item" :href="`/revision/general/administration/services/${functional.FFUNCCOD}/plan`">GAS Profile/Design</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/logframe/${functional.FFUNCCOD}`">View Logframe</Link></li>
+                                            <li>
+                                                <button class="dropdown-item"
+                                                @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)"
+                                                > View Logframe
+                                            </button>
+                                            </li>
+                                            <!-- <li><Link class="dropdown-item" :href="`/logframe/${functional.FFUNCCOD}`">View Logframe</Link></li> -->
                                         </ul>
                                     </div>
                                 </td>
@@ -87,12 +93,18 @@
 
             </div>
         </div>
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
 
+                <iframe :src="my_link" style="width:100%; height:500px" />
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
@@ -103,6 +115,8 @@ export default {
     },
     data() {
         return{
+            my_link: "",
+            displayModal: false,
             //search: this.$props.filters.search,
         }
     },
@@ -120,7 +134,7 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering,Modal,
     },
 
     methods:{
@@ -143,7 +157,25 @@ export default {
               if (confirm(text) == true) {
                 this.$inertia.delete("/paps/" + id+"/"+this.idmfo);
             }
-        }
+        },
+        getToRep(ffunccod, ffunction){
+            // alert(data[0].FFUNCCOD);
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FLogFrame&reportUnit=%2Freports%2Fplanning_system%2FLogFrame%2FLogframe&standAlone=true&decorate=no&output=pdf';
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
+            var link1 = linkt + jasper_ip +jasper_link + params;
+            return link1;
+        },
+
+        showModal(ffunccod, ffunction){
+            this.my_link = this.getToRep(ffunccod, ffunction);
+            this.displayModal = true;
+        },
+
+        hideModal() {
+            this.displayModal = false;
+        },
     }
 };
 </script>

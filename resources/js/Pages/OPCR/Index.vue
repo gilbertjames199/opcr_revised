@@ -62,7 +62,7 @@
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
                                             <li>
                                                 <button class="dropdown-item"
-                                                @click="showModal(data,
+                                                @click="showModal(functional.FFUNCCOD,functional.FFUNCTION,
                                                 MOOE,
                                                 PS)"
                                                 > View OPCR Standard
@@ -164,25 +164,24 @@ export default {
                 this.$inertia.delete("/paps/" + id+"/"+this.idmfo);
             }
         },
-        getToRep(data, MOOE, PS){
+        getToRep(ffunccod, ffunction, MOOE, PS){
             // alert(data[0].FFUNCCOD);
             var linkt="http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR_Standard&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Standard%2FOPCR&standAlone=true&decorate=no&output=pdf';
-            var params = '&id=' + data[0].FFUNCCOD + '&FUNCTION=' + data[0].FFUNCTION + '&MOOE=' + MOOE + '&PS=' + PS;
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&MOOE=' + MOOE + '&PS=' + PS;
             var link1 = linkt + jasper_ip +jasper_link + params;
             return link1;
         },
 
-        showModal(data, MOOE, PS){
-            this.my_link = this.getToRep(data, MOOE, PS);
+        showModal(ffunccod, ffunction, MOOE, PS){
+            this.my_link = this.getToRep(ffunccod, ffunction, MOOE, PS);
             this.displayModal = true;
         },
 
         hideModal() {
             this.displayModal = false;
         },
-
     }
 };
 </script>

@@ -86,7 +86,7 @@ class PerformanceController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
-            'Performance'=>$request->Performance,
+            'performance'=>$request->performance,
             'idpaps'=>$request->idpaps
         ]);
 
