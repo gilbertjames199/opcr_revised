@@ -28,8 +28,8 @@
         <filtering v-if="filter" @closeFilter="filter=false">
             Filter by MFO
             <select v-model="mfosel" class="form-control" @change="filterData()">
-                <option v-for="mfo in mfos" :value="mfo.id">
-                    {{ mfo.mfo_desc }}
+                <option v-for="dat in data.data" :key="dat.idmfo">
+                    {{ dat.m_f_o.mfo_desc }}
                 </option>
             </select>
             <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
@@ -135,7 +135,7 @@ export default {
     watch: {
             search: _.debounce(function (value) {
             this.$inertia.get(
-                "/paps/direct",
+                "/OPCRpaps/direct",
                 { search: value },
                 {
                     preserveScroll: true,
@@ -170,7 +170,7 @@ export default {
             //alert(this.mfosel);
 
             this.$inertia.get(
-                "/paps/direct",
+                "/OPCRpaps/direct",
                 {
                     mfosel: this.mfosel
                 },
