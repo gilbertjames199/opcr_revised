@@ -150,6 +150,7 @@ export default {
         },
 
         showModal(ffunccod, ffunction){
+            alert(ffunccod+"\n"+ffunction);
             this.my_link = this.getToRep(ffunccod, ffunction);
             this.displayModal = true;
         },
