@@ -80,11 +80,12 @@
             </div>
         </div>
         <Modal v-if="displayModal" @close-modal-event="hideModal">
+
             <div class="d-flex justify-content-center">
-                {{ my_link }}
                 <iframe :src="my_link" style="width:100%; height:500px" />
             </div>
         </Modal>
+        {{ my_link }}
     </div>
 </template>
 <script>
