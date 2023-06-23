@@ -41,16 +41,18 @@
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
                                             <li><Link class="dropdown-item" :href="`/divisions/${functional.FFUNCCOD}`">Divisions</Link></li>
                                             <li><Link class="dropdown-item" :href="`/revision/general/administration/services/${functional.FFUNCCOD}/plan`">GAS Profile/Design</Link></li>
-                                            <li>
+                                            <li v-if="functional.FFUNCCOD==='1031'">
+                                                <button class="dropdown-item"
+                                                    @click="showModalAd(functional.FFUNCCOD, functional.FFUNCTION)"
+                                                    > View Logframe
+                                                </button>
+                                            </li>
+                                            <li v-else>
                                                 <button class="dropdown-item"
                                                     @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)"
                                                     > View Logframe
                                                 </button>
-                                                <button class="dropdown-item"
-                                                    v-if="functional.FFUNCCOD==='1031'"
-                                                    @click="showModalAd(functional.FFUNCCOD, functional.FFUNCTION)"
-                                                    > View Logframe
-                                                </button>
+
                                             </li>
                                             <!-- <li><Link class="dropdown-item" :href="`/logframe/${functional.FFUNCCOD}`">View Logframe</Link></li> -->
                                         </ul>
