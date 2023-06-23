@@ -168,7 +168,6 @@ export default {
         },
         async filterData(){
             //alert(this.mfosel);
-
             this.$inertia.get(
                 "/OPCRpaps/direct",
                 {
