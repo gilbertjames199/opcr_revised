@@ -48,7 +48,7 @@
                                                 </button>
                                                 <button class="dropdown-item"
                                                     v-if="functional.FFUNCCOD==='1031'"
-                                                    @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)"
+                                                    @click="showModalAd(functional.FFUNCCOD, functional.FFUNCTION)"
                                                     > View Logframe
                                                 </button>
                                             </li>
@@ -159,6 +159,16 @@ export default {
             this.my_link = this.getToRep(ffunccod, ffunction);
             this.displayModal = true;
         },
+        showModalAd(ffunccod, ffunction){
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLogframe_spcl%2FMAIN_LOGFRAME&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLogframe_spcl&standAlone=true&decorate=no&output=pdf'
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
+            var link1 = linkt + jasper_ip +jasper_link + params;
+            this.displayModal = true;
+            return link1;
+
+        }
 
         hideModal() {
             this.displayModal = false;
