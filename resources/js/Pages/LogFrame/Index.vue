@@ -43,9 +43,14 @@
                                             <li><Link class="dropdown-item" :href="`/revision/general/administration/services/${functional.FFUNCCOD}/plan`">GAS Profile/Design</Link></li>
                                             <li>
                                                 <button class="dropdown-item"
-                                                @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)"
-                                                > View Logframe
-                                            </button>
+                                                    @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)"
+                                                    > View Logframe
+                                                </button>
+                                                <button class="dropdown-item"
+                                                    v-if="functional.FFUNCCOD==1031"
+                                                    @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)"
+                                                    > View Logframe
+                                                </button>
                                             </li>
                                             <!-- <li><Link class="dropdown-item" :href="`/logframe/${functional.FFUNCCOD}`">View Logframe</Link></li> -->
                                         </ul>
