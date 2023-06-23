@@ -163,14 +163,14 @@ export default {
             this.displayModal = true;
         },
         showModalAd(ffunccod, ffunction){
-            alert("showModalAd\n"+ffunccod+"\n"+ffunction);
+            //alert("showModalAd\n"+ffunccod+"\n"+ffunction);
             var linkt="http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLogframe_spcl%2FMAIN_LOGFRAME&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLogframe_spcl&decorate=no&output=pdf'
             var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
             var link1 = linkt + jasper_ip +jasper_link + params;
             this.displayModal = true;
-            return link1;
+            this.my_link = link1;
 
         },
 
