@@ -154,7 +154,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                         ->where('opcr_id', $opcr_id)
                         ->first()->average_sum;
         $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
-
+        if($count<1){$count=1;};
         $total = number_format($averageSum,2);
         $ave_pre = $total/$count;
         $ave = number_format($ave_pre,2);
