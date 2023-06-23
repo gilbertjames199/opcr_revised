@@ -202,7 +202,7 @@ class LogFrameController extends Controller
         $functions = $request->FUNCTION;
         $socgoals = SocietalGoal::
         select(DB::raw('"'.$functions.'" as FUNCTION'), "description","id")
-        ->selectRaw("'$FFUNCOD' as FFUNCOD")
+        ->selectRaw("'$FFUNCOD' as FFUNCOD'")
 
         ->get();
         return $socgoals;
