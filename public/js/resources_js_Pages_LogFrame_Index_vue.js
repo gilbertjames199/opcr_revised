@@ -65,17 +65,17 @@ __webpack_require__.r(__webpack_exports__);
         this.$inertia["delete"]("/paps/" + id + "/" + this.idmfo);
       }
     },
-    getToRep: function getToRep(data) {
+    getToRep: function getToRep(ffunccod, ffunction) {
       // alert(data[0].FFUNCCOD);
       var linkt = "http://";
       var jasper_ip = this.jasper_ip;
       var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FLogFrame&reportUnit=%2Freports%2Fplanning_system%2FLogFrame%2FLogframe&standAlone=true&decorate=no&output=pdf';
-      var params = '&id=' + data[0].FFUNCCOD + '&FUNCTION=' + data[0].FFUNCTION;
+      var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
       var link1 = linkt + jasper_ip + jasper_link + params;
       return link1;
     },
-    showModal: function showModal(data) {
-      this.my_link = this.getToRep(data);
+    showModal: function showModal(ffunccod, ffunction) {
+      this.my_link = this.getToRep(ffunccod, ffunction);
       this.displayModal = true;
     },
     hideModal: function hideModal() {
@@ -251,10 +251,11 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNo
 
 var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("GAS Profile/Design");
 
-var _hoisted_16 = {
+var _hoisted_16 = ["onClick"];
+var _hoisted_17 = {
   "class": "d-flex justify-content-center"
 };
-var _hoisted_17 = ["src"];
+var _hoisted_18 = ["src"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -298,10 +299,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS, DYNAMIC_SLOTS */
     , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "dropdown-item",
-      onClick: _cache[0] || (_cache[0] = function ($event) {
-        return $options.showModal($props.data);
-      })
-    }, " View Logframe ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"dropdown-item\" :href=\"`/logframe/${functional.FFUNCCOD}`\">View Logframe</Link></li> ")])])])]);
+      onClick: function onClick($event) {
+        return $options.showModal(functional.FFUNCCOD, functional.FFUNCTION);
+      }
+    }, " View Logframe ", 8
+    /* PROPS */
+    , _hoisted_16)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"dropdown-item\" :href=\"`/logframe/${functional.FFUNCCOD}`\">View Logframe</Link></li> ")])])])]);
   }), 256
   /* UNKEYED_FRAGMENT */
   ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"row justify-content-center\">\n                    <div class=\"col-md-12\">\n                        <pagination :next=\"data.next_page_url\" :prev=\"data.prev_page_url\" />\n                    </div>\n                </div>\n                <div class=\"row justify-content-center\">\n                    <div class=\"col-md-12\">\n                        <p >\n                            {{ data.from }} to {{ data.to }} of\n                            {{ data.total }} entries\n                        </p>\n                    </div>\n                </div> ")])]), $data.displayModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Modal, {
@@ -309,7 +312,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onCloseModalEvent: $options.hideModal
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
         src: $data.my_link,
         style: {
           "width": "100%",
@@ -317,7 +320,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, null, 8
       /* PROPS */
-      , _hoisted_17)])];
+      , _hoisted_18)])];
     }),
     _: 1
     /* STABLE */

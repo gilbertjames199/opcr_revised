@@ -67,17 +67,17 @@ __webpack_require__.r(__webpack_exports__);
         this.$inertia["delete"]("/paps/" + id + "/" + this.idmfo);
       }
     },
-    getToRep: function getToRep(data, MOOE, PS) {
+    getToRep: function getToRep(ffunccod, ffunction, MOOE, PS) {
       // alert(data[0].FFUNCCOD);
       var linkt = "http://";
       var jasper_ip = this.jasper_ip;
       var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR_Standard&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Standard%2FOPCR&standAlone=true&decorate=no&output=pdf';
-      var params = '&id=' + data[0].FFUNCCOD + '&FUNCTION=' + data[0].FFUNCTION + '&MOOE=' + MOOE + '&PS=' + PS;
+      var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&MOOE=' + MOOE + '&PS=' + PS;
       var link1 = linkt + jasper_ip + jasper_link + params;
       return link1;
     },
-    showModal: function showModal(data, MOOE, PS) {
-      this.my_link = this.getToRep(data, MOOE, PS);
+    showModal: function showModal(ffunccod, ffunction, MOOE, PS) {
+      this.my_link = this.getToRep(ffunccod, ffunction, MOOE, PS);
       this.displayModal = true;
     },
     hideModal: function hideModal() {
@@ -248,13 +248,14 @@ var _hoisted_13 = {
   "class": "dropdown-menu action-dropdown",
   "aria-labelledby": "dropdownMenuButton1"
 };
+var _hoisted_14 = ["onClick"];
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("OPCR Form");
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("OPCR Form");
 
-var _hoisted_15 = {
+var _hoisted_16 = {
   "class": "d-flex justify-content-center"
 };
-var _hoisted_16 = ["src"];
+var _hoisted_17 = ["src"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -274,15 +275,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("/{id}/{idinteroutcome}/edit\n                                            <li><Link class=\"dropdown-item\" :href=\"`/paps/${dat.id}/${dat.idmfo}/edit`\">Edit</Link></li>\n                                            <li><Link class=\"text-danger dropdown-item\" @click=\"deletePAPS(dat.id)\">Delete</Link></li>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "dropdown-item",
-      onClick: _cache[0] || (_cache[0] = function ($event) {
-        return $options.showModal($props.data, $props.MOOE, $props.PS);
-      })
-    }, " View OPCR Standard ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link class=\"dropdown-item\" :href=\"`/OPCRStandard/${functional.FFUNCCOD}`\">View OPCR Standard</Link></li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+      onClick: function onClick($event) {
+        return $options.showModal(functional.FFUNCCOD, functional.FFUNCTION, $props.MOOE, $props.PS);
+      }
+    }, " View OPCR Standard ", 8
+    /* PROPS */
+    , _hoisted_14)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link class=\"dropdown-item\" :href=\"`/OPCRStandard/${functional.FFUNCCOD}`\">View OPCR Standard</Link></li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "dropdown-item",
       href: "/opcrlist/".concat(functional.FFUNCCOD)
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [_hoisted_14];
+        return [_hoisted_15];
       }),
       _: 2
       /* DYNAMIC */
@@ -297,7 +300,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onCloseModalEvent: $options.hideModal
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
         src: $data.my_link,
         style: {
           "width": "100%",
@@ -305,7 +308,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, null, 8
       /* PROPS */
-      , _hoisted_16)])];
+      , _hoisted_17)])];
     }),
     _: 1
     /* STABLE */
