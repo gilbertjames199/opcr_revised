@@ -85,7 +85,7 @@
                 <iframe :src="my_link" style="width:100%; height:500px" />
             </div>
         </Modal>
-        {{ my_link }}
+        <!-- {{ my_link }} -->
     </div>
 </template>
 <script>
