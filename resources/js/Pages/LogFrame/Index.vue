@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>LOGFRAME</h3>
+            <h3>LOGICAL FRAMEWORK</h3>
             <div class="peers">
 
 
