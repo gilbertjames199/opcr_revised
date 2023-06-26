@@ -38,38 +38,48 @@ class OPCRController extends Controller
                         ->select('ff.FFUNCCOD','FFUNCTION')
                         ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
                         ->where('iduser',auth()->user()->recid)
-                        ->get();
+                        ->get()
+                        ->map(function($item){
+                            $my_year = now()->year;
+
+                            // dd($my_year);
+
+                            //REVISION PLAN ID/ GET MOOE & PS
+                            $revision_plan = RevisionPlan::where('idmfo','0')
+                                                ->where('idpaps','0')
+                                                ->where('FFUNCCOD', $item->FFUNCCOD)
+                                                ->where('year_period', $my_year)
+                                                ->first();
+                            $mooe="0.00";
+                            $ps = "0.00";
+                            if($revision_plan){
+                                $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                                        ->where('category','Maintenance, Operating, and Other Expenses')
+                                        ->sum('amount');
+
+                                $ps1 =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                                        ->where('category','Personnel Services')
+                                        ->sum('amount');
+                                $mooe2 = (float)$mooe1;
+                                $ps2 = (float)$ps1;
+                                $mooe = number_format($mooe2,2);
+                                $ps = number_format($ps2,2);
+                            }else{
+                                //dd("empty no ps budget");
+                            }
+                            return [
+                                "FFUNCCOD"=>$item->FFUNCCOD,
+                                "FFUNCTION"=>$item->FFUNCTION,
+                                "MOOE"=>$mooe,
+                                "PS"=>$ps,
+                            ];
+                        });
 
 
                         //YEAR NOW
-                        $my_year = now()->year;
 
-                        // dd($my_year);
-
-                        //REVISION PLAN ID/ GET MOOE & PS
-                        $revision_plan = RevisionPlan::where('idmfo','0')
-                                            ->where('idpaps','0')
-                                            ->where('FFUNCCOD', $request->id)
-                                            ->where('year_period', $my_year)
-                                            ->first();
-                        $mooe="0.00";
-                        $ps = "0.00";
-                        if($revision_plan){
-                            $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
-                                    ->where('category','Maintenance, Operating, and Other Expenses')
-                                    ->sum('amount');
-
-                            $ps1 =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
-                                    ->where('category','Personnel Services')
-                                    ->sum('amount');
-                            $mooe2 = (float)$mooe1;
-                            $ps2 = (float)$ps1;
-                            $mooe = number_format($mooe2,2);
-                            $ps = number_format($ps2,2);
-                        }else{
-                            //dd("empty no ps budget");
-                        }
-
+        $mooe="0.00";
+        $ps = "0.00";
         return inertia('OPCR/Index', [
             "data"=>$functions,
             "MOOE"=>$mooe,
