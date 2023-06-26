@@ -48,8 +48,8 @@
                                             <li>
                                                 <button class="dropdown-item"
                                                 @click="showModal(functional.FFUNCCOD,functional.FFUNCTION,
-                                                MOOE,
-                                                PS)"
+                                                functional.MOOE,
+                                                functional.PS)"
                                                 > View OPCR Standard
                                             </button>
                                             </li>
