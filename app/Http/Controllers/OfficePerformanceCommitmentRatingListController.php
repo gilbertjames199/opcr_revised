@@ -139,6 +139,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         ]);
         $found = $this->model->where('year', $request->year)
                                 ->where('semester', $request->semester)
+                                ->where('FFUNCCOD', $request->FFUNCCOD)
                                 ->first();
         $type='error';
         $msg="OPCR for the year (".$request->year.") and semester (".$request->semester.") already exists. Save unsuccessful.";

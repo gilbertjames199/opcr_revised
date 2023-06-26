@@ -8,6 +8,7 @@ use App\Models\MajorFinalOutput;
 use App\Models\OrganizationalGoal;
 use App\Models\Outcome;
 use App\Models\ProgramAndProject;
+use App\Models\Sector;
 use App\Models\Sectoral;
 use App\Models\SocietalGoal;
 use Illuminate\Http\Request;
@@ -30,7 +31,13 @@ class LogFrameController extends Controller
                         ->select('ff.FFUNCCOD','FFUNCTION')
                         ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
                         ->where('iduser',auth()->user()->recid)
-                        ->get();
+                        ->get()->map(function($item){
+                            $FFUNCTION = trim($item->FFUNCTION);
+                            return [
+                                'FFUNCCOD'=>$item->FFUNCCOD,
+                                'FFUNCTION'=>$FFUNCTION
+                            ];
+                        });
         // $acc_access = $this->model->where('FFUNCCOD','1031')->get()->pluck('iduser');
         // dd($acc_access);
         //dd($functions);
@@ -207,5 +214,18 @@ class LogFrameController extends Controller
 
         ->get();
         return $socgoals;
+    }
+
+    public function sectoralClassified(Request $request){
+        //dd('sectoral classified');
+        $data = Sector::select('id AS sector_id','sector_name')->selectRaw("'$request->id' as FFUNCOD")->get();
+        return $data;
+    }
+    public function sectorFiltered(Request $request){
+        $sectoral = Sectoral::select("goal_description as SectoralDescription","id", "sector")
+                    ->where('FFUNCCOD', $request->id)
+                    ->where('sector', $request->sector_id)
+                    ->get();
+        return $sectoral;
     }
 }
