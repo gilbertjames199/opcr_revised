@@ -18,6 +18,12 @@
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
                 <input type="hidden" v-model="form.idpaps" class="form-control" autocomplete="positionchrome-off">
+                <label for="">Numerical Rating</label>
+                <input type="text" v-model="form.numerical_rating" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.numerical_rating">{{ form.errors.numerical_rating }}</div>
+                <label for="">Adjectival Rating</label>
+                <input type="text" v-model="form.adjectival_rating" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.adjectival_rating">{{ form.errors.adjectival_rating }}</div>
                 <label for="">Quality</label>
                 <input type="text" v-model="form.quality" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.quality">{{ form.errors.quality }}</div>
@@ -60,6 +66,8 @@ export default {
             return {
                 submitted: false,
                 form: useForm({
+                    numerical_rating: "",
+                    adjectival_rating: "",
                     quality: "",
                     idpaps: "",
                     id: null
@@ -75,6 +83,8 @@ export default {
                     this.bar=this.bari
                 }
                 this.pageTitle = "Edit"
+                this.form.numerical_rating=this.editData.numerical_rating
+                this.form.adjectival_rating=this.editData.adjectival_rating
                 this.form.quality=this.editData.quality
                 this.form.idpaps=this.editData.idpaps
                 this.form.id=this.editData.id

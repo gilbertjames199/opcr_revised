@@ -51,6 +51,8 @@ class TimelinessController extends Controller
         // dd($request);
         $id = $request->idpaps;
         $attributes = $request->validate([
+            'numerical_rating' => 'required',
+            'adjectival_rating' => 'required',
             'timeliness' => 'required',
             'idpaps'=>'required',
         ]);
@@ -65,6 +67,8 @@ class TimelinessController extends Controller
         $data = $this->model->where('id', $id)->first([
             'id',
             'timeliness',
+            'numerical_rating',
+            'adjectival_rating',
             'idpaps'
         ]);
         $paps = ProgramAndProject::findOrFail($data->idpaps);
@@ -86,6 +90,8 @@ class TimelinessController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
+            'numerical_rating'=>$request->numerical_rating,
+            'adjectival_rating'=>$request->adjectival_rating,
             'timeliness'=>$request->timeliness,
             'idpaps'=>$request->idpaps
         ]);

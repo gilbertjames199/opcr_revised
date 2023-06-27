@@ -39,6 +39,8 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
+                                <th>Numerical Rating</th>
+                                <th>Adjectival Rating</th>
                                 <th>Timeliness</th>
                                 <th>Action</th>
                             </tr>
@@ -46,6 +48,8 @@
                         <tbody>
 
                             <tr v-for="dat in data.data">
+                                <td>{{ dat.numerical_rating }}</td>
+                                <td>{{ dat.adjectival_rating }}</td>
                                 <td>{{ dat.timeliness }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >

@@ -13,5 +13,7 @@ class Quality extends Model
     protected $fillable = [
         'quality',
         'idpaps',
+        'numerical_rating',
+        'adjectival_rating',
     ];
 }
