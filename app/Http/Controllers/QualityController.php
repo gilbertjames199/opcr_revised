@@ -51,6 +51,8 @@ class QualityController extends Controller
         // dd($request);
         $id = $request->idpaps;
         $attributes = $request->validate([
+            'numerical_rating' => 'required',
+            'adjectival_rating' => 'required',
             'quality' => 'required',
             'idpaps'=>'required',
         ]);
@@ -65,6 +67,8 @@ class QualityController extends Controller
         $data = $this->model->where('id', $id)->first([
             'id',
             'quality',
+            'numerical_rating',
+            'adjectival_rating',
             'idpaps'
         ]);
         $paps = ProgramAndProject::findOrFail($data->idpaps);
@@ -86,6 +90,8 @@ class QualityController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
+            'numerical_rating'=>$request->numerical_rating,
+            'adjectival_rating'=>$request->adjectival_rating,
             'quality'=>$request->quality,
             'idpaps'=>$request->idpaps
         ]);

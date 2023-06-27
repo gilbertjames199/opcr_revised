@@ -13,5 +13,7 @@ class Timeliness extends Model
     protected $fillable = [
         'timeliness',
         'idpaps',
+        'numerical_rating',
+        'adjectival_rating',
     ];
 }
