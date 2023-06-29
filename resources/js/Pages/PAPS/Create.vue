@@ -53,46 +53,6 @@
                     <option>Project</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.type">{{ form.errors.type }}</div>
-                <!-- <div>PLAN PERIOD</div>
-
-                <label for="">From</label>
-                <select v-model="form.plan_period_from" class="form-control" >
-                    <option v-for="year in year_values">{{ year }}</option>
-                </select> -->
-                <!--<input type="number" min="2000" max="2099" step="1" v-model="form.plan_period_from" class="form-control" autocomplete="chrome-off">-->
-                <!-- <div class="fs-6 c-red-500" v-if="form.errors.plan_period_from">{{ form.errors.plan_period_from }}</div>
-
-                <label for="">To</label>
-                <select v-model="form.plan_period_to" class="form-control" >
-                    <option v-for="year in year_values">{{ year }}</option>
-                </select> -->
-                <!--<input type="number" min="2000" max="2099" step="1" v-model="form.plan_period_to" class="form-control" autocomplete="chrome-off">-->
-                <!-- <div class="fs-6 c-red-500" v-if="form.errors.plan_period_to">{{ form.errors.plan_period_to }}</div> -->
-
-                <!-- <div>PLAN AMOUNT</div>
-                <label for="">Year 1</label>
-                <input type="number" v-model="form.plan_amount_year1" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year1">{{ form.errors.plan_amount_year1 }}</div>
-
-                <label for="">Year 2</label>
-                <input type="number" v-model="form.plan_amount_year2" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year2">{{ form.errors.plan_amount_year2 }}</div>
-
-                <label for="">Year 3</label>
-                <input type="number" v-model="form.plan_amount_year3" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year3">{{ form.errors.plan_amount_year3 }}</div>
-
-                <label for="">Year 4</label>
-                <input type="number" v-model="form.plan_amount_year4" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year4">{{ form.errors.plan_amount_year4 }}</div>
-
-                <label for="">Year 5</label>
-                <input type="number" v-model="form.plan_amount_year5" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year5">{{ form.errors.plan_amount_year5 }}</div>
-
-                <label for="">Year 6</label>
-                <input type="number" v-model="form.plan_amount_year6" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.plan_amount_year6">{{ form.errors.plan_amount_year6 }}</div> -->
 
                 <label for="">Office</label>
                 <!--<input type="number" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">-->
@@ -102,6 +62,51 @@
                     </option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
+
+                <label for="">Chief Executive Agenda</label>
+                <select class="form-control form-select" v-model="form.chief_executive_agenda" >
+                    <option value=""></option>
+                    <option v-for="chief_agenda in chief_agenda" :value="chief_agenda.id" >
+                        {{ chief_agenda.agenda_description }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.chief_executive_agenda">{{ form.errors.chief_executive_agenda }}</div>
+
+                <label for="">Socio-Economic Agenda</label>
+                <select class="form-control form-select" v-model="form.socio_economic_agenda" >
+                    <option value=""></option>
+                    <option v-for="socio_economic in socio_economic" :value="socio_economic.id" >
+                        {{ socio_economic.agenda_description }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.socio_economic_agenda">{{ form.errors.socio_economic_agenda }}</div>
+
+                <label for="">Sustainable Development Goals</label>
+                <select class="form-control form-select" v-model="form.sust_devt_goal" >
+                    <option value=""></option>
+                    <option v-for="sustainable in sustainable" :value="sustainable.id" >
+                        {{ sustainable.goal_description }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.sust_devt_goal">{{ form.errors.sust_devt_goal }}</div>
+
+                <label for="">Executive Legislative Agenda</label>
+                <select class="form-control form-select" v-model="form.executive_legislative_agenda" >
+                    <option value=""></option>
+                    <option v-for="executive_legislative in executive_legislative" :value="executive_legislative.id" >
+                        {{ executive_legislative.agenda_description }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.executive_legislative_agenda">{{ form.errors.executive_legislative_agenda }}</div>
+
+                <label for="">Research Agenda</label>
+                <select class="form-control form-select" v-model="form.research_agenda" >
+                    <option value=""></option>
+                    <option v-for="research in research" :value="research.id" >
+                        {{ research.agenda_description }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.research_agenda">{{ form.errors.research_agenda }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
@@ -124,6 +129,11 @@ export default {
         props: {
             editData: Object,
             mfos: Object,
+            chief_agenda: Object,
+            socio_economic: Object,
+            sustainable: Object,
+            executive_legislative: Object,
+            research: Object,
             idmfo: String,
             functions: Object
         },
@@ -146,6 +156,11 @@ export default {
                     FFUNCCOD	: "",
                     idmfo	: "",
                     MOV: "",
+                    chief_executive_agenda: "",
+                    socio_economic_agenda: "",
+                    sust_devt_goal: "",
+                    executive_legislative_agenda: "",
+                    research_agenda: "",
                     id: null
                 }),
                 year_values:  ["2000",
@@ -267,6 +282,11 @@ export default {
                 this.form.type=this.editData.type
                 this.form.FFUNCCOD=this.editData.FFUNCCOD
                 this.form.idmfo=this.editData.idmfo
+                this.form.chief_executive_agenda = this.editData.chief_executive_agenda
+                this.form.socio_economic_agenda = this.editData.socio_economic_agenda
+                this.form.sust_devt_goal = this.editData.sust_devt_goal
+                this.form.executive_legislative_agenda = this.editData.executive_legislative_agenda
+                this.form.research_agenda = this.editData.research_agenda
                 this.form.id=this.editData.id
             } else {
                 this.pageTitle = "Create"

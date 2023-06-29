@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountAccess;
+use App\Models\ChiefAgenda;
+use App\Models\EconomicAgenda;
+use App\Models\ELA;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring;
 use App\Models\OfficeAccountable;
@@ -12,7 +15,9 @@ use App\Models\Quality;
 use App\Models\QualityRemarks;
 use App\Models\rating;
 use App\Models\RatingRemarks;
+use App\Models\ResearchAgenda;
 use App\Models\RevisionPlan;
+use App\Models\SDG;
 use App\Models\Strategy;
 use App\Models\SuccessIndicator;
 use App\Models\Target;
@@ -63,6 +68,7 @@ class PAPController extends Controller
     public function create($id)
     {
         $mfos= MajorFinalOutput::get();
+        $chief_executive_agenda = ChiefAgenda::get();
         //dd($id);
         $year_object=DB::connection('mysql2')
                         ->table('raaohs')
@@ -77,6 +83,7 @@ class PAPController extends Controller
                     ->with('func')->get();
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
+            'chief_agenda'=>$chief_executive_agenda,
             'idmfo'=>$id,
             'functions'=>$functions,
             'years'=>$year_object,
@@ -90,6 +97,11 @@ class PAPController extends Controller
     public function direct_create()
     {
         $mfos= MajorFinalOutput::get();
+        $chief_executive_agenda = ChiefAgenda::get();
+        $socio_economic = EconomicAgenda::get();
+        $sustainable = SDG::get();
+        $executive_legislative = ELA::get();
+        $research = ResearchAgenda::get();
         // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
         // $functions = $accounts->pluck('func');
         $functions = AccountAccess::where('iduser',auth()->user()->recid)
@@ -99,6 +111,11 @@ class PAPController extends Controller
         //dd($id);
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
+            'chief_agenda'=>$chief_executive_agenda,
+            'socio_economic' => $socio_economic,
+            'sustainable' => $sustainable,
+            'executive_legislative' => $executive_legislative,
+            'research' => $research,
             'functions'=>$functions,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
@@ -111,7 +128,19 @@ class PAPController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
-        $this->model->create($attributes);
+        //$this->model->create($attributes);
+        $paps = new ProgramAndProject();
+        $paps->paps_desc = $request->paps_desc;
+        $paps->FFUNCCOD = $request->FFUNCCOD;
+        $paps->idmfo = $request->idmfo;
+        $paps-> MOV= $request->MOV;
+        $paps-> type= $request->type;
+        $paps-> chief_executive_agenda= $request->chief_executive_agenda;
+        $paps-> socio_economic_agenda= $request->socio_economic_agenda;
+        $paps-> sust_devt_goal= $request->sust_devt_goal;
+        $paps-> executive_legislative_agenda= $request->executive_legislative_agenda;
+        $paps-> research_agenda= $request->research_agenda;
+        $paps->save();
         //dd($request->idmfo);
         //$request->pass='';
         return redirect('/paps/direct')
@@ -140,6 +169,11 @@ class PAPController extends Controller
                         ->orderBy('tyear','ASC')
                         ->get();
         $mfos= MajorFinalOutput::get();
+        $chief_executive_agenda = ChiefAgenda::get();
+        $socio_economic = EconomicAgenda::get();
+        $sustainable = SDG::get();
+        $executive_legislative = ELA::get();
+        $research = ResearchAgenda::get();
         $data = $this->model->where('id', $id)->first([
             'id',
             'paps_desc',
@@ -147,6 +181,11 @@ class PAPController extends Controller
             'idmfo',
             'MOV',
             'type',
+            'chief_executive_agenda',
+            'socio_economic_agenda',
+            'sust_devt_goal',
+            'executive_legislative_agenda',
+            'research_agenda'
         ]);
         // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
         // $functions = $accounts->pluck('func');
@@ -158,6 +197,11 @@ class PAPController extends Controller
         return inertia('PAPS/Create', [
             "editData" => $data,
             "mfos"=>$mfos,
+            'chief_agenda'=>$chief_executive_agenda,
+            'socio_economic' => $socio_economic,
+            'sustainable' => $sustainable,
+            'executive_legislative' => $executive_legislative,
+            'research' => $research,
             "idmfo"=> $idmfo,
             "functions"=>$functions,
             'years'=>$year_object,
@@ -173,8 +217,21 @@ class PAPController extends Controller
     {
 
         $data = $this->model::findOrFail($request->id);
-        $validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
-        $data->update($validatedData);
+        dd($request->chief_executive_agenda);
+        //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
+        $paps = new ProgramAndProject();
+        $data->update([
+            'paps_desc'=> $request->paps_desc,
+            'FFUNCCOD'=> $request->FFUNCCOD,
+            'idmfo'=> $request->idmfo,
+            'MOV'=> $request->MOV,
+            'type'=> $request->type,
+            'chief_executive_agenda'=> $request->chief_executive_agenda,
+            'socio_economic_agenda'=> $request->socio_economic_agenda,
+            'sust_devt_goal'=> $request->sust_devt_goal,
+            'executive_legislative_agenda'=> $request->executive_legislative_agenda,
+            'research_agenda'=> $request->research_agenda
+        ]);
         return redirect('/paps/direct')
                 ->with('message','Program and Projects updated');
     }
@@ -183,8 +240,20 @@ class PAPController extends Controller
     {
 
         $data = $this->model::findOrFail($request->id);
-        $validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
-        $data->update($validatedData);
+        // dd($request->chief_executive_agenda);
+        //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
+        $data->update([
+            'paps_desc'=> $request->paps_desc,
+            'FFUNCCOD'=> $request->FFUNCCOD,
+            'idmfo'=> $request->idmfo,
+            'MOV'=> $request->MOV,
+            'type'=> $request->type,
+            'chief_executive_agenda'=> $request->chief_executive_agenda,
+            'socio_economic_agenda'=> $request->socio_economic_agenda,
+            'sust_devt_goal'=> $request->sust_devt_goal,
+            'executive_legislative_agenda'=> $request->executive_legislative_agenda,
+            'research_agenda'=> $request->research_agenda
+        ]);
         //dd('updated');
         return redirect('/paps/'.$request->idmfo)
                 ->with('message','Program and Projects updated');

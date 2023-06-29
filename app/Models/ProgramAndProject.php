@@ -15,7 +15,12 @@ class ProgramAndProject extends Model
         'FFUNCCOD',
         'idmfo',
         'MOV',
-        'type'
+        'type',
+        'chief_executive_agenda',
+        'socio_economic_agenda',
+        'sust_devt_goal',
+        'executive_legislative_agenda',
+        'research_agenda'
     ];
     public static function rules(){
         return [
@@ -25,6 +30,7 @@ class ProgramAndProject extends Model
             'idmfo'=> 'required|numeric',
             'MOV'=>'required',
             'type'=>'required'
+
         ];
     }
 
