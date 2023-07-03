@@ -34,10 +34,10 @@
                             <tr class="bg-secondary text-white">
                                 <th>PAPS</th>
                                 <th>Target</th>
-                                <th>Quantity</th>
+                                <!-- <th>Quantity</th> -->
                                 <th>Accomplishment</th>
-                                <th>Quantity</th>
-                                <th>Percent Accomplished</th>
+                                <!-- <th>Quantity</th> -->
+                                <!-- <th>Percent Accomplished</th> -->
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -54,10 +54,10 @@
                                         style="vertical-align:middle">
                                     {{ dat.target_success_indicator }}
                                 </td>
-                                <td>{{ dat.target_quantity }}</td>
+                                <!-- <td>{{ dat.target_quantity }}</td> -->
                                 <td>{{ dat.actual_accomplishments }} </td>
-                                <td>{{  dat.accomplishment_quantity }}</td>
-                                <td>{{ getPercentage(dat.target_quantity, dat.accomplishment_quantity) }} %</td>
+                                <!-- <td>{{  dat.accomplishment_quantity }}</td> -->
+                                <!-- <td>{{ getPercentage(dat.target_quantity, dat.accomplishment_quantity) }} %</td> -->
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -225,3 +225,4 @@ export default {
                 top: 240px;
             }
 </style>
+<!--  -->
