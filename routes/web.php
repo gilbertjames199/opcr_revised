@@ -727,6 +727,7 @@ Route::prefix('opcr/print')->group(function(){
     Route::get('/rating', [OfficePerformanceCommitmentRatingController::class,'print_rating']);
     Route::get('/office', [OfficePerformanceCommitmentRatingController::class,'print_office']);
 });
+Route::get('test/opcr_id/{opcr_id}',[OfficePerformanceCommitmentRatingListController::class,'getRating']);
 Route::prefix('printlog')->group(function(){
     Route::get('/SocGoal',[LogFrameController::class,'SocGoal']);
     Route::get('/logframeMFO',[LogFrameController::class,'mfo']);

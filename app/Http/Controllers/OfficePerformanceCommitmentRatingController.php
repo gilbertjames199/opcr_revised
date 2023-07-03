@@ -724,13 +724,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
     public function print_success_targets(Request $request){
         $idpaps = $request->idpaps;
         $opcr_id= $request->opcr_id;
-
+        //rating q rating_e nabali
         $targets = OpcrTarget::select("opcr_accomplishments.actual_accomplishments",
                             "opcr_accomplishments.quantity",
                             "opcr_targets.target_success_indicator",
                             "opcr_targets.quantity AS target_quantity",
-                            "ratings.numerical_rating AS rating_q",
-                            "qualities.numerical_rating AS rating_e",
+                            "ratings.numerical_rating AS rating_e",
+                            "qualities.numerical_rating AS rating_q",
                             "timelinesses.numerical_rating AS rating_t",
                             DB::raw('ROUND((COALESCE(qualities.numerical_rating, 0) + COALESCE(ratings.numerical_rating, 0) + COALESCE(timelinesses.numerical_rating, 0)) / (CASE WHEN qualities.numerical_rating IS NULL AND ratings.numerical_rating IS NULL THEN 1 WHEN qualities.numerical_rating IS NULL AND timelinesses.numerical_rating IS NULL THEN 1 WHEN ratings.numerical_rating IS NULL AND timelinesses.numerical_rating IS NULL THEN 1 WHEN qualities.numerical_rating IS NULL THEN 2 WHEN ratings.numerical_rating IS NULL THEN 2 WHEN timelinesses.numerical_rating IS NULL THEN 2 ELSE 3 END),2) AS average_rating'),
                             "opcr_accomplishments.remarks_final",
