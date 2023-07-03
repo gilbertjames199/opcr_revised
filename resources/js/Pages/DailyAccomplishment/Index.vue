@@ -30,7 +30,15 @@
                 </svg>
             </Link> -->
         </div>
-
+        <filtering v-if="filter" @closeFilter="filter=false">
+            Filter by MFO
+            <select v-model="mfosel" class="form-control" @change="filterData()">
+                <option v-for="mfo in mfos" :value="mfo.id">
+                    {{ mfo.mfo_desc }}
+                </option>
+            </select>
+            <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
+        </filtering>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -102,7 +110,7 @@ export default {
     },
     data() {
         return{
-
+            filter: false,
         }
     },
     components: {
@@ -110,7 +118,10 @@ export default {
     },
 
     methods:{
-
+        showFilter() {
+            //alert("show filter");
+            this.filter = !this.filter
+        },
         showCreate(){
             this.$inertia.get(
                 "/targets/create",
