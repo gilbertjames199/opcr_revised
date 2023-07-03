@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DailyAccomplishment;
+use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
@@ -54,11 +55,12 @@ class DailyAccomplishmentController extends Controller
         $date_from = $request->date_from;
         $date_to = $request->date_to;
         $FFUNCCOD = $request->FFUNCCOD;
-
+        $FUNCCTION = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->FFUNCTION;
         return [
             "date_from"=>$date_from,
             "date_to"=>$date_to,
             "FFUNCCOD"=>$FFUNCCOD,
+            "office"=>$FUNCCTION,
         ];
     }
     public function mfo_accomplishment(Request $request){
