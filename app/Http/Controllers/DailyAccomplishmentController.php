@@ -67,7 +67,6 @@ class DailyAccomplishmentController extends Controller
                 ->map(function($item)use($request){
                     $date_from = $request->date_from;
                     $date_to = $request->date_to;
-                    $FFUNCCOD = $request->FFUNCCOD;
                     return [
                         'idmfo'=>$item->id,
                         'mfo_desc'=>$item->mfo_desc,
@@ -83,7 +82,6 @@ class DailyAccomplishmentController extends Controller
                 ->map(function($item)use($request){
                     $date_from = $request->date_from;
                     $date_to = $request->date_to;
-                    $FFUNCCOD = $request->FFUNCCOD;
                     return [
                         'idpaps'=>$item->id,
                         'paps_desc'=>$item->paps_desc,
