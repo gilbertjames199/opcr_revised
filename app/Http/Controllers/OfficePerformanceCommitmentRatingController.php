@@ -26,7 +26,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
     {
         $this->model= $model;
     }
-    public function index(Request $request, $opcr_id, $FFUNCCOD){
+    public function index2(Request $request, $opcr_id, $FFUNCCOD){
         //Check if the OPCR Form for the OPCR List is empty or not
         $opcr = $this->model->where('opcr_id', $opcr_id)->get();
         $list = OfficePerformanceCommitmentRatingList::where('id',$opcr_id)->first();
@@ -159,6 +159,139 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $ave_pre = $total/$count;
         $ave = number_format($ave_pre,2);
         //dd($ave);
+    }
+    public function index(Request $request, $opcr_id, $FFUNCCOD){
+        //Check if the OPCR Form for the OPCR List is empty or not
+        $opcr = $this->model->where('opcr_id', $opcr_id)->get();
+        $list = OfficePerformanceCommitmentRatingList::where('id',$opcr_id)->first();
+
+        $my_year = Carbon::parse($list->date_to)->format('Y');
+        //dd($my_year);
+        $cnt = $opcr->count();
+
+        //dd($FFUNCCOD);
+        $succid =[];
+        //Load all success indicators
+        $success_indicators = SuccessIndicator::select('success_indicators.id',
+                                    'success_indicators.success_indicator'
+                            )
+                            ->join('program_and_projects AS paps','paps.id','success_indicators.idpaps')
+                            ->where('FFUNCCOD', $FFUNCCOD)
+                            ->get();
+        if($cnt<1){
+            //IF the OPCR List has no OPCR Ratings, generate OPCR ratings for each Success Indicator
+            //Save OPC Rating for each success indicator with rating of 1 for Q,E,and T
+            foreach($success_indicators as $success_indicator){
+                $opcrf = new OfficePerformanceCommitmentRating();
+                $opcrf->success_indicator_id = $success_indicator->id;
+                array_push($succid,$success_indicator->id);
+                $opcrf->accomplishments ="";
+                $opcrf->rating_q="1";
+                $opcrf->rating_e="1";
+                $opcrf->rating_t="1";
+                $opcrf->remarks="-";
+                $opcrf->FFUNCCOD=$FFUNCCOD;
+                $opcrf->opcr_id	= $opcr_id;
+                $opcrf->save();
+            }
+            //dd('EMPTY: '.$cnt);
+        }else{
+            $exist = $this->model->where('FFUNCCOD', $FFUNCCOD)
+                                                ->get();
+            $existingSuccessIndicatorIds = $exist->pluck('success_indicator_id')->toArray();
+            foreach($success_indicators as $success_indicator){
+                $successIndicatorId= $success_indicator->id;
+                if(!in_array($successIndicatorId, $existingSuccessIndicatorIds)){
+                    OfficePerformanceCommitmentRating::create([
+                        'success_indicator_id'=>$successIndicatorId,
+                        'accomplishments'=>'',
+                        'rating_q'=>'1',
+                        'rating_e'=>'1',
+                        'rating_t'=>'1',
+                        'remarks'=>'-',
+                        'FFUNCCOD'=>$FFUNCCOD,
+                        'opcr_id'=>$opcr_id
+                    ]);
+                }
+            }
+            //dd('COUNT: '.$cnt);
+        }
+        //REVISION PLAN ID
+        $revision_plan = RevisionPlan::where('idmfo','0')
+                            ->where('idpaps','0')
+                            ->where('FFUNCCOD', $FFUNCCOD)
+                            ->where('year_period', $my_year)
+                            ->first();
+        $mooe="0.00";
+        $ps = "0.00";
+        if($revision_plan){
+            $mooe = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                    ->where('category','Maintenance, Operating, and Other Expenses')
+                    ->sum('amount');
+
+            $ps =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                    ->where('category','Personnel Services')
+                    ->sum('amount');
+
+        }else{
+            //dd("empty no ps budget");
+        }
+        //$opcr = $this->model->where('FFUNCCOD', $FFUNCCOD)->get();
+        $opcrs = $this->model->select('office_performance_commitment_ratings.id',
+                        'office_performance_commitment_ratings.success_indicator_id',
+                        'office_performance_commitment_ratings.accomplishments',
+                        'office_performance_commitment_ratings.rating_q',
+                        'office_performance_commitment_ratings.rating_e',
+                        'office_performance_commitment_ratings.rating_t',
+                        'office_performance_commitment_ratings.remarks',
+                        'office_performance_commitment_ratings.FFUNCCOD',
+                        'office_performance_commitment_ratings.opcr_id',
+                        'SU.success_indicator',
+                        'off.office_accountable',
+                        'PAPS.paps_desc',
+                        'mfo.mfo_desc',
+                        'mfo.created_at'
+                    )
+                    ->leftjoin('success_indicators AS SU','SU.id', 'office_performance_commitment_ratings.success_indicator_id')
+                    ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
+                    ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
+                    ->leftjoin('major_final_outputs AS mfo','mfo.id', 'PAPS.idmfo')
+                    ->orderBy('mfo.mfo_desc', 'asc')
+                    ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
+                    ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
+                    ->get();
+        //return $opcrs;
+        //return $mfos;
+        //********************************************** */
+        $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                        ->where('role','like','%Department Head%')
+                        ->count();
+        $dept_head="N/A";
+        if($count_pgdh>0){
+            $dept_head = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                        ->where('role','like','%Department Head%')
+                        ->first()->name;
+        }
+
+        //$dept_head = Str::upper($head->name);
+        $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+        $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+        $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+        $start = $dateStart->format('F');
+        $end= $dateEnd->format('F Y');
+        $opcr_date=$start." to ".$end;
+        $opcr_date = Str::upper($opcr_date);
+        //dd($opcr_date);
+        //$date_now = Carbon::now()->format('F d, Y');
+
+        $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
+                        ->where('opcr_id', $opcr_id)
+                        ->first()->average_sum;
+        $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+        if($count<1){$count=1;};
+        $total = number_format($averageSum,2);
+        $ave_pre = $total/$count;
+        $ave = number_format($ave_pre,2);
 
         //********************************************* */
         return inertia('OPCR/Form/Index',[
@@ -593,23 +726,32 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $opcr_id= $request->opcr_id;
 
         $targets = OpcrTarget::select("opcr_accomplishments.actual_accomplishments",
-                        "opcr_accomplishments.quantity",
-                        "opcr_targets.target_success_indicator",
-                        "opcr_targets.quantity AS target_quantity"
+                            "opcr_accomplishments.quantity",
+                            "opcr_targets.target_success_indicator",
+                            "opcr_targets.quantity AS target_quantity",
+                            "ratings.numerical_rating AS rating_q",
+                            "qualities.numerical_rating AS rating_r",
+                            "timelinesses.numerical_rating AS rating_t"
                         )
                         ->leftJoin("opcr_accomplishments", "opcr_accomplishments.opcr_target_id", "opcr_targets.id")
+                        ->leftJoin("ratings","opcr_accomplishments.ratings_id","ratings.id")
+                        ->leftJoin("qualities","opcr_accomplishments.quality_id","qualities.id")
+                        ->leftJoin("timelinesses","opcr_accomplishments.timeliness_id","timelinesses.id")
                         ->where("opcr_targets.idpaps", $idpaps)
                         ->where("opcr_targets.office_performance_commitment_rating_list_id", $opcr_id)
-                        ->get()
-                        ->map(function($item){
-                            //$accomplishments = OpcrAccomplishment::where('opcr_target_id', $item->opcr_target_id)->first();
-                            return [
-                                'target_success_indicator'=>$item->target_success_indicator,
-                                'quantity'=>$item->target_quantity,
-                                'actual_accomplishment'=>$item->actual_accomplishments,
-                                'quantity_accomplished'=>$item->quantity,
-                            ];
-                        });
+                        ->get();
+                        // ->map(function($item){
+                        //     //$accomplishments = OpcrAccomplishment::where('opcr_target_id', $item->opcr_target_id)->first();
+                        //     return [
+                        //         'target_success_indicator'=>$item->target_success_indicator,
+                        //         'quantity'=>$item->target_quantity,
+                        //         'actual_accomplishment'=>$item->actual_accomplishments,
+                        //         'quantity_accomplished'=>$item->quantity,
+                        //         'rating_q'=>$item->rating_q,
+                        //         'rating_r'=>$item->rating_r,
+                        //         'rating_t'=>$item->rating_t,
+                        //     ];
+                        // });
         return $targets;
     }
 

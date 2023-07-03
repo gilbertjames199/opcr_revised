@@ -7,11 +7,16 @@ use App\Models\Implementing_team;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
 use App\Models\OpcrTarget;
+use App\Models\Output;
 use App\Models\ProgramAndProject;
+use App\Models\Quality;
+use App\Models\rating;
 use App\Models\RevisionPlan;
 use App\Models\SuccessIndicator;
+use App\Models\Timeliness;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -135,11 +140,19 @@ class OpcrTargetController extends Controller
         //
         $paps = ProgramAndProject::where('FFUNCCOD', $opcr_list->FFUNCCOD)->get();
         $success_indicators = SuccessIndicator::where('idpaps', $request->idpaps)->get();
+        $outputs = Output::where('idpaps', $request->idpaps)->get();
+        $qualities = Quality::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
+        $ratings = rating::where('idpaps', $request->idpaps)->orderBy('efficiency_quantity', 'desc')->get();
+        $timeliness = Timeliness::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
         return inertia('OPCR/Target/Create',[
             "opcr_list_id"=>$opcr_list_id,
             "idpaps"=>$request->idpaps,
             "paps"=>$paps,
             "success_indicators"=>$success_indicators,
+            'outputs'=>$outputs,
+            'qualities'=>$qualities,
+            'ratings'=>$ratings,
+            'timeliness'=>$timeliness,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -148,13 +161,34 @@ class OpcrTargetController extends Controller
     }
     public function store(Request $request){
         //dd($request);
+        //dd($request->target_success_indicator);
         $attributes = $request->validate([
-            'target_success_indicator'=>'required',
-            'quantity'=>'required',
+            'output_id'=>'required',
             'idpaps'=>'required',
             'office_performance_commitment_rating_list_id'=>'required',
         ]);
-        $this->model->create($attributes);
+
+        //SENTENCE******************
+        $output = Output::where('idpaps',$request->idpaps)->first()->Outputs;
+        $quality = Quality::where('idpaps',$request->idpaps)->first()->quality;
+        $rating =rating::where('idpaps',$request->idpaps)->first()->efficiency_quantity;
+        $timeliness =Timeliness::where('idpaps',$request->idpaps)->first()->timeliness;
+        $sentence = $request->quantity.' ('.$rating.') '.$output.' '.$timeliness.' with '.$quality.'.';
+        $correctedSentence = $this->correctSentence($sentence);
+        //dd($correctedSentence);
+        //**************** */
+
+        $targ = new OpcrTarget();
+        $targ->id=$request->id;
+        $targ->target_success_indicator=$request->target_success_indicator;
+        $targ->output_id=$request->output_id;
+        $targ->quality_id=$request->quality_id;
+        $targ->ratings_id=$request->ratings_id;
+        $targ->timeliness_id=$request->timeliness_id;
+        $targ->remarks_final=$request->remarks_final;
+        $targ->idpaps=$request->idpaps;
+        $targ->office_performance_commitment_rating_list_id=$request->office_performance_commitment_rating_list_id;
+        $targ->save();
         return redirect('/opcrtarget/'.$request->office_performance_commitment_rating_list_id)
                 ->with('message','Office performance target added!');
     }
@@ -163,11 +197,19 @@ class OpcrTargetController extends Controller
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $data->office_performance_commitment_rating_list_id)->first();
         $paps = ProgramAndProject::where('FFUNCCOD', $opcr_list->FFUNCCOD)->get();
         $success_indicators = SuccessIndicator::where('idpaps', $data->idpaps)->get();
+        $outputs = Output::where('idpaps', $data->idpaps)->get();
+        $qualities = Quality::where('idpaps', $data->idpaps)->orderBy('numerical_rating', 'desc')->get();
+        $ratings = rating::where('idpaps', $data->idpaps)->orderBy('efficiency_quantity', 'desc')->get();
+        $timeliness = Timeliness::where('idpaps', $data->idpaps)->orderBy('numerical_rating', 'desc')->get();
         return inertia('OPCR/Target/Create',[
             "opcr_list_id"=>$opcr_list_id,
             "idpaps"=>$request->idpaps,
             "editData"=>$data,
             "paps"=>$paps,
+            'outputs'=>$outputs,
+            'qualities'=>$qualities,
+            'ratings'=>$ratings,
+            'timeliness'=>$timeliness,
             "success_indicators"=>$success_indicators,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
@@ -180,7 +222,15 @@ class OpcrTargetController extends Controller
         //dd($request->plan_period);
         $data->update([
             'target_success_indicator'=>$request->target_success_indicator,
-            'quantity'=>$request->quantity
+            'quantity'=>$request->quantity,
+            'output_id'=>$request->output_id,
+            'quality_id'=>$request->quality_id,
+            'ratings_id'=>$request->ratings_id,
+            'timeliness_id'=>$request->timeliness_id,
+            'remarks_final'=>$request->remarks_final,
+            'idpaps'=>$request->idpaps,
+            'office_performance_commitment_rating_list_id'=>$request->office_performance_commitment_rating_list_id,
+
         ]);
 
         return redirect('/opcrtarget/'.$request->office_performance_commitment_rating_list_id)
@@ -193,6 +243,22 @@ class OpcrTargetController extends Controller
         $opcr_id = $opcr_list->office_performance_commitment_rating_list_id;
         return redirect('/opcrtarget/'.$opcr_id)
                 ->with('error','Office performance goal deleted!');
+    }
+    public function correctSentence($text){
+        $client = new Client();
+        $response = $client->post('https://languagetool.org/api/v2/check', [
+            'form_params' => [
+                'text' => $text,
+                'language' => 'en-US',
+            ],
+        ]);
+        $corrections = json_decode($response->getBody(), true)['matches'];
+
+        foreach ($corrections as $correction) {
+            $text = str_replace($correction['context']['text'], $correction['replacements'][0]['value'], $text);
+        }
+
+        return $text;
     }
 
 }

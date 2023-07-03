@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
 use App\Models\OpcrAccomplishment;
 use App\Models\OpcrTarget;
+use App\Models\Output;
 use App\Models\ProgramAndProject;
+use App\Models\Quality;
+use App\Models\rating;
+use App\Models\Timeliness;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -86,11 +92,18 @@ class OpcrAccomplishmentController extends Controller
         //find targets
         $targets =OpcrTarget::where('id', $request->idtarget)->get();
         //load create form
+
+        $qualities = Quality::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
+        $ratings = rating::where('idpaps', $request->idpaps)->orderBy('efficiency_quantity', 'desc')->get();
+        $timeliness = Timeliness::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
         return inertia('OPCR/Accomplishment/Create',[
             "opcr_list_id"=>$opcr_list_id,
             "idpaps"=>$request->idpaps,
             "paps"=>$paps,
             "targets"=>$targets,
+            'qualities'=>$qualities,
+            'ratings'=>$ratings,
+            'timeliness'=>$timeliness,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -113,7 +126,18 @@ class OpcrAccomplishmentController extends Controller
             'opcr_target_id.required'=>'Target is required',
         ]
         );
-        $this->model->create($attributes);
+        //$this->model->create($attributes);
+        $accomp = new OpcrAccomplishment();
+        $accomp->actual_accomplishments=$request->actual_accomplishments;
+        $accomp->quantity=$request->quantity;
+        $accomp->idpaps=$request->idpaps;
+        $accomp->opcr_target_id=$request->opcr_target_id;
+        $accomp->office_performance_commitment_rating_list_id=$request->office_performance_commitment_rating_list_id;
+        $accomp->quality_id=$request->quality_id;
+        $accomp->ratings_id=$request->ratings_id;
+        $accomp->timeliness_id=$request->timeliness_id;
+        $accomp->remarks_final=$request->remarks_final;
+        $accomp->save();
         return redirect('/opcraccomplishment/'.$request->office_performance_commitment_rating_list_id)
                 ->with('message','Office performance accomplishment added!');
     }
@@ -128,6 +152,9 @@ class OpcrAccomplishmentController extends Controller
         $paps = ProgramAndProject::where('id', $data->idpaps)->first();
         //find targets
         $targets =OpcrTarget::where('id', $data->opcr_target_id)->get();
+        $qualities = Quality::where('idpaps', $data->idpaps)->orderBy('numerical_rating', 'desc')->get();
+        $ratings = rating::where('idpaps', $data->idpaps)->orderBy('efficiency_quantity', 'desc')->get();
+        $timeliness = Timeliness::where('idpaps', $data->idpaps)->orderBy('numerical_rating', 'desc')->get();
 
         //load create form
         return inertia('OPCR/Accomplishment/Create',[
@@ -135,6 +162,9 @@ class OpcrAccomplishmentController extends Controller
             "idpaps"=>$request->idpaps,
             "paps"=>$paps,
             "targets"=>$targets,
+            'qualities'=>$qualities,
+            'ratings'=>$ratings,
+            'timeliness'=>$timeliness,
             "editData"=>$data,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
@@ -144,12 +174,23 @@ class OpcrAccomplishmentController extends Controller
     }
     public function update(Request $request){
         //dd('opcr accomplishment update');
+        // $targ=OpcrTarget::where('id',$request->opcr_target_id)->first();
+        // $output =Output::where('id', $request->idpaps);
         $data = $this->model->findOrFail($request->id);
+        // $timeliness = Timeliness::where('id', $request->timeliness_id)->first();
+        // $actual_accomplishments = $request->quantity.' '.$output->Outputs.' '.$timeliness->timeliness;
         //dd($request->plan_period);
         $data->update([
             'actual_accomplishments'=>$request->actual_accomplishments,
             'opcr_target_id'=>$request->opcr_target_id,
-            'quantity'=>$request->quantity
+            'quantity'=>$request->quantity,
+            'idpaps'=>$request->idpaps,
+            'office_performance_commitment_rating_list_id'=>$request->office_performance_commitment_rating_list_id,
+            'quality_id'=>$request->quality_id,
+            'ratings_id'=>$request->ratings_id,
+            'timeliness_id'=>$request->timeliness_id,
+            'remarks_final'=>$request->remarks_final,
+
         ]);
 
         return redirect('/opcraccomplishment/'.$request->office_performance_commitment_rating_list_id)
@@ -163,5 +204,21 @@ class OpcrAccomplishmentController extends Controller
         return redirect('/opcraccomplishment/'.$opcr_id)
                 ->with('error','OPCR Accomplishment deleted!');
         //dd("delete");
+    }
+    public function correctSentence($text){
+        $client = new Client();
+        $response = $client->post('https://languagetool.org/api/v2/check', [
+            'form_params' => [
+                'text' => $text,
+                'language' => 'en-US',
+            ],
+        ]);
+        $corrections = json_decode($response->getBody(), true)['matches'];
+
+        foreach ($corrections as $correction) {
+            $text = str_replace($correction['context']['text'], $correction['replacements'][0]['value'], $text);
+        }
+
+        return $text;
     }
 }
