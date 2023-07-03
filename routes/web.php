@@ -66,6 +66,10 @@ use App\Http\Controllers\TimelinessRemarksController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\OpcrAccomplishmentController;
 use App\Http\Controllers\OpcrTargetController;
+use App\Http\Controllers\AIPController;
+use App\Http\Controllers\aip_controller;
+use App\Http\Controllers\DailyAccomplishmentController;
+use App\Http\Controllers\AddAccomplishmentController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -625,9 +629,47 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [OpcrAccomplishmentController::class, 'destroy']);
     });
 
+
+    Route::prefix('/AIP')->group(function(){
+        Route::get('/',[AIPController::class,'index']);
+        Route::get('/direct',[AIPController::class,'direct']);
+    });
+
+    Route::prefix('/aip')->group(function(){
+        Route::get('/{id}',[aip_controller::class,'index']);
+        Route::get('/create/{id}',[aip_controller::class,'create']);
+        Route::post('/store',[aip_controller::class,'store']);
+        Route::get('/{id}/edit', [aip_controller::class, 'edit']);
+        Route::patch('/{id}', [aip_controller::class, 'update']);
+        Route::delete('/{id}', [aip_controller::class, 'destroy']);
+    });
+
     Route::prefix('viewOPCR')->group(function(){
         Route::get('/FFUNCOD',[OPCRController::class,'viewOPCR']);
 
+    });
+
+
+    Route::prefix('/DailyAccomplishment')->group(function(){
+        Route::get('/direct',[DailyAccomplishmentController::class,'direct']);
+        Route::get('/direct/create',[DailyAccomplishmentController::class,'direct_create']);
+        Route::get('/{id}',[DailyAccomplishmentController::class,'index']);
+        Route::get('/create/{id}',[DailyAccomplishmentController::class,'create']);
+        Route::post('/save',[DailyAccomplishmentController::class,'save']);
+        Route::post('/store',[DailyAccomplishmentController::class,'store']);
+        Route::get('/{id}/{idmfo}/edit', [DailyAccomplishmentController::class, 'edit']);
+        Route::patch('/{id}', [DailyAccomplishmentController::class, 'update']);
+        Route::patch('/update/{id}', [DailyAccomplishmentController::class, 'updated']);
+        Route::delete('/{id}', [DailyAccomplishmentController::class, 'destroy']);
+    });
+
+    Route::prefix('/AddAccomplishment')->group(function(){
+        Route::get('/{id}',[AddAccomplishmentController::class,'index']);
+        Route::get('/create/{id}',[AddAccomplishmentController::class,'create']);
+        Route::post('/store',[AddAccomplishmentController::class,'store']);
+        Route::get('/{id}/edit', [AddAccomplishmentController::class, 'edit']);
+        Route::patch('/{id}', [AddAccomplishmentController::class, 'update']);
+        Route::delete('/{id}', [AddAccomplishmentController::class, 'destroy']);
     });
 });
 

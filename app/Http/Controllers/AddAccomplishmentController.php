@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DailyAccomplishment;
 use App\Models\ProgramAndProject;
-use App\Models\Performance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PerformanceController extends Controller
+class AddAccomplishmentController extends Controller
 {
     //
     protected $model;
-    public function __construct(Performance $model)
+    public function __construct(DailyAccomplishment $model)
     {
         $this->model=$model;
     }
@@ -23,7 +23,7 @@ class PerformanceController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->paginate(10)
                     ->withQueryString();
-        return inertia('Performance/Index',[
+        return inertia('DailyAccomplishment/Index',[
             "data"=>$data,
             "idpaps"=>$idpaps,
             "paps"=>$paps,
@@ -35,10 +35,9 @@ class PerformanceController extends Controller
     }
 
     public function create(Request $request, $idpaps){
-
+        //dd('create');
         $paps = ProgramAndProject::findOrFail($idpaps);
-        // dd($paps);
-        return inertia('Performance/Create',[
+        return inertia('DailyAccomplishment/Create',[
             'paps'=>$paps,
             'idpaps'=>$idpaps,
             'can'=>[
@@ -52,24 +51,32 @@ class PerformanceController extends Controller
         // dd($request);
         $id = $request->idpaps;
         $attributes = $request->validate([
-            'performance' => 'required',
+            'description' => 'required',
+            'quantity' => 'required',
+            'date' => 'required',
+            'remarks' => 'required',
+            'Link' => 'required',
             'idpaps'=>'required',
         ]);
 
         //dd($attributes);
         $this->model->create($attributes);
-        return redirect('/Performance/'.$id)
-                ->with('message','Performance Measure added');
+        return redirect('/AddAccomplishment/'.$id)
+                ->with('message','Daily Accomplishment added');
     }
 
     public function edit(Request $request, $id){
         $data = $this->model->where('id', $id)->first([
             'id',
-            'performance',
+            'description',
+            'quantity',
+            'date',
+            'remarks',
+            'Link',
             'idpaps'
         ]);
         $paps = ProgramAndProject::findOrFail($data->idpaps);
-        return inertia('Performance/Create', [
+        return inertia('DailyAccomplishment/Create', [
             "editData" => $data,
             "idpaps"=>$data->idpaps,
             'paps'=>$paps,
@@ -87,12 +94,16 @@ class PerformanceController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
-            'performance'=>$request->performance,
+            'description'=>$request->description,
+            'quantity'=>$request->quantity,
+            'date'=>$request->date,
+            'remarks'=>$request->remarks,
+            'Link'=>$request->Link,
             'idpaps'=>$request->idpaps
         ]);
 
-        return redirect('/Performance/'.$request->idpaps)
-                ->with('message','Performance Measure updated');
+        return redirect('/AddAccomplishment/'.$request->idpaps)
+                ->with('message','Accomplishment updated');
     }
 
     public function destroy(Request $request){
@@ -100,7 +111,8 @@ class PerformanceController extends Controller
         $id = $data->idpaps;
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/Performance/'.$id)->with('warning', 'Performance Measure Deleted');
+        return redirect('/AddAccomplishment/'.$id)->with('warning', 'Accomplishment Deleted');
 
     }
+
 }
