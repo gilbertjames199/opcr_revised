@@ -730,14 +730,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
                             "opcr_targets.target_success_indicator",
                             "opcr_targets.quantity AS target_quantity",
                             "ratings.numerical_rating AS rating_q",
-                            "qualities.numerical_rating AS rating_r",
+                            "qualities.numerical_rating AS rating_e",
                             "timelinesses.numerical_rating AS rating_t",
-                            "ratings.id AS idr",
-                            "qualities.id AS idq",
-                            "timelinesses.id AS idt",
-                            "opcr_accomplishments.quality_id",
-                            "opcr_accomplishments.id",
-                            "opcr_accomplishments.remarks_final"
+                            DB::raw('ROUND((COALESCE(qualities.numerical_rating, 0) + COALESCE(ratings.numerical_rating, 0) + COALESCE(timelinesses.numerical_rating, 0)) / (CASE WHEN qualities.numerical_rating IS NULL AND ratings.numerical_rating IS NULL THEN 1 WHEN qualities.numerical_rating IS NULL AND timelinesses.numerical_rating IS NULL THEN 1 WHEN ratings.numerical_rating IS NULL AND timelinesses.numerical_rating IS NULL THEN 1 WHEN qualities.numerical_rating IS NULL THEN 2 WHEN ratings.numerical_rating IS NULL THEN 2 WHEN timelinesses.numerical_rating IS NULL THEN 2 ELSE 3 END),2) AS average_rating'),
+                            "opcr_accomplishments.remarks_final",
                         )
                         ->leftJoin("opcr_accomplishments", "opcr_accomplishments.opcr_target_id", "opcr_targets.id")
                         ->leftJoin("ratings","opcr_accomplishments.ratings_id","ratings.id")
@@ -747,6 +743,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                         ->where("opcr_targets.office_performance_commitment_rating_list_id", $opcr_id)
                         ->get()
                         ->map(function($item){
+                            // $ave = number_format($item->average_rating, 2, '.', ',');
                             //$accomplishments = OpcrAccomplishment::where('opcr_target_id', $item->opcr_target_id)->first();
                             return [
                                 'target_success_indicator'=>$item->target_success_indicator,
@@ -754,8 +751,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
                                 'actual_accomplishment'=>$item->actual_accomplishments,
                                 'quantity_accomplished'=>$item->quantity,
                                 'rating_q'=>$item->rating_q,
-                                'rating_r'=>$item->rating_r,
+                                'rating_e'=>$item->rating_e,
                                 'rating_t'=>$item->rating_t,
+                                'average_rating'=>$item->average_rating,
                                 'remarks_final'=>$item->remarks_final,
                             ];
                         });
