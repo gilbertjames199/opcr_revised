@@ -783,7 +783,7 @@ Route::prefix('printlog')->group(function(){
     Route::get('/{FFUNCCOD}',[LogFrameController::class,'printlogpublic']);
 
 });
-Route::prefix('daily_acomplishments/')->group(function(){
+Route::prefix('daily_accomplishments/')->group(function(){
     Route::get('main',[DailyAccomplishmentController::class,'main_accomplishment']);
     Route::get('mfos',[DailyAccomplishmentController::class,'mfo_accomplishment']);
     Route::get('paps',[DailyAccomplishmentController::class,'paps_accomplishment']);
