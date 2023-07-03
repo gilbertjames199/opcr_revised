@@ -55,7 +55,7 @@ class DailyAccomplishmentController extends Controller
         $date_from = $request->date_from;
         $date_to = $request->date_to;
         $FFUNCCOD = $request->FFUNCCOD;
-        $FUNCCTION = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->FFUNCTION;
+        $FUNCCTION = $request->office;
         return [
             "date_from"=>$date_from,
             "date_to"=>$date_to,
