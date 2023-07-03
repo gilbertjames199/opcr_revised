@@ -111,7 +111,7 @@ export default {
     watch: {
             search: _.debounce(function (value) {
             this.$inertia.get(
-                "/OPCRpaps/direct",
+                "/DailyAccomplishment/direct",
                 { search: value },
                 {
                     preserveScroll: true,
@@ -145,7 +145,7 @@ export default {
         async filterData(){
             //alert(this.mfosel);
             this.$inertia.get(
-                "/OPCRpaps/direct",
+                "/DailyAccomplishment/direct",
                 {
                     mfosel: this.mfosel
                 },
