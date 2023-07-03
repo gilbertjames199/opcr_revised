@@ -141,8 +141,6 @@ class PAPController extends Controller
         $paps-> executive_legislative_agenda= $request->executive_legislative_agenda;
         $paps-> research_agenda= $request->research_agenda;
         $paps->save();
-        //dd($request->idmfo);
-        //$request->pass='';
         return redirect('/paps/direct')
         ->with('message','Programs and Projects(PAPS) added');
     }
