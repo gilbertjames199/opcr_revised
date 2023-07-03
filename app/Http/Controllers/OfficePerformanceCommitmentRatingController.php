@@ -731,7 +731,12 @@ class OfficePerformanceCommitmentRatingController extends Controller
                             "opcr_targets.quantity AS target_quantity",
                             "ratings.numerical_rating AS rating_q",
                             "qualities.numerical_rating AS rating_r",
-                            "timelinesses.numerical_rating AS rating_t"
+                            "timelinesses.numerical_rating AS rating_t",
+                            "ratings.id AS idr",
+                            "qualities.id AS idq",
+                            "timelinesses.id AS idt",
+                            "opcr_accomplishments.quality_id",
+                            "opcr_accomplishments.id"
                         )
                         ->leftJoin("opcr_accomplishments", "opcr_accomplishments.opcr_target_id", "opcr_targets.id")
                         ->leftJoin("ratings","opcr_accomplishments.ratings_id","ratings.id")
@@ -739,19 +744,19 @@ class OfficePerformanceCommitmentRatingController extends Controller
                         ->leftJoin("timelinesses","opcr_accomplishments.timeliness_id","timelinesses.id")
                         ->where("opcr_targets.idpaps", $idpaps)
                         ->where("opcr_targets.office_performance_commitment_rating_list_id", $opcr_id)
-                        ->get();
-                        // ->map(function($item){
-                        //     //$accomplishments = OpcrAccomplishment::where('opcr_target_id', $item->opcr_target_id)->first();
-                        //     return [
-                        //         'target_success_indicator'=>$item->target_success_indicator,
-                        //         'quantity'=>$item->target_quantity,
-                        //         'actual_accomplishment'=>$item->actual_accomplishments,
-                        //         'quantity_accomplished'=>$item->quantity,
-                        //         'rating_q'=>$item->rating_q,
-                        //         'rating_r'=>$item->rating_r,
-                        //         'rating_t'=>$item->rating_t,
-                        //     ];
-                        // });
+                        ->get()
+                        ->map(function($item){
+                            //$accomplishments = OpcrAccomplishment::where('opcr_target_id', $item->opcr_target_id)->first();
+                            return [
+                                'target_success_indicator'=>$item->target_success_indicator,
+                                'quantity'=>$item->target_quantity,
+                                'actual_accomplishment'=>$item->actual_accomplishments,
+                                'quantity_accomplished'=>$item->quantity,
+                                'rating_q'=>$item->rating_q,
+                                'rating_r'=>$item->rating_r,
+                                'rating_t'=>$item->rating_t,
+                            ];
+                        });
         return $targets;
     }
 
