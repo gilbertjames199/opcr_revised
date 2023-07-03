@@ -7,10 +7,12 @@ use App\Models\FFUNCCOD;
 use App\Models\Implementing_team;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
+use App\Models\OpcrTarget;
 use App\Models\RevisionPlan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class OfficePerformanceCommitmentRatingListController extends Controller
@@ -27,9 +29,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                         ->get()->map(function($item)use($FFUNCCOD){
                             $opcr_id=$item->id;
                             //TOTAL & AVERAGE
-                            $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
-                                            ->where('opcr_id', $opcr_id)
-                                            ->first()->average_sum;
+                            $averageSum = $this->getRating($opcr_id);
                             $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
                             if($count<1){
                                 $count=1;
@@ -126,6 +126,35 @@ class OfficePerformanceCommitmentRatingListController extends Controller
             //     'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
             // ],
         ]);
+    }
+    public function getRating($opcr_id){
+
+        $targets = OpcrTarget::select(
+                            DB::raw('SUM(ROUND((COALESCE(qualities.numerical_rating, 0) + COALESCE(ratings.numerical_rating, 0) + COALESCE(timelinesses.numerical_rating, 0)) / (CASE WHEN qualities.numerical_rating IS NULL AND ratings.numerical_rating IS NULL THEN 1 WHEN qualities.numerical_rating IS NULL AND timelinesses.numerical_rating IS NULL THEN 1 WHEN ratings.numerical_rating IS NULL AND timelinesses.numerical_rating IS NULL THEN 1 WHEN qualities.numerical_rating IS NULL THEN 2 WHEN ratings.numerical_rating IS NULL THEN 2 WHEN timelinesses.numerical_rating IS NULL THEN 2 ELSE 3 END),2)) AS sum'),
+                        )
+                        ->leftJoin("opcr_accomplishments", "opcr_accomplishments.opcr_target_id", "opcr_targets.id")
+                        ->leftJoin("ratings","opcr_accomplishments.ratings_id","ratings.id")
+                        ->leftJoin("qualities","opcr_accomplishments.quality_id","qualities.id")
+                        ->leftJoin("timelinesses","opcr_accomplishments.timeliness_id","timelinesses.id")
+                        ->where("opcr_targets.office_performance_commitment_rating_list_id", $opcr_id)
+                        ->get();
+                        // ->map(function($item){
+                        //     // $ave = number_format($item->average_rating, 2, '.', ',');
+                        //     //$accomplishments = OpcrAccomplishment::where('opcr_target_id', $item->opcr_target_id)->first();
+                        //     return [
+                        //         'target_success_indicator'=>$item->target_success_indicator,
+                        //         'quantity'=>$item->target_quantity,
+                        //         'actual_accomplishment'=>$item->actual_accomplishments,
+                        //         'quantity_accomplished'=>$item->quantity,
+                        //         'rating_q'=>$item->rating_q,
+                        //         'rating_e'=>$item->rating_e,
+                        //         'rating_t'=>$item->rating_t,
+                        //         'average_rating'=>$item->average_rating,
+                        //         'remarks_final'=>$item->remarks_final,
+                        //     ];
+                        // });
+        $val = $targets[0]->sum;
+        return $val;
     }
     public function store(Request $request){
         //dd($request);
