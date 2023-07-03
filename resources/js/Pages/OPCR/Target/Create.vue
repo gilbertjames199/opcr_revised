@@ -28,12 +28,57 @@
                 <label for="">Target Description</label>
                 <input type="text" v-model="form.target_success_indicator" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.target_success_indicator">{{ form.errors.target_success_indicator }}</div>
+                <div>
+                    <label for="">Quantity</label>
+                    <input type="number" v-model="form.quantity" class="form-control" autocomplete="chrome-off">
+                    <div class="fs-6 c-red-500" v-if="form.errors.quantity">{{ form.errors.quantity }}</div>
+                </div>
+                <!--TARGET*******************************************-->
+                <!--OUTPUT-->
+                <label for="">Output</label>
+                <select v-model="form.output_id" id="selectOutput" class="form-control" autocomplete="chrome-off" >
+                    <option v-for="output in outputs" :value="output.id">
+                        {{ output.Outputs }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.output_id">{{ form.errors.output_id }}</div>
 
-                <label for="">Quantity</label>
-                <input type="number" v-model="form.quantity" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.quantity">{{ form.errors.quantity }}</div>
+                <!--QUALITY-->
+                <label for="">Quality</label>
+                <select v-model="form.quality_id" id="selectQuality" class="form-control" autocomplete="chrome-off" >
+                    <option v-for="quality in qualities" :value="quality.id">
+                        {{ quality.quality }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.quality_id">{{ form.errors.quality_id }}</div>
+
+                <!--EFFICIENCY/RATING-->
+                <label for="">Efficiency</label>
+                <select v-model="form.ratings_id" id="selectRating" class="form-control" autocomplete="chrome-off">
+                    <option v-for="rating in ratings" :value="rating.id">
+                        {{ rating.efficiency_quantity }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.ratings_id">{{ form.errors.ratings_id }}</div>
+
+                <!--TIMELINESS-->
+                <label for="">Timeliness</label>
+                <select v-model="form.timeliness_id" id="selectTimeliness" class="form-control" autocomplete="chrome-off" @change="setSentence">
+                    <option v-for="time in timeliness" :value="time.id">
+                        {{ time.timeliness }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.quality_id">{{ form.errors.timeliness_id }}</div>
+                <!--*************************************************-->
+
                 <!--OPCR_list_id-->
                 <input type="hidden" v-model="form.office_performance_commitment_rating_list_id" class="form-control" autocomplete="chrome-off">
+
+                <div>
+                    <label for="">Remarks</label>
+                    <input type="text" v-model="form.remarks_final" class="form-control" autocomplete="chrome-off">
+                    <div class="fs-6 c-red-500" v-if="form.errors.remarks_final">{{ form.errors.remarks_final }}</div>
+                </div>
                 <!--idpaps-->
                 <input type="hidden" v-model="form.idpaps" class="form-control" autocomplete="chrome-off">
 
@@ -58,17 +103,27 @@ export default {
             paps: Object,
             idpaps: String,
             opcr_list_id: String,
-            success_indicators: Object
+            success_indicators: Object,
+            outputs: Object,
+            qualities: Object,
+            ratings: Object,
+            timeliness: Object,
         },
 
         data() {
             return {
                 success_indicator_holder: "",
                 submitted: false,
+                correctedSentence: "",
                 form: useForm({
-                    target_success_indicator:           "",
-                    quantity:          "",
-                    idpaps:            "",
+                    target_success_indicator: "",
+                    output_id: "",
+                    quality_id: "",
+                    ratings_id: "",
+                    timeliness_id: "",
+                    remarks_final: "",
+                    quantity:"",
+                    idpaps: "",
                     office_performance_commitment_rating_list_id:"",
                     id:                 null
                 }),
@@ -81,21 +136,28 @@ export default {
             if (this.editData !== undefined) {
                 this.pageTitle= "Edit"
                 this.form.target_success_indicator=this.editData.target_success_indicator
+                this.form.output_id=this.editData.output_id
+                this.form.quality_id=this.editData.quality_id
+                this.form.ratings_id=this.editData.ratings_id
+                this.form.timeliness_id=this.editData.timeliness_id
                 this.form.quantity=this.editData.quantity
                 this.form.idpaps=this.editData.idpaps
                 this.form.office_performance_commitment_rating_list_id=this.editData.office_performance_commitment_rating_list_id
                 this.form.id  =this.editData.id
+                this.form.remarks_final=this.editData.remarks_final
                 this.success_indicator_holder=this.editData.target_success_indicator
             } else {
                 this.pageTitle = "Create"
                 this.form.idpaps = this.idpaps;
                 this.form.office_performance_commitment_rating_list_id=this.opcr_list_id
                 this.form.id=null
+                this.preselectThirdLevel();
             }
         },
 
         methods: {
             submit() {
+
                 if(this.success_indicator_holder===""){
                     alert("Select success indicator first!");
                 }else{
@@ -110,8 +172,76 @@ export default {
             setSuccessTarget(){
                 //alert('setSuccessTarget');
                 this.form.target_success_indicator=this.success_indicator_holder;
-            }
+            },
+            preselectThirdLevel(){
+                var count_q = Object.keys(this.qualities).length;
+                var count_e = Object.keys(this.ratings).length;
+                var count_t = Object.keys(this.timeliness).length;
+                if(count_q>0){
 
+                    var i= parseFloat(count_q)/2;
+                    i = Math.floor(i);
+                    this.form.quality_id=this.qualities[i].id;
+                }
+                if(count_e>=0){
+                    var g= parseFloat(count_e)/2;
+                    g = Math.floor(g);
+                    this.form.ratings_id=this.ratings[g].id;
+                }
+                if(count_t>=0){
+                    var h= parseFloat(count_t)/2;
+                    h = Math.floor(h);
+                    this.form.timeliness_id=this.timeliness[h].id;
+                }
+            },
+            async correctSentence(sentence) {
+                try {
+                    const response = await axios.post('https://languagetool.org/api/v2/check',
+                                {
+                                    text: sentence,
+                                    language: 'en-US'
+                                }
+                    );
+
+                    const corrections = response.data.matches;
+
+                    let correctedSentence = sentence;
+
+                    corrections.forEach(correction => {
+                        correctedSentence = correctedSentence.replace(
+                        correction.context.text,
+                        correction.replacements[0].value
+                        );
+                    });
+
+                    return correctedSentence;
+                } catch (error) {
+                    console.error(error);
+                    return sentence; // Return the original sentence in case of an error
+                }
+            },
+            async setSentence(){
+                // selectQuality
+                // selectRating
+                // selectTimeliness
+                var ind_output = document.getElementById("selectOutput").selectedIndex;
+                var ind_qual = document.getElementById("selectQuality").selectedIndex;
+                var ind_eff = document.getElementById("selectRating").selectedIndex;
+                var ind_time = document.getElementById("selectTimeliness").selectedIndex;
+                alert(ind_time)
+                var out = this.outputs[ind_output].Outputs;
+                var qual = this.qualities[ind_qual].quality;
+                var eff = this.ratings[ind_eff].efficiency_quantity;
+                var time = this.ratings[ind_time].ind_time;
+                var my_sentence = this.form.quantity + " "  + eff + " " + out + " " + time + " " + " with "+qual;
+                alert(my_sentence)
+                this.correctedSentence = await this.correctSentence(my_sentence);
+
+            },
+            async setVal(){
+                this.form.target_success_indicator=this.setSentence();
+                alert(this.form.target_success_indicator)
+            }
 
         },
     };
