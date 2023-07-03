@@ -72,8 +72,7 @@ class DailyAccomplishmentController extends Controller
                         'idmfo'=>$item->id,
                         'mfo_desc'=>$item->mfo_desc,
                         "date_from"=>$date_from,
-                        "date_to"=>$date_to,
-                        "FFUNCCOD"=>$FFUNCCOD,
+                        "date_to"=>$date_to
                     ];
                 });
         return $mfos;
@@ -89,18 +88,24 @@ class DailyAccomplishmentController extends Controller
                         'idpaps'=>$item->id,
                         'paps_desc'=>$item->paps_desc,
                         "date_from"=>$date_from,
-                        "date_to"=>$date_to,
-                        "FFUNCCOD"=>$FFUNCCOD,
+                        "date_to"=>$date_to
                     ];
                 });
         return $paps;
     }
     public function daily_accomplishment(Request $request){
         $accomp = DailyAccomplishment::where('idpaps', $request->idpaps)
+                    ->whereBetween('date',[$request->date_from, $request->date_to])
                     ->get()
                     ->map(function($item)use($request){
-
+                        return [
+                            'description'=>$item->description,
+                            'quantity'=>$item->quantity,
+                            'remarks'=>$item->remarks,
+                            'date'=>$item->date,
+                        ];
                     });
+        return $accomp;
     }
 
 }
