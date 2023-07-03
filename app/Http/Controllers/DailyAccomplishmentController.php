@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DailyAccomplishment;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
@@ -49,5 +50,57 @@ class DailyAccomplishmentController extends Controller
         ]);
     }
 
+    public function main_accomplishment(Request $request){
+        $date_from = $request->date_from;
+        $date_to = $request->date_to;
+        $FFUNCCOD = $request->FFUNCCOD;
+
+        return [
+            "date_from"=>$date_from,
+            "date_to"=>$date_to,
+            "FFUNCCOD"=>$FFUNCCOD,
+        ];
+    }
+    public function mfo_accomplishment(Request $request){
+        $mfos = MajorFinalOutput::where('FFUNCCOD', $request->FFUNCCOD)
+                ->get()
+                ->map(function($item)use($request){
+                    $date_from = $request->date_from;
+                    $date_to = $request->date_to;
+                    $FFUNCCOD = $request->FFUNCCOD;
+                    return [
+                        'idmfo'=>$item->id,
+                        'mfo_desc'=>$item->mfo_desc,
+                        "date_from"=>$date_from,
+                        "date_to"=>$date_to,
+                        "FFUNCCOD"=>$FFUNCCOD,
+                    ];
+                });
+        return $mfos;
+    }
+    public function paps_accomplishment(Request $request){
+        $paps = ProgramAndProject::where('idmfo', $request->idmfo)
+                ->get()
+                ->map(function($item)use($request){
+                    $date_from = $request->date_from;
+                    $date_to = $request->date_to;
+                    $FFUNCCOD = $request->FFUNCCOD;
+                    return [
+                        'idpaps'=>$item->id,
+                        'paps_desc'=>$item->paps_desc,
+                        "date_from"=>$date_from,
+                        "date_to"=>$date_to,
+                        "FFUNCCOD"=>$FFUNCCOD,
+                    ];
+                });
+        return $paps;
+    }
+    public function daily_accomplishment(Request $request){
+        $accomp = DailyAccomplishment::where('idpaps', $request->idpaps)
+                    ->get()
+                    ->map(function($item)use($request){
+
+                    });
+    }
 
 }

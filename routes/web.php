@@ -783,5 +783,8 @@ Route::prefix('printlog')->group(function(){
     Route::get('/{FFUNCCOD}',[LogFrameController::class,'printlogpublic']);
 
 });
+Route::prefix('daily_acomplishments/')->grou(function(){
+    Route::get('main',[OfficePerformanceCommitmentRatingListController::class,'getRating']);
+});
 
 
