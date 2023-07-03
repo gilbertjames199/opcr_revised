@@ -70,6 +70,7 @@ class OutputController extends Controller
         $paps = ProgramAndProject::findOrFail($data->idpaps);
         return inertia('Outputs/Create', [
             "editData" => $data,
+            "idpaps"=>$data->idpaps,
             'paps'=>$paps,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),

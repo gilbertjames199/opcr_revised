@@ -71,6 +71,7 @@ class PerformanceController extends Controller
         $paps = ProgramAndProject::findOrFail($data->idpaps);
         return inertia('Performance/Create', [
             "editData" => $data,
+            "idpaps"=>$data->idpaps,
             'paps'=>$paps,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
