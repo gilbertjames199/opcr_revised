@@ -736,7 +736,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                             "qualities.id AS idq",
                             "timelinesses.id AS idt",
                             "opcr_accomplishments.quality_id",
-                            "opcr_accomplishments.id"
+                            "opcr_accomplishments.id",
+                            "opcr_accomplishments.remarks_final"
                         )
                         ->leftJoin("opcr_accomplishments", "opcr_accomplishments.opcr_target_id", "opcr_targets.id")
                         ->leftJoin("ratings","opcr_accomplishments.ratings_id","ratings.id")
@@ -755,6 +756,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                                 'rating_q'=>$item->rating_q,
                                 'rating_r'=>$item->rating_r,
                                 'rating_t'=>$item->rating_t,
+                                'opcr_accomplishments.remarks_final'=>$item->remarks_final,
                             ];
                         });
         return $targets;
