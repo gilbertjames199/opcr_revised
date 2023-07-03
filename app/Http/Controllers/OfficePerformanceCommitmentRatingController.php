@@ -756,7 +756,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                                 'rating_q'=>$item->rating_q,
                                 'rating_r'=>$item->rating_r,
                                 'rating_t'=>$item->rating_t,
-                                'opcr_accomplishments.remarks_final'=>$item->remarks_final,
+                                'remarks_final'=>$item->remarks_final,
                             ];
                         });
         return $targets;
