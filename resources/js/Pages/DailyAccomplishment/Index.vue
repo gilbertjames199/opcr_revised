@@ -39,9 +39,9 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
+                                <th>Date</th>
                                 <th>Description</th>
                                 <th>Quantity</th>
-                                <th>Date</th>
                                 <th>Remarks</th>
                                 <th>Link</th>
                                 <th>Action</th>
@@ -50,11 +50,11 @@
                         <tbody>
 
                             <tr v-for="dat in data.data">
+                                <td>{{ dat.date }}</td>
                                 <td>{{ dat.description }}</td>
                                 <td>{{ dat.quantity }}</td>
-                                <td>{{ dat.date }}</td>
                                 <td>{{ dat.remarks }}</td>
-                                <td><a :href="dat.Link" target="_blank">{{ dat.Link }}</a></td>
+                                <td><a :href="dat.Link" target="_blank">{{ dat.Link.length > 50 ? (dat.Link).substring(0, 50) + '...' : dat.Link }}</a></td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
