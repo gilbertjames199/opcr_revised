@@ -155,13 +155,13 @@ class MFOController extends Controller
         $idn = auth()->user()->recid;
         //dd($idn);
         $data = $this->model->orderBy('created_at', 'desc')
-                ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','major_final_outputs.FFUNCCOD')
-                ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
+                ->join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','major_final_outputs.FFUNCCOD')
+                ->join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
                 ->where('sysu.recid',$idn)
                 ->paginate(10)
                 ->withQueryString();
 
-        dd($data);
+        //dd($data);
         //dd($data);
         //dd($data->pluck('mfo_desc'));
         return inertia('MFOs/Direct',[
