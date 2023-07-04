@@ -68,8 +68,23 @@ class PAPController extends Controller
 
     public function create($id)
     {
-        $mfos= MajorFinalOutput::get();
+        $idn = auth()->user()->recid;
+        $mfos1= MajorFinalOutput::get();
+
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+
+        //$showPerPage=10;
+        $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
         $chief_executive_agenda = ChiefAgenda::get();
+        $socio_economic = EconomicAgenda::get();
+        $sustainable = SDG::get();
+        $executive_legislative = ELA::get();
+        $research = ResearchAgenda::get();
         //dd($id);
         $year_object=DB::connection('mysql2')
                         ->table('raaohs')
@@ -85,6 +100,10 @@ class PAPController extends Controller
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
             'chief_agenda'=>$chief_executive_agenda,
+            'socio_economic' => $socio_economic,
+            'sustainable' => $sustainable,
+            'executive_legislative' => $executive_legislative,
+            'research' => $research,
             'idmfo'=>$id,
             'functions'=>$functions,
             'years'=>$year_object,
