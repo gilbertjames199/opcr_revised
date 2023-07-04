@@ -31,7 +31,8 @@ class DailyAccomplishmentController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
-                ->orderBy('created_at', 'desc');
+                ->orderBy('created_at', 'desc')
+                ->get();
 
         $access = DB::connection('mysql2')->table('accountaccess')
                 ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
@@ -39,7 +40,7 @@ class DailyAccomplishmentController extends Controller
                 ->where('systemusers.recid',$idn)
                 ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
-        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD)->paginate(10);
         $mfos=MajorFinalOutput::all();
 
         $functions = FFUNCCOD::select('functions.FFUNCCOD','functions.FFUNCTION')
