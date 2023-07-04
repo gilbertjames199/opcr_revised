@@ -97,16 +97,22 @@ class PAPController extends Controller
 
     public function direct_create()
     {
+        //dd("direct create");
         $idn = auth()->user()->recid;
         $mfos1= MajorFinalOutput::get();
+
         $access = DB::connection('mysql2')->table('accountaccess')
                 ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
                 ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
                 ->where('systemusers.recid',$idn)
                 ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
-        $showPerPage=10;
-        $mfos =PaginationHelper::paginate($mfos1, $showPerPage);
+
+        //$showPerPage=10;
+        $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        //dd($mfos);
+        //dd($mfos);
+        //$mfos =PaginationHelper::paginate($result, $showPerPage);
 
         $chief_executive_agenda = ChiefAgenda::get();
         $socio_economic = EconomicAgenda::get();
