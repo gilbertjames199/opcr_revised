@@ -73,7 +73,7 @@ class DailyAccomplishmentController extends Controller
     public function mfo_accomplishment(Request $request){
 
         $mfos = MajorFinalOutput::select('major_final_outputs.id','major_final_outputs.mfo_desc')
-                ->where('FFUNCCOD', $request->FFUNCCOD)
+                ->where('major_final_outputs.FFUNCCOD', $request->FFUNCCOD)
                 ->join('program_and_projects','major_final_outputs.id','program_and_projects.idmfo')
                 ->join('daily_accomplishments','daily_accomplishments.idpaps','program_and_projects.id')
                 ->get()
@@ -91,7 +91,7 @@ class DailyAccomplishmentController extends Controller
     }
     public function paps_accomplishment(Request $request){
         $paps = ProgramAndProject::select('program_and_projects.paps_desc','program_and_projects.id')
-                ->where('idmfo', $request->idmfo)
+                ->where('program_and_projects.idmfo', $request->idmfo)
                 ->join('daily_accomplishments','daily_accomplishments.idpaps','program_and_projects.id')
                 ->get()
                 ->map(function($item)use($request){
