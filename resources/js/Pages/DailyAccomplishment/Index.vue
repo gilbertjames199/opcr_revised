@@ -15,6 +15,7 @@
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/AddAccomplishment/create/${idpaps}`">Add Daily Accomplishment</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+
                 </div>
                 <Link :href="`/DailyAccomplishment/direct`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -30,6 +31,15 @@
                 </svg>
             </Link> -->
         </div>
+        <filtering v-if="filter" @closeFilter="filter=false">
+            Filter by MFO
+            <select v-model="mfosel" class="form-control" @change="filterData()">
+                <option v-for="mfo in mfos" :value="mfo.id">
+                    {{ mfo.mfo_desc }}
+                </option>
+            </select>
+            <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
+        </filtering>
 
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
@@ -98,11 +108,15 @@ export default {
     props: {
         data: Object,
         paps: Object,
-        idpaps: String
+        idpaps: String,
+        functions: Object,
     },
     data() {
         return{
-
+            filter: false,
+            filter_p: false,
+            date_from: "",
+            date_to: "",
         }
     },
     components: {
@@ -110,7 +124,13 @@ export default {
     },
 
     methods:{
-
+        showFilter() {
+            //alert("show filter");
+            this.filter = !this.filter
+        },
+        showFilterP(){
+            this.filter_p = !this.filter_p
+        },
         showCreate(){
             this.$inertia.get(
                 "/targets/create",
