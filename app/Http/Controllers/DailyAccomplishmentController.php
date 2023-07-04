@@ -40,7 +40,7 @@ class DailyAccomplishmentController extends Controller
                 ->where('systemusers.recid',$idn)
                 ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
-        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD)->paginate(10);
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
         $mfos=MajorFinalOutput::all();
 
         $functions = FFUNCCOD::select('functions.FFUNCCOD','functions.FFUNCTION')
