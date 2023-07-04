@@ -73,6 +73,8 @@ class DailyAccomplishmentController extends Controller
     public function mfo_accomplishment(Request $request){
 
         $mfos = MajorFinalOutput::where('FFUNCCOD', $request->FFUNCCOD)
+                ->join('program_and_projects','major_final_outputs.id','program_and_projects.idmfo')
+                ->join('daily_accomplishments','daily_accomplishments.idpaps','program_and_projects.id')
                 ->get()
                 ->map(function($item)use($request){
                     $date_from = $request->date_from;
