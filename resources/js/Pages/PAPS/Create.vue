@@ -30,7 +30,7 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
 
-                <label for="">Major Final Outputs</label>
+                <label for="">Major Final Outputs (MFOs)</label>
                 <select class="form-control form-select" v-model="form.idmfo" >
                     <option v-for="mfo in mfos.data" :value="mfo.id" >
                         {{ mfo.mfo_desc }}

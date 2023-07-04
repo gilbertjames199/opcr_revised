@@ -267,7 +267,7 @@ var _hoisted_11 = {
 
 var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Major Final Outputs", -1
+}, "Major Final Outputs (MFOs)", -1
 /* HOISTED */
 );
 
