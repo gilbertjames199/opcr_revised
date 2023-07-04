@@ -163,7 +163,7 @@ class MFOController extends Controller
 
         //dd($data);
         //dd($data);
-        //dd($data->pluck('mfo_desc'));
+        dd($data->pluck('mfo_desc'));
         return inertia('MFOs/Direct',[
             "data"=>$data,
             "filters" => $request->only(['search']),
