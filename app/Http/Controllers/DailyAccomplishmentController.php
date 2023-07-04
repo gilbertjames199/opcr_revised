@@ -31,12 +31,17 @@ class DailyAccomplishmentController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
-                ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
-                ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
-                ->where('sysu.recid',$idn)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
+
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
         $mfos=MajorFinalOutput::all();
 
         $functions = FFUNCCOD::select('functions.FFUNCCOD','functions.FFUNCTION')
@@ -47,7 +52,7 @@ class DailyAccomplishmentController extends Controller
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('Daily_Accomplishment/Direct',[
-            "data"=>$data,
+            "data"=>$result,
             "mfos"=>$mfos,
             "filters" => $request->only(['search']),
             "functions"=>$functions,
