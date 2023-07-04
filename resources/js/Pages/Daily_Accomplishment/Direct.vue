@@ -13,6 +13,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilterP()">Print</button>
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
@@ -33,6 +34,19 @@
                 </option>
             </select>
             <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
+        </filtering>
+        <filtering v-if="filter_p" @closeFilter="filter_p=false">
+            Date From
+            <input type="date" v-model="date_from" class="form-control" />
+            Date To
+            <input type="date" v-model="date_to" class="form-control" />
+            Offices
+            <select v-model="FFUNCCOD" id="selectOffice" class="form-control" @change="filterData()">
+                <option v-for="functional in functions" :value="functional.FFUNCCOD">
+                    {{ functional.FFUNCTION }}
+                </option>
+            </select>
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="printSubmit">Clear Filter</button>
         </filtering>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
@@ -85,12 +99,18 @@
 
             </div>
         </div>
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
+                <iframe :src="my_link" style="width:100%; height:400px" />
+            </div>
+        </Modal>
 
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
@@ -100,12 +120,20 @@ export default {
         // idmfo: String,
         idpaps: Number,
         can: Object,
-        mfos: Object
+        mfos: Object,
+        functions: Object
     },
     data() {
         return{
             search: this.$props.filters.search,
             filter: false,
+            filter_p: false,
+            date_from: "",
+            date_to: "",
+            FFUNCCOD: "",
+            office: "",
+            displayModal: false,
+            my_link: "",
         }
     },
     watch: {
@@ -122,7 +150,7 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering,Modal
     },
 
     methods:{
@@ -137,6 +165,28 @@ export default {
         showFilter() {
             //alert("show filter");
             this.filter = !this.filter
+        },
+        showFilterP(){
+            this.filter_p = !this.filter_p
+        },
+        printSubmit(){
+            var office_ind = document.getElementById("selectOffice").selectedIndex;
+            this.office =this.functions[office_ind].FFUNCTION;
+            this.my_link =this.viewlink(this.FFUNCCOD, this.date_from, this.date_to, this.office);
+            this.showModal();
+            //alert(lnk);
+        },
+
+        viewlink(FFUNCCOD, date_from, date_to, office){
+            //var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FDaily_Accomplishment%2FAccomplishments_Main&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FDaily_Accomplishment&decorate=no&output=pdf';
+            var params = '&FFUNCCOD=' + FFUNCCOD + '&date_from=' + date_from + '&date_to=' + date_to +
+                '&office=' + office;
+            var linkl = linkt+jasper_ip + jasper_link + params;
+
+            return linkl;
         },
         async clearFilter(){
             this.mfosel="";
@@ -155,7 +205,14 @@ export default {
                     replace: true,
                 }
             );
-        }
+        },
+        showModal() {
+
+            this.displayModal = true;
+        },
+        hideModal() {
+            this.displayModal = false;
+        },
     }
 };
 </script>

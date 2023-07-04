@@ -38,12 +38,19 @@ class DailyAccomplishmentController extends Controller
                 ->paginate(10)
                 ->withQueryString();
         $mfos=MajorFinalOutput::all();
+
+        $functions = FFUNCCOD::select('functions.FFUNCCOD','functions.FFUNCTION')
+                    ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','functions.FFUNCCOD')
+                    ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
+                    ->where('sysu.recid',$idn)
+                    ->get();
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('Daily_Accomplishment/Direct',[
             "data"=>$data,
             "mfos"=>$mfos,
             "filters" => $request->only(['search']),
+            "functions"=>$functions,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -64,6 +71,7 @@ class DailyAccomplishmentController extends Controller
         ];
     }
     public function mfo_accomplishment(Request $request){
+
         $mfos = MajorFinalOutput::where('FFUNCCOD', $request->FFUNCCOD)
                 ->get()
                 ->map(function($item)use($request){

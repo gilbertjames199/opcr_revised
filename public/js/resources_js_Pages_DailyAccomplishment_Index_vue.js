@@ -19,11 +19,15 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     data: Object,
     paps: Object,
-    idpaps: String
+    idpaps: String,
+    functions: Object
   },
   data: function data() {
     return {
-      filter: false
+      filter: false,
+      filter_p: false,
+      date_from: "",
+      date_to: ""
     };
   },
   components: {
@@ -34,6 +38,9 @@ __webpack_require__.r(__webpack_exports__);
     showFilter: function showFilter() {
       //alert("show filter");
       this.filter = !this.filter;
+    },
+    showFilterP: function showFilterP() {
+      this.filter_p = !this.filter_p;
     },
     showCreate: function showCreate() {
       this.$inertia.get("/targets/create", {
