@@ -5,7 +5,7 @@
 
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>List of OPCR Forms</h3>
+            <h3>Office Performance Commitment Rating (OPCR)</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
