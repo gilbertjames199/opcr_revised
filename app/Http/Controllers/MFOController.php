@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
 use App\Models\FFUNCCOD;
 use App\Models\IntermediateOutcome;
@@ -170,12 +171,13 @@ class MFOController extends Controller
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
         $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
 
-
+        $showPerPage=10;
+        $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
         //dd($data);
         //dd($result);
         // dd($access);
         return inertia('MFOs/Direct',[
-            "data"=>$result,
+            "data"=>$paginatedResult,
             "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),

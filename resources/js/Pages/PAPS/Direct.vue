@@ -49,7 +49,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dat in data" :key="dat.id">
+                            <tr v-for="dat in data.data" :key="dat.id">
                                 <td>{{ dat.m_f_o.mfo_desc }}</td>
                                 <td>{{ dat.paps_desc }}</td>
                                 <td>{{ dat.MOV }}</td>

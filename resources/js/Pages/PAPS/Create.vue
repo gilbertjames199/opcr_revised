@@ -32,7 +32,7 @@
 
                 <label for="">Major Final Outputs</label>
                 <select class="form-control form-select" v-model="form.idmfo" >
-                    <option v-for="mfo in mfos" :value="mfo.id" >
+                    <option v-for="mfo in mfos.data" :value="mfo.id" >
                         {{ mfo.mfo_desc }}
                     </option>
                 </select>

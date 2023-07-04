@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationHelper;
 use App\Models\DailyAccomplishment;
 use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +43,8 @@ class DailyAccomplishmentController extends Controller
                 ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
         $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $showPerPage=10;
+        $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
         $mfos=MajorFinalOutput::all();
 
         $functions = FFUNCCOD::select('functions.FFUNCCOD','functions.FFUNCTION')
@@ -48,10 +52,11 @@ class DailyAccomplishmentController extends Controller
                     ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
                     ->where('sysu.recid',$idn)
                     ->get();
+        //dd($paginatedResult);
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('Daily_Accomplishment/Direct',[
-            "data"=>$result,
+            "data"=>$paginatedResult,
             "mfos"=>$mfos,
             "filters" => $request->only(['search']),
             "functions"=>$functions,

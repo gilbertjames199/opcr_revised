@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
 use App\Models\ChiefAgenda;
 use App\Models\EconomicAgenda;
@@ -96,7 +97,17 @@ class PAPController extends Controller
 
     public function direct_create()
     {
-        $mfos= MajorFinalOutput::get();
+        $idn = auth()->user()->recid;
+        $mfos1= MajorFinalOutput::get();
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+        $showPerPage=10;
+        $mfos =PaginationHelper::paginate($mfos1, $showPerPage);
+
         $chief_executive_agenda = ChiefAgenda::get();
         $socio_economic = EconomicAgenda::get();
         $sustainable = SDG::get();
@@ -315,13 +326,15 @@ class PAPController extends Controller
                 ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
         $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $showPerPage=10;
+        $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
         $mfos=MajorFinalOutput::all();
 
 
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('PAPS/Direct',[
-            "data"=>$result,
+            "data"=>$paginatedResult,
             "mfos"=>$mfos,
             "filters" => $request->only(['search']),
             'can'=>[
