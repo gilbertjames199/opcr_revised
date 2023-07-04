@@ -151,7 +151,7 @@ class MFOController extends Controller
     }
 
     public function direct(Request $request){
-        //dd("direct");
+        dd("direct");
         $idn = auth()->user()->recid;
         //dd($idn);
         $data = $this->model->orderBy('created_at', 'desc')
