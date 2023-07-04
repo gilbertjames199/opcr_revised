@@ -76,6 +76,7 @@ class DailyAccomplishmentController extends Controller
                 ->where('major_final_outputs.FFUNCCOD', $request->FFUNCCOD)
                 ->join('program_and_projects','major_final_outputs.id','program_and_projects.idmfo')
                 ->join('daily_accomplishments','daily_accomplishments.idpaps','program_and_projects.id')
+                ->groupBy('major_final_outputs.id')
                 ->get()
                 ->map(function($item)use($request){
                     $date_from = $request->date_from;
@@ -93,6 +94,7 @@ class DailyAccomplishmentController extends Controller
         $paps = ProgramAndProject::select('program_and_projects.paps_desc','program_and_projects.id')
                 ->where('program_and_projects.idmfo', $request->idmfo)
                 ->join('daily_accomplishments','daily_accomplishments.idpaps','program_and_projects.id')
+                ->groupBy('program_and_projects.id')
                 ->get()
                 ->map(function($item)use($request){
                     $date_from = $request->date_from;
