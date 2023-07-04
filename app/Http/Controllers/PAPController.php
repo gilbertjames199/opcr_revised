@@ -295,6 +295,7 @@ class PAPController extends Controller
     public function direct(Request $request){
         //dd("direct");
         //dd($request->mfosel);
+
         $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
                 ->when($request->search, function($query, $searchItem){
@@ -303,17 +304,24 @@ class PAPController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
-                ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
-                ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
-                ->where('sysu.recid',$idn)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
+
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
         $mfos=MajorFinalOutput::all();
+
+
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('PAPS/Direct',[
-            "data"=>$data,
+            "data"=>$result,
             "mfos"=>$mfos,
             "filters" => $request->only(['search']),
             'can'=>[

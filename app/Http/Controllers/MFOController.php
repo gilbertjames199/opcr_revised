@@ -153,19 +153,29 @@ class MFOController extends Controller
     public function direct(Request $request){
 
         $idn = auth()->user()->recid;
-        //dd($idn);
-        $data = $this->model->orderBy('created_at', 'desc')
-                ->join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','major_final_outputs.FFUNCCOD')
-                ->join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
-                ->where('sysu.recid',$idn)
+
+        $data = $this->model->select('major_final_outputs.mfo_desc','major_final_outputs.id', 'major_final_outputs.FFUNCCOD')
+                ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
+                // ->join('fms.accountaccess AS acc', function ($join) use ($idn) {
+                //     $join->on(DB::raw('TRIM(acc.ffunccod)'), '=', 'major_final_outputs.FFUNCCOD')
+                //         ->where('acc.iduser', $idn);
+                // })
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+
 
         //dd($data);
-        //dd($data);
-        dd($data->pluck('mfo_desc'));
+        //dd($result);
+        // dd($access);
         return inertia('MFOs/Direct',[
-            "data"=>$data,
+            "data"=>$result,
             "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
