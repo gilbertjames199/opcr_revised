@@ -38,7 +38,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dat in data.data">
+                            
+                            <tr v-for="dat in data">
                                 <td>{{ dat.mfo_desc }} </td>
                                 <td>
                                     <div class="dropdown dropstart" >
