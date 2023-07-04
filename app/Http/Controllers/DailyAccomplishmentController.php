@@ -90,6 +90,7 @@ class DailyAccomplishmentController extends Controller
     }
     public function paps_accomplishment(Request $request){
         $paps = ProgramAndProject::where('idmfo', $request->idmfo)
+                ->join('daily_accomplishments','daily_accomplishments.idpaps','program_and_projects.id')
                 ->get()
                 ->map(function($item)use($request){
                     $date_from = $request->date_from;
