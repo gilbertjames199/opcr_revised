@@ -46,7 +46,7 @@
                     {{ functional.FFUNCTION }}
                 </option>
             </select>
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="printSubmit">Clear Filter</button>
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="printSubmit">Print Report</button>
         </filtering>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">

@@ -471,7 +471,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[11] || (_cache[11] = function () {
           return $options.printSubmit && $options.printSubmit.apply($options, arguments);
         })
-      }, "Clear Filter")];
+      }, "Print Report")];
     }),
     _: 1
     /* STABLE */
