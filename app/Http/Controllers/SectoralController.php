@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
 use App\Models\MajorFinalOutput;
 use App\Models\Sector;
@@ -25,10 +26,24 @@ class SectoralController extends Controller
         $data = $this->model
                     ->orderBy('created_at', 'desc')
                     ->with('sectors')
-                    ->paginate(10)
-                    ->withQueryString();
+                    ->get();
+
+        //USER ACCESS
+        $idn = auth()->user()->recid;
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+
+        //FILTER PAPS
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $showPerPage=10;
+        $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
+
         return inertia('Sectoral/Index',[
-            "data"=>$data,
+            "data"=>$paginatedResult,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
