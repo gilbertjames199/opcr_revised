@@ -50,4 +50,8 @@ class ProgramAndProject extends Model
     public function MFO(){
         return $this -> hasOne(MajorFinalOutput::class, 'id', 'idmfo');
     }
+
+    public function AIP(){
+        return $this->hasOne(AIP::class, 'idpaps', 'id');
+    }
 }

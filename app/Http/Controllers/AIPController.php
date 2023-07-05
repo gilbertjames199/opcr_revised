@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountAccess;
+use App\Models\AIP;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
@@ -14,10 +15,12 @@ class AIPController extends Controller
     //
     protected $model;
     protected $paps;
-    public function __construct(AccountAccess $model, ProgramAndProject $paps)
+    protected $aip;
+    public function __construct(AccountAccess $model, ProgramAndProject $paps, AIP $aip)
     {
         $this->model=$model;
         $this->paps=$paps;
+        $this->aip=$aip;
     }
 
 
@@ -38,7 +41,12 @@ class AIPController extends Controller
         //dd($request->mfosel);
         // dd($request->mfosel);
         $idn = auth()->user()->recid;
-        $data = $this->paps->with('MFO')
+        // $aip = $this->aip
+        // ->when($request->search, function($query, $searchItem){
+        //     $query->where('AIP_Code','LIKE','%'.$searchItem.'%');
+        // });
+
+        $data = $this->paps->with('MFO')->with('AIP')
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
                 })
@@ -51,12 +59,15 @@ class AIPController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
+
         $mfos=MajorFinalOutput::all();
+        $aip=AIP::all();
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('AIP/LBP_Form_2/Index',[
             "data"=>$data,
             "mfos"=>$mfos,
+            "aip"=>$aip,
             "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
@@ -64,4 +75,75 @@ class AIPController extends Controller
             ],
         ]);
     }
+
+    public function create(Request $request, $id){
+        //dd('create');
+        $paps = ProgramAndProject::findOrFail($id);
+        return inertia('AIP/LBP_Form_2/Create',[
+            'paps'=>$paps,
+            'idpaps'=>$id,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
+    }
+
+    public function store(Request $request){
+        // dd($request);
+        $id = $request->idpaps;
+        $attributes = $request->validate([
+            'AIP_Code' => 'required',
+            'PS' => 'required',
+            'MOOE' => 'required',
+            'CO' => 'required',
+            'idpaps'=>'required',
+        ]);
+        // dd($attributes);
+        //dd($attributes);
+        $this->aip->create($attributes);
+        return redirect('AIP/direct')
+                ->with('message','Output added');
+    }
+
+    public function edit(Request $request, $id){
+        $data = $this->aip->where('id', $id)->first([
+            'id',
+            'AIP_Code',
+            'PS',
+            'MOOE',
+            'CO',
+            'idpaps'
+        ]);
+        // dd($data);
+        $paps = ProgramAndProject::findOrFail($data->idpaps);
+        return inertia('AIP/LBP_Form_2/Create', [
+            "editData" => $data,
+            "idpaps"=>$data->idpaps,
+            'paps'=>$paps,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
+    }
+
+
+    public function update(Request $request)
+    {
+        // dd($request);
+        $data = $this->aip->findOrFail($request->id);
+        //dd($request->plan_period);
+        $data->update([
+            'AIP_Code'=>$request->AIP_Code,
+            'PS'=>$request->PS,
+            'MOOE'=>$request->MOOE,
+            'CO'=>$request->CO,
+            'idpaps'=>$request->idpaps
+        ]);
+
+        return redirect('AIP/direct')
+                ->with('message','Output updated');
+    }
+
 }

@@ -14,6 +14,7 @@
                 </div>
                 <div class="peer">
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Print</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -50,7 +51,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data" :key="dat.id">
-                                <td>{{ "" }}</td>
+                                <td><div v-if="dat.a_i_p">{{ dat.a_i_p.AIP_Code }}</div></td>
                                 <td>{{ dat.m_f_o.mfo_desc }}</td>
                                 <td>{{ dat.paps_desc }}</td>
 
@@ -62,8 +63,10 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/aip/${dat.id}`">AIP Code</Link></li>
+                                            <li v-if="!dat.a_i_p"><Link class="dropdown-item" :href="`/AIP/create/${dat.id}`"> AIP Code</Link></li>
+                                            <li v-if="dat.a_i_p"><Link class="dropdown-item" :href="`/AIP/${dat.a_i_p.id}/edit`"> Edit</Link></li>
                                         </ul>
+
                                     </div>
                                 </td>
                             </tr>
@@ -113,7 +116,7 @@ export default {
     watch: {
             search: _.debounce(function (value) {
             this.$inertia.get(
-                "/OPCRpaps/direct",
+                "/AIP/direct",
                 { search: value },
                 {
                     preserveScroll: true,
@@ -128,8 +131,6 @@ export default {
     },
 
     methods:{
-
-
         deleteMFO(id) {
             let text = "WARNING!\nAre you sure you want to delete the PAP?";
               if (confirm(text) == true) {
@@ -147,7 +148,7 @@ export default {
         async filterData(){
             //alert(this.mfosel);
             this.$inertia.get(
-                "/OPCRpaps/direct",
+                "/AIP/direct",
                 {
                     mfosel: this.mfosel
                 },

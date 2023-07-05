@@ -633,16 +633,21 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/AIP')->group(function(){
         Route::get('/',[AIPController::class,'index']);
         Route::get('/direct',[AIPController::class,'direct']);
+        Route::get('/create/{id}',[AIPController::class,'create']);
+        Route::post('/store',[AIPController::class,'store']);
+        Route::get('/{id}/edit', [AIPController::class, 'edit']);
+        Route::patch('/{id}', [AIPController::class, 'update']);
+        Route::delete('/{id}', [AIPController::class, 'destroy']);
     });
 
-    Route::prefix('/aip')->group(function(){
-        Route::get('/{id}',[aip_controller::class,'index']);
-        Route::get('/create/{id}',[aip_controller::class,'create']);
-        Route::post('/store',[aip_controller::class,'store']);
-        Route::get('/{id}/edit', [aip_controller::class, 'edit']);
-        Route::patch('/{id}', [aip_controller::class, 'update']);
-        Route::delete('/{id}', [aip_controller::class, 'destroy']);
-    });
+    // Route::prefix('/aip')->group(function(){
+    //     Route::get('/{id}',[aip_controller::class,'index']);
+    //     Route::get('/create/{id}',[aip_controller::class,'create']);
+    //     Route::post('/store',[aip_controller::class,'store']);
+    //     Route::get('/{id}/edit', [aip_controller::class, 'edit']);
+    //     Route::patch('/{id}', [aip_controller::class, 'update']);
+    //     Route::delete('/{id}', [aip_controller::class, 'destroy']);
+    // });
 
     Route::prefix('viewOPCR')->group(function(){
         Route::get('/FFUNCOD',[OPCRController::class,'viewOPCR']);
