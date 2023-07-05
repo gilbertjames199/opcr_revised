@@ -45,8 +45,8 @@ class DailyAccomplishmentController extends Controller
         $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
         $showPerPage=10;
         $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
-        $mfos=MajorFinalOutput::all();
-
+        $mfos_all=MajorFinalOutput::all();
+        $mfos = $mfos_all->whereIn('FFUNCCOD', $accessFFUNCCOD);
         $functions = FFUNCCOD::select('functions.FFUNCCOD','functions.FFUNCTION')
                     ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','functions.FFUNCCOD')
                     ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
