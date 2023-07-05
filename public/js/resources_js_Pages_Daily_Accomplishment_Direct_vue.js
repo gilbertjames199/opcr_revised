@@ -86,7 +86,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.office = this.functions[office_ind].FFUNCTION;
       var pg_head = this.functions[office_ind].DEPTHEAD;
       this.my_link = this.viewlink(this.FFUNCCOD, this.date_from, this.date_to, this.office, pg_head);
-      this.showModal(); //alert(lnk);
+      this.showModal();
     },
     viewlink: function viewlink(FFUNCCOD, date_from, date_to, office, pg_head) {
       //var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";

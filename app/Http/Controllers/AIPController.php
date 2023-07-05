@@ -46,7 +46,11 @@ class AIPController extends Controller
         //     $query->where('AIP_Code','LIKE','%'.$searchItem.'%');
         // });
 
-        $data = $this->paps->with('MFO')->with('AIP')
+        $data = $this->paps->with('MFO')->with(['AIP' =>function($query)use($request){
+                    $query->when($request->search, function($query, $searchItem){
+                        $query->where('AIP_Code','LIKE','%'.$searchItem.'%');
+                    });
+                }])
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
                 })
