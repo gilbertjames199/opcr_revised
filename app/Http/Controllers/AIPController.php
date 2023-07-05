@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
 use App\Models\AIP;
 use App\Models\MajorFinalOutput;
@@ -68,15 +69,30 @@ class AIPController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
-
+        $idn = auth()->user()->recid;
         $mfos=MajorFinalOutput::all();
-        $aip=AIP::all();
+
+        //Retrieving user access
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+
+        //filter data
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $showPerPage=10;
+        $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
+
+        //filter mfos
+        $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
+
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('AIP/LBP_Form_2/Index',[
             "data"=>$data,
             "mfos"=>$mfos,
-            "aip"=>$aip,
             "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
