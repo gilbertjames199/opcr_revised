@@ -62,13 +62,7 @@ class AIPController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
-                ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
-                ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
-                ->where('sysu.recid',$idn)
-                ->groupBy('program_and_projects.paps_desc')
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
-                ->withQueryString();
+                ->get();
         $idn = auth()->user()->recid;
         $mfos=MajorFinalOutput::all();
 
