@@ -46,13 +46,17 @@ class AIPController extends Controller
         //     $query->where('AIP_Code','LIKE','%'.$searchItem.'%');
         // });
 
-        $data = $this->paps->with('MFO')->with(['AIP' =>function($query)use($request){
-                    $query->when($request->search, function($query, $searchItem){
-                        $query->where('AIP_Code','LIKE','%'.$searchItem.'%');
-                    });
-                }])
-                ->when($request->search, function($query, $searchItem){
-                    $query->where('paps_desc','LIKE','%'.$searchItem.'%');
+
+        // ->with(['AIP' =>function($query)use($request){
+        //     $query->when($request->search, function($query, $searchItem){
+        //         //dd('search: '.$searchItem);
+        //         $query->where('AIP_Code','LIKE','%'.$searchItem.'%');
+        //     });
+        // }])
+        $data = $this->paps->with('MFO')->with('AIP')
+                ->when($request->search, function($query) use ($request){
+                    $query->where(AIP::select('AIP_Code')->whereColumn('a_i_p_s.idpaps','program_and_projects.id'),'LIKE','%'.$request->search.'%')
+                            ->orWhere('program_and_projects.paps_desc', 'LIKE','%'.$request->search.'%');
                 })
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
@@ -60,6 +64,7 @@ class AIPController extends Controller
                 ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
                 ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
                 ->where('sysu.recid',$idn)
+                ->groupBy('program_and_projects.paps_desc')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();

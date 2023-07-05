@@ -100,6 +100,7 @@ export default {
     props: {
         data: Object,
         filters: Object,
+
         // idinteroutcome: String,
         // idoutcome: String,
         //idmfo:string,
