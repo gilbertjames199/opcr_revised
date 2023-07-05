@@ -340,9 +340,8 @@ class PAPController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
-                ->withQueryString();
+                ->orderBy('program_and_projects.created_at', 'desc')
+                ->get();
 
         $access = DB::connection('mysql2')->table('accountaccess')
                 ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))

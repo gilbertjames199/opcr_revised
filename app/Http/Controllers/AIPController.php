@@ -62,6 +62,7 @@ class AIPController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
+                ->orderBy('program_and_projects.created_at', 'desc')
                 ->get();
         $idn = auth()->user()->recid;
         $mfos=MajorFinalOutput::all();
