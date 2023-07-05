@@ -35,7 +35,7 @@
             </select>
             <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
         </filtering>
-        <filtering v-if="filter_p" @closeFilter="filter_p=false">
+        <FilterPrinting v-if="filter_p" @closeFilter="filter_p=false">
             Date From
             <input type="date" v-model="date_from" class="form-control" />
             Date To
@@ -47,7 +47,7 @@
                 </option>
             </select>
             <button class="btn btn-sm btn-primary mT-5 text-white" @click="printSubmit">Print Report</button>
-        </filtering>
+        </FilterPrinting>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -109,6 +109,7 @@
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
+import FilterPrinting from "@/Shared/FilterPrint";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
 export default {
@@ -150,7 +151,7 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering,Modal
+        Pagination, Filtering,Modal, FilterPrinting
     },
 
     methods:{
