@@ -65,7 +65,7 @@
                                             <li v-if="dat.id"><Link class="dropdown-item" :href="`/opcrtarget/${dat.id}/edit`">Edit</Link></li>
                                             <li v-if="dat.id"><Link class="text-danger dropdown-item" @click="deleteTarget(dat.id)">Delete </Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="createTarget(dat.idpaps, dat.success_indicator)">
-                                                    Add Target -dat.id {{ dat.id }}
+                                                    Add Target
                                                 </Link>
                                             </li>
                                             <!-- <li><Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">Edit</Link></li>

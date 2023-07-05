@@ -72,11 +72,13 @@ class DailyAccomplishmentController extends Controller
         $date_to = $request->date_to;
         $FFUNCCOD = $request->FFUNCCOD;
         $FUNCCTION = $request->office;
+        $pg_head =$request->pg_head;
         return [
             "date_from"=>$date_from,
             "date_to"=>$date_to,
             "FFUNCCOD"=>$FFUNCCOD,
             "office"=>$FUNCCTION,
+            "pg_head"=>$pg_head,
         ];
     }
     public function mfo_accomplishment(Request $request){
