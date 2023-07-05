@@ -172,18 +172,19 @@ export default {
         printSubmit(){
             var office_ind = document.getElementById("selectOffice").selectedIndex;
             this.office =this.functions[office_ind].FFUNCTION;
-            this.my_link =this.viewlink(this.FFUNCCOD, this.date_from, this.date_to, this.office);
+            var pg_head = this.functions[office_ind].DEPTHEAD;
+            this.my_link =this.viewlink(this.FFUNCCOD, this.date_from, this.date_to, this.office, pg_head);
+
             this.showModal();
-            //alert(lnk);
         },
 
-        viewlink(FFUNCCOD, date_from, date_to, office){
+        viewlink(FFUNCCOD, date_from, date_to, office, pg_head){
             //var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
             var linkt="http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FDaily_Accomplishment%2FAccomplishments_Main&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FDaily_Accomplishment&decorate=no&output=pdf';
             var params = '&FFUNCCOD=' + FFUNCCOD + '&date_from=' + date_from + '&date_to=' + date_to +
-                '&office=' + office+'&pg_head=PGHead';
+                '&office=' + office+'&pg_head='+pg_head;
             var linkl = linkt+jasper_ip + jasper_link + params;
 
             return linkl;
