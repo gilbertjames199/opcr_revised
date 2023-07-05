@@ -102,7 +102,8 @@ export default {
         filters: Object,
         // idinteroutcome: String,
         // idoutcome: String,
-        // idmfo: String,
+        //idmfo:string,
+        idmfo: String,
         idpaps: Number,
         can: Object,
         mfos: Object
