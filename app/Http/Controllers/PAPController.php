@@ -353,7 +353,7 @@ class PAPController extends Controller
         $showPerPage=10;
         $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
         $mfos=MajorFinalOutput::all();
-        $mfos=$data->whereIn('FFUNCCOD',$accessFFUNCCOD);
+        $mfos=$mfos->whereIn('FFUNCCOD',$accessFFUNCCOD);
 
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
