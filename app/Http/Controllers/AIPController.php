@@ -91,7 +91,7 @@ class AIPController extends Controller
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('AIP/LBP_Form_2/Index',[
-            "data"=>$data,
+            "data"=>$paginatedResult,
             "mfos"=>$mfos,
             "filters" => $request->only(['search']),
             'can'=>[
