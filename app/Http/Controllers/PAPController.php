@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
 use App\Models\ChiefAgenda;
 use App\Models\EconomicAgenda;
@@ -67,8 +68,23 @@ class PAPController extends Controller
 
     public function create($id)
     {
-        $mfos= MajorFinalOutput::get();
+        $idn = auth()->user()->recid;
+        $mfos1= MajorFinalOutput::get();
+
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+
+        //$showPerPage=10;
+        $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
         $chief_executive_agenda = ChiefAgenda::get();
+        $socio_economic = EconomicAgenda::get();
+        $sustainable = SDG::get();
+        $executive_legislative = ELA::get();
+        $research = ResearchAgenda::get();
         //dd($id);
         $year_object=DB::connection('mysql2')
                         ->table('raaohs')
@@ -84,6 +100,10 @@ class PAPController extends Controller
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
             'chief_agenda'=>$chief_executive_agenda,
+            'socio_economic' => $socio_economic,
+            'sustainable' => $sustainable,
+            'executive_legislative' => $executive_legislative,
+            'research' => $research,
             'idmfo'=>$id,
             'functions'=>$functions,
             'years'=>$year_object,
@@ -96,7 +116,23 @@ class PAPController extends Controller
 
     public function direct_create()
     {
-        $mfos= MajorFinalOutput::get();
+        //dd("direct create");
+        $idn = auth()->user()->recid;
+        $mfos1= MajorFinalOutput::get();
+
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+
+        //$showPerPage=10;
+        $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        //dd($mfos);
+        //dd($mfos);
+        //$mfos =PaginationHelper::paginate($result, $showPerPage);
+
         $chief_executive_agenda = ChiefAgenda::get();
         $socio_economic = EconomicAgenda::get();
         $sustainable = SDG::get();
@@ -295,6 +331,7 @@ class PAPController extends Controller
     public function direct(Request $request){
         //dd("direct");
         //dd($request->mfosel);
+
         $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
                 ->when($request->search, function($query, $searchItem){
@@ -303,17 +340,26 @@ class PAPController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
-                ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
-                ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
-                ->where('sysu.recid',$idn)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
+
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $showPerPage=10;
+        $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
         $mfos=MajorFinalOutput::all();
+
+
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('PAPS/Direct',[
-            "data"=>$data,
+            "data"=>$paginatedResult,
             "mfos"=>$mfos,
             "filters" => $request->only(['search']),
             'can'=>[

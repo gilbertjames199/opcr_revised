@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationHelper;
 use App\Models\DailyAccomplishment;
 use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,23 +33,30 @@ class DailyAccomplishmentController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
-                ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
-                ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
-                ->where('sysu.recid',$idn)
                 ->orderBy('created_at', 'desc')
-                ->paginate(10)
-                ->withQueryString();
-        $mfos=MajorFinalOutput::all();
+                ->get();
 
-        $functions = FFUNCCOD::select('functions.FFUNCCOD','functions.FFUNCTION')
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $showPerPage=10;
+        $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
+        $mfos_all=MajorFinalOutput::all();
+        $mfos = $mfos_all->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $functions = FFUNCCOD::select('functions.FFUNCCOD','functions.FFUNCTION','functions.DEPTHEAD')
                     ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','functions.FFUNCCOD')
                     ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
                     ->where('sysu.recid',$idn)
                     ->get();
+        //dd($paginatedResult);
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('Daily_Accomplishment/Direct',[
-            "data"=>$data,
+            "data"=>$paginatedResult,
             "mfos"=>$mfos,
             "filters" => $request->only(['search']),
             "functions"=>$functions,
@@ -63,11 +72,13 @@ class DailyAccomplishmentController extends Controller
         $date_to = $request->date_to;
         $FFUNCCOD = $request->FFUNCCOD;
         $FUNCCTION = $request->office;
+        $pg_head =$request->pg_head;
         return [
             "date_from"=>$date_from,
             "date_to"=>$date_to,
             "FFUNCCOD"=>$FFUNCCOD,
             "office"=>$FUNCCTION,
+            "pg_head"=>$pg_head,
         ];
     }
     public function mfo_accomplishment(Request $request){

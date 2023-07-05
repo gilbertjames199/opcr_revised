@@ -38,6 +38,7 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             <tr v-for="dat in data.data">
                                 <td>{{ dat.mfo_desc }} </td>
                                 <td>

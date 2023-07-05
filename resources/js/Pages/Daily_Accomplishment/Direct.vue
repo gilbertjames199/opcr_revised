@@ -69,10 +69,10 @@
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
+                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
                                             <li><Link class="dropdown-item" :href="`/AddAccomplishment/${dat.id}`">Add Accomplishment</Link></li>
                                         </ul>
                                     </div>
@@ -172,18 +172,20 @@ export default {
         printSubmit(){
             var office_ind = document.getElementById("selectOffice").selectedIndex;
             this.office =this.functions[office_ind].FFUNCTION;
-            this.my_link =this.viewlink(this.FFUNCCOD, this.date_from, this.date_to, this.office);
+            var pg_head = this.functions[office_ind].DEPTHEAD;
+
+            this.my_link =this.viewlink(this.FFUNCCOD, this.date_from, this.date_to, this.office, pg_head);
+
             this.showModal();
-            //alert(lnk);
         },
 
-        viewlink(FFUNCCOD, date_from, date_to, office){
+        viewlink(FFUNCCOD, date_from, date_to, office, pg_head){
             //var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
             var linkt="http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FDaily_Accomplishment%2FAccomplishments_Main&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FDaily_Accomplishment&decorate=no&output=pdf';
             var params = '&FFUNCCOD=' + FFUNCCOD + '&date_from=' + date_from + '&date_to=' + date_to +
-                '&office=' + office;
+                '&office=' + office+'&pg_head='+pg_head;
             var linkl = linkt+jasper_ip + jasper_link + params;
 
             return linkl;

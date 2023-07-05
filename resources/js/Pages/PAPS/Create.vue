@@ -1,7 +1,7 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Programs and Projects <!--{{  idmfo }}--></h3>
+            <h3>{{ pageTitle }} Programs and Projects</h3>
             <div v-if="from_mfo==true">
                 <Link :href="`/paps/${idmfo}`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -30,7 +30,8 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
 
-                <label for="">Major Final Outputs</label>
+                <label for="">Major Final Outputs </label>
+
                 <select class="form-control form-select" v-model="form.idmfo" >
                     <option v-for="mfo in mfos" :value="mfo.id" >
                         {{ mfo.mfo_desc }}
