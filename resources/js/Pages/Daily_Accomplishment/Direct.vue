@@ -173,7 +173,7 @@ export default {
             var office_ind = document.getElementById("selectOffice").selectedIndex;
             this.office =this.functions[office_ind].FFUNCTION;
             var pg_head = this.functions[office_ind].DEPTHEAD;
-            var pg_head ='PG Head Sample'
+
             this.my_link =this.viewlink(this.FFUNCCOD, this.date_from, this.date_to, this.office, pg_head);
 
             this.showModal();
