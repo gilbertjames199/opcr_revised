@@ -38,7 +38,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <tr v-for="dat in data.data">
                                 <td>{{ dat.box_number }}</td>
                                 <td>{{ dat.sector }}</td>

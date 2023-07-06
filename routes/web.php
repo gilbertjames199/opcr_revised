@@ -794,5 +794,8 @@ Route::prefix('daily_accomplishments/')->group(function(){
     Route::get('paps',[DailyAccomplishmentController::class,'paps_accomplishment']);
     Route::get('daily',[DailyAccomplishmentController::class,'daily_accomplishment']);
 });
+Route::prefix('hgdg/print')->group(function(){
+    Route::get('question',[HGDGScoreController::class,'getQuestions']);
+});
 
 
