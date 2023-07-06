@@ -64,7 +64,7 @@ __webpack_require__.r(__webpack_exports__);
       percentt = this.format_number(percentt, 2, true);
       return percentt;
     },
-    print: function print(checklist_id) {
+    print: function print(checklist_id, box_number, sector) {
       alert("checklist_id: " + checklist_id);
     }
   }
@@ -308,7 +308,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "text-danger dropdown-item",
       onClick: function onClick($event) {
-        return $options.print(dat.id);
+        return $options.print(dat.id, dat.box_number, dat.sector);
       }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
