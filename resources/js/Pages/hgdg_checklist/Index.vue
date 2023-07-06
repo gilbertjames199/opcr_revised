@@ -52,6 +52,7 @@
                                             <li><Link class="dropdown-item" :href="`/HGDGQuestions/${dat.id}`">Add Questions</Link></li>
                                             <li><Link class="dropdown-item" :href="`/HGDGChecklist/${dat.id}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">Delete</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="print(dat.id)">Print</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -134,6 +135,9 @@ export default {
             var percentt = (accSum/targqty)*100
             percentt=this.format_number(percentt,2,true)
             return percentt;
+        },
+        print(checklist_id){
+            alert("checklist_id: "+checklist_id);
         }
     }
 };
