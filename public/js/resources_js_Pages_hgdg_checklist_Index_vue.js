@@ -65,7 +65,7 @@ __webpack_require__.r(__webpack_exports__);
       return percentt;
     },
     print: function print(checklist_id, box_number, sector) {
-      alert("checklist_id: " + checklist_id);
+      alert("checklist_id: " + checklist_id + "\nbox_number: " + box_number + "\nsector" + sector);
     }
   }
 });

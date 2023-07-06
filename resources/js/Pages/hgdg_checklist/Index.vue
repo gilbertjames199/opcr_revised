@@ -137,7 +137,9 @@ export default {
             return percentt;
         },
         print(checklist_id, box_number, sector){
-            alert("checklist_id: "+checklist_id);
+            alert("checklist_id: "+checklist_id+
+                    "\nbox_number: "+box_number+
+                    "\nsector"+sector);
         }
     }
 };

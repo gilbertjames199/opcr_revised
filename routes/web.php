@@ -795,6 +795,7 @@ Route::prefix('daily_accomplishments/')->group(function(){
     Route::get('daily',[DailyAccomplishmentController::class,'daily_accomplishment']);
 });
 Route::prefix('hgdg/print')->group(function(){
+    Route::get('checklist',[HGDGScoreController::class,'getChecklist']);
     Route::get('question',[HGDGScoreController::class,'getQuestions']);
 });
 
