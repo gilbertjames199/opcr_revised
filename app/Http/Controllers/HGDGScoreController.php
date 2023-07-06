@@ -228,14 +228,18 @@ class HGDGScoreController extends Controller
     public function getQuestions(Request $request){
         $box_number = $request->box_number;
         $sector	=$request->sector;
-        $questions = HGDGQuestion::where('checklist_id',$request->checklist_id)
-                        ->orderByRaw("CAST(SUBSTRING_INDEX(question_number, '.', 1) AS UNSIGNED)")
-                        ->get();
+        $checklist_id = $request->checklist_id;
         return [
             "box_number"=>$box_number,
             "sector"=>$sector,
-            "questions"=>$questions
+            "checklist_id"=>$checklist_id
         ];
+    }
+    public function allQuestions(Request $request){
+        $questions =HGDGQuestion::where('checklist_id',$request->checklist_id)
+                    ->orderByRaw("CAST(SUBSTRING_INDEX(question_number, '.', 1) AS UNSIGNED)")
+                    ->get();
+        return $questions;
     }
 
 }
