@@ -47,16 +47,16 @@
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
                                             <li>
                                                 <button class="dropdown-item"
-                                                @click="showModal(functional.FFUNCCOD,functional.FFUNCTION,
-                                                functional.MOOE,
-                                                functional.PS)"
-                                                > View OPCR Standard
-                                            </button>
+                                                    @click="showModal(functional.FFUNCCOD,functional.FFUNCTION,
+                                                    functional.MOOE,
+                                                    functional.PS)"
+                                                    > View OPCR Standard
+                                                </button>
                                             </li>
 
-
+                                            <!-- <li><Link class="dropdown-item" @click="goToAppropriations">Appropriations and Obligation</Link></li> -->
                                                 <!-- <Link class="dropdown-item" :href="`/OPCRStandard/${functional.FFUNCCOD}`">View OPCR Standard</Link></li> -->
-                                            <li><Link class="dropdown-item" :href="`AIP/direct`">LBP Form No. 4</Link></li>
+                                            <li><Link class="dropdown-item" :href="`AIP/direct`">LBP Form</Link></li>
 
                                         </ul>
                                     </div>

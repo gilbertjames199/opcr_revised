@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
 use App\Models\AIP;
+use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
@@ -76,14 +77,26 @@ class AIPController extends Controller
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
 
         //filter data
-        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD)
+                    ->map(function($item){
+                        $functionn = FFUNCCOD::where("FFUNCCOD", $item->FFUNCCOD)->first()->FFUNCTION;
+                        return [
+                            "id"=>$item->id,
+                            "a_i_p"=>$item->aip,
+                            "m_f_o"=>$item->mfo,
+                            "paps_desc"=>$item->paps_desc,
+                            "FFUNCCOD"=>$item->FFUNCCOD,
+                            "FFUNCTION"=>$functionn,
+                        ];
+                    });
+                    //dd($result);
         $showPerPage=10;
         $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
 
         //filter mfos
         $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
 
-        //dd($mfos);
+        //dd($paginatedResult);
         //dd($data->pluck('mfo_desc'));
         return inertia('AIP/LBP_Form_2/Index',[
             "data"=>$paginatedResult,
