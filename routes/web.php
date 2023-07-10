@@ -70,6 +70,7 @@ use App\Http\Controllers\AIPController;
 use App\Http\Controllers\aip_controller;
 use App\Http\Controllers\DailyAccomplishmentController;
 use App\Http\Controllers\AddAccomplishmentController;
+use App\Http\Controllers\AppropriationController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -640,6 +641,9 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [AIPController::class, 'destroy']);
     });
 
+    Route::prefix('/appropriations')->group(function(){
+        Route::get('/{idpaps}',[AppropriationController::class,'index']);
+    });
     // Route::prefix('/aip')->group(function(){
     //     Route::get('/{id}',[aip_controller::class,'index']);
     //     Route::get('/create/{id}',[aip_controller::class,'create']);
@@ -793,6 +797,10 @@ Route::prefix('daily_accomplishments/')->group(function(){
     Route::get('mfos',[DailyAccomplishmentController::class,'mfo_accomplishment']);
     Route::get('paps',[DailyAccomplishmentController::class,'paps_accomplishment']);
     Route::get('daily',[DailyAccomplishmentController::class,'daily_accomplishment']);
+});
+Route::prefix('hgdg/print')->group(function(){
+    Route::get('checklist',[HGDGScoreController::class,'getChecklist']);
+    Route::get('question',[HGDGScoreController::class,'getQuestions']);
 });
 
 Route::prefix('printLBP')->group(function(){

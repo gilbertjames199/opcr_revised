@@ -38,10 +38,9 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <tr v-for="dat in data.data">
                                 <td>{{ dat.box_number }}</td>
-                                <td>{{ dat.sector }}</td>
+                                <td>{{ dat.sector }} <!-- - {{ printValue(dat.id, dat.box_number, dat.sector) }}--></td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,6 +52,12 @@
                                             <li><Link class="dropdown-item" :href="`/HGDGQuestions/${dat.id}`">Add Questions</Link></li>
                                             <li><Link class="dropdown-item" :href="`/HGDGChecklist/${dat.id}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">Delete</Link></li>
+                                            <li>
+                                                <Link class="text-danger dropdown-item"
+                                                        @click="printShow(dat.id, dat.box_number, dat.sector)">
+                                                            Print
+                                                </Link>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -75,24 +80,37 @@
                 </div>
 
             </div>
-        </div>
 
+        </div>
+        <Modal v-show="displayModal" @close-modal-event="hideModal">
+            IFrame {{ displayModal }}
+            {{ my_link }}
+            <!-- <div class="d-flex justify-content-center">
+                <iframe :src="my_link" style="width:100%; height:400px" />
+            </div>-->
+        </Modal>
+        displayModal: {{ displayModal }}
+        <!-- {{ print_link }} -->
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object
     },
     data() {
         return{
+            displayModal: false,
+            my_link: "",
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal
     },
+
     methods:{
         showCreate(){
             this.$inertia.get(
@@ -135,7 +153,31 @@ export default {
             var percentt = (accSum/targqty)*100
             percentt=this.format_number(percentt,2,true)
             return percentt;
-        }
+        },
+        printShow(chk_id, bx_n, sec){
+            // alert("checklist_id: "+chk_id+
+            //         "\nbox_number: "+bx_n+
+            //         "\nsector"+sec+"\ndisplayModal: "+this.displayModal);
+            this.my_link=this.printValue(chk_id, bx_n, sec);
+            this.showModal();
+        },
+        printValue(chk_id, bx_n, sec){
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FHGDGChecklist%2FHGDGChecklist&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FHGDGChecklist&decorate=no&output=pdf';
+            var params = '&checklist_id=' + chk_id + '&box_number=' + bx_n +
+                '&sector=' + sec;
+            var lnk =linkt+jasper_ip + jasper_link + params;
+            return lnk;
+        },
+        showModal() {
+            alert("displaymodal: true " + this.my_link);
+            this.displayModal = true;
+        },
+        hideModal() {
+            alert("displaymodal: falseqwdede " + this.my_link);
+            this.displayModal = false;
+        },
     }
 };
 </script>

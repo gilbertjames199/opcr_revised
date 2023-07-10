@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
@@ -63,13 +64,29 @@ class OPCRPAPSController extends Controller
                 ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
                 ->where('sysu.recid',$idn)
                 ->orderBy('created_at', 'desc')
-                ->paginate(10)
-                ->withQueryString();
+                ->get();
         $mfos=MajorFinalOutput::all();
+
+        //USER ACCESS
+        $idn = auth()->user()->recid;
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+
+        //FILTER PAPS
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $showPerPage=10;
+        $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
+
+        //FILTER MFO
+        $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('OPCRPaps/Direct',[
-            "data"=>$data,
+            "data"=>$paginatedResult,
             "mfos"=>$mfos,
             "filters" => $request->only(['search']),
             'can'=>[

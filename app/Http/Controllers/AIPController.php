@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
 use App\Models\AIP;
+use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
@@ -46,22 +48,44 @@ class AIPController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
-                ->Join(DB::raw('fms.accountaccess acc'),'acc.FFUNCCOD','=','program_and_projects.FFUNCCOD')
-                ->Join(DB::raw('fms.systemusers sysu'),'sysu.recid','=','acc.iduser')
-                ->where('sysu.recid',$idn)
-                ->groupBy('program_and_projects.paps_desc')
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
-                ->withQueryString();
-
+                ->orderBy('program_and_projects.created_at', 'desc')
+                ->get();
+        $idn = auth()->user()->recid;
         $mfos=MajorFinalOutput::all();
-        $aip=AIP::all();
-        //dd($mfos);
+
+        //Retrieving user access
+        $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                ->where('systemusers.recid',$idn)
+                ->get();
+        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+
+        //filter data
+        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD)
+                    ->map(function($item){
+                        $functionn = FFUNCCOD::where("FFUNCCOD", $item->FFUNCCOD)->first()->FFUNCTION;
+                        return [
+                            "id"=>$item->id,
+                            "a_i_p"=>$item->aip,
+                            "m_f_o"=>$item->mfo,
+                            "paps_desc"=>$item->paps_desc,
+                            "FFUNCCOD"=>$item->FFUNCCOD,
+                            "FFUNCTION"=>$functionn,
+                        ];
+                    });
+                    //dd($result);
+        $showPerPage=10;
+        $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
+
+        //filter mfos
+        $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
+
+        //dd($paginatedResult);
         //dd($data->pluck('mfo_desc'));
         return inertia('AIP/LBP_Form_2/Index',[
-            "data"=>$data,
+            "data"=>$paginatedResult,
             "mfos"=>$mfos,
-            "aip"=>$aip,
             "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
