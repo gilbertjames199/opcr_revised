@@ -1811,6 +1811,14 @@ var map = {
 		"./resources/js/Pages/Activities/Index.vue",
 		"resources_js_Pages_Activities_Index_vue"
 	],
+	"./Appropriations/Create": [
+		"./resources/js/Pages/Appropriations/Create.vue",
+		"resources_js_Pages_Appropriations_Create_vue"
+	],
+	"./Appropriations/Create.vue": [
+		"./resources/js/Pages/Appropriations/Create.vue",
+		"resources_js_Pages_Appropriations_Create_vue"
+	],
 	"./Appropriations/Index": [
 		"./resources/js/Pages/Appropriations/Index.vue",
 		"resources_js_Pages_Appropriations_Index_vue"
