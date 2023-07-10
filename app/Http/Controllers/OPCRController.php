@@ -269,10 +269,7 @@ class OPCRController extends Controller
         $mfos =MajorFinalOutput::select(DB::raw('"'.$functions.'" as FUNCTION'),"mfo_desc","id")
         ->selectRaw("'$MOOE' as MOOE, '$PS' as PS")->where('FFUNCCOD', $request->id)
         ->get();
-
-
         return $mfos;
-
     }
 
     public function PAPS(Request $request){

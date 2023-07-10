@@ -795,4 +795,11 @@ Route::prefix('daily_accomplishments/')->group(function(){
     Route::get('daily',[DailyAccomplishmentController::class,'daily_accomplishment']);
 });
 
+Route::prefix('printLBP')->group(function(){
+    Route::get('/MFO',[AIPController::class,'MFO']);
+    Route::get('/PAPS',[AIPController::class,'PAPS']);
+
+
+});
+
 

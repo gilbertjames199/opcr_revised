@@ -14,7 +14,10 @@
                 </div>
                 <div class="peer">
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Print</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(functional.FFUNCCOD,functional.FFUNCTION,
+                                                functional.MOOE,
+                                                functional.PS)"
+                                                > Print</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -66,7 +69,6 @@
                                             <li v-if="!dat.a_i_p"><Link class="dropdown-item" :href="`/AIP/create/${dat.id}`"> AIP Code</Link></li>
                                             <li v-if="dat.a_i_p"><Link class="dropdown-item" :href="`/AIP/${dat.a_i_p.id}/edit`"> Edit</Link></li>
                                         </ul>
-
                                     </div>
                                 </td>
                             </tr>
@@ -91,11 +93,18 @@
             </div>
         </div>
 
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
+
+                <iframe :src="my_link" style="width:100%; height:500px" />
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
@@ -113,6 +122,8 @@ export default {
         return{
             search: this.$props.filters.search,
             filter: false,
+            my_link: "",
+            displayModal: false,
         }
     },
     watch: {
@@ -129,7 +140,7 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal,
     },
 
     methods:{
@@ -160,7 +171,25 @@ export default {
                     replace: true,
                 }
             );
-        }
+        },
+        getToRep(ffunccod, ffunction){
+            // alert(data[0].FFUNCCOD);
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR_Standard&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Standard%2FOPCRStandard&standAlone=true&decorate=no&output=pdf';
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&MOOE=' + MOOE + '&PS=' + PS;
+            var link1 = linkt + jasper_ip +jasper_link + params;
+            return link1;
+        },
+
+        showModal(ffunccod, ffunction){
+            this.my_link = this.getToRep(ffunccod, ffunction);
+            this.displayModal = true;
+        },
+
+        hideModal() {
+            this.displayModal = false;
+        },
     }
 };
 </script>
