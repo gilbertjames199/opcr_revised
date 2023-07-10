@@ -14,10 +14,7 @@
                 </div>
                 <div class="peer">
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
-                    <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(functional.FFUNCCOD,functional.FFUNCTION,
-                                                functional.MOOE,
-                                                functional.PS)"
-                                                > Print</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(data.data[0].FFUNCCOD,data.data[0].FFUNCTION,)">Print</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -173,18 +170,18 @@ export default {
                 }
             );
         },
-<<<<<<< HEAD
         getToRep(ffunccod, ffunction){
             // alert(data[0].FFUNCCOD);
             var linkt="http://";
             var jasper_ip = this.jasper_ip;
-            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR_Standard&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Standard%2FOPCRStandard&standAlone=true&decorate=no&output=pdf';
-            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&MOOE=' + MOOE + '&PS=' + PS;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FBudget%2FLBP_Form_4&reportUnit=%2Freports%2FBudget%2FLBP_Form_4%2FLBPFORM4&standAlone=true&decorate=no&output=pdf';
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
             var link1 = linkt + jasper_ip +jasper_link + params;
             return link1;
         },
 
         showModal(ffunccod, ffunction){
+            // alert(ffunction,ffunccod);
             this.my_link = this.getToRep(ffunccod, ffunction);
             this.displayModal = true;
         },
@@ -192,7 +189,6 @@ export default {
         hideModal() {
             this.displayModal = false;
         },
-=======
         goToAppropriations(id){
                 axios.get('/appropriations', {
         params: {
@@ -211,7 +207,6 @@ export default {
             console.error(error);
         });
         }
->>>>>>> 026eeaadc6403d0b1bc9aa53fe4f30e36b14441f
     }
 };
 </script>
