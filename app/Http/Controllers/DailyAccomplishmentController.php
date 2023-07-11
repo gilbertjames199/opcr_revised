@@ -37,6 +37,7 @@ class DailyAccomplishmentController extends Controller
                 })
                 ->join('major_final_outputs','major_final_outputs.id','program_and_projects.idmfo')
                 ->orderBy('mfo_desc', 'ASC')
+                ->orderBy('paps_desc', 'ASC')
                 ->get();
 
         $access = DB::connection('mysql2')->table('accountaccess')
