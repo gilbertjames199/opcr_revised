@@ -28,7 +28,7 @@ class AIPController extends Controller
 
     public function index(Request $request){
         $functions =$this->model
-        ->select('ff.FFUNCCOD','FFUNCTION')
+        ->select('ff.FFUNCCOD','ff.FFUNCTION')
         ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
         ->where('iduser',auth()->user()->recid)
         ->get();
@@ -39,22 +39,7 @@ class AIPController extends Controller
     }
 
     public function direct(Request $request){
-        //dd("direct");
-        //dd($request->mfosel);
-        // dd($request->mfosel);
         $idn = auth()->user()->recid;
-        // $aip = $this->aip
-        // ->when($request->search, function($query, $searchItem){
-        //     $query->where('AIP_Code','LIKE','%'.$searchItem.'%');
-        // });
-
-
-        // ->with(['AIP' =>function($query)use($request){
-        //     $query->when($request->search, function($query, $searchItem){
-        //         //dd('search: '.$searchItem);
-        //         $query->where('AIP_Code','LIKE','%'.$searchItem.'%');
-        //     });
-        // }])
         $data = $this->paps->with('MFO')->with('AIP')
                 ->when($request->search, function($query) use ($request){
                     $query->where(AIP::select('AIP_Code')->whereColumn('a_i_p_s.idpaps','program_and_projects.id'),'LIKE','%'.$request->search.'%')
@@ -177,6 +162,37 @@ class AIPController extends Controller
 
         return redirect('AIP/direct')
                 ->with('message','Output updated');
+    }
+
+    public function MFO(Request $request){
+
+        $functions = $request->FUNCTION;
+
+
+        $mfos = MajorFinalOutput::select(DB::raw('"'.$functions.'" as FUNCTION'),"mfo_desc","id")
+        ->where('FFUNCCOD', $request->id)
+        ->get();
+        return $mfos;
+    }
+
+    public function PAPS(Request $request){
+
+
+        $paps = ProgramAndProject::select(
+                'program_and_projects.id',
+                'program_and_projects.paps_desc',
+                'program_and_projects.idmfo',
+                'a_i_p_s.AIP_Code',
+                'a_i_p_s.PS',
+                'a_i_p_s.MOOE',
+                'a_i_p_s.CO',
+                'success_indicators.success_indicator'
+        )
+            ->leftJoin('a_i_p_s', 'program_and_projects.id', '=', 'a_i_p_s.idpaps')
+            ->leftJoin('success_indicators', 'program_and_projects.id', '=', 'success_indicators.idpaps')
+            ->where('idmfo', $request->idmfo)
+        ->get();
+        return $paps;
     }
 
 }

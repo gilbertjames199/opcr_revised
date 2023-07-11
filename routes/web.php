@@ -71,6 +71,9 @@ use App\Http\Controllers\aip_controller;
 use App\Http\Controllers\DailyAccomplishmentController;
 use App\Http\Controllers\AddAccomplishmentController;
 use App\Http\Controllers\AppropriationController;
+use App\Http\Controllers\DivisionOutputController;
+use App\Http\Controllers\IndividualFinalOutputController;
+use App\Http\Controllers\SubMfoController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -643,7 +646,40 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('/appropriations')->group(function(){
         Route::get('/{idpaps}',[AppropriationController::class,'index']);
+        Route::get('/create/{idpaps}',[AppropriationController::class,'create']);
+        Route::post('/store',[AppropriationController::class,'store']);
+        Route::get('/{id}/edit',[AppropriationController::class,'edit']);
+        Route::patch('/',[AppropriationController::class,'update']);
+        Route::delete('/{id}', [AppropriationController::class, 'destroy']);
     });
+
+    Route::prefix('/individual/outputs')->group(function(){
+        Route::get('/',[IndividualFinalOutputController::class,'index']);
+        Route::get('/create',[IndividualFinalOutputController::class,'create']);
+        Route::post('/store',[IndividualFinalOutputController::class,'store']);
+        Route::get('/{id}/edit',[IndividualFinalOutputController::class,'edit']);
+        Route::patch('/',[IndividualFinalOutputController::class,'update']);
+        Route::delete('/{id}', [IndividualFinalOutputController::class, 'destroy']);
+    });
+    Route::prefix('/division_outputs')->group(function(){
+        Route::get('/',[DivisionOutputController::class,'index']);
+        Route::get('/create',[DivisionOutputController::class,'create']);
+        Route::get('/{id}/edit',[DivisionOutputController::class,'edit']);
+        Route::post('/store',[DivisionOutputController::class,'store']);
+        Route::patch('/',[DivisionOutputController::class,'update']);
+        Route::delete('/{id}', [DivisionOutputController::class, 'destroy']);
+        Route::get('/get/division_outputs/list',[DivisionOutputController::class,'getDivOutput']);
+    });
+    Route::prefix('/submfos')->group(function(){
+        Route::get('/{idmfo}',[SubMfoController::class,'index']);
+        Route::get('/create/{idmfo}',[SubMfoController::class,'create']);
+        Route::get('/get/submfo/list',[SubMfoController::class,'getSubMFOs']);
+        Route::post('/store',[SubMfoController::class,'store']);
+        Route::get('/{id}/edit',[SubMfoController::class,'edit']);
+        Route::patch('/',[SubMfoController::class,'update']);
+        Route::delete('/{id}', [SubMfoController::class, 'destroy']);
+    });
+
     // Route::prefix('/aip')->group(function(){
     //     Route::get('/{id}',[aip_controller::class,'index']);
     //     Route::get('/create/{id}',[aip_controller::class,'create']);
@@ -680,6 +716,7 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [AddAccomplishmentController::class, 'update']);
         Route::delete('/{id}', [AddAccomplishmentController::class, 'destroy']);
     });
+
 });
 
 
@@ -801,6 +838,13 @@ Route::prefix('daily_accomplishments/')->group(function(){
 Route::prefix('hgdg/print')->group(function(){
     Route::get('checklist',[HGDGScoreController::class,'getChecklist']);
     Route::get('question',[HGDGScoreController::class,'getQuestions']);
+});
+
+Route::prefix('printLBP')->group(function(){
+    Route::get('/MFO',[AIPController::class,'MFO']);
+    Route::get('/PAPS',[AIPController::class,'PAPS']);
+
+
 });
 
 

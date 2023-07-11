@@ -5,14 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Appropriation extends Model
+class IndividualFinalOutput extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='appropriations';
+    protected $table='individual_final_outputs';
     protected $guarded = [];
-
-    public function paps(){
-        return $this->hasOne(ProgramAndProject::class, 'id', 'idpaps');
-    }
 }
