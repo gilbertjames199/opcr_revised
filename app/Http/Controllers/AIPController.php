@@ -167,9 +167,10 @@ class AIPController extends Controller
     public function MFO(Request $request){
 
         $functions = $request->FUNCTION;
-
+        $date = $request-> Date;
 
         $mfos = MajorFinalOutput::select(DB::raw('"'.$functions.'" as FUNCTION'),"mfo_desc","id")
+        ->selectRaw("'$date' as Date")
         ->where('FFUNCCOD', $request->id)
         ->get();
         return $mfos;
@@ -186,10 +187,12 @@ class AIPController extends Controller
                 'a_i_p_s.PS',
                 'a_i_p_s.MOOE',
                 'a_i_p_s.CO',
-                'success_indicators.success_indicator'
+                'success_indicators.success_indicator',
+                'opcr_targets.quantity'
         )
             ->leftJoin('a_i_p_s', 'program_and_projects.id', '=', 'a_i_p_s.idpaps')
             ->leftJoin('success_indicators', 'program_and_projects.id', '=', 'success_indicators.idpaps')
+            ->leftJoin('opcr_targets', 'program_and_projects.id', '=', 'opcr_targets.idpaps')
             ->where('idmfo', $request->idmfo)
         ->get();
         return $paps;

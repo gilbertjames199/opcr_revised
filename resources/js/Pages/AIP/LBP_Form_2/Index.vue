@@ -14,7 +14,7 @@
                 </div>
                 <div class="peer">
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
-                    <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(data.data[0].FFUNCCOD,data.data[0].FFUNCTION,)">Print</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showPrint()">Print</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -26,6 +26,14 @@
                 </svg>
             </Link> -->
         </div>
+        <Printing v-if="print" @closeFilter="print=false">
+            Target Fiscal Year
+            <br>
+            <input v-model="dates" type="number" name="year" min="1900" max="2099" step="1" oninput="javascript: if (this.value.length > 4) this.value = this.value.slice(0, 4);"/>
+<br><br>
+ <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(data.data[0].FFUNCCOD,data.data[0].FFUNCTION,dates)">Print</button>
+        </Printing>
+
         <filtering v-if="filter" @closeFilter="filter=false">
             Filter by MFO
             <select v-model="mfosel" class="form-control" @change="filterData()">
@@ -101,6 +109,7 @@
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
+import Printing from "@/Shared/FilterPrint";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
 export default {
@@ -118,8 +127,10 @@ export default {
     },
     data() {
         return{
+            dates: "2012",
             search: this.$props.filters.search,
             filter: false,
+            print: false,
             my_link: "",
             displayModal: false,
         }
@@ -138,7 +149,7 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering, Modal,
+        Pagination, Filtering, Modal, Printing,
     },
 
     methods:{
@@ -170,19 +181,23 @@ export default {
                 }
             );
         },
-        getToRep(ffunccod, ffunction){
+        showPrint() {
+            //alert("show filter");
+            this.print = !this.print
+        },
+        getToRep(ffunccod, ffunction, dates){
             // alert(data[0].FFUNCCOD);
             var linkt="http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FBudget%2FLBP_Form_4&reportUnit=%2Freports%2FBudget%2FLBP_Form_4%2FLBPFORM4&standAlone=true&decorate=no&output=pdf';
-            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&Date=' + dates;
             var link1 = linkt + jasper_ip +jasper_link + params;
             return link1;
         },
 
-        showModal(ffunccod, ffunction){
+        showModal(ffunccod, ffunction, dates){
             // alert(ffunction,ffunccod);
-            this.my_link = this.getToRep(ffunccod, ffunction);
+            this.my_link = this.getToRep(ffunccod, ffunction, dates);
             this.displayModal = true;
         },
 
