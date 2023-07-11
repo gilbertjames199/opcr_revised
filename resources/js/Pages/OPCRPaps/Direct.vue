@@ -62,6 +62,7 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
+                                            <li><Link class="dropdown-item" :href="`/OPCRpaps/create/${dat.id}`">Add Standard</Link></li>
                                             <li><Link class="dropdown-item" :href="`/output/${dat.id}`">Outputs</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Performance/${dat.id}`">Performance Measures</Link></li>
                                             <li><Link class="dropdown-item" :href="`/SuccessIndicator/${dat.id}`">Success Indicator</Link></li>

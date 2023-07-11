@@ -95,4 +95,17 @@ class OPCRPAPSController extends Controller
             ],
         ]);
     }
+
+    public function create(Request $request, $idpaps){
+        //dd('create');
+        $paps = ProgramAndProject::findOrFail($idpaps);
+        return inertia('OPCRPaps/Create',[
+            'paps'=>$paps,
+            'idpaps'=>$idpaps,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
+    }
 }

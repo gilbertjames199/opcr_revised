@@ -50,7 +50,7 @@
                         <thead>
                             <tr class="bg-secondary text-white">
                                 <th>Date</th>
-                                <th>Description</th>
+                                <th>Activity/Program</th>
                                 <th>Quantity</th>
                                 <th>Remarks</th>
                                 <th>Link</th>
