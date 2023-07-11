@@ -11,4 +11,8 @@ class Appropriation extends Model
     protected $connection = "mysql";
     protected $table='appropriations';
     protected $guarded = [];
+
+    public function paps(){
+        return $this->hasOne(ProgramAndProject::class, 'id', 'idpaps');
+    }
 }

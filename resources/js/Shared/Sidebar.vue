@@ -257,9 +257,8 @@
                             </Link>
                         </li>
 
-                        <li  class="nav-item dropdown" >
+                <li  class="nav-item dropdown" >
                     <a class="dropdown-toggle" href="javascript:void(0);">
-
                         <span class="title">Outcomes</span>
                         <span class="arrow">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -282,6 +281,31 @@
                         </li>
                     </ul>
                 </li>
+                <!--***************************-->
+                <li  class="nav-item dropdown" >
+                    <a class="dropdown-toggle" href="javascript:void(0);">
+                        <span class="title">Outputs</span>
+                        <span class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <ul  class="dropdown-menu">
+                        <li>
+                            <Link class="sidebar-link" href="/individual/outputs" :class="{'active': $page.url === '/individual/outputs'}">
+                                <span class="title">Individual Outputs</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link class="sidebar-link" href="/division_outputs" :class="{'active': $page.url === '/division_outputs'}">
+                                <span class="title">Division Outputs</span>
+                            </Link>
+                        </li>
+                    </ul>
+                </li>
+                <!--****************************-->
                         <li>
                             <Link class="sidebar-link" href="/HGDGChecklist" :class="{'active': $page.url === '/HGDGChecklist'}">
                                 <span class="title">HGDG Checklist</span>

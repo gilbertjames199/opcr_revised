@@ -7,11 +7,22 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Programmed Appropriation and Obligation by Object of Expenditure</h3>
-            <div class="peers">
-
+            <h3>Programmed Appropriation and Obligation by Object of Expenditure </h3>
+            <div class="peer">
+                <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
+                <Link class="btn btn-primary btn-sm"
+                        :href="`/appropriations/create/${paps.id}`">
+                    Add Activities
+                </Link>
+                <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
+                <Link :href="`/AIP/direct`">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                    </svg>
+                </Link>
             </div>
-            <!--
+            <!--/AIP/direct
             <Link :href="`/mfos/${idinteroutcome}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -37,8 +48,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="functional in data.data">
-                                <td>{{ functional }}</td>
+                            <tr v-for="dat in data.data">
+                                <td>{{ dat.paps.paps_desc }}</td>
+                                <td>{{ dat.object_of_expenditure }}</td>
+                                <td>{{ dat.account_code }}</td>
+                                <td>{{ dat.category }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,18 +60,9 @@
                                             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit
-                                            <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
-                                            <li>
-                                                <button > View OPCR Standard
-                                                </button>
-                                            </li>
-
-                                            <li><Link class="dropdown-item" :href="`appropriations`">Appropriations and Obligation</Link></li>
-                                                <!-- <Link class="dropdown-item" :href="`/OPCRStandard/${functional.FFUNCCOD}`">View OPCR Standard</Link></li> -->
-                                            <li><Link class="dropdown-item" :href="`AIP/direct`">LBP Form No. 4</Link></li>
-
+                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                            <li><Link class="dropdown-item" :href="`/appropriations/${dat.id}/edit`">Edit</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteApprop(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -97,8 +102,7 @@ import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
-        MOOE: String,
-        PS: String,
+        paps: String,
         // idinteroutcome: String,
         // idmfo: String,
         // can: Object,
@@ -143,10 +147,10 @@ export default {
                 }
             );
         },
-        deletePAPS(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Program and Projects? "+id;
-              if (confirm(text) == true) {
-                this.$inertia.delete("/paps/" + id+"/"+this.idmfo);
+        deleteApprop(id) {
+            let text = "WARNING!\nAre you sure you want to delete the record? ";
+            if (confirm(text) == true) {
+                this.$inertia.delete("/appropriations/" + id);
             }
         },
         getToRep(ffunccod, ffunction, MOOE, PS){
