@@ -88,7 +88,7 @@ class DailyAccomplishmentController extends Controller
     public function mfo_accomplishment(Request $request){
 
         $mfos = MajorFinalOutput::select('major_final_outputs.id','major_final_outputs.mfo_desc')
-                ->where('major_final_outputs.FFUNCCOD', $request->FFUNCCOD)
+                ->where('major_final_outputs.department_code', $request->FFUNCCOD)
                 ->join('program_and_projects','major_final_outputs.id','program_and_projects.idmfo')
                 ->join('daily_accomplishments','daily_accomplishments.idpaps','program_and_projects.id')
                 ->groupBy('major_final_outputs.id')
