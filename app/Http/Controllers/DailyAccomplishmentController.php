@@ -133,6 +133,9 @@ class DailyAccomplishmentController extends Controller
                             'quantity'=>$item->quantity,
                             'remarks'=>$item->remarks,
                             'date'=>$item->date,
+                            'source_of_fund'=>$item->source_of_fund,
+                            'amount'=>$item->amount,
+                            'responsible_person'=>$item->responsible_person
                         ];
                     });
         return $accomp;
