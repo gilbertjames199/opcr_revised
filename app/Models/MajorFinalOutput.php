@@ -15,7 +15,8 @@ class MajorFinalOutput extends Model
         'id_org_outcome',
         'id_sec_outcome',
         'id_socgoal',
-        'FFUNCCOD'
+        'FFUNCCOD',
+        'department_code'
     ];
 
     public function paps(){
@@ -26,9 +27,10 @@ class MajorFinalOutput extends Model
 
             'mfo_desc'=> 'required',
             'id_org_outcome'=>'required|numeric',
-        'id_sec_outcome'=>'required|numeric',
-        'id_socgoal'=>'required|numeric',
-            'FFUNCCOD'=>'required|numeric',
+            'id_sec_outcome'=>'required|numeric',
+            'id_socgoal'=>'required|numeric',
+            'FFUNCCOD'=>'required',
+            'department_code'=>'required'
         ];
     }
 
@@ -39,7 +41,7 @@ class MajorFinalOutput extends Model
             'id_sec_outcome'=> 'The Sectoral Outcome field is required',
             'id_socgoal'=> 'The Societal Goal field is required',
             'FFUNCCOD.required'=>'The office code field is required',
-            'FFUNCCOD.numeric'=>'Office code must be a number.',
+            'department_code'=>'The department code field is required'
         ];
     }
 }

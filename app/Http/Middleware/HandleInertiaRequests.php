@@ -26,6 +26,7 @@ class HandleInertiaRequests extends Middleware
                          'FullName' => ucfirst(auth()->user()->FullName),
                          'UserName' =>auth()->user()->UserName,
                          'UserType' =>auth()->user()->UserType,
+                         'department_code' =>auth()->user()->department_code,
                     //     'level' =>auth()->user()->level,
                     //     'municipality' =>auth()->user()->municipality,
                     //     'barangay' =>auth()->user()->barangay,

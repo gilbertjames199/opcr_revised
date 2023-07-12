@@ -74,8 +74,11 @@ class MFOController extends Controller
 
     public function store(Request $request)
     {
+        $dept_code = auth()->user()->department_code;
+        $request->merge(['department_code' => $dept_code]);
         $attributes = $request->validate(MajorFinalOutput::rules(), MajorFinalOutput::errorMessages());
         //dd($attributes);
+
         $this->model->create($attributes);
         $request->pass='';
         return redirect('/mfos/direct')
@@ -123,6 +126,8 @@ class MFOController extends Controller
 
     public function update(Request $request, MajorFinalOutput $majorFinalOutput)
     {
+        $dept_code = auth()->user()->department_code;
+        $request->merge(['department_code' => $dept_code]);
         $data = $majorFinalOutput::findOrFail($request->id);
         $validatedData = $request->validate(MajorFinalOutput::rules(), MajorFinalOutput::errorMessages());
         $data->update($validatedData);

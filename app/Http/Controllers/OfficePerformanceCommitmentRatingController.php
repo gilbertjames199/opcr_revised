@@ -27,6 +27,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $this->model= $model;
     }
     public function index2(Request $request, $opcr_id, $FFUNCCOD){
+        $dept_code = auth()->user()->department_code;
         //Check if the OPCR Form for the OPCR List is empty or not
         $opcr = $this->model->where('opcr_id', $opcr_id)->get();
         $list = OfficePerformanceCommitmentRatingList::where('id',$opcr_id)->first();
@@ -58,6 +59,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $opcrf->remarks="-";
                 $opcrf->FFUNCCOD=$FFUNCCOD;
                 $opcrf->opcr_id	= $opcr_id;
+                $opcrf->department_code = $dept_code;
                 $opcrf->save();
             }
             //dd('EMPTY: '.$cnt);
@@ -76,7 +78,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                         'rating_t'=>'1',
                         'remarks'=>'-',
                         'FFUNCCOD'=>$FFUNCCOD,
-                        'opcr_id'=>$opcr_id
+                        'opcr_id'=>$opcr_id,
+                        'department_code'=>$dept_code
                     ]);
                 }
             }
@@ -161,6 +164,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //dd($ave);
     }
     public function index(Request $request, $opcr_id, $FFUNCCOD){
+        $dept_code = auth()->user()->department_code;
         //Check if the OPCR Form for the OPCR List is empty or not
         $opcr = $this->model->where('opcr_id', $opcr_id)->get();
         $list = OfficePerformanceCommitmentRatingList::where('id',$opcr_id)->first();
@@ -191,6 +195,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $opcrf->rating_t="1";
                 $opcrf->remarks="-";
                 $opcrf->FFUNCCOD=$FFUNCCOD;
+                $opcrf->department_code=$dept_code;
                 $opcrf->opcr_id	= $opcr_id;
                 $opcrf->save();
             }
@@ -210,6 +215,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                         'rating_t'=>'1',
                         'remarks'=>'-',
                         'FFUNCCOD'=>$FFUNCCOD,
+                        'department_code'=>$dept_code,
                         'opcr_id'=>$opcr_id
                     ]);
                 }
@@ -319,9 +325,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
 
         foreach($myObject as $opcr){
-            //Set variable null variable for OPCR
+            $dept_code = auth()->user()->department_code;
             $opcry = null;
-            //Fetch all the OPCRs using the opcr id
             $opcry = OfficePerformanceCommitmentRating::findOrFail($opcr->id);
             if($opcry){
                 $opcry->update([
@@ -331,6 +336,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     'rating_e'=>$opcr->rating_e,
                     'rating_t'=>$opcr->rating_t,
                     'remarks'=>$opcr->remarks,
+                    'department_code'=>$dept_code
                 ]);
             }
         }

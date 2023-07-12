@@ -31,20 +31,23 @@ class OpcrTargetController extends Controller
     public function index(Request $request, $opcr_list_id){
         //->where('OPT.office_performance_commitment_rating_list_id', $opcr_list_id)
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
-        $data = ProgramAndProject::where('FFUNCCOD', $opcr_list->FFUNCCOD)
-                            ->select('program_and_projects.id AS idpaps',
+        $data = ProgramAndProject::where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
+                            ->select('major_final_outputs.mfo_desc',
+                                    'program_and_projects.id AS idpaps',
                                     'program_and_projects.paps_desc',
                                     'OPT.id',
                                     'OPT.target_success_indicator',
                                     'OPT.quantity',
                                     'SU.success_indicator')
+                            ->leftjoin('major_final_outputs','major_final_outputs.id','program_and_projects.idmfo')
                             ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
                             ->leftjoin(DB::raw('(Select id,
                                                         office_performance_commitment_rating_list_id,
                                                         idpaps, quantity, target_success_indicator
                              FROM opcr_targets WHERE opcr_targets.office_performance_commitment_rating_list_id='.$opcr_list_id.') AS OPT'), 'OPT.idpaps', 'program_and_projects.id')
+                            ->orderBy('major_final_outputs.mfo_desc', 'asc')
                             ->orderBy('program_and_projects.paps_desc', 'asc')
-                             ->get();
+                            ->get();
 
         //dd($data);
         //dd('OPCR Targets index');
