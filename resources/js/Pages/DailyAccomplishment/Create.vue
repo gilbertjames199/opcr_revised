@@ -2,7 +2,7 @@
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Accomplishment</h3>
-            <Link :href="`/AddAccomplishment/${idpaps}`">
+            <Link :href="`/AddAccomplishment`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                 <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -18,13 +18,42 @@
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
                 <input type="hidden" v-model="form.idpaps" class="form-control" autocomplete="positionchrome-off">
-                <label for="">Description</label>
+
+                <label for="">Major Final Output</label>
+                <select class="form-control form-select" v-model="form.idmfo"  @click="filterPaps()">
+                    <option v-for="mfo in mfo" :value="mfo.id" >
+                        {{ mfo.mfo_desc }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.description">{{ form.errors.description }}</div>
+
+                <label for="">Programs and Project</label>
+                <select class="form-control form-select" v-model="form.idpaps">
+                    <option v-for="paps in my_paps" :value="paps.id" >
+                        {{ paps.paps_desc }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.description">{{ form.errors.description }}</div>
+
+                <label for="">Activity</label>
                 <input type="text" v-model="form.description" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.description">{{ form.errors.description }}</div>
 
                 <label for="">Quantity</label>
                 <input type="number" v-model="form.quantity" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.quantity">{{ form.errors.quantity }}</div>
+
+                <label for="">Amount</label>
+                <input type="number" v-model="form.amount" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.amount">{{ form.errors.amount }}</div>
+
+                <label for="">Source of Fund</label>
+                <input type="text" v-model="form.source_of_fund" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.source_of_fund">{{ form.errors.source_of_fund }}</div>
+
+                <label for="">Responsible Person/Unit</label>
+                <input type="text" v-model="form.responsible_person" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.responsible_person">{{ form.errors.responsible_person }}</div>
 
                 <label for="">Date</label>
                 <input type="date" v-model="form.date" class="form-control" autocomplete="positionchrome-off">
@@ -57,8 +86,8 @@ import Places from "@/Shared/PlacesShared";
 
 export default {
         props: {
+            mfo: Object,
             paps: Object,
-            idpaps: Number,
             editData: Object,
             sectors: Object
         },
@@ -74,14 +103,19 @@ export default {
         },
         data() {
             return {
+                my_paps: [],
                 submitted: false,
                 form: useForm({
+                    idmfo: "",
                     date: "",
                     description: "",
                     quantity: "",
                     remarks: "",
                     Link: "",
                     idpaps: "",
+                    amount: "",
+                    responsible_person: "",
+                    source_of_fund: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -101,6 +135,10 @@ export default {
                 this.form.remarks=this.editData.remarks
                 this.form.Link=this.editData.Link
                 this.form.idpaps=this.editData.idpaps
+                this.form.idmfo=this.editData.idmfo
+                this.form.amount=this.editData.amount
+                this.form.source_of_fund=this.editData.source_of_fund
+                this.form.responsible_person=this.editData.responsible_person
                 this.form.id=this.editData.id
             } else {
                 this.pageTitle = "Create"
@@ -120,6 +158,16 @@ export default {
                     // alert('for store '+url);
                     this.form.post(url);
                 }
+            },
+            filterPaps(){
+                this.my_paps=[];
+                this.paps.forEach(i=>{
+                    if(i.idmfo===this.form.idmfo){
+                        this.my_paps.push(i);
+                    }
+                });
+                console.log(this.my_paps);
+                return this.my_paps;
             },
         },
     };

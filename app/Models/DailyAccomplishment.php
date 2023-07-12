@@ -17,5 +17,14 @@ class DailyAccomplishment extends Model
         'remarks',
         'Link',
         'idpaps',
+        'idmfo',
+        'responsible_person',
+        'source_of_fund',
+        'amount'
     ];
+
+    public function MFO(){
+        return $this -> hasOne(MajorFinalOutput::class, 'id', 'idmfo');
+    }
+
 }

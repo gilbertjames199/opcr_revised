@@ -27,7 +27,7 @@ class DailyAccomplishmentController extends Controller
         // dd($request->mfosel);
         $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
-                ->select('program_and_projects.paps_desc', 'program_and_projects.FFUNCCOD',
+                ->select('program_and_projects.id','program_and_projects.paps_desc', 'program_and_projects.FFUNCCOD',
                     'program_and_projects.type','major_final_outputs.mfo_desc')
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
