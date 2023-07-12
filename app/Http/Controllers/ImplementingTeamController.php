@@ -52,13 +52,17 @@ class ImplementingTeamController extends Controller
     }
 
     public function store(Request $request){
-        // dd($request);
+
+        $dept_code = auth()->user()->department_code;
+        $request->merge(['department_code' => $dept_code]);
+
         $attributes = $request->validate([
             'name' => 'required',
             'position' => 'required',
             'competency' => 'required',
             'role' => 'required',
             'FFUNCCOD' => 'required',
+            'department_code'=>'required'
         ]);
         //dd($attributes);
         $this->model->create($attributes);
@@ -91,6 +95,8 @@ class ImplementingTeamController extends Controller
 
     public function update(Request $request)
     {
+        $dept_code = auth()->user()->department_code;
+        $request->merge(['department_code' => $dept_code]);
         // dd('update');
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
@@ -99,6 +105,7 @@ class ImplementingTeamController extends Controller
             'position'=>$request->position,
             'competency'=>$request->competency,
             'role'=>$request->role,
+            "department_code"=>$request->department_code
         ]);
 
         return redirect('/ImplementingTeam')

@@ -15,7 +15,7 @@
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/AddAccomplishment/create/`">Add Daily Accomplishment</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
-
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilterP()">Print</button>
                 </div>
                 <Link :href="`/DailyAccomplishment/direct`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -40,7 +40,13 @@
             </select>
             <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
         </filtering>
-
+        <FilterPrinting v-if="filter_p" @closeFilter="filter_p=false">
+            Date From
+            <input type="date" v-model="date_from" class="form-control" />
+            Date To
+            <input type="date" v-model="date_to" class="form-control" />
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="printSubmit">Print Report</button>
+        </FilterPrinting>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -100,14 +106,21 @@
 
             </div>
         </div>
-
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
+                <iframe :src="my_link" style="width:100%; height:400px" />
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
+import FilterPrinting from "@/Shared/FilterPrint";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
+        auth: Object,
         mfos: Object,
         data: Object,
         paps: Object,
@@ -120,10 +133,12 @@ export default {
             filter_p: false,
             date_from: "",
             date_to: "",
+            displayModal: false,
+            my_link: "",
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal, FilterPrinting
     },
 
     methods:{
@@ -176,7 +191,35 @@ export default {
             var percentt = (accSum/targqty)*100
             percentt=this.format_number(percentt,2,true)
             return percentt;
-        }
+        },
+        printSubmit(){
+            alert("print submit");
+            //var office_ind = document.getElementById("selectOffice").selectedIndex;
+            this.office =this.auth.user.office.office;
+            var pg_head = 'PG Head';
+            var forFFUNCCOD = this.auth.user.office.department_code;
+            this.my_link =this.viewlink(this.FFUNCCOD, this.date_from, this.date_to, this.office, pg_head);
+
+            this.showModal();
+        },
+
+        viewlink(FFUNCCOD, date_from, date_to, office, pg_head){
+            //var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FDaily_Accomplishment%2FAccomplishments_Main&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FDaily_Accomplishment&decorate=no&output=pdf';
+            var params = '&FFUNCCOD=' + FFUNCCOD + '&date_from=' + date_from + '&date_to=' + date_to +
+                '&office=' + office+'&pg_head='+pg_head;
+            var linkl = linkt+jasper_ip + jasper_link + params;
+
+            return linkl;
+        },
+        showModal() {
+            this.displayModal = true;
+        },
+        hideModal() {
+            this.displayModal = false;
+        },
     }
 };
 </script>

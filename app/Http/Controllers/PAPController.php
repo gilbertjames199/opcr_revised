@@ -163,10 +163,13 @@ class PAPController extends Controller
 
     public function store(Request $request)
     {
+        $dept_code = auth()->user()->department_code;
+        $request->merge(['department_code' => $dept_code]);
         $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         //$this->model->create($attributes);
         $paps = new ProgramAndProject();
         $paps->paps_desc = $request->paps_desc;
+        $paps->department_code = $dept_code;
         $paps->FFUNCCOD = $request->FFUNCCOD;
         $paps->idmfo = $request->idmfo;
         $paps-> MOV= $request->MOV;
@@ -182,6 +185,8 @@ class PAPController extends Controller
     }
     public function save(Request $request)
     {
+        $dept_code = auth()->user()->department_code;
+        $request->merge(['department_code' => $dept_code]);
         $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $this->model->create($attributes);
 
@@ -249,14 +254,15 @@ class PAPController extends Controller
 
     public function update(Request $request, $id)
     {
+        $dept_code = auth()->user()->department_code;
 
         $data = $this->model::findOrFail($request->id);
-        dd($request->chief_executive_agenda);
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $paps = new ProgramAndProject();
         $data->update([
             'paps_desc'=> $request->paps_desc,
             'FFUNCCOD'=> $request->FFUNCCOD,
+            'department_code'=>$dept_code,
             'idmfo'=> $request->idmfo,
             'MOV'=> $request->MOV,
             'type'=> $request->type,
@@ -272,13 +278,14 @@ class PAPController extends Controller
 
     public function updated(Request $request, $id)
     {
-
+        $dept_code = auth()->user()->department_code;
         $data = $this->model::findOrFail($request->id);
         // dd($request->chief_executive_agenda);
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $data->update([
             'paps_desc'=> $request->paps_desc,
             'FFUNCCOD'=> $request->FFUNCCOD,
+            'department_code'=>$dept_code,
             'idmfo'=> $request->idmfo,
             'MOV'=> $request->MOV,
             'type'=> $request->type,

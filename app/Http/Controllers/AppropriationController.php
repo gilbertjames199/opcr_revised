@@ -232,4 +232,9 @@ class AppropriationController extends Controller
         //dd($request->raao_id);
         return redirect('/appropriations/'.$idpaps)->with('warning', 'Record Deleted');
     }
+    public function main(Request $request){
+        $dept_head = $request->dept_head;
+        $FFUNCCOD = $request->FFUNCCOD;
+        $office_code = $request->office_code;
+    }
 }

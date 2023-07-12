@@ -13,6 +13,7 @@ class ProgramAndProject extends Model
     protected $fillable = [
         'paps_desc',
         'FFUNCCOD',
+        'department_code',
         'idmfo',
         'MOV',
         'type',
@@ -26,6 +27,7 @@ class ProgramAndProject extends Model
         return [
             'paps_desc'=> 'required',
             'FFUNCCOD'=> 'required|numeric',
+            'department_code'=>'required',
             //'aipcode'=> 'required',
             'idmfo'=> 'required|numeric',
             'MOV'=>'required',
@@ -40,6 +42,7 @@ class ProgramAndProject extends Model
             'paps_desc.required' => 'The programs and projects description field is required',
             'FFUNCCOD.required' => 'The office/department code is required',
             'FFUNCCOD.numeric' => 'The office/department must be a number',
+            'department_code.required'=>'Department code is required',
             'idmfo.required' => 'The MFO is required',
             'idmfo.numeric' => 'The MFO must be a number',
             'MOV.required' => 'The MOV is required',

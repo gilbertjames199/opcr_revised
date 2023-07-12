@@ -607,6 +607,7 @@ Route::middleware('auth')->group(function() {
     });
     //OPCR List
     Route::prefix('opcrlist')->group(function(){
+        Route::get('/',[OfficePerformanceCommitmentRatingListController::class,'direct']);
         Route::get('/{FFUNCCOD}',[OfficePerformanceCommitmentRatingListController::class,'index']);
         Route::get('/create/{FFUNCCOD}',[OfficePerformanceCommitmentRatingListController::class,'create']);
         Route::post('/store',[OfficePerformanceCommitmentRatingListController::class,'store']);
@@ -643,7 +644,7 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [AIPController::class, 'update']);
         Route::delete('/{id}', [AIPController::class, 'destroy']);
     });
-
+    //Appropriations
     Route::prefix('/appropriations')->group(function(){
         Route::get('/{idpaps}',[AppropriationController::class,'index']);
         Route::get('/create/{idpaps}',[AppropriationController::class,'create']);
@@ -846,5 +847,10 @@ Route::prefix('printLBP')->group(function(){
 
 
 });
+Route::prefix('printLBP2')->group(function(){
+    Route::get('/MFO',[AppropriationController::class,'MFO']);
+    Route::get('/PAPS',[AIPController::class,'PAPS']);
 
+
+});
 
