@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
+use App\Models\BudgetRequirement;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
+use App\Models\RevisionPlan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,15 +15,30 @@ use Illuminate\Support\Facades\Auth;
 class OPCRPAPSController extends Controller
 {
     protected $model;
-    public function __construct(ProgramAndProject $model)
+    protected $function;
+    public function __construct(ProgramAndProject $model, AccountAccess $function)
     {
         //$this->middleware(['auth','verified']);
         $this->model = $model;
+        $this->function = $function;
     }
 
     public function index(Request $request, $id)
     {
+
         //dd("not direct");
+        $functions =$this->function
+                        ->select('ff.FFUNCCOD','FFUNCTION')
+                        ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
+                        ->where('iduser',auth()->user()->recid)
+                        ->get()
+                        ->map(function($item){
+
+                            return [
+                                "FFUNCCOD"=>$item->FFUNCCOD,
+                                "FFUNCTION"=>$item->FFUNCTION,
+                            ];
+                        });
         $data = ProgramAndProject::where('idmfo',$id)
                 ->with('MFO')
                 ->when($request->search, function($query, $searchItem){
@@ -38,6 +55,7 @@ class OPCRPAPSController extends Controller
 
         //dd($data);
         return inertia('PAPS/Index',[
+            "function"=>$functions,
             "data"=>$data,
             "idmfo"=>$id,
             "filters" => $request->only(['search']),
@@ -49,6 +67,51 @@ class OPCRPAPSController extends Controller
     }
 
     public function direct(Request $request){
+
+        $functions =$this->function
+        ->select('ff.FFUNCCOD','FFUNCTION')
+        ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
+        ->where('iduser',auth()->user()->recid)
+        ->get()
+        ->map(function($item){
+            $my_year = now()->year;
+
+            // dd($my_year);
+
+            //REVISION PLAN ID/ GET MOOE & PS
+            $revision_plan = RevisionPlan::where('idmfo','0')
+                                ->where('idpaps','0')
+                                ->where('FFUNCCOD', $item->FFUNCCOD)
+                                ->where('year_period', $my_year)
+                                ->first();
+            $mooe="0.00";
+            $ps = "0.00";
+            if($revision_plan){
+                $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                        ->where('category','Maintenance, Operating, and Other Expenses')
+                        ->sum('amount');
+
+                $ps1 =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                        ->where('category','Personnel Services')
+                        ->sum('amount');
+                $mooe2 = (float)$mooe1;
+                $ps2 = (float)$ps1;
+                $mooe = number_format($mooe2,2);
+                $ps = number_format($ps2,2);
+            }else{
+                //dd("empty no ps budget");
+            }
+            return [
+                "FFUNCCOD"=>$item->FFUNCCOD,
+                "FFUNCTION"=>$item->FFUNCTION,
+                "MOOE"=>$mooe,
+                "PS"=>$ps,
+            ];
+        });
+        $mooe="0.00";
+        $ps = "0.00";
+
+        // dd($functions);
         //dd("direct");
         //dd($request->mfosel);
         // dd($request->mfosel);
@@ -86,6 +149,9 @@ class OPCRPAPSController extends Controller
         //dd($mfos);
         //dd($data->pluck('mfo_desc'));
         return inertia('OPCRPaps/Direct',[
+            "functions" => $functions,
+            "MOOE" => $mooe,
+            "PS" => $ps,
             "data"=>$paginatedResult,
             "mfos"=>$mfos,
             "filters" => $request->only(['search']),
