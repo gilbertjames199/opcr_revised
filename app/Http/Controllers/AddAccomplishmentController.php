@@ -60,7 +60,6 @@ class AddAccomplishmentController extends Controller
             'idpaps'=>'required',
         ]);
 
-        dd($request->all());
         $this->model->create($request->all());
         return redirect('/AddAccomplishment')
                 ->with('message','Daily Accomplishment added');
