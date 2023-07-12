@@ -14,6 +14,10 @@
                 </div>
                 <div class="peer">
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
+                    <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(functions[0].FFUNCCOD,functions[0].FFUNCTION,
+                                                functions[0].MOOE,
+                                                functions[0].PS)"
+                                                >Print OPCR Standard</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -110,16 +114,25 @@
 
             </div>
         </div>
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
 
+                <iframe :src="my_link" style="width:100%; height:500px" />
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
         filters: Object,
+        functions: Object,
+        MOOE: Object,
+        PS: Object,
         // idinteroutcome: String,
         // idoutcome: String,
         // idmfo: String,
@@ -129,6 +142,8 @@ export default {
     },
     data() {
         return{
+            my_link: "",
+            displayModal: false,
             search: this.$props.filters.search,
             filter: false,
         }
@@ -147,7 +162,7 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal,
     },
 
     methods:{
@@ -180,7 +195,25 @@ export default {
                     replace: true,
                 }
             );
-        }
+        },
+        getToRep(ffunccod, ffunction, MOOE, PS){
+            // alert(data[0].FFUNCCOD);
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR_Standard&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Standard%2FOPCRStandard&standAlone=true&decorate=no&output=pdf';
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&MOOE=' + MOOE + '&PS=' + PS;
+            var link1 = linkt + jasper_ip +jasper_link + params;
+            return link1;
+        },
+
+        showModal(ffunccod, ffunction, MOOE, PS){
+            this.my_link = this.getToRep(ffunccod, ffunction, MOOE, PS);
+            this.displayModal = true;
+        },
+
+        hideModal() {
+            this.displayModal = false;
+        },
     }
 };
 </script>
