@@ -13,7 +13,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/AddAccomplishment/create/${idpaps}`">Add Daily Accomplishment</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/AddAccomplishment/create/`">Add Daily Accomplishment</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
 
                 </div>
@@ -50,7 +50,8 @@
                         <thead>
                             <tr class="bg-secondary text-white">
                                 <th>Date</th>
-                                <th>Activity/Program</th>
+                                <th>Major Final Output</th>
+                                <th>Activities</th>
                                 <th>Quantity</th>
                                 <th>Remarks</th>
                                 <th>Link</th>
@@ -61,6 +62,7 @@
 
                             <tr v-for="dat in data.data">
                                 <td>{{ dat.date }}</td>
+                                <td>{{ dat.m_f_o.mfo_desc }}</td>
                                 <td>{{ dat.description }}</td>
                                 <td>{{ dat.quantity }}</td>
                                 <td>{{ dat.remarks }}</td>
@@ -106,6 +108,7 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 export default {
     props: {
+        mfos: Object,
         data: Object,
         paps: Object,
         idpaps: String,

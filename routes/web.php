@@ -709,8 +709,8 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::prefix('/AddAccomplishment')->group(function(){
-        Route::get('/{id}',[AddAccomplishmentController::class,'index']);
-        Route::get('/create/{id}',[AddAccomplishmentController::class,'create']);
+        Route::get('/',[AddAccomplishmentController::class,'index']);
+        Route::get('/create',[AddAccomplishmentController::class,'create']);
         Route::post('/store',[AddAccomplishmentController::class,'store']);
         Route::get('/{id}/edit', [AddAccomplishmentController::class, 'edit']);
         Route::patch('/{id}', [AddAccomplishmentController::class, 'update']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DailyAccomplishment;
+use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,17 +17,17 @@ class AddAccomplishmentController extends Controller
         $this->model=$model;
     }
 
-    public function index(Request $request, $idpaps){
-        $paps = ProgramAndProject::findOrFail($idpaps);
-        $data = $this->model
-                    ->where('idpaps', $idpaps)
+    public function index(Request $request){
+        $mfo = MajorFinalOutput::get();
+        $paps = ProgramAndProject::get();
+        $data = $this->model->with('MFO')
                     ->orderBy('created_at', 'desc')
                     ->paginate(10)
                     ->withQueryString();
         return inertia('DailyAccomplishment/Index',[
             "data"=>$data,
-            "idpaps"=>$idpaps,
             "paps"=>$paps,
+            "mfos"=>$mfo,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -34,12 +35,13 @@ class AddAccomplishmentController extends Controller
         ]);
     }
 
-    public function create(Request $request, $idpaps){
+    public function create(Request $request){
         //dd('create');
-        $paps = ProgramAndProject::findOrFail($idpaps);
+        $paps = ProgramAndProject::get();
+        $mfo = MajorFinalOutput::get();
         return inertia('DailyAccomplishment/Create',[
             'paps'=>$paps,
-            'idpaps'=>$idpaps,
+            'mfo'=>$mfo,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -49,19 +51,18 @@ class AddAccomplishmentController extends Controller
 
     public function store(Request $request){
         // dd($request);
-        $id = $request->idpaps;
-        $attributes = $request->validate([
+
+        $request->validate([
             'description' => 'required',
-            'quantity' => 'required',
             'date' => 'required',
             'remarks' => 'required',
             'Link' => 'required',
             'idpaps'=>'required',
         ]);
 
-        //dd($attributes);
-        $this->model->create($attributes);
-        return redirect('/AddAccomplishment/'.$id)
+        dd($request->all());
+        $this->model->create($request->all());
+        return redirect('/AddAccomplishment')
                 ->with('message','Daily Accomplishment added');
     }
 
@@ -73,12 +74,18 @@ class AddAccomplishmentController extends Controller
             'date',
             'remarks',
             'Link',
-            'idpaps'
+            'idpaps',
+            'idmfo',
+            'responsible_person',
+            'source_of_fund',
+            'amount'
         ]);
-        $paps = ProgramAndProject::findOrFail($data->idpaps);
+        $paps = ProgramAndProject::get();
+        $mfo = MajorFinalOutput::get();
         return inertia('DailyAccomplishment/Create', [
             "editData" => $data,
             "idpaps"=>$data->idpaps,
+            "mfo"=>$mfo,
             'paps'=>$paps,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
@@ -99,10 +106,14 @@ class AddAccomplishmentController extends Controller
             'date'=>$request->date,
             'remarks'=>$request->remarks,
             'Link'=>$request->Link,
-            'idpaps'=>$request->idpaps
+            'idpaps'=>$request->idpaps,
+            'idmfo'=>$request->idmfo,
+            'amount'=>$request->amount,
+            'source_of_fund'=>$request->source_of_fund,
+            'responsible_person'=>$request->responsible_person,
         ]);
 
-        return redirect('/AddAccomplishment/'.$request->idpaps)
+        return redirect('/AddAccomplishment')
                 ->with('message','Accomplishment updated');
     }
 
