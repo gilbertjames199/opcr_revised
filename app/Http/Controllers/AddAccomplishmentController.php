@@ -118,10 +118,9 @@ class AddAccomplishmentController extends Controller
 
     public function destroy(Request $request){
         $data = $this->model->findOrFail($request->id);
-        $id = $data->idpaps;
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/AddAccomplishment/'.$id)->with('warning', 'Accomplishment Deleted');
+        return redirect('/AddAccomplishment')->with('warning', 'Accomplishment Deleted');
 
     }
 
