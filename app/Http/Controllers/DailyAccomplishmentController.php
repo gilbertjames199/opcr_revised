@@ -27,13 +27,17 @@ class DailyAccomplishmentController extends Controller
         // dd($request->mfosel);
         $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
+                ->select('program_and_projects.paps_desc', 'program_and_projects.FFUNCCOD',
+                    'program_and_projects.type','major_final_outputs.mfo_desc')
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
                 })
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
-                ->orderBy('created_at', 'desc')
+                ->join('major_final_outputs','major_final_outputs.id','program_and_projects.idmfo')
+                ->orderBy('mfo_desc', 'ASC')
+                ->orderBy('paps_desc', 'ASC')
                 ->get();
 
         $access = DB::connection('mysql2')->table('accountaccess')
