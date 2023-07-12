@@ -95,7 +95,7 @@ __webpack_require__.r(__webpack_exports__);
       this.office = this.auth.user.office.office;
       var pg_head = 'PG Head';
       var forFFUNCCOD = this.auth.user.office.department_code;
-      this.my_link = this.viewlink(this.FFUNCCOD, this.date_from, this.date_to, this.office, pg_head);
+      this.my_link = this.viewlink(forFFUNCCOD, this.date_from, this.date_to, this.office, pg_head);
       this.showModal();
     },
     viewlink: function viewlink(FFUNCCOD, date_from, date_to, office, pg_head) {
