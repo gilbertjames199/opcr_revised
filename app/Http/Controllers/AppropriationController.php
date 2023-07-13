@@ -215,7 +215,7 @@ class AppropriationController extends Controller
                             ->where('idpaps',$idpaps)
                             ->sum('budget_year');
         $total_co_approp=$this->appropriation
-                            ->where('category','Personnel Services')
+                            ->where('category','Capital Outlay')
                             ->where('idpaps',$idpaps)
                             ->sum('budget_year');
         return [
