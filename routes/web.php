@@ -847,10 +847,11 @@ Route::prefix('printLBP')->group(function(){
 
 
 });
-Route::prefix('printLBP2')->group(function(){
-    Route::get('/MFO',[AppropriationController::class,'MFO']);
-    Route::get('/PAPS',[AIPController::class,'PAPS']);
-
-
+Route::prefix('appropriations')->group(function(){
+    Route::get('/',[AppropriationController::class,'main']);
+    Route::get('/paps/types',[AppropriationController::class,'paps_types']);
+    Route::get('/paps',[AppropriationController::class,'paps']);
+    Route::get('/paps/categories/list',[AppropriationController::class,'paps_categories']);
+    Route::get('/paps/appropriations/print/all',[AppropriationController::class,'appropriations']);
 });
 
