@@ -294,7 +294,6 @@ class AppropriationController extends Controller
             ->selectRaw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total')
             ->selectRaw('SUM(appropriations.budget_year) AS budget_year')
             ->leftjoin('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
-            ->where('program_and_projects.type', $request->type)
             ->where('appropriations.category', $request->category)
             ->where('appropriations.idpaps', $request->idpaps)
             ->when($request->category === 'Capital Outlay', function ($query) {
