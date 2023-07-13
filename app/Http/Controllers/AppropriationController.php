@@ -124,7 +124,7 @@ class AppropriationController extends Controller
         $app->budget_year=$request->budget_year;
         $app->idpaps=$request->idpaps;
         $app->category=$request->category;
-        $app->GAD=$request->GAD;
+        $app->GAD="";
         $app->save();
         return redirect('/appropriations/'.$request->idpaps)
                 ->with('message','Division Output added');
