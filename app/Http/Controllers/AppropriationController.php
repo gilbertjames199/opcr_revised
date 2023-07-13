@@ -277,6 +277,7 @@ class AppropriationController extends Controller
     }
     public function paps_categories(Request $request){
         $categories = Category::select('categories.category')
+            ->where('appropriations.idpaps', $request->idpaps)
             ->join('appropriations','appropriations.category','categories.category')
             ->groupBy('categories.category')
             ->get()
