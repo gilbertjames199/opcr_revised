@@ -44,6 +44,9 @@
                                 <th>Object of Expenditure</th>
                                 <th>Account Code</th>
                                 <th>Category</th>
+                                <th>First Sem</th>
+                                <th>Second Sem</th>
+                                <th>Budget Year</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -53,6 +56,9 @@
                                 <td>{{ dat.object_of_expenditure }}</td>
                                 <td>{{ dat.account_code }}</td>
                                 <td>{{ dat.category }}</td>
+                                <td>{{ dat.first_sem }}</td>
+                                <td>{{ dat.second_sem }}</td>
+                                <td>{{ dat.budget_year }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

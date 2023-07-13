@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AIP;
 use App\Models\Appropriation;
+use App\Models\Category;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -214,7 +215,7 @@ class AppropriationController extends Controller
                             ->where('idpaps',$idpaps)
                             ->sum('budget_year');
         $total_co_approp=$this->appropriation
-                            ->where('category','Personnel Services')
+                            ->where('category','Capital Outlay')
                             ->where('idpaps',$idpaps)
                             ->sum('budget_year');
         return [
@@ -233,8 +234,78 @@ class AppropriationController extends Controller
         return redirect('/appropriations/'.$idpaps)->with('warning', 'Record Deleted');
     }
     public function main(Request $request){
-        $dept_head = $request->dept_head;
-        $FFUNCCOD = $request->FFUNCCOD;
-        $office_code = $request->office_code;
+        $department_head = $request->department_head;
+        $budget_officer = $request->budget_officer;
+        $department_code = $request->department_code;
+        $office = $request->office;
+        $local_chief = $request->local_chief;
+        return [
+            'department_code'=>$department_code,
+            'office'=>$office,
+            'department_head'=>$department_head,
+            'budget_officer'=>$budget_officer,
+            'local_chief'=>$local_chief,
+        ];
+    }
+    public function paps_types(Request $request){
+        $department_code = $request->department_code;
+        $paps_types = ProgramAndProject::selectRaw('DISTINCT(type)')
+                        ->get()
+                        ->map(function($item)use($department_code){
+                            return [
+                                'paps_type'=>$item->type,
+                                'department_code'=>$department_code
+                            ];
+                        });
+        return $paps_types;
+    }
+    public function paps(Request $request){
+        $paps = ProgramAndProject::where('department_code', $request->department_code)
+                    ->where('type', $request->paps_type)
+                    ->get()
+                    ->map(function($item)use($request){
+                        return [
+                            "idpaps"=>$item->id,
+                            "paps_desc"=>$item->paps_desc,
+                            "type"=>$request->type
+                        ];
+                    });
+        return $paps;
+    }
+    public function paps_categories(Request $request){
+        $categories = Category::get()
+            ->map(function($item)use($request){
+            return [
+                "category"=>$item->category,
+                "type"=>$request->type,
+                "idpaps"=>$request->idpaps
+            ];
+        });
+        return $categories;
+    }
+    public function appropriations(Request $request){
+        //dd($request->type);
+        $appropriations = Appropriation::select('program_and_projects.paps_desc','program_and_projects.type',
+            'appropriations.object_of_expenditure', 'appropriations.account_code')
+            ->selectRaw('SUM(appropriations.past_year) AS past_year')
+            ->selectRaw('SUM(appropriations.first_sem) AS first_sem')
+            ->selectRaw('SUM(appropriations.second_sem) AS second_sem')
+            ->selectRaw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total')
+            ->selectRaw('SUM(appropriations.budget_year) AS budget_year')
+            ->leftjoin('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
+            ->where('program_and_projects.type', $request->type)
+            ->where('appropriations.category', $request->category)
+            ->where('appropriations.idpaps', $request->idpaps)
+            ->when($request->category === 'Capital Outlay', function ($query) {
+                $query->groupBy('appropriations.object_of_expenditure');
+            })
+            ->when($request->category === 'Maintenance, Operating, and Other Expenses', function ($query) {
+                $query->groupBy('appropriations.account_code');
+            })
+            ->when($request->category === 'Personnel Services', function ($query) {
+                $query->groupBy('appropriations.account_code');
+            })
+            ->get();
+        return $appropriations;
     }
 }

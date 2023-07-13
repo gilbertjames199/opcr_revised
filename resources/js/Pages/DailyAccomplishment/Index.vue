@@ -19,6 +19,7 @@
                 </div>
 
             </div>
+
             <!-- <Link :href="'/Sectoral'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -193,7 +194,7 @@ export default {
             this.office =this.auth.user.office.office;
             var pg_head = 'PG Head';
             var forFFUNCCOD = this.auth.user.office.department_code;
-            this.my_link =this.viewlink(this.FFUNCCOD, this.date_from, this.date_to, this.office, pg_head);
+            this.my_link =this.viewlink(forFFUNCCOD, this.date_from, this.date_to, this.office, pg_head);
 
             this.showModal();
         },

@@ -124,7 +124,24 @@ class DailyAccomplishmentController extends Controller
         return $paps;
     }
     public function daily_accomplishment(Request $request){
-        $accomp = DailyAccomplishment::where('idpaps', $request->idpaps)
+        $accomp = DailyAccomplishment::where('idmfo', $request->idmfo)
+                    ->whereBetween('date',[$request->date_from, $request->date_to])
+                    ->get()
+                    ->map(function($item)use($request){
+                        return [
+                            'description'=>$item->description,
+                            'quantity'=>$item->quantity,
+                            'remarks'=>$item->remarks,
+                            'date'=>$item->date,
+                            'source_of_fund'=>$item->source_of_fund,
+                            'amount'=>$item->amount,
+                            'responsible_person'=>$item->responsible_person
+                        ];
+                    });
+        return $accomp;
+    }
+    public function daily_accomplishment_new(Request $request){
+        $accomp = DailyAccomplishment::where('idmfo', $request->idmfo)
                     ->whereBetween('date',[$request->date_from, $request->date_to])
                     ->get()
                     ->map(function($item)use($request){
