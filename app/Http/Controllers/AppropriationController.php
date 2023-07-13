@@ -236,7 +236,7 @@ class AppropriationController extends Controller
     public function main(Request $request){
         $department_head = $request->department_head;
         $budget_officer = $request->budget_officer;
-        $department_code = $request->office_code;
+        $department_code = $request->department_code;
         $office = $request->office;
         $local_chief = $request->local_chief;
         return [
