@@ -265,6 +265,7 @@ class AppropriationController extends Controller
                     ->where('program_and_projects.type', '=', 'Activity')
                     ->where('program_and_projects.department_code', '=', $request->department_code)
                     ->groupBy('program_and_projects.id', 'program_and_projects.paps_desc')
+                    ->get()
                     ->map(function($item)use($request){
                         return [
                             "idpaps"=>$item->id,
