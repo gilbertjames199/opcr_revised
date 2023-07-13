@@ -278,11 +278,12 @@ class AppropriationController extends Controller
         return $paps_types;
     }
     public function paps(Request $request){
-        //->groupBy('program_and_projects.id', 'program_and_projects.paps_desc')
+        //
         $paps = ProgramAndProject::select('program_and_projects.id', 'program_and_projects.paps_desc', DB::raw('MAX(appropriations.id) AS column_name'))
                     ->join('appropriations', 'appropriations.idpaps', '=', 'program_and_projects.id')
-                    ->where('program_and_projects.type', '=', 'Activity')
+                    ->where('program_and_projects.type', '=', $request->type)
                     ->where('program_and_projects.department_code', '=', $request->department_code)
+                    ->groupBy('program_and_projects.id', 'program_and_projects.paps_desc')
                     ->get()
                     ->map(function($item)use($request){
                         return [
