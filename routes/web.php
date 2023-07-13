@@ -847,7 +847,7 @@ Route::prefix('printLBP')->group(function(){
 
 
 });
-Route::prefix('appropriations')->group(function(){
+Route::prefix('print/appropriations')->group(function(){
     Route::get('/',[AppropriationController::class,'main']);
     Route::get('/paps/types',[AppropriationController::class,'paps_types']);
     Route::get('/paps',[AppropriationController::class,'paps']);
