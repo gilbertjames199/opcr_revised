@@ -39,15 +39,15 @@
                 <input type="text" v-model="form.description" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.description">{{ form.errors.description }}</div>
 
-                <label for="">Quantity</label>
+                <label for="">Quantity (if any)</label>
                 <input type="number" v-model="form.quantity" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.quantity">{{ form.errors.quantity }}</div>
 
-                <label for="">Amount</label>
+                <label for="">Amount (if any)</label>
                 <input type="number" v-model="form.amount" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.amount">{{ form.errors.amount }}</div>
 
-                <label for="">Source of Fund</label>
+                <label for="">Source of Fund (if any)</label>
                 <input type="text" v-model="form.source_of_fund" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.source_of_fund">{{ form.errors.source_of_fund }}</div>
 

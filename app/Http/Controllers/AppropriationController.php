@@ -262,6 +262,7 @@ class AppropriationController extends Controller
     public function paps(Request $request){
         $paps = ProgramAndProject::where('department_code', $request->department_code)
                     ->where('type', $request->paps_type)
+                    ->join('appropriations','appropriations.idpaps','program_and_projects.id')
                     ->get()
                     ->map(function($item)use($request){
                         return [

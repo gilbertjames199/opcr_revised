@@ -247,7 +247,7 @@ var _hoisted_13 = {
 
 var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Quantity", -1
+}, "Quantity (if any)", -1
 /* HOISTED */
 );
 
@@ -258,7 +258,7 @@ var _hoisted_15 = {
 
 var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Amount", -1
+}, "Amount (if any)", -1
 /* HOISTED */
 );
 
@@ -269,7 +269,7 @@ var _hoisted_17 = {
 
 var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Source of Fund", -1
+}, "Source of Fund (if any)", -1
 /* HOISTED */
 );
 
