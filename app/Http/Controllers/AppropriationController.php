@@ -261,6 +261,13 @@ class AppropriationController extends Controller
     public function paps_types(Request $request){
         $department_code = $request->department_code;
         $paps_types = ProgramAndProject::selectRaw('DISTINCT(type)')
+                        ->join('appropriations','appropriations.idpaps','program_and_projects.id')
+                        ->orderByRaw(DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
+                            WHEN program_and_projects.type = 'Project' THEN 1
+                            WHEN program_and_projects.type = 'Program' THEN 2
+                            WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
+                            END")
+                        )
                         ->get()
                         ->map(function($item)use($department_code){
                             return [
