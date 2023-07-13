@@ -115,7 +115,17 @@ class AppropriationController extends Controller
             'idpaps' => 'required',
             'category' => 'required',
         ]);
-        $this->appropriation->create($attributes);
+        $app = new Appropriation();
+        $app->object_of_expenditure=$request->object_of_expenditure;
+        $app->account_code=$request->account_code;
+        $app->past_year=$request->past_year;
+        $app->first_sem=$request->first_sem;
+        $app->second_sem=$request->second_sem;
+        $app->budget_year=$request->budget_year;
+        $app->idpaps=$request->idpaps;
+        $app->category=$request->category;
+        $app->GAD=$request->GAD;
+        $app->save();
         return redirect('/appropriations/'.$request->idpaps)
                 ->with('message','Division Output added');
     }
