@@ -83,9 +83,16 @@ class AIPController extends Controller
 
         //dd($paginatedResult);
         //dd($data->pluck('mfo_desc'));
+        $office_code = auth()->user()->department_code;
+        $ffunccod = DB::connection('mysql2')->table('offices')->where('department_code', $office_code)
+                        ->first()->ffunccod;
+        $functions = FFUNCCOD::where('FFUNCCOD', $ffunccod)->first();
+        //$functions = FFUNCCOD::where('FFUNCCOD')
+
         return inertia('AIP/LBP_Form_2/Index',[
             "data"=>$paginatedResult,
             "mfos"=>$mfos,
+            'FFUNCCOD'=>$functions,
             "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),

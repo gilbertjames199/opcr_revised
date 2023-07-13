@@ -21,6 +21,7 @@ class HandleInertiaRequests extends Middleware
         if (auth()->check()) {
             $profile =  User::where('recid', auth()->user()->recid)->first();
             $office = DB::connection('mysql2')->table('offices')->where('department_code',auth()->user()->department_code)->first();
+
             return array_merge(parent::share($request), [
                 'auth' => auth()->user() ? [ //if there is a user
                     'user' => [
@@ -29,6 +30,7 @@ class HandleInertiaRequests extends Middleware
                          'UserType' =>auth()->user()->UserType,
                          'department_code' =>auth()->user()->department_code,
                          'office'=>$office,
+
                     //     'level' =>auth()->user()->level,
                     //     'municipality' =>auth()->user()->municipality,
                     //     'barangay' =>auth()->user()->barangay,
