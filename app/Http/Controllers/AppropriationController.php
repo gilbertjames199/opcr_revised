@@ -249,8 +249,7 @@ class AppropriationController extends Controller
     }
     public function paps_types(Request $request){
         $department_code = $request->department_code;
-        $paps_types = ProgramAndProject::select('DISTINCT(type)')
-                        ->where('department_code', $department_code)
+        $paps_types = ProgramAndProject::selectRaw('DISTINCT(type)')
                         ->get()
                         ->map(function($item)use($department_code){
                             return [
