@@ -277,6 +277,7 @@ class AppropriationController extends Controller
     }
     public function paps_categories(Request $request){
         $categories = Category::get()
+            ->join('appropriations','appropriations.category','categories.category')
             ->map(function($item)use($request){
             return [
                 "category"=>$item->category,
