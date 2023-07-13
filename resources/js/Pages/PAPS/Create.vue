@@ -33,11 +33,12 @@
                 <label for="">Major Final Outputs </label>
 
                 <select class="form-control form-select" v-model="form.idmfo" >
+                    <option></option>
                     <option v-for="mfo in mfos" :value="mfo.id" >
                         {{ mfo.mfo_desc }}
                     </option>
                 </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.idstrategy">{{ form.errors.idstrategy }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.idmfo">{{ form.errors.idmfo }}</div>
 
                 <label for="">Program and Projects (PAPS) Description	</label>
                 <input type="text" v-model="form.paps_desc" class="form-control" autocomplete="chrome-off">
@@ -49,6 +50,7 @@
 
                 <label for="">Type</label>
                 <select class="form-control form-select" v-model="form.type" >
+                    <option>GAS</option>
                     <option>Activity</option>
                     <option>Program</option>
                     <option>Project</option>
@@ -273,8 +275,8 @@ export default {
         mounted() {
             if(this.idmfo!==undefined){
                 this.from_mfo=true
-
             }
+
             this.form.idmfo=this.idmfo
             if (this.editData !== undefined) {
                 this.pageTitle = "Edit"
@@ -302,7 +304,13 @@ export default {
 
         methods: {
             submit() {
-
+                if(this.form.type=="GAS"){
+                    this.form.idmfo="0";
+                }else{
+                    if(this.form.idmfo=="0"){
+                        this.form.idmfo=null
+                    }
+                }
                 this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
