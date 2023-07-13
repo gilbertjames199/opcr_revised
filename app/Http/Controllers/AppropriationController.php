@@ -9,6 +9,7 @@ use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class AppropriationController extends Controller
@@ -292,8 +293,9 @@ class AppropriationController extends Controller
             ->groupBy('categories.category')
             ->get()
             ->map(function($item)use($request){
+                $categ = Str::upper($item->category);
             return [
-                "category"=>$item->category,
+                "category"=>$categ,
                 "type"=>$request->type,
                 "idpaps"=>$request->idpaps
             ];
