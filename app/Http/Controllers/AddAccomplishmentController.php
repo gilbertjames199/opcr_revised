@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DailyAccomplishment;
+use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
@@ -20,14 +21,26 @@ class AddAccomplishmentController extends Controller
     public function index(Request $request){
         $mfo = MajorFinalOutput::get();
         $paps = ProgramAndProject::get();
+
+        $functions = FFUNCCOD::where('department_code', auth()->user()->department_code)->first();
+
         $data = $this->model->with('MFO')
-                    ->orderBy('created_at', 'desc')
+                    ->when($request->search, function($query, $searchItem){
+                        $query->where('daily_accomplishments.description','LIKE','%'.$searchItem.'%');
+                    })
+                    ->when($request->mfosel, function($query, $searchItem){
+                        $query->where('program_and_projects.idmfo','=',$searchItem);
+                    })
+                    ->join('program_and_projects','program_and_projects.id','daily_accomplishments.idpaps')
+                    ->orderBy('daily_accomplishments.created_at', 'desc')
                     ->paginate(10)
                     ->withQueryString();
         return inertia('DailyAccomplishment/Index',[
             "data"=>$data,
             "paps"=>$paps,
             "mfos"=>$mfo,
+            "functions"=>$functions,
+            "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)

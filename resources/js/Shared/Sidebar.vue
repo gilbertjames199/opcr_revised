@@ -84,7 +84,7 @@
                         <li>
                             <Link class="sidebar-link" href="/logframe" :class="{'active': $page.url === '/logframe'}">
 
-                                <span class="title">View Logframe</span>
+                                <span class="title">View Logframe {{  }}</span>
                             </Link>
                         </li>
                         </ul>
