@@ -250,12 +250,18 @@ class AppropriationController extends Controller
         $department_code = $request->department_code;
         $office = $request->office;
         $local_chief = $request->local_chief;
+
         return [
             'department_code'=>$department_code,
             'office'=>$office,
             'department_head'=>$department_head,
             'budget_officer'=>$budget_officer,
             'local_chief'=>$local_chief,
+            'total_past_year'=>$request->total_past_year,
+            'total_first_sem'=>$request->total_first_sem,
+            'total_second_sem'=>$request->total_second_sem,
+            'total_total'=>$request->total_total,
+            'total_budget_year'=>$request->total_budget_year,
         ];
     }
     public function paps_types(Request $request){
@@ -299,6 +305,11 @@ class AppropriationController extends Controller
             ->where('appropriations.idpaps', $request->idpaps)
             ->join('appropriations','appropriations.category','categories.category')
             ->groupBy('categories.category')
+            ->orderByRaw(DB::raw("CASE WHEN categories.category = 'Personnel Services' THEN 0
+                            WHEN categories.category = 'Maintenance, Operating, and Other Expenses' THEN 1
+                            WHEN categories.category = 'Capital Outlay' THEN 2 ELSE 3
+                            END")
+                        )
             ->get()
             ->map(function($item)use($request){
                 //$categ = Str::upper($item->category);

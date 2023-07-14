@@ -138,7 +138,13 @@ export default {
         idmfo: String,
         idpaps: Number,
         can: Object,
+<<<<<<< HEAD
         mfos: Object
+=======
+        mfos: Object,
+        FFUNCCOD: Object,
+        totals: Object,
+>>>>>>> 01f398e5dc221c6fee66bbcd8c137b29f9ee7fc6
     },
     data() {
         return{
@@ -209,7 +215,28 @@ export default {
             var link1 = linkt + jasper_ip +jasper_link + params;
             return link1;
         },
+<<<<<<< HEAD
 
+=======
+        goToRepPrintLBP2(){
+            //http://122.53.120.27:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2&standAlone=true&decorate=no&output=pdf';
+            var params = '&department_code='  + this.auth.user.department_code +
+                        '&office=' + this.auth.user.office.office +
+                        '&department_head=' + this.FFUNCCOD.DEPTHEAD +
+                        '&budget_officer=EVA JEAN S. LICAYAN' +
+                        '&local_chief=DOROTHY M. GONZAGA'+
+                        '&total_past_year='+ this.totals.past_year +
+                        '&total_first_sem='+  this.totals.first_sem +
+                        '&total_second_sem='+ this.totals.second_sem +
+                        '&total_total='+ this.totals.total +
+                        '&total_budget_year=' + this.totals.budget_year;
+            var link1 = linkt + jasper_ip +jasper_link + params;
+            return link1;
+        },
+>>>>>>> 01f398e5dc221c6fee66bbcd8c137b29f9ee7fc6
         showModal(ffunccod, ffunction, dates){
             // alert(ffunction,ffunccod);
             // alert(this.lbp_version);
