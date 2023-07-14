@@ -40,7 +40,7 @@
             </select>
             <br>
             <br>
-            <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(data.data[0].FFUNCCOD,data.data[0].FFUNCTION,dates)">Print</button>
+ <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(data.data[0].FFUNCCOD,data.data[0].FFUNCTION,dates)">Print</button>
         </Printing>
 
         <filtering v-if="filter" @closeFilter="filter=false">
@@ -69,7 +69,7 @@
                         <tbody>
                             <tr v-for="dat in data.data" :key="dat.id">
                                 <td><div v-if="dat.a_i_p">{{ dat.a_i_p.AIP_Code }}</div></td>
-                                <td><div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div></td>
+                                <td>{{ dat.m_f_o.mfo_desc }}</td>
                                 <td>{{ dat.paps_desc }}</td>
 
                                 <td>
@@ -125,15 +125,14 @@ export default {
     props: {
         data: Object,
         filters: Object,
-        auth: Object,
+
         // idinteroutcome: String,
         // idoutcome: String,
         //idmfo:string,
         idmfo: String,
         idpaps: Number,
         can: Object,
-        mfos: Object,
-        FFUNCCOD: Object
+        mfos: Object
     },
     data() {
         return{
@@ -143,7 +142,6 @@ export default {
             print: false,
             my_link: "",
             displayModal: false,
-            lbp_version: 2,
         }
     },
     watch: {
@@ -205,26 +203,10 @@ export default {
             var link1 = linkt + jasper_ip +jasper_link + params;
             return link1;
         },
-        goToRepPrintLBP2(){
-            //http://122.53.120.27:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2
-            var linkt="http://";
-            var jasper_ip = this.jasper_ip;
-            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2&standAlone=true&decorate=no&output=pdf';
-            var params = '&department_code='  + this.auth.user.department_code +
-                        '&office=' + this.auth.user.office.office +
-                        '&department_head=' + this.FFUNCCOD.DEPTHEAD +
-                        '&budget_officer=EVA JEAN S. LICAYAN' +
-                        '&local_chief=DOROTHY M. GONZAGA';
-            var link1 = linkt + jasper_ip +jasper_link + params;
-            return link1;
-        },
+
         showModal(ffunccod, ffunction, dates){
             // alert(ffunction,ffunccod);
-            if(this.lbp_version>2){
-                this.my_link = this.getToRep(ffunccod, ffunction, dates);
-            }else{
-                this.my_link = this.goToRepPrintLBP2();
-            }
+            this.my_link = this.getToRep(ffunccod, ffunction, dates);
             this.displayModal = true;
         },
 
