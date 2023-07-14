@@ -339,12 +339,12 @@ class AppropriationController extends Controller
                     "type"=>$item->type,
                     "account_code"=>$item->account_code,
                     "object_of_expenditure"=>$item->object_of_expenditure,
-                    "past_year"=>$item->past_year,
-                    "first_sem"=>$item->first_sem,
-                    "second_sem"=>$item->second_sem,
-                    "total"=>$item->total,
-                    "budget_year"=>$item->budget_year,
-                    "department_code"=>$item->department_code,
+                    "past_year"=>number_format($item->past_year, 2, '.', ','),
+                    "first_sem"=>number_format($item->first_sem, 2, '.', ','),
+                    "second_sem"=>number_format($item->second_sem, 2, '.', ','),
+                    "total"=>number_format($item->total, 2, '.', ','),
+                    "budget_year"=>number_format($item->budget_year, 2, '.', ','),
+                    "department_code"=>number_format($item->department_code, 2, '.', ','),
                 ];
             });
         return $appropriations;
