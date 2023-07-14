@@ -301,12 +301,12 @@ class AppropriationController extends Controller
             ->get()
             ->map(function($item)use($request){
                 $categ = Str::upper($item->category);
-            return [
-                "category"=>$categ,
-                "type"=>$request->type,
-                "idpaps"=>$request->idpaps
-            ];
-        });
+                return [
+                    "category"=>$categ,
+                    "type"=>$request->type,
+                    "idpaps"=>$request->idpaps
+                ];
+            });
         return $categories;
     }
     public function appropriations(Request $request){
@@ -331,7 +331,20 @@ class AppropriationController extends Controller
             ->when($request->category === 'Personnel Services', function ($query) {
                 $query->groupBy('appropriations.account_code');
             })
-            ->get();
+            ->get()
+            ->map(function($item){
+                return [
+                    "paps_desc"=>$item->paps_desc,
+                    "type"=>$item->type,
+                    "account_code"=>$item->account_code,
+                    "object_of_expenditure"=>$item->object_of_expenditure,
+                    "past_year"=>$item->past_year,
+                    "first_sem"=>$item->first_sem,
+                    "second_sem"=>$item->second_sem,
+                    "total"=>$item->total,
+                    "budget_year"=>$item->budget_year,
+                ];
+            });
         return $appropriations;
     }
 }
