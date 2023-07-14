@@ -75,7 +75,7 @@
                         <tbody>
                             <tr v-for="dat in data.data" :key="dat.id">
                                 <td><div v-if="dat.a_i_p">{{ dat.a_i_p.AIP_Code }}</div></td>
-                                <td><div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div></td>
+                                <td>{{ dat.m_f_o.mfo_desc }}</td>
                                 <td>{{ dat.paps_desc }}</td>
 
                                 <td>
@@ -131,16 +131,20 @@ export default {
     props: {
         data: Object,
         filters: Object,
-        auth: Object,
+
         // idinteroutcome: String,
         // idoutcome: String,
         //idmfo:string,
         idmfo: String,
         idpaps: Number,
         can: Object,
+<<<<<<< HEAD
+        mfos: Object
+=======
         mfos: Object,
         FFUNCCOD: Object,
         totals: Object,
+>>>>>>> 01f398e5dc221c6fee66bbcd8c137b29f9ee7fc6
     },
     data() {
         return{
@@ -150,7 +154,6 @@ export default {
             print: false,
             my_link: "",
             displayModal: false,
-            lbp_version: 2,
         }
     },
     watch: {
@@ -212,6 +215,9 @@ export default {
             var link1 = linkt + jasper_ip +jasper_link + params;
             return link1;
         },
+<<<<<<< HEAD
+
+=======
         goToRepPrintLBP2(){
             //http://122.53.120.27:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2
             var linkt="http://";
@@ -230,13 +236,11 @@ export default {
             var link1 = linkt + jasper_ip +jasper_link + params;
             return link1;
         },
+>>>>>>> 01f398e5dc221c6fee66bbcd8c137b29f9ee7fc6
         showModal(ffunccod, ffunction, dates){
             // alert(ffunction,ffunccod);
-            if(this.lbp_version>2){
-                this.my_link = this.getToRep(ffunccod, ffunction, dates);
-            }else{
-                this.my_link = this.goToRepPrintLBP2();
-            }
+            // alert(this.lbp_version);
+            this.my_link = this.getToRep(ffunccod, ffunction, dates);
             this.displayModal = true;
         },
 
