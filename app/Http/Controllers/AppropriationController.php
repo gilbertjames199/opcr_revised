@@ -300,8 +300,8 @@ class AppropriationController extends Controller
             ->join('appropriations','appropriations.category','categories.category')
             ->groupBy('categories.category')
             ->orderByRaw(DB::raw("CASE WHEN categories.category = 'Personnel Services' THEN 0
-                            WHEN program_and_projects.type = 'Maintenance, Operating, and Other Expenses' THEN 1
-                            WHEN program_and_projects.type = 'Capital Outlay' THEN 2 ELSE 3
+                            WHEN categories.category = 'Maintenance, Operating, and Other Expenses' THEN 1
+                            WHEN categories.category = 'Capital Outlay' THEN 2 ELSE 3
                             END")
                         )
             ->get()
