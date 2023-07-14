@@ -45,6 +45,12 @@ class PAPController extends Controller
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
                 })
+                ->orderByRaw(DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
+                            WHEN program_and_projects.type = 'Project' THEN 1
+                            WHEN program_and_projects.type = 'Program' THEN 2
+                            WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
+                            END")
+                        )
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
@@ -364,6 +370,12 @@ class PAPController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
+                ->orderByRaw(DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
+                            WHEN program_and_projects.type = 'Project' THEN 1
+                            WHEN program_and_projects.type = 'Program' THEN 2
+                            WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
+                            END")
+                        )
                 ->orderBy('program_and_projects.created_at', 'desc')
                 ->get();
 
