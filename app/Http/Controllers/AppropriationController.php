@@ -312,7 +312,7 @@ class AppropriationController extends Controller
     public function appropriations(Request $request){
         //dd($request->type);
         $appropriations = Appropriation::select('program_and_projects.paps_desc','program_and_projects.type',
-            'appropriations.account_code')
+            'appropriations.account_code','program_and_projects.department_code')
             ->selectRaw('appropriations.object_of_expenditure')
             ->selectRaw('SUM(appropriations.past_year) AS past_year')
             ->selectRaw('SUM(appropriations.first_sem) AS first_sem')
@@ -343,6 +343,7 @@ class AppropriationController extends Controller
                     "second_sem"=>$item->second_sem,
                     "total"=>$item->total,
                     "budget_year"=>$item->budget_year,
+                    "department_code"=>$item->department_code,
                 ];
             });
         return $appropriations;
