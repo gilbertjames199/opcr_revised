@@ -37,12 +37,7 @@
             </select>
             <br>
             <br>
-<<<<<<< HEAD
-            <div v-if="lbp_version > 2">
-
-=======
             <div v-if="lbp_version>2">
->>>>>>> 5ca11a45a9b05df93ad1f7d9954e003b74afa16d
                 Target Fiscal Year
                 <br>
                 <input v-model="dates" class="form-control" type="number" name="year" min="1900" max="2099" step="1" oninput="javascript: if (this.value.length > 4) this.value = this.value.slice(0, 4);"/>
@@ -217,7 +212,7 @@ export default {
 
         showModal(ffunccod, ffunction, dates){
             // alert(ffunction,ffunccod);
-            alert(this.lbp_version);
+            // alert(this.lbp_version);
             this.my_link = this.getToRep(ffunccod, ffunction, dates);
             this.displayModal = true;
         },
