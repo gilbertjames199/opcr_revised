@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
 use App\Models\AIP;
+use App\Models\Appropriation;
 use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
@@ -89,11 +90,20 @@ class AIPController extends Controller
         $functions = FFUNCCOD::where('FFUNCCOD', $ffunccod)->first();
         //$functions = FFUNCCOD::where('FFUNCCOD')
 
+        $totals = Appropriation::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
+                ->selectRaw('FORMAT(SUM(appropriations.first_sem), 2, \'en_US\') AS first_sem')
+                ->selectRaw('FORMAT(SUM(appropriations.second_sem), 2, \'en_US\') AS second_sem')
+                ->selectRaw('FORMAT((SUM(appropriations.first_sem) + SUM(appropriations.second_sem)), 2, \'en_US\') AS total')
+                ->selectRaw('FORMAT(SUM(appropriations.budget_year), 2, \'en_US\') AS budget_year')
+                ->join('program_and_projects','program_and_projects.id','appropriations.idpaps')
+                ->where('program_and_projects.department_code', auth()->user()->department_code)
+                ->first();
         return inertia('AIP/LBP_Form_2/Index',[
             "data"=>$paginatedResult,
             "mfos"=>$mfos,
             'FFUNCCOD'=>$functions,
             "filters" => $request->only(['search']),
+            "totals"=>$totals,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -166,7 +176,7 @@ class AIPController extends Controller
             'CO'=>$request->CO,
             'idpaps'=>$request->idpaps
         ]);
-        
+
         return redirect('AIP/direct')
                 ->with('message','Output updated');
     }
