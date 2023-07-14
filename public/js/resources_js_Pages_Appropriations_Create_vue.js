@@ -90,7 +90,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.GAD = this.editData.GAD;
       this.form.CCET = this.editData.CCET;
       this.form.id = this.editData.id;
-      this.searchByAccountCode();
+      this.searchByAccountCodeForEditMounted();
     } else {
       this.pageTitle = "Create ";
       this.form.idpaps = this.pap1.id;
@@ -157,6 +157,11 @@ __webpack_require__.r(__webpack_exports__);
       var ind = this.codes.indexOf(this.form.account_code.toString());
       this.chart_selected = this.accounts[parseInt(ind)];
       this.form.object_of_expenditure = this.chart_selected; //alert('search by account tgttg! '+ind);
+    },
+    searchByAccountCodeForEditMounted: function searchByAccountCodeForEditMounted() {
+      var ind = this.codes.indexOf(this.form.account_code.toString());
+      this.chart_selected = this.accounts[parseInt(ind)]; //this.form.object_of_expenditure = this.chart_selected
+      //alert('search by account tgttg! '+ind);
     }
   }
 });
