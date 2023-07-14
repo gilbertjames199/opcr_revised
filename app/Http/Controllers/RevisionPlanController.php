@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountAccess;
 use App\Models\BudgetRequirement;
+use App\Models\FFUNCCOD;
 use App\Models\HGDG_Checklist;
 use App\Models\ImplementationPlan;
 use App\Models\Implementing_team;
@@ -30,58 +31,58 @@ class RevisionPlanController extends Controller
     }
     public function index(Request $request, $idpaps){
         $myid=auth()->user()->recid;
-        //dd($idpaps);
-        // ->select('revision_plans.id', 'revision_plans.project_title',
-        //                     'revision_plans.version','revision_plans.type',
-        //                     'ff.FFUNCTION')
-        $data=RevisionPlan::select('revision_plans.id', 'revision_plans.project_title',
+        $dept_id =auth()->user()->department_code;
+        $FFUNCCOD = FFUNCCOD::where('department_code', $dept_id)->first()->FFUNCCOD;
+        $paps = ProgramAndProject::where('id', $idpaps)->first();
+        if($paps->type==="GAS"){
+            return redirect('/revision/general/administration/services/'.$FFUNCCOD.'/plan');
+        }else{
+            $data=RevisionPlan::select('revision_plans.id', 'revision_plans.project_title',
                             'revision_plans.version','revision_plans.type',
                             'ff.FFUNCTION')
-                ->Join(DB::raw('program_and_projects paps'), 'paps.id','=','revision_plans.idpaps')
-                ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD','=','paps.FFUNCCOD')
-                ->Join(DB::raw('fms.accountaccess acc'),'acc.ffunccod','=','ff.FFUNCCOD')
-                ->where('acc.iduser','=',$myid)
-                ->where('idpaps','=',$idpaps)
-                ->get()
-                ->map(function($item){
-                    $budgetary_requirement =BudgetRequirement::where('revision_plan_id',$item->id)
-                                            ->sum('amount');
-                    // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
-                    //                 ->join('targets', 'targets.id','implementation_plans.id')
-                    //                 ->sum('targets.planned_budget');
-                    // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
-                    //                 ->join('targets', 'targets.id','implementation_plans.id')
-                    //                 ->get();
-                    $imp_amount = DB::table('targets')
-                                    ->where('implementation_plans.idrev_plan',$item->id)
-                                    ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
-                                    ->select('targets.*', 'implementation_plans.*')
-                                    ->sum('targets.planned_budget');
+                        ->Join(DB::raw('program_and_projects paps'), 'paps.id','=','revision_plans.idpaps')
+                        ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD','=','paps.FFUNCCOD')
+                        ->Join(DB::raw('fms.accountaccess acc'),'acc.ffunccod','=','ff.FFUNCCOD')
+                        ->where('acc.iduser','=',$myid)
+                        ->where('idpaps','=',$idpaps)
+                        ->get()
+                        ->map(function($item){
+                            $budgetary_requirement =BudgetRequirement::where('revision_plan_id',$item->id)
+                                                    ->sum('amount');
+
+                            $imp_amount = DB::table('targets')
+                                            ->where('implementation_plans.idrev_plan',$item->id)
+                                            ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                                            ->select('targets.*', 'implementation_plans.*')
+                                            ->sum('targets.planned_budget');
 
 
-                    return [
-                        'FFUNCTION'=>$item->FFUNCTION,
-                        'id'=>$item->id,
-                        'project_title'=>$item->project_title,
-                        'type'=>$item->type,
-                        'version'=>$item->version,
-                        'budget_sum'=>$budgetary_requirement,
-                        'imp_amount'=>$imp_amount
-                    ];
-                });
+                            return [
+                                'FFUNCTION'=>$item->FFUNCTION,
+                                'id'=>$item->id,
+                                'project_title'=>$item->project_title,
+                                'type'=>$item->type,
+                                'version'=>$item->version,
+                                'budget_sum'=>$budgetary_requirement,
+                                'imp_amount'=>$imp_amount
+                            ];
+                        });
 
-        $paps = ProgramAndProject::where('id', $idpaps)->first();
-        //dd($data);
-        return inertia('RevisionPlans/Index',[
-            'data'=>$data,
-            "idpaps"=>$idpaps,
-            "paps"=>$paps,
-            "filters" => $request->only(['search']),
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-            ],
-        ]);
+
+            //dd($data);
+            return inertia('RevisionPlans/Index',[
+                'data'=>$data,
+                "idpaps"=>$idpaps,
+                "paps"=>$paps,
+                "filters" => $request->only(['search']),
+                'can'=>[
+                    'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                    'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+                ],
+            ]);
+        }
+
+
     }
     public function create(Request $request, $id){
         $paps=ProgramAndProject::where('id',$id)->get();

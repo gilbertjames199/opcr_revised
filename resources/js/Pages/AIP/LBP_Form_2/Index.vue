@@ -241,21 +241,21 @@ export default {
         },
         goToAppropriations(id){
                 axios.get('/appropriations', {
-        params: {
-            idpaps: id
-        }
-        })
-        .then(response => {
-            // Handle the response data if needed
-            console.log(response.data);
+                params: {
+                    idpaps: id
+                }
+                })
+                .then(response => {
+                    // Handle the response data if needed
+                    console.log(response.data);
 
-            // Redirect the user to 'Appropriations/Index' using return inertia
-            window.location.href = '/Appropriations/Index';
-        })
-        .catch(error => {
-            // Handle any errors
-            console.error(error);
-        });
+                    // Redirect the user to 'Appropriations/Index' using return inertia
+                    window.location.href = '/Appropriations/Index';
+                })
+                .catch(error => {
+                    // Handle any errors
+                    console.error(error);
+                });
         }
     }
 };

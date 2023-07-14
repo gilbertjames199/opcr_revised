@@ -175,6 +175,8 @@ class PAPController extends Controller
                 $proceed="0";
             }
         }
+        $msg = "Failed to add Programs and Projects(PAPS)";
+        $status = "error";
         if($proceed==="1"){
 
             //$this->model->create($attributes);
@@ -191,10 +193,12 @@ class PAPController extends Controller
             $paps-> executive_legislative_agenda= $request->executive_legislative_agenda;
             $paps-> research_agenda= $request->research_agenda;
             $paps->save();
+            $msg = "Programs and Projects(PAPS) added";
+            $status="message";
         }
 
         return redirect('/paps/direct')
-        ->with('message','Programs and Projects(PAPS) added');
+        ->with($status,$msg);
     }
     public function save(Request $request)
     {

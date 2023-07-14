@@ -55,7 +55,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data" :key="dat.id">
-                                <td>{{ dat.m_f_o.mfo_desc }}</td>
+                                <td ><div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div></td>
                                 <td>{{ dat.paps_desc }}</td>
                                 <td>{{ dat.MOV }}</td>
                                 <td>
