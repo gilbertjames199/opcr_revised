@@ -9,6 +9,7 @@ use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class AppropriationController extends Controller
@@ -115,7 +116,17 @@ class AppropriationController extends Controller
             'idpaps' => 'required',
             'category' => 'required',
         ]);
-        $this->appropriation->create($attributes);
+        $app = new Appropriation();
+        $app->object_of_expenditure=$request->object_of_expenditure;
+        $app->account_code=$request->account_code;
+        $app->past_year=$request->past_year;
+        $app->first_sem=$request->first_sem;
+        $app->second_sem=$request->second_sem;
+        $app->budget_year=$request->budget_year;
+        $app->idpaps=$request->idpaps;
+        $app->category=$request->category;
+        $app->GAD="";
+        $app->save();
         return redirect('/appropriations/'.$request->idpaps)
                 ->with('message','Division Output added');
     }
@@ -250,6 +261,13 @@ class AppropriationController extends Controller
     public function paps_types(Request $request){
         $department_code = $request->department_code;
         $paps_types = ProgramAndProject::selectRaw('DISTINCT(type)')
+                        ->join('appropriations','appropriations.idpaps','program_and_projects.id')
+                        ->orderByRaw(DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
+                            WHEN program_and_projects.type = 'Project' THEN 1
+                            WHEN program_and_projects.type = 'Program' THEN 2
+                            WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
+                            END")
+                        )
                         ->get()
                         ->map(function($item)use($department_code){
                             return [
@@ -260,40 +278,49 @@ class AppropriationController extends Controller
         return $paps_types;
     }
     public function paps(Request $request){
-        $paps = ProgramAndProject::where('department_code', $request->department_code)
-                    ->where('type', $request->paps_type)
+        //
+        $paps = ProgramAndProject::select('program_and_projects.id', 'program_and_projects.paps_desc', DB::raw('MAX(appropriations.id) AS column_name'))
+                    ->join('appropriations', 'appropriations.idpaps', '=', 'program_and_projects.id')
+                    ->where('program_and_projects.type', '=', $request->paps_type)
+                    ->where('program_and_projects.department_code', '=', $request->department_code)
+                    ->groupBy('program_and_projects.id', 'program_and_projects.paps_desc')
                     ->get()
                     ->map(function($item)use($request){
                         return [
                             "idpaps"=>$item->id,
                             "paps_desc"=>$item->paps_desc,
-                            "type"=>$request->type
+                            "type"=>$request->paps_type
                         ];
                     });
         return $paps;
     }
     public function paps_categories(Request $request){
-        $categories = Category::get()
+        $categories = Category::select('categories.category')
+            ->where('appropriations.idpaps', $request->idpaps)
+            ->join('appropriations','appropriations.category','categories.category')
+            ->groupBy('categories.category')
+            ->get()
             ->map(function($item)use($request){
-            return [
-                "category"=>$item->category,
-                "type"=>$request->type,
-                "idpaps"=>$request->idpaps
-            ];
-        });
+                //$categ = Str::upper($item->category);
+                return [
+                    "category"=>$item->category,
+                    "type"=>$request->type,
+                    "idpaps"=>$request->idpaps
+                ];
+            });
         return $categories;
     }
     public function appropriations(Request $request){
         //dd($request->type);
         $appropriations = Appropriation::select('program_and_projects.paps_desc','program_and_projects.type',
-            'appropriations.object_of_expenditure', 'appropriations.account_code')
+            'appropriations.account_code','program_and_projects.department_code')
+            ->selectRaw('appropriations.object_of_expenditure')
             ->selectRaw('SUM(appropriations.past_year) AS past_year')
             ->selectRaw('SUM(appropriations.first_sem) AS first_sem')
             ->selectRaw('SUM(appropriations.second_sem) AS second_sem')
             ->selectRaw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total')
             ->selectRaw('SUM(appropriations.budget_year) AS budget_year')
             ->leftjoin('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
-            ->where('program_and_projects.type', $request->type)
             ->where('appropriations.category', $request->category)
             ->where('appropriations.idpaps', $request->idpaps)
             ->when($request->category === 'Capital Outlay', function ($query) {
@@ -305,7 +332,21 @@ class AppropriationController extends Controller
             ->when($request->category === 'Personnel Services', function ($query) {
                 $query->groupBy('appropriations.account_code');
             })
-            ->get();
+            ->get()
+            ->map(function($item){
+                return [
+                    "paps_desc"=>$item->paps_desc,
+                    "type"=>$item->type,
+                    "account_code"=>$item->account_code,
+                    "object_of_expenditure"=>$item->object_of_expenditure,
+                    "past_year"=>$item->past_year,
+                    "first_sem"=>$item->first_sem,
+                    "second_sem"=>$item->second_sem,
+                    "total"=>$item->total,
+                    "budget_year"=>$item->budget_year,
+                    "department_code"=>$item->department_code,
+                ];
+            });
         return $appropriations;
     }
 }

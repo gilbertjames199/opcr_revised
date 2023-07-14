@@ -165,21 +165,34 @@ class PAPController extends Controller
     {
         $dept_code = auth()->user()->department_code;
         $request->merge(['department_code' => $dept_code]);
+        $proceed ="1";
         $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
-        //$this->model->create($attributes);
-        $paps = new ProgramAndProject();
-        $paps->paps_desc = $request->paps_desc;
-        $paps->department_code = $dept_code;
-        $paps->FFUNCCOD = $request->FFUNCCOD;
-        $paps->idmfo = $request->idmfo;
-        $paps-> MOV= $request->MOV;
-        $paps-> type= $request->type;
-        $paps-> chief_executive_agenda= $request->chief_executive_agenda;
-        $paps-> socio_economic_agenda= $request->socio_economic_agenda;
-        $paps-> sust_devt_goal= $request->sust_devt_goal;
-        $paps-> executive_legislative_agenda= $request->executive_legislative_agenda;
-        $paps-> research_agenda= $request->research_agenda;
-        $paps->save();
+        if($request->type==='GAS'){
+            $count = ProgramAndProject::where('program_and_projects.department_code', $dept_code)
+                        ->where('program_and_projects.type','GAS')
+                        ->count('id');
+            if($count>0){
+                $proceed="0";
+            }
+        }
+        if($proceed==="1"){
+
+            //$this->model->create($attributes);
+            $paps = new ProgramAndProject();
+            $paps->paps_desc = $request->paps_desc;
+            $paps->department_code = $dept_code;
+            $paps->FFUNCCOD = $request->FFUNCCOD;
+            $paps->idmfo = $request->idmfo;
+            $paps-> MOV= $request->MOV;
+            $paps-> type= $request->type;
+            $paps-> chief_executive_agenda= $request->chief_executive_agenda;
+            $paps-> socio_economic_agenda= $request->socio_economic_agenda;
+            $paps-> sust_devt_goal= $request->sust_devt_goal;
+            $paps-> executive_legislative_agenda= $request->executive_legislative_agenda;
+            $paps-> research_agenda= $request->research_agenda;
+            $paps->save();
+        }
+
         return redirect('/paps/direct')
         ->with('message','Programs and Projects(PAPS) added');
     }
