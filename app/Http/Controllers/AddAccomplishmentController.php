@@ -25,6 +25,9 @@ class AddAccomplishmentController extends Controller
         $functions = FFUNCCOD::where('department_code', auth()->user()->department_code)->first();
 
         $data = $this->model->with('MFO')
+                    ->select('daily_accomplishments.date','daily_accomplishments.description','daily_accomplishments.quantity','daily_accomplishments.remarks',
+                    'daily_accomplishments.Link', 'daily_accomplishments.id','daily_accomplishments.idmfo',
+                    )
                     ->when($request->search, function($query, $searchItem){
                         $query->where('daily_accomplishments.description','LIKE','%'.$searchItem.'%');
                     })
@@ -92,6 +95,7 @@ class AddAccomplishmentController extends Controller
             'source_of_fund',
             'amount'
         ]);
+
         $paps = ProgramAndProject::get();
         $mfo = MajorFinalOutput::get();
         return inertia('DailyAccomplishment/Create', [
