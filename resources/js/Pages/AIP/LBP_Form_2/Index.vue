@@ -36,7 +36,6 @@
                 <option value="4">LBP Form 4</option>
             </select>
             <br>
-            <br>
             <div v-if="lbp_version>2">
                 Target Fiscal Year
                 <br>
@@ -150,6 +149,7 @@ export default {
             print: false,
             my_link: "",
             displayModal: false,
+            lbp_version: ""
         }
     },
     watch: {
