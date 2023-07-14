@@ -82,9 +82,9 @@
                         </li>
 
                         <li>
-                            <Link class="sidebar-link" href="/logframe" :class="{'active': $page.url === '/logframe'}">
+                            <Link class="sidebar-link" :href="`/logframe/${$page.props.auth.user.office.ffunccod}`" :class="{'active': $page.url === `/logframe/${$page.props.auth.user.office.ffunccod}`}">
 
-                                <span class="title">View Logframe {{  }}</span>
+                                <span class="title">View Logframe</span>
                             </Link>
                         </li>
                         </ul>

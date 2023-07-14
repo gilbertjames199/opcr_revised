@@ -52,6 +52,7 @@ class LogFrameController extends Controller
     }
 
     public function showlog($FFUNCCOD){
+
         //dd('showlog');
         $soc_goal= SocietalGoal::get();
         //econ
