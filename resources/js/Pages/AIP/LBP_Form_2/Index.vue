@@ -31,9 +31,16 @@
         <Printing v-if="print" @closeFilter="print=false">
             Target Fiscal Year
             <br>
-            <input v-model="dates" type="number" name="year" min="1900" max="2099" step="1" oninput="javascript: if (this.value.length > 4) this.value = this.value.slice(0, 4);"/>
-<br><br>
- <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(data.data[0].FFUNCCOD,data.data[0].FFUNCTION,dates)">Print</button>
+            <input v-model="dates" class="form-control" type="number" name="year" min="1900" max="2099" step="1" oninput="javascript: if (this.value.length > 4) this.value = this.value.slice(0, 4);"/>
+            <br>
+            <br>
+            <select v-model="lbp_version" class="form-control">
+                <option value="2" selected>LBP Form 2</option>
+                <option value="4">LBP Form 4</option>
+            </select>
+            <br>
+            <br>
+            <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(data.data[0].FFUNCCOD,data.data[0].FFUNCTION,dates)">Print</button>
         </Printing>
 
         <filtering v-if="filter" @closeFilter="filter=false">
@@ -118,14 +125,15 @@ export default {
     props: {
         data: Object,
         filters: Object,
-
+        auth: Object,
         // idinteroutcome: String,
         // idoutcome: String,
         //idmfo:string,
         idmfo: String,
         idpaps: Number,
         can: Object,
-        mfos: Object
+        mfos: Object,
+        FFUNCCOD: Object
     },
     data() {
         return{
@@ -135,6 +143,7 @@ export default {
             print: false,
             my_link: "",
             displayModal: false,
+            lbp_version: 2,
         }
     },
     watch: {
@@ -196,10 +205,26 @@ export default {
             var link1 = linkt + jasper_ip +jasper_link + params;
             return link1;
         },
-
+        goToRepPrintLBP2(){
+            //http://122.53.120.27:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2&standAlone=true&decorate=no&output=pdf';
+            var params = '&department_code='  + this.auth.user.department_code +
+                        '&office=' + this.auth.user.office.office +
+                        '&department_head=' + this.FFUNCCOD.DEPTHEAD +
+                        '&budget_officer=EVA JEAN S. LICAYAN' +
+                        '&local_chief=DOROTHY M. GONZAGA';
+            var link1 = linkt + jasper_ip +jasper_link + params;
+            return link1;
+        },
         showModal(ffunccod, ffunction, dates){
             // alert(ffunction,ffunccod);
-            this.my_link = this.getToRep(ffunccod, ffunction, dates);
+            if(this.lbp_version>2){
+                this.my_link = this.getToRep(ffunccod, ffunction, dates);
+            }else{
+                this.my_link = this.goToRepPrintLBP2();
+            }
             this.displayModal = true;
         },
 
