@@ -29,18 +29,28 @@
             -->
         </div>
         <Printing v-if="print" @closeFilter="print=false">
-            Target Fiscal Year
-            <br>
-            <input v-model="dates" class="form-control" type="number" name="year" min="1900" max="2099" step="1" oninput="javascript: if (this.value.length > 4) this.value = this.value.slice(0, 4);"/>
-            <br>
-            <br>
+            Select Form {{ lbp_version }}
             <select v-model="lbp_version" class="form-control">
-                <option value="2" selected>LBP Form 2</option>
+                <option></option>
+                <option value="2">LBP Form 2</option>
                 <option value="4">LBP Form 4</option>
             </select>
             <br>
             <br>
+<<<<<<< HEAD
  <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(data.data[0].FFUNCCOD,data.data[0].FFUNCTION,dates)">Print</button>
+=======
+            <div v-if="lpb_version>2">
+                Target Fiscal Year
+                <br>
+                <input v-model="dates" class="form-control" type="number" name="year" min="1900" max="2099" step="1" oninput="javascript: if (this.value.length > 4) this.value = this.value.slice(0, 4);"/>
+                <br>
+                <br>
+            </div>
+
+
+            <button class="btn btn-primary btn-sm mL-2 text-white"  @click="showModal(data.data[0].FFUNCCOD,data.data[0].FFUNCTION,dates)">Print</button>
+>>>>>>> 3cc178deaf1b3dade002c61bc18f4191dadbce61
         </Printing>
 
         <filtering v-if="filter" @closeFilter="filter=false">
