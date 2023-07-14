@@ -156,7 +156,7 @@ class AIPController extends Controller
 
     public function update(Request $request)
     {
-        // dd($request);
+        //dd($request->PS);
         $data = $this->aip->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
@@ -166,7 +166,7 @@ class AIPController extends Controller
             'CO'=>$request->CO,
             'idpaps'=>$request->idpaps
         ]);
-
+        
         return redirect('AIP/direct')
                 ->with('message','Output updated');
     }
