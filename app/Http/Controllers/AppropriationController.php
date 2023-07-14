@@ -301,9 +301,9 @@ class AppropriationController extends Controller
             ->groupBy('categories.category')
             ->get()
             ->map(function($item)use($request){
-                $categ = Str::upper($item->category);
+                //$categ = Str::upper($item->category);
                 return [
-                    "category"=>$categ,
+                    "category"=>$item->category,
                     "type"=>$request->type,
                     "idpaps"=>$request->idpaps
                 ];
