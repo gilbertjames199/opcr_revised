@@ -151,7 +151,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     showModal: function showModal(ffunccod, ffunction, dates) {
       // alert(ffunction,ffunccod);
       // alert(this.lbp_version);
-      this.my_link = this.getToRep(ffunccod, ffunction, dates);
+      if (this.lbp_version > 2) {
+        this.my_link = this.getToRep(ffunccod, ffunction, dates);
+      } else {
+        this.my_link = this.goToRepPrintLBP2();
+      }
+
       this.displayModal = true;
     },
     hideModal: function hideModal() {
