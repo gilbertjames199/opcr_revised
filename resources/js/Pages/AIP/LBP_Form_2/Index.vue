@@ -18,9 +18,7 @@
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
-            <div hidden>Test hiddden
 
-            </div>
             <!--
             <Link :href="`/inter_outcome/${idoutcome}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -132,7 +130,7 @@ export default {
     props: {
         data: Object,
         filters: Object,
-
+        auth: Object,
         // idinteroutcome: String,
         // idoutcome: String,
         //idmfo:string,
