@@ -45,6 +45,12 @@ class PAPController extends Controller
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
                 })
+                ->orderByRaw(DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
+                            WHEN program_and_projects.type = 'Project' THEN 1
+                            WHEN program_and_projects.type = 'Program' THEN 2
+                            WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
+                            END")
+                        )
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
@@ -175,6 +181,8 @@ class PAPController extends Controller
                 $proceed="0";
             }
         }
+        $msg = "Failed to add Programs and Projects(PAPS)";
+        $status = "error";
         if($proceed==="1"){
 
             //$this->model->create($attributes);
@@ -191,10 +199,12 @@ class PAPController extends Controller
             $paps-> executive_legislative_agenda= $request->executive_legislative_agenda;
             $paps-> research_agenda= $request->research_agenda;
             $paps->save();
+            $msg = "Programs and Projects(PAPS) added";
+            $status="message";
         }
 
         return redirect('/paps/direct')
-        ->with('message','Programs and Projects(PAPS) added');
+        ->with($status,$msg);
     }
     public function save(Request $request)
     {
@@ -360,6 +370,12 @@ class PAPController extends Controller
                 ->when($request->mfosel, function($query, $searchItem){
                     $query->where('idmfo','=',$searchItem);
                 })
+                ->orderByRaw(DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
+                            WHEN program_and_projects.type = 'Project' THEN 1
+                            WHEN program_and_projects.type = 'Program' THEN 2
+                            WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
+                            END")
+                        )
                 ->orderBy('program_and_projects.created_at', 'desc')
                 ->get();
 

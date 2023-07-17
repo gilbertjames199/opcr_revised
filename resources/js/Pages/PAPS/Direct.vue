@@ -51,7 +51,10 @@
                         <tbody>
                             <tr v-for="dat in data.data" :key="dat.id">
                                 <td><div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div></td>
-                                <td>{{ dat.paps_desc }}</td>
+                                <td>
+                                    <!-- <div v-if="dat.type==='GAS'">General Administration and Support (GAS) - {{ dat.paps_desc }}</div> -->
+                                    <div >{{ dat.paps_desc }}</div>
+                                </td>
                                 <td>{{ dat.MOV }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >

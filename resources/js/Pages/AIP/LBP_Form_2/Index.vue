@@ -36,7 +36,6 @@
                 <option value="4">LBP Form 4</option>
             </select>
             <br>
-            <br>
             <div v-if="lbp_version>2">
                 Target Fiscal Year
                 <br>
@@ -75,7 +74,7 @@
                         <tbody>
                             <tr v-for="dat in data.data" :key="dat.id">
                                 <td><div v-if="dat.a_i_p">{{ dat.a_i_p.AIP_Code }}</div></td>
-                                <td>{{ dat.m_f_o.mfo_desc }}</td>
+                                <td><div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div></td>
                                 <td>{{ dat.paps_desc }}</td>
 
                                 <td>
@@ -131,7 +130,7 @@ export default {
     props: {
         data: Object,
         filters: Object,
-
+        auth: Object,
         // idinteroutcome: String,
         // idoutcome: String,
         //idmfo:string,
@@ -150,6 +149,7 @@ export default {
             print: false,
             my_link: "",
             displayModal: false,
+            lbp_version: ""
         }
     },
     watch: {
@@ -232,7 +232,11 @@ export default {
         showModal(ffunccod, ffunction, dates){
             // alert(ffunction,ffunccod);
             // alert(this.lbp_version);
-            this.my_link = this.getToRep(ffunccod, ffunction, dates);
+            if(this.lbp_version>2){
+                this.my_link = this.getToRep(ffunccod, ffunction, dates);
+            }else{
+                this.my_link = this.goToRepPrintLBP2();
+            }
             this.displayModal = true;
         },
 
@@ -241,21 +245,21 @@ export default {
         },
         goToAppropriations(id){
                 axios.get('/appropriations', {
-        params: {
-            idpaps: id
-        }
-        })
-        .then(response => {
-            // Handle the response data if needed
-            console.log(response.data);
+                params: {
+                    idpaps: id
+                }
+                })
+                .then(response => {
+                    // Handle the response data if needed
+                    console.log(response.data);
 
-            // Redirect the user to 'Appropriations/Index' using return inertia
-            window.location.href = '/Appropriations/Index';
-        })
-        .catch(error => {
-            // Handle any errors
-            console.error(error);
-        });
+                    // Redirect the user to 'Appropriations/Index' using return inertia
+                    window.location.href = '/Appropriations/Index';
+                })
+                .catch(error => {
+                    // Handle any errors
+                    console.error(error);
+                });
         }
     }
 };

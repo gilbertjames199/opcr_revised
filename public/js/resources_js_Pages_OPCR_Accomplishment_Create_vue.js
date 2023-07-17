@@ -98,7 +98,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           selectedText = e.target.options[e.target.options.selectedIndex].targets.target_success_indicator
           this.opcr_target_holder = selectedText;
           this.form.actual_accomplishments=selectedText;
-       }*/
+        }*/
       var selectedText = event.target.selectedOptions[0].text;
       this.form.actual_accomplishments = selectedText;
       this.form.target_success_indicator = this.success_indicator_holder; //alert(selectedText);

@@ -82,7 +82,7 @@
                         </li>
 
                         <li>
-                            <Link class="sidebar-link" href="/logframe" :class="{'active': $page.url === '/logframe'}">
+                            <Link class="sidebar-link" :href="`/logframe/${$page.props.auth.user.office.ffunccod}`" :class="{'active': $page.url === `/logframe/${$page.props.auth.user.office.ffunccod}`}">
 
                                 <span class="title">View Logframe</span>
                             </Link>
@@ -137,7 +137,7 @@
                 </li> -->
 
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/AddAccomplishment/" :class="{'active': $page.url === '/DailyAccomplishment/direct'}">
+                    <Link class="sidebar-link" href="/AddAccomplishment/" :class="{'active': $page.url === '/AddAccomplishment/'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-fill" viewBox="0 0 16 16">

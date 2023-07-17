@@ -11,3 +11,4 @@ To install:
 5. php artisan migrate
 6. php artisan db:seed <-this will add user admin@admin.com/12345678
 7. php artisan storage:link
+8. composer dump-autoload

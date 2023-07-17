@@ -9,6 +9,20 @@
         <div class="peers fxw-nw jc-sb ai-c">
             <h2>{{ office }}</h2>
             &nbsp;
+
+            <div v-if="auth.user.office.ffunccod==='1031'">
+                <button class="btn btn-primary mt-3 text-white"
+                    @click="showModalAd(auth.user.office.ffunccod, auth.user.office.office)"
+                    > Print Logframe
+                </button>
+            </div>
+            <div v-else>
+                <button class="btn btn-primary mt-3 text-white"
+                    @click="showModal(auth.user.office.ffunccod, auth.user.office.office)"
+                    > Print Logframe
+                </button>
+
+            </div>
             <Link :href="`/logframe`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -124,12 +138,17 @@
                 -->
             </div>
         </div>
-
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
+                <iframe :src="my_link" style="width:100%; height:500px" />
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
@@ -141,7 +160,8 @@ export default {
         sec_goal: Object,
         mfos: Object,
         office: String,
-
+        functional: Object,
+        auth: Object
         // idinteroutcome: String,
         // idmfo: String,
         // can: Object,
@@ -151,6 +171,7 @@ export default {
         return{
             //search: this.$props.filters.search,
             mfo_rowspan: 0,
+            displayModal: false,
         }
     },
     mounted(){
@@ -177,30 +198,40 @@ export default {
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal,
     },
 
     methods:{
 
-        showCreate(){
-            this.$inertia.get(
-                "/targets/create",
-                {
-                    raao_id: this.raao_id
-                },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
+        getToRep(ffunccod, ffunction){
+            // alert(data[0].FFUNCCOD);
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FLogFrame&reportUnit=%2Freports%2Fplanning_system%2FLogFrame%2FLogframe&standAlone=true&decorate=no&output=pdf';
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
+            var link1 = linkt + jasper_ip +jasper_link + params;
+            return link1;
         },
-        deletePAPS(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Program and Projects? "+id;
-              if (confirm(text) == true) {
-                this.$inertia.delete("/paps/" + id+"/"+this.idmfo);
-            }
-        }
+        showModal(ffunccod, ffunction){
+            // alert(ffunccod+"\n"+ffunction);
+            this.my_link = this.getToRep(ffunccod, ffunction);
+            this.displayModal = true;
+        },
+        showModalAd(ffunccod, ffunction){
+            //alert("showModalAd\n"+ffunccod+"\n"+ffunction);
+            var linkt="http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLogframe_spcl%2FMAIN_LOGFRAME&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLogframe_spcl&decorate=no&output=pdf'
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
+            var link1 = linkt + jasper_ip +jasper_link + params;
+            this.displayModal = true;
+            this.my_link = link1;
+
+        },
+
+        hideModal() {
+            this.displayModal = false;
+        },
     }
 };
 </script>

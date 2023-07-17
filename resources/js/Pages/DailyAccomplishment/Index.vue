@@ -30,6 +30,7 @@
         <filtering v-if="filter" @closeFilter="filter=false">
             Filter by MFO
             <select v-model="mfosel" class="form-control" @change="filterData()">
+                <option></option>
                 <option v-for="mfo in mfos" :value="mfo.id">
                     {{ mfo.mfo_desc }}
                 </option>
@@ -64,9 +65,14 @@
                         <tbody>
 
                             <tr v-for="dat in data.data">
+<<<<<<< HEAD
                                 <td>{{ dat.date_from }}</td>
                                 <td>{{ dat.date_to }}</td>
                                 <td>{{ dat.m_f_o.mfo_desc }}</td>
+=======
+                                <td>{{ dat.date }}</td>
+                                <td><div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div></td>
+>>>>>>> 9e2a3d9683031260221bb09f62c46c37c7b27195
                                 <td>{{ dat.description }}</td>
                                 <td>{{ dat.quantity }}</td>
                                 <td>{{ dat.remarks }}</td>
@@ -124,16 +130,32 @@ export default {
         paps: Object,
         idpaps: String,
         functions: Object,
+        filters: Object,
     },
     data() {
         return{
+            search: this.$props.filters.search,
             filter: false,
             filter_p: false,
             date_from: "",
             date_to: "",
             displayModal: false,
             my_link: "",
+            mfosel: "",
         }
+    },
+    watch: {
+            search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/AddAccomplishment",
+                { search: value },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 300),
     },
     components: {
         Pagination, Filtering, Modal, FilterPrinting
@@ -191,10 +213,10 @@ export default {
             return percentt;
         },
         printSubmit(){
-            alert("print submit");
+            //alert("print submit");
             //var office_ind = document.getElementById("selectOffice").selectedIndex;
             this.office =this.auth.user.office.office;
-            var pg_head = 'PG Head';
+            var pg_head = this.functions.DEPTHEAD;
             var forFFUNCCOD = this.auth.user.office.department_code;
             this.my_link =this.viewlink(forFFUNCCOD, this.date_from, this.date_to, this.office, pg_head);
 
@@ -218,6 +240,27 @@ export default {
         hideModal() {
             this.displayModal = false;
         },
+        async filterData(){
+            //alert(this.mfosel);
+
+            this.$inertia.get(
+                "/AddAccomplishment",
+                {
+                    mfosel: this.mfosel
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        },
+        clearFilter(){
+
+            this.mfosel="";
+            this.search="";
+            this.filterData();
+        }
     }
 };
 </script>
