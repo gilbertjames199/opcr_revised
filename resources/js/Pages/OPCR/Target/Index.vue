@@ -146,11 +146,12 @@ export default {
         },
         createTarget(idpaps, success_indic){
             //alert(idpaps);
-            if(success_indic===null){
-                alert('This PPA has no success indicator! Add success indicator for the target first!');
-            }else{
-                this.$inertia.get("/opcrtarget/create/" + this.opcr_list_id, {"idpaps": idpaps});
-            }
+            this.$inertia.get("/opcrtarget/create/" + this.opcr_list_id, {"idpaps": idpaps});
+            // if(success_indic===null){
+            //     alert('This PPA has no success indicator! Add success indicator for the target first!');
+            // }else{
+            //     this.$inertia.get("/opcrtarget/create/" + this.opcr_list_id, {"idpaps": idpaps});
+            // }
 
         },
         getRowspanPaps(row, ind){
