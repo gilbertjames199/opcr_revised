@@ -138,13 +138,9 @@ export default {
         idmfo: String,
         idpaps: Number,
         can: Object,
-<<<<<<< HEAD
-        mfos: Object
-=======
         mfos: Object,
         FFUNCCOD: Object,
         totals: Object,
->>>>>>> 01f398e5dc221c6fee66bbcd8c137b29f9ee7fc6
     },
     data() {
         return{
@@ -215,9 +211,6 @@ export default {
             var link1 = linkt + jasper_ip +jasper_link + params;
             return link1;
         },
-<<<<<<< HEAD
-
-=======
         goToRepPrintLBP2(){
             //http://122.53.120.27:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2
             var linkt="http://";
@@ -236,7 +229,6 @@ export default {
             var link1 = linkt + jasper_ip +jasper_link + params;
             return link1;
         },
->>>>>>> 01f398e5dc221c6fee66bbcd8c137b29f9ee7fc6
         showModal(ffunccod, ffunction, dates){
             // alert(ffunction,ffunccod);
             // alert(this.lbp_version);
