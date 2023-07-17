@@ -25,7 +25,7 @@ class AddAccomplishmentController extends Controller
         $functions = FFUNCCOD::where('department_code', auth()->user()->department_code)->first();
 
         $data = $this->model->with('MFO')
-                    ->select('daily_accomplishments.date','daily_accomplishments.description','daily_accomplishments.quantity','daily_accomplishments.remarks',
+                    ->select('daily_accomplishments.date_from','daily_accomplishments.date_to','daily_accomplishments.description','daily_accomplishments.quantity','daily_accomplishments.remarks',
                     'daily_accomplishments.Link', 'daily_accomplishments.id','daily_accomplishments.idmfo',
                     )
                     ->when($request->search, function($query, $searchItem){

@@ -65,14 +65,9 @@
                         <tbody>
 
                             <tr v-for="dat in data.data">
-<<<<<<< HEAD
                                 <td>{{ dat.date_from }}</td>
                                 <td>{{ dat.date_to }}</td>
                                 <td>{{ dat.m_f_o.mfo_desc }}</td>
-=======
-                                <td>{{ dat.date }}</td>
-                                <td><div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div></td>
->>>>>>> 9e2a3d9683031260221bb09f62c46c37c7b27195
                                 <td>{{ dat.description }}</td>
                                 <td>{{ dat.quantity }}</td>
                                 <td>{{ dat.remarks }}</td>
