@@ -42,6 +42,7 @@
         "vue-filepond": "^7.0.2",
         "vue-search-select": "^3.1.0",
         "vue-select": "^4.0.0-beta.3",
+        "vue-select2": "^0.2.6",
         "vue-year-picker": "^1.1.0"
     }
 }

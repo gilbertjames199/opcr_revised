@@ -440,7 +440,7 @@ var _hoisted_37 = {
   key: 2
 };
 
-var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Appropriations/Obligations");
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Appropriations");
 
 var _hoisted_39 = {
   "class": "row justify-content-center"

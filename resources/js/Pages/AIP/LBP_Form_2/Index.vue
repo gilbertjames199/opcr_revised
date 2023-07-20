@@ -87,7 +87,7 @@
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
                                             <li v-if="!dat.a_i_p"><Link class="dropdown-item" :href="`/AIP/create/${dat.id}`"> AIP Code</Link></li>
                                             <li v-if="dat.a_i_p"><Link class="dropdown-item" :href="`/AIP/${dat.a_i_p.id}/edit`"> Edit</Link></li>
-                                            <li v-if="dat.a_i_p"><Link class="dropdown-item" :href="`/appropriations/${dat.id}`">Appropriations/Obligations</Link></li>
+                                            <li v-if="dat.a_i_p"><Link class="dropdown-item" :href="`/appropriations/${dat.id}`">Appropriations</Link></li>
                                         </ul>
                                     </div>
                                 </td>

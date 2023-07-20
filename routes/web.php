@@ -73,6 +73,7 @@ use App\Http\Controllers\AddAccomplishmentController;
 use App\Http\Controllers\AppropriationController;
 use App\Http\Controllers\DivisionOutputController;
 use App\Http\Controllers\IndividualFinalOutputController;
+use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
@@ -650,6 +651,10 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit',[AppropriationController::class,'edit']);
         Route::patch('/',[AppropriationController::class,'update']);
         Route::delete('/{id}', [AppropriationController::class, 'destroy']);
+
+    });
+    Route::prefix('/ooes')->group(function(){
+        Route::get('/filtered/ooes',[ObjectOfExpenditureController::class,'filterOOES']);
     });
 
     Route::prefix('/individual/outputs')->group(function(){
