@@ -25,7 +25,7 @@ class AddAccomplishmentController extends Controller
         $functions = FFUNCCOD::where('department_code', auth()->user()->department_code)->first();
 
         $data = $this->model->with('MFO')
-                    ->select('daily_accomplishments.date','daily_accomplishments.description','daily_accomplishments.quantity','daily_accomplishments.remarks',
+                    ->select('daily_accomplishments.date_from','daily_accomplishments.date_to','daily_accomplishments.description','daily_accomplishments.quantity','daily_accomplishments.remarks',
                     'daily_accomplishments.Link', 'daily_accomplishments.id','daily_accomplishments.idmfo',
                     )
                     ->when($request->search, function($query, $searchItem){
@@ -70,10 +70,13 @@ class AddAccomplishmentController extends Controller
 
         $request->validate([
             'description' => 'required',
-            'date' => 'required',
+            'date_from' => 'required',
+            'date_to' => 'required',
             'remarks' => 'required',
             'Link' => 'required',
+            'Link' => 'required',
             'idpaps'=>'required',
+            'responsible_person'=>'required',
         ]);
 
         $this->model->create($request->all());
@@ -86,7 +89,8 @@ class AddAccomplishmentController extends Controller
             'id',
             'description',
             'quantity',
-            'date',
+            'date_from',
+            'date_to',
             'remarks',
             'Link',
             'idpaps',
@@ -119,7 +123,8 @@ class AddAccomplishmentController extends Controller
         $data->update([
             'description'=>$request->description,
             'quantity'=>$request->quantity,
-            'date'=>$request->date,
+            'date_from'=>$request->date_from,
+            'date_to'=>$request->date_to,
             'remarks'=>$request->remarks,
             'Link'=>$request->Link,
             'idpaps'=>$request->idpaps,

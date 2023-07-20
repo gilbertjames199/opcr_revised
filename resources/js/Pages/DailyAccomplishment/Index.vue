@@ -52,7 +52,8 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Date</th>
+                                <th>Date From</th>
+                                <th>Date To</th>
                                 <th>Major Final Output</th>
                                 <th>Activities</th>
                                 <th>Quantity</th>
@@ -64,8 +65,9 @@
                         <tbody>
 
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.date }}</td>
-                                <td><div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div></td>
+                                <td>{{ dat.date_from }}</td>
+                                <td>{{ dat.date_to }}</td>
+                                <td>{{ dat.m_f_o.mfo_desc }}</td>
                                 <td>{{ dat.description }}</td>
                                 <td>{{ dat.quantity }}</td>
                                 <td>{{ dat.remarks }}</td>

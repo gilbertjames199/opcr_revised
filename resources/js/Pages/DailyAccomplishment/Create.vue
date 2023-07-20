@@ -55,9 +55,13 @@
                 <input type="text" v-model="form.responsible_person" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.responsible_person">{{ form.errors.responsible_person }}</div>
 
-                <label for="">Date</label>
-                <input type="date" v-model="form.date" class="form-control" autocomplete="positionchrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.date">{{ form.errors.date }}</div>
+                <label for="">Date From</label>
+                <input type="date" v-model="form.date_from" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
+
+                <label for="">Date To</label>
+                <input type="date" v-model="form.date_to" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
 
                 <label for="">Remarks</label>
                 <input type="text" v-model="form.remarks" class="form-control" autocomplete="positionchrome-off">
@@ -107,7 +111,8 @@ export default {
                 submitted: false,
                 form: useForm({
                     idmfo: "",
-                    date: "",
+                    date_from: "",
+                    date_to: "",
                     description: "",
                     quantity: "",
                     remarks: "",
@@ -129,7 +134,8 @@ export default {
                     this.bar=this.bari
                 }
                 this.pageTitle = "Edit"
-                this.form.date=this.editData.date
+                this.form.date_from=this.editData.date_from
+                this.form.date_to=this.editData.date_to
                 this.form.description=this.editData.description
                 this.form.quantity=this.editData.quantity
                 this.form.remarks=this.editData.remarks

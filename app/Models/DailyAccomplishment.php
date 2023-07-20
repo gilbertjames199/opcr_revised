@@ -11,7 +11,8 @@ class DailyAccomplishment extends Model
     protected $connection = "mysql";
     protected $table='daily_accomplishments';
     protected $fillable = [
-        'date',
+        'date_from',
+        'date_to',
         'description',
         'quantity',
         'remarks',
