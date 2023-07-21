@@ -49,7 +49,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.year">{{ form.errors.year }}</div>
 
                 <label>OFFICE</label>
-                {{ form.FFUNCCOD }}
+                <!-- {{ form.FFUNCCOD }} -->
                 <select class="form-control" v-model="form.FFUNCCOD" >
                     <option></option>
                     <option v-for="functione in functions" :value="functione.FFUNCCOD">{{ functione.FFUNCTION }}</option>
@@ -57,7 +57,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
 
                 <label>RAAO TYPE</label>
-                {{ form.raaotype }}
+                <!-- {{ form.raaotype }} -->
                 <select class="form-control" v-model="form.raaotype" ref="raaoSelect" @change="filterProgram">
                     <option></option>
                     <option value="1">Personnel Services</option>
@@ -69,7 +69,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
 
                 <label>PROGRAM</label>&nbsp;
-                <br>{{ form.idprogram }}
+                <!-- <br>{{ form.idprogram }} -->
                 <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
                 <div>
                     <multiselect
@@ -85,7 +85,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
                 <!--******************************-->
                 <label>Objects of Expenditure</label>&nbsp;
-                idooe: {{ form.idooe }}
+                <!-- idooe: {{ form.idooe }} -->
                 <div>
                     <multiselect
                         :options="formattedOOEs"
@@ -120,11 +120,6 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.budget_year">{{ form.errors.budget_year }} OR the budget year value is greater than the value recorded at the LBP Form No. 2</div>
 
                 <label>CATEGORY</label>
-                <!-- <select class="form-control" v-model="form.category" >
-                    <option>Capital Outlay</option>
-                    <option>Maintenance, Operating, and Other Expenses</option>
-                    <option>Personnel Services</option>
-                </select> -->
                 <input type="text" class="form-control" v-model="form.category" />
                 <div class="fs-6 c-red-500" v-if="form.errors.category">{{ form.errors.category }}</div>
 
@@ -445,7 +440,6 @@ export default {
                 this.form.first_sem =this.format_number_conv(prog_sel[0].sem1,2,false);
                 this.form.second_sem = this.format_number_conv(prog_sel[0].sem2,2,false);
                 this.form.past_year = this.format_number_conv(prog_sel[0].past_year,2,false);
-                //alert("account_code: "+this.form.account_code)
             }
 
         },
