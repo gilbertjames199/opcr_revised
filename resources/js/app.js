@@ -26,6 +26,8 @@ import 'vue-select/dist/vue-select.css';
 import vSelect from 'vue-select';
 import VueSelect from 'vue-select';
 
+//VUE SELECT2
+
 //YEAR PICKER
 //import yearPicker from 'vue-year-picker';
 

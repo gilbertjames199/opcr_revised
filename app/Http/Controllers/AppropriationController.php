@@ -21,18 +21,12 @@ class AppropriationController extends Controller
         $this->paps = $paps;
     }
     public function index(Request $request, $idpaps){
-        //dd("idpaps: ".$request->idpaps);
-
         $data = $this->appropriation
                 ->where('idpaps', $idpaps)
                 ->with('paps')
                 ->paginate(10);
         $paps = $this->paps->where('id',$idpaps)->first();
         $idpaps = $request->query('idpaps');
-
-        // Handle the request and any necessary logic based on $idpaps
-
-        // Redirect the user to 'Appropriations/Index' using return inertia
         return inertia('Appropriations/Index',[
             "data"=>$data,
             "paps"=>$paps,
@@ -53,17 +47,56 @@ class AppropriationController extends Controller
         $accounts = DB::connection('mysql2')->table('chartofaccounts')->get();
         $acc = $accounts->pluck('FTITLE');
         $code = $accounts->pluck('FACTCODE');
+
+        //FUNCTIONS
+        $idn = auth()->user()->recid;
+        $functions = DB::connection('mysql2')->table('accountaccess')
+                    ->select(DB::raw('TRIM(accountaccess.ffunccod) AS FFUNCCOD'),'functions.FFUNCTION')
+                    ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                    ->join('functions','functions.FFUNCCOD','accountaccess.ffunccod')
+                    ->where('systemusers.recid',$idn)
+                    ->get();
+
+        //PROGRAMS
+        // ->join('raaohs', 'raaohs.idprogram','programs.recid')
+        // ->groupBy('programs.recid')
+        $programs = DB::connection('mysql2')->table('programs')
+                    ->select('raaohs.recid AS raohsid','programs.FPROGRAM','programs.factcode','programs.ftype','programs.recid', 'raaohs.FFUNCCOD')
+                    ->leftjoin('raaohs', 'raaohs.idprogram','programs.recid')
+                    ->OrderBy('programs.FPROGRAM')
+                    ->groupBy('programs.recid')
+                    ->get();
+
+        //Objects of Expenditure
+        // $ooes = DB::connection('mysql2')->table('ooes')
+        //         ->get();
+
+        $ooes = DB::connection('mysql2')->table('raaohs')
+                ->select('ooes.FACTCODE','ooes.FOOEDESC','ooes.assetaccountcode',
+                    'ooes.consotag', 'ooes.ffunccod','ooes.consotag','ooes.ftype2','ooes.fueltag',
+                    'ooes.recid', 'raaohs.FFUNCCOD', 'raaohs.FRAOTYPE','raaohs.idprogram', 'raaohs.idprogram'
+                )
+                ->join('raaods', 'raaods.idraao','raaohs.recid')
+                ->join('ooes','ooes.recid','raaods.idooe')
+                ->where('raaods.entrytype','=','0')
+                ->groupBy('ooes.recid')
+                ->orderBy('ooes.FOOEDESC')
+                ->get();
+        //$accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
         return inertia("Appropriations/Create",[
             "pap1"=>$paps,
             "paps"=>$all_paps,
             "accounts"=>$acc,
             "codes"=>$code,
             "aip"=>$aip,
-            "total_budget_year"=>$total_budget_year
+            "total_budget_year"=>$total_budget_year,
+            "functions"=>$functions,
+            "programs"=>$programs,
+            "ooes"=>$ooes,
         ]);
     }
     public function store(Request $request){
-
+        // dd($request);
         //validate if budget
         $idpaps = $request->idpaps;
         $aip=[];
@@ -103,11 +136,15 @@ class AppropriationController extends Controller
             }else{
                 $request->merge(['budget_year' => null]);
             }
-
-
         }
-
+        //dd($request);
         $attributes = $request->validate([
+            'idooe'=>'required',
+            'year'=>'required',
+            'FFUNCCOD'=>'required',
+            'raaotype'=>'required',
+            'idprogram'=>'required',
+            'AIP_CODE'=>'required',
             'object_of_expenditure' => 'required',
             'past_year' => 'required',
             'first_sem' => 'required',
@@ -115,8 +152,15 @@ class AppropriationController extends Controller
             'budget_year' => 'required',
             'idpaps' => 'required',
             'category' => 'required',
+
         ]);
         $app = new Appropriation();
+        $app->idooe	=$request->idooe;
+        $app->year	=$request->year;
+        $app->FFUNCCOD	=$request->FFUNCCOD;
+        $app->raaotype	=$request->raaotype;
+        $app->idprogram	=$request->idprogram;
+        $app->AIP_CODE	=$request->AIP_CODE;
         $app->object_of_expenditure=$request->object_of_expenditure;
         $app->account_code=$request->account_code;
         $app->past_year=$request->past_year;

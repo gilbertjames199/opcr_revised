@@ -78,6 +78,12 @@
  * Licensed under the MIT license.
  */
 
+/*!
+ * vue-select2 v0.2.6
+ * (c) 2016 Haixing Hu
+ * Released under the MIT License.
+ */
+
 /**
  * @license
  * Lodash <https://lodash.com/>

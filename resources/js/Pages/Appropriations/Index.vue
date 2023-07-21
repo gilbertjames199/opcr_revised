@@ -12,7 +12,7 @@
                 <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
                 <Link class="btn btn-primary btn-sm"
                         :href="`/appropriations/create/${paps.id}`">
-                    Add Activities
+                    Add Appropriations
                 </Link>
                 <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
                 <Link :href="`/AIP/direct`">
