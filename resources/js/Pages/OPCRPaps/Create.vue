@@ -18,6 +18,7 @@
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
                 <input type="hidden" v-model="form.idpaps" class="form-control" autocomplete="positionchrome-off">
+
                 <label for="">Output</label>
                 <input type="text" v-model="form.Outputs" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.Outputs">{{ form.errors.Outputs }}</div>
@@ -37,72 +38,74 @@
                 <label for="">Monitoring</label>
                 <input type="text" v-model="form.Monitoring" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.Monitoring">{{ form.errors.Monitoring }}</div>
+                    <br>
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Rating</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Quality</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Timeliness</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <label for="input">Numerical Rating</label>
+                        <input id="input" type="text" v-model="form.NumericalRating" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.NumericalRating">{{ form.errors.NumericalRating }}</div>
 
-                <button type="button" class="btn btn-primary mt-3" @click="showRating">
-                 Ratings
-                </button>&nbsp;&nbsp;
+                        <label for="input">Adjectival Rating</label>
+                        <input id="input" type="text" v-model="form.AdjectivalRating" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.AdjectivalRating">{{ form.errors.AdjectivalRating }}</div>
 
-                <button type="button" class="btn btn-primary mt-3"  @click="showQuality">
-                 Quality
-                </button>&nbsp;&nbsp;
+                        <label for="input">Efficiency (Quantity)</label>
+                        <input id="input" type="text" v-model="form.Efficiency" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.Efficiency">{{ form.errors.Efficiency }}</div>
 
-                <button type="button" class="btn btn-primary mt-3" @click="showTimeliness">
-                 Timeliness
-                </button><br>
-
-                    <div id="inputRating" v-if="showRatingInput">
-                    <label for="input">Numerical Rating</label>
-                    <input id="input" type="text" v-model="form.NumericalRating" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.NumericalRating">{{ form.errors.NumericalRating }}</div>
-
-                    <label for="input">Adjectival Rating</label>
-                    <input id="input" type="text" v-model="form.AdjectivalRating" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.AdjectivalRating">{{ form.errors.AdjectivalRating }}</div>
-
-                    <label for="input">Efficiency (Quantity)</label>
-                    <input id="input" type="text" v-model="form.Efficiency" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.Efficiency">{{ form.errors.Efficiency }}</div>
-
-                    <label for="input">Remarks</label>
-                    <input id="input" type="text" v-model="form.RatingRemarks" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.RatingRemarks">{{ form.errors.RatingRemarks }}</div>
+                        <label for="input">Remarks</label>
+                        <input id="input" type="text" v-model="form.RatingRemarks" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.RatingRemarks">{{ form.errors.RatingRemarks }}</div>
                     </div>
 
-                    <div id="inputQuality" v-if="showQualityInput">
-                    <label for="input">Numerical Rating</label>
-                    <input id="input" type="text" v-model="form.NumericalRating1" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.NumericalRating1">{{ form.errors.NumericalRating1 }}</div>
+                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <label for="input">Numerical Rating</label>
+                        <input id="input" type="text" v-model="form.NumericalRating1" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.NumericalRating1">{{ form.errors.NumericalRating1 }}</div>
 
-                    <label for="input">Adjectival Rating</label>
-                    <input id="input" type="text" v-model="form.AdjectivalRating1" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.AdjectivalRating1">{{ form.errors.AdjectivalRating1 }}</div>
+                        <label for="input">Adjectival Rating</label>
+                        <input id="input" type="text" v-model="form.AdjectivalRating1" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.AdjectivalRating1">{{ form.errors.AdjectivalRating1 }}</div>
 
-                    <label for="input">Quality</label>
-                    <input id="input" type="text" v-model="form.Quality" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.Quality">{{ form.errors.Quality }}</div>
+                        <label for="input">Quality</label>
+                        <input id="input" type="text" v-model="form.Quality" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.Quality">{{ form.errors.Quality }}</div>
 
-                    <label for="input">Remarks</label>
-                    <input id="input" type="text" v-model="form.QualityRemarks" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.QualityRemarks">{{ form.errors.QualityRemarks }}</div>
+                        <label for="input">Remarks</label>
+                        <input id="input" type="text" v-model="form.QualityRemarks" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.QualityRemarks">{{ form.errors.QualityRemarks }}</div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                        <label for="input">Numerical Rating</label>
+                        <input id="input" type="text" v-model="form.NumericalRating2" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.NumericalRating2">{{ form.errors.NumericalRating2 }}</div>
+
+                        <label for="input">Adjectival Rating</label>
+                        <input id="input" type="text" v-model="form.AdjectivalRating2" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.AdjectivalRating2">{{ form.errors.AdjectivalRating2 }}</div>
+
+                        <label for="input">Timeliness</label>
+                        <input id="input" type="text" v-model="form.Timeliness" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.Timeliness">{{ form.errors.Timeliness }}</div>
+
+                        <label for="input">Remarks</label>
+                        <input id="input" type="text" v-model="form.TimelinessRemarks" class="form-control" autocomplete="positionchrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.TimelinessRemarks">{{ form.errors.TimelinessRemarks }}</div>
+                    </div>
                     </div>
 
-                    <div id="inputTimeliness" v-if="showTimelinessInput">
-                    <label for="input">Numerical Rating</label>
-                    <input id="input" type="text" v-model="form.NumericalRating2" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.NumericalRating2">{{ form.errors.NumericalRating2 }}</div>
 
-                    <label for="input">Adjectival Rating</label>
-                    <input id="input" type="text" v-model="form.AdjectivalRating2" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.AdjectivalRating2">{{ form.errors.AdjectivalRating2 }}</div>
-
-                    <label for="input">Timeliness</label>
-                    <input id="input" type="text" v-model="form.Timeliness" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.Timeliness">{{ form.errors.Timeliness }}</div>
-
-                    <label for="input">Remarks</label>
-                    <input id="input" type="text" v-model="form.TimelinessRemarks" class="form-control" autocomplete="positionchrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.TimelinessRemarks">{{ form.errors.TimelinessRemarks }}</div>
-                    </div>
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
@@ -196,21 +199,6 @@ export default {
                     // alert('for store '+url);
                     this.form.post(url);
                 }
-            },
-            showRating() {
-            this.showRatingInput = true;
-            this.showQualityInput = false;
-            this.showTimelinessInput = false;
-            },
-            showQuality() {
-            this.showRatingInput = false;
-            this.showQualityInput = true;
-            this.showTimelinessInput = false;
-            },
-            showTimeliness() {
-            this.showRatingInput = false;
-            this.showQualityInput = false;
-            this.showTimelinessInput = true;
             }
         },
     };
