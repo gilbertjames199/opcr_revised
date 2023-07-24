@@ -218,7 +218,7 @@ export default {
         computed: {
             formattedOOEs(){
                 let dataOoes = this.dt_ooes;
-                return dataOoes.map((dataOoes)=>({
+                return this.dt_ooes.map((dataOoes)=>({
                     value: dataOoes.recid,
                     label: dataOoes.FOOEDESC,
                     FACTCODE: dataOoes.FACTCODE,
