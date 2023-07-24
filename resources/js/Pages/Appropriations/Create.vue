@@ -20,7 +20,7 @@
                 <input type="hidden" required>
                 <input type="hidden" v-model="form.idpaps" class="form-control" autocomplete="positionchrome-off">
 
-                <div >
+                <div hidden>
                     <label for="">Chart of Accounts *</label>
                     <div @keyup.enter="addAccount($event)">
                         <multiselect
@@ -49,7 +49,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.year">{{ form.errors.year }}</div>
 
                 <label>OFFICE</label>
-                <!-- {{ form.FFUNCCOD }} -->
+                {{ form.FFUNCCOD }}
                 <select class="form-control" v-model="form.FFUNCCOD" >
                     <option></option>
                     <option v-for="functione in functions" :value="functione.FFUNCCOD">{{ functione.FFUNCTION }}</option>
@@ -57,8 +57,8 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
 
                 <label>RAAO TYPE</label>
-                <!-- {{ form.raaotype }} -->
-                <select class="form-control" v-model="form.raaotype" ref="raaoSelect" @change="filterProgram">
+                {{ form.raaotype }}
+                <select class="form-control" v-model="form.raaotype" ref="raaoSelect" @click="filterProgram">
                     <option></option>
                     <option value="1">Personnel Services</option>
                     <option value="2">Maintenance, Operating, and Other Expenses</option>
@@ -69,7 +69,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
 
                 <label>PROGRAM</label>&nbsp;
-                <!-- <br>{{ form.idprogram }} -->
+                <br>{{ form.idprogram }}
                 <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
                 <div>
                     <multiselect
@@ -78,14 +78,14 @@
                         v-model="form.idprogram"
                         label="label"
                         track-by="label"
-                        @close="loadOOE"
+                        @change="loadOOE"
                     >
                     </multiselect>
                 </div>
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
                 <!--******************************-->
                 <label>Objects of Expenditure</label>&nbsp;
-                <!-- idooe: {{ form.idooe }} -->
+                idooe: {{ form.idooe }}
                 <div>
                     <multiselect
                         :options="formattedOOEs"
@@ -101,19 +101,19 @@
 
                 <div class="fs-6 c-red-500" v-if="form.errors.GAD">{{ form.errors.GAD }}</div>
                 <label>PAST YEAR </label>
-                <input type="number" class="form-control" v-model="form.past_year" />
+                <input type="number" class="form-control" v-model="form.past_year" readonly/>
                 <div class="fs-6 c-red-500" v-if="form.errors.past_year">{{ form.errors.past_year }}</div>
 
                 <label>FIRST SEMESTER (Actual) </label>
-                <input type="number" class="form-control" v-model="form.first_sem" />
+                <input type="number" class="form-control" v-model="form.first_sem" readonly/>
                 <div class="fs-6 c-red-500" v-if="form.errors.first_sem">{{ form.errors.first_sem }}</div>
 
                 <label>SECOND SEMESTER (Estimate) </label>
-                <input type="number" class="form-control" v-model="form.second_sem" />
+                <input type="number" class="form-control" v-model="form.second_sem" readonly/>
                 <div class="fs-6 c-red-500" v-if="form.errors.second_sem">{{ form.errors.second_sem }}</div>
 
                 <label>TOTAL </label>
-                <input type="text" class="form-control" :value="getTotal12" />
+                <input type="text" class="form-control" :value="getTotal12" readonly/>
 
                 <label>BUDGET YEAR PROPOSED </label>
                 <input type="number" class="form-control" v-model="form.budget_year" />
@@ -140,6 +140,7 @@
                 <!-- {{ aip }}
                 <br/>
                 {{ total_budget_year }} -->
+               <!-- trte {{ formattedPrograms }} -->
             </form>
         </div>
 
@@ -233,9 +234,9 @@ export default {
                 if (this.form.raaotype) {
                     dataPrograms = dataPrograms.filter((program) => program.ftype === this.form.raaotype);
                 }
-                // if(this.form.FFUNCCOD){
-                //     dataPrograms = dataPrograms.filter((program) => program.FFUNCCOD === this.form.FFUNCCOD);
-                // }
+                if(this.form.FFUNCCOD){
+                    dataPrograms = dataPrograms.filter((program) => program.FFUNCCOD === this.form.FFUNCCOD);
+                }
 
                 return dataPrograms.map((program) => ({
                     value: program.recid,
@@ -406,18 +407,15 @@ export default {
                 this.form.year = parseFloat(yr)+1;
             },
             filterProgram(){
-                this.form.idprogram=null;
-                this.form.idooe=null;
+                // this.form.idprogram=null;
+                // this.form.idooe=null;
                 const selectElement = this.$refs.raaoSelect;
                 this.form.category = selectElement.options[selectElement.selectedIndex].text;
 
             },
             loadOOE(){
-
                 this.dt_ooes=[];
                 var year1 = parseFloat(this.form.year)-1;
-
-
                 axios.get("/ooes/filtered/ooes",{
                     params:{
                         idprogram: this.form.idprogram,
@@ -430,7 +428,6 @@ export default {
                 }).catch((error) => {
                     console.error(error);
                 });
-
             },
             setOOEValue(){
                 var prog_sel=this.dt_ooes.filter(ooes=>ooes.recid===this.form.idooe);

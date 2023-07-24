@@ -38,6 +38,9 @@ class AppropriationController extends Controller
         ]);
     }
     public function create(Request $request, $idpaps){
+        $year_c = date('Y');
+        $year_n = intval($year_c)+1;
+        $year_p = intval($year_c)-1;
         //AIP CODE
         $aip = AIP::where('idpaps', $idpaps)->first();
         $total_budget_year = $this->getTotalAppropriationByPAPS($idpaps);
@@ -61,11 +64,14 @@ class AppropriationController extends Controller
         // ->join('raaohs', 'raaohs.idprogram','programs.recid')
         // ->groupBy('programs.recid')
         $programs = DB::connection('mysql2')->table('programs')
-                    ->select('raaohs.recid AS raohsid','programs.FPROGRAM','programs.factcode','programs.ftype','programs.recid', 'raaohs.FFUNCCOD')
-                    ->leftjoin('raaohs', 'raaohs.idprogram','programs.recid')
-                    ->OrderBy('programs.FPROGRAM')
-                    ->groupBy('programs.recid')
-                    ->get();
+                     ->select('raaohs.recid AS raohsid','programs.FPROGRAM',
+                        'programs.factcode','programs.ftype','raaohs.tyear',
+                        'programs.recid', DB::raw('TRIM(raaohs.FFUNCCOD) AS FFUNCCOD'))
+                     ->join('raaohs', 'raaohs.idprogram','programs.recid')
+                     ->where('raaohs.tyear', $year_c)
+                     ->OrderBy('programs.FPROGRAM')
+                     ->groupBy('raaohs.recid')
+                     ->get();
 
         $ooes=[];
         return inertia("Appropriations/Create",[
@@ -189,10 +195,13 @@ class AppropriationController extends Controller
          // ->join('raaohs', 'raaohs.idprogram','programs.recid')
          // ->groupBy('programs.recid')
          $programs = DB::connection('mysql2')->table('programs')
-                     ->select('raaohs.recid AS raohsid','programs.FPROGRAM','programs.factcode','programs.ftype','programs.recid', 'raaohs.FFUNCCOD')
+                     ->select('raaohs.recid AS raohsid','programs.FPROGRAM',
+                        'programs.factcode','programs.ftype','raaohs.tyear',
+                        'programs.recid', 'raaohs.FFUNCCOD')
                      ->leftjoin('raaohs', 'raaohs.idprogram','programs.recid')
+                     ->where('raaohs.tyear', $year_c)
                      ->OrderBy('programs.FPROGRAM')
-                     ->groupBy('programs.recid')
+                     ->groupBy('raaohs.recid')
                      ->get();
 
          $ooes=DB::connection('mysql2')->table('raaohs')
@@ -232,16 +241,26 @@ class AppropriationController extends Controller
                                     ->whereYear('raaods.fdate', '=',$year_c)
                                     ->join('raaohs','raaohs.recid','raaods.idraao')
                                     ->sum('raaods.famount');
-                    $sem2 = DB::connection('mysql2')
-                                ->table('raaods')
+                    // $sem2 = DB::connection('mysql2')
+                    //             ->table('raaods')
+                    //             ->where('raaohs.idprogram', $item->idprogram)
+                    //             ->where('raaohs.FFUNCCOD', $item->FFUNCCOD)
+                    //             ->where('raaohs.FRAOTYPE', $item->FRAOTYPE)
+                    //             ->where('raaods.entrytype', '1')
+                    //             ->where('raaods.idooe',$item->recid)
+                    //             ->whereYear('raaods.fdate', '=',$year_c)
+                    //             ->whereMonth('raaods.fdate', '>','7')
+                    //             ->join('raaohs','raaohs.recid','raaods.idraao')
+                    //             ->sum('raaods.famount');
+                    $sem2 =DB::connection('mysql2')->table('raaods')
+                                ->leftJoin('raaohs', 'raaods.idraao', '=', 'raaohs.recid')
+                                ->whereYear('raaods.fdate', $year_c)
+                                ->whereMonth('raaods.fdate', '<', '7')
+                                ->where('raaods.entrytype', '3')
                                 ->where('raaohs.idprogram', $item->idprogram)
+                                ->where('raaods.idooe', $item->recid)
                                 ->where('raaohs.FFUNCCOD', $item->FFUNCCOD)
-                                ->where('raaohs.FRAOTYPE', $item->FRAOTYPE)
-                                ->where('raaods.entrytype', '1')
-                                ->where('raaods.idooe',$item->recid)
-                                ->whereYear('raaods.fdate', '=',$year_c)
-                                ->whereMonth('raaods.fdate', '>','7')
-                                ->join('raaohs','raaohs.recid','raaods.idraao')
+                                ->groupBy('raaods.idooe')
                                 ->sum('raaods.famount');
                     return [
                         'FACTCODE'=>$item->FACTCODE,
