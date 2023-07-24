@@ -38,6 +38,9 @@ class AppropriationController extends Controller
         ]);
     }
     public function create(Request $request, $idpaps){
+        $year_c = date('Y');
+        $year_n = intval($year_c)+1;
+        $year_p = intval($year_c)-1;
         //AIP CODE
         $aip = AIP::where('idpaps', $idpaps)->first();
         $total_budget_year = $this->getTotalAppropriationByPAPS($idpaps);
@@ -61,28 +64,16 @@ class AppropriationController extends Controller
         // ->join('raaohs', 'raaohs.idprogram','programs.recid')
         // ->groupBy('programs.recid')
         $programs = DB::connection('mysql2')->table('programs')
-                    ->select('raaohs.recid AS raohsid','programs.FPROGRAM','programs.factcode','programs.ftype','programs.recid', 'raaohs.FFUNCCOD')
-                    ->leftjoin('raaohs', 'raaohs.idprogram','programs.recid')
-                    ->OrderBy('programs.FPROGRAM')
-                    ->groupBy('programs.recid')
-                    ->get();
+                     ->select('raaohs.recid AS raohsid','programs.FPROGRAM',
+                        'programs.factcode','programs.ftype','raaohs.tyear',
+                        'programs.recid', DB::raw('TRIM(raaohs.FFUNCCOD) AS FFUNCCOD'))
+                     ->join('raaohs', 'raaohs.idprogram','programs.recid')
+                     ->where('raaohs.tyear', $year_c)
+                     ->OrderBy('programs.FPROGRAM')
+                     ->groupBy('raaohs.recid')
+                     ->get();
 
-        //Objects of Expenditure
-        // $ooes = DB::connection('mysql2')->table('ooes')
-        //         ->get();
-
-        $ooes = DB::connection('mysql2')->table('raaohs')
-                ->select('ooes.FACTCODE','ooes.FOOEDESC','ooes.assetaccountcode',
-                    'ooes.consotag', 'ooes.ffunccod','ooes.consotag','ooes.ftype2','ooes.fueltag',
-                    'ooes.recid', 'raaohs.FFUNCCOD', 'raaohs.FRAOTYPE','raaohs.idprogram', 'raaohs.idprogram'
-                )
-                ->join('raaods', 'raaods.idraao','raaohs.recid')
-                ->join('ooes','ooes.recid','raaods.idooe')
-                ->where('raaods.entrytype','=','0')
-                ->groupBy('ooes.recid')
-                ->orderBy('ooes.FOOEDESC')
-                ->get();
-        //$accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+        $ooes=[];
         return inertia("Appropriations/Create",[
             "pap1"=>$paps,
             "paps"=>$all_paps,
@@ -137,14 +128,13 @@ class AppropriationController extends Controller
                 $request->merge(['budget_year' => null]);
             }
         }
-        //dd($request);
+
         $attributes = $request->validate([
             'idooe'=>'required',
             'year'=>'required',
             'FFUNCCOD'=>'required',
             'raaotype'=>'required',
             'idprogram'=>'required',
-            'AIP_CODE'=>'required',
             'object_of_expenditure' => 'required',
             'past_year' => 'required',
             'first_sem' => 'required',
@@ -152,8 +142,8 @@ class AppropriationController extends Controller
             'budget_year' => 'required',
             'idpaps' => 'required',
             'category' => 'required',
-
         ]);
+        // dd($request);
         $app = new Appropriation();
         $app->idooe	=$request->idooe;
         $app->year	=$request->year;
@@ -177,27 +167,134 @@ class AppropriationController extends Controller
     public function edit(Request $request, $id){
 
         $data = $this->appropriation::where('id',$id)->first();
+        //dd($data);
+        $year_n = $data->year;
+        $year_c = intval($year_n)-1;
+        $year_p = intval($year_n)-2;
         $idpaps = $data->idpaps;
+         //AIP CODE
+         $aip = AIP::where('idpaps', $idpaps)->first();
+         $total_budget_year = $this->getTotalAppropriationByPAPS($idpaps);
+         //dd("create: ".$idpaps);
+         $paps = ProgramAndProject::find($idpaps);
+         $all_paps = ProgramAndProject::get();
+         $accounts = DB::connection('mysql2')->table('chartofaccounts')->get();
+         $acc = $accounts->pluck('FTITLE');
+         $code = $accounts->pluck('FACTCODE');
 
-        $aip = AIP::where('idpaps', $idpaps)->first();
-        $total_budget_year = $this->getTotalAppropriationByPAPS($idpaps);
-        $paps = ProgramAndProject::find($idpaps);
-        $all_paps = ProgramAndProject::get();
-        $accounts = DB::connection('mysql2')->table('chartofaccounts')->get();
-        $acc = $accounts->pluck('FTITLE');
-        $code = $accounts->pluck('FACTCODE');
-        return inertia("Appropriations/Create",[
-            "pap1"=>$paps,
-            "paps"=>$all_paps,
-            "accounts"=>$acc,
-            "codes"=>$code,
-            "editData"=>$data,
-            "aip"=>$aip,
-            "total_budget_year"=>$total_budget_year
-        ]);
+         //FUNCTIONS
+         $idn = auth()->user()->recid;
+         $functions = DB::connection('mysql2')->table('accountaccess')
+                     ->select(DB::raw('TRIM(accountaccess.ffunccod) AS FFUNCCOD'),'functions.FFUNCTION')
+                     ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
+                     ->join('functions','functions.FFUNCCOD','accountaccess.ffunccod')
+                     ->where('systemusers.recid',$idn)
+                     ->get();
+
+         //PROGRAMS
+         // ->join('raaohs', 'raaohs.idprogram','programs.recid')
+         // ->groupBy('programs.recid')
+         $programs = DB::connection('mysql2')->table('programs')
+                     ->select('raaohs.recid AS raohsid','programs.FPROGRAM',
+                        'programs.factcode','programs.ftype','raaohs.tyear',
+                        'programs.recid', 'raaohs.FFUNCCOD')
+                     ->leftjoin('raaohs', 'raaohs.idprogram','programs.recid')
+                     ->where('raaohs.tyear', $year_c)
+                     ->OrderBy('programs.FPROGRAM')
+                     ->groupBy('raaohs.recid')
+                     ->get();
+
+         $ooes=DB::connection('mysql2')->table('raaohs')
+                ->select('ooes.FACTCODE','ooes.FOOEDESC','ooes.assetaccountcode',
+                    'ooes.consotag', 'ooes.ftype2','ooes.fueltag',
+                    'ooes.recid', 'raaohs.FFUNCCOD', 'raaohs.FRAOTYPE','raaohs.idprogram',
+                    'raaods.famount'
+                )
+                ->where('raaohs.idprogram', $data->idprogram)
+                ->where('raaohs.FFUNCCOD', $data->FFUNCCOD)
+                ->where('raaohs.FRAOTYPE', $data->raaotype)
+                ->join('raaods', 'raaods.idraao','raaohs.recid')
+                ->join('ooes','ooes.recid','raaods.idooe')
+                ->groupBy('ooes.recid')
+                ->orderBy('ooes.FOOEDESC')
+                ->get()
+                ->map(function($item)use($request, $year_c, $year_n){
+                    $year_past = $year_c-1;
+                    $past_year = DB::connection('mysql2')
+                                    ->table('raaods')
+                                    ->where('raaohs.idprogram', $item->idprogram)
+                                    ->where('raaohs.FFUNCCOD', $item->FFUNCCOD)
+                                    ->where('raaohs.FRAOTYPE', $item->FRAOTYPE)
+                                    ->where('raaods.idooe',$item->recid)
+                                    ->where('raaods.entrytype', '2')
+                                    ->whereYear('raaods.fdate', '=',$year_past)
+                                    ->join('raaohs','raaohs.recid','raaods.idraao')
+                                    ->sum('raaods.famount');
+                    $sem1 = DB::connection('mysql2')
+                                    ->table('raaods')
+                                    ->where('raaohs.idprogram', $item->idprogram)
+                                    ->where('raaohs.FFUNCCOD', $item->FFUNCCOD)
+                                    ->where('raaohs.FRAOTYPE', $item->FRAOTYPE)
+                                    ->where('raaods.idooe',$item->recid)
+                                    ->where('raaods.entrytype', '3')
+                                    ->whereMonth('raaods.fdate', '<','7')
+                                    ->whereYear('raaods.fdate', '=',$year_c)
+                                    ->join('raaohs','raaohs.recid','raaods.idraao')
+                                    ->sum('raaods.famount');
+                    // $sem2 = DB::connection('mysql2')
+                    //             ->table('raaods')
+                    //             ->where('raaohs.idprogram', $item->idprogram)
+                    //             ->where('raaohs.FFUNCCOD', $item->FFUNCCOD)
+                    //             ->where('raaohs.FRAOTYPE', $item->FRAOTYPE)
+                    //             ->where('raaods.entrytype', '1')
+                    //             ->where('raaods.idooe',$item->recid)
+                    //             ->whereYear('raaods.fdate', '=',$year_c)
+                    //             ->whereMonth('raaods.fdate', '>','7')
+                    //             ->join('raaohs','raaohs.recid','raaods.idraao')
+                    //             ->sum('raaods.famount');
+                    $sem2 =DB::connection('mysql2')->table('raaods')
+                                ->leftJoin('raaohs', 'raaods.idraao', '=', 'raaohs.recid')
+                                ->whereYear('raaods.fdate', $year_c)
+                                ->whereMonth('raaods.fdate', '<', '7')
+                                ->where('raaods.entrytype', '3')
+                                ->where('raaohs.idprogram', $item->idprogram)
+                                ->where('raaods.idooe', $item->recid)
+                                ->where('raaohs.FFUNCCOD', $item->FFUNCCOD)
+                                ->groupBy('raaods.idooe')
+                                ->sum('raaods.famount');
+                    return [
+                        'FACTCODE'=>$item->FACTCODE,
+                        'FOOEDESC'=>$item->FOOEDESC,
+                        'assetaccountcode'=>$item->assetaccountcode,
+                        'consotag'=>$item->consotag,
+                        'ftype2'=>$item->ftype2,
+                        'fueltag'=>$item->fueltag,
+                        'recid'=>$item->recid,
+                        'FFUNCCOD'=>$item->FFUNCCOD,
+                        'FRAOTYPE'=>$item->FRAOTYPE,
+                        'idprogram'=>$item->idprogram,
+                        'past_year'=>$past_year,
+                        'sem1'=>$sem1,
+                        'sem2'=>$sem2,
+                        'famount'=>$item->famount
+                    ];
+                });;
+         //dd($data);
+         return inertia("Appropriations/Create",[
+             "pap1"=>$paps,
+             "paps"=>$all_paps,
+             "accounts"=>$acc,
+             "codes"=>$code,
+             "aip"=>$aip,
+             "total_budget_year"=>$total_budget_year,
+             "functions"=>$functions,
+             "programs"=>$programs,
+             "ooes"=>$ooes,
+             "editData"=>$data
+         ]);
     }
     public function update(Request $request){
-        //dd("update");
+        //dd($request);
         $idpaps = $request->idpaps;
         $aip=[];
         $is_greater =false;
@@ -246,6 +343,11 @@ class AppropriationController extends Controller
         ]);
         $approp = $this->appropriation->find($request->id);
         //dd($request->id);
+        $approp->idooe = $request->idooe;
+        $approp->year = $request->year;
+        $approp->FFUNCCOD = $request->FFUNCCOD;
+        $approp->raaotype = $request->raaotype;
+        $approp->idprogram = $request->idprogram;
         $approp->object_of_expenditure = $request->object_of_expenditure;
         $approp->account_code = $request->account_code;
         $approp->past_year = $request->past_year;

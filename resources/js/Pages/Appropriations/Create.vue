@@ -49,16 +49,16 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.year">{{ form.errors.year }}</div>
 
                 <label>OFFICE</label>
-                <!-- {{ form.FFUNCCOD }} -->
-                <select class="form-control" v-model="form.FFUNCCOD" @change="loadOOE">
+                {{ form.FFUNCCOD }}
+                <select class="form-control" v-model="form.FFUNCCOD" >
                     <option></option>
                     <option v-for="functione in functions" :value="functione.FFUNCCOD">{{ functione.FFUNCTION }}</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
 
                 <label>RAAO TYPE</label>
-                <!-- - {{ form.raaotype }} -->
-                <select class="form-control" v-model="form.raaotype" ref="raaoSelect" @change="filterProgram">
+                {{ form.raaotype }}
+                <select class="form-control" v-model="form.raaotype" ref="raaoSelect" @click="filterProgram">
                     <option></option>
                     <option value="1">Personnel Services</option>
                     <option value="2">Maintenance, Operating, and Other Expenses</option>
@@ -69,7 +69,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
 
                 <label>PROGRAM</label>&nbsp;
-                <!-- <br>{{ form.idprogram }} -->
+                <br>{{ form.idprogram }}
                 <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
                 <div>
                     <multiselect
@@ -84,7 +84,8 @@
                 </div>
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
                 <!--******************************-->
-                <label>Objects of Expenditure</label>&nbsp;idooe: {{ form.idooe }}
+                <label>Objects of Expenditure</label>&nbsp;
+                idooe: {{ form.idooe }}
                 <div>
                     <multiselect
                         :options="formattedOOEs"
@@ -100,30 +101,25 @@
 
                 <div class="fs-6 c-red-500" v-if="form.errors.GAD">{{ form.errors.GAD }}</div>
                 <label>PAST YEAR </label>
-                <input type="number" class="form-control" v-model="form.past_year" />
+                <input type="number" class="form-control" v-model="form.past_year" readonly/>
                 <div class="fs-6 c-red-500" v-if="form.errors.past_year">{{ form.errors.past_year }}</div>
 
                 <label>FIRST SEMESTER (Actual) </label>
-                <input type="number" class="form-control" v-model="form.first_sem" />
+                <input type="number" class="form-control" v-model="form.first_sem" readonly/>
                 <div class="fs-6 c-red-500" v-if="form.errors.first_sem">{{ form.errors.first_sem }}</div>
 
                 <label>SECOND SEMESTER (Estimate) </label>
-                <input type="number" class="form-control" v-model="form.second_sem" />
+                <input type="number" class="form-control" v-model="form.second_sem" readonly/>
                 <div class="fs-6 c-red-500" v-if="form.errors.second_sem">{{ form.errors.second_sem }}</div>
 
                 <label>TOTAL </label>
-                <input type="text" class="form-control" :value="getTotal12" />
+                <input type="text" class="form-control" :value="getTotal12" readonly/>
 
                 <label>BUDGET YEAR PROPOSED </label>
                 <input type="number" class="form-control" v-model="form.budget_year" />
                 <div class="fs-6 c-red-500" v-if="form.errors.budget_year">{{ form.errors.budget_year }} OR the budget year value is greater than the value recorded at the LBP Form No. 2</div>
 
                 <label>CATEGORY</label>
-                <!-- <select class="form-control" v-model="form.category" >
-                    <option>Capital Outlay</option>
-                    <option>Maintenance, Operating, and Other Expenses</option>
-                    <option>Personnel Services</option>
-                </select> -->
                 <input type="text" class="form-control" v-model="form.category" />
                 <div class="fs-6 c-red-500" v-if="form.errors.category">{{ form.errors.category }}</div>
 
@@ -144,9 +140,10 @@
                 <!-- {{ aip }}
                 <br/>
                 {{ total_budget_year }} -->
+               <!-- trte {{ formattedPrograms }} -->
             </form>
         </div>
-        {{ formattedOOEs }}
+
     </div>
 
 </template>
@@ -207,6 +204,7 @@ export default {
                     category: "",
                     GAD: "",
                     CCET: "",
+                    AIP_CODE: "",
                     id: null
                 }),
                 pageTitle: "",
@@ -226,6 +224,9 @@ export default {
                     FACTCODE: dataOoes.FACTCODE,
                     program_id: dataOoes.idprogram,
                     FFUNCCOD: dataOoes.FFUNCCOD,
+                    sem1: dataOoes.sem1,
+                    sem2: dataOoes.sem2,
+                    past_year: dataOoes.past_year
                 }));
             },
             formattedPrograms(){
@@ -233,9 +234,9 @@ export default {
                 if (this.form.raaotype) {
                     dataPrograms = dataPrograms.filter((program) => program.ftype === this.form.raaotype);
                 }
-                // if(this.form.FFUNCCOD){
-                //     dataPrograms = dataPrograms.filter((program) => program.FFUNCCOD === this.form.FFUNCCOD);
-                // }
+                if(this.form.FFUNCCOD){
+                    dataPrograms = dataPrograms.filter((program) => program.FFUNCCOD === this.form.FFUNCCOD);
+                }
 
                 return dataPrograms.map((program) => ({
                     value: program.recid,
@@ -265,7 +266,14 @@ export default {
                     this.bar=this.bari
                 }
                 this.pageTitle = "Edit"
-                this.form.object_of_expenditure	=this.editData.object_of_expenditure
+
+                this.form.year = this.editData.year
+                this.form.FFUNCCOD = this.editData.FFUNCCOD
+                this.form.raaotype = this.editData.raaotype
+                this.filterProgram();
+                this.form.idprogram = this.editData.idprogram
+                //this.loadOOE();
+                this.form.idooe = this.editData.idooe
                 this.form.account_code=this.editData.account_code
                 this.form.past_year=this.editData.past_year
                 this.form.first_sem=this.editData.first_sem
@@ -276,6 +284,7 @@ export default {
                 this.form.GAD=this.editData.GAD
                 this.form.CCET=this.editData.CCET
                 this.form.id=this.editData.id
+                this.form.object_of_expenditure	=this.editData.object_of_expenditure
                 this.searchByAccountCodeForEditMounted();
             } else {
                 this.pageTitle = "Create "
@@ -340,7 +349,7 @@ export default {
                 // this.selected = this.typed;
                 alert('addAccount');
             },
-            //searchText
+
             searchPrograms(){
                 //this.program_typed = searchText;
                 //alert(this.program_typed)
@@ -385,36 +394,28 @@ export default {
                 var ind = this.codes.indexOf(this.form.account_code.toString());
                 this.chart_selected=this.accounts[parseInt(ind)];
                 this.form.object_of_expenditure = this.chart_selected
-                //alert('search by account tgttg! '+ind);
+
             },
             searchByAccountCodeForEditMounted(){
                 var ind = this.codes.indexOf(this.form.account_code.toString());
                 this.chart_selected=this.accounts[parseInt(ind)];
-                //this.form.object_of_expenditure = this.chart_selected
-                //alert('search by account tgttg! '+ind);
+
             },
             setCurrentYear(){
 
                 var yr = new Date().getFullYear()
                 this.form.year = parseFloat(yr)+1;
-                //alert("year: "+this.form.year);
             },
             filterProgram(){
-                //alert("filterProgram");
-                this.form.idprogram=null;
-                this.form.idooe=null;
+                // this.form.idprogram=null;
+                // this.form.idooe=null;
                 const selectElement = this.$refs.raaoSelect;
                 this.form.category = selectElement.options[selectElement.selectedIndex].text;
-                //this.loadOOE();
-                //alert(this.form.category);
-            },
 
+            },
             loadOOE(){
-                //FETCH OOEs, FILTER BY year, FFUNCCOD, FRAOTYPE
-                //alert('loadOE');
                 this.dt_ooes=[];
                 var year1 = parseFloat(this.form.year)-1;
-                //alert(this.form.FFUNCCOD)
                 axios.get("/ooes/filtered/ooes",{
                     params:{
                         idprogram: this.form.idprogram,
@@ -427,24 +428,15 @@ export default {
                 }).catch((error) => {
                     console.error(error);
                 });
-                console.log(this.dt_ooes)
-                this.dt_ooes_length = Object.keys(this.dt_ooes).length;
-                //SET ACCOUNT CODE BASED ON ID OF PROGRAM SELECTED
-                if(this.form.idprogram){
-                    const program_selected = this.programs.find(programs=>programs.recid === this.form.idprogram)
-                    if(program_selected){
-                        this.form.account_code = program_selected.factcode
-                    }else{
-                        this.form.account_code = ""
-                    }
-                    this.searchByAccountCode();
-                }
             },
             setOOEValue(){
-                var prog_sel=this.ooes.filter(ooes=>ooes.recid===this.form.idooe);
+                var prog_sel=this.dt_ooes.filter(ooes=>ooes.recid===this.form.idooe);
                 this.form.account_code=prog_sel[0].FACTCODE;
                 this.searchByAccountCode();
                 this.form.object_of_expenditure = prog_sel[0].FOOEDESC;
+                this.form.first_sem =this.format_number_conv(prog_sel[0].sem1,2,false);
+                this.form.second_sem = this.format_number_conv(prog_sel[0].sem2,2,false);
+                this.form.past_year = this.format_number_conv(prog_sel[0].past_year,2,false);
             }
 
         },
