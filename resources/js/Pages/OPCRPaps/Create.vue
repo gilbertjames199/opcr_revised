@@ -52,18 +52,19 @@
                     </ul>
                     <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                        <label for="input">Numerical Rating</label>
-                        <input id="input" type="text" v-model="form.NumericalRating" class="form-control" autocomplete="positionchrome-off">
-                        <div class="fs-6 c-red-500" v-if="form.errors.NumericalRating">{{ form.errors.NumericalRating }}</div>
-
-                        <label for="input">Adjectival Rating</label>
-                        <input id="input" type="text" v-model="form.AdjectivalRating" class="form-control" autocomplete="positionchrome-off">
-                        <div class="fs-6 c-red-500" v-if="form.errors.AdjectivalRating">{{ form.errors.AdjectivalRating }}</div>
-
-                        <label for="input">Efficiency (Quantity)</label>
-                        <input id="input" type="text" v-model="form.Efficiency" class="form-control" autocomplete="positionchrome-off">
-                        <div class="fs-6 c-red-500" v-if="form.errors.Efficiency">{{ form.errors.Efficiency }}</div>
-
+                        <table class="table table-bordered">
+                        <tr>
+                            <th>Numerical Rating</th>
+                            <th>Adjectival Rating</th>
+                            <th>Efficiency (Quantity)</th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="Enter numerical rating"  v-model="form.NumericalRating" class="form-control" autocomplete="positionchrome-off"></td>
+                            <td><input type="text" placeholder="Enter adjectival rating" v-model="form.AdjectivalRating" class="form-control" autocomplete="positionchrome-off"></td>
+                            <td style="width: 60%;"><input type="text" placeholder="Enter efficiency" v-model="form.Efficiency" class="form-control" autocomplete="positionchrome-off">
+                            </td>
+                        </tr>
+                </table>
                         <label for="input">Remarks</label>
                         <input id="input" type="text" v-model="form.RatingRemarks" class="form-control" autocomplete="positionchrome-off">
                         <div class="fs-6 c-red-500" v-if="form.errors.RatingRemarks">{{ form.errors.RatingRemarks }}</div>

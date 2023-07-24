@@ -138,6 +138,7 @@ class AIPController extends Controller
             'PS' => 'required',
             'MOOE' => 'required',
             'CO' => 'required',
+            'date' => 'required',
             'idpaps'=>'required',
         ]);
         // dd($attributes);
@@ -154,6 +155,7 @@ class AIPController extends Controller
             'PS',
             'MOOE',
             'CO',
+            'date',
             'idpaps'
         ]);
         // dd($data);
@@ -180,6 +182,7 @@ class AIPController extends Controller
             'PS'=>$request->PS,
             'MOOE'=>$request->MOOE,
             'CO'=>$request->CO,
+            'date'=>$request->date,
             'idpaps'=>$request->idpaps
         ]);
 
@@ -200,8 +203,6 @@ class AIPController extends Controller
     }
 
     public function PAPS(Request $request){
-
-
         $paps = ProgramAndProject::select(
                 'program_and_projects.id',
                 'program_and_projects.paps_desc',
@@ -210,6 +211,7 @@ class AIPController extends Controller
                 'a_i_p_s.PS',
                 'a_i_p_s.MOOE',
                 'a_i_p_s.CO',
+                'a_i_p_s.date',
                 'success_indicators.success_indicator',
                 'opcr_targets.quantity'
         )

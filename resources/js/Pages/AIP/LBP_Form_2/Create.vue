@@ -39,6 +39,9 @@
                     {{ Total }}
                 </div>
 
+                <label>YEAR</label>
+                <input type="number" class="form-control" v-model="form.date" />
+                <div class="fs-6 c-red-500" v-if="form.errors.date">{{ form.errors.date }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
@@ -83,6 +86,7 @@ export default {
                     MOOE: "",
                     CO: "",
                     idpaps: "",
+                    date: "",
                     id: null
                 }),
                 pageTitle: ""
@@ -102,11 +106,13 @@ export default {
                 this.form.CO=this.editData.CO
                 this.form.idpaps=this.editData.idpaps
                 this.form.id=this.editData.id
+                this.form.date=this.editData.date
             } else {
                 this.pageTitle = "Create"
                 this.form.PS = 0;
                 this.form.MOOE = 0;
                 this.form.CO = 0;
+                this.setCurrentYear()
             }
 
         },
@@ -124,6 +130,12 @@ export default {
                     this.form.post(url);
                 }
             },
+            setCurrentYear(){
+
+                var yr = new Date().getFullYear()
+                this.form.year = parseFloat(yr)+1;
+                //alert("year: "+this.form.year);
+                },
         },
         computed: {
             Total(){
