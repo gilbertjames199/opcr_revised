@@ -143,13 +143,14 @@ export default {
     },
     data() {
         return{
-            dates: "2012",
+            dates: "",
             search: this.$props.filters.search,
             filter: false,
             print: false,
             my_link: "",
             displayModal: false,
-            lbp_version: ""
+            lbp_version: "",
+            date: ""
         }
     },
     watch: {
@@ -168,6 +169,12 @@ export default {
     components: {
         Pagination, Filtering, Modal, Printing,
     },
+    mounted() {
+
+        this.setCurrentYear()
+
+
+        },
 
     methods:{
         deleteMFO(id) {
@@ -260,7 +267,13 @@ export default {
                     // Handle any errors
                     console.error(error);
                 });
-        }
+        },
+        setCurrentYear(){
+
+        var yr = new Date().getFullYear()
+        this.dates = parseFloat(yr)+1;
+        // alert("year: "+this.form.year);
+        },
     }
 };
 </script>
