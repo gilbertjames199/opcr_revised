@@ -61,8 +61,7 @@
                         <tr>
                             <td><input type="text" placeholder="Enter numerical rating"  v-model="form.NumericalRating" class="form-control" autocomplete="positionchrome-off"></td>
                             <td><input type="text" placeholder="Enter adjectival rating" v-model="form.AdjectivalRating" class="form-control" autocomplete="positionchrome-off"></td>
-                            <td style="width: 60%;"><input type="text" placeholder="Enter efficiency" v-model="form.Efficiency" class="form-control" autocomplete="positionchrome-off">
-                            </td>
+                            <td style="width: 60%;"><input type="text" placeholder="Enter efficiency" v-model="form.Efficiency" class="form-control" autocomplete="positionchrome-off"></td>
                         </tr>
                 </table>
                         <label for="input">Remarks</label>

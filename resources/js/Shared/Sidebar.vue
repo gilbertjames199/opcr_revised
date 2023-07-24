@@ -364,6 +364,13 @@
                                 <span class="title">OPCR Standard</span>
                             </Link>
                         </li>
+
+                        <li>
+                            <Link class="sidebar-link" href="/OPCRpaps/direct" :class="{'active': $page.url === '/OPCRpaps/direct'}">
+
+                                <span class="title">IPCR Standard</span>
+                            </Link>
+                        </li>
                         <!-- <li>
                             <Link class="sidebar-link" href="/indicators" :class="{'active': $page.url === '/indicators'}">
                                 <span class="title">Divisions</span>
