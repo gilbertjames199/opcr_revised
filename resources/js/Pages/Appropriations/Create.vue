@@ -49,7 +49,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.year">{{ form.errors.year }}</div>
 
                 <label>OFFICE</label>
-                {{ form.FFUNCCOD }}
+                <!-- {{ form.FFUNCCOD }} -->
                 <select class="form-control" v-model="form.FFUNCCOD" >
                     <option></option>
                     <option v-for="functione in functions" :value="functione.FFUNCCOD">{{ functione.FFUNCTION }}</option>
@@ -57,7 +57,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
 
                 <label>RAAO TYPE</label>
-                {{ form.raaotype }}
+                <!-- {{ form.raaotype }} -->
                 <select class="form-control" v-model="form.raaotype" ref="raaoSelect" @click="filterProgram">
                     <option></option>
                     <option value="1">Personnel Services</option>
@@ -101,15 +101,15 @@
 
                 <div class="fs-6 c-red-500" v-if="form.errors.GAD">{{ form.errors.GAD }}</div>
                 <label>PAST YEAR </label>
-                <input type="number" class="form-control" v-model="form.past_year" readonly/>
+                <input type="text" class="form-control" v-model="computed_pastyear" readonly/>
                 <div class="fs-6 c-red-500" v-if="form.errors.past_year">{{ form.errors.past_year }}</div>
 
                 <label>FIRST SEMESTER (Actual) </label>
-                <input type="number" class="form-control" v-model="form.first_sem" readonly/>
+                <input type="text" class="form-control" :value="computed_sem1" readonly/>
                 <div class="fs-6 c-red-500" v-if="form.errors.first_sem">{{ form.errors.first_sem }}</div>
 
                 <label>SECOND SEMESTER (Estimate) </label>
-                <input type="number" class="form-control" v-model="form.second_sem" readonly/>
+                <input type="text" class="form-control" :value="computed_sem2" readonly/>
                 <div class="fs-6 c-red-500" v-if="form.errors.second_sem">{{ form.errors.second_sem }}</div>
 
                 <label>TOTAL </label>
@@ -196,7 +196,7 @@ export default {
                     idprogram: "",
                     object_of_expenditure: "",
                     account_code: "",
-                    past_year: "",
+                    past_year: 0,
                     first_sem: 0,
                     second_sem: 0,
                     budget_year: "",
@@ -251,7 +251,27 @@ export default {
                 var f1 = parseFloat(this.form.first_sem);
                 var f2 = parseFloat(this.form.second_sem);
                 var tot = f1+f2;
-                return tot;
+                var tat = this.format_number_conv(tot,2,true);
+                return tat;
+            },
+            computed_pastyear(){
+                // var p_year = this.format_number_conv(this.form.past_year,2,true);
+                // if(isNaN(p_year)){
+                //     return "0.00"
+                // }else{
+                //     return this.format_number_conv(this.form.past_year,2,true);
+                // }
+                return this.format_number_conv(this.form.past_year,2,true);
+            },
+            computed_sem1(){
+                //var s1 = parseFloat(this.form.sem1);
+                return this.format_number_conv(this.form.first_sem,2,true);
+                //return this.format_number_conv(s1,2,true);
+                //return isNaN(s1) ? '0.00' : s1;
+
+            },
+            computed_sem2(){
+                return this.format_number_conv(this.form.second_sem,2,true);
             }
         },
         mounted() {
@@ -437,7 +457,7 @@ export default {
                 this.form.first_sem =this.format_number_conv(prog_sel[0].sem1,2,false);
                 this.form.second_sem = this.format_number_conv(prog_sel[0].sem2,2,false);
                 this.form.past_year = this.format_number_conv(prog_sel[0].past_year,2,false);
-            }
+            },
 
         },
 
