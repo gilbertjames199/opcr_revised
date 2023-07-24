@@ -15,6 +15,7 @@ class AIP extends Model
         'PS',
         'MOOE',
         'CO',
+        'date',
         'idpaps',
     ];
 }
