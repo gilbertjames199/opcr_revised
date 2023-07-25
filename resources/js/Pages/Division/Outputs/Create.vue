@@ -20,7 +20,7 @@
                 <select type="text" v-model="form.division_id" class="form-control" autocomplete="chrome-off">
                     <option></option>
                     <option v-for="division in divisions" :value="division.id">
-                        {{ division.description }}
+                        {{ division.division_name1 }}
                     </option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.division_id">{{ form.errors.division_id }}</div>

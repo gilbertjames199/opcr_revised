@@ -450,23 +450,23 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [RiskManangementController::class, 'destroy']);
      });
 
-        //Signatories
-        Route::prefix('/Signatories')->group(function(){
-            Route::get('/{revid}',[SignatoryController::class,'index']);
-            Route::get('/create/{revid}',[SignatoryController::class,'create']);
-            Route::post('/store',[SignatoryController::class,'store']);
-            Route::get('/{id}/edit', [SignatoryController::class, 'edit']);
-            Route::patch('/{id}', [SignatoryController::class, 'update']);
-            Route::delete('/{id}', [SignatoryController::class, 'destroy']);
-         });
-
-         //OPCR
-         Route::prefix('/OPCRStandard')->group(function(){
-            Route::get('/',[OPCRController::class,'index']);
-            Route::get('/{idstrat}',[OPCRController::class,'showopcr']);
+    //Signatories
+    Route::prefix('/Signatories')->group(function(){
+        Route::get('/{revid}',[SignatoryController::class,'index']);
+        Route::get('/create/{revid}',[SignatoryController::class,'create']);
+        Route::post('/store',[SignatoryController::class,'store']);
+        Route::get('/{id}/edit', [SignatoryController::class, 'edit']);
+        Route::patch('/{id}', [SignatoryController::class, 'update']);
+        Route::delete('/{id}', [SignatoryController::class, 'destroy']);
         });
 
-            //Route::patch('/', [PAPController::class, 'update']);
+        //OPCR
+        Route::prefix('/OPCRStandard')->group(function(){
+        Route::get('/',[OPCRController::class,'index']);
+        Route::get('/{idstrat}',[OPCRController::class,'showopcr']);
+    });
+
+    //Route::patch('/', [PAPController::class, 'update']);
     Route::prefix('/OPCRpaps')->group(function(){
         Route::get('/direct',[OPCRPAPSController::class,'direct']);
         Route::get('/direct/create',[OPCRPAPSController::class,'direct_create']);
@@ -614,6 +614,7 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'update']);
         Route::delete('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'destroy']);
     });
+
     //OPCR Target
     Route::prefix('opcrtarget')->group(function(){
         Route::get('/{opcr_list_id}',[OpcrTargetController::class,'index']);
@@ -633,7 +634,11 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [OpcrAccomplishmentController::class, 'destroy']);
     });
 
-
+    //IPCR List
+    Route::prefix('IPCR')->group(function(){
+        Route::get('/direct',[OpcrAccomplishmentController::class,'index']);
+    });
+    //AIP
     Route::prefix('/AIP')->group(function(){
         Route::get('/',[AIPController::class,'index']);
         Route::get('/direct',[AIPController::class,'direct']);
@@ -665,6 +670,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit',[IndividualFinalOutputController::class,'edit']);
         Route::patch('/',[IndividualFinalOutputController::class,'update']);
         Route::delete('/{id}', [IndividualFinalOutputController::class, 'destroy']);
+        Route::post('/import/file/data', [IndividualFinalOutputController::class, 'importIPCR']);
     });
     Route::prefix('/division_outputs')->group(function(){
         Route::get('/',[DivisionOutputController::class,'index']);

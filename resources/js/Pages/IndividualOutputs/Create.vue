@@ -23,20 +23,21 @@
                 <select type="text" v-model="division_id" class="form-control" autocomplete="chrome-off">
                     <option></option>
                     <option v-for="division in divisions" :value="division.id">
-                        {{ division.description }}
+                        {{ division.division_name1 }}
                     </option>
                 </select>
 
                 <label for="">DIVISION OUTPUTS</label>
                 <select type="text" v-model="form.id_div_output" @click="filterDivOutput()" class="form-control" autocomplete="chrome-off">
                     <option></option>
-                    <option v-for="division in my_div_outputs" :value="division.id">
+                    <option v-for="division in div_outputs" :value="division.id">
                         {{ division.output }}
                     </option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.id_div_output">{{ form.errors.id_div_output }}</div>
 
-                <label for="">MAJOR FINAL OUTPUT</label>
+                <label for="">MAJOR FINAL OUTPUT</label> {{ form.idmfo }}
+                <!-- -->
                 <select type="text" v-model="form.idmfo" @click="filterSubMFO()" class="form-control" autocomplete="chrome-off">
                     <option></option>
                     <option v-for="mfo in mfos" :value="mfo.id">
@@ -106,7 +107,20 @@ export default {
                 pageTitle: ""
             };
         },
-
+        computed:{
+            my_submfos_formatted(){
+                let submfos_1 = this.submfos;
+                if (this.form.idmfo) {
+                    submfos_1 = submfos.filter((submfos) => submfos.idmfo === this.form.idmfo);
+                }
+                return submfos_1;
+                // return submfos_1.map((subm)=>({
+                //     id: subm.id,
+                //     submfo_description: subm.submfo_description,
+                //     idmfo: subm.idmfo
+                // }));
+            }
+        },
         mounted() {
 
             if (this.editData !== undefined) {
@@ -115,12 +129,12 @@ export default {
                 this.form.idmfo=this.editData.idmfo
                 this.form.id =this.editData.id
                 this.division_id = this.divid
-                this.filterDivOutput()
-                this.filterSubMFO()
                 this.form.idsubmfo = this.editData.idsubmfo
                 this.form.id_div_output = this.editData.id_div_output
                 this.form.individual_output = this.editData.individual_output
                 this.form.performance_measure = this.editData.performance_measure
+                this.filterDivOutput()
+                this.filterSubMFO()
             } else {
                 this.pageTitle = "Create"
                 this.my_submfos = []
