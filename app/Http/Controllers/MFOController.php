@@ -161,10 +161,15 @@ class MFOController extends Controller
         $idn = auth()->user()->recid;
 
         $data = $this->model->select('major_final_outputs.mfo_desc','major_final_outputs.id', 'major_final_outputs.FFUNCCOD')
-                ->where('FFUNCCOD', '1121')
+                ->where('department_code', auth()->user()->department_code)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
+                // $data = $this->model->select('major_final_outputs.mfo_desc','major_final_outputs.id', 'major_final_outputs.FFUNCCOD')
+                // ->where('FFUNCCOD', '1121')
+                // ->orderBy('created_at', 'desc')
+                // ->paginate(10)
+                // ->withQueryString();
                 // ->join('fms.accountaccess AS acc', function ($join) use ($idn) {
                 //     $join->on(DB::raw('TRIM(acc.ffunccod)'), '=', 'major_final_outputs.FFUNCCOD')
                 //         ->where('acc.iduser', $idn);
@@ -184,7 +189,7 @@ class MFOController extends Controller
         //dd($result);
         // dd($access);
         return inertia('MFOs/Direct',[
-            "data"=>$paginatedResult,
+            "data"=>$data,
             "filters" => $request->only(['search']),
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
