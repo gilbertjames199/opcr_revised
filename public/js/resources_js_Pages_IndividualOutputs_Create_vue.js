@@ -43,6 +43,25 @@ __webpack_require__.r(__webpack_exports__);
       pageTitle: ""
     };
   },
+  computed: {
+    my_submfos_formatted: function my_submfos_formatted() {
+      var _this = this;
+
+      var submfos_1 = this.submfos;
+
+      if (this.form.idmfo) {
+        submfos_1 = submfos.filter(function (submfos) {
+          return submfos.idmfo === _this.form.idmfo;
+        });
+      }
+
+      return submfos_1; // return submfos_1.map((subm)=>({
+      //     id: subm.id,
+      //     submfo_description: subm.submfo_description,
+      //     idmfo: subm.idmfo
+      // }));
+    }
+  },
   mounted: function mounted() {
     if (this.editData !== undefined) {
       this.pageTitle = "Edit";
@@ -50,12 +69,12 @@ __webpack_require__.r(__webpack_exports__);
       this.form.idmfo = this.editData.idmfo;
       this.form.id = this.editData.id;
       this.division_id = this.divid;
-      this.filterDivOutput();
-      this.filterSubMFO();
       this.form.idsubmfo = this.editData.idsubmfo;
       this.form.id_div_output = this.editData.id_div_output;
       this.form.individual_output = this.editData.individual_output;
       this.form.performance_measure = this.editData.performance_measure;
+      this.filterDivOutput();
+      this.filterSubMFO();
     } else {
       this.pageTitle = "Create";
       this.my_submfos = [];
@@ -71,24 +90,24 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     filterDivOutput: function filterDivOutput() {
-      var _this = this;
+      var _this2 = this;
 
       this.my_div_outputs = [];
       this.div_outputs.forEach(function (i) {
-        if (i.division_id === _this.division_id) {
-          _this.my_div_outputs.push(i);
+        if (i.division_id === _this2.division_id) {
+          _this2.my_div_outputs.push(i);
         }
       });
       console.log(this.my_div_outputs);
       return this.my_div_outputs;
     },
     filterSubMFO: function filterSubMFO() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.my_submfos = [];
       this.submfos.forEach(function (i) {
-        if (i.idmfo === _this2.form.idmfo) {
-          _this2.my_submfos.push(i);
+        if (i.idmfo === _this3.form.idmfo) {
+          _this3.my_submfos.push(i);
         }
       });
       console.log(this.my_submfos);
@@ -335,7 +354,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [_hoisted_9, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.divisions, function (division) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       value: division.id
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(division.description), 9
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(division.division_name1), 9
     /* TEXT, PROPS */
     , _hoisted_10);
   }), 256
@@ -352,7 +371,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     "class": "form-control",
     autocomplete: "chrome-off"
-  }, [_hoisted_12, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.my_div_outputs, function (division) {
+  }, [_hoisted_12, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.div_outputs, function (division) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       value: division.id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(division.output), 9
@@ -364,7 +383,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.id_div_output]]), $data.form.errors.id_div_output ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.id_div_output), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.idmfo), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     type: "text",
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.form.idmfo = $event;
@@ -574,13 +595,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Create_vue_vue_type_template_id_6ad828db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.vue?vue&type=template&id=6ad828db */ "./resources/js/Pages/IndividualOutputs/Create.vue?vue&type=template&id=6ad828db");
 /* harmony import */ var _Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Create.vue?vue&type=script&lang=js */ "./resources/js/Pages/IndividualOutputs/Create.vue?vue&type=script&lang=js");
-/* harmony import */ var D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_xampp_htdocs_raao1_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_6ad828db__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/IndividualOutputs/Create.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao1_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_6ad828db__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/IndividualOutputs/Create.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -601,13 +622,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _PlacesShared_vue_vue_type_template_id_ee3222a6__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PlacesShared.vue?vue&type=template&id=ee3222a6 */ "./resources/js/Shared/PlacesShared.vue?vue&type=template&id=ee3222a6");
 /* harmony import */ var _PlacesShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PlacesShared.vue?vue&type=script&lang=js */ "./resources/js/Shared/PlacesShared.vue?vue&type=script&lang=js");
-/* harmony import */ var D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_xampp_htdocs_raao1_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PlacesShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PlacesShared_vue_vue_type_template_id_ee3222a6__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/PlacesShared.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao1_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PlacesShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PlacesShared_vue_vue_type_template_id_ee3222a6__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/PlacesShared.vue"]])
 /* hot reload */
 if (false) {}
 

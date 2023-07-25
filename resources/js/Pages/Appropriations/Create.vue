@@ -78,7 +78,7 @@
                         v-model="form.idprogram"
                         label="label"
                         track-by="label"
-                        @change="loadOOE"
+                        @close="loadOOE"
                     >
                     </multiselect>
                 </div>

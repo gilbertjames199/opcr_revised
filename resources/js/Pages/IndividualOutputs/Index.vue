@@ -15,6 +15,7 @@
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/individual/outputs/create`">Add IFO</Link>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal()">Import</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>&nbsp;
                 <Link :href="`/logframe`">
@@ -35,9 +36,10 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Division</th>
+                                <th>IPCR Code</th>
                                 <th>Major Final Output</th>
                                 <th>Sub MFO</th>
+                                <th>Division Output</th>
                                 <th>Individual Output</th>
                                 <th>Performance Measure</th>
                                 <th>Action</th>
@@ -46,9 +48,10 @@
                         <tbody>
 
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.division }}</td>
+                                <td>{{ dat.ipcr_code }}</td>
                                 <td>{{ dat.mfo_desc }}</td>
                                 <td>{{ dat.submfo_description }}</td>
+                                <td>{{ dat.output }}</td>
                                 <td>{{ dat.individual_output }}</td>
                                 <td>{{ dat.performance_measure }}</td>
                                 <td>
@@ -84,7 +87,16 @@
 
             </div>
         </div>
-
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <h1>Upload Excel File</h1><br>
+            <form @submit.prevent="submit">
+                <input type="file" @input="form.myfile = $event.target.files[0]" @change="onFileChanged()"/>
+                <progress v-if="form.progress" class="form-control"  :value="form.progress.percentage" max="100">
+                    {{ form.progress.percentage }}%
+                </progress>
+                <button type="submit" class="btn btn-primary btn-sm mL-2 text-white" >Submit</button>
+            </form>
+        </Modal>
     </div>
 
 </template>
@@ -92,6 +104,7 @@
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
@@ -100,22 +113,49 @@ export default {
     },
     data() {
         return{
-
+            form: this.$inertia.form({
+                myfile: null,
+                name: null,
+                avatar: null,
+                type: true,
+            }),
+            set_type: false,
+            my_status: '0',
+            my_id: 0,
+            my_date: null,
+            displayModal: false,
+            displayDisappModal: false
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering,Modal
     },
 
     methods:{
-
-
         deleteIFO(id) {
             let text = "WARNING!\nAre you sure you want to delete the Individual Final Output?";
               if (confirm(text) == true) {
                 this.$inertia.delete("/individual/outputs/" + id);
             }
         },
+        onFileChanged() {
+            this.form.myfile = this.$refs.myFile.files[0];
+            console.log(this.form.myfile)
+        },
+        submit() {
+            if(!this.form.myfile){
+                alert("No file chosen!");
+            }else{
+                this.form.post('/individual/outputs/import/file/data')
+            }
+
+        },
+        showModal(){
+            this.displayModal=true
+        },
+        hideModal(){
+            this.displayModal=false
+        }
 
     }
 };
