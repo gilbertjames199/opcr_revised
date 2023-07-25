@@ -87,7 +87,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     setCurrentYear: function setCurrentYear() {
       var yr = new Date().getFullYear();
-      this.form.year = parseFloat(yr) + 1; //alert("year: "+this.form.year);
+      this.form.date = parseFloat(yr) + 1; // alert("year: "+this.form.year);
     }
   },
   computed: {

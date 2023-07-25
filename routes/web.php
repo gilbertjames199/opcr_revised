@@ -655,7 +655,7 @@ Route::middleware('auth')->group(function() {
     });
     Route::prefix('/ooes')->group(function(){
         Route::get('/filtered/ooes',[ObjectOfExpenditureController::class,'filterOOES']);
-        Route::get('/filtered/ooes',[ObjectOfExpenditureController::class,'filterOOEPrograms']);
+        //Route::get('/filtered/ooes',[ObjectOfExpenditureController::class,'filterOOEPrograms']);
     });
 
     Route::prefix('/individual/outputs')->group(function(){
