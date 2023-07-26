@@ -24,7 +24,12 @@ class DivisionOutputController extends Controller
                     'divisions.division_name1 AS description', 'major_final_outputs.FFUNCCOD', 'major_final_outputs.mfo_desc')
                     ->leftjoin('divisions','divisions.id','division_outputs.division_id')
                     ->join('major_final_outputs','major_final_outputs.id','division_outputs.idmfo')
-                    ->get();
+                    ->where(function($query) {
+                        $query->where('major_final_outputs.department_code', auth()->user()->department_code)
+                              ->orWhere('major_final_outputs.department_code', '-');
+                    })
+                    ->orderBy('divisions.division_name1', 'ASC')
+                    ->paginate(10);
         $idn = auth()->user()->recid;
         $access = DB::connection('mysql2')->table('accountaccess')
                         ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
@@ -37,7 +42,7 @@ class DivisionOutputController extends Controller
         $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
 
         return inertia('Division/Outputs/Index',[
-            "data"=>$paginatedResult
+            "data"=>$data
         ]);
     }
     public function create(Request $request){

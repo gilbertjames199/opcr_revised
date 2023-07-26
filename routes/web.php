@@ -75,6 +75,7 @@ use App\Http\Controllers\DivisionOutputController;
 use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
+use App\Http\Controllers\UserEmployeesController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -96,7 +97,14 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/home')->group(function() {
         Route::get('/', [DashBoardController::class, 'index']);
     });
-
+    Route::prefix('/user/employees')->group(function(){
+        Route::get('/',[UserEmployeesController::class,'index']);
+        Route::get('/sync/employees/list',[UserEmployeesController::class,'syncemployees']);
+    });
+    //Users
+    Route::prefix('/users')->group(function(){
+        Route::get('/',[UserController::class,'index']);
+    });
     //UserOffice
     Route::prefix('/office')->group(function(){
         Route::get('/', [UserOfficeController::class, 'create']);

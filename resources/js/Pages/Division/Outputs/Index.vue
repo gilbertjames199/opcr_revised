@@ -8,7 +8,7 @@
             <!-- <h4>{{ dept.FFUNCTION }}</h4> -->
         </div>
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Divisions</h3>
+            <h3>Divisions Outputs</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -35,7 +35,7 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Description</th>
+                                <th>Divisions</th>
                                 <th>Major Final Output</th>
                                 <th>Output</th>
                                 <th>Action</th>
