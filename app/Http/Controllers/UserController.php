@@ -19,61 +19,66 @@ class UserController extends Controller
         $this->middleware(['auth','verified']);
         $this->model = $model;
     }
-    
+
     public function index(Request $request)
     {
-        
-        $user_data;
-        if(Auth::user()->can('create', User::class)){
-            $user_data=$this->model->
-                            when($request->search, function ($query, $searchItem) {
-                                $query->where('name', 'like', '%' . $searchItem . '%');
-                            })
-                            ->orderBy('created_at', 'desc')
-                            ->simplePaginate(10)
-                            ->withQueryString()
-                            ->through(fn($user) => [
-                                'id' => $user->id,
-                                'name' => $user->name,
-                                "can" => [
-                                    'edit' => auth()->user()->can('edit', $user),
-                                    'delete' => auth()->user()->can('delete', $user),
-                                    'canViewUsers' =>auth()->user()->can('can_view_users', $user),
-                                    'canInsertUsers' =>auth()->user()->can('can_insert_users', $user),
-                                    'canEditUsers' =>auth()->user()->can('can_edit_users', $user),
-                                    'canDeleteUsers' =>auth()->user()->can('can_delete_users', $user),
-                                    'canUpdateUserPermissions' =>auth()->user()->can('can_update_user_permissions', $user),
-                                ],
-                            ]);
-            
-            return inertia('Users/Index', [
-                //returns an array of users with name field only
-                "permissions_all" => Permission::all(),
-                "users" => $user_data,
-                "filters" => $request->only(['search']),
-                "can" => [
-                    'createUser' => Auth::user()->can('create', User::class),
-                    'editUser' =>Auth::user()->can('edit', User::class),
-                    'deleteUser' =>Auth::user()->can('delete', User::class),
-                    'canViewUsers' =>Auth::user()->can('can_view_users', User::class),
-                    'canInsertUsers' =>Auth::user()->can('can_insert_users', User::class),
-                    'canEditUsers' =>Auth::user()->can('can_edit_users', User::class),
-                    'canDeleteUsers' =>Auth::user()->can('can_delete_users', User::class),
-                    'canUpdateUserPermissions' =>Auth::user()->can('can_update_user_permissions', User::class),
-                ],
-            ]);
-        }else{
-            return inertia('Forbidden/Index', [
-                "can" => [
-                    'createUser' => Auth::user()->can('create', User::class),
-                    'editUser' =>Auth::user()->can('edit', User::class),
-                    'deleteUser' =>Auth::user()->can('delete', User::class),
-                ],
-            ]);
-        }
-        
-    }
 
+
+    }
+    //public function sync_users()
+    // public function index(Request $request)
+    // {
+
+    //     $user_data;
+    //     if(Auth::user()->can('create', User::class)){
+    //         $user_data=$this->model->
+    //                         when($request->search, function ($query, $searchItem) {
+    //                             $query->where('name', 'like', '%' . $searchItem . '%');
+    //                         })
+    //                         ->orderBy('created_at', 'desc')
+    //                         ->simplePaginate(10)
+    //                         ->withQueryString()
+    //                         ->through(fn($user) => [
+    //                             'id' => $user->id,
+    //                             'name' => $user->name,
+    //                             "can" => [
+    //                                 'edit' => auth()->user()->can('edit', $user),
+    //                                 'delete' => auth()->user()->can('delete', $user),
+    //                                 'canViewUsers' =>auth()->user()->can('can_view_users', $user),
+    //                                 'canInsertUsers' =>auth()->user()->can('can_insert_users', $user),
+    //                                 'canEditUsers' =>auth()->user()->can('can_edit_users', $user),
+    //                                 'canDeleteUsers' =>auth()->user()->can('can_delete_users', $user),
+    //                                 'canUpdateUserPermissions' =>auth()->user()->can('can_update_user_permissions', $user),
+    //                             ],
+    //                         ]);
+
+    //         return inertia('Users/Index', [
+    //             //returns an array of users with name field only
+    //             "permissions_all" => Permission::all(),
+    //             "users" => $user_data,
+    //             "filters" => $request->only(['search']),
+    //             "can" => [
+    //                 'createUser' => Auth::user()->can('create', User::class),
+    //                 'editUser' =>Auth::user()->can('edit', User::class),
+    //                 'deleteUser' =>Auth::user()->can('delete', User::class),
+    //                 'canViewUsers' =>Auth::user()->can('can_view_users', User::class),
+    //                 'canInsertUsers' =>Auth::user()->can('can_insert_users', User::class),
+    //                 'canEditUsers' =>Auth::user()->can('can_edit_users', User::class),
+    //                 'canDeleteUsers' =>Auth::user()->can('can_delete_users', User::class),
+    //                 'canUpdateUserPermissions' =>Auth::user()->can('can_update_user_permissions', User::class),
+    //             ],
+    //         ]);
+    //     }else{
+    //         return inertia('Forbidden/Index', [
+    //             "can" => [
+    //                 'createUser' => Auth::user()->can('create', User::class),
+    //                 'editUser' =>Auth::user()->can('edit', User::class),
+    //                 'deleteUser' =>Auth::user()->can('delete', User::class),
+    //             ],
+    //         ]);
+    //     }
+
+    // }
     //********************************** */
     public function userPermissions(Request $request)
     {
@@ -97,12 +102,12 @@ class UserController extends Controller
         return Permission::all();
     }
 
-    
+
     public function create()
     {
-       
+
         $permissions = DB::table('permissions')->get();
-        
+
         return inertia('Users/Create',[
             "permissions" => $permissions,
             "can" => [
@@ -112,11 +117,11 @@ class UserController extends Controller
             ],
         ]);
     }
-    
-    
+
+
     public function store(Request $request)
     {
-        
+
         $attributes = $request->validate([
             'name' => 'required',
             'email' => ['required', 'email'],
@@ -125,19 +130,19 @@ class UserController extends Controller
 
         $this->model->create($attributes);
 
-        
+
 
         return redirect('/users')->with('message', 'User created');
-        
-        
-        
+
+
+
     }
 
-    
-    
+
+
     public function edit(Request $request, $id)
     {
-        
+
         $permissions = DB::table('permissions')->get();
         $data = $this->model->where('id', $id)->first([
             'name', 'id', 'email', 'level', 'municipality', 'barangay'
@@ -265,14 +270,14 @@ class UserController extends Controller
             3.)  Find user_permissions in my_arr
             4.)  If not found, delete
         */
-        
+
         $my_arr= $request->value;
-        
+
         //dd($my_arr,$newArr,$user_permissions);
         //dd(array_diff($newArr));
         if($my_arr){
             $newArr = array_diff($user_permissions, $my_arr);
-        
+
             if($newArr){
                 foreach($newArr as $newAr){
                     DB::table('permission_user')
@@ -290,10 +295,10 @@ class UserController extends Controller
                     DB::table('permission_user')->insert(['permission_id'=>$my_ar,'user_id'=>$id]);
                 }
                 foreach($user_permissions as $user_permission){
-                    
+
                 }
             }
-            
+
         }else{
             DB::table('permission_user')
                 ->where('user_id','=',$id)
@@ -307,7 +312,7 @@ class UserController extends Controller
         return redirect('/users')->with('message', 'Permissions updated');
         //dd($my_arr);
     }
-    
+
     public function findNewPermissions($u_id, $p_id){
         $found=[];
         $found=DB::table('permission_user')

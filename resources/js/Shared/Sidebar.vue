@@ -381,7 +381,7 @@
                         </li>
 
                         <li>
-                            <Link class="sidebar-link" href="/OPCRpaps/direct" :class="{'active': $page.url === '/OPCRpaps/direct'}">
+                            <Link class="sidebar-link" href="/IPCR/direct" :class="{'active': $page.url === '/IPCR/direct'}">
 
                                 <span class="title">IPCR Standard</span>
                             </Link>
