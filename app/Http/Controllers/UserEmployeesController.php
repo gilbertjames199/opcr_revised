@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UserEmployees;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class UserEmployeesController extends Controller
@@ -23,8 +24,10 @@ class UserEmployeesController extends Controller
         ]
         );
     }
+
     public function syncemployees(Request $request){
         $apiUrl = 'http://hris.dvodeoro.ph:91/api/ListOfEmployees4IPCR';
+
         // Initialize Guzzle HTTP client
         //$client = new Client();
         $data = [];
@@ -48,7 +51,7 @@ class UserEmployeesController extends Controller
 
             // Get the JSON response from the API and decode it into an associative array
             $data = json_decode($response->getBody(), true);
-
+            dd($data);
             // Now $data contains the API response as an array, and you can process it as needed
             $length = count($data);
             for($i=0; $i<$length; $i++){
@@ -98,6 +101,8 @@ class UserEmployeesController extends Controller
             $emp->position_title2 = $datum['position_title2'];
             $emp->is_pghead = $datum['is_pghead'];
             $emp->salary_grade = $datum['salary_grade'];
+            $emp->employment_type = $datum['employment_type'];
+            $emp->employment_type_descr = $datum['employment_type_descr'];
             $emp->save();
         }
 

@@ -75,11 +75,8 @@ use App\Http\Controllers\DivisionOutputController;
 use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
-<<<<<<< HEAD
 use App\Http\Controllers\IPCRController;
-=======
 use App\Http\Controllers\UserEmployeesController;
->>>>>>> 4eb9dae1c7711e2f8794ff49b0f6bd63195015d7
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;

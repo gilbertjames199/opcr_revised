@@ -386,6 +386,13 @@
                                 <span class="title">IPCR Standard</span>
                             </Link>
                         </li>
+
+                        <li>
+                            <Link class="sidebar-link" href="/user/employees" :class="{'active': $page.url === '/user/employees'}">
+
+                                <span class="title">Employees</span>
+                            </Link>
+                        </li>
                         <!-- <li>
                             <Link class="sidebar-link" href="/indicators" :class="{'active': $page.url === '/indicators'}">
                                 <span class="title">Divisions</span>
