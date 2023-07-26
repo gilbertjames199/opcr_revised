@@ -11,4 +11,11 @@ class UserEmployees extends Model
     protected $connection = "mysql";
     protected $table='user_employees';
     protected $guarded=['id'];
+
+
+    public function Division(){
+        return $this -> hasOne(Division::class, 'division_code', 'division_code');
+    }
 }
+
+
