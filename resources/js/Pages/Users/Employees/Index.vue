@@ -30,6 +30,7 @@
                     <thead class="table-primary">
                         <tr>
                             <th scope="col">Name</th>
+                            <th>Employment Status</th>
                             <th>Division Code</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
@@ -37,6 +38,7 @@
                     <tbody>
                         <tr v-for="user in users.data" >
                             <td>{{ user.employee_name }}</td>
+                            <td>{{ user.employment_type_descr }}</td>
                             <td>{{ user.division_code }}</td>
                             <td style="text-align: right">
                                 <div class="dropdown dropstart" >
