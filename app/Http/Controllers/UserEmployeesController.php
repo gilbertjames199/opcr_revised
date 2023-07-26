@@ -77,7 +77,7 @@ class UserEmployeesController extends Controller
         if(count($emplo)<1){
             $emp = new UserEmployees;
             $emp->empl_id = $datum['empl_id'];
-            $emp->password = bcrypt('$password1');
+            $emp->password = md5('$password1');
             $emp->employee_name = $datum['employee_name'];
             $emp->last_name = $datum['last_name'];
             $emp->first_name = $datum['first_name'];
