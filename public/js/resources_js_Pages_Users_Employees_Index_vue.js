@@ -231,7 +231,7 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "table-primary"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col"
-}, "Name"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Division Code"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+}, "Name"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Employment Status"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Division Code"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
   style: {
     "text-align": "right"
@@ -266,7 +266,7 @@ var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "aria-labelledby": "dropdownMenuButton1"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   "class": "dropdown-item"
-}, "Permissions")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<li>v-if=\"verifyPermissions(user.can.canEditUsers, user.can.canUpdateUserPermissions, user.can.canDeleteUsers)\"<Link class=\"dropdown-item\" :href=\"`/users/${user.id}/edit`\">Permissions</Link></li>"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li v-if=\"user.can.canEditUsers\"><Link class=\"dropdown-item\" :href=\"`/users/${user.id}/edit`\">Edit</Link></li>\n                                    <li v-if=\"user.can.canUpdateUserPermissions\"><button class=\"dropdown-item\" @click=\"showModal(user.id, user.name)\">Permissions</button></li>\n                                    <li v-if=\"user.can.canDeleteUsers\"><hr class=\"dropdown-divider action-divider\"></li>\n                                    <li v-if=\"user.can.canDeleteUsers\"><Link class=\"text-danger dropdown-item\" @click=\"deleteUser(user.id)\">Delete</Link></li> ")])])], -1
+}, "Permissions")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<li>v-if=\"verifyPermissions(user.can.canEditUsers, user.can.canUpdateUserPermissions, user.can.canDeleteUsers)\"<Link class=\"dropdown-item\" :href=\"`/users/${user.id}/edit`\">Permissions</Link></li>"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li v-if=\"user.can.canEditUsers\"><Link class=\"dropdown-item\" :href=\"`/users/${user.id}/edit`\">Edit</Link></li>\r\n                                    <li v-if=\"user.can.canUpdateUserPermissions\"><button class=\"dropdown-item\" @click=\"showModal(user.id, user.name)\">Permissions</button></li>\r\n                                    <li v-if=\"user.can.canDeleteUsers\"><hr class=\"dropdown-divider action-divider\"></li>\r\n                                    <li v-if=\"user.can.canDeleteUsers\"><Link class=\"text-danger dropdown-item\" @click=\"deleteUser(user.id)\">Delete</Link></li> ")])])], -1
 /* HOISTED */
 );
 
@@ -325,6 +325,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.users.data, function (user) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.employee_name), 1
     /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.employment_type_descr), 1
+    /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.division_code), 1
     /* TEXT */
     ), _hoisted_15]);
@@ -335,7 +337,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     prev: $props.users.prev_page_url
   }, null, 8
   /* PROPS */
-  , ["next", "prev"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <PermissionsModal v-if=\"displayModal\" @close-modal-event=\"hideModal\" >\n            permission array\n            My Value {{ form.my_id }}\n                <span style=\"font-weight: bold\">Name: </span>{{ this.my_name }}\n                <input  v-model=\"form.my_id\" type=\"hidden\" >\n                <multiselect v-model=\"form.value\"\n                            :options=\"permission_particular\"\n                            mode=\"tags\"\n                            :searchable=\"true\"\n                />\n                <br>\n                <button type=\"button\" class=\"btn btn-primary\" style=\"font-weight: bold; color: white\" @click=\"submitChanges()\">SAVE</button>&nbsp;\n                <button type=\"button\" class=\"btn btn-danger\" style=\"font-weight: bold; color: white\" @click=\"hideModal()\">CANCEL</button>\n            <form @submit.prevent=\"submit()\">\n\n            </form>\n        </PermissionsModal> ")])], 64
+  , ["next", "prev"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <PermissionsModal v-if=\"displayModal\" @close-modal-event=\"hideModal\" >\r\n            permission array\r\n            My Value {{ form.my_id }}\r\n                <span style=\"font-weight: bold\">Name: </span>{{ this.my_name }}\r\n                <input  v-model=\"form.my_id\" type=\"hidden\" >\r\n                <multiselect v-model=\"form.value\"\r\n                            :options=\"permission_particular\"\r\n                            mode=\"tags\"\r\n                            :searchable=\"true\"\r\n                />\r\n                <br>\r\n                <button type=\"button\" class=\"btn btn-primary\" style=\"font-weight: bold; color: white\" @click=\"submitChanges()\">SAVE</button>&nbsp;\r\n                <button type=\"button\" class=\"btn btn-danger\" style=\"font-weight: bold; color: white\" @click=\"hideModal()\">CANCEL</button>\r\n            <form @submit.prevent=\"submit()\">\r\n\r\n            </form>\r\n        </PermissionsModal> ")])], 64
   /* STABLE_FRAGMENT */
   );
 }
