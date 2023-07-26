@@ -16,7 +16,7 @@ class UserEmployeesController extends Controller
         $this->us_em=$us_em;
     }
     public function index(Request $request){
-        $data = $this->us_em->where('department_code',auth()->user()->department_code)
+        $data = $this->us_em->where('department_code',auth()->user()->department_code)->with('Division')
                 ->paginate(10);
         return inertia('Users/Employees/Index',
         [
