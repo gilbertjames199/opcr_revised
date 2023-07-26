@@ -75,6 +75,7 @@ use App\Http\Controllers\DivisionOutputController;
 use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
+use App\Http\Controllers\IPCRController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\ImplementationPlan;
@@ -711,6 +712,12 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [DailyAccomplishmentController::class, 'update']);
         Route::patch('/update/{id}', [DailyAccomplishmentController::class, 'updated']);
         Route::delete('/{id}', [DailyAccomplishmentController::class, 'destroy']);
+    });
+
+    Route::prefix('/IPCR')->group(function(){
+        Route::get('/direct',[IPCRController::class,'direct']);
+        Route::get('/direct/create',[IPCRController::class,'direct_create']);
+        Route::get('/{id}',[IPCRController::class,'index']);
     });
 
     Route::prefix('/AddAccomplishment')->group(function(){
