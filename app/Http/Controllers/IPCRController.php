@@ -22,7 +22,7 @@ class IPCRController extends Controller
 
         $functions = FFUNCCOD::where('department_code', auth()->user()->department_code)->first();
 
-        $data = $this->model->with('MFO')
+        $data = $this->model
                     // ->when($request->mfosel, function($query, $searchItem){
                     //     $query->where('program_and_projects.idmfo','=',$searchItem);
                     // })

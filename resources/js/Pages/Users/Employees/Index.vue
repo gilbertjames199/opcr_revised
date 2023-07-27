@@ -31,7 +31,7 @@
                         <tr>
                             <th scope="col">Name</th>
                             <th>Employment Status</th>
-                            <th>Division Code</th>
+                            <th>Division</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
@@ -39,7 +39,7 @@
                         <tr v-for="user in users.data" >
                             <td>{{ user.employee_name }}</td>
                             <td>{{ user.employment_type_descr }}</td>
-                            <td>{{ user.division_code }}</td>
+                            <td><div v-if="user.division">{{ user.division.division_name1 }}</div></td>
                             <td style="text-align: right">
                                 <div class="dropdown dropstart" >
                                   <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

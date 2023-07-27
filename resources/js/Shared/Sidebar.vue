@@ -380,12 +380,12 @@
                             </Link>
                         </li>
 
-                        <li>
+                        <!-- <li>
                             <Link class="sidebar-link" href="/IPCR/direct" :class="{'active': $page.url === '/IPCR/direct'}">
 
                                 <span class="title">IPCR Standard</span>
                             </Link>
-                        </li>
+                        </li> -->
 
                         <li>
                             <Link class="sidebar-link" href="/user/employees" :class="{'active': $page.url === '/user/employees'}">

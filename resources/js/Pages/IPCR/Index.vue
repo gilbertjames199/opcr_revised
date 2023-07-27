@@ -78,6 +78,8 @@
                                 <td><div v-if="dat.a_i_p">{{ dat.a_i_p.AIP_Code }}</div></td>
                                 <td><div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div></td>
                                 <td>{{ dat.paps_desc }}</td>
+                                <td>{{ dat.paps_desc }}</td>
+                                <td>{{ dat.paps_desc }}</td>
 
                                 <td>
                                     <div class="dropdown dropstart" >
