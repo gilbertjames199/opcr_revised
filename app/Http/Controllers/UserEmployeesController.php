@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserEmployeeCredential;
 use App\Models\UserEmployees;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
@@ -51,11 +53,22 @@ class UserEmployeesController extends Controller
 
             // Get the JSON response from the API and decode it into an associative array
             $data = json_decode($response->getBody(), true);
-            dd($data);
+            //dd($data);
             // Now $data contains the API response as an array, and you can process it as needed
             $length = count($data);
+            $mapped_data =[];
             for($i=0; $i<$length; $i++){
-                $this->saveUserEmployees($data[$i]);
+                // $this->saveUserEmployees($data[$i]);
+                $val = $this->saveUserEmployees($data[$i]);
+                array_push($mapped_data, $val);
+                $this->saveUserCredentials($data[$i]);
+            }
+            //dd($mapped_data);
+            $chunk_data = array_chunk($mapped_data,1000);
+            foreach($chunk_data as $key=>$value){
+
+                DB::table('user_employees')->upsert($value,['empl_id']
+                );
             }
             //dd($data[0]['department_code']);
             // For example, return the data using Inertia::render
@@ -74,13 +87,54 @@ class UserEmployeesController extends Controller
         //dd("done");
     }
     public function saveUserEmployees($datum){
+
+        return [
+                    'empl_id'=>$datum['empl_id'],
+                    'employee_name'=>$datum['employee_name'],
+                    'last_name'=>$datum['last_name'],
+                    'first_name'=>$datum['first_name'],
+                    'middle_name'=>$datum['middle_name'],
+                    'suffix_name'=>$datum['suffix_name'],
+                    'postfix_name'=>$datum['postfix_name'],
+                    'gender'=>$datum['gender'],
+                    'birth_date'=>$datum['birth_date'],
+                    'age'=>$datum['age'],
+                    'department_code'=>$datum['department_code'],
+                    'subdepartment_code'=>$datum['subdepartment_code'],
+                    'division_code'=>$datum['division_code'],
+                    'section_code'=>$datum['section_code'],
+                    'position_code'=>$datum['position_code'],
+                    'position_long_title'=>$datum['position_long_title'],
+                    'position_short_title'=>$datum['position_short_title'],
+                    'position_title1'=>$datum['position_title1'],
+                    'position_title2'=>$datum['position_title2'],
+                    'is_pghead'=>$datum['is_pghead'],
+                    'salary_grade'=>$datum['salary_grade'],
+                    'employment_type'=>$datum['employment_type'],
+                    'employment_type_descr'=>$datum['employment_type_descr'],
+                ];
+
+    }
+    public function saveUserCredentials($datum){
+        $emplo = UserEmployeeCredential::where('username', $datum['empl_id'])
+                    ->get();
+
+        if(count($emplo)<1){
+            $emc = new UserEmployeeCredential;
+            $emc->username = $datum['empl_id'];
+            $emc->password = md5('password1.');
+            $emc->department_code= $datum['department_code'];
+            $emc->division_code = $datum['division_code'];
+            $emc->save();
+        }
+    }
+    public function saveUser($datum){
         $emplo = UserEmployees::where('empl_id', $datum['empl_id'])
                     ->get();
         //dd(count($emplo));
         if(count($emplo)<1){
             $emp = new UserEmployees;
             $emp->empl_id = $datum['empl_id'];
-            $emp->password = bcrypt('$password1');
             $emp->employee_name = $datum['employee_name'];
             $emp->last_name = $datum['last_name'];
             $emp->first_name = $datum['first_name'];
@@ -105,6 +159,5 @@ class UserEmployeesController extends Controller
             $emp->employment_type_descr = $datum['employment_type_descr'];
             $emp->save();
         }
-
     }
 }
