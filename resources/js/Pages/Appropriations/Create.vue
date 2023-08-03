@@ -69,7 +69,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
 
                 <label>PROGRAM</label>&nbsp;
-                <br>{{ form.idprogram }}
+                <!-- <br>{{ form.idprogram }} -->
                 <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
                 <div>
                     <multiselect
@@ -85,7 +85,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
                 <!--******************************-->
                 <label>Objects of Expenditure</label>&nbsp;
-                idooe: {{ form.idooe }}
+                <!-- idooe: {{ form.idooe }} -->
                 <div>
                     <multiselect
                         :options="formattedOOEs"
@@ -326,32 +326,31 @@ export default {
                 var addable=true;
                 //var adval=0;
                 var possible_difference = 0;
-
+                var maxi=parseFloat(0);
                 if(this.form.category=='Capital Outlay'){
                     if(app_co>aip_co){
                         addable=false;
-                        possible_difference=aip_co - parseFloat(this.total_budget_year.total_co_approp);
-
+                        // possible_difference=aip_co - parseFloat(this.total_budget_year.total_co_approp);
+                        maxi = parseFloat(aip_co);
                     }
                 }
                 if(this.form.category=='Maintenance, Operating, and Other Expenses'){
-
                     if(app_mooe>aip_mooe){
-
+                        maxi = parseFloat(aip_mooe);
                         addable=false;
-                        possible_difference=aip_mooe - parseFloat(this.total_budget_year.total_approp_mooe);
+                        // possible_difference=aip_mooe - parseFloat(this.total_budget_year.total_approp_mooe);
                     }
                 }
                 if(this.form.category=='Personnel Services'){
                     if(app_ps>aip_ps){
+                        maxi = parseFloat(app_ps);
                         addable=false;
-                        possible_difference=aip_ps - parseFloat(this.total_budget_year.total_ps_approp);
+                        // possible_difference=aip_ps - parseFloat(this.total_budget_year.total_ps_approp);
                     }
                 }
 
                 if(addable==false){
-                    alert("The amount for budget year exceeds the value of the recorded "+this.form.category+
-                            " for this PAPS. The maximum allowable value for budget year is only "+possible_difference+".")
+                    alert("The maximum allowable value for budget year is only "+maxi+". ")
                 }else{
                     if (this.editData !== undefined) {
                         this.form.patch("/appropriations/", this.form);
