@@ -50,7 +50,6 @@
                                 <th>PAPS Description</th>
                                 <th>Means of Verification</th>
                                 <th>Action</th>
-                                <th>Remarks</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,29 +66,11 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
                                             <li><Link class="dropdown-item" :href="`/OPCRpaps/create/${dat.id}`">Add Standard</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/output/${dat.id}`">Outputs</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/Performance/${dat.id}`">Performance Measures</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/SuccessIndicator/${dat.id}`">Success Indicator</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/OfficeAccountable/${dat.id}`">Office/Individual Accountable</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/OPCRpaps/edit/${dat.id}`">Edit Standard</Link></li>
+                                            <li><Link class="text-danger dropdown-item" @click="deleteStandard(dat.id)">Delete Standard</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Rating/${dat.id}`">Ratings</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Quality/${dat.id}`">Quality</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Timeliness/${dat.id}`">Timeliness</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/Monitoring/${dat.id}`">Monitoring</Link></li>
-                                        </ul>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                            </svg>
-                                        </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/RatingRemarks/${dat.id}`">Ratings Remarks</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/QualityRemarks/${dat.id}`">Quality Remarks</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/TimelinessRemarks/${dat.id}`">Timeliness Remarks</Link></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -166,12 +147,10 @@ export default {
     },
 
     methods:{
-
-
-        deleteMFO(id) {
-            let text = "WARNING!\nAre you sure you want to delete the PAP?";
+        deleteStandard(id) {
+            let text = "WARNING!\nAre you sure you want to delete this Standard?";
               if (confirm(text) == true) {
-                this.$inertia.delete("/paps/" + id+"/");
+                this.$inertia.delete("/OPCRpaps/" + id+"/");
             }
         },
         showFilter() {

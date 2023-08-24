@@ -1,7 +1,7 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} OPCR Standard</h3>
+            <h3>{{ pageTitle }} OPCR Standard {{ idpaps }}</h3>
             <Link :href="`/OPCRpaps/direct`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -125,6 +125,14 @@ import Places from "@/Shared/PlacesShared";
 
 export default {
         props: {
+            Output: Object,
+            Performance: Object,
+            Success: Object,
+            Office: Object,
+            Monitoring: Object,
+            RatingRemarks: Object,
+            QualityRemarks: Object,
+            TimelinessRemarks: Object,
             paps: Object,
             idpaps: Number,
             editData: Object,
@@ -178,7 +186,14 @@ export default {
                     this.bar=this.bari
                 }
                 this.pageTitle = "Edit"
-                this.form.Outputs=this.editData.Outputs
+                this.form.Outputs=this.Output.Outputs
+                this.form.PerformanceMeasure=this.Performance.performance
+                this.form.SuccessIndicator=this.Success.success_indicator
+                this.form.OfficeAccountable=this.Office.office_accountable
+                this.form.Monitoring=this.Monitoring.monitoring
+                this.form.RatingRemarks=this.RatingRemarks.rating_remarks
+                this.form.QualityRemarks=this.QualityRemarks.quality_remarks
+                this.form.TimelinessRemarks=this.TimelinessRemarks.timeliness_remarks
                 this.form.idpaps=this.editData.idpaps
                 this.form.id=this.editData.id
             } else {
@@ -192,10 +207,10 @@ export default {
                 this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
                 //alert(this.form.target_qty);
                 if (this.editData !== undefined) {
-                    this.form.patch("/output/" + this.form.id, this.form);
+                    this.form.patch("/OPCRpaps/" + this.form.id, this.form);
                 } else {
                     // alert("Sample");
-                    var url="/output/store"
+                    var url="/OPCRpaps/store"
                     // alert('for store '+url);
                     this.form.post(url);
                 }

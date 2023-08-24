@@ -483,7 +483,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/create/{id}',[OPCRPAPSController::class,'create']);
         Route::post('/save',[OPCRPAPSController::class,'save']);
         Route::post('/store',[OPCRPAPSController::class,'store']);
-        Route::get('/{id}/{idmfo}/edit', [OPCRPAPSController::class, 'edit']);
+        Route::get('/edit/{id}', [OPCRPAPSController::class, 'edit']);
         Route::patch('/{id}', [OPCRPAPSController::class, 'update']);
         Route::patch('/update/{id}', [OPCRPAPSController::class, 'updated']);
         Route::delete('/{id}', [OPCRPAPSController::class, 'destroy']);

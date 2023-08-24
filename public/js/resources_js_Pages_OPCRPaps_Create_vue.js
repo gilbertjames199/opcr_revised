@@ -18,6 +18,14 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
+    Output: Object,
+    Performance: Object,
+    Success: Object,
+    Office: Object,
+    Monitoring: Object,
+    RatingRemarks: Object,
+    QualityRemarks: Object,
+    TimelinessRemarks: Object,
     paps: Object,
     idpaps: Number,
     editData: Object,
@@ -72,7 +80,14 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.pageTitle = "Edit";
-      this.form.Outputs = this.editData.Outputs;
+      this.form.Outputs = this.Output.Outputs;
+      this.form.PerformanceMeasure = this.Performance.performance;
+      this.form.SuccessIndicator = this.Success.success_indicator;
+      this.form.OfficeAccountable = this.Office.office_accountable;
+      this.form.Monitoring = this.Monitoring.monitoring;
+      this.form.RatingRemarks = this.RatingRemarks.rating_remarks;
+      this.form.QualityRemarks = this.QualityRemarks.quality_remarks;
+      this.form.TimelinessRemarks = this.TimelinessRemarks.timeliness_remarks;
       this.form.idpaps = this.editData.idpaps;
       this.form.id = this.editData.id;
     } else {
@@ -84,10 +99,10 @@ __webpack_require__.r(__webpack_exports__);
       this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4); //alert(this.form.target_qty);
 
       if (this.editData !== undefined) {
-        this.form.patch("/output/" + this.form.id, this.form);
+        this.form.patch("/OPCRpaps/" + this.form.id, this.form);
       } else {
         // alert("Sample");
-        var url = "/output/store"; // alert('for store '+url);
+        var url = "/OPCRpaps/store"; // alert('for store '+url);
 
         this.form.post(url);
       }
@@ -401,7 +416,7 @@ var _hoisted_37 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " OPCR Standard", 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " OPCR Standard " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.idpaps), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/OPCRpaps/direct"
