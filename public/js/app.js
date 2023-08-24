@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-(self.webpackChunk=self.webpackChunk||[]).push([[2773],{8077:(e,a,t)=>{"use strict";var n=t(7757),r=t.n(n),s=t(821),l=t(9038),i={class:"page-container"},o={class:"main-content bgc-grey-100"},c={id:"mainContent"};var d={class:"header navbar"},u={class:"header-container"},m=(0,s.createStaticVNode)('<ul class="nav-left"><li><a id="sidebar-toggle" class="sidebar-toggle" href="javascript:void(0);"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-list" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path></svg></a></li><li class="search-input"><input class="form-control" type="text" placeholder="Search..."></li></ul>',1),v={class:"nav-right"},h={class:"dropdown"},p={href:"",class:"dropdown-toggle no-after peers fxw-nw ai-c lh-1","data-bs-toggle":"dropdown"},g=(0,s.createElementVNode)("div",{class:"peer mR-10"},null,-1),C={class:"peer"},f={class:"fsz-sm c-grey-900"},x=(0,s.createElementVNode)("svg",{xmlns:"http://www.w3.org/2000/svg",width:"12",height:"12",fill:"currentColor",class:"bi bi-caret-down-fill mL-5",viewBox:"0 0 16 16"},[(0,s.createElementVNode)("path",{d:"M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"})],-1),w={class:"dropdown-menu fsz-sm dropdown-menu-c"},I=(0,s.createElementVNode)("svg",{xmlns:"http://www.w3.org/2000/svg",width:"14",height:"14",fill:"currentColor",class:"bi bi-sliders2 mR-10",viewBox:"0 0 16 16"},[(0,s.createElementVNode)("path",{"fill-rule":"evenodd",d:"M10.5 1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4H1.5a.5.5 0 0 1 0-1H10V1.5a.5.5 0 0 1 .5-.5ZM12 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Zm-6.5 2A.5.5 0 0 1 6 6v1.5h8.5a.5.5 0 0 1 0 1H6V10a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5ZM1 8a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 1 8Zm9.5 2a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V13H1.5a.5.5 0 0 1 0-1H10v-1.5a.5.5 0 0 1 .5-.5Zm1.5 2.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Z"})],-1),V=(0,s.createElementVNode)("span",null," Setting",-1),N=(0,s.createElementVNode)("svg",{xmlns:"http://www.w3.org/2000/svg",width:"14",height:"14",fill:"currentColor",class:"bi bi-person-bounding-box mR-10",viewBox:"0 0 16 16"},[(0,s.createElementVNode)("path",{d:"M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"}),(0,s.createElementVNode)("path",{d:"M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"})],-1),E=(0,s.createElementVNode)("span",null," Change Password",-1),b=(0,s.createElementVNode)("li",{role:"separator",class:"divider"},null,-1),A=[(0,s.createElementVNode)("svg",{xmlns:"http://www.w3.org/2000/svg",width:"14",height:"14",fill:"currentColor",class:"bi bi-box-arrow-right mR-10",viewBox:"0 0 16 16"},[(0,s.createElementVNode)("path",{"fill-rule":"evenodd",d:"M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"}),(0,s.createElementVNode)("path",{"fill-rule":"evenodd",d:"M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"})],-1),(0,s.createElementVNode)("span",null," Logout",-1)];const P={methods:{logout:function(){this.$inertia.post("/logout"),location.href="/"},update_verified:function(){axios.patch("/users/update_verified_at")}}};var R=t(3744);const O=(0,R.Z)(P,[["render",function(e,a,t,n,r,l){var i=(0,s.resolveComponent)("Link");return(0,s.openBlock)(),(0,s.createElementBlock)("div",d,[(0,s.createElementVNode)("div",u,[m,(0,s.createElementVNode)("ul",v,[(0,s.createElementVNode)("li",h,[(0,s.createElementVNode)("a",p,[g,(0,s.createElementVNode)("div",C,[(0,s.createElementVNode)("span",f,(0,s.toDisplayString)(e.$page.props.auth.user.FullName),1)]),x]),(0,s.createElementVNode)("ul",w,[(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{href:"/users/settings",class:"d-b td-n pY-5 bgcH-grey-100 c-grey-700"},{default:(0,s.withCtx)((function(){return[I,V]})),_:1})]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{href:"/users/change-password",class:"d-b td-n pY-5 bgcH-grey-100 c-grey-700"},{default:(0,s.withCtx)((function(){return[N,E]})),_:1})]),b,(0,s.createElementVNode)("li",null,[(0,s.createElementVNode)("a",{onClick:a[0]||(a[0]=function(e){return l.logout()}),href:"",class:"d-b td-n pY-5 bgcH-grey-100 c-grey-700"},A)])])])])])])}]]);var S={class:"bdT ta-c p-30 lh-0 fsz-sm c-grey-600"},k=[(0,s.createElementVNode)("span",null,[(0,s.createTextVNode)("Developed by "),(0,s.createElementVNode)("a",{href:"https://davaodeoro.gov.ph/"},"PICTO")],-1)];const z={},M=(0,R.Z)(z,[["render",function(e,a,t,n,r,l){return(0,s.openBlock)(),(0,s.createElementBlock)("footer",S,k)}]]);var _={class:"sidebar"},y={class:"sidebar-inner"},D=(0,s.createStaticVNode)('<div class="sidebar-logo"><div class="peers ai-c fxw-nw"><div class="peer peer-greed"><a class="sidebar-link td-n" href="/"><div class="peers ai-c fxw-nw"><div class="peer"><div class="logo"><img src="/images/logo.png" alt="" class="img-fluid p-5"></div></div><div class="peer peer-greed"><h5 class="lh-1 mB-0 logo-text" style="color:#ffdc78;font-size:x-large !important;"> Admin </h5></div></div></a></div><div class="peer"><div class="mobile-toggle sidebar-toggle"><a href="" class="td-n"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-list" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path></svg></a></div></div></div></div>',1),F={class:"sidebar-menu scrollable pos-r"},B=(0,s.createElementVNode)("hr",null,null,-1),T={class:"nav-item dropdown"},L=(0,s.createStaticVNode)('<a class="dropdown-toggle" href="javascript:void(0);"><span class="icon-holder"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-border-outer" viewBox="0 0 16 16"><path d="M7.5 1.906v.938h1v-.938h-1zm0 1.875v.938h1V3.78h-1zm0 1.875v.938h1v-.938h-1zM1.906 8.5h.938v-1h-.938v1zm1.875 0h.938v-1H3.78v1zm1.875 0h.938v-1h-.938v1zm2.813 0v-.031H8.5V7.53h-.031V7.5H7.53v.031H7.5v.938h.031V8.5h.938zm.937 0h.938v-1h-.938v1zm1.875 0h.938v-1h-.938v1zm1.875 0h.938v-1h-.938v1zM7.5 9.406v.938h1v-.938h-1zm0 1.875v.938h1v-.938h-1zm0 1.875v.938h1v-.938h-1z"></path><path d="M0 0v16h16V0H0zm1 1h14v14H1V1z"></path></svg></span><span class="title">Logframe</span><span class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path></svg></span></a>',1),G={class:"dropdown-menu"},H=(0,s.createElementVNode)("span",{class:"title"},"Societal Goals",-1),U={class:"nav-item dropdown"},j=(0,s.createStaticVNode)('<a class="dropdown-toggle" href="javascript:void(0);"><span class="title">Outcomes</span><span class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path></svg></span></a>',1),q={class:"dropdown-menu"},Z=(0,s.createElementVNode)("span",{class:"title"},"Sectoral Outcomes",-1),Q=(0,s.createElementVNode)("span",{class:"title"},"Organizational Outcomes",-1),Y=(0,s.createElementVNode)("span",{class:"title"},"Major Final Output",-1),J=(0,s.createElementVNode)("span",{class:"title"},"Programs, Activities, Projects",-1),X=(0,s.createElementVNode)("span",{class:"title"},"View Logframe",-1),W={class:"nav-item"},K=(0,s.createElementVNode)("span",null,null,-1),ee=(0,s.createElementVNode)("span",{class:"icon-holder"},[(0,s.createElementVNode)("svg",{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",fill:"currentColor",class:"bi bi-border-style",viewBox:"0 0 16 16"},[(0,s.createElementVNode)("path",{d:"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z"})])],-1),ae=(0,s.createElementVNode)("span",{class:"title"},"OPCR",-1),te={class:"nav-item"},ne=(0,s.createElementVNode)("span",null,null,-1),re=(0,s.createElementVNode)("span",{class:"icon-holder"},[(0,s.createElementVNode)("svg",{xmlns:"http://www.w3.org/2000/svg",width:"16",height:"16",fill:"currentColor",class:"bi bi-filter-square-fill",viewBox:"0 0 16 16"},[(0,s.createElementVNode)("path",{d:"M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm.5 5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1 0-1zM4 8.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm2 3a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5z"})])],-1),se=(0,s.createElementVNode)("span",{class:"title"},"IPCR",-1),le={class:"nav-item"},ie=(0,s.createElementVNode)("span",null,null,-1),oe=(0,s.createElementVNode)("span",{class:"icon-holder"},[(0,s.createElementVNode)("svg",{xmlns:"http://www.w3.org/2000/svg",width:"16",height:"16",fill:"currentColor",class:"bi bi-card-text",viewBox:"0 0 16 16"},[(0,s.createElementVNode)("path",{d:"M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"}),(0,s.createElementVNode)("path",{d:"M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"})])],-1),ce=(0,s.createElementVNode)("span",{class:"title"},"LBP Form",-1),de={class:"nav-item"},ue=(0,s.createElementVNode)("span",null,null,-1),me=(0,s.createElementVNode)("span",{class:"icon-holder"},[(0,s.createElementVNode)("svg",{xmlns:"http://www.w3.org/2000/svg",width:"16",height:"16",fill:"currentColor",class:"bi bi-calendar-fill",viewBox:"0 0 16 16"},[(0,s.createElementVNode)("path",{d:"M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z"})])],-1),ve=(0,s.createElementVNode)("span",{class:"title"},"Accomplishment Report",-1),he=(0,s.createElementVNode)("hr",null,null,-1),pe={class:"nav-item dropdown"},ge=(0,s.createStaticVNode)('<a class="dropdown-toggle" href="javascript:void(0);"><span class="icon-holder"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-book-fill" viewBox="0 0 16 16"><path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"></path></svg></span><span class="title">Libraries</span><span class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path></svg></span></a>',1),Ce={class:"dropdown-menu"},fe={class:"nav-item dropdown"},xe=(0,s.createStaticVNode)('<a class="dropdown-toggle" href="javascript:void(0);"><span class="title">Agenda</span><span class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path></svg></span></a>',1),we={class:"dropdown-menu"},Ie=(0,s.createElementVNode)("span",{class:"title"},"Chief Executive Agenda",-1),Ve=(0,s.createElementVNode)("span",{class:"title"},"Socio-Economic Agenda",-1),Ne=(0,s.createElementVNode)("span",{class:"title"},"Sustainable Devt Goals",-1),Ee=(0,s.createElementVNode)("span",{class:"title"},"Executive Legislative Agenda",-1),be=(0,s.createElementVNode)("span",{class:"title"},"Research Agenda",-1),Ae=(0,s.createElementVNode)("span",{class:"title"},"HGDG Checklist",-1),Pe=(0,s.createElementVNode)("span",{class:"title"},"GAD Related Issues",-1),Re=(0,s.createElementVNode)("span",{class:"title"},"Implementing Team",-1),Oe=(0,s.createElementVNode)("span",{class:"title"},"Indicators",-1),Se=(0,s.createElementVNode)("span",{class:"title"},"OPCR Standard",-1),ke=(0,s.createElementVNode)("span",{class:"title"},"Employees",-1),ze=(0,s.createElementVNode)("hr",null,null,-1);const Me={mounted:function(){$((function(){$(".sidebar .sidebar-menu li a").on("click",(function(){var e=$(this);e.parent().hasClass("open")?e.parent().children(".dropdown-menu").slideUp(200,(function(){e.parent().removeClass("open")})):(e.parent().parent().children("li.open").children(".dropdown-menu").slideUp(200),e.parent().parent().children("li.open").children("a").removeClass("open"),e.parent().parent().children("li.open").removeClass("open"),e.parent().children(".dropdown-menu").slideDown(200,(function(){e.parent().addClass("open")})))})),$(".sidebar").find(".sidebar-link").each((function(e,a){$(a).removeClass("active")})).filter((function(){var e=$(this).attr("href");return("/"===e[0]?e.substr(1):e)===window.location.pathname.substr(1)})).addClass("active"),$(".sidebar-toggle").on("click",(function(e){$("body").toggleClass("is-collapsed"),e.preventDefault()}))}))}},_e={components:{Nav:O,Footer:M,Sidebar:(0,R.Z)(Me,[["render",function(e,a,t,n,r,l){var i=(0,s.resolveComponent)("Link");return(0,s.openBlock)(),(0,s.createElementBlock)("div",_,[(0,s.createElementVNode)("div",y,[D,(0,s.createElementVNode)("ul",F,[B,(0,s.createElementVNode)("li",T,[L,(0,s.createElementVNode)("ul",G,[(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/Societal"===e.$page.url}]),href:"/Societal"},{default:(0,s.withCtx)((function(){return[H]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",U,[j,(0,s.createElementVNode)("ul",q,[(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/Sectoral"===e.$page.url}]),href:"/Sectoral"},{default:(0,s.withCtx)((function(){return[Z]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/Organization"===e.$page.url}]),href:"/Organization"},{default:(0,s.withCtx)((function(){return[Q]})),_:1},8,["class"])])])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/mfos/direct"===e.$page.url}]),href:"/mfos/direct"},{default:(0,s.withCtx)((function(){return[Y]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/paps/direct"===e.$page.url}]),href:"/paps/direct"},{default:(0,s.withCtx)((function(){return[J]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:e.$page.url==="/logframe/".concat(e.$page.props.auth.user.office.ffunccod)}]),href:"/logframe/".concat(e.$page.props.auth.user.office.ffunccod)},{default:(0,s.withCtx)((function(){return[X]})),_:1},8,["href","class"])])])]),(0,s.createElementVNode)("li",W,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/opcrlist"===e.$page.url}]),href:"/opcrlist"},{default:(0,s.withCtx)((function(){return[K,ee,ae]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",te,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/IPCR/direct"===e.$page.url}]),href:"/IPCR/direct"},{default:(0,s.withCtx)((function(){return[ne,re,se]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",le,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/AIP/direct"===e.$page.url}]),href:"/AIP/direct"},{default:(0,s.withCtx)((function(){return[ie,oe,ce]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",de,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/AddAccomplishment/"===e.$page.url}]),href:"/AddAccomplishment/"},{default:(0,s.withCtx)((function(){return[ue,me,ve]})),_:1},8,["class"])]),he,(0,s.createElementVNode)("li",pe,[ge,(0,s.createElementVNode)("ul",Ce,[(0,s.createElementVNode)("li",fe,[xe,(0,s.createElementVNode)("ul",we,[(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/ChiefAgenda"===e.$page.url}]),href:"/ChiefAgenda"},{default:(0,s.withCtx)((function(){return[Ie]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/EconomicAgenda"===e.$page.url}]),href:"/EconomicAgenda"},{default:(0,s.withCtx)((function(){return[Ve]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/SDG"===e.$page.url}]),href:"/SDG"},{default:(0,s.withCtx)((function(){return[Ne]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/ELA"===e.$page.url}]),href:"/ELA"},{default:(0,s.withCtx)((function(){return[Ee]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/ResearchAgenda"===e.$page.url}]),href:"/ResearchAgenda"},{default:(0,s.withCtx)((function(){return[be]})),_:1},8,["class"])])])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/HGDGChecklist"===e.$page.url}]),href:"/HGDGChecklist"},{default:(0,s.withCtx)((function(){return[Ae]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/Issues"===e.$page.url}]),href:"/Issues"},{default:(0,s.withCtx)((function(){return[Pe]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/ImplementingTeam"===e.$page.url}]),href:"/ImplementingTeam"},{default:(0,s.withCtx)((function(){return[Re]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/indicators"===e.$page.url}]),href:"/indicators"},{default:(0,s.withCtx)((function(){return[Oe]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/OPCRpaps/direct"===e.$page.url}]),href:"/OPCRpaps/direct"},{default:(0,s.withCtx)((function(){return[Se]})),_:1},8,["class"])]),(0,s.createElementVNode)("li",null,[(0,s.createVNode)(i,{class:(0,s.normalizeClass)(["sidebar-link",{active:"/user/employees"===e.$page.url}]),href:"/user/employees"},{default:(0,s.withCtx)((function(){return[ke]})),_:1},8,["class"])])])]),ze])])])}]])}},ye=(0,R.Z)(_e,[["render",function(e,a,t,n,r,l){var d=(0,s.resolveComponent)("Sidebar"),u=(0,s.resolveComponent)("Notification"),m=(0,s.resolveComponent)("Nav"),v=(0,s.resolveComponent)("Footer");return(0,s.openBlock)(),(0,s.createElementBlock)("div",null,[(0,s.createVNode)(d),(0,s.createElementVNode)("div",i,[(0,s.createVNode)(u),(0,s.createVNode)(m),(0,s.createElementVNode)("main",o,[(0,s.createElementVNode)("div",c,[(0,s.renderSlot)(e.$slots,"default")])]),(0,s.createVNode)(v)])])}]]);var De={class:"position-fixed bottom-0 end-0 p-3",style:{"z-index":"11"}},Fe={class:"toast align-items-center",role:"alert","aria-atomic":"true","aria-live":"polite","data-bs-autohide":"true","data-bs-delay":"5000"},Be={key:0,class:"d-flex text-white bg-success"},Te={class:"toast-body"},Le=(0,s.createElementVNode)("button",{type:"button",class:"btn-close me-2 m-auto","data-bs-dismiss":"toast","aria-label":"Close"},null,-1),$e={key:1,class:"d-flex text-white bg-danger"},Ge={class:"toast-body"},He=(0,s.createElementVNode)("button",{type:"button",class:"btn-close me-2 m-auto","data-bs-dismiss":"toast","aria-label":"Close"},null,-1);const Ue={watch:{"$page.props.flash":{handler:function(e){var a=document.querySelector(".toast");new window.bootstrap.Toast(a).show()},deep:!0}}},je=(0,R.Z)(Ue,[["render",function(e,a,t,n,r,l){return(0,s.openBlock)(),(0,s.createElementBlock)("div",De,[(0,s.createElementVNode)("div",Fe,[null!==e.$page.props.flash.message?((0,s.openBlock)(),(0,s.createElementBlock)("div",Be,[(0,s.createElementVNode)("div",Te,(0,s.toDisplayString)(e.$page.props.flash.message),1),Le])):(0,s.createCommentVNode)("",!0),null!==e.$page.props.flash.error?((0,s.openBlock)(),(0,s.createElementBlock)("div",$e,[(0,s.createElementVNode)("div",Ge,(0,s.toDisplayString)(e.$page.props.flash.error),1),He])):(0,s.createCommentVNode)("",!0)])])}]]);var qe=t(1966),Ze=(t(8085),{key:0,class:"fixed inset-0 w-full h-screen flex items-center justify-center bg-semi-75"});const Qe={props:{showing:{required:!0,type:Boolean}}},Ye=(0,R.Z)(Qe,[["render",function(e,a,t,n,r,l){return t.showing?((0,s.openBlock)(),(0,s.createElementBlock)("div",Ze," The modal will go here. ")):(0,s.createCommentVNode)("",!0)}]]);var Je=t(1658),Xe=t.n(Je),We=t(521),Ke=t.n(We),ea=t(2965),aa=t.n(ea),ta=t(8236),na=t.n(ta),ra=t(5180),sa=t.n(ra),la=t(3863),ia=t.n(la),oa=(t(6441),t(9938)),ca=t.n(oa),da=t(3633);function ua(e,a,t,n,r,s,l){try{var i=e[s](l),o=i.value}catch(e){return void t(e)}i.done?a(o):Promise.resolve(o).then(n,r)}t(7333);var ma,va,ha=Xe()(Ke(),aa(),na(),sa(),ia());(0,l.yP)({resolve:(ma=r().mark((function e(a){var n,s;return r().wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,t(4985)("./".concat(a));case 2:return s=e.sent.default,null!==(n=s.layout)&&void 0!==n||(s.layout=ye),e.abrupt("return",s);case 5:case"end":return e.stop()}}),e)})),va=function(){var e=this,a=arguments;return new Promise((function(t,n){var r=ma.apply(e,a);function s(e){ua(r,t,n,s,l,"next",e)}function l(e){ua(r,t,n,s,l,"throw",e)}s(void 0)}))},function(e){return va.apply(this,arguments)}),setup:function(e){var a=e.el,t=e.App,n=e.props,r=e.plugin;(0,s.createApp)({render:function(){return(0,s.h)(t,n)}}).use(r).component("multiselect",da.Z).component("Link",l.rU).component("Head",l.Fb).component("CardModal",Ye).component("Notification",je).component("FilePond",ha).component("v-select",ca()).mixin({data:function(){return{my_years:["2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027","2028","2029","2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047","2048","2049","2050","2051","2052","2053","2054","2055","2056","2057","2058","2059","2060","2061","2062","2063","2064","2065","2066","2067","2068","2069","2070","2071","2072","2073","2074","2075","2076","2077","2078","2079","2080","2081","2082","2083","2084","2085","2086","2087","2088","2089","2090","2091","2092","2093","2094","2095","2096","2097","2098","2099","2100"],get jasper_ip(){return"122.53.120.27:8080/"}}},methods:{cleanVariable:function(e){this.variable=e.target.value.replace(/[^0-9]/g,"")},NumbersOnly:function(e){e.target.value.toString();var a=(e=e||window.event).which?e.which:e.keyCode;if(!(a>31&&(a<48||a>57)&&46!==a))return!0;e.preventDefault(),e.toFixed(2)},format_number:function(e,a,t){return e.toLocaleString("en-US",{useGrouping:t,minimumFractionDigits:a,maximumFractionDigits:a})},format_number_conv:function(e,a,t){return parseFloat(e).toLocaleString("en-US",{useGrouping:t,minimumFractionDigits:a,maximumFractionDigits:a})},GAD_remark:function(e){var a=parseFloat(e),t="GAD is insivible";return a>=4&&a<8?t="Promising GAD prospects (conditional pass)":a>=8&&a<15?t="Gender Sensitive":a>=15&&a<20?t="Gender-responsive":a>=20&&(t="Fully gender-responsive"),t},yearNow:function(){return(new Date).getFullYear()},year_values:function(){return s.createApp,["2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027","2028","2029","2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047","2048","2049","2050","2051","2052","2053","2054","2055","2056","2057","2058","2059","2060","2061","2062","2063","2064","2065","2066","2067","2068","2069","2070","2071","2072","2073","2074","2075","2076","2077","2078","2079","2080","2081","2082","2083","2084","2085","2086","2087","2088","2089","2090","2091","2092","2093","2094","2095","2096","2097","2098","2099","2100"]},allCaps:function(e){return e.toUpperCase()},formatMonthYear:function(e){var a=e.split("-"),t=a[0],n=new Date(a[0],a[1]-1).toLocaleString("en-US",{month:"long"});return"".concat(n," ").concat(t)},formatMonth:function(e){var a=e.split("-"),t=(a[0],new Date(a[0],a[1]-1).toLocaleString("en-US",{month:"long"}));return"".concat(t)},getImagePath:function(e){return"/images/".concat(e)},getSum:function(e,a){var t=parseFloat(e)+parseFloat(a);return this.format_number_conv(t,2,!0)},getDifference:function(e,a){var t=parseFloat(e)-parseFloat(a);return this.format_number_conv(t,2,!0)}}}).mount(a)},title:function(e){return"PPA: "+e}}),qe.I.init({delay:250,color:"#29d",includeCSS:!0,showSpinner:!1})},7333:(e,a,t)=>{window._=t(6486);try{window.bootstrap=t(7244),window.$=window.jQuery=t(9755)}catch(e){}window.axios=t(9669),window.axios.defaults.headers.common["X-Requested-With"]="XMLHttpRequest"},7731:()=>{},4985:(e,a,t)=>{var n={"./AIP/Index":[7937,7937],"./AIP/Index.vue":[7937,7937],"./AIP/LBP_Form_2/Create":[8405,8405],"./AIP/LBP_Form_2/Create.vue":[8405,8405],"./AIP/LBP_Form_2/Index":[1353,1353],"./AIP/LBP_Form_2/Index.vue":[1353,1353],"./AIP_Code/Create":[2484,2484],"./AIP_Code/Create.vue":[2484,2484],"./AIP_Code/Index":[430,430],"./AIP_Code/Index.vue":[430,430],"./Accomplishments/Create":[1473,1473],"./Accomplishments/Create.vue":[1473,1473],"./Accomplishments/Index":[3589,3589],"./Accomplishments/Index.vue":[3589,3589],"./Accomplishments/ValidationModal":[5326,5326],"./Accomplishments/ValidationModal.vue":[5326,5326],"./Accomplishments2/Create":[5193,5193],"./Accomplishments2/Create.vue":[5193,5193],"./Accomplishments2/Create2":[4896,4896],"./Accomplishments2/Create2.vue":[4896,4896],"./Accomplishments2/Index":[3315,3315],"./Accomplishments2/Index.vue":[3315,3315],"./Accomplishments2/Index2Backup":[8276,8276],"./Accomplishments2/Index2Backup.vue":[8276,8276],"./Accomplishments2/IndexBackUp":[2786,2786],"./Accomplishments2/IndexBackUp.vue":[2786,2786],"./Accomplishments2/ValidationModal":[9214,9214],"./Accomplishments2/ValidationModal.vue":[9214,9214],"./Activities/Create":[1085,1085],"./Activities/Create.vue":[1085,1085],"./Activities/Index":[1638,1638],"./Activities/Index.vue":[1638,1638],"./Appropriations/Create":[1639,8898,1639],"./Appropriations/Create.vue":[1639,8898,1639],"./Appropriations/Index":[5517,5517],"./Appropriations/Index.vue":[5517,5517],"./Authentication/LogIn":[4035,8127],"./Authentication/LogIn.vue":[4035,8127],"./BudgetRequirement/Create":[8609,8898,8609],"./BudgetRequirement/Create.vue":[8609,8898,8609],"./BudgetRequirement/Index":[6889,6889],"./BudgetRequirement/Index.vue":[6889,6889],"./ChiefAgenda/Index":[5456,5456],"./ChiefAgenda/Index.vue":[5456,5456],"./ChiefAgenda/addAgenda":[7089,7089],"./ChiefAgenda/addAgenda.vue":[7089,7089],"./DailyAccomplishment/Create":[7803,7803],"./DailyAccomplishment/Create.vue":[7803,7803],"./DailyAccomplishment/Index":[946,946],"./DailyAccomplishment/Index.vue":[946,946],"./Daily_Accomplishment/Direct":[2493,2493],"./Daily_Accomplishment/Direct.vue":[2493,2493],"./Division/Create":[460,460],"./Division/Create.vue":[460,460],"./Division/Index":[7868,7868],"./Division/Index.vue":[7868,7868],"./Division/Outputs/Create":[6110,6110],"./Division/Outputs/Create.vue":[6110,6110],"./Division/Outputs/Index":[4554,4554],"./Division/Outputs/Index.vue":[4554,4554],"./ELA/Create":[3933,3933],"./ELA/Create.vue":[3933,3933],"./ELA/Index":[1392,1392],"./ELA/Index.vue":[1392,1392],"./EconomicAgenda/Index":[7468,7468],"./EconomicAgenda/Index.vue":[7468,7468],"./EconomicAgenda/addAgenda":[9587,9587],"./EconomicAgenda/addAgenda.vue":[9587,9587],"./EvaluationMechanismTool/Create":[201,201],"./EvaluationMechanismTool/Create.vue":[201,201],"./EvaluationMechanismTool/Index":[551,551],"./EvaluationMechanismTool/Index.vue":[551,551],"./Home":[7885,7885],"./Home.vue":[7885,7885],"./IPCR/Index":[2004,2004],"./IPCR/Index.vue":[2004,2004],"./Implementation/Create":[1290,8898,1290],"./Implementation/Create.vue":[1290,8898,1290],"./Implementation/Create_A":[6023,8898,6023],"./Implementation/Create_A.vue":[6023,8898,6023],"./Implementation/Index":[570,570],"./Implementation/Index.vue":[570,570],"./ImplementingTeam/Create":[5114,5114],"./ImplementingTeam/Create.vue":[5114,5114],"./ImplementingTeam/Index":[9944,9944],"./ImplementingTeam/Index.vue":[9944,9944],"./ImplementingTeamRevision/Create":[3820,3820],"./ImplementingTeamRevision/Create.vue":[3820,3820],"./ImplementingTeamRevision/Index":[8387,8387],"./ImplementingTeamRevision/Index.vue":[8387,8387],"./Indicators/Create":[5097,5097],"./Indicators/Create.vue":[5097,5097],"./Indicators/Index":[5174,5174],"./Indicators/Index.vue":[5174,5174],"./IndividualOutputs/Create":[6474,6474],"./IndividualOutputs/Create.vue":[6474,6474],"./IndividualOutputs/Index":[6299,6299],"./IndividualOutputs/Index.vue":[6299,6299],"./InterOutcome/Create":[4018,4018],"./InterOutcome/Create.vue":[4018,4018],"./InterOutcome/Index":[6165,6165],"./InterOutcome/Index.vue":[6165,6165],"./Issues/Create":[406,406],"./Issues/Create.vue":[406,406],"./Issues/Index":[8568,8568],"./Issues/Index.vue":[8568,8568],"./LogFrame/Index":[5827,5827],"./LogFrame/Index.vue":[5827,5827],"./LogFrame/logframe":[432,432],"./LogFrame/logframe.vue":[432,432],"./MFOs/Create":[4948,4948],"./MFOs/Create.vue":[4948,4948],"./MFOs/Direct":[6181,6181],"./MFOs/Direct.vue":[6181,6181],"./MFOs/Index":[3510,3510],"./MFOs/Index.vue":[3510,3510],"./MFOs/SubMFO/Create":[1076,1076],"./MFOs/SubMFO/Create.vue":[1076,1076],"./MFOs/SubMFO/Direct":[4603,4603],"./MFOs/SubMFO/Direct.vue":[4603,4603],"./Monitoring/Create":[8824,8824],"./Monitoring/Create.vue":[8824,8824],"./Monitoring/Index":[5137,5137],"./Monitoring/Index.vue":[5137,5137],"./OPCR/Accomplishment/Create":[1789,1789],"./OPCR/Accomplishment/Create.vue":[1789,1789],"./OPCR/Accomplishment/Index":[4853,4035],"./OPCR/Accomplishment/Index.vue":[4853,4035],"./OPCR/Form/Create":[3811,3811],"./OPCR/Form/Create.vue":[3811,3811],"./OPCR/Form/Index":[1027,1027],"./OPCR/Form/Index.vue":[1027,1027],"./OPCR/Form/Print":[4054,4054],"./OPCR/Form/Print.vue":[4054,4054],"./OPCR/Index":[3316,3316],"./OPCR/Index.vue":[3316,3316],"./OPCR/List/Create":[8517,8517],"./OPCR/List/Create.vue":[8517,8517],"./OPCR/List/Index":[7296,7296],"./OPCR/List/Index.vue":[7296,7296],"./OPCR/OPCR":[9579,9579],"./OPCR/OPCR.vue":[9579,9579],"./OPCR/Target/Create":[4320,4320],"./OPCR/Target/Create.vue":[4320,4320],"./OPCR/Target/Index":[6,6],"./OPCR/Target/Index.vue":[6,6],"./OPCRPaps/Create":[309,309],"./OPCRPaps/Create.vue":[309,309],"./OPCRPaps/Direct":[1217,1217],"./OPCRPaps/Direct.vue":[1217,1217],"./OfficeAccountable/Create":[9399,9399],"./OfficeAccountable/Create.vue":[9399,9399],"./OfficeAccountable/Index":[6826,6826],"./OfficeAccountable/Index.vue":[6826,6826],"./Organizational/Index":[9615,9615],"./Organizational/Index.vue":[9615,9615],"./Organizational/addOrganizational":[6027,6027],"./Organizational/addOrganizational.vue":[6027,6027],"./Outcome/Create":[2853,2853],"./Outcome/Create.vue":[2853,2853],"./Outcome/Index":[8829,8829],"./Outcome/Index.vue":[8829,8829],"./Outputs/Create":[1184,1184],"./Outputs/Create.vue":[1184,1184],"./Outputs/Index":[5376,5376],"./Outputs/Index.vue":[5376,5376],"./PAPS/Create":[3456,3456],"./PAPS/Create.vue":[3456,3456],"./PAPS/Direct":[1240,1240],"./PAPS/Direct.vue":[1240,1240],"./PAPS/Index":[2859,2859],"./PAPS/Index.vue":[2859,2859],"./Performance/Create":[6946,6946],"./Performance/Create.vue":[6946,6946],"./Performance/Index":[1097,1097],"./Performance/Index.vue":[1097,1097],"./Places":[488,488],"./Places.vue":[488,488],"./Poles/Index":[1009,1009],"./Poles/Index.vue":[1009,1009],"./Posts/Index":[751,751],"./Posts/Index.vue":[751,751],"./ProjectProfile/Create":[5676,5676],"./ProjectProfile/Create.vue":[5676,5676],"./ProjectProfile/Index":[8846,8846],"./ProjectProfile/Index.vue":[8846,8846],"./Quality/Create":[6096,6096],"./Quality/Create.vue":[6096,6096],"./Quality/Index":[5826,5826],"./Quality/Index.vue":[5826,5826],"./QualityRemarks/Create":[6230,6230],"./QualityRemarks/Create.vue":[6230,6230],"./QualityRemarks/Index":[5700,5700],"./QualityRemarks/Index.vue":[5700,5700],"./RAAO/Index":[9313,9313],"./RAAO/Index.vue":[9313,9313],"./Rating/Create":[105,105],"./Rating/Create.vue":[105,105],"./Rating/Index":[9006,9006],"./Rating/Index.vue":[9006,9006],"./RatingRemarks/Create":[7618,7618],"./RatingRemarks/Create.vue":[7618,7618],"./RatingRemarks/Index":[1367,1367],"./RatingRemarks/Index.vue":[1367,1367],"./ResearchAgenda/Create":[4236,4236],"./ResearchAgenda/Create.vue":[4236,4236],"./ResearchAgenda/Index":[5211,5211],"./ResearchAgenda/Index.vue":[5211,5211],"./RevisionPlans/Create":[3568,3568],"./RevisionPlans/Create.vue":[3568,3568],"./RevisionPlans/GAS/Create":[8712,8712],"./RevisionPlans/GAS/Create.vue":[8712,8712],"./RevisionPlans/GAS/Index":[3426,3426],"./RevisionPlans/GAS/Index.vue":[3426,3426],"./RevisionPlans/GAS/View":[2169,2169],"./RevisionPlans/GAS/View.vue":[2169,2169],"./RevisionPlans/Index":[5086,5086],"./RevisionPlans/Index.vue":[5086,5086],"./RevisionPlans/MFO/Create":[6266,6266],"./RevisionPlans/MFO/Create.vue":[6266,6266],"./RevisionPlans/MFO/Index":[7730,7730],"./RevisionPlans/MFO/Index.vue":[7730,7730],"./RevisionPlans/View":[2927,2927],"./RevisionPlans/View.vue":[2927,2927],"./RiskManagement/Create":[4180,4180],"./RiskManagement/Create.vue":[4180,4180],"./RiskManagement/Index":[4879,4879],"./RiskManagement/Index.vue":[4879,4879],"./SDG/Create":[3697,3697],"./SDG/Create.vue":[3697,3697],"./SDG/Index":[4900,4900],"./SDG/Index.vue":[4900,4900],"./Sectoral/Index":[4215,4215],"./Sectoral/Index.vue":[4215,4215],"./Sectoral/addSector":[507,507],"./Sectoral/addSector.vue":[507,507],"./Signatories/Create":[3404,3404],"./Signatories/Create.vue":[3404,3404],"./Signatories/Index":[8571,8571],"./Signatories/Index.vue":[8571,8571],"./SocietalGoals/Index":[3701,3701],"./SocietalGoals/Index.vue":[3701,3701],"./SocietalGoals/addSocietalGoals":[3992,3992],"./SocietalGoals/addSocietalGoals.vue":[3992,3992],"./Strategies/Create":[1130,1130],"./Strategies/Create.vue":[1130,1130],"./Strategies/Index":[4084,4084],"./Strategies/Index.vue":[4084,4084],"./SuccessIndicator/Create":[346,346],"./SuccessIndicator/Create.vue":[346,346],"./SuccessIndicator/Index":[7700,7700],"./SuccessIndicator/Index.vue":[7700,7700],"./Targets/Create":[5282,5282],"./Targets/Create.vue":[5282,5282],"./Targets/Direct":[6713,6713],"./Targets/Direct.vue":[6713,6713],"./Targets/Implementation/Create":[4135,4135],"./Targets/Implementation/Create.vue":[4135,4135],"./Targets/Implementation/Index":[5153,5153],"./Targets/Implementation/Index.vue":[5153,5153],"./Targets/Index":[6859,6859],"./Targets/Index.vue":[6859,6859],"./Time_Sheets/Index":[2130,2130],"./Time_Sheets/Index.vue":[2130,2130],"./Time_Sheets/New":[4859,4859],"./Time_Sheets/New.vue":[4859,4859],"./Timeliness/Create":[8325,8325],"./Timeliness/Create.vue":[8325,8325],"./Timeliness/Index":[4102,4102],"./Timeliness/Index.vue":[4102,4102],"./TimelinessRemarks/Create":[4099,4099],"./TimelinessRemarks/Create.vue":[4099,4099],"./TimelinessRemarks/Index":[4445,4445],"./TimelinessRemarks/Index.vue":[4445,4445],"./UserOffice/Set":[6542,6542],"./UserOffice/Set.vue":[6542,6542],"./Users/BootstrapModalNoJquery":[4399,4399],"./Users/BootstrapModalNoJquery.vue":[4399,4399],"./Users/ChangePassword":[6609,6609],"./Users/ChangePassword.vue":[6609,6609],"./Users/Create":[4465,4465],"./Users/Create.vue":[4465,4465],"./Users/Employees/Index":[7619,7619],"./Users/Employees/Index.vue":[7619,7619],"./Users/Index":[9186,9186],"./Users/Index.vue":[9186,9186],"./Users/PermissionsModal":[2783,2783],"./Users/PermissionsModal.vue":[2783,2783],"./Users/Settings":[2071,2071],"./Users/Settings.vue":[2071,2071],"./hgdg_checklist/Create":[8444,8444],"./hgdg_checklist/Create.vue":[8444,8444],"./hgdg_checklist/Index":[6703,6703],"./hgdg_checklist/Index.vue":[6703,6703],"./hgdg_question/Create":[2440,2440],"./hgdg_question/Create.vue":[2440,2440],"./hgdg_question/Index":[1330,1330],"./hgdg_question/Index.vue":[1330,1330],"./hgdg_score/Index":[7377,7377],"./hgdg_score/Index.vue":[7377,7377]};function r(e){if(!t.o(n,e))return Promise.resolve().then((()=>{var a=new Error("Cannot find module '"+e+"'");throw a.code="MODULE_NOT_FOUND",a}));var a=n[e],r=a[0];return Promise.all(a.slice(1).map(t.e)).then((()=>t(r)))}r.keys=()=>Object.keys(n),r.id=4985,e.exports=r},4654:()=>{}},e=>{var a=a=>e(e.s=a);e.O(0,[6170,8898],(()=>(a(8077),a(7731))));e.O()}]);
-=======
 (self["webpackChunk"] = self["webpackChunk"] || []).push([["/js/app"],{
 
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Shared/CardModal.vue?vue&type=script&lang=js":
@@ -538,31 +535,59 @@ var _hoisted_8 = {
 
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
+}, "Societal Goals", -1
+/* HOISTED */
+);
+
+var _hoisted_10 = {
+  "class": "nav-item dropdown"
+};
+
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"title\">Outcomes</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1);
+
+var _hoisted_12 = {
+  "class": "dropdown-menu"
+};
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "title"
+}, "Sectoral Outcomes", -1
+/* HOISTED */
+);
+
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "title"
+}, "Organizational Outcomes", -1
+/* HOISTED */
+);
+
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "title"
 }, "Major Final Output", -1
 /* HOISTED */
 );
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Programs, Activities, Projects", -1
 /* HOISTED */
 );
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "View Logframe", -1
 /* HOISTED */
 );
 
-var _hoisted_12 = {
+var _hoisted_18 = {
   "class": "nav-item"
 };
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "icon-holder"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("OPCRStandard<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-graph-up-arrow\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z\"/>\r\n                            </svg>"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -577,21 +602,21 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "OPCR", -1
 /* HOISTED */
 );
 
-var _hoisted_16 = {
+var _hoisted_22 = {
   "class": "nav-item"
 };
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "icon-holder"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -606,21 +631,21 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "IPCR", -1
 /* HOISTED */
 );
 
-var _hoisted_20 = {
+var _hoisted_26 = {
   "class": "nav-item"
 };
 
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "icon-holder"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -637,21 +662,21 @@ var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "LBP Form", -1
 /* HOISTED */
 );
 
-var _hoisted_24 = {
+var _hoisted_30 = {
   "class": "nav-item"
 };
 
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1
+var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "icon-holder"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -666,158 +691,102 @@ var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Accomplishment Report", -1
 /* HOISTED */
 );
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
+var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_29 = {
+var _hoisted_35 = {
   "class": "nav-item dropdown"
 };
 
-var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"22\" height=\"22\" fill=\"currentColor\" class=\"bi bi-book-fill\" viewBox=\"0 0 16 16\"><path d=\"M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z\"></path></svg></span><span class=\"title\">Libraries</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1);
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"22\" height=\"22\" fill=\"currentColor\" class=\"bi bi-book-fill\" viewBox=\"0 0 16 16\"><path d=\"M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z\"></path></svg></span><span class=\"title\">Libraries</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1);
 
-var _hoisted_31 = {
+var _hoisted_37 = {
   "class": "dropdown-menu"
 };
-var _hoisted_32 = {
+var _hoisted_38 = {
   "class": "nav-item dropdown"
 };
 
-var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"title\">Agenda</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1);
+var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"title\">Agenda</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1);
 
-var _hoisted_34 = {
+var _hoisted_40 = {
   "class": "dropdown-menu"
 };
 
-var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_41 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Chief Executive Agenda", -1
 /* HOISTED */
 );
 
-var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Socio-Economic Agenda", -1
 /* HOISTED */
 );
 
-var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_43 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Sustainable Devt Goals", -1
 /* HOISTED */
 );
 
-var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Executive Legislative Agenda", -1
 /* HOISTED */
 );
 
-var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Research Agenda", -1
 /* HOISTED */
 );
 
-var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "title"
-}, "Societal Goals", -1
-/* HOISTED */
-);
-
-var _hoisted_41 = {
-  "class": "nav-item dropdown"
-};
-
-var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"title\">Outcomes</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1);
-
-var _hoisted_43 = {
-  "class": "dropdown-menu"
-};
-
-var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "title"
-}, "Organizational Outcomes", -1
-/* HOISTED */
-);
-
-var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "title"
-}, "Sectoral Outcomes", -1
-/* HOISTED */
-);
-
-var _hoisted_46 = {
-  "class": "nav-item dropdown"
-};
-
-var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"title\">Outputs</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1);
-
-var _hoisted_48 = {
-  "class": "dropdown-menu"
-};
-
-var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "title"
-}, "Individual Outputs", -1
-/* HOISTED */
-);
-
-var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "title"
-}, "Division Outputs", -1
-/* HOISTED */
-);
-
-var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "HGDG Checklist", -1
 /* HOISTED */
 );
 
-var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "GAD Related Issues", -1
 /* HOISTED */
 );
 
-var _hoisted_53 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Implementing Team", -1
 /* HOISTED */
 );
 
-var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Indicators", -1
 /* HOISTED */
 );
 
-var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "OPCR Standard", -1
 /* HOISTED */
 );
 
-var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "title"
-}, "IPCR Standard", -1
-/* HOISTED */
-);
-
-var _hoisted_57 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "title"
 }, "Employees", -1
 /* HOISTED */
 );
 
-var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
 /* HOISTED */
 );
 
@@ -826,12 +795,54 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ### $Sidebar Header ### "), _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ### $Sidebar Menu ### "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<li class=\"nav-item mT-30 actived\">\r\n                    <Link class=\"sidebar-link\" href=\"/\"\r\n                        ><span class=\"icon-holder\"\r\n                            ><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-house-door\" viewBox=\"0 0 16 16\">\r\n                              <path d=\"M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z\"/>\r\n                            </svg>\r\n                        </span\r\n                        ><span class=\"title\">Dashboard</span></Link\r\n                    >\r\n                </li>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
+      'active': _ctx.$page.url === '/Societal'
+    }]),
+    href: "/Societal"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_9];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
+      'active': _ctx.$page.url === '/Sectoral'
+    }]),
+    href: "/Sectoral"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_13];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
+      'active': _ctx.$page.url === '/Organization'
+    }]),
+    href: "/Organization"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_14];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["class"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/mfos/direct'
     }]),
     href: "/mfos/direct"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_9];
+      return [_hoisted_15];
     }),
     _: 1
     /* STABLE */
@@ -845,7 +856,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/paps/direct"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_10];
+      return [_hoisted_16];
     }),
     _: 1
     /* STABLE */
@@ -859,77 +870,77 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/logframe/".concat(_ctx.$page.props.auth.user.office.ffunccod)
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_11];
+      return [_hoisted_17];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["href", "class"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  , ["href", "class"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/opcrlist'
     }]),
     href: "/opcrlist"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_13, _hoisted_14, _hoisted_15];
+      return [_hoisted_19, _hoisted_20, _hoisted_21];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/IPCR/direct'
     }]),
     href: "/IPCR/direct"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_17, _hoisted_18, _hoisted_19];
+      return [_hoisted_23, _hoisted_24, _hoisted_25];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/AIP/\" :class=\"{'active': $page.url === '/AIP/'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-graph-up-arrow\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z\"/>\r\n                            </svg> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" </span>\r\n                        <span class=\"title\">AIP</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/AIP/\" :class=\"{'active': $page.url === '/AIP/'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-graph-up-arrow\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z\"/>\r\n                            </svg> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" </span>\r\n                        <span class=\"title\">AIP</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/AIP/direct'
     }]),
     href: "/AIP/direct"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_21, _hoisted_22, _hoisted_23];
+      return [_hoisted_27, _hoisted_28, _hoisted_29];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/DailyAccomplishment/direct\" :class=\"{'active': $page.url === '/DailyAccomplishment/direct'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-calendar-fill\" viewBox=\"0 0 16 16\">\r\n                                 <path d=\"M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z\"/>\r\n                                    </svg>\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Accomplishment Report</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/DailyAccomplishment/direct\" :class=\"{'active': $page.url === '/DailyAccomplishment/direct'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-calendar-fill\" viewBox=\"0 0 16 16\">\r\n                                 <path d=\"M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z\"/>\r\n                                    </svg>\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Accomplishment Report</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/AddAccomplishment/'
     }]),
     href: "/AddAccomplishment/"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_25, _hoisted_26, _hoisted_27];
+      return [_hoisted_31, _hoisted_32, _hoisted_33];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Outcomes"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/outcome\" :class=\"{'active': $page.url === '/outcome'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-person-rolodex\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z\"/>\r\n                                <path d=\"M1 1a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h.5a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h.5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6.707L6 1.293A1 1 0 0 0 5.293 1H1Zm0 1h4.293L6 2.707A1 1 0 0 0 6.707 3H15v10h-.085a1.5 1.5 0 0 0-2.4-.63C11.885 11.223 10.554 10 8 10c-2.555 0-3.886 1.224-4.514 2.37a1.5 1.5 0 0 0-2.4.63H1V2Z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Outcomes</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                <li class=\"nav-item\" v-if=\"$page.props.can.can_access_indicators\">\r\n                    <Link class=\"sidebar-link\" href=\"/indicators\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-bezier2\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M1 2.5A1.5 1.5 0 0 1 2.5 1h1A1.5 1.5 0 0 1 5 2.5h4.134a1 1 0 1 1 0 1h-2.01c.18.18.34.381.484.605.638.992.892 2.354.892 3.895 0 1.993.257 3.092.713 3.7.356.476.895.721 1.787.784A1.5 1.5 0 0 1 12.5 11h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H6.866a1 1 0 1 1 0-1h1.711a2.839 2.839 0 0 1-.165-.2C7.743 11.407 7.5 10.007 7.5 8c0-1.46-.246-2.597-.733-3.355-.39-.605-.952-1-1.767-1.112A1.5 1.5 0 0 1 3.5 5h-1A1.5 1.5 0 0 1 1 3.5v-1zM2.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10 10a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Indicators</span>\r\n                    </Link>\r\n                </li>\r\n                "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("GOALS"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/Organization\" :class=\"{'active': $page.url === '/Organization'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-diagram-3\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Organizational Goals</span>\r\n                    </Link>\r\n                </li>\r\n\r\n                <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/Sectoral\" :class=\"{'active': $page.url === '/Sectoral'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-pie-chart-fill\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Sectoral Goals</span>\r\n                    </Link>\r\n                </li>\r\n                "), _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Agenda/Goals"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Other Libraries"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_29, [_hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_32, [_hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Outcomes"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/outcome\" :class=\"{'active': $page.url === '/outcome'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-person-rolodex\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z\"/>\r\n                                <path d=\"M1 1a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h.5a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h.5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6.707L6 1.293A1 1 0 0 0 5.293 1H1Zm0 1h4.293L6 2.707A1 1 0 0 0 6.707 3H15v10h-.085a1.5 1.5 0 0 0-2.4-.63C11.885 11.223 10.554 10 8 10c-2.555 0-3.886 1.224-4.514 2.37a1.5 1.5 0 0 0-2.4.63H1V2Z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Outcomes</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                <li class=\"nav-item\" v-if=\"$page.props.can.can_access_indicators\">\r\n                    <Link class=\"sidebar-link\" href=\"/indicators\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-bezier2\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M1 2.5A1.5 1.5 0 0 1 2.5 1h1A1.5 1.5 0 0 1 5 2.5h4.134a1 1 0 1 1 0 1h-2.01c.18.18.34.381.484.605.638.992.892 2.354.892 3.895 0 1.993.257 3.092.713 3.7.356.476.895.721 1.787.784A1.5 1.5 0 0 1 12.5 11h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H6.866a1 1 0 1 1 0-1h1.711a2.839 2.839 0 0 1-.165-.2C7.743 11.407 7.5 10.007 7.5 8c0-1.46-.246-2.597-.733-3.355-.39-.605-.952-1-1.767-1.112A1.5 1.5 0 0 1 3.5 5h-1A1.5 1.5 0 0 1 1 3.5v-1zM2.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10 10a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Indicators</span>\r\n                    </Link>\r\n                </li>\r\n                "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("GOALS"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/Organization\" :class=\"{'active': $page.url === '/Organization'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-diagram-3\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Organizational Goals</span>\r\n                    </Link>\r\n                </li>\r\n\r\n                <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/Sectoral\" :class=\"{'active': $page.url === '/Sectoral'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-pie-chart-fill\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Sectoral Goals</span>\r\n                    </Link>\r\n                </li>\r\n                "), _hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Agenda/Goals"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Other Libraries"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_35, [_hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_38, [_hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/ChiefAgenda'
     }]),
     href: "/ChiefAgenda"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_35];
+      return [_hoisted_41];
     }),
     _: 1
     /* STABLE */
@@ -943,7 +954,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/EconomicAgenda"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_36];
+      return [_hoisted_42];
     }),
     _: 1
     /* STABLE */
@@ -957,7 +968,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/SDG"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_37];
+      return [_hoisted_43];
     }),
     _: 1
     /* STABLE */
@@ -971,7 +982,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/ELA"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_38];
+      return [_hoisted_44];
     }),
     _: 1
     /* STABLE */
@@ -985,77 +996,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/ResearchAgenda"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_39];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["class"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
-      'active': _ctx.$page.url === '/Societal'
-    }]),
-    href: "/Societal"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_40];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_41, [_hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
-      'active': _ctx.$page.url === '/Organization'
-    }]),
-    href: "/Organization"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_44];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
-      'active': _ctx.$page.url === '/Sectoral'
-    }]),
-    href: "/Sectoral"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_45];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["class"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("***************************"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_46, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
-      'active': _ctx.$page.url === '/individual/outputs'
-    }]),
-    href: "/individual/outputs"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_49];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
-      'active': _ctx.$page.url === '/division_outputs'
-    }]),
-    href: "/division_outputs"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_50];
     }),
     _: 1
     /* STABLE */
@@ -1069,7 +1010,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/HGDGChecklist"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_51];
+      return [_hoisted_46];
     }),
     _: 1
     /* STABLE */
@@ -1083,7 +1024,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/Issues"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_52];
+      return [_hoisted_47];
     }),
     _: 1
     /* STABLE */
@@ -1097,7 +1038,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/ImplementingTeam"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_53];
+      return [_hoisted_48];
     }),
     _: 1
     /* STABLE */
@@ -1111,7 +1052,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/indicators"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_54];
+      return [_hoisted_49];
     }),
     _: 1
     /* STABLE */
@@ -1125,42 +1066,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/OPCRpaps/direct"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_55];
+      return [_hoisted_50];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
-      'active': _ctx.$page.url === '/IPCR/direct'
-    }]),
-    href: "/IPCR/direct"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_56];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                            <Link class=\"sidebar-link\" href=\"/IPCR/direct\" :class=\"{'active': $page.url === '/IPCR/direct'}\">\r\n\r\n                                <span class=\"title\">IPCR Standard</span>\r\n                            </Link>\r\n                        </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/user/employees'
     }]),
     href: "/user/employees"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_57];
+      return [_hoisted_51];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                            <Link class=\"sidebar-link\" href=\"/indicators\" :class=\"{'active': $page.url === '/indicators'}\">\r\n                                <span class=\"title\">Divisions</span>\r\n                            </Link>\r\n                        </li> ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("CEA human na"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/ChiefAgenda\" :class=\"{'active': $page.url === '/ChiefAgenda'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-clipboard-fill\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M10 1.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1Zm-5 0A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5v1A1.5 1.5 0 0 1 9.5 4h-3A1.5 1.5 0 0 1 5 2.5v-1Zm-2 0h1v1A2.5 2.5 0 0 0 6.5 5h3A2.5 2.5 0 0 0 12 2.5v-1h1a2 2 0 0 1 2 2V14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3.5a2 2 0 0 1 2-2Z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Chief Executive Agenda</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Socio Economic"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/EconomicAgenda\" :class=\"{'active': $page.url === '/EconomicAgenda'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-8-square-fill\" viewBox=\"0 0 16 16\">\r\n                            <path d=\"M6.623 6.094c0 .738.586 1.254 1.383 1.254s1.377-.516 1.377-1.254c0-.733-.58-1.23-1.377-1.23s-1.383.497-1.383 1.23Zm-.281 3.644c0 .838.72 1.412 1.664 1.412.943 0 1.658-.574 1.658-1.412 0-.843-.715-1.424-1.658-1.424-.944 0-1.664.58-1.664 1.424Z\"/>\r\n                            <path d=\"M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2Zm8.97 9.803c0 1.394-1.218 2.355-2.988 2.355-1.763 0-2.953-.955-2.953-2.344 0-1.271.95-1.851 1.647-2.003v-.065c-.621-.193-1.33-.738-1.33-1.781 0-1.225 1.09-2.121 2.66-2.121s2.654.896 2.654 2.12c0 1.061-.738 1.595-1.336 1.782v.065c.703.152 1.647.744 1.647 1.992Z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title text-wrap\">\r\n                            <p class=\"text-truncate\"></p>\r\n                            Socio-Economic Agenda\r\n                        </span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("SDG"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/SDG\" :class=\"{'active': $page.url === '/SDG'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-globe-asia-australia\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"m10.495 6.92 1.278-.619a.483.483 0 0 0 .126-.782c-.252-.244-.682-.139-.932.107-.23.226-.513.373-.816.53l-.102.054c-.338.178-.264.626.1.736a.476.476 0 0 0 .346-.027ZM7.741 9.808V9.78a.413.413 0 1 1 .783.183l-.22.443a.602.602 0 0 1-.12.167l-.193.185a.36.36 0 1 1-.5-.516l.112-.108a.453.453 0 0 0 .138-.326ZM5.672 12.5l.482.233A.386.386 0 1 0 6.32 12h-.416a.702.702 0 0 1-.419-.139l-.277-.206a.302.302 0 1 0-.298.52l.761.325Z\"/>\r\n                                <path d=\"M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1.612 10.867l.756-1.288a1 1 0 0 1 1.545-.225l1.074 1.005a.986.986 0 0 0 1.36-.011l.038-.037a.882.882 0 0 0 .26-.755c-.075-.548.37-1.033.92-1.099.728-.086 1.587-.324 1.728-.957.086-.386-.114-.83-.361-1.2-.207-.312 0-.8.374-.8.123 0 .24-.055.318-.15l.393-.474c.196-.237.491-.368.797-.403.554-.064 1.407-.277 1.583-.973.098-.391-.192-.634-.484-.88-.254-.212-.51-.426-.515-.741a6.998 6.998 0 0 1 3.425 7.692 1.015 1.015 0 0 0-.087-.063l-.316-.204a1 1 0 0 0-.977-.06l-.169.082a1 1 0 0 1-.741.051l-1.021-.329A1 1 0 0 0 11.205 9h-.165a1 1 0 0 0-.945.674l-.172.499a1 1 0 0 1-.404.514l-.802.518a1 1 0 0 0-.458.84v.455a1 1 0 0 0 1 1h.257a1 1 0 0 1 .542.16l.762.49a.998.998 0 0 0 .283.126 7.001 7.001 0 0 1-9.49-3.409Z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Sustainable Development Goals</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("ELA"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/ELA\" :class=\"{'active': $page.url === '/ELA'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-diagram-2-fill\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H11a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 5 7h2.5V6A1.5 1.5 0 0 1 6 4.5v-1zm-3 8A1.5 1.5 0 0 1 4.5 10h1A1.5 1.5 0 0 1 7 11.5v1A1.5 1.5 0 0 1 5.5 14h-1A1.5 1.5 0 0 1 3 12.5v-1zm6 0a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1A1.5 1.5 0 0 1 9 12.5v-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Executive Legislative Agenda</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Research"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/ResearchAgenda\" :class=\"{'active': $page.url === '/ResearchAgenda'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" fill=\"currentColor\" class=\"bi bi-search\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z\"/>\r\n                            </svg>\r\n                            <svg class=\"svg-icon\" style=\"width: 20; height: 20;vertical-align: middle;fill: currentColor;overflow: hidden;\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M448 428V288h-128v140L192 736h384z\"  />\r\n                                <path d=\"M672 608c12.288 0 24.128-1.696 35.616-4.32l51.136 112.512a32.096 32.096 0 0 0 42.368 15.872 32 32 0 0 0 15.872-42.368l-51.2-112.64A159.264 159.264 0 0 0 832 448a160 160 0 1 0-160 160z m0-256c52.928 0 96 43.072 96 96s-43.072 96-96 96-96-43.072-96-96 43.072-96 96-96z\"  /><path d=\"M64 128v768h896V128H64z m832 704H128V192h768v640z\"  />\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Research Agenda</span>\r\n                    </Link>\r\n                </li> "), _hoisted_58])])]);
+  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                            <Link class=\"sidebar-link\" href=\"/indicators\" :class=\"{'active': $page.url === '/indicators'}\">\r\n                                <span class=\"title\">Divisions</span>\r\n                            </Link>\r\n                        </li> ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("CEA human na"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/ChiefAgenda\" :class=\"{'active': $page.url === '/ChiefAgenda'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-clipboard-fill\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M10 1.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1Zm-5 0A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5v1A1.5 1.5 0 0 1 9.5 4h-3A1.5 1.5 0 0 1 5 2.5v-1Zm-2 0h1v1A2.5 2.5 0 0 0 6.5 5h3A2.5 2.5 0 0 0 12 2.5v-1h1a2 2 0 0 1 2 2V14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3.5a2 2 0 0 1 2-2Z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Chief Executive Agenda</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Socio Economic"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/EconomicAgenda\" :class=\"{'active': $page.url === '/EconomicAgenda'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-8-square-fill\" viewBox=\"0 0 16 16\">\r\n                            <path d=\"M6.623 6.094c0 .738.586 1.254 1.383 1.254s1.377-.516 1.377-1.254c0-.733-.58-1.23-1.377-1.23s-1.383.497-1.383 1.23Zm-.281 3.644c0 .838.72 1.412 1.664 1.412.943 0 1.658-.574 1.658-1.412 0-.843-.715-1.424-1.658-1.424-.944 0-1.664.58-1.664 1.424Z\"/>\r\n                            <path d=\"M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2Zm8.97 9.803c0 1.394-1.218 2.355-2.988 2.355-1.763 0-2.953-.955-2.953-2.344 0-1.271.95-1.851 1.647-2.003v-.065c-.621-.193-1.33-.738-1.33-1.781 0-1.225 1.09-2.121 2.66-2.121s2.654.896 2.654 2.12c0 1.061-.738 1.595-1.336 1.782v.065c.703.152 1.647.744 1.647 1.992Z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title text-wrap\">\r\n                            <p class=\"text-truncate\"></p>\r\n                            Socio-Economic Agenda\r\n                        </span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("SDG"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/SDG\" :class=\"{'active': $page.url === '/SDG'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-globe-asia-australia\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"m10.495 6.92 1.278-.619a.483.483 0 0 0 .126-.782c-.252-.244-.682-.139-.932.107-.23.226-.513.373-.816.53l-.102.054c-.338.178-.264.626.1.736a.476.476 0 0 0 .346-.027ZM7.741 9.808V9.78a.413.413 0 1 1 .783.183l-.22.443a.602.602 0 0 1-.12.167l-.193.185a.36.36 0 1 1-.5-.516l.112-.108a.453.453 0 0 0 .138-.326ZM5.672 12.5l.482.233A.386.386 0 1 0 6.32 12h-.416a.702.702 0 0 1-.419-.139l-.277-.206a.302.302 0 1 0-.298.52l.761.325Z\"/>\r\n                                <path d=\"M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1.612 10.867l.756-1.288a1 1 0 0 1 1.545-.225l1.074 1.005a.986.986 0 0 0 1.36-.011l.038-.037a.882.882 0 0 0 .26-.755c-.075-.548.37-1.033.92-1.099.728-.086 1.587-.324 1.728-.957.086-.386-.114-.83-.361-1.2-.207-.312 0-.8.374-.8.123 0 .24-.055.318-.15l.393-.474c.196-.237.491-.368.797-.403.554-.064 1.407-.277 1.583-.973.098-.391-.192-.634-.484-.88-.254-.212-.51-.426-.515-.741a6.998 6.998 0 0 1 3.425 7.692 1.015 1.015 0 0 0-.087-.063l-.316-.204a1 1 0 0 0-.977-.06l-.169.082a1 1 0 0 1-.741.051l-1.021-.329A1 1 0 0 0 11.205 9h-.165a1 1 0 0 0-.945.674l-.172.499a1 1 0 0 1-.404.514l-.802.518a1 1 0 0 0-.458.84v.455a1 1 0 0 0 1 1h.257a1 1 0 0 1 .542.16l.762.49a.998.998 0 0 0 .283.126 7.001 7.001 0 0 1-9.49-3.409Z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Sustainable Development Goals</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("ELA"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/ELA\" :class=\"{'active': $page.url === '/ELA'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-diagram-2-fill\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H11a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 5 7h2.5V6A1.5 1.5 0 0 1 6 4.5v-1zm-3 8A1.5 1.5 0 0 1 4.5 10h1A1.5 1.5 0 0 1 7 11.5v1A1.5 1.5 0 0 1 5.5 14h-1A1.5 1.5 0 0 1 3 12.5v-1zm6 0a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1A1.5 1.5 0 0 1 9 12.5v-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Executive Legislative Agenda</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Research"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/ResearchAgenda\" :class=\"{'active': $page.url === '/ResearchAgenda'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" fill=\"currentColor\" class=\"bi bi-search\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z\"/>\r\n                            </svg>\r\n                            <svg class=\"svg-icon\" style=\"width: 20; height: 20;vertical-align: middle;fill: currentColor;overflow: hidden;\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M448 428V288h-128v140L192 736h384z\"  />\r\n                                <path d=\"M672 608c12.288 0 24.128-1.696 35.616-4.32l51.136 112.512a32.096 32.096 0 0 0 42.368 15.872 32 32 0 0 0 15.872-42.368l-51.2-112.64A159.264 159.264 0 0 0 832 448a160 160 0 1 0-160 160z m0-256c52.928 0 96 43.072 96 96s-43.072 96-96 96-96-43.072-96-96 43.072-96 96-96z\"  /><path d=\"M64 128v768h896V128H64z m832 704H128V192h768v640z\"  />\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Research Agenda</span>\r\n                    </Link>\r\n                </li> "), _hoisted_52])])]);
 }
 
 /***/ }),
@@ -3067,4 +2994,3 @@ module.exports = webpackAsyncContext;
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
->>>>>>> 00dddd3017d8dfc18f6636d3a15a338908551394
