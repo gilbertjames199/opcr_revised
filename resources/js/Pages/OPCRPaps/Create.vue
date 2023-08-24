@@ -70,35 +70,35 @@
                     </div>
 
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                        <label for="input">Numerical Rating</label>
-                        <input id="input" type="text" v-model="form.NumericalRating1" class="form-control" autocomplete="positionchrome-off">
-                        <div class="fs-6 c-red-500" v-if="form.errors.NumericalRating1">{{ form.errors.NumericalRating1 }}</div>
-
-                        <label for="input">Adjectival Rating</label>
-                        <input id="input" type="text" v-model="form.AdjectivalRating1" class="form-control" autocomplete="positionchrome-off">
-                        <div class="fs-6 c-red-500" v-if="form.errors.AdjectivalRating1">{{ form.errors.AdjectivalRating1 }}</div>
-
-                        <label for="input">Quality</label>
-                        <input id="input" type="text" v-model="form.Quality" class="form-control" autocomplete="positionchrome-off">
-                        <div class="fs-6 c-red-500" v-if="form.errors.Quality">{{ form.errors.Quality }}</div>
-
+                        <table class="table table-bordered">
+                        <tr>
+                            <th>Numerical Rating</th>
+                            <th>Adjectival Rating</th>
+                            <th>Quality</th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="Enter numerical rating"  v-model="form.NumericalRating1" class="form-control" autocomplete="positionchrome-off"></td>
+                            <td><input type="text" placeholder="Enter adjectival rating" v-model="form.AdjectivalRating1" class="form-control" autocomplete="positionchrome-off"></td>
+                            <td style="width: 60%;"><input type="text" placeholder="Enter Quality" v-model="form.Quality" class="form-control" autocomplete="positionchrome-off"></td>
+                        </tr>
+                </table>
                         <label for="input">Remarks</label>
                         <input id="input" type="text" v-model="form.QualityRemarks" class="form-control" autocomplete="positionchrome-off">
                         <div class="fs-6 c-red-500" v-if="form.errors.QualityRemarks">{{ form.errors.QualityRemarks }}</div>
                     </div>
                     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                        <label for="input">Numerical Rating</label>
-                        <input id="input" type="text" v-model="form.NumericalRating2" class="form-control" autocomplete="positionchrome-off">
-                        <div class="fs-6 c-red-500" v-if="form.errors.NumericalRating2">{{ form.errors.NumericalRating2 }}</div>
-
-                        <label for="input">Adjectival Rating</label>
-                        <input id="input" type="text" v-model="form.AdjectivalRating2" class="form-control" autocomplete="positionchrome-off">
-                        <div class="fs-6 c-red-500" v-if="form.errors.AdjectivalRating2">{{ form.errors.AdjectivalRating2 }}</div>
-
-                        <label for="input">Timeliness</label>
-                        <input id="input" type="text" v-model="form.Timeliness" class="form-control" autocomplete="positionchrome-off">
-                        <div class="fs-6 c-red-500" v-if="form.errors.Timeliness">{{ form.errors.Timeliness }}</div>
-
+                        <table class="table table-bordered">
+                        <tr>
+                            <th>Numerical Rating</th>
+                            <th>Adjectival Rating</th>
+                            <th>Timeliness</th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="Enter numerical rating"  v-model="form.NumericalRating2" class="form-control" autocomplete="positionchrome-off"></td>
+                            <td><input type="text" placeholder="Enter adjectival rating" v-model="form.AdjectivalRating2" class="form-control" autocomplete="positionchrome-off"></td>
+                            <td style="width: 60%;"><input type="text" placeholder="Enter Timeliness" v-model="form.Timeliness" class="form-control" autocomplete="positionchrome-off"></td>
+                        </tr>
+                </table>
                         <label for="input">Remarks</label>
                         <input id="input" type="text" v-model="form.TimelinessRemarks" class="form-control" autocomplete="positionchrome-off">
                         <div class="fs-6 c-red-500" v-if="form.errors.TimelinessRemarks">{{ form.errors.TimelinessRemarks }}</div>
