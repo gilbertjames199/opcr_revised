@@ -52,14 +52,57 @@ class OpcrAccomplishmentController extends Controller
                             ->orderBy('program_and_projects.paps_desc', 'asc')
                             ->orderBy('OPT.target_success_indicator','asc')
                             ->get()->map(function($item){
-                                $accomplishment = OpcrAccomplishment::where('opcr_target_id', $item->idtarget)->first();
+                                $accomplishment = OpcrAccomplishment::select(
+                                                        'opcr_accomplishments.actual_accomplishments',
+                                                        'opcr_accomplishments.quantity',
+                                                        'opcr_accomplishments.quality_id',
+                                                        'qualities.quality AS qual',
+                                                        'qualities.numerical_rating AS qnr',
+                                                        'qualities.adjectival_rating AS qar',
+                                                        'ratings.efficiency_quantity AS eff',
+                                                        'ratings.numerical_rating AS eff_nr',
+                                                        'ratings.adjectival_rating AS eff_ar',
+                                                        'timelinesses.timeliness AS time',
+                                                        'timelinesses.numerical_rating AS time_nr',
+                                                        'timelinesses.adjectival_rating AS time_ar'
+                                                    )
+                                                    ->where('opcr_target_id', $item->idtarget)
+                                                    ->leftjoin('qualities','qualities.id','opcr_accomplishments.quality_id')
+                                                    ->leftjoin('ratings','ratings.id','opcr_accomplishments.ratings_id')
+                                                    ->leftjoin('timelinesses','timelinesses.id','opcr_accomplishments.timeliness_id')
+                                                    ->first();
+                                //dd($accomplishment);
                                 $acc ="";
                                 $id = null;
                                 $quant ="0";
+
+                                $qual="";
+                                $qnr = "";
+                                $qar="";
+
+                                $eff ="";
+                                $eff_nr ="";
+                                $eff_ar="";
+
+                                $time="";
+                                $time_nr="";
+                                $time_ar="";
                                 if($accomplishment){
                                     $acc=$accomplishment->actual_accomplishments;
                                     $id =$accomplishment->id;
                                     $quant=$accomplishment->quantity;
+
+                                    $qual = $accomplishment->qual;
+                                    $qnr = $accomplishment->qnr;
+                                    $qar = $accomplishment->qar;
+
+                                    $eff = $accomplishment->eff;
+                                    $eff_nr = $accomplishment->eff_nr;
+                                    $eff_ar = $accomplishment->eff_ar;
+
+                                    $time=$accomplishment->time;
+                                    $time_nr=$accomplishment->time_nr;
+                                    $time_ar=$accomplishment->time_ar;
                                 }
                                 return [
                                     'idpaps'=>$item->idpaps,
@@ -69,11 +112,20 @@ class OpcrAccomplishmentController extends Controller
                                     'target_success_indicator'=>$item->target_success_indicator,
                                     'target_quantity'=>$item->target_quantity,
                                     'actual_accomplishments'=>$acc,
+                                    'quality'=>$qual,
+                                    'quality_num_rating'=>$qnr,
+                                    'quality_adj_rating'=>$qar,
                                     'accomplishment_quantity'=>$quant,
+                                    'eff'=>$eff,
+                                    'eff_nr'=>$eff_nr,
+                                    'eff_ar'=>$eff_ar,
+                                    'time'=>$time,
+                                    'time_nr'=>$time_nr,
+                                    'time_ar'=>$time_ar,
                                     'id'=>$id,
                                 ];
                             });
-        //dd($data);
+        // dd($data);
         return inertia('OPCR/Accomplishment/Index',[
             "opcr_list_id"=>$opcr_list_id,
             "data"=>$data,

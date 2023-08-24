@@ -145,7 +145,7 @@ class OpcrTargetController extends Controller
         $success_indicators = SuccessIndicator::where('idpaps', $request->idpaps)->get();
         $outputs = Output::where('idpaps', $request->idpaps)->get();
         $qualities = Quality::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
-        $ratings = rating::where('idpaps', $request->idpaps)->orderBy('efficiency_quantity', 'desc')->get();
+        $ratings = rating::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
         $timeliness = Timeliness::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
         return inertia('OPCR/Target/Create',[
             "opcr_list_id"=>$opcr_list_id,
@@ -172,19 +172,20 @@ class OpcrTargetController extends Controller
         ]);
 
         //SENTENCE******************
-        $output = Output::where('idpaps',$request->idpaps)->first()->Outputs;
-        $quality = Quality::where('idpaps',$request->idpaps)->first()->quality;
-        $rating =rating::where('idpaps',$request->idpaps)->first()->efficiency_quantity;
-        $timeliness =Timeliness::where('idpaps',$request->idpaps)->first()->timeliness;
-        $sentence = $request->quantity.' ('.$rating.') '.$output.' '.$timeliness.' with '.$quality.'.';
-        $correctedSentence = $this->correctSentence($sentence);
+        // $output = Output::where('idpaps',$request->idpaps)->first()->Outputs;
+        // $quality = Quality::where('idpaps',$request->idpaps)->first()->quality;
+        // $rating =rating::where('idpaps',$request->idpaps)->first()->efficiency_quantity;
+        // $timeliness =Timeliness::where('idpaps',$request->idpaps)->first()->timeliness;
+        //$sentence = $request->quantity.' ('.$rating.') '.$output.' '.$timeliness.' with '.$quality.'.';
+        //$correctedSentence = $this->correctSentence($sentence);
         //dd($correctedSentence);
         //**************** */
-
+        //dd($request);
         $targ = new OpcrTarget();
         $targ->id=$request->id;
         $targ->target_success_indicator=$request->target_success_indicator;
         $targ->output_id=$request->output_id;
+        $targ->quantity=$request->quantity;
         $targ->quality_id=$request->quality_id;
         $targ->ratings_id=$request->ratings_id;
         $targ->timeliness_id=$request->timeliness_id;

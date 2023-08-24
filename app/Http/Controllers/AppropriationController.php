@@ -301,6 +301,7 @@ class AppropriationController extends Controller
 
         if($idpaps){
             $aip=AIP::where('idpaps', $request->idpaps)->first();
+            // dd($aip->ps." ".$request->budget_year);
             $mooe = $aip->MOOE;
             $ps = $aip->PS;
             $co = $aip->CO;

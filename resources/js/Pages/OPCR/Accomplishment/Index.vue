@@ -32,13 +32,23 @@
                     <table class="table table-hover table-striped table-bordered border-dark">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>PAPS</th>
-                                <th>Target</th>
+                                <th rowspan="2">PAPS</th>
+                                <th rowspan="2">Target</th>
                                 <!-- <th>Quantity</th> -->
-                                <th>Accomplishment</th>
+                                <th colspan="2" style="text-align: center">Quality</th>
+                                <th colspan="2" style="text-align: center">Efficiency</th>
+                                <th colspan="2" style="text-align: center">Timeliness</th>
                                 <!-- <th>Quantity</th> -->
                                 <!-- <th>Percent Accomplished</th> -->
-                                <th>Actions</th>
+                                <th rowspan="2">Actions</th>
+                            </tr>
+                            <tr class="bg-secondary text-white">
+                                <th>Numerical Rating</th>
+                                <th>Descriptive Rating</th>
+                                <th>Numerical Rating</th>
+                                <th>Descriptive Rating</th>
+                                <th>Numerical Rating</th>
+                                <th>Descriptive Rating</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,7 +65,12 @@
                                     {{ dat.target_success_indicator }}
                                 </td>
                                 <!-- <td>{{ dat.target_quantity }}</td> -->
-                                <td>{{ dat.actual_accomplishments }} </td>
+                                <td style="text-align: center">{{ dat.quality_num_rating }} </td>
+                                <td style="text-align: center">{{ dat.quality_adj_rating }}</td>
+                                <td style="text-align: center">{{ dat.eff_nr }} </td>
+                                <td style="text-align: center">{{ dat.eff_ar }}</td>
+                                <td style="text-align: center">{{ dat.time_nr }} </td>
+                                <td style="text-align: center">{{ dat.time_ar }} </td>
                                 <!-- <td>{{  dat.accomplishment_quantity }}</td> -->
                                 <!-- <td>{{ getPercentage(dat.target_quantity, dat.accomplishment_quantity) }} %</td> -->
                                 <td>

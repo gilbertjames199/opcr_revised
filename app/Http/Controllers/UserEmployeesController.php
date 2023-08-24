@@ -66,9 +66,14 @@ class UserEmployeesController extends Controller
             //dd($mapped_data);
             $chunk_data = array_chunk($mapped_data,1000);
             foreach($chunk_data as $key=>$value){
-
-                DB::table('user_employees')->upsert($value,['empl_id']
-                );
+                foreach ($value as $data) {
+                    UserEmployees::updateOrCreate(
+                        ['empl_id' => $data['empl_id']],
+                        $data
+                    );
+                }
+                // DB::table('user_employees')->upsert($value,['empl_id']
+                // );
             }
             //dd($data[0]['department_code']);
             // For example, return the data using Inertia::render
