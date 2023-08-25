@@ -11,10 +11,13 @@ use App\Models\OfficeAccountable;
 use App\Models\Output;
 use App\Models\Performance;
 use App\Models\ProgramAndProject;
+use App\Models\Quality;
 use App\Models\QualityRemarks;
+use App\Models\rating;
 use App\Models\RatingRemarks;
 use App\Models\RevisionPlan;
 use App\Models\SuccessIndicator;
+use App\Models\Timeliness;
 use App\Models\TimelinessRemarks;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -193,6 +196,9 @@ class OPCRPAPSController extends Controller
             'OfficeAccountable' => 'required',
             'Monitoring' => 'required',
             'idpaps'=>'required',
+            'RatingRemarks'=>'required',
+            'QualityRemarks'=>'required',
+            'TimelinessRemarks'=>'required'
         ]);
 
         $output=new Output();
@@ -235,6 +241,31 @@ class OPCRPAPSController extends Controller
         $TimelinessRemarks->timeliness_remarks=$request->TimelinessRemarks;
         $TimelinessRemarks->save();
 
+        for($i=0; $i<count($request->NumericalRating); $i++){
+            $ratings = new rating();
+            $ratings->numerical_rating = $request->NumericalRating[$i];
+            $ratings->adjectival_rating = $request->AdjectivalRating[$i];
+            $ratings->efficiency_quantity = $request->Efficiency[$i];
+            $ratings->idpaps = $request->idpaps;
+            $ratings->save();
+        }
+
+        for($i=0; $i<count($request->NumericalRating1); $i++){
+            $qualities = new Quality();
+            $qualities->numerical_rating = $request->NumericalRating1[$i];
+            $qualities->adjectival_rating = $request->AdjectivalRating1[$i];
+            $qualities->quality = $request->Quality[$i];
+            $qualities->idpaps = $request->idpaps;
+            $qualities->save();
+        }
+        for($i=0; $i<count($request->NumericalRating2); $i++){
+            $timelinesses = new Timeliness();
+            $timelinesses->numerical_rating = $request->NumericalRating2[$i];
+            $timelinesses->adjectival_rating = $request->AdjectivalRating2[$i];
+            $timelinesses->timeliness = $request->Timeliness[$i];
+            $timelinesses->idpaps = $request->idpaps;
+            $timelinesses->save();
+        }
         //dd($attributes);
         //$this->model->create($attributes);
         return redirect('OPCRpaps/direct')
@@ -251,6 +282,9 @@ class OPCRPAPSController extends Controller
         $quality = QualityRemarks::where('idpaps', $id)->first();
         $timeliness = TimelinessRemarks::where('idpaps', $id)->first();
 
+        $ratings_r = rating::where('idpaps', $id)->orderBy('id')->get();
+        $qualities_r = Quality::where('idpaps', $id)->orderBy('id')->get();
+        $timeliness_r = Timeliness::where('idpaps', $id)->orderBy('id')->get();
 
         $paps = ProgramAndProject::findOrFail($id);
         return inertia('OPCRPaps/Create', [
@@ -265,6 +299,9 @@ class OPCRPAPSController extends Controller
             "editData" => $paps,
             "idpaps"=>$id,
             'paps'=>$paps,
+            'ratings_r'=>$ratings_r,
+            'qualities_r'=>$qualities_r,
+            'timeliness_r'=>$timeliness_r,
             'can'=>[
                 'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
@@ -274,6 +311,33 @@ class OPCRPAPSController extends Controller
 
     public function update(Request $request, $id)
     {
+        rating::where('idpaps', $id)->delete();
+        for($i=0; $i<count($request->NumericalRating); $i++){
+            $ratings = new rating();
+            $ratings->numerical_rating = $request->NumericalRating[$i];
+            $ratings->adjectival_rating = $request->AdjectivalRating[$i];
+            $ratings->efficiency_quantity = $request->Efficiency[$i];
+            $ratings->idpaps = $request->id;
+            $ratings->save();
+        }
+        Quality::where('idpaps', $id)->delete();
+        for($i=0; $i<count($request->NumericalRating1); $i++){
+            $qualities = new Quality();
+            $qualities->numerical_rating = $request->NumericalRating1[$i];
+            $qualities->adjectival_rating = $request->AdjectivalRating1[$i];
+            $qualities->quality = $request->Quality[$i];
+            $qualities->idpaps = $request->id;
+            $qualities->save();
+        }
+        Timeliness::where('idpaps', $id)->delete();
+        for($i=0; $i<count($request->NumericalRating2); $i++){
+            $timelinesses = new Timeliness();
+            $timelinesses->numerical_rating = $request->NumericalRating2[$i];
+            $timelinesses->adjectival_rating = $request->AdjectivalRating2[$i];
+            $timelinesses->timeliness = $request->Timeliness[$i];
+            $timelinesses->idpaps = $request->id;
+            $timelinesses->save();
+        }
         // dd($id);
         $outputs = Output::where('idpaps', $id)->first();
         $performance = Performance::where('idpaps', $id)->first();
@@ -283,6 +347,8 @@ class OPCRPAPSController extends Controller
         $rating = RatingRemarks::where('idpaps', $id)->first();
         $quality = QualityRemarks::where('idpaps', $id)->first();
         $timeliness = TimelinessRemarks::where('idpaps', $id)->first();
+
+
         // dd($request);
         // $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
@@ -349,7 +415,9 @@ class OPCRPAPSController extends Controller
         $rating->delete();
         $quality->delete();
         $timeliness->delete();
-
+        rating::where('idpaps', $id)->delete();
+        Quality::where('idpaps', $id)->delete();
+        Timeliness::where('idpaps', $id)->delete();
         //dd($request->raao_id);
         return redirect('OPCRpaps/direct')->with('warning', 'Output Deleted');
 
