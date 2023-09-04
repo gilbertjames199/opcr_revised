@@ -65,9 +65,9 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/OPCRpaps/create/${dat.id}`">Add Standard</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/OPCRpaps/edit/${dat.id}`">Edit Standard</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteStandard(dat.id)">Delete Standard</Link></li>
+                                            <li><Link v-if="isEmptyObject(dat.output)" class="dropdown-item" :href="`/OPCRpaps/create/${dat.id}`">Add Standard</Link></li>
+                                            <li><Link v-if="isNotEmptyObject(dat.output)" class="dropdown-item" :href="`/OPCRpaps/edit/${dat.id}`">Edit Standard</Link></li>
+                                            <li><Link v-if="isNotEmptyObject(dat.output)" class="text-danger dropdown-item" @click="deleteStandard(dat.id)">Delete Standard</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Rating/${dat.id}`">Ratings</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Quality/${dat.id}`">Quality</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Timeliness/${dat.id}`">Timeliness</Link></li>
@@ -193,6 +193,13 @@ export default {
         hideModal() {
             this.displayModal = false;
         },
+        isEmptyObject(obj) {
+            // Check if the object is empty
+            return Object.keys(obj).length === 0;
+        },
+        isNotEmptyObject(obj){
+            return Object.keys(obj).length > 0;
+        }
     }
 };
 </script>

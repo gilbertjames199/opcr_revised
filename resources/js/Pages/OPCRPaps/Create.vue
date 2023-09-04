@@ -1,7 +1,9 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} OPCR Standard {{ idpaps }}</h3>
+            <h3>{{ pageTitle }} OPCR Standard
+                <!-- {{ idpaps }} -->
+            </h3>
             <Link :href="`/OPCRpaps/direct`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -9,7 +11,9 @@
                 </svg>
             </Link>
         </div>
-
+        <div>
+            <h6>PAPS Decription: <u>{{ paps.paps_desc }}</u></h6>
+        </div>
         <!-- <div class="col-md-8">
             <button class="btn btn-secondary" @click="showModal" :disabled="submitted">Permissions</button>
         </div> -->
@@ -356,7 +360,10 @@ export default {
                     this.form.AdjectivalRating.pop()
                     this.form.NumericalRating.pop()
                     this.form.Efficiency.pop()
-                    this.rating_length = this.rating_length - 1
+                    if(this.rating_length>1){
+                        this.rating_length = this.rating_length - 1
+                    }
+
                 }
 
             },
@@ -365,7 +372,10 @@ export default {
                     this.form.AdjectivalRating1.pop()
                     this.form.NumericalRating1.pop()
                     this.form.Quality.pop()
-                    this.quality_length = this.quality_length - 1
+                    if(this.quality_length>1){
+                        this.quality_length = this.quality_length - 1
+                    }
+
                 }
             },
             decreaseLengthTimeliness(){
@@ -373,7 +383,10 @@ export default {
                     this.form.AdjectivalRating2.pop()
                     this.form.NumericalRating2.pop()
                     this.form.Timeliness.pop()
-                    this.timeliness_length = this.timeliness_length - 1
+                    if(this.timeliness_length>1){
+                        this.timeliness_length = this.timeliness_length - 1
+                    }
+
                 }
 
             }

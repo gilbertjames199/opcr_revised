@@ -245,10 +245,14 @@ class IndividualFinalOutputController extends Controller
                                 $FFUNCCOD_2 = "4421-2";
                                 $FFUNCCOD_3 = "4421-3";
                                 $FFUNCCOD_4 = "4421-4";
-                                $idmfo1=$this->saveMFO($mfo_desc, $dept_code, $FFUNCCOD_1);
-                                $idmfo2=$this->saveMFO($mfo_desc, $dept_code, $FFUNCCOD_2);
-                                $idmfo3=$this->saveMFO($mfo_desc, $dept_code, $FFUNCCOD_3);
-                                $idmfo4=$this->saveMFO($mfo_desc, $dept_code, $FFUNCCOD_4);
+                                $dept_code1 = "21";
+                                $dept_code2 = "22";
+                                $dept_code3 = "23";
+                                $dept_code4 = "24";
+                                $idmfo1=$this->saveMFO($mfo_desc, $dept_code1, $FFUNCCOD_1);
+                                $idmfo2=$this->saveMFO($mfo_desc, $dept_code2, $FFUNCCOD_2);
+                                $idmfo3=$this->saveMFO($mfo_desc, $dept_code3, $FFUNCCOD_3);
+                                $idmfo4=$this->saveMFO($mfo_desc, $dept_code4, $FFUNCCOD_4);
                                 $idsubmfo1 = $this->saveSubMFO($idmfo1, $submfo_desc);
                                 $idsubmfo2 = $this->saveSubMFO($idmfo2, $submfo_desc);
                                 $idsubmfo3 = $this->saveSubMFO($idmfo3, $submfo_desc);
@@ -329,6 +333,7 @@ class IndividualFinalOutputController extends Controller
         }
         $my_mfo = DB::table('major_final_outputs')
                     ->where("mfo_desc","=",$mfo_desc)
+                    ->where("department_code", $dept_code)
                     ->first();
         return $my_mfo->id;
     }

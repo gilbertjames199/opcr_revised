@@ -125,9 +125,9 @@ class OPCRPAPSController extends Controller
         // dd($functions);
         //dd("direct");
         //dd($request->mfosel);
-        // dd($request->mfosel);
+        // dd($request->mfosel);->leftJoin('outputs','outputs.idpaps','program_and_projects.id')
         $idn = auth()->user()->recid;
-        $data = $this->model->with('MFO')
+        $data = $this->model->with('MFO')->with('output')
                 ->when($request->search, function($query, $searchItem){
                     $query->where('paps_desc','LIKE','%'.$searchItem.'%');
                 })
@@ -174,7 +174,7 @@ class OPCRPAPSController extends Controller
     }
 
     public function create(Request $request, $idpaps){
-        //dd('create');
+        // dd('create');
         $paps = ProgramAndProject::findOrFail($idpaps);
         return inertia('OPCRPaps/Create',[
             'paps'=>$paps,
@@ -243,7 +243,12 @@ class OPCRPAPSController extends Controller
 
         for($i=0; $i<count($request->NumericalRating); $i++){
             $ratings = new rating();
-            $ratings->numerical_rating = $request->NumericalRating[$i];
+            if(!$request->numerical_rating){
+                $ratings->numerical_rating = "-";
+            }else{
+                $ratings->numerical_rating = $request->NumericalRating[$i];
+            }
+
             $ratings->adjectival_rating = $request->AdjectivalRating[$i];
             $ratings->efficiency_quantity = $request->Efficiency[$i];
             $ratings->idpaps = $request->idpaps;

@@ -66,8 +66,14 @@
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
                                             <li v-if="dat.id"><Link class="dropdown-item" :href="`/opcrtarget/${dat.id}/edit`">Edit</Link></li>
                                             <li v-if="dat.id"><Link class="text-danger dropdown-item" @click="deleteTarget(dat.id)">Delete </Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="createTarget(dat.idpaps, dat.success_indicator)">
+                                            <li v-if="dat.success_indicator && !dat.id">
+                                                <Link class="text-danger dropdown-item" @click="createTarget(dat.idpaps, dat.success_indicator)">
                                                     Add Target
+                                                </Link>
+                                            </li>
+                                            <li v-else>
+                                                <Link class="text-danger dropdown-item" :href="`/OPCRpaps/create/${dat.idpaps}`">
+                                                    Add OPCR Standard {{ dat.idpaps }}
                                                 </Link>
                                             </li>
                                             <!-- <li><Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">Edit</Link></li>
@@ -146,12 +152,12 @@ export default {
         },
         createTarget(idpaps, success_indic){
             //alert(idpaps);
-            this.$inertia.get("/opcrtarget/create/" + this.opcr_list_id, {"idpaps": idpaps});
-            // if(success_indic===null){
-            //     alert('This PPA has no success indicator! Add success indicator for the target first!');
-            // }else{
-            //     this.$inertia.get("/opcrtarget/create/" + this.opcr_list_id, {"idpaps": idpaps});
-            // }
+            // this.$inertia.get("/opcrtarget/create/" + this.opcr_list_id, {"idpaps": idpaps});
+            if(success_indic===null){
+                alert('This PPA has no success indicator! Add success indicator for the target first!');
+            }else{
+                this.$inertia.get("/opcrtarget/create/" + this.opcr_list_id, {"idpaps": idpaps});
+            }
 
         },
         getRowspanPaps(row, ind){
@@ -191,6 +197,10 @@ export default {
         hideModal() {
             this.displayModal = false;
         },
+        createOPCR(opcr_list_id, success_indicator){
+            //:href="`/opcrtarget/create/${opcr_list_id}`"
+            var url="/opcrtarget/create/"+opcr_list_id
+        }
     }
 };
 </script>

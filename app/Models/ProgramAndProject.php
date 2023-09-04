@@ -57,4 +57,8 @@ class ProgramAndProject extends Model
     public function AIP(){
         return $this->hasOne(AIP::class, 'idpaps', 'id');
     }
+
+    public function output(){
+        return $this -> hasMany(Output::class, 'idpaps', 'id');
+    }
 }
