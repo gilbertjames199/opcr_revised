@@ -52,9 +52,18 @@ class OrganizationController extends Controller
     }
 
     public function create(Request $request){
-        $functions = AccountAccess::where('iduser',auth()->user()->recid)
-                    ->Join(DB::Raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-                    ->with('func')->get();
+        // $functions = AccountAccess::where('iduser',auth()->user()->recid)
+        //             ->Join(DB::Raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+        //             ->with('func')->get();
+        $functions = AccountAccess::select('ff.FFUNCCOD','ff.FFUNCTION')
+                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func');
+        if(auth()->user()->recid!==545){
+            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        }
+        $functions=clone($functions)
+                    ->distinct('FFUNCCOD')
+                    ->get();
        // dd($accounts);
         //$functions = $accounts->pluck('func');
         return inertia('Organizational/addOrganizational',[
@@ -86,9 +95,16 @@ class OrganizationController extends Controller
         ]);
         //dd($data);
         //$accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
-        $functions = AccountAccess::where('iduser',auth()->user()->recid)
-                    ->Join(DB::Raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-                    ->with('func')->get();
+        $functions = AccountAccess::select('ff.FFUNCCOD','ff.FFUNCTION')
+                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+                    ->with('func');
+        if(auth()->user()->recid!==545){
+            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        }
+        $functions=clone($functions)
+                    ->distinct('FFUNCCOD')
+                    ->get();
+        //dd($functions);
         return inertia('Organizational/addOrganizational', [
             "editData" => $data,
             "functions"=>$functions,

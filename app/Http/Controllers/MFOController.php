@@ -54,10 +54,18 @@ class MFOController extends Controller
         $SocietalGoals=SocietalGoal::get();
         $SectorOutcomes=Sectoral::get();
         $OrganizationalOutcomes=OrganizationalGoal::get();
-        $functions = AccountAccess::where('iduser',auth()->user()->recid)
-                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+        // $functions = AccountAccess::where('iduser',auth()->user()->recid)
+        //             ->select('ff.FFUNCCOD','ff.FFUNCTION')
+        //             ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+        //             ->with('func')->get();
+        $functions = AccountAccess::select('ff.FFUNCCOD','ff.FFUNCTION')
                     ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-                    ->with('func')->get();
+                    ->with('func');
+        if(auth()->user()->recid!==545){
+            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        }
+        $functions=clone($functions)
+                    ->get();
         //$functions = $accounts->pluck('func');
         //dd($accounts);
         return inertia('MFOs/Create', [
@@ -105,10 +113,15 @@ class MFOController extends Controller
             'id_sec_outcome',
             'FFUNCCOD'
         ]);
-        $functions = AccountAccess::where('iduser',auth()->user()->recid)
-                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+        $functions = AccountAccess::select('ff.FFUNCCOD','ff.FFUNCTION')
                     ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-                    ->with('func')->get();
+                    ->with('func');
+        if(auth()->user()->recid!==545){
+            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        }
+        $functions=clone($functions)
+                    ->get();
+
         //dd($idinteroutcome);
         return inertia('MFOs/Create', [
             "editData" => $data,

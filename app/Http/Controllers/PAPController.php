@@ -99,10 +99,20 @@ class PAPController extends Controller
                         ->get();
         // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
         // $functions = $accounts->pluck('func');
-        $functions = AccountAccess::where('iduser',auth()->user()->recid)
-                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+        // $functions = AccountAccess::where('iduser',auth()->user()->recid)
+        //             ->select('ff.FFUNCCOD','ff.FFUNCTION')
+        //             ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+        //             ->with('func')->get();
+        $functions = AccountAccess::select('ff.FFUNCCOD','ff.FFUNCTION')
                     ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-                    ->with('func')->get();
+                    ->with('func');
+        if(auth()->user()->recid!==545){
+            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        }
+        $functions=clone($functions)
+                    ->distinct('FFUNCCOD')
+                    ->get();
+
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
             'chief_agenda'=>$chief_executive_agenda,
@@ -146,10 +156,20 @@ class PAPController extends Controller
         $research = ResearchAgenda::get();
         // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
         // $functions = $accounts->pluck('func');
-        $functions = AccountAccess::where('iduser',auth()->user()->recid)
-                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+        // $functions = AccountAccess::where('iduser',auth()->user()->recid)
+        //             ->select('ff.FFUNCCOD','ff.FFUNCTION')
+        //             ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+        //             ->with('func')->get();
+        $functions = AccountAccess::select('ff.FFUNCCOD','ff.FFUNCTION')
                     ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-                    ->with('func')->get();
+                    ->with('func');
+        if(auth()->user()->recid!==545){
+            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        }
+        $functions=clone($functions)
+                    ->distinct('FFUNCCOD')
+                    ->get();
+        // dd($functions);
         //dd($id);
         return inertia('PAPS/Create', [
             'mfos'=>$mfos,
@@ -251,10 +271,19 @@ class PAPController extends Controller
         ]);
         // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
         // $functions = $accounts->pluck('func');
-        $functions = AccountAccess::where('iduser',auth()->user()->recid)
-                    ->select('ff.FFUNCCOD','ff.FFUNCTION')
+        // $functions = AccountAccess::where('iduser',auth()->user()->recid)
+        //             ->select('ff.FFUNCCOD','ff.FFUNCTION')
+        //             ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
+        //             ->with('func')->get();
+        $functions = AccountAccess::select('ff.FFUNCCOD','ff.FFUNCTION')
                     ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-                    ->with('func')->get();
+                    ->with('func');
+        if(auth()->user()->recid!==545){
+            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        }
+        $functions=clone($functions)
+                    ->distinct('FFUNCCOD')
+                    ->get();
         // dd($data);
         return inertia('PAPS/Create', [
             "editData" => $data,
