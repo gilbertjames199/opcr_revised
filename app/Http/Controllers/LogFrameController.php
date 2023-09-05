@@ -30,14 +30,22 @@ class LogFrameController extends Controller
         $functions =$this->model
                         ->select('ff.FFUNCCOD','FFUNCTION')
                         ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
-                        ->where('iduser',auth()->user()->recid)
-                        ->get()->map(function($item){
+                        ;
+
+
+        if(auth()->user()->recid!==545){
+            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        }
+        $functions=clone($functions)
+                        ->where('FFUNCTION','LIKE','%Office%')
+                        ->distinct('FFUNCCOD')->orderBy('FFUNCTION')->get()->map(function($item){
                             $FFUNCTION = trim($item->FFUNCTION);
                             return [
                                 'FFUNCCOD'=>$item->FFUNCCOD,
                                 'FFUNCTION'=>$FFUNCTION
                             ];
                         });
+
         // $acc_access = $this->model->where('FFUNCCOD','1031')->get()->pluck('iduser');
         // dd($acc_access);
         //dd($functions);
