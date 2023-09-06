@@ -65,6 +65,7 @@ class MFOController extends Controller
             $functions = clone($functions)->where('iduser',auth()->user()->recid);
         }
         $functions=clone($functions)
+                    ->distinct('ff.FFUNCCOD')
                     ->get();
         //$functions = $accounts->pluck('func');
         //dd($accounts);
@@ -120,6 +121,7 @@ class MFOController extends Controller
             $functions = clone($functions)->where('iduser',auth()->user()->recid);
         }
         $functions=clone($functions)
+                    ->distinct('ff.FFUNCCOD')
                     ->get();
 
         //dd($idinteroutcome);

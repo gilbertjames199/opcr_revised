@@ -28,9 +28,8 @@ class LogFrameController extends Controller
         //             ->with('func')->get();
 
         $functions =$this->model
-                        ->select('ff.FFUNCCOD','FFUNCTION')
-                        ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
-                        ;
+                        ->select('ff.FFUNCCOD','FFUNCTION','department_code')
+                        ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod');
 
 
         if(auth()->user()->recid!==545){
@@ -42,7 +41,8 @@ class LogFrameController extends Controller
                             $FFUNCTION = trim($item->FFUNCTION);
                             return [
                                 'FFUNCCOD'=>$item->FFUNCCOD,
-                                'FFUNCTION'=>$FFUNCTION
+                                'FFUNCTION'=>$FFUNCTION,
+                                'department_code'=>$item->department_code,
                             ];
                         });
 

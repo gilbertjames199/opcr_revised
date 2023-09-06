@@ -42,7 +42,7 @@
                         <tbody>
 
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.description }}</td>
+                                <td>{{ dat.division_name1 }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
