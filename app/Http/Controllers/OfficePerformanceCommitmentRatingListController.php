@@ -116,15 +116,22 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         ]);
     }
     public function direct(Request $request){
+        
         $dept_code = auth()->user()->department_code;
         $office = DB::connection('mysql2')->table('offices')
                     ->where('department_code', $dept_code)
                     ->first()->office;
         $office_lower = Str::lower($office);
         //dd($office_lower);
+        //dd($office_lower);
+        // dd(auth()->user()->department_code);
+        // $FFUNCCOD = DB::connection('mysql2')->table('functions')
+        //             ->whereRaw('LOWER(functions.FFUNCTION) LIKE ?', ['%'.$office_lower.'%'])
+        //             ->first()->FFUNCCOD;
         $FFUNCCOD = DB::connection('mysql2')->table('functions')
-                    ->whereRaw('LOWER(functions.FFUNCTION) LIKE ?', ['%'.$office_lower.'%'])
+                    ->where('department_code',auth()->user()->department_code)
                     ->first()->FFUNCCOD;
+        //$FFUNCCOD = user()
         //dd($FFUNCCOD);
         $opcr_lists = $this->model->where('FFUNCCOD',$FFUNCCOD)
                         ->orderBy('year', 'desc')
