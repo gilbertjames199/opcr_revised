@@ -47,9 +47,7 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Add Post");
-
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "bgc-white p-20 bd"
 }, null, -1
 /* HOISTED */
@@ -71,12 +69,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: ""
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_5];
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Add Post")];
     }),
     _: 1
     /* STABLE */
 
-  })]), _hoisted_6])], 64
+  })]), _hoisted_5])], 64
   /* STABLE_FRAGMENT */
   );
 }

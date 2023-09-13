@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Eight Point Socio-Economic  Agenda</h3>
+            <h3>Eight Point Socio-Economic Agenda</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -39,17 +39,39 @@
                                 <td>{{ dat.agenda_description }}</td>
                                 <td>{{ dat.yearfrom }}</td>
                                 <td>{{ dat.yearto }}</td>
-                                <td>{{ dat.rationale }}</td>
                                 <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    <!-- {{ dat.rationale }} -->
+                                    <div class="quill-editor-container">
+                                        <div class="quill-toolbar-hidden" v-if="!dat.isEditing">
+                                            <!-- Hide the Quill toolbar -->
+                                            <QuillEditor v-model:content="dat.rationale" contentType="html"
+                                                :readOnly="true" />
+                                        </div>
+                                        <div v-else>
+                                            <!-- Show the Quill content in read-only mode -->
+                                            <div v-html="dat.rationale"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropstart">
+                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/EconomicAgenda/${dat.id}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteEconomicAgenda(dat.id)">Delete</Link></li>
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/EconomicAgenda/${dat.id}/edit`">Edit
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="text-danger dropdown-item"
+                                                    @click="deleteEconomicAgenda(dat.id)">Delete</Link>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -64,7 +86,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <p >
+                        <p>
                             {{ data.from }} to {{ data.to }} of
                             {{ data.total }} entries
                         </p>
@@ -84,7 +106,7 @@ export default {
         data: Object
     },
     data() {
-        return{
+        return {
 
         }
     },
@@ -92,9 +114,9 @@ export default {
         Pagination, Filtering,
     },
 
-    methods:{
+    methods: {
 
-        showCreate(){
+        showCreate() {
             this.$inertia.get(
                 "/targets/create",
                 {
@@ -108,12 +130,12 @@ export default {
             );
         },
         deleteEconomicAgenda(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Eight Point Socio-Economic Agenda?"+id;
-              if (confirm(text) == true) {
+            let text = "WARNING!\nAre you sure you want to delete the Eight Point Socio-Economic Agenda?" + id;
+            if (confirm(text) == true) {
                 this.$inertia.delete("/EconomicAgenda/" + id);
             }
         },
-        getAccomplishment(tar_id){
+        getAccomplishment(tar_id) {
             this.$inertia.get(
                 "/accomplishments",
                 {
@@ -126,32 +148,38 @@ export default {
                 }
             );
         },
-        getPercent(accomp, targqty){
-            var accSum=0;
+        getPercent(accomp, targqty) {
+            var accSum = 0;
             accomp.forEach(myFunction);
-            function myFunction(item){
+            function myFunction(item) {
                 accSum += parseFloat(item.accomplishment_qty)
 
             }
-            var percentt = (accSum/targqty)*100
-            percentt=this.format_number(percentt,2,true)
+            var percentt = (accSum / targqty) * 100
+            percentt = this.format_number(percentt, 2, true)
             return percentt;
         }
     }
 };
 </script>
 <style>
-            .row-centered {
-                text-align:center;
-            }
-            .col-centered {
-                display:inline-block;
-                float:none;
-                text-align:left;
-                margin-right:-4px;
-            }
-            .pos{
-                position: top;
-                top: 240px;
-            }
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+.pos {
+    position: top;
+    top: 240px;
+}
+
+.quill-editor-container .quill-toolbar-hidden .ql-toolbar {
+    display: none;
+}
 </style>
