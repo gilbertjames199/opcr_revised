@@ -77,7 +77,7 @@ class PAPController extends Controller
     {
         $idn = auth()->user()->recid;
         $mfos1 = MajorFinalOutput::get();
-
+        $mfos = [];
         $access = DB::connection('mysql2')->table('accountaccess')
             ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
             ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
