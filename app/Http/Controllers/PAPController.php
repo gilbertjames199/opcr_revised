@@ -273,12 +273,6 @@ class PAPController extends Controller
             'executive_legislative_agenda',
             'research_agenda'
         ]);
-        // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
-        // $functions = $accounts->pluck('func');
-        // $functions = AccountAccess::where('iduser',auth()->user()->recid)
-        //             ->select('ff.FFUNCCOD','ff.FFUNCTION')
-        //             ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-        //             ->with('func')->get();
         $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
             ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
             ->with('func');
@@ -288,7 +282,6 @@ class PAPController extends Controller
         $functions = clone ($functions)
             ->distinct('FFUNCCOD')
             ->get();
-        // dd($data);
         return inertia('PAPS/Create', [
             "editData" => $data,
             "mfos" => $mfos,

@@ -124,6 +124,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.form.executive_legislative_agenda = this.editData.executive_legislative_agenda;
       this.form.research_agenda = this.editData.research_agenda;
       this.form.id = this.editData.id;
+      this.filterMFOs();
     } else {
       this.pageTitle = "Create";
 
