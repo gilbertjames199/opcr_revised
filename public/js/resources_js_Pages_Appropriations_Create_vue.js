@@ -836,7 +836,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $data.form.processing
   }, " Save changes ", 8
   /* PROPS */
-  , _hoisted_53), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ aip }}\n                <br/>\n                {{ total_budget_year }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" trte {{ formattedPrograms }} ")], 32
+  , _hoisted_53), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ aip }}\n                <br/>\n                {{ total_budget_year }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" trte {{ formattedPrograms }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dt_ooes }} ")], 32
   /* HYDRATE_EVENTS */
   )])]);
 }

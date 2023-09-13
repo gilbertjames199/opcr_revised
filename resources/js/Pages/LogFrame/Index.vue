@@ -30,27 +30,44 @@
                             <tr v-for="functional in data">
                                 <td>{{ functional.FFUNCTION }}</td>
                                 <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    <div class="dropdown dropstart">
+                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                            <!--/{id}/{idinteroutcome}/edit
                                             <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
-                                            <li><Link class="dropdown-item" :href="`/divisions/${functional.department_code}`">Divisions</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/revision/general/administration/services/${functional.FFUNCCOD}/plan`">GAS Profile/Design</Link></li>
-                                            <li v-if="functional.FFUNCCOD==='1031'">
+                                            <li>
+                                                <Link class="dropdown-item"
+                                                    :href="`/divisions/${functional.department_code}`">Divisions</Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item"
+                                                    :href="`/revision/general/administration/services/${functional.FFUNCCOD}/plan`">
+                                                GAS Profile/Design</Link>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" target="_blank"
+                                                    :href="`/logframe/${functional.FFUNCCOD}`">
+                                                    Logframe
+                                                </a>
+                                            </li>
+                                            <li v-if="functional.FFUNCCOD === '1031'">
                                                 <button class="dropdown-item"
-                                                    @click="showModalAd(functional.FFUNCCOD, functional.FFUNCTION)"
-                                                    > View Logframe
+                                                    @click="showModalAd(functional.FFUNCCOD, functional.FFUNCTION)"> View
+                                                    Print Logframe
                                                 </button>
                                             </li>
                                             <li v-else>
                                                 <button class="dropdown-item"
-                                                    @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)"
-                                                    > View Logframe
+                                                    @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)"> View
+                                                    Logframe
                                                 </button>
 
                                             </li>
@@ -101,16 +118,16 @@ export default {
         // filters: Object,
     },
     data() {
-        return{
+        return {
             my_link: "",
             displayModal: false,
             //search: this.$props.filters.search,
         }
     },
     watch: {
-            search: _.debounce(function (value) {
+        search: _.debounce(function (value) {
             this.$inertia.get(
-                "/paps/"+this.idmfo,
+                "/paps/" + this.idmfo,
                 { search: value },
                 {
                     preserveScroll: true,
@@ -121,14 +138,14 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering,Modal,
+        Pagination, Filtering, Modal,
     },
 
-    methods:{
+    methods: {
 
 
 
-        showCreate(){
+        showCreate() {
             this.$inertia.get(
                 "/targets/create",
                 {
@@ -142,33 +159,33 @@ export default {
             );
         },
         deletePAPS(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Program and Projects? "+id;
-              if (confirm(text) == true) {
-                this.$inertia.delete("/paps/" + id+"/"+this.idmfo);
+            let text = "WARNING!\nAre you sure you want to delete the Program and Projects? " + id;
+            if (confirm(text) == true) {
+                this.$inertia.delete("/paps/" + id + "/" + this.idmfo);
             }
         },
-        getToRep(ffunccod, ffunction){
+        getToRep(ffunccod, ffunction) {
             // alert(data[0].FFUNCCOD);
-            var linkt="http://";
+            var linkt = "http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FLogFrame&reportUnit=%2Freports%2Fplanning_system%2FLogFrame%2FLogframe&standAlone=true&decorate=no&output=pdf';
             var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
-            var link1 = linkt + jasper_ip +jasper_link + params;
+            var link1 = linkt + jasper_ip + jasper_link + params;
             return link1;
         },
 
-        showModal(ffunccod, ffunction){
+        showModal(ffunccod, ffunction) {
             // alert(ffunccod+"\n"+ffunction);
             this.my_link = this.getToRep(ffunccod, ffunction);
             this.displayModal = true;
         },
-        showModalAd(ffunccod, ffunction){
+        showModalAd(ffunccod, ffunction) {
             //alert("showModalAd\n"+ffunccod+"\n"+ffunction);
-            var linkt="http://";
+            var linkt = "http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLogframe_spcl%2FMAIN_LOGFRAME&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLogframe_spcl&decorate=no&output=pdf'
             var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
-            var link1 = linkt + jasper_ip +jasper_link + params;
+            var link1 = linkt + jasper_ip + jasper_link + params;
             this.displayModal = true;
             this.my_link = link1;
 
@@ -181,17 +198,19 @@ export default {
 };
 </script>
 <style>
-            .row-centered {
-                text-align:center;
-            }
-            .col-centered {
-                display:inline-block;
-                float:none;
-                text-align:left;
-                margin-right:-4px;
-            }
-            .pos{
-                position: top;
-                top: 240px;
-            }
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+.pos {
+    position: top;
+    top: 240px;
+}
 </style>

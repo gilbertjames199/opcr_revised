@@ -40,31 +40,32 @@ class PAPController extends Controller
     public function index(Request $request, $id)
     {
         //dd("not direct");
-        $data = ProgramAndProject::where('idmfo',$id)
-                ->with('MFO')
-                ->when($request->search, function($query, $searchItem){
-                    $query->where('paps_desc','LIKE','%'.$searchItem.'%');
-                })
-                ->orderByRaw(DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
+        $data = ProgramAndProject::where('idmfo', $id)
+            ->with('MFO')
+            ->when($request->search, function ($query, $searchItem) {
+                $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');
+            })
+            ->orderByRaw(
+                DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
                             WHEN program_and_projects.type = 'Project' THEN 1
                             WHEN program_and_projects.type = 'Program' THEN 2
                             WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
                             END")
-                        )
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
-                ->withQueryString();
+            )
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
         //$data = ProgramAndProject::get();
 
         //dd($data);
-        return inertia('PAPS/Index',[
-            "data"=>$data,
-            "idmfo"=>$id,
+        return inertia('PAPS/Index', [
+            "data" => $data,
+            "idmfo" => $id,
             "filters" => $request->only(['search']),
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -75,57 +76,58 @@ class PAPController extends Controller
     public function create($id)
     {
         $idn = auth()->user()->recid;
-        $mfos1= MajorFinalOutput::get();
+        $mfos1 = MajorFinalOutput::get();
 
         $access = DB::connection('mysql2')->table('accountaccess')
-                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
-                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
-                ->where('systemusers.recid',$idn)
-                ->get();
+            ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+            ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
+            ->where('systemusers.recid', $idn)
+            ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
 
         //$showPerPage=10;
-        $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
+
         $chief_executive_agenda = ChiefAgenda::get();
         $socio_economic = EconomicAgenda::get();
         $sustainable = SDG::get();
         $executive_legislative = ELA::get();
         $research = ResearchAgenda::get();
         //dd($id);
-        $year_object=DB::connection('mysql2')
-                        ->table('raaohs')
-                        ->select(DB::raw('DISTINCT(tyear)'))
-                        ->orderBy('tyear','ASC')
-                        ->get();
+        $year_object = DB::connection('mysql2')
+            ->table('raaohs')
+            ->select(DB::raw('DISTINCT(tyear)'))
+            ->orderBy('tyear', 'ASC')
+            ->get();
         // $accounts = AccountAccess::where('iduser',auth()->user()->recid)->with('func')->get();
         // $functions = $accounts->pluck('func');
         // $functions = AccountAccess::where('iduser',auth()->user()->recid)
         //             ->select('ff.FFUNCCOD','ff.FFUNCTION')
         //             ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
         //             ->with('func')->get();
-        $functions = AccountAccess::select('ff.FFUNCCOD','ff.FFUNCTION')
-                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-                    ->with('func');
-        if(auth()->user()->recid!==545){
-            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
+            ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
+            ->with('func');
+        if (auth()->user()->recid !== 545) {
+            $functions = clone ($functions)->where('iduser', auth()->user()->recid);
+            $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
         }
-        $functions=clone($functions)
-                    ->distinct('FFUNCCOD')
-                    ->get();
+        $functions = clone ($functions)
+            ->distinct('FFUNCCOD')
+            ->get();
 
         return inertia('PAPS/Create', [
-            'mfos'=>$mfos,
-            'chief_agenda'=>$chief_executive_agenda,
+            'mfos' => $mfos,
+            'chief_agenda' => $chief_executive_agenda,
             'socio_economic' => $socio_economic,
             'sustainable' => $sustainable,
             'executive_legislative' => $executive_legislative,
             'research' => $research,
-            'idmfo'=>$id,
-            'functions'=>$functions,
-            'years'=>$year_object,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            'idmfo' => $id,
+            'functions' => $functions,
+            'years' => $year_object,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -134,17 +136,18 @@ class PAPController extends Controller
     {
         //dd("direct create");
         $idn = auth()->user()->recid;
-        $mfos1= MajorFinalOutput::get();
-
+        $mfos1 = MajorFinalOutput::get();
+        $mfos = [];
+        $mfos = clone ($mfos1);
         $access = DB::connection('mysql2')->table('accountaccess')
-                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
-                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
-                ->where('systemusers.recid',$idn)
-                ->get();
+            ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+            ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
+            ->where('systemusers.recid', $idn)
+            ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
 
         //$showPerPage=10;
-        $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
+
         //dd($mfos);
         //dd($mfos);
         //$mfos =PaginationHelper::paginate($result, $showPerPage);
@@ -160,28 +163,29 @@ class PAPController extends Controller
         //             ->select('ff.FFUNCCOD','ff.FFUNCTION')
         //             ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
         //             ->with('func')->get();
-        $functions = AccountAccess::select('ff.FFUNCCOD','ff.FFUNCTION')
-                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-                    ->with('func');
-        if(auth()->user()->recid!==545){
-            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
+            ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
+            ->with('func');
+        if (auth()->user()->recid !== 545) {
+            $functions = clone ($functions)->where('iduser', auth()->user()->recid);
+            $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
         }
-        $functions=clone($functions)
-                    ->distinct('FFUNCCOD')
-                    ->get();
+        $functions = clone ($functions)
+            ->distinct('FFUNCCOD')
+            ->get();
         // dd($functions);
         //dd($id);
         return inertia('PAPS/Create', [
-            'mfos'=>$mfos,
-            'chief_agenda'=>$chief_executive_agenda,
+            'mfos' => $mfos,
+            'chief_agenda' => $chief_executive_agenda,
             'socio_economic' => $socio_economic,
             'sustainable' => $sustainable,
             'executive_legislative' => $executive_legislative,
             'research' => $research,
-            'functions'=>$functions,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            'functions' => $functions,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -189,21 +193,22 @@ class PAPController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request);
         $dept_code = auth()->user()->department_code;
         $request->merge(['department_code' => $dept_code]);
-        $proceed ="1";
+        $proceed = "1";
         $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
-        if($request->type==='GAS'){
+        if ($request->type === 'GAS') {
             $count = ProgramAndProject::where('program_and_projects.department_code', $dept_code)
-                        ->where('program_and_projects.type','GAS')
-                        ->count('id');
-            if($count>0){
-                $proceed="0";
+                ->where('program_and_projects.type', 'GAS')
+                ->count('id');
+            if ($count > 0) {
+                $proceed = "0";
             }
         }
         $msg = "Failed to add Programs and Projects(PAPS)";
         $status = "error";
-        if($proceed==="1"){
+        if ($proceed === "1") {
 
             //$this->model->create($attributes);
             $paps = new ProgramAndProject();
@@ -211,20 +216,20 @@ class PAPController extends Controller
             $paps->department_code = $dept_code;
             $paps->FFUNCCOD = $request->FFUNCCOD;
             $paps->idmfo = $request->idmfo;
-            $paps-> MOV= $request->MOV;
-            $paps-> type= $request->type;
-            $paps-> chief_executive_agenda= $request->chief_executive_agenda;
-            $paps-> socio_economic_agenda= $request->socio_economic_agenda;
-            $paps-> sust_devt_goal= $request->sust_devt_goal;
-            $paps-> executive_legislative_agenda= $request->executive_legislative_agenda;
-            $paps-> research_agenda= $request->research_agenda;
+            $paps->MOV = $request->MOV;
+            $paps->type = $request->type;
+            $paps->chief_executive_agenda = $request->chief_executive_agenda;
+            $paps->socio_economic_agenda = $request->socio_economic_agenda;
+            $paps->sust_devt_goal = $request->sust_devt_goal;
+            $paps->executive_legislative_agenda = $request->executive_legislative_agenda;
+            $paps->research_agenda = $request->research_agenda;
             $paps->save();
             $msg = "Programs and Projects(PAPS) added";
-            $status="message";
+            $status = "message";
         }
 
         return redirect('/paps/direct')
-        ->with($status,$msg);
+            ->with($status, $msg);
     }
     public function save(Request $request)
     {
@@ -233,24 +238,23 @@ class PAPController extends Controller
         $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $this->model->create($attributes);
 
-        return redirect('/paps/'.$request->idmfo)
-        ->with('message','Programs and Projects(PAPS) added');
+        return redirect('/paps/' . $request->idmfo)
+            ->with('message', 'Programs and Projects(PAPS) added');
     }
 
 
     public function show(ProgramAndProject $programAndProject)
     {
-
     }
 
     public function edit(ProgramAndProject $programAndProject, $id, $idmfo)
     {
-        $year_object=DB::connection('mysql2')
-                        ->table('raaohs')
-                        ->select(DB::raw('DISTINCT(tyear)'))
-                        ->orderBy('tyear','ASC')
-                        ->get();
-        $mfos= MajorFinalOutput::get();
+        $year_object = DB::connection('mysql2')
+            ->table('raaohs')
+            ->select(DB::raw('DISTINCT(tyear)'))
+            ->orderBy('tyear', 'ASC')
+            ->get();
+        $mfos = MajorFinalOutput::get();
         $chief_executive_agenda = ChiefAgenda::get();
         $socio_economic = EconomicAgenda::get();
         $sustainable = SDG::get();
@@ -275,30 +279,30 @@ class PAPController extends Controller
         //             ->select('ff.FFUNCCOD','ff.FFUNCTION')
         //             ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
         //             ->with('func')->get();
-        $functions = AccountAccess::select('ff.FFUNCCOD','ff.FFUNCTION')
-                    ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
-                    ->with('func');
-        if(auth()->user()->recid!==545){
-            $functions = clone($functions)->where('iduser',auth()->user()->recid);
+        $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
+            ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
+            ->with('func');
+        if (auth()->user()->recid !== 545) {
+            $functions = clone ($functions)->where('iduser', auth()->user()->recid);
         }
-        $functions=clone($functions)
-                    ->distinct('FFUNCCOD')
-                    ->get();
+        $functions = clone ($functions)
+            ->distinct('FFUNCCOD')
+            ->get();
         // dd($data);
         return inertia('PAPS/Create', [
             "editData" => $data,
-            "mfos"=>$mfos,
-            'chief_agenda'=>$chief_executive_agenda,
+            "mfos" => $mfos,
+            'chief_agenda' => $chief_executive_agenda,
             'socio_economic' => $socio_economic,
             'sustainable' => $sustainable,
             'executive_legislative' => $executive_legislative,
             'research' => $research,
-            "idmfo"=> $idmfo,
-            "functions"=>$functions,
-            'years'=>$year_object,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            "idmfo" => $idmfo,
+            "functions" => $functions,
+            'years' => $year_object,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -312,20 +316,20 @@ class PAPController extends Controller
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $paps = new ProgramAndProject();
         $data->update([
-            'paps_desc'=> $request->paps_desc,
-            'FFUNCCOD'=> $request->FFUNCCOD,
-            'department_code'=>$dept_code,
-            'idmfo'=> $request->idmfo,
-            'MOV'=> $request->MOV,
-            'type'=> $request->type,
-            'chief_executive_agenda'=> $request->chief_executive_agenda,
-            'socio_economic_agenda'=> $request->socio_economic_agenda,
-            'sust_devt_goal'=> $request->sust_devt_goal,
-            'executive_legislative_agenda'=> $request->executive_legislative_agenda,
-            'research_agenda'=> $request->research_agenda
+            'paps_desc' => $request->paps_desc,
+            'FFUNCCOD' => $request->FFUNCCOD,
+            'department_code' => $dept_code,
+            'idmfo' => $request->idmfo,
+            'MOV' => $request->MOV,
+            'type' => $request->type,
+            'chief_executive_agenda' => $request->chief_executive_agenda,
+            'socio_economic_agenda' => $request->socio_economic_agenda,
+            'sust_devt_goal' => $request->sust_devt_goal,
+            'executive_legislative_agenda' => $request->executive_legislative_agenda,
+            'research_agenda' => $request->research_agenda
         ]);
         return redirect('/paps/direct')
-                ->with('message','Program and Projects updated');
+            ->with('message', 'Program and Projects updated');
     }
 
     public function updated(Request $request, $id)
@@ -335,51 +339,52 @@ class PAPController extends Controller
         // dd($request->chief_executive_agenda);
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $data->update([
-            'paps_desc'=> $request->paps_desc,
-            'FFUNCCOD'=> $request->FFUNCCOD,
-            'department_code'=>$dept_code,
-            'idmfo'=> $request->idmfo,
-            'MOV'=> $request->MOV,
-            'type'=> $request->type,
-            'chief_executive_agenda'=> $request->chief_executive_agenda,
-            'socio_economic_agenda'=> $request->socio_economic_agenda,
-            'sust_devt_goal'=> $request->sust_devt_goal,
-            'executive_legislative_agenda'=> $request->executive_legislative_agenda,
-            'research_agenda'=> $request->research_agenda
+            'paps_desc' => $request->paps_desc,
+            'FFUNCCOD' => $request->FFUNCCOD,
+            'department_code' => $dept_code,
+            'idmfo' => $request->idmfo,
+            'MOV' => $request->MOV,
+            'type' => $request->type,
+            'chief_executive_agenda' => $request->chief_executive_agenda,
+            'socio_economic_agenda' => $request->socio_economic_agenda,
+            'sust_devt_goal' => $request->sust_devt_goal,
+            'executive_legislative_agenda' => $request->executive_legislative_agenda,
+            'research_agenda' => $request->research_agenda
         ]);
         //dd('updated');
-        return redirect('/paps/'.$request->idmfo)
-                ->with('message','Program and Projects updated');
+        return redirect('/paps/' . $request->idmfo)
+            ->with('message', 'Program and Projects updated');
     }
     public function destroy(Request $request, $id)
     {
         $count_rev = RevisionPlan::where('idpaps', $id)->count();
         $count_strat = Strategy::where('idpaps', $id)->count();
         $count_success = SuccessIndicator::where('idpaps', $id)->count();
-        $count_targets =Target::where('idpdip', $id)->count();
-        $count_output =Output::where('idpaps', $id)->count();
+        $count_targets = Target::where('idpdip', $id)->count();
+        $count_output = Output::where('idpaps', $id)->count();
         $count_off = OfficeAccountable::where('idpaps', $id)->count();
         $count_rating = rating::where('idpaps', $id)->count();
-        $count_rating_rem =RatingRemarks::where('idpaps', $id)->count();
+        $count_rating_rem = RatingRemarks::where('idpaps', $id)->count();
         $count_quality = Quality::where('idpaps', $id)->count();
         $count_qual_rem = QualityRemarks::where('idpaps', $id)->count();
         $count_time = Timeliness::where('idpaps', $id)->count();
         $count_time_rem = TimelinessRemarks::where('idpaps', $id)->count();
         $count_mon = Monitoring::where('idpaps', $id)->count();
 
-        $msg="";
+        $msg = "";
 
-        $status ="";
-        if($count_rev>0 || $count_strat>0 || $count_success>0 || $count_targets>0 ||
-            $count_output>0 || $count_off>0 || $count_rating>0 || $count_rating_rem>0 ||
-            $count_quality>0 || $count_qual_rem>0 || $count_time>0 || $count_time_rem>0 ||
-            $count_mon>0
-        ){
-            $msg="Unable to delete!";
-            $status ="error";
-        }else{
-            $msg="Program/Project/Activity Successfully deleted!";
-            $status ="message";
+        $status = "";
+        if (
+            $count_rev > 0 || $count_strat > 0 || $count_success > 0 || $count_targets > 0 ||
+            $count_output > 0 || $count_off > 0 || $count_rating > 0 || $count_rating_rem > 0 ||
+            $count_quality > 0 || $count_qual_rem > 0 || $count_time > 0 || $count_time_rem > 0 ||
+            $count_mon > 0
+        ) {
+            $msg = "Unable to delete!";
+            $status = "error";
+        } else {
+            $msg = "Program/Project/Activity Successfully deleted!";
+            $status = "message";
             $data = $this->model->findOrFail($id);
             $data->delete();
         }
@@ -387,49 +392,61 @@ class PAPController extends Controller
         return redirect('/paps/direct')->with($status, $msg);
     }
 
-    public function direct(Request $request){
+    public function direct(Request $request)
+    {
         //dd("direct");
         //dd($request->mfosel);
 
         $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
-                ->when($request->search, function($query, $searchItem){
-                    $query->where('paps_desc','LIKE','%'.$searchItem.'%');
-                })
-                ->when($request->mfosel, function($query, $searchItem){
-                    $query->where('idmfo','=',$searchItem);
-                })
-                ->orderByRaw(DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
+            ->when($request->search, function ($query, $searchItem) {
+                $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');
+            })
+            ->when($request->mfosel, function ($query, $searchItem) {
+                $query->where('idmfo', '=', $searchItem);
+            })
+            ->orderByRaw(
+                DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
                             WHEN program_and_projects.type = 'Project' THEN 1
                             WHEN program_and_projects.type = 'Program' THEN 2
                             WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
                             END")
-                        )
-                ->orderBy('program_and_projects.created_at', 'desc')
-                ->get();
+            )
+            ->orderBy('program_and_projects.created_at', 'desc')
+            ->get();
 
         $access = DB::connection('mysql2')->table('accountaccess')
-                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
-                ->join('systemusers','systemusers.recid','=','accountaccess.iduser')
-                ->where('systemusers.recid',$idn)
-                ->get();
+            ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+            ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
+            ->where('systemusers.recid', $idn)
+            ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
-        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
-        $showPerPage=10;
-        $paginatedResult =PaginationHelper::paginate($result, $showPerPage);
-        $mfos=MajorFinalOutput::all();
-        $mfos=$mfos->whereIn('FFUNCCOD',$accessFFUNCCOD);
+        $result = clone ($data);
+        $mfos = MajorFinalOutput::all();
+        if (auth()->user()->recid !== 545) {
+            $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+            $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        }
 
-        //dd($mfos);
-        //dd($data->pluck('mfo_desc'));
-        return inertia('PAPS/Direct',[
-            "data"=>$paginatedResult,
-            "mfos"=>$mfos,
+        $showPerPage = 10;
+        $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
+
+        return inertia('PAPS/Direct', [
+            "data" => $paginatedResult,
+            "mfos" => $mfos,
             "filters" => $request->only(['search']),
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
+    }
+
+    public function mfos_filter(Request $request, $FFUNCCOD)
+    {
+        $MY_FFUNCCOD = $FFUNCCOD;
+        // dd($FFUNCCOD);
+        $data = MajorFinalOutput::where('FFUNCCOD', $MY_FFUNCCOD)->get();
+        return ['data' => $data];
     }
 }
