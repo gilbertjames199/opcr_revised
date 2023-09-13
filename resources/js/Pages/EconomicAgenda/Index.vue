@@ -41,17 +41,8 @@
                                 <td>{{ dat.yearto }}</td>
                                 <td>
                                     <!-- {{ dat.rationale }} -->
-                                    <div class="quill-editor-container">
-                                        <div class="quill-toolbar-hidden" v-if="!dat.isEditing">
-                                            <!-- Hide the Quill toolbar -->
-                                            <QuillEditor v-model:content="dat.rationale" contentType="html"
-                                                :readOnly="true" />
-                                        </div>
-                                        <div v-else>
-                                            <!-- Show the Quill content in read-only mode -->
-                                            <div v-html="dat.rationale"></div>
-                                        </div>
-                                    </div>
+                                    <div v-html="dat.rationale"></div>
+
                                 </td>
                                 <td>
                                     <div class="dropdown dropstart">
@@ -177,9 +168,5 @@ export default {
 .pos {
     position: top;
     top: 240px;
-}
-
-.quill-editor-container .quill-toolbar-hidden .ql-toolbar {
-    display: none;
 }
 </style>
