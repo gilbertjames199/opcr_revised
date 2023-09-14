@@ -7,6 +7,7 @@ use App\Models\AccountAccess;
 use App\Models\ChiefAgenda;
 use App\Models\EconomicAgenda;
 use App\Models\ELA;
+use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring;
 use App\Models\OfficeAccountable;
@@ -389,7 +390,7 @@ class PAPController extends Controller
     {
         //dd("direct");
         //dd($request->mfosel);
-
+        $offices = FFUNCCOD::all();
         $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
             ->when($request->search, function ($query, $searchItem) {
@@ -425,6 +426,7 @@ class PAPController extends Controller
         $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
 
         return inertia('PAPS/Direct', [
+            "offices" => $offices,
             "data" => $paginatedResult,
             "mfos" => $mfos,
             "filters" => $request->only(['search']),

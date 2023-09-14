@@ -189,7 +189,7 @@ class MFOController extends Controller
                 ->paginate(10)
                 ->withQueryString();
         } else {
-            $data = $this->model->select('major_final_outputs.mfo_desc', 'major_final_outputs.id', 'major_final_outputs.FFUNCCOD')
+            $data = $this->model->with('office')->select('major_final_outputs.mfo_desc', 'major_final_outputs.id', 'major_final_outputs.FFUNCCOD')
                 ->where('department_code', auth()->user()->department_code)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
