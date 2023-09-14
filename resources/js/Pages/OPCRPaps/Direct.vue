@@ -8,21 +8,37 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>OPCR Standard</h3>
-            <div class="peers">
+            <div class="peers" v-if="auth.user.department_code === '04'">
                 <div class="peer mR-10">
                     Search MFO
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
                 <div class="peer mR-10">
-                    <span v-if="auth.user.department_code === '04'">
-                        Select Office <span style="color:red">(select office before printing)</span>
-                        <select v-model="FFUNCCOD" class="form-control form-control-sm" @change="filterMFOs()">
-                            <option v-for="func in functions" :value="func.FFUNCCOD">
-                                {{ func.FFUNCTION }}
-                            </option>
-                        </select>
-                    </span>
+
+                    Select Office <span style="color:red">(select office before printing)</span>
+                    <select v-model="FFUNCCOD" class="form-control form-control-sm" @change="filterMFOs()">
+                        <option v-for="func in functions" :value="func.FFUNCCOD">
+                            {{ func.FFUNCTION }}
+                        </option>
+                    </select>
+                    <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(
+                        filter_FFUNCCOD,
+                        filter_FFUNCTION,
+                        filter_mooe,
+                        filter_Ps
+                    )">Print OPCR Standard</button>
+
+                </div>
+            </div>
+            <div class="peers" v-else>
+                <div class="peer mR-10">
+                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+
+                </div>
+                <div class="peer mR-10">
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(
                         filter_FFUNCCOD,
