@@ -83,7 +83,8 @@ class OPCRPAPSController extends Controller
         if (auth()->user()->department_code != '04') {
         }
         $functions = $this->function
-            ->select('ff.FFUNCCOD', 'FFUNCTION');
+            ->select('ff.FFUNCCOD', 'FFUNCTION')
+            ->distinct('FFUNCTION');
 
         $mooe = "0.00";
         $ps = "0.00";
