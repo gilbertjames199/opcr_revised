@@ -14,6 +14,7 @@
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/mfos/create`">Add MFO </Link>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
 
@@ -26,6 +27,16 @@
         </div>
 
         <div class="masonry-sizer col-md-6"></div>
+        <filtering v-if="filter" @closeFilter="filter = false">
+            <div v-if="$page.props.auth.user.department_code === '04'">
+                Filter by Office
+                <select v-model="FFUNCCOD" class="form-control" @change="filterMFOs()">
+                    <option v-for="FFUNCCOD in offices" :value="FFUNCCOD.FFUNCCOD">
+                        {{ FFUNCCOD.FFUNCTION }}
+                    </option>
+                </select>
+            </div>
+        </filtering>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
@@ -112,23 +123,29 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
+        filters: Object,
         idinteroutcome: String,
         idoutcome: String,
-
+        offices: Object,
     },
     data() {
         return {
+            search: this.$props.filters.search,
             mfosel: "",
             filter: false,
             ismfo: 1,
+            FFUNCCOD: "",
         }
     },
     components: {
         Pagination, Filtering,
     },
-
+    watch: {
+        search: _.debounce(function (value) {
+            this.filterMFOs();
+        }, 300),
+    },
     methods: {
-
         showCreate() {
             this.$inertia.get(
                 "/targets/create",
@@ -148,6 +165,24 @@ export default {
                 this.$inertia.delete("/mfos/" + id + "/" + this.idinteroutcome);
             }
         },
+        showFilter() {
+            //alert("show filter");
+            this.filter = !this.filter
+        },
+        async filterMFOs() {
+            this.$inertia.get(
+                "/mfos/direct",
+                {
+                    search: this.search,
+                    FFUNCCOD: this.FFUNCCOD
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }
 
     }
 };

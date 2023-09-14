@@ -80,55 +80,17 @@ class OPCRPAPSController extends Controller
     public function direct(Request $request)
     {
         // dd(auth()->user()->department_code);
+        if (auth()->user()->department_code != '04') {
+        }
         $functions = $this->function
-            ->select('ff.FFUNCCOD', 'FFUNCTION')
-            ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
-            ->where('iduser', auth()->user()->recid)
-            ->get()
-            ->map(function ($item) {
-                $my_year = now()->year;
+            ->select('ff.FFUNCCOD', 'FFUNCTION');
 
-                // dd($my_year);
-
-                //REVISION PLAN ID/ GET MOOE & PS
-                $revision_plan = RevisionPlan::where('idmfo', '0')
-                    ->where('idpaps', '0')
-                    ->where('FFUNCCOD', $item->FFUNCCOD)
-                    ->where('year_period', $my_year)
-                    ->first();
-                $mooe = "0.00";
-                $ps = "0.00";
-                if ($revision_plan) {
-                    $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
-                        ->where('category', 'Maintenance, Operating, and Other Expenses')
-                        ->sum('amount');
-
-                    $ps1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
-                        ->where('category', 'Personnel Services')
-                        ->sum('amount');
-                    $mooe2 = (float)$mooe1;
-                    $ps2 = (float)$ps1;
-                    $mooe = number_format($mooe2, 2);
-                    $ps = number_format($ps2, 2);
-                } else {
-                    //dd("empty no ps budget");
-                }
-                return [
-                    "FFUNCCOD" => $item->FFUNCCOD,
-                    "FFUNCTION" => $item->FFUNCTION,
-                    "MOOE" => $mooe,
-                    "PS" => $ps,
-                ];
-            });
         $mooe = "0.00";
         $ps = "0.00";
         $dept_code = auth()->user()->department_code;
-        // dd($functions);
-        //dd("direct");
-        //dd($request->mfosel);
-        // dd($request->mfosel);->leftJoin('outputs','outputs.idpaps','program_and_projects.id')
+
         $idn = auth()->user()->recid;
-        // dd($idn);
+
         $data = $this->model->with('MFO')->with('output')
             ->distinct('program_and_projects.id')
             ->when($request->search, function ($query, $searchItem) {
@@ -138,29 +100,96 @@ class OPCRPAPSController extends Controller
                 $query->where('idmfo', '=', $searchItem);
             });
 
-        // ->Join(DB::raw('fms.accountaccess acc'), 'acc.FFUNCCOD', '=', 'program_and_projects.FFUNCCOD')
-        // ->Join(DB::raw('fms.systemusers sysu'), 'sysu.recid', '=', 'acc.iduser')
-        // ->where('sysu.recid', $idn)
-        // ->orderBy('created_at', 'desc')->get();
-        // dd($data);
+        $mfos = MajorFinalOutput::all();
         if ($dept_code != '04') {
+            $functions = clone ($functions)
+                ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
+                ->where('iduser', auth()->user()->recid)
+                ->get()
+                ->map(function ($item) {
+                    $my_year = now()->year;
+                    //REVISION PLAN ID/ GET MOOE & PS
+                    $revision_plan = RevisionPlan::where('idmfo', '0')
+                        ->where('idpaps', '0')
+                        ->where('FFUNCCOD', $item->FFUNCCOD)
+                        ->where('year_period', $my_year)
+                        ->first();
+                    $mooe = "0.00";
+                    $ps = "0.00";
+                    if ($revision_plan) {
+                        $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                            ->where('category', 'Maintenance, Operating, and Other Expenses')
+                            ->sum('amount');
+
+                        $ps1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                            ->where('category', 'Personnel Services')
+                            ->sum('amount');
+                        $mooe2 = (float)$mooe1;
+                        $ps2 = (float)$ps1;
+                        $mooe = number_format($mooe2, 2);
+                        $ps = number_format($ps2, 2);
+                    } else {
+                        //dd("empty no ps budget");
+                    }
+                    return [
+                        "FFUNCCOD" => $item->FFUNCCOD,
+                        "FFUNCTION" => $item->FFUNCTION,
+                        "MOOE" => $mooe,
+                        "PS" => $ps,
+                    ];
+                });
             $data = clone ($data)
                 ->Join(DB::raw('fms.accountaccess acc'), 'acc.FFUNCCOD', '=', 'program_and_projects.FFUNCCOD')
                 ->Join(DB::raw('fms.systemusers sysu'), 'sysu.recid', '=', 'acc.iduser')
                 ->where('sysu.recid', $idn);
+            $idn = auth()->user()->recid;
+            $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
+                ->where('systemusers.recid', $idn)
+                ->get();
+            $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+            $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        } else {
+            $functions = clone ($functions)
+                ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
+                ->get()
+                ->map(function ($item) {
+                    $my_year = now()->year;
+                    //REVISION PLAN ID/ GET MOOE & PS
+                    $revision_plan = RevisionPlan::where('idmfo', '0')
+                        ->where('idpaps', '0')
+                        ->where('FFUNCCOD', $item->FFUNCCOD)
+                        ->where('year_period', $my_year)
+                        ->first();
+                    $mooe = "0.00";
+                    $ps = "0.00";
+                    if ($revision_plan) {
+                        $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                            ->where('category', 'Maintenance, Operating, and Other Expenses')
+                            ->sum('amount');
+
+                        $ps1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                            ->where('category', 'Personnel Services')
+                            ->sum('amount');
+                        $mooe2 = (float)$mooe1;
+                        $ps2 = (float)$ps1;
+                        $mooe = number_format($mooe2, 2);
+                        $ps = number_format($ps2, 2);
+                    } else {
+                        //dd("empty no ps budget");
+                    }
+                    return [
+                        "FFUNCCOD" => $item->FFUNCCOD,
+                        "FFUNCTION" => $item->FFUNCTION,
+                        "MOOE" => $mooe,
+                        "PS" => $ps,
+                    ];
+                });
         }
         $data = clone ($data)->orderBy('created_at', 'desc')->get();
-        // dd($data);
-        $mfos = MajorFinalOutput::all();
 
-        //USER ACCESS
-        $idn = auth()->user()->recid;
-        $access = DB::connection('mysql2')->table('accountaccess')
-            ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
-            ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
-            ->where('systemusers.recid', $idn)
-            ->get();
-        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+
 
 
         //FILTER PAPS
@@ -172,9 +201,8 @@ class OPCRPAPSController extends Controller
         $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
 
         //FILTER MFO
-        $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
-        //dd($mfos);
-        //dd($data->pluck('mfo_desc'));
+
+
         return inertia('OPCRPaps/Direct', [
             "functions" => $functions,
             "MOOE" => $mooe,

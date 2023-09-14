@@ -172,12 +172,13 @@ class MFOController extends Controller
 
     public function direct(Request $request)
     {
-
+        $office = [];
         $idn = auth()->user()->recid;
         $dept_code = auth()->user()->department_code;
         // dd(auth()->user());
         if ($dept_code == '04') {
             // dd($dept_code . ' is equal to 04');
+            $office = FFUNCCOD::all();
             $data = $this->model->with(['office' => function ($query) {
                 $query->orderBy('FFUNCTION', 'asc');
             }])->select(
@@ -185,6 +186,12 @@ class MFOController extends Controller
                 'major_final_outputs.id',
                 'major_final_outputs.FFUNCCOD'
             )
+                ->when($request->search, function ($query, $searchItem) {
+                    $query->where('mfo_desc', 'LIKE', '%' . $searchItem . '%');
+                })
+                ->when($request->FFUNCCOD, function ($query, $searchItem) {
+                    $query->where('FFUNCCOD', '=', $searchItem);
+                })
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
@@ -195,16 +202,6 @@ class MFOController extends Controller
                 ->paginate(10)
                 ->withQueryString();
         }
-
-        // $data = $this->model->select('major_final_outputs.mfo_desc','major_final_outputs.id', 'major_final_outputs.FFUNCCOD')
-        // ->where('FFUNCCOD', '1121')
-        // ->orderBy('created_at', 'desc')
-        // ->paginate(10)
-        // ->withQueryString();
-        // ->join('fms.accountaccess AS acc', function ($join) use ($idn) {
-        //     $join->on(DB::raw('TRIM(acc.ffunccod)'), '=', 'major_final_outputs.FFUNCCOD')
-        //         ->where('acc.iduser', $idn);
-        // })
         $access = DB::connection('mysql2')->table('accountaccess')
             ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
             ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
@@ -215,11 +212,8 @@ class MFOController extends Controller
 
         $showPerPage = 10;
         $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
-
-        //dd($data);
-        //dd($result);
-        // dd($access);
         return inertia('MFOs/Direct', [
+            "offices" => $office,
             "data" => $data,
             "filters" => $request->only(['search']),
             'can' => [
