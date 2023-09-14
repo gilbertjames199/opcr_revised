@@ -3,10 +3,13 @@
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Organizational Outcomes</h3>
             <Link href="/Organization">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                <path fill-rule="evenodd"
+                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+            </svg>
             </Link>
         </div>
 
@@ -24,8 +27,8 @@
 
                 <label for="">OFFICES</label>
                 <!--<input type="text" v-model="form.FFUNCCOD" class="form-control" autocomplete="chrome-off">-->
-                <select class="form-control form-select" v-model="form.FFUNCCOD" >
-                    <option v-for="functional in functions" :value="functional.FFUNCCOD" >
+                <select class="form-control form-select" v-model="form.FFUNCCOD">
+                    <option v-for="functional in functions" :value="functional.FFUNCCOD">
                         {{ functional.FFUNCTION }}
                     </option>
                 </select>
@@ -34,7 +37,7 @@
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
-                <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
+                <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">
                     Save changes
                 </button>
             </form>
@@ -42,66 +45,65 @@
 
 
     </div>
-
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
 import Places from "@/Shared/PlacesShared";
-    //import BootstrapModalNoJquery from './BootstrapModalNoJquery.vue';
+//import BootstrapModalNoJquery from './BootstrapModalNoJquery.vue';
 
 export default {
-        props: {
-            editData: Object,
-            functions: Object
-        },
-        components: {
-          //BootstrapModalNoJquery,
+    props: {
+        editData: Object,
+        functions: Object
+    },
+    components: {
+        //BootstrapModalNoJquery,
 
-          Places: () => new Promise((resolve) => {
+        Places: () => new Promise((resolve) => {
             setTimeout(() => {
                 resolve(Places)
             }, 2000)
         })
 
-        },
-        data() {
-            return {
-                submitted: false,
-                form: useForm({
-                    goal_description: "",
-                    FFUNCCOD: "",
-                    id: null
-                }),
-                pageTitle: ""
-            };
-        },
+    },
+    data() {
+        return {
+            submitted: false,
+            form: useForm({
+                goal_description: "",
+                FFUNCCOD: "",
+                id: null
+            }),
+            pageTitle: ""
+        };
+    },
 
-        mounted() {
+    mounted() {
 
-            if (this.editData !== undefined) {
-                if(this.bari){
-                    this.bar=this.bari
-                }
-                this.pageTitle = "Edit"
-                this.form.goal_description=this.editData.goal_description
-                this.form.FFUNCCOD=this.editData.FFUNCCOD
-                this.form.id=this.editData.id
-            } else {
-                this.pageTitle = "Create"
+        if (this.editData !== undefined) {
+            if (this.bari) {
+                this.bar = this.bari
             }
+            this.pageTitle = "Edit"
+            this.form.goal_description = this.editData.goal_description
+            this.form.FFUNCCOD = this.editData.FFUNCCOD
+            this.form.id = this.editData.id
+        } else {
+            this.pageTitle = "Create"
+        }
 
-        },
+    },
 
-        methods: {
-            submit() {
-                this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
-                //alert(this.form.target_qty);
-                if (this.editData !== undefined) {
-                    this.form.patch("/Organization/" + this.form.id, this.form);
-                } else {
-                    this.form.post("/Organization");
-                }
-            },
+    methods: {
+        submit() {
+            this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4);
+            //alert(this.form.target_qty);
+            if (this.editData !== undefined) {
+                this.form.patch("/Organization/" + this.form.id, this.form);
+            } else {
+                this.form.post("/Organization");
+            }
         },
-    };
-    </script>
+    },
+};
+</script>

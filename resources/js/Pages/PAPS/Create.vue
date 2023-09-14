@@ -123,7 +123,7 @@
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
-                <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
+                <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">
                     Save changes
                 </button>
             </form>

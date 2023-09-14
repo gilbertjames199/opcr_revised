@@ -98,7 +98,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           selectedText = e.target.options[e.target.options.selectedIndex].targets.target_success_indicator
           this.opcr_target_holder = selectedText;
           this.form.actual_accomplishments=selectedText;
-        }*/
+       }*/
       var selectedText = event.target.selectedOptions[0].text;
       this.form.actual_accomplishments = selectedText;
       this.form.target_success_indicator = this.success_indicator_holder; //alert(selectedText);
@@ -535,7 +535,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.idpaps]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
-    "class": "btn btn-primary mt-3",
+    "class": "btn btn-primary mt-3 text-white",
     onClick: _cache[11] || (_cache[11] = function ($event) {
       return $options.submit();
     }),

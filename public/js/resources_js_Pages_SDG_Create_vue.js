@@ -205,6 +205,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:content": _cache[0] || (_cache[0] = function ($event) {
       return $data.form.goal_description = $event;
     }),
+    style: {
+      backgroundColor: '#ffffff'
+    },
     contentType: "html",
     toolbar: "full"
   }, null, 8
@@ -222,7 +225,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
-    "class": "btn btn-primary mt-3",
+    "class": "btn btn-primary mt-3 text-white",
     onClick: _cache[2] || (_cache[2] = function ($event) {
       return $options.submit();
     }),

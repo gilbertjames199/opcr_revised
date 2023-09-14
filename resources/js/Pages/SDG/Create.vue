@@ -23,12 +23,13 @@
 
                 <label for="">DESCRIPTION</label>
                 <!-- <input type="text" v-model="form.goal_description" class="form-control" autocomplete="chrome-off"> -->
-                <QuillEditor theme="snow" v-model:content="form.goal_description" contentType="html" toolbar="full" />
+                <QuillEditor theme="snow" v-model:content="form.goal_description" :style="{ backgroundColor: '#ffffff' }"
+                    contentType="html" toolbar="full" />
                 <div class="fs-6 c-red-500" v-if="form.errors.goal_description">{{ form.errors.goal_description }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
-                <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
+                <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">
                     Save changes
                 </button>
             </form>

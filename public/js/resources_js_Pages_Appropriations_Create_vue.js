@@ -823,7 +823,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
-    "class": "btn text-white btn-primary mt-3",
+    "class": "btn text-white btn-primary mt-3 text-white",
     onClick: _cache[19] || (_cache[19] = function ($event) {
       return $options.submit();
     }),
