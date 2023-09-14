@@ -32,18 +32,27 @@
             </Link> -->
         </div>
         <filtering v-if="filter" @closeFilter="filter = false">
-            Filter by Office
-            <select v-model="FFUNCCOD" class="form-control" @change="filterMFOs()">
-                <option v-for="func in functions" :value="func.FFUNCCOD">
-                    {{ func.FFUNCTION }}
-                </option>
-            </select>
+            <div v-if="auth.user.department_code === '04'">
+                Filter by Office
+                <select v-model="FFUNCCOD" class="form-control" @change="filterMFOs()">
+                    <option v-for="func in functions" :value="func.FFUNCCOD">
+                        {{ func.FFUNCTION }}
+                    </option>
+                </select>
+            </div>
+
             Filter by MFO
             <select v-model="mfosel" class="form-control" @change="filterData()">
                 <option v-for="mfo in mfos_data" :value="mfo.id">
                     {{ mfo.mfo_desc }}
                 </option>
             </select>
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="showModal(
+                filter_FFUNCCOD,
+                filter_FFUNCTION,
+                filter_mooe,
+                filter_Ps
+            )">Print OPCR Standard</button>&nbsp;
             <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
         </filtering>
         <div class="masonry-sizer col-md-6"></div>
@@ -131,7 +140,7 @@
                 <iframe :src="my_link" style="width:100%; height:500px" />
             </div>
         </Modal>
-        {{ functions }}
+        <!-- {{ functions }} -->
         <!-- {{ mfos_data }} -->
     </div>
 </template>
@@ -189,9 +198,9 @@ export default {
 
         if (this.auth.user.department_code !== '04') {
             this.filter_FFUNCCOD = this.functions[0].FFUNCCOD
-            this.filter_FFUNCTION = functions[0].FFUNCTION
-            this.filter_mooe = functions[0].MOOE
-            this.filter_Ps = functions[0].PS
+            this.filter_FFUNCTION = this.functions[0].FFUNCTION
+            this.filter_mooe = this.functions[0].MOOE
+            this.filter_Ps = this.functions[0].PS
         }
         this.mfos_data = this.mfos;
     },
@@ -250,11 +259,11 @@ export default {
         },
 
         showModal(ffunccod, ffunction, MOOE, PS) {
-            alert("FFUNCCOD: " + ffunccod + "\n "
-                + " FFUNCTION: " + ffunction + "\n " +
-                "MOOE: " + MOOE + " \n" +
-                "PS: " + PS
-            )
+            // alert("FFUNCCOD: " + ffunccod + "\n "
+            //     + " FFUNCTION: " + ffunction + "\n " +
+            //     "MOOE: " + MOOE + " \n" +
+            //     "PS: " + PS
+            // )
             this.my_link = this.getToRep(ffunccod, ffunction, MOOE, PS);
             this.displayModal = true;
         },
