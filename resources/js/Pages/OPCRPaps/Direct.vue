@@ -10,9 +10,19 @@
             <h3>OPCR Standard</h3>
             <div class="peers">
                 <div class="peer mR-10">
+                    Search MFO
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
-                <div class="peer">
+                <div class="peer mR-10">
+                    <span v-if="auth.user.department_code === '04'">
+                        Select Office <span style="color:red">(select office before printing)</span>
+                        <select v-model="FFUNCCOD" class="form-control form-control-sm" @change="filterMFOs()">
+                            <option v-for="func in functions" :value="func.FFUNCCOD">
+                                {{ func.FFUNCTION }}
+                            </option>
+                        </select>
+                    </span>
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(
                         filter_FFUNCCOD,
@@ -20,7 +30,7 @@
                         filter_mooe,
                         filter_Ps
                     )">Print OPCR Standard</button>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+
                 </div>
             </div>
 
