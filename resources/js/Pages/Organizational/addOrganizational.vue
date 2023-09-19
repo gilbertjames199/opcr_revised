@@ -22,7 +22,8 @@
                 <input type="hidden" required>
 
                 <label for="">DESCRIPTION</label>
-                <input type="text" v-model="form.goal_description" class="form-control" autocomplete="chrome-off">
+                <QuillEditor theme="snow" v-model:content="form.goal_description" contentType="html" toolbar="full" />
+                <!-- <input type="text" v-model="form.goal_description" class="form-control" autocomplete="chrome-off"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.goal_description">{{ form.errors.goal_description }}</div>
 
                 <label for="">OFFICES</label>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FFUNCCOD;
 use App\Models\User;
 use App\Models\Permission;
 use App\Models\TemporaryFile;
@@ -17,14 +18,17 @@ class UserController extends Controller
     protected $model;
     public function __construct(User $model)
     {
-        $this->middleware(['auth','verified']);
+        $this->middleware(['auth', 'verified']);
         $this->model = $model;
     }
 
     public function index(Request $request)
     {
-
-
+        $users = $this->model->paginate(10);
+        return inertia('Users/Index', [
+            "filters" => $request->only(['search']),
+            "users" => $users,
+        ]);
     }
     //public function sync_users()
     // public function index(Request $request)
@@ -84,12 +88,12 @@ class UserController extends Controller
     public function userPermissions(Request $request)
     {
         //dd($request->id);
-        $user_permissions =[];
+        $user_permissions = [];
         $user = User::find($request->id);
         //$user = User::find(2);
         //dd($user);
         //$user = $this->model->findOrFail($request->id);
-        foreach($user->permissions as $permission){
+        foreach ($user->permissions as $permission) {
             /*if($permission->pivot->permission_id==="3"){
                 $found=true;
             }*/
@@ -106,16 +110,12 @@ class UserController extends Controller
 
     public function create()
     {
-
-        $permissions = DB::table('permissions')->get();
-
-        return inertia('Users/Create',[
-            "permissions" => $permissions,
-            "can" => [
-                'createUser' => Auth::user()->can('create', User::class),
-                'editUser' =>Auth::user()->can('edit', User::class),
-                'deleteUser' =>Auth::user()->can('delete', User::class),
-            ],
+        // $permissions = DB::table('permissions')->get();
+        $FFUNCCOD = FFUNCCOD::select('FFUNCTION', 'FFUNCCOD', 'department_code')
+            ->orderBy('FFUNCTION', 'asc')
+            ->paginate(10);
+        return inertia('Users/Create', [
+            "FFUNCCOD" => $FFUNCCOD,
         ]);
     }
 
@@ -134,9 +134,6 @@ class UserController extends Controller
 
 
         return redirect('/users')->with('message', 'User created');
-
-
-
     }
 
 
@@ -154,8 +151,8 @@ class UserController extends Controller
             "permissions" => $permissions,
             "can" => [
                 'createUser' => Auth::user()->can('create', User::class),
-                'editUser' =>Auth::user()->can('edit', User::class),
-                'deleteUser' =>Auth::user()->can('delete', User::class),
+                'editUser' => Auth::user()->can('edit', User::class),
+                'deleteUser' => Auth::user()->can('delete', User::class),
             ],
         ]);
     }
@@ -167,7 +164,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
         ]);
-        return redirect('/users')->with('message', 'Successfully updated data of '.$request->name.'!');
+        return redirect('/users')->with('message', 'Successfully updated data of ' . $request->name . '!');
     }
 
     public function destroy(Request $request)
@@ -184,8 +181,8 @@ class UserController extends Controller
         return inertia('Users/ChangePassword', [
             "can" => [
                 'createUser' => Auth::user()->can('create', User::class),
-                'editUser' =>Auth::user()->can('edit', User::class),
-                'deleteUser' =>Auth::user()->can('delete', User::class),
+                'editUser' => Auth::user()->can('edit', User::class),
+                'deleteUser' => Auth::user()->can('delete', User::class),
             ],
         ]);
     }
@@ -217,13 +214,14 @@ class UserController extends Controller
         return inertia('Users/Settings', [
             "can" => [
                 'createUser' => Auth::user()->can('create', User::class),
-                'editUser' =>Auth::user()->can('edit', User::class),
-                'deleteUser' =>Auth::user()->can('delete', User::class),
+                'editUser' => Auth::user()->can('edit', User::class),
+                'deleteUser' => Auth::user()->can('delete', User::class),
             ],
         ]);
     }
 
-    public function changeName(Request $request) {
+    public function changeName(Request $request)
+    {
         $data = $this->model->findOrFail(auth()->user()->id);
         $data->update([
             'name' => $request->name,
@@ -238,14 +236,15 @@ class UserController extends Controller
         ])->with('message', 'User updated');*/
     }
 
-    public function changePhoto(Request $request) {
+    public function changePhoto(Request $request)
+    {
         $data = $this->model->findOrFail(auth()->user()->id);
 
         $temporaryFile = TemporaryFile::where('folder', $request->folder)->first();
 
         if ($temporaryFile) {
             $data->addMedia(storage_path('app/avatars/tmp/' . $request->folder . '/' . $temporaryFile->filename))
-                 ->toMediaCollection('avatars');
+                ->toMediaCollection('avatars');
 
             rmdir(storage_path('app/avatars/tmp/' . $request->folder));
             $temporaryFile->delete();
@@ -254,14 +253,15 @@ class UserController extends Controller
         return redirect('/users/settings')->with('message', 'User updated');
     }
 
-    public function updatePermissions(Request $request){
+    public function updatePermissions(Request $request)
+    {
         //retrieving all user permission
-        $user_permissions =[];
+        $user_permissions = [];
         $user = User::find($request->my_id);
-        $id= $request->my_id;
-        $myArrLength=0;
-        $permissionsLength=0;
-        foreach($user->permissions as $permission){
+        $id = $request->my_id;
+        $myArrLength = 0;
+        $permissionsLength = 0;
+        foreach ($user->permissions as $permission) {
             array_push($user_permissions, $permission->pivot->permission_id);
         }
         //newly updated permissions
@@ -272,67 +272,64 @@ class UserController extends Controller
             4.)  If not found, delete
         */
 
-        $my_arr= $request->value;
+        $my_arr = $request->value;
 
         //dd($my_arr,$newArr,$user_permissions);
         //dd(array_diff($newArr));
-        if($my_arr){
+        if ($my_arr) {
             $newArr = array_diff($user_permissions, $my_arr);
 
-            if($newArr){
-                foreach($newArr as $newAr){
+            if ($newArr) {
+                foreach ($newArr as $newAr) {
                     DB::table('permission_user')
-                        ->where([['permission_id', $newAr],['user_id',$id]])
+                        ->where([['permission_id', $newAr], ['user_id', $id]])
                         ->delete();
                 }
             }
-            $found=false;
-            $myArrLength=count($my_arr);
-            foreach($my_arr as $my_ar){
-                $found= $this->findNewPermissions($id, $my_ar);
-                if($found){
-
-                }else{
-                    DB::table('permission_user')->insert(['permission_id'=>$my_ar,'user_id'=>$id]);
+            $found = false;
+            $myArrLength = count($my_arr);
+            foreach ($my_arr as $my_ar) {
+                $found = $this->findNewPermissions($id, $my_ar);
+                if ($found) {
+                } else {
+                    DB::table('permission_user')->insert(['permission_id' => $my_ar, 'user_id' => $id]);
                 }
-                foreach($user_permissions as $user_permission){
-
+                foreach ($user_permissions as $user_permission) {
                 }
             }
-
-        }else{
+        } else {
             DB::table('permission_user')
-                ->where('user_id','=',$id)
+                ->where('user_id', '=', $id)
                 ->delete();
         }
-        if($user_permissions){
-            $permissionsLength=count($user_permissions);
-        }else{
-
+        if ($user_permissions) {
+            $permissionsLength = count($user_permissions);
+        } else {
         }
         return redirect('/users')->with('message', 'Permissions updated');
         //dd($my_arr);
     }
 
-    public function findNewPermissions($u_id, $p_id){
-        $found=[];
-        $found=DB::table('permission_user')
-                ->select('permission_id')
-                ->where([['permission_id',$p_id],['user_id',$u_id]])
-                ->get();
-        if(count($found)!=0){
+    public function findNewPermissions($u_id, $p_id)
+    {
+        $found = [];
+        $found = DB::table('permission_user')
+            ->select('permission_id')
+            ->where([['permission_id', $p_id], ['user_id', $u_id]])
+            ->get();
+        if (count($found) != 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public function update_verified_at(){
+    public function update_verified_at()
+    {
         $my_id = Auth::user()->id;
         dd($my_id);
-        if($my_id==1){
-
-        }else{
+        if ($my_id == 1) {
+        } else {
             $data = $this->model->findOrFail($my_id);
             $data->update([
                 'email_verified_at' => NULL,
@@ -340,29 +337,32 @@ class UserController extends Controller
         }
     }
 
-    public function getBarangays(Request $request){
+    public function getBarangays(Request $request)
+    {
         $mun_where = $request->mun;
         //dd($mun_where);
-        $data=DB::table('y01_personal_infos')
-                        ->distinct()
-                        ->select(DB::raw('(y01_personal_infos.barangay)'))
-                        ->where('y01_personal_infos.municipality','LIKE','%'.$mun_where.'%')
-                        ->orderBy('y01_personal_infos.barangay','ASC')
-                        ->get();
+        $data = DB::table('y01_personal_infos')
+            ->distinct()
+            ->select(DB::raw('(y01_personal_infos.barangay)'))
+            ->where('y01_personal_infos.municipality', 'LIKE', '%' . $mun_where . '%')
+            ->orderBy('y01_personal_infos.barangay', 'ASC')
+            ->get();
         return ['data' => $data];
     }
 
-    public function getPuroks(Request $request){
-        $data =DB::table('y01_personal_infos')
-                        ->distinct()
-                        ->select(DB::raw('(y01_personal_infos.purok_sitio)'))
-                        ->where([['y01_personal_infos.barangay','LIKE','%'.$request->bar.'%'],['y01_personal_infos.municipality','LIKE','%'.$request->mun.'%']])
-                        ->orderBy('y01_personal_infos.purok_sitio','ASC')
-                        ->get();
+    public function getPuroks(Request $request)
+    {
+        $data = DB::table('y01_personal_infos')
+            ->distinct()
+            ->select(DB::raw('(y01_personal_infos.purok_sitio)'))
+            ->where([['y01_personal_infos.barangay', 'LIKE', '%' . $request->bar . '%'], ['y01_personal_infos.municipality', 'LIKE', '%' . $request->mun . '%']])
+            ->orderBy('y01_personal_infos.purok_sitio', 'ASC')
+            ->get();
         return ['data' => $data];
     }
 
-    public function getPersonnel(Request $request){
+    public function getPersonnel(Request $request)
+    {
         $personnel = json_decode(file_get_contents(storage_path() . "/personnel.json"), true);
         return $personnel;
     }
