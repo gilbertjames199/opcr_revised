@@ -25,10 +25,14 @@ class User extends Authenticatable implements HasMedia
     protected $primaryKey = "recid";
     protected $rememberTokenName = false;
     protected $fillable = [
-        'name',
+        'FullName',
+        'UserName',
+        'UserPassword',
+        'UserType',
         'email',
-        'email_verified_at',
-        'password'
+        'department_code',
+        'office',
+        'is_active',
     ];
 
     protected $hidden = [

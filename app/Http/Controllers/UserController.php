@@ -24,7 +24,12 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = $this->model->paginate(10);
+        $users = $this->model
+            ->when($request->search, function ($query, $searchItem) {
+                $query->where('UserName', 'like', '%' . $searchItem . '%')
+                    ->orWhere('FullName', 'like', '%' . $searchItem . '%');
+            })
+            ->paginate(10);
         return inertia('Users/Index', [
             "filters" => $request->only(['search']),
             "users" => $users,
@@ -37,9 +42,9 @@ class UserController extends Controller
     //     $user_data;
     //     if(Auth::user()->can('create', User::class)){
     //         $user_data=$this->model->
-    //                         when($request->search, function ($query, $searchItem) {
-    //                             $query->where('name', 'like', '%' . $searchItem . '%');
-    //                         })
+    // when($request->search, function ($query, $searchItem) {
+    //     $query->where('name', 'like', '%' . $searchItem . '%');
+    // })
     //                         ->orderBy('created_at', 'desc')
     //                         ->simplePaginate(10)
     //                         ->withQueryString()
@@ -110,29 +115,52 @@ class UserController extends Controller
 
     public function create()
     {
+        // dd("create");
         // $permissions = DB::table('permissions')->get();
-        $FFUNCCOD = FFUNCCOD::select('FFUNCTION', 'FFUNCCOD', 'department_code')
-            ->orderBy('FFUNCTION', 'asc')
-            ->paginate(10);
+        $FFUNCCOD = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->get();
+        // dd($FFUNCCOD);
+        $offices = DB::connection('mysql2')->table('offices')->get();
         return inertia('Users/Create', [
             "FFUNCCOD" => $FFUNCCOD,
+            "offices" => $offices,
         ]);
     }
 
 
     public function store(Request $request)
     {
-
+        // dd($request);
         $attributes = $request->validate([
-            'name' => 'required',
-            'email' => ['required', 'email'],
-            'password' => 'required'
+            'FullName'  => 'required',
+            'UserName'  => ['required', 'unique:mysql2.systemusers'],
+            'UserPassword'  => 'required',
+            'UserType'  => 'required',
+            'email'  => ['required', 'email'],
+            'office' => 'required'
         ]);
-
-        $this->model->create($attributes);
-
-
-
+        $password = md5($request->UserPassword);
+        $department_code = DB::connection('mysql2')->table('functions')
+            ->where('FFUNCCOD', $request->office)
+            ->first()->department_code;
+        // dd($department_code);
+        DB::connection('mysql2')->table('systemusers')
+            ->insert([
+                'FullName' => $request->FullName,
+                'UserName' => $request->UserName,
+                'UserPassword' => $password,
+                'UserType' => $request->UserType,
+                'email' => $request->email,
+                'department_code' => $department_code,
+                'office' => $request->office,
+                'is_active' => '1'
+            ]);
+        $us = $this->model->where('UserName', $request->UserName)->first()->recid;
+        DB::connection('mysql2')->table('accountaccess')->insert([
+            'iduser' => $us,
+            'FFUNCCOD' => $request->office
+        ]);
+        // dd("recid: " . $us);
+        // $this->model->create($attributes);
         return redirect('/users')->with('message', 'User created');
     }
 
@@ -177,13 +205,13 @@ class UserController extends Controller
 
     public function changePassword()
     {
-        //return inertia("Users/ChangePassword");
+        // return inertia("Users/ChangePassword");
         return inertia('Users/ChangePassword', [
-            "can" => [
-                'createUser' => Auth::user()->can('create', User::class),
-                'editUser' => Auth::user()->can('edit', User::class),
-                'deleteUser' => Auth::user()->can('delete', User::class),
-            ],
+            // "can" => [
+            //     'createUser' => Auth::user()->can('create', User::class),
+            //     'editUser' => Auth::user()->can('edit', User::class),
+            //     'deleteUser' => Auth::user()->can('delete', User::class),
+            // ],
         ]);
     }
 
@@ -192,18 +220,34 @@ class UserController extends Controller
         $old = $request->old;
         $new = $request->new;
         $confirm = $request->confirm;
-
-        if (!Hash::check($old, auth()->user()->password)) {
+        // dd($request);
+        // if (!Hash::check($old, auth()->user()->password)) {
+        //     return back()->with('error', 'Wrong Credentials');
+        // }
+        $pold = md5($old);
+        $ppu = auth()->user()->UserPassword;
+        //dd("OLD PASS: " . $pold . " CURRENT: " . $pp);
+        if ($pold != $ppu) {
             return back()->with('error', 'Wrong Credentials');
         }
 
         if ($new !== $confirm) {
             return back()->with('error', 'Not the same');
         }
+        // $user = DB::connection('mysql2')
+        //     ->table('systemusers')
+        //     ->where('recid', auth()->user()->id)
+        //     ->first();
+        // dd(auth()->user()->recid);
+        // $user->password = md5($new);
+        // $user->save();
+        DB::connection('mysql2')->table('systemusers')
+            ->where('recid', '=', auth()->user()->recid)
+            ->update([
+                'UserPassword' => md5($new)
+                // Add more columns and values to update as needed
+            ]);
 
-        $user = $this->model->findOrFail(auth()->user()->id);
-        $user->password = bcrypt($new);
-        $user->save();
 
         return back()->with('message', 'Password Updated');
     }

@@ -150,6 +150,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var jasper_ip = this.jasper_ip;
       var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2&standAlone=true&decorate=no&output=pdf';
       var params = '&department_code=' + this.auth.user.department_code + '&office=' + this.auth.user.office.office + '&department_head=' + this.FFUNCCOD.DEPTHEAD + '&budget_officer=EVA JEAN S. LICAYAN' + '&local_chief=DOROTHY M. GONZAGA' + '&total_past_year=' + this.totals.past_year + '&total_first_sem=' + this.totals.first_sem + '&total_second_sem=' + this.totals.second_sem + '&total_total=' + this.totals.total + '&total_budget_year=' + this.totals.budget_year;
+      alert(params);
       var link1 = linkt + jasper_ip + jasper_link + params;
       return link1;
     },

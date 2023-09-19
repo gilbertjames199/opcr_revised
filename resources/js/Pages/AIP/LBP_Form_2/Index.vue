@@ -251,6 +251,7 @@ export default {
                 '&total_second_sem=' + this.totals.second_sem +
                 '&total_total=' + this.totals.total +
                 '&total_budget_year=' + this.totals.budget_year;
+            alert(params)
             var link1 = linkt + jasper_ip + jasper_link + params;
             return link1;
         },

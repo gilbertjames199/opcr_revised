@@ -106,7 +106,15 @@ Route::middleware('auth')->group(function () {
     });
     //Users
     Route::prefix('/users')->group(function () {
-        Route::get('/', [UserController::class, 'index']);
+        // Route::get('/', [UserController::class, 'index']);
+        // Route::post('/', [UserController::class, 'store']);
+        // Route::get('/create', [UserController::class, 'create']);
+        // Route::get('/{id}/edit', [UserController::class, 'edit']);
+        // Route::delete('/{id}', [UserController::class, 'destroy']);
+        // Route::patch('/{id}', [UserController::class, 'update']);
+        // ///users/change-password
+        // Route::get('/change-password', [UserController::class, 'changePassword']);
+        // Route::post('/update-password', [UserController::class, 'updatePassword']);
     });
     //UserOffice
     Route::prefix('/office')->group(function () {
