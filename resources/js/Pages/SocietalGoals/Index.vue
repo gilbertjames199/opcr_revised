@@ -91,6 +91,7 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 export default {
     props: {
+        auth: Object,
         data: Object
     },
     data() {

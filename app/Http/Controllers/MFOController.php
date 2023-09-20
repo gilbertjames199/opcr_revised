@@ -83,7 +83,8 @@ class MFOController extends Controller
 
     public function store(Request $request)
     {
-        $dept_code = auth()->user()->department_code;
+
+        $dept_code = FFUNCCOD::where('FFUNCCOD', $request->FFUNCCOD)->first()->department_code;
         $request->merge(['department_code' => $dept_code]);
         $attributes = $request->validate(MajorFinalOutput::rules(), MajorFinalOutput::errorMessages());
         //dd($attributes);
@@ -209,7 +210,7 @@ class MFOController extends Controller
             ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
         $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
-
+        // dd($data);
         $showPerPage = 10;
         $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
         return inertia('MFOs/Direct', [

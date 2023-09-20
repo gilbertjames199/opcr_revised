@@ -112,9 +112,9 @@ Route::middleware('auth')->group(function () {
         // Route::get('/{id}/edit', [UserController::class, 'edit']);
         // Route::delete('/{id}', [UserController::class, 'destroy']);
         // Route::patch('/{id}', [UserController::class, 'update']);
-        // ///users/change-password
-        // Route::get('/change-password', [UserController::class, 'changePassword']);
-        // Route::post('/update-password', [UserController::class, 'updatePassword']);
+        ///users/change-password
+        Route::get('/change-password', [UserController::class, 'changePassword']);
+        Route::post('/update-password', [UserController::class, 'updatePassword']);
     });
     //UserOffice
     Route::prefix('/office')->group(function () {

@@ -139,10 +139,12 @@ class UserController extends Controller
             'office' => 'required'
         ]);
         $password = md5($request->UserPassword);
+        //identify FFUNCCOD and department_code of user
         $department_code = DB::connection('mysql2')->table('functions')
             ->where('FFUNCCOD', $request->office)
             ->first()->department_code;
         // dd($department_code);
+        //save user
         DB::connection('mysql2')->table('systemusers')
             ->insert([
                 'FullName' => $request->FullName,
