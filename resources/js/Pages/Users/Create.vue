@@ -64,9 +64,9 @@
                 </div>
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
-                <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
+                <button type="button" class="btn btn-primary text-white mt-3" @click="submit()" :disabled="form.processing">
                     Save changes
-                </button>james
+                </button>
             </form>
 
         </div>
