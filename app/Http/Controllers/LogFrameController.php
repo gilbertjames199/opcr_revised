@@ -84,8 +84,9 @@ class LogFrameController extends Controller
             ->where('sectors.sector_name', 'LIKE', '%General%')
             ->get();
         $sec_goal = Sectoral::Join('sectors', 'sectors.id', 'sectoral_goals.sector')
+            ->where('FFUNCCOD', $FFUNCCOD)
             ->get();
-
+        // dd($sec_goal);
         $organizational = OrganizationalGoal::where('FFUNCCOD', $FFUNCCOD)->get();
 
         $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)->with('paps')->get();

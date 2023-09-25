@@ -32,6 +32,7 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
+                                <th>Office</th>
                                 <th>Description</th>
                                 <th>Sector</th>
                                 <th>Action</th>
@@ -40,6 +41,7 @@
                         <tbody>
 
                             <tr v-for="dat in data.data">
+                                <td>{{ dat.office.FFUNCTION }}</td>
                                 <td>
                                     <div align="justify" v-html="dat.goal_description"></div>
                                 </td>
