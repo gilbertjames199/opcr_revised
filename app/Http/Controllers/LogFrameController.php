@@ -227,10 +227,11 @@ class LogFrameController extends Controller
 
     public function organizational(Request $request)
     {
-
+        // DB::raw("REGEXP_REPLACE(goal_description, '<[^>]*>', '') as organizationalOutcome"),
+        // dd("org");
         // "goal_description as organizationalOutcome",
         $organizational = OrganizationalGoal::select(
-            DB::raw("REGEXP_REPLACE(goal_description, '<[^>]*>', '') as organizationalOutcome"),
+            "goal_description as organizationalOutcome",
             "id"
         )
             ->where('FFUNCCOD', $request->id)
@@ -244,7 +245,7 @@ class LogFrameController extends Controller
         $functions = $request->FUNCTION;
         $socgoals = SocietalGoal::select(
             DB::raw('"' . $functions . '" as FUNCTION'),
-            DB::raw(DB::raw("REGEXP_REPLACE(description, '<[^>]*>', '') as description")),
+            DB::raw("REGEXP_REPLACE(description, '<[^>]*>', '') as description"),
             "id"
         )
             ->selectRaw("'$FFUNCOD' as FFUNCOD")
@@ -269,9 +270,10 @@ class LogFrameController extends Controller
     }
     public function sectorFiltered(Request $request)
     {
+        // DB::raw("REGEXP_REPLACE(goal_description, '<[^>]*>', '') as SectoralDescription"))
         //"goal_description as SectoralDescription",
         $sectoral = Sectoral::select(
-            DB::raw(DB::raw("REGEXP_REPLACE(goal_description, '<[^>]*>', '') as SectoralDescription")),
+            "goal_description as SectoralDescription",
             "id",
             "sector"
         )
