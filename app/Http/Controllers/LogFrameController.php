@@ -264,17 +264,23 @@ class LogFrameController extends Controller
             "id"
         )
             ->selectRaw("'$FFUNCOD' as FFUNCOD")
-            ->get()
-            ->map(function ($item) {
-                $desc = strip_tags($item->description);
-                return [
-                    "FUNCTION" => $item->FUNCTION,
-                    "description" => $desc,
-                    "id" => $item->id,
-                    "FFUNCOD" => $item->FFUNCOD
-                ];
-            });
-        return $socgoals;
+            ->first();
+        // ->map(function ($item) {
+        //     $desc = strip_tags($item->description);
+        //     return [
+        //         "FUNCTION" => $item->FUNCTION,
+        //         "description" => $desc,
+        //         "id" => $item->id,
+        //         "FFUNCOD" => $item->FFUNCOD
+        //     ];
+        // });
+        $socgoals1 = [
+            "FUNCTION" => $socgoals->FUNCTION,
+            "description" => $socgoals->description,
+            "id" => $socgoals->id,
+            "FFUNCOD" => $socgoals->FFUNCOD
+        ];
+        return $socgoals1;
     }
 
     public function sectoralClassified(Request $request)
