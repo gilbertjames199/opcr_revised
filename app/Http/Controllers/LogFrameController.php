@@ -243,9 +243,10 @@ class LogFrameController extends Controller
     {
         $FFUNCOD = $request->id;
         $functions = $request->FUNCTION;
+        // DB::raw("REGEXP_REPLACE(description, '<[^>]*>', '') as description"),
         $socgoals = SocietalGoal::select(
             DB::raw('"' . $functions . '" as FUNCTION'),
-            DB::raw("REGEXP_REPLACE(description, '<[^>]*>', '') as description"),
+            "description",
             "id"
         )
             ->selectRaw("'$FFUNCOD' as FFUNCOD")
