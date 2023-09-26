@@ -221,7 +221,14 @@ class LogFrameController extends Controller
     {
         $sectoral = Sectoral::select("goal_description as SectoralDescription", "id")
             ->where('FFUNCCOD', $request->id)
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                $orgg = strip_tags($item->SectoralDescription);
+                return [
+                    "SectoralDescription" => $orgg,
+                    "id" => $item->id,
+                ];
+            });
         return $sectoral;
     }
 
