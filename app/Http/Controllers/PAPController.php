@@ -198,7 +198,19 @@ class PAPController extends Controller
         $dept_code = auth()->user()->department_code;
         $request->merge(['department_code' => $dept_code]);
         $proceed = "1";
-        $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
+        // $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
+        $request->validate([
+            'paps_desc' => 'required',
+            'type' => 'required',
+            'FFUNCCOD' => 'required',
+            'idmfo' => 'required',
+            // 'chief_executive_agenda' => 'required',
+            // 'socio_economic_agenda' => 'required',
+            // 'sust_devt_goal' => 'required',
+            // 'executive_legislative_agenda' => 'required',
+            // 'research_agenda' => 'required',
+            // 'description' => 'required',
+        ]);
         if ($request->type === 'GAS') {
             $count = ProgramAndProject::where('program_and_projects.department_code', $dept_code)
                 ->where('program_and_projects.type', 'GAS')

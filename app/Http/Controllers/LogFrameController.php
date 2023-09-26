@@ -227,7 +227,12 @@ class LogFrameController extends Controller
 
     public function organizational(Request $request)
     {
-        $organizational = OrganizationalGoal::select("goal_description as organizationalOutcome", "id")
+
+        // "goal_description as organizationalOutcome",
+        $organizational = OrganizationalGoal::select(
+            DB::raw("REGEXP_REPLACE(goal_description, '<[^>]*>', '') as organizationalOutcome"),
+            "id"
+        )
             ->where('FFUNCCOD', $request->id)
             ->get();
         return $organizational;
@@ -237,10 +242,22 @@ class LogFrameController extends Controller
     {
         $FFUNCOD = $request->id;
         $functions = $request->FUNCTION;
-        $socgoals = SocietalGoal::select(DB::raw('"' . $functions . '" as FUNCTION'), "description", "id")
+        $socgoals = SocietalGoal::select(
+            DB::raw('"' . $functions . '" as FUNCTION'),
+            DB::raw(DB::raw("REGEXP_REPLACE(description, '<[^>]*>', '') as description")),
+            "id"
+        )
             ->selectRaw("'$FFUNCOD' as FFUNCOD")
-
             ->get();
+        // ->map(function ($item) {
+        //     $desc = strip_tags($item->description);
+        //     return [
+        //         "FUNCTION" => $item->FUNCTION,
+        //         "description" => $desc,
+        //         "id" => $item->id,
+        //         "FFUNCOD" => $item->FFUNCOD
+        //     ];
+        // });
         return $socgoals;
     }
 
@@ -252,7 +269,12 @@ class LogFrameController extends Controller
     }
     public function sectorFiltered(Request $request)
     {
-        $sectoral = Sectoral::select("goal_description as SectoralDescription", "id", "sector")
+        //"goal_description as SectoralDescription",
+        $sectoral = Sectoral::select(
+            DB::raw(DB::raw("REGEXP_REPLACE(goal_description, '<[^>]*>', '') as SectoralDescription")),
+            "id",
+            "sector"
+        )
             ->where('FFUNCCOD', $request->id)
             ->where('sector', $request->sector_id)
             ->get();

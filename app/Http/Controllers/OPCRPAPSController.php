@@ -189,7 +189,7 @@ class OPCRPAPSController extends Controller
                 });
         }
         $data = clone ($data)->orderBy('created_at', 'desc')->get();
-
+        // dd($data);
 
 
 
@@ -243,9 +243,9 @@ class OPCRPAPSController extends Controller
             'OfficeAccountable' => 'required',
             'Monitoring' => 'required',
             'idpaps' => 'required',
-            'RatingRemarks' => 'required',
-            'QualityRemarks' => 'required',
-            'TimelinessRemarks' => 'required'
+            // 'RatingRemarks' => 'required',
+            // 'QualityRemarks' => 'required',
+            // 'TimelinessRemarks' => 'required'
         ]);
 
         $output = new Output();
