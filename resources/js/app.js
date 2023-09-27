@@ -363,6 +363,14 @@ createInertiaApp({
                         var n3 = parseFloat(n1) - parseFloat(n2);
                         //alert(n1+" --- ");
                         return this.format_number_conv(n3, 2, true);
+                    },
+                    truncateText(text, limit) {
+                        const words = text.split(' ');
+                        if (words.length > limit) {
+                            return words.slice(0, limit).join(' ') + '...'; // Add ellipsis for truncation
+                        } else {
+                            return text;
+                        }
                     }
                 }
             })

@@ -35,14 +35,14 @@
                         </thead>
                         <tbody>
 
-                            <tr v-for="dat in data.data">
+                            <tr v-for="dat in data">
                                 <td>{{ dat.agenda_description }}</td>
                                 <td>{{ dat.yearfrom }}</td>
                                 <td>{{ dat.yearto }}</td>
                                 <td>
                                     <!-- {{ dat.rationale }} -->
-                                    <div v-html="dat.rationale"></div>
-
+                                    <!-- <div v-html="dat.rationale"></div> -->
+                                    {{ truncateText(dat.rationale, 10) }}
                                 </td>
                                 <td>
                                     <div class="dropdown dropstart">

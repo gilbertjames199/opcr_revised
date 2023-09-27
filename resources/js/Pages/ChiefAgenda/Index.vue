@@ -34,12 +34,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dat in data.data">
+                            <tr v-for="dat in data">
                                 <td>{{ dat.agenda_description }}</td>
                                 <td>{{ dat.yearfrom }}</td>
                                 <td>{{ dat.yearto }}</td>
                                 <td>
-                                    <div align="justify" v-html="dat.rationale"></div>
+                                    {{ truncateText(dat.rationale, 10) }}
+                                    <!-- <div align="justify" v-html="dat.rationale"></div> -->
                                     <!-- <QuillEditor v-model:content="dat.rationale" contentType="html" :readOnly="true" /> -->
 
                                 </td>
@@ -85,7 +86,7 @@
 
             </div>
         </div>
-
+        <!-- {{ data }} -->
     </div>
 </template>
 <script>
