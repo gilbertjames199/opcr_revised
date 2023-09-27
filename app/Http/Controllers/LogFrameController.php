@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Mockery\Undefined;
+use SimpleXMLElement;
 
 class LogFrameController extends Controller
 {
@@ -265,6 +266,17 @@ class LogFrameController extends Controller
         )
             ->selectRaw("'$FFUNCOD' as FFUNCOD")
             ->first();
+        $xmlString = '';
+        if ($socgoals && $socgoals->description) {
+            // Load HTML content from $socgoals->description as SimpleXMLElement
+            $xml = new SimpleXMLElement('<root>' . $socgoals->description . '</root>');
+
+            // Convert SimpleXMLElement to XML string
+            $xmlString = $xml->asXML();
+
+            // Set the response content type to XML
+            //return response($xmlString)->header('Content-Type', 'application/xml');
+        }
         // ->map(function ($item) {
         //     $desc = strip_tags($item->description);
         //     return [
@@ -276,7 +288,7 @@ class LogFrameController extends Controller
         // });
         $socgoals1 = [
             "FUNCTION" => $socgoals->FUNCTION,
-            "description" => $socgoals->description,
+            "description" => $xmlString,
             "id" => $socgoals->id,
             "FFUNCOD" => $socgoals->FFUNCOD
         ];
