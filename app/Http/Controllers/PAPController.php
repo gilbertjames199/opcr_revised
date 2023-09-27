@@ -248,8 +248,15 @@ class PAPController extends Controller
     {
         $dept_code = auth()->user()->department_code;
         $request->merge(['department_code' => $dept_code]);
-        $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
-        $this->model->create($attributes);
+        $attributes = $request->validate([
+            'paps_desc' => 'required',
+            'FFUNCCOD' => 'required',
+            'department_code' => 'required',
+            'idmfo' => 'required',
+            'type' => 'required',
+        ]);
+        //$attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
+        $this->model->create($request->all);
 
         return redirect('/paps/' . $request->idmfo)
             ->with('message', 'Programs and Projects(PAPS) added');
