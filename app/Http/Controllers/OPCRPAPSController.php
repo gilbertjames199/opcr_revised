@@ -79,6 +79,7 @@ class OPCRPAPSController extends Controller
 
     public function direct(Request $request)
     {
+        // dd($request->FFUNCCOD);
         // dd(auth()->user()->department_code);
         if (auth()->user()->department_code != '04') {
         }
@@ -99,6 +100,9 @@ class OPCRPAPSController extends Controller
             })
             ->when($request->mfosel, function ($query, $searchItem) {
                 $query->where('idmfo', '=', $searchItem);
+            })
+            ->when($request->FFUNCCOD, function ($query, $searchItem) {
+                $query->where('FFUNCCOD', '=', $searchItem);
             });
 
         $mfos = MajorFinalOutput::all();

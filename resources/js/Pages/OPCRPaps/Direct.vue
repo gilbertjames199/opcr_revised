@@ -18,6 +18,7 @@
 
                     Select Office <span style="color:red">(select office before printing)</span>
                     <select v-model="FFUNCCOD" class="form-control form-control-sm" @change="filterMFOs()">
+                        <option></option>
                         <option v-for="func in functions" :value="func.FFUNCCOD">
                             {{ func.FFUNCTION }}
                         </option>
@@ -29,7 +30,7 @@
                         filter_mooe,
                         filter_Ps
                     )">Print OPCR Standard</button>
-
+                    <button class="btn btn-sm btn-danger mL-2 text-white" @click="clearFilter">Clear Filter</button>
                 </div>
             </div>
             <div class="peers" v-else>
@@ -61,6 +62,7 @@
             <div v-if="auth.user.department_code === '04'">
                 Filter by Office
                 <select v-model="FFUNCCOD" class="form-control" @change="filterMFOs()">
+                    <option value=""></option>
                     <option v-for="func in functions" :value="func.FFUNCCOD">
                         {{ func.FFUNCTION }}
                     </option>
@@ -69,6 +71,7 @@
 
             Filter by MFO
             <select v-model="mfosel" class="form-control" @change="filterData()">
+                <option></option>
                 <option v-for="mfo in mfos_data" :value="mfo.id">
                     {{ mfo.mfo_desc }}
                 </option>
@@ -255,9 +258,11 @@ export default {
             } catch (error) {
                 console.error("Error fetching MFOs:", error);
             }
+            this.filterData();
         },
         async clearFilter() {
             this.mfosel = "";
+            this.FFUNCCOD = "";
             this.filterData();
         },
         async filterData() {
@@ -265,7 +270,8 @@ export default {
             this.$inertia.get(
                 "/OPCRpaps/direct",
                 {
-                    mfosel: this.mfosel
+                    mfosel: this.mfosel,
+                    FFUNCCOD: this.FFUNCCOD
                 },
                 {
                     preserveScroll: true,

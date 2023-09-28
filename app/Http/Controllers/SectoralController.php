@@ -23,9 +23,6 @@ class SectoralController extends Controller
     //
     public function index(Request $request)
     {
-
-
-
         //USER ACCESS
         $idn = auth()->user()->recid;
         $dept_code = auth()->user()->department_code;
@@ -52,6 +49,7 @@ class SectoralController extends Controller
             $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
             $showPerPage = 10;
             $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
+            // dd($paginatedResult);
         }
 
 

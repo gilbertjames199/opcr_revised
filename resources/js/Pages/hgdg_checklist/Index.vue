@@ -42,20 +42,32 @@
                                 <td>{{ dat.box_number }}</td>
                                 <td>{{ dat.sector }} <!-- - {{ printValue(dat.id, dat.box_number, dat.sector) }}--></td>
                                 <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    <div class="dropdown dropstart">
+                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/HGDGQuestions/${dat.id}`">Add Questions</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/HGDGChecklist/${dat.id}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">Delete</Link></li>
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/HGDGQuestions/${dat.id}`">Add Questions
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/HGDGChecklist/${dat.id}/edit`">Edit
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">
+                                                Delete</Link>
+                                            </li>
                                             <li>
                                                 <Link class="text-danger dropdown-item"
-                                                        @click="printShow(dat.id, dat.box_number, dat.sector)">
-                                                            Print
+                                                    @click="printShow(dat.id, dat.box_number, dat.sector)">
+                                                Print
                                                 </Link>
                                             </li>
                                         </ul>
@@ -72,7 +84,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <p >
+                        <p>
                             {{ data.from }} to {{ data.to }} of
                             {{ data.total }} entries
                         </p>
@@ -89,7 +101,7 @@
                 <iframe :src="my_link" style="width:100%; height:400px" />
             </div>-->
         </Modal>
-        displayModal: {{ displayModal }}
+        <!-- displayModal: {{ displayModal }} -->
         <!-- {{ print_link }} -->
     </div>
 </template>
@@ -102,7 +114,7 @@ export default {
         data: Object
     },
     data() {
-        return{
+        return {
             displayModal: false,
             my_link: "",
         }
@@ -111,8 +123,8 @@ export default {
         Pagination, Filtering, Modal
     },
 
-    methods:{
-        showCreate(){
+    methods: {
+        showCreate() {
             this.$inertia.get(
                 "/targets/create",
                 {
@@ -126,12 +138,13 @@ export default {
             );
         },
         deleteSectoral(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Checklist?"+id;
-              if (confirm(text) == true) {
+            //  + id
+            let text = "WARNING!\nAre you sure you want to delete the Checklist?";
+            if (confirm(text) == true) {
                 this.$inertia.delete("/HGDGChecklist/" + id);
             }
         },
-        getAccomplishment(tar_id){
+        getAccomplishment(tar_id) {
             this.$inertia.get(
                 "/accomplishments",
                 {
@@ -144,30 +157,30 @@ export default {
                 }
             );
         },
-        getPercent(accomp, targqty){
-            var accSum=0;
+        getPercent(accomp, targqty) {
+            var accSum = 0;
             accomp.forEach(myFunction);
-            function myFunction(item){
+            function myFunction(item) {
                 accSum += parseFloat(item.accomplishment_qty)
             }
-            var percentt = (accSum/targqty)*100
-            percentt=this.format_number(percentt,2,true)
+            var percentt = (accSum / targqty) * 100
+            percentt = this.format_number(percentt, 2, true)
             return percentt;
         },
-        printShow(chk_id, bx_n, sec){
+        printShow(chk_id, bx_n, sec) {
             // alert("checklist_id: "+chk_id+
             //         "\nbox_number: "+bx_n+
             //         "\nsector"+sec+"\ndisplayModal: "+this.displayModal);
-            this.my_link=this.printValue(chk_id, bx_n, sec);
+            this.my_link = this.printValue(chk_id, bx_n, sec);
             this.showModal();
         },
-        printValue(chk_id, bx_n, sec){
-            var linkt="http://";
+        printValue(chk_id, bx_n, sec) {
+            var linkt = "http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FHGDGChecklist%2FHGDGChecklist&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FHGDGChecklist&decorate=no&output=pdf';
             var params = '&checklist_id=' + chk_id + '&box_number=' + bx_n +
                 '&sector=' + sec;
-            var lnk =linkt+jasper_ip + jasper_link + params;
+            var lnk = linkt + jasper_ip + jasper_link + params;
             return lnk;
         },
         showModal() {
@@ -182,17 +195,19 @@ export default {
 };
 </script>
 <style>
-            .row-centered {
-                text-align:center;
-            }
-            .col-centered {
-                display:inline-block;
-                float:none;
-                text-align:left;
-                margin-right:-4px;
-            }
-            .pos{
-                position: top;
-                top: 240px;
-            }
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+.pos {
+    position: top;
+    top: 240px;
+}
 </style>

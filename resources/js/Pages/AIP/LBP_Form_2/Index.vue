@@ -130,7 +130,7 @@
 
             </div>
         </div>
-        {{ FFUNCCOD.FFUNCCOD }}
+        <!-- {{ FFUNCCOD.FFUNCCOD }} -->
         <Modal v-if="displayModal" @close-modal-event="hideModal">
             <div class="d-flex justify-content-center">
 
@@ -252,7 +252,7 @@ export default {
                 '&total_second_sem=' + this.totals.second_sem +
                 '&total_total=' + this.totals.total +
                 '&total_budget_year=' + this.totals.budget_year;
-            alert(params)
+            // alert(params)
             var link1 = linkt + jasper_ip + jasper_link + params;
             return link1;
         },

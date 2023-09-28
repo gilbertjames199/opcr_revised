@@ -97,8 +97,10 @@ class AIPController extends Controller
         // dd($office_code);
         // $ffunccod = DB::connection('mysql2')->table('offices')->where('department_code', $office_code)
         //     ->first()->ffunccod;
-        $ffunccod = auth()->user()->office;
-        $functions = FFUNCCOD::where('FFUNCCOD', $ffunccod)->first();
+        // $ffunccod = auth()->user()->office;
+        $dept_code = auth()->user()->department_code;
+        // $ffunccod = auth()->user()->office;
+        $functions = FFUNCCOD::where('department_code', $dept_code)->first();
         // $empl_id = $functions->empl_id;
         // $emp = DB::table('user_employees')
         //     ->where('empl_id', $empl_id)
@@ -107,7 +109,7 @@ class AIPController extends Controller
         // $mi = substr($emp->middle_name, 0, 1);
         // $pg_head = $emp->first_name . ' ' . $mi . ' ' . $emp->last_name;
         //$functions = FFUNCCOD::where('FFUNCCOD')
-
+        // dd(auth()->user());
         $totals = Appropriation::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
             ->selectRaw('FORMAT(SUM(appropriations.first_sem), 2, \'en_US\') AS first_sem')
             ->selectRaw('FORMAT(SUM(appropriations.second_sem), 2, \'en_US\') AS second_sem')

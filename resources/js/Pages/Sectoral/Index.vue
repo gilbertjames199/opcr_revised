@@ -32,7 +32,7 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Office</th>
+                                <th v-if="auth.user.department_code === '04'">Office</th>
                                 <th>Description</th>
                                 <th>Sector</th>
                                 <th>Action</th>
@@ -41,7 +41,7 @@
                         <tbody>
 
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.office.FFUNCTION }}</td>
+                                <td v-if="auth.user.department_code === '04'">{{ dat.office.FFUNCTION }}</td>
                                 <td>
                                     <div align="justify" v-html="dat.goal_description"></div>
                                 </td>
@@ -95,6 +95,7 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 export default {
     props: {
+        auth: Object,
         data: Object
     },
     data() {
