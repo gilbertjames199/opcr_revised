@@ -37,7 +37,6 @@ class PAPController extends Controller
         //$this->middleware(['auth','verified']);
         $this->model = $model;
     }
-
     public function index(Request $request, $id)
     {
         //dd("not direct");
@@ -70,10 +69,6 @@ class PAPController extends Controller
             ],
         ]);
     }
-
-
-
-
     public function create($id)
     {
         $idn = auth()->user()->recid;
@@ -190,8 +185,6 @@ class PAPController extends Controller
             ],
         ]);
     }
-
-
     public function store(Request $request)
     {
         // dd($request);
@@ -262,12 +255,9 @@ class PAPController extends Controller
         return redirect('/paps/' . $request->idmfo)
             ->with('message', 'Programs and Projects(PAPS) added');
     }
-
-
     public function show(ProgramAndProject $programAndProject)
     {
     }
-
     public function edit(ProgramAndProject $programAndProject, $id, $idmfo)
     {
         $year_object = DB::connection('mysql2')
@@ -320,8 +310,6 @@ class PAPController extends Controller
             ],
         ]);
     }
-
-
     public function update(Request $request, $id)
     {
         $dept_code = auth()->user()->department_code;
@@ -345,7 +333,6 @@ class PAPController extends Controller
         return redirect('/paps/direct')
             ->with('info', 'Program and Projects updated');
     }
-
     public function updated(Request $request, $id)
     {
         $dept_code = auth()->user()->department_code;
@@ -405,7 +392,6 @@ class PAPController extends Controller
         //dd($request->raao_id);
         return redirect('/paps/direct')->with($status, $msg);
     }
-
     public function direct(Request $request)
     {
         //dd("direct");
@@ -456,7 +442,6 @@ class PAPController extends Controller
             ],
         ]);
     }
-
     public function mfos_filter(Request $request, $FFUNCCOD)
     {
         $MY_FFUNCCOD = $FFUNCCOD;

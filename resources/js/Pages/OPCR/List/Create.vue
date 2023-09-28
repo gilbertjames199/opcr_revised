@@ -113,12 +113,12 @@ export default {
             var currentYear = this.form.year;
             var dateFromR = "";
             var dateToR = "";
-            if (this.form.semester === "First Semester") {
+            if (this.form.semester === "Second Semester") {
                 dateFromR = new Date(currentYear, 6, 2);
                 dateToR = new Date(currentYear, 11, 32);
             } else {
                 dateFromR = new Date(currentYear, 0, 2);
-                dateToR = new Date(currentYear, 6, 31);
+                dateToR = new Date(currentYear, 5, 31);
             }
             const formattedDate = dateFromR.toISOString().split('T')[0];
             const formattedDate2 = dateToR.toISOString().split('T')[0];

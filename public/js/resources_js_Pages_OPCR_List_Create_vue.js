@@ -70,12 +70,12 @@ __webpack_require__.r(__webpack_exports__);
       var dateFromR = "";
       var dateToR = "";
 
-      if (this.form.semester === "First Semester") {
+      if (this.form.semester === "Second Semester") {
         dateFromR = new Date(currentYear, 6, 2);
         dateToR = new Date(currentYear, 11, 32);
       } else {
         dateFromR = new Date(currentYear, 0, 2);
-        dateToR = new Date(currentYear, 6, 31);
+        dateToR = new Date(currentYear, 5, 31);
       }
 
       var formattedDate = dateFromR.toISOString().split('T')[0];

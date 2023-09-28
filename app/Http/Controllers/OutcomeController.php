@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OutcomeController extends Controller
 {
+    protected $model;
     /**
      * Display a listing of the resource.
      *
@@ -30,41 +31,43 @@ class OutcomeController extends Controller
 
         //dd($org_goals->pluck("goal_description"));
         $data = $this->model
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
-                ->withQueryString();
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
-        return inertia('Outcome/Index',[
-            "data"=>$data,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+        return inertia('Outcome/Index', [
+            "data" => $data,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
 
     public function create(Request $request)
     {
-        $org_goals=OrganizationalGoal::get();
+        $org_goals = OrganizationalGoal::get();
         $sec_goals = Sectoral::get();
         $sdg_goals = SDG::get();
         $chief_agenda = ChiefAgenda::get();
         $econ_agenda = EconomicAgenda::get();
         $ela_agenda = ELA::get();
         $res_agenda = ResearchAgenda::get();
-        return inertia('Outcome/Create',[
-            'org_goals'=>$org_goals,
-            'sec_goals'=>$sec_goals,
-            'sdg_goals'=>$sdg_goals,
-            'chief_agenda'=>$chief_agenda,
-            'econ_agenda'=>$econ_agenda,
-            'ela_agenda'=>$ela_agenda,
-            'res_agenda'=>$res_agenda,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
-            ],
-        ]
+        return inertia(
+            'Outcome/Create',
+            [
+                'org_goals' => $org_goals,
+                'sec_goals' => $sec_goals,
+                'sdg_goals' => $sdg_goals,
+                'chief_agenda' => $chief_agenda,
+                'econ_agenda' => $econ_agenda,
+                'ela_agenda' => $ela_agenda,
+                'res_agenda' => $res_agenda,
+                'can' => [
+                    'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                    'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                ],
+            ]
 
         );
     }
@@ -73,14 +76,14 @@ class OutcomeController extends Controller
     {
         $attributes = $request->validate(Outcome::rules(), Outcome::errorMessages());
         $this->model->create($attributes);
-        $request->pass='';
+        $request->pass = '';
         return redirect('/outcome')
-                ->with('message','Outcome added');
+            ->with('message', 'Outcome added');
     }
 
     public function edit(Request $request, $id)
     {
-        $org_goals=OrganizationalGoal::get();
+        $org_goals = OrganizationalGoal::get();
         $sec_goals = Sectoral::get();
         $sdg_goals = SDG::get();
         $chief_agenda = ChiefAgenda::get();
@@ -104,16 +107,16 @@ class OutcomeController extends Controller
 
         return inertia('Outcome/Create', [
             "editData" => $data,
-            'org_goals'=>$org_goals,
-            'sec_goals'=>$sec_goals,
-            'sdg_goals'=>$sdg_goals,
-            'chief_agenda'=>$chief_agenda,
-            'econ_agenda'=>$econ_agenda,
-            'ela_agenda'=>$ela_agenda,
-            'res_agenda'=>$res_agenda,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            'org_goals' => $org_goals,
+            'sec_goals' => $sec_goals,
+            'sdg_goals' => $sdg_goals,
+            'chief_agenda' => $chief_agenda,
+            'econ_agenda' => $econ_agenda,
+            'ela_agenda' => $ela_agenda,
+            'res_agenda' => $res_agenda,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -124,7 +127,7 @@ class OutcomeController extends Controller
         $validatedData = $request->validate(Outcome::rules(), Outcome::errorMessages());
         $data->update($validatedData);
         return redirect('/outcome')
-                ->with('message','Outcome updated');
+            ->with('info', 'Outcome updated');
     }
 
 
@@ -133,6 +136,6 @@ class OutcomeController extends Controller
         $data = $this->model->findOrFail($request->id);
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/outcome')->with('warning', 'Target deleted');
+        return redirect('/outcome')->with('deleted', 'Target deleted');
     }
 }
