@@ -257,9 +257,9 @@ class PAPController extends Controller
         ]);
         //$attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $this->model->create($request->all);
-
-        return redirect('/paps/' . $request->idmfo)
-            ->with('message', 'Programs and Projects(PAPS) added');
+        return redirect()->route('/paps/direct', ['mfosel' => $request->idmfo]);
+        // return redirect('/paps/direct?mfosel=' . $request->idmfo)
+        //     ->with('message', 'Programs and Projects(PAPS) added');
     }
 
 
