@@ -147,7 +147,7 @@ class MFOController extends Controller
         $validatedData = $request->validate(MajorFinalOutput::rules(), MajorFinalOutput::errorMessages());
         $data->update($validatedData);
         return redirect('/mfos/direct')
-            ->with('message', 'MFOs updated');
+            ->with('info', 'MFO updated');
     }
 
 
@@ -163,7 +163,7 @@ class MFOController extends Controller
             $status = "error";
         } else {
             $msg = "MFO Successfully deleted!";
-            $status = "message";
+            $status = "deleted";
             $data = $this->model->findOrFail($id);
             $data->delete();
         }

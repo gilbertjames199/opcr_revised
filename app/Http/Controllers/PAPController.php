@@ -246,6 +246,7 @@ class PAPController extends Controller
     }
     public function save(Request $request)
     {
+        // dd("save");
         $dept_code = auth()->user()->department_code;
         $request->merge(['department_code' => $dept_code]);
         $attributes = $request->validate([
@@ -256,10 +257,17 @@ class PAPController extends Controller
             'type' => 'required',
         ]);
         //$attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
+<<<<<<< HEAD
         $this->model->create($request->all);
         return redirect()->route('/paps/direct', ['mfosel' => $request->idmfo]);
         // return redirect('/paps/direct?mfosel=' . $request->idmfo)
         //     ->with('message', 'Programs and Projects(PAPS) added');
+=======
+        $this->model->create($request->all());
+
+        return redirect('/paps/' . $request->idmfo)
+            ->with('message', 'Programs and Projects(PAPS) added');
+>>>>>>> 7956a058959c014cb859f48c1111035e5e0b8ae3
     }
 
 
@@ -342,7 +350,7 @@ class PAPController extends Controller
             'research_agenda' => $request->research_agenda
         ]);
         return redirect('/paps/direct')
-            ->with('message', 'Program and Projects updated');
+            ->with('info', 'Program and Projects updated');
     }
 
     public function updated(Request $request, $id)
@@ -366,7 +374,7 @@ class PAPController extends Controller
         ]);
         //dd('updated');
         return redirect('/paps/' . $request->idmfo)
-            ->with('message', 'Program and Projects updated');
+            ->with('info', 'Program and Projects updated');
     }
     public function destroy(Request $request, $id)
     {
@@ -397,7 +405,7 @@ class PAPController extends Controller
             $status = "error";
         } else {
             $msg = "Program/Project/Activity Successfully deleted!";
-            $status = "message";
+            $status = "deleted";
             $data = $this->model->findOrFail($id);
             $data->delete();
         }
