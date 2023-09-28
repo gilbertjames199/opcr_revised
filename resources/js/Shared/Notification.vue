@@ -55,7 +55,7 @@
             <div class="d-flex text-white bg-gradient-deleted" v-if="$page.props.flash.deleted !== null">
                 <div class="toast-body">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-backspace-fill"
-                        viewBox="0 0 16 16" style="fill: #f6ff91;">
+                        viewBox="0 0 16 16" style="fill: #f46c89;">
                         <path
                             d="M13.879 10.414a2.501 2.501 0 0 0-3.465 3.465l3.465-3.465Zm.707.707-3.465 3.465a2.501 2.501 0 0 0 3.465-3.465Zm-4.56-1.096a3.5 3.5 0 1 1 4.949 4.95 3.5 3.5 0 0 1-4.95-4.95ZM8 1c-1.573 0-3.022.289-4.096.777C2.875 2.245 2 2.993 2 4s.875 1.755 1.904 2.223C4.978 6.711 6.427 7 8 7s3.022-.289 4.096-.777C13.125 5.755 14 5.007 14 4s-.875-1.755-1.904-2.223C11.022 1.289 9.573 1 8 1Z" />
                         <path
@@ -124,4 +124,5 @@ export default {
 /* .toast-rounded {
     border-radius: 10px; */
 /* Add rounded corners
-} */</style>
+} */
+</style>
