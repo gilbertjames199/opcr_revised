@@ -257,17 +257,10 @@ class PAPController extends Controller
             'type' => 'required',
         ]);
         //$attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
-<<<<<<< HEAD
-        $this->model->create($request->all);
-        return redirect()->route('/paps/direct', ['mfosel' => $request->idmfo]);
-        // return redirect('/paps/direct?mfosel=' . $request->idmfo)
-        //     ->with('message', 'Programs and Projects(PAPS) added');
-=======
         $this->model->create($request->all());
 
         return redirect('/paps/' . $request->idmfo)
             ->with('message', 'Programs and Projects(PAPS) added');
->>>>>>> 7956a058959c014cb859f48c1111035e5e0b8ae3
     }
 
 
