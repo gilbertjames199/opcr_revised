@@ -101,7 +101,7 @@ class EconomicAgendaController extends Controller
         ]);
 
         return redirect('/EconomicAgenda')
-            ->with('message', 'Chief Executive Agenda updated');
+            ->with('info', 'Chief Executive Agenda updated');
     }
 
     public function destroy(Request $request)
@@ -109,6 +109,6 @@ class EconomicAgendaController extends Controller
         $data = $this->model->findOrFail($request->id);
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/EconomicAgenda')->with('warning', 'Chief Executive Agenda Deleted');
+        return redirect('/EconomicAgenda')->with('deleted', 'Chief Executive Agenda Deleted');
     }
 }

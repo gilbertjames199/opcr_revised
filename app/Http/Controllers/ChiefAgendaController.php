@@ -101,7 +101,7 @@ class ChiefAgendaController extends Controller
         ]);
 
         return redirect('/ChiefAgenda')
-            ->with('message', 'Chief Executive Agenda updated');
+            ->with('info', 'Chief Executive Agenda updated');
     }
 
     public function destroy(Request $request)
@@ -109,6 +109,6 @@ class ChiefAgendaController extends Controller
         $data = $this->model->findOrFail($request->id);
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/ChiefAgenda')->with('warning', 'Chief Executive Agenda Deleted');
+        return redirect('/ChiefAgenda')->with('deleted', 'Chief Executive Agenda Deleted');
     }
 }

@@ -101,7 +101,7 @@ class ELAController extends Controller
         ]);
 
         return redirect('/ELA')
-            ->with('message', 'Executive Legislative Agenda updated');
+            ->with('info', 'Executive Legislative Agenda updated');
     }
 
     public function destroy(Request $request)
@@ -109,6 +109,6 @@ class ELAController extends Controller
         $data = $this->model->findOrFail($request->id);
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/ELA')->with('warning', 'Executive Legislative Agenda Deleted');
+        return redirect('/ELA')->with('deleted', 'Executive Legislative Agenda Deleted');
     }
 }

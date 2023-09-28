@@ -205,7 +205,7 @@ class AIPController extends Controller
         ]);
 
         return redirect('AIP/direct')
-            ->with('message', 'Output updated');
+            ->with('info', 'Output updated');
     }
 
     public function MFO(Request $request)

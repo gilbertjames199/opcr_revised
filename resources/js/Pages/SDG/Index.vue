@@ -32,9 +32,10 @@
                         </thead>
                         <tbody>
 
-                            <tr v-for="dat in data.data">
+                            <tr v-for="dat in data">
                                 <td>
-                                    <div align="justify" v-html="dat.goal_description"></div>
+                                    <!-- <div align="justify" v-html="dat.goal_description"></div> -->
+                                    {{ truncateText(dat.goal_description, 10) }}
                                 </td>
                                 <td>
                                     <div class="dropdown dropstart">
@@ -159,4 +160,5 @@ export default {
 .pos {
     position: top;
     top: 240px;
-}</style>
+}
+</style>

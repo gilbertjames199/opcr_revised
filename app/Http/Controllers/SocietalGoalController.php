@@ -12,38 +12,40 @@ class SocietalGoalController extends Controller
     protected $model;
     public function __construct(SocietalGoal $model)
     {
-       $this->model = $model;
+        $this->model = $model;
     }
 
 
     //
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
         $data = $this->model
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(10)
-                    ->withQueryString();
-        return inertia('SocietalGoals/Index',[
-            "data"=>$data,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        return inertia('SocietalGoals/Index', [
+            "data" => $data,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
-
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         //dd('create');
-        return inertia('SocietalGoals/addSocietalGoals',[
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+        return inertia('SocietalGoals/addSocietalGoals', [
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         // dd($request);
         $attributes = $request->validate([
             'description' => 'required',
@@ -51,10 +53,11 @@ class SocietalGoalController extends Controller
         //dd($attributes);
         $this->model->create($attributes);
         return redirect('/Societal')
-                ->with('message','Societal Goals added');
+            ->with('message', 'Societal Goals added');
     }
 
-    public function edit(Request $request, $id){
+    public function edit(Request $request, $id)
+    {
         $data = $this->model->where('id', $id)->first([
             'id',
             'description',
@@ -62,9 +65,9 @@ class SocietalGoalController extends Controller
 
         return inertia('SocietalGoals/addSocietalGoals', [
             "editData" => $data,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -75,24 +78,27 @@ class SocietalGoalController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
-            'description'=>$request->description,
+            'description' => $request->description,
         ]);
 
         return redirect('/Societal')
-                ->with('message','Societal Goals updated');
+            ->with('info', 'Societal Goals updated');
     }
 
-    public function destroy(Request $request){
-        $count_mfo =MajorFinalOutput::where('id_socgoal', $request->id)->count();
-        $msg="";
-        if($count_mfo>0){
-            $msg ="Unable to delete";
-        }else{
+    public function destroy(Request $request)
+    {
+        $count_mfo = MajorFinalOutput::where('id_socgoal', $request->id)->count();
+        $stat = "";
+        $msg = "";
+        if ($count_mfo > 0) {
+            $stat = "warning";
+            $msg = "Unable to delete";
+        } else {
             $data = $this->model->findOrFail($request->id);
             $data->delete();
-            $msg ="Societal Goal Deleted";
+            $msg = "Societal Goal Deleted";
+            $stat = "deleted";
         }
-        return redirect('/Societal')->with('error', $msg);
-
+        return redirect('/Societal')->with($stat, $msg);
     }
 }
