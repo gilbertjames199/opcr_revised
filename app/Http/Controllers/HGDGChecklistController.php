@@ -85,7 +85,7 @@ class HGDGChecklistController extends Controller
         ]);
 
         return redirect('/HGDGChecklist')
-            ->with('message', 'Checklist updated');
+            ->with('info', 'Checklist updated');
     }
 
 
@@ -100,7 +100,7 @@ class HGDGChecklistController extends Controller
             $status = "error";
         } else {
             $msg = "Checklist successfully deleted!";
-            $status = "message";
+            $status = "deleted";
             $data = $this->model->findOrFail($request->id);
             $data->delete();
         }
