@@ -99,7 +99,8 @@ export default {
         if (this.editData !== undefined) {
             this.pageTitle = "Edit"
             this.form.idpaps = this.idpaps
-            this.form.idmfo = this.idmfo
+            // this.form.idmfo = this.idmfo
+            this.form.idmfo = this.editData.idmfo
             this.form.description = this.editData.description
             this.form.id = this.editData.id
         } else {

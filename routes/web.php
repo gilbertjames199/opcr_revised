@@ -311,7 +311,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [StrategyController::class, 'store']);
         Route::post('/update', [StrategyController::class, 'update']);
         Route::delete('/{id}/{idpaps}', [StrategyController::class, 'destroy']);
-        Route::get('/{id}/{idinteroutcome}/edit', [StrategyController::class, 'edit']);
+        Route::get('/{id}/{idinteroutcome}/edit/{ismfo}', [StrategyController::class, 'edit']);
         Route::patch('/', [StrategyController::class, 'update']);
     });
     //MFOStrategies
