@@ -51,9 +51,36 @@ class MFOController extends Controller
 
     public function create()
     {
-        $SocietalGoals = SocietalGoal::get();
-        $SectorOutcomes = Sectoral::get();
-        $OrganizationalOutcomes = OrganizationalGoal::get();
+        $SocietalGoals = SocietalGoal::get()->map(function ($item) {
+            $desc_cleaned = strip_tags($item->description);
+            $desc_cleaned = str_replace(["\n", "\r", "\t"], '', $desc_cleaned);
+            $desc_cleaned = str_replace('&nbsp;', '', $desc_cleaned);
+            return [
+                "id" => $item->id,
+                "description" => strip_tags($desc_cleaned)
+            ];
+        });
+        $SectorOutcomes = Sectoral::get()->map(function ($item) {
+            $desc_cleaned = strip_tags($item->goal_description);
+            $desc_cleaned = str_replace(["\n", "\r", "\t"], '', $desc_cleaned);
+            $desc_cleaned = str_replace('&nbsp;', '', $desc_cleaned);
+            return [
+                "FFUNNCOD" => $item->FFUNCCOD,
+                "goal_description" => $desc_cleaned,
+                "id" => $item->id,
+                "sector" => $item->sector
+            ];
+        });
+        $OrganizationalOutcomes = OrganizationalGoal::get()->map(function ($item) {
+            $desc_cleaned = strip_tags($item->goal_description);
+            $desc_cleaned = str_replace(["\n", "\r", "\t"], '', $desc_cleaned);
+            $desc_cleaned = str_replace('&nbsp;', '', $desc_cleaned);
+            return [
+                "FFUNNCOD" => $item->FFUNCCOD,
+                "goal_description" => $desc_cleaned,
+                "id" => $item->id,
+            ];
+        });
         // $functions = AccountAccess::where('iduser',auth()->user()->recid)
         //             ->select('ff.FFUNCCOD','ff.FFUNCTION')
         //             ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
@@ -103,9 +130,36 @@ class MFOController extends Controller
 
     public function edit(MajorFinalOutput $majorFinalOutput, $id)
     {
-        $SocietalGoals = SocietalGoal::get();
-        $SectorOutcomes = Sectoral::get();
-        $OrganizationalOutcomes = OrganizationalGoal::get();
+        $SocietalGoals = SocietalGoal::get()->map(function ($item) {
+            $desc_cleaned = strip_tags($item->description);
+            $desc_cleaned = str_replace(["\n", "\r", "\t"], '', $desc_cleaned);
+            $desc_cleaned = str_replace('&nbsp;', '', $desc_cleaned);
+            return [
+                "id" => $item->id,
+                "description" => strip_tags($desc_cleaned)
+            ];
+        });
+        $SectorOutcomes = Sectoral::get()->map(function ($item) {
+            $desc_cleaned = strip_tags($item->goal_description);
+            $desc_cleaned = str_replace(["\n", "\r", "\t"], '', $desc_cleaned);
+            $desc_cleaned = str_replace('&nbsp;', '', $desc_cleaned);
+            return [
+                "FFUNNCOD" => $item->FFUNCCOD,
+                "goal_description" => $desc_cleaned,
+                "id" => $item->id,
+                "sector" => $item->sector
+            ];
+        });
+        $OrganizationalOutcomes = OrganizationalGoal::get()->map(function ($item) {
+            $desc_cleaned = strip_tags($item->goal_description);
+            $desc_cleaned = str_replace(["\n", "\r", "\t"], '', $desc_cleaned);
+            $desc_cleaned = str_replace('&nbsp;', '', $desc_cleaned);
+            return [
+                "FFUNNCOD" => $item->FFUNCCOD,
+                "goal_description" => $desc_cleaned,
+                "id" => $item->id,
+            ];
+        });
         $data = $this->model->where('id', $id)->first([
             'id',
             'mfo_desc',
