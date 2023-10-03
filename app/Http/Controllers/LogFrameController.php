@@ -302,7 +302,7 @@ class LogFrameController extends Controller
         $data = Sector::select(
             'sectors.id AS sector_id',
             'sectors.sector_name AS sector_name',
-            'sectoral_goals.FFUNCCOD AS FFUNCCOD'
+            'sectoral_goals.FFUNCCOD AS FFUNCOD'
         )
             ->where('sectoral_goals.FFUNCCOD', $request->id)
             ->join('sectoral_goals', 'sectoral_goals.sector', 'sectors.id')
