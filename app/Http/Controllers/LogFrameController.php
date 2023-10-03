@@ -211,8 +211,18 @@ class LogFrameController extends Controller
 
     public function paps(Request $request)
     {
+        // dd("paps");
+        // $paps = ProgramAndProject::select("paps_desc", "id", "MOV")
+        //     ->where('idmfo', $request->idmfo)
+        //     ->distinct("paps_desc")
+        //     ->get();
         $paps = ProgramAndProject::select("paps_desc", "id", "MOV")
-            ->where('idmfo', $request->idmfo)
+            ->whereIn('id', function ($query) use ($request) {
+                $query->selectRaw('MIN(id)')
+                    ->from('program_and_projects')
+                    ->where('idmfo', $request->idmfo)
+                    ->groupBy('paps_desc');
+            })
             ->get();
         return $paps;
     }
