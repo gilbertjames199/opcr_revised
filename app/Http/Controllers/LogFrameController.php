@@ -49,7 +49,6 @@ class LogFrameController extends Controller
                     'department_code' => $item->department_code,
                 ];
             });
-
         // $acc_access = $this->model->where('FFUNCCOD','1031')->get()->pluck('iduser');
         // dd($acc_access);
         //dd($functions);
@@ -65,13 +64,13 @@ class LogFrameController extends Controller
 
     public function showlog($FFUNCCOD)
     {
-        $ffunccody = auth()->user()->office;
-        // dd("ffunccody: " . $ffunccody);
-        if ($ffunccody != null) {
-            // dd("Null ang ffunccody333 ");
+        // $ffunccody = auth()->user()->office;
+        // // dd("ffunccody: " . $ffunccody);
+        // if ($ffunccody != null) {
+        //     // dd("Null ang ffunccody333 ");
 
-            $FFUNCCOD = $ffunccody;
-        }
+        //     $FFUNCCOD = $ffunccody;
+        // }
         //dd('showlog');
         $soc_goal = SocietalGoal::get();
         //econ
@@ -297,8 +296,9 @@ class LogFrameController extends Controller
 
     public function sectoralClassified(Request $request)
     {
-        //dd('sectoral classified');
+        // dd('sectoral classified');
         // $data = Sector::select('id AS sector_id', 'sector_name')->selectRaw("'$request->id' as FFUNCOD")->get();
+
         $data = Sector::select(
             'sectors.id AS sector_id',
             'sectors.sector_name AS sector_name',
@@ -306,6 +306,7 @@ class LogFrameController extends Controller
         )
             ->where('sectoral_goals.FFUNCCOD', $request->id)
             ->join('sectoral_goals', 'sectoral_goals.sector', 'sectors.id')
+            ->distinct('sectors.id')
             ->get();
         return $data;
     }
@@ -313,6 +314,7 @@ class LogFrameController extends Controller
     {
         // DB::raw("REGEXP_REPLACE(goal_description, '<[^>]*>', '') as SectoralDescription"))
         //"goal_description as SectoralDescription",
+        // dd("sector filtered");
         $sectoral = Sectoral::select(
             "goal_description as SectoralDescription",
             "id",
@@ -320,7 +322,22 @@ class LogFrameController extends Controller
         )
             ->where('FFUNCCOD', $request->id)
             ->where('sector', $request->sector_id)
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                $sec_desc = $item->SectoralDescription;
+                $sec_desc = preg_replace('/<[^>]*>/', '', $sec_desc);
+
+                // Step 2: Remove escape characters (e.g., \n)
+                $sec_desc = str_replace(["\n", "\r", "\t"], ' ', $sec_desc);
+
+                // Step 3: Remove &nbsp; entities
+                $sec_desc = str_replace('&nbsp;', ' ', $sec_desc);
+                return [
+                    "SectoralDescription" => $sec_desc,
+                    "id" => $item->id,
+                    "sector" => $item->sector
+                ];
+            });
         return $sectoral;
     }
 }

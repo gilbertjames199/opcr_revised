@@ -319,7 +319,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         ]);
 
         return redirect('/opcrlist/' . $request->FFUNCCOD)
-            ->with('message', 'Added new OPCR!');
+            ->with('info', 'Updated new OPCR!');
     }
     public function destroy(Request $request)
     {
