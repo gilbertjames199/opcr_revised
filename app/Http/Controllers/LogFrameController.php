@@ -298,7 +298,15 @@ class LogFrameController extends Controller
     public function sectoralClassified(Request $request)
     {
         //dd('sectoral classified');
-        $data = Sector::select('id AS sector_id', 'sector_name')->selectRaw("'$request->id' as FFUNCOD")->get();
+        // $data = Sector::select('id AS sector_id', 'sector_name')->selectRaw("'$request->id' as FFUNCOD")->get();
+        $data = Sector::select(
+            'sectors.id AS sector_id',
+            'sectors.sector_name AS sector_name',
+            'sectoral_goals.FFUNCCOD AS FFUNCCOD'
+        )
+            ->where('sectoral_goals.FFUNCCOD', $request->id)
+            ->join('sectoral_goals', 'sectoral_goals.sector', 'sectors.id')
+            ->get();
         return $data;
     }
     public function sectorFiltered(Request $request)
