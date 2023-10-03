@@ -64,13 +64,22 @@ class LogFrameController extends Controller
 
     public function showlog($FFUNCCOD)
     {
-        // $ffunccody = auth()->user()->office;
-        // // dd("ffunccody: " . $ffunccody);
-        // if ($ffunccody != null) {
-        //     // dd("Null ang ffunccody333 ");
+        // dd($FFUNCCOD);
+        // === null
+        if ($FFUNCCOD == null || $FFUNCCOD == "" || $FFUNCCOD == "null") {
+            // dd($FFUNCCOD . " inside !FFUNCCOD is null");
+            $ffunccody = auth()->user()->office;
+            // dd("ffunccody: " . $ffunccody);
+            if ($ffunccody != null) {
+                // dd("Null ang ffunccody333 ");
 
-        //     $FFUNCCOD = $ffunccody;
+                $FFUNCCOD = $ffunccody;
+            }
+        }
+        // else {
+        //     dd("FFUNCCOD is not szcnull");
         // }
+
         //dd('showlog');
         $soc_goal = SocietalGoal::get();
         //econ
@@ -93,6 +102,7 @@ class LogFrameController extends Controller
         //$id= auth()->user()->recid;
         $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
         $office = $functions->pluck('FFUNCTION');
+        // dd($mfos);
         // dd("FFUNCCOD123: " . $FFUNCCOD);
         // dd($office[0]);
         return inertia('LogFrame/logframe', [
