@@ -55,21 +55,20 @@
                                             <li>
                                                 <a class="dropdown-item" target="_blank"
                                                     :href="`/logframe/${functional.FFUNCCOD}`">
-                                                    Logframe
+                                                    Logframe Details
                                                 </a>
                                             </li>
                                             <li v-if="functional.FFUNCCOD === '1031'">
                                                 <button class="dropdown-item"
-                                                    @click="showModalAd(functional.FFUNCCOD, functional.FFUNCTION)"> View
+                                                    @click="showModalAd(functional.FFUNCCOD, functional.FFUNCTION)">
                                                     Print Logframe
                                                 </button>
                                             </li>
                                             <li v-else>
                                                 <button class="dropdown-item"
-                                                    @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)"> View
-                                                    Logframe
+                                                    @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)">
+                                                    Print Logframe
                                                 </button>
-
                                             </li>
                                             <!-- <li><Link class="dropdown-item" :href="`/logframe/${functional.FFUNCCOD}`">View Logframe</Link></li> -->
                                         </ul>
@@ -166,11 +165,19 @@ export default {
         },
         getToRep(ffunccod, ffunction) {
             // alert(data[0].FFUNCCOD);
+            // var linkt = "http://";
+            // var jasper_ip = this.jasper_ip;
+            // var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FLogFrame&reportUnit=%2Freports%2Fplanning_system%2FLogFrame%2FLogframe&standAlone=true&decorate=no&output=pdf';
+            // var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
+            // var link1 = linkt + jasper_ip + jasper_link + params;
+            // return link1;
             var linkt = "http://";
             var jasper_ip = this.jasper_ip;
-            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FLogFrame&reportUnit=%2Freports%2Fplanning_system%2FLogFrame%2FLogframe&standAlone=true&decorate=no&output=pdf';
+            //var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FLogFrame&reportUnit=%2Freports%2Fplanning_system%2FLogFrame%2FLogframe&standAlone=true&decorate=no&output=pdf';
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FNLogFrame%2FLogframe&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FNLogFrame&standAlone=true&decorate=no&output=pdf'
             var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
             var link1 = linkt + jasper_ip + jasper_link + params;
+            // prompt('getToRep: ' + link1, link1);
             return link1;
         },
 
@@ -181,12 +188,21 @@ export default {
         },
         showModalAd(ffunccod, ffunction) {
             //alert("showModalAd\n"+ffunccod+"\n"+ffunction);
+            // var linkt = "http://";
+            // var jasper_ip = this.jasper_ip;
+            // var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLogframe_spcl%2FMAIN_LOGFRAME&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLogframe_spcl&decorate=no&output=pdf'
+            // var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
+            // var link1 = linkt + jasper_ip + jasper_link + params;
+            // this.displayModal = true;
+            // this.my_link = link1;
+
             var linkt = "http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLogframe_spcl%2FMAIN_LOGFRAME&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLogframe_spcl&decorate=no&output=pdf'
             var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
             var link1 = linkt + jasper_ip + jasper_link + params;
             this.displayModal = true;
+            // alert('ad: ' + link1)
             this.my_link = link1;
 
         },

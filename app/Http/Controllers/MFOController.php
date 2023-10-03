@@ -141,6 +141,7 @@ class MFOController extends Controller
         });
         $SectorOutcomes = Sectoral::get()->map(function ($item) {
             $desc_cleaned = strip_tags($item->goal_description);
+            $desc_cleaned = preg_replace('/<[^>]*>/', '', $desc_cleaned);
             $desc_cleaned = str_replace(["\n", "\r", "\t"], '', $desc_cleaned);
             $desc_cleaned = str_replace('&nbsp;', '', $desc_cleaned);
             return [
