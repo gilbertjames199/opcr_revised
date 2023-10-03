@@ -138,7 +138,7 @@ class SectoralController extends Controller
         ]);
 
         return redirect('/Sectoral')
-            ->with('message', 'Sectoral Goal updated');
+            ->with('info', 'Sectoral Goal updated');
     }
 
     public function destroy(Request $request)
@@ -151,7 +151,7 @@ class SectoralController extends Controller
             $status = "error";
         } else {
             $msg = "Sectoral outcome deleted";
-            $status = "message";
+            $status = "deleted";
             $data = $this->model->findOrFail($request->id);
             $data->delete();
         }
