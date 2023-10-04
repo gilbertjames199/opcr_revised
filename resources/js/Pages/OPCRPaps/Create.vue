@@ -269,9 +269,15 @@ export default {
             this.form.SuccessIndicator = this.Success.success_indicator
             this.form.OfficeAccountable = this.Office.office_accountable
             this.form.Monitoring = this.Monitoring.monitoring
-            this.form.RatingRemarks = this.RatingRemarks.rating_remarks
-            this.form.QualityRemarks = this.QualityRemarks.quality_remarks
-            this.form.TimelinessRemarks = this.TimelinessRemarks.timeliness_remarks
+            if (this.RatingRemarks !== null) {
+                this.form.RatingRemarks = this.RatingRemarks.rating_remarks
+            }
+            if (this.QualityRemarks !== null) {
+                this.form.QualityRemarks = this.QualityRemarks.quality_remarks
+            }
+            if (this.TimelinessRemarks !== null) {
+                this.form.TimelinessRemarks = this.TimelinessRemarks.timeliness_remarks
+            }
             this.form.idpaps = this.editData.idpaps
             this.form.id = this.editData.id
             this.ratings_r.forEach((item, index) => {
@@ -305,7 +311,7 @@ export default {
             this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4);
             //alert(this.form.target_qty);
             if (this.editData !== undefined) {
-                this.form.patch("/OPCRpaps/" + this.form.id, this.form);
+                this.form.patch("/OPCRpaps/" + this.idpaps, this.form);
             } else {
                 // alert("Sample");
                 var url = "/OPCRpaps/store"
