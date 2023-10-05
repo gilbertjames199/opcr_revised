@@ -238,7 +238,9 @@ class OPCRPAPSController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
+        // dd(count($request->NumericalRating));
+        // dd($request->adjectivalRating);
+
         $id = $request->idpaps;
         $attributes = $request->validate([
             'Outputs' => 'required',
@@ -294,12 +296,12 @@ class OPCRPAPSController extends Controller
 
         for ($i = 0; $i < count($request->NumericalRating); $i++) {
             $ratings = new rating();
-            if (!$request->numerical_rating) {
-                $ratings->numerical_rating = "-";
-            } else {
-                $ratings->numerical_rating = $request->NumericalRating[$i];
-            }
-
+            // if (!$request->numerical_rating) {
+            //     $ratings->numerical_rating = "-";
+            // } else {
+            //     $ratings->numerical_rating = $request->NumericalRating[$i];
+            // }
+            $ratings->numerical_rating = $request->NumericalRating[$i];
             $ratings->adjectival_rating = $request->AdjectivalRating[$i];
             $ratings->efficiency_quantity = $request->Efficiency[$i];
             $ratings->idpaps = $request->idpaps;
