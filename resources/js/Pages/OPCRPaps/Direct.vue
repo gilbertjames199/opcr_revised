@@ -149,7 +149,8 @@
 
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
+                        <!-- <pagination :next="data.next_page_url" :prev="data.prev_page_url" /> -->
+                        <Pagination_Preserved :links="data.links" />
                     </div>
                 </div>
                 <div class="row justify-content-center">
@@ -177,6 +178,7 @@
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Pagination_Preserved from "../../Shared/Pagination_Preserved.vue";
 import Modal from "@/Shared/PrintModal";
 export default {
     props: {
@@ -193,6 +195,7 @@ export default {
         can: Object,
         mfos: Object
     },
+
     data() {
         return {
             my_link: "",
@@ -221,7 +224,7 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering, Modal,
+        Pagination, Filtering, Modal, Pagination_Preserved
     },
     mounted() {
 
@@ -309,7 +312,40 @@ export default {
         },
         isNotEmptyObject(obj) {
             return Object.keys(obj).length > 0;
-        }
+        },
+        pageChange(direction, limit_local) {
+            var num = 0;
+            if (direction === 'next') {
+                num = this.data.current_page + 1;
+            } else {
+                if (this.data.current_page === 1) {
+                    num = 1;
+                } else {
+                    num = this.data.current_page - 1;
+                }
+            }
+            this.$inertia.get(
+                "/OPCRpaps/direct",
+                {
+                    page: num,
+                    mfosel: this.mfosel,
+                    FFUNCCOD: this.FFUNCCOD
+                    // mun: this.select_mun,
+                    // bar: this.select_bar,
+                    // pur: this.select_pur,
+                    // gender: this.gender,
+                    // curr_school: this.curr_school,
+                    // tab_sel: this.tab_selected,
+                    // my_table_data: this.my_table_data
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                });
+
+
+        },
     }
 };
 </script>
