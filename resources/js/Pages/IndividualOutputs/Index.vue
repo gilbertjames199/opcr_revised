@@ -124,7 +124,8 @@ export default {
             my_id: 0,
             my_date: null,
             displayModal: false,
-            displayDisappModal: false
+            displayDisappModal: false,
+            showModal: false,
         }
     },
     components: {
