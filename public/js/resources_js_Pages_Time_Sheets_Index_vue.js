@@ -233,19 +233,14 @@ var _hoisted_8 = {
 var _hoisted_9 = {
   "class": "peer"
 };
-
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("    ");
-
-var _hoisted_11 = {
+var _hoisted_10 = {
   "class": "peer mR-10"
 };
-var _hoisted_12 = {
+var _hoisted_11 = {
   "class": "peer"
 };
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Additional filters appears here ");
-
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"col-12\"><div class=\"bgc-white p-20 bd\"><table class=\"table table-hover\"><thead><tr><th>Pin</th><th>Project &amp; Task</th><th>Budget</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Total</th><th></th></tr></thead><tbody><tr><th><input type=\"checkbox\" checked=\"true\"></th><th><div class=\"peer\"> 21-168-Project 1371     <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-caret-down-fill\" viewBox=\"0 0 16 16\"><path d=\"M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z\"></path></svg></div><div style=\"font-weight:normal !important;\">unbillable labor</div></th><th> ... </th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th> 0 </th><th><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-x-lg\" viewBox=\"0 0 16 16\"><path d=\"M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z\"></path></svg></th></tr><tr><th><input type=\"checkbox\" checked=\"true\"></th><th><div class=\"peer\"> General and Admnistrative     <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-caret-down-fill\" viewBox=\"0 0 16 16\"><path d=\"M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z\"></path></svg></div><div style=\"font-weight:normal !important;\">Your task name -253</div></th><th> ... </th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th> 0 </th><th><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-x-lg\" viewBox=\"0 0 16 16\"><path d=\"M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z\"></path></svg></th></tr><tr><td></td><td></td><th>Totals</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><td></td></tr></tbody></table></div></div>", 1);
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"col-12\"><div class=\"bgc-white p-20 bd\"><table class=\"table table-hover\"><thead><tr><th>Pin</th><th>Project &amp; Task</th><th>Budget</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Total</th><th></th></tr></thead><tbody><tr><th><input type=\"checkbox\" checked=\"true\"></th><th><div class=\"peer\"> 21-168-Project 1371     <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-caret-down-fill\" viewBox=\"0 0 16 16\"><path d=\"M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z\"></path></svg></div><div style=\"font-weight:normal !important;\">unbillable labor</div></th><th> ... </th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th> 0 </th><th><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-x-lg\" viewBox=\"0 0 16 16\"><path d=\"M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z\"></path></svg></th></tr><tr><th><input type=\"checkbox\" checked=\"true\"></th><th><div class=\"peer\"> General and Admnistrative     <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-caret-down-fill\" viewBox=\"0 0 16 16\"><path d=\"M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z\"></path></svg></div><div style=\"font-weight:normal !important;\">Your task name -253</div></th><th> ... </th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th><button class=\"btn btn btn-secondary btn-sm mL-2 text-white\">...</button></th><th> 0 </th><th><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-x-lg\" viewBox=\"0 0 16 16\"><path d=\"M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z\"></path></svg></th></tr><tr><td></td><td></td><th>Totals</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><td></td></tr></tbody></table></div></div>", 1);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
@@ -284,7 +279,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[3] || (_cache[3] = function ($event) {
       return $options.showFilter();
     })
-  }, "Submit"), _hoisted_10]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, "Submit"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("    ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return _ctx.search = $event;
     }),
@@ -293,7 +288,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     placeholder: "Search..."
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.search]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<Link class=\"btn btn-primary btn-sm\" href=\"/users/create\">Add User</Link>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.search]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<Link class=\"btn btn-primary btn-sm\" href=\"/users/create\">Add User</Link>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary btn-sm mL-2 text-white",
     onClick: _cache[5] || (_cache[5] = function ($event) {
       return $options.showFilter();
@@ -305,12 +300,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_13];
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Additional filters appears here ")];
     }),
     _: 1
     /* STABLE */
 
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n        <div class=\"col-12\">\r\n            <div class=\"bgc-white p-20 bd\">\r\n                <table class=\"table table-hover\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th scope=\"col\">Name</th>\r\n                            <th scope=\"col\">Age</th>\r\n                            <th scope=\"col\">Sex</th>\r\n                            <th scope=\"col\">Ethnicity</th>\r\n                            <th scope=\"col\">Address</th>\r\n                            <th scope=\"col\">Volunteer Classification</th>\r\n                            <th scope=\"col\">Key Area</th>\r\n                            <th scope=\"col\">Hours Available</th>\r\n                            <th scope=\"col\">4K's Registered</th>\r\n                            <th scope=\"col\" v-if=\"verifyPreviledge(can.createUser, can.editUser,can.deleteUser)\" style=\"text-align: right\" >Action</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr v-for=\"(person_info, index) in person_infos.data\" :key=\"index\">\r\n                            <td>{{ person_info.lastname }}, {{ person_info.firstname }}</td>\r\n                            <td>{{ getAge(person_info.month_day_year)}}</td>\r\n                            <td>{{ person_info.gender }}</td>\r\n                            <td>{{ person_info.ethnicity_blood }}</td>\r\n                             <td>\r\n                                <span v-if=\"person_info.purok_sitio\">Purok {{ person_info.purok_sitio }},</span>\r\n                                {{ person_info.barangay }}\r\n                            </td>\r\n                            <td>\r\n                                <li v-if=\"person_info.vol.where_volunteer_build==='1'\">House Build/School Build</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_environment==='1'\">Environment</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_disaster==='1'\">Disaster Response</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_bayanihan==='1'\">Bayanihan Programs</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_sports==='1'\">Sports</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_events==='1'\">Events</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_bayanihan_karunungan==='1'\">Bayanihan  para sa Karunungan</li>\r\n                            </td>\r\n                            <td>\r\n                                {{ person_info.vol.type_volunteer}}\r\n                                <span v-if=\"person_info.vol.type_volunteer==='Type A Volunteer'\">\r\n                                    - <span v-if=\"person_info.vol.type_volunteer_A==='Others, specify'\">{{ person_info.vol.type_volunteer_other_specify }}</span>\r\n                                      <span v-else>{{ person_info.vol.type_volunteer_A }}</span>\r\n                                </span>\r\n                            </td>\r\n                            <td>{{ person_info.vol.time_avail_vlntr }}</td>\r\n                            <td>4K's Registered</td>\r\n                            <td v-if=\"verifyPreviledge(can.createUser, can.editUser,can.deleteUser)\" >\r\n                                <div class=\"dropdown dropstart\" >\r\n                                    <button class=\"btn btn-secondary btn-sm action-btn\" type=\"button\" id=\"dropdownMenuButton1\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\r\n                                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-three-dots\" viewBox=\"0 0 16 16\">\r\n                                        <path d=\"M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z\"/>\r\n                                        </svg>\r\n                                    </button>\r\n                                    <ul class=\"dropdown-menu action-dropdown\" aria-labelledby=\"dropdownMenuButton1\">\r\n                                        <li v-if=\"can.editUser\"><Link class=\"dropdown-item\" >Edit</Link></li>\r\n                                        <li v-if=\"can.editUser\"><hr class=\"dropdown-divider action-divider\"></li>\r\n                                        <li v-if=\"can.deleteUser\"><Link class=\"text-danger dropdown-item\" >Delete</Link></li>\r\n                                    </ul>\r\n                                </div>\r\n                            </td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n                <div class=\"row justify-content-center\">\r\n                    <div class=\"col-md-12\">\r\n                        <pagination :next=\"person_infos.next_page_url\" :prev=\"person_infos.prev_page_url\" />\r\n                    </div>\r\n                </div>\r\n                <div class=\"row justify-content-center\">\r\n                    <div class=\"col-md-12\">\r\n                        <p>\r\n                            {{ person_infos.from }} to {{ person_infos.to }} of\r\n                            {{ person_infos.total }} entries\r\n                        </p>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        ")])], 64
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n        <div class=\"col-12\">\r\n            <div class=\"bgc-white p-20 bd\">\r\n                <table class=\"table table-hover\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th scope=\"col\">Name</th>\r\n                            <th scope=\"col\">Age</th>\r\n                            <th scope=\"col\">Sex</th>\r\n                            <th scope=\"col\">Ethnicity</th>\r\n                            <th scope=\"col\">Address</th>\r\n                            <th scope=\"col\">Volunteer Classification</th>\r\n                            <th scope=\"col\">Key Area</th>\r\n                            <th scope=\"col\">Hours Available</th>\r\n                            <th scope=\"col\">4K's Registered</th>\r\n                            <th scope=\"col\" v-if=\"verifyPreviledge(can.createUser, can.editUser,can.deleteUser)\" style=\"text-align: right\" >Action</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr v-for=\"(person_info, index) in person_infos.data\" :key=\"index\">\r\n                            <td>{{ person_info.lastname }}, {{ person_info.firstname }}</td>\r\n                            <td>{{ getAge(person_info.month_day_year)}}</td>\r\n                            <td>{{ person_info.gender }}</td>\r\n                            <td>{{ person_info.ethnicity_blood }}</td>\r\n                             <td>\r\n                                <span v-if=\"person_info.purok_sitio\">Purok {{ person_info.purok_sitio }},</span>\r\n                                {{ person_info.barangay }}\r\n                            </td>\r\n                            <td>\r\n                                <li v-if=\"person_info.vol.where_volunteer_build==='1'\">House Build/School Build</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_environment==='1'\">Environment</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_disaster==='1'\">Disaster Response</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_bayanihan==='1'\">Bayanihan Programs</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_sports==='1'\">Sports</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_events==='1'\">Events</li>\r\n                                <li v-if=\"person_info.vol.where_volunteer_bayanihan_karunungan==='1'\">Bayanihan  para sa Karunungan</li>\r\n                            </td>\r\n                            <td>\r\n                                {{ person_info.vol.type_volunteer}}\r\n                                <span v-if=\"person_info.vol.type_volunteer==='Type A Volunteer'\">\r\n                                    - <span v-if=\"person_info.vol.type_volunteer_A==='Others, specify'\">{{ person_info.vol.type_volunteer_other_specify }}</span>\r\n                                      <span v-else>{{ person_info.vol.type_volunteer_A }}</span>\r\n                                </span>\r\n                            </td>\r\n                            <td>{{ person_info.vol.time_avail_vlntr }}</td>\r\n                            <td>4K's Registered</td>\r\n                            <td v-if=\"verifyPreviledge(can.createUser, can.editUser,can.deleteUser)\" >\r\n                                <div class=\"dropdown dropstart\" >\r\n                                    <button class=\"btn btn-secondary btn-sm action-btn\" type=\"button\" id=\"dropdownMenuButton1\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\r\n                                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-three-dots\" viewBox=\"0 0 16 16\">\r\n                                        <path d=\"M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z\"/>\r\n                                        </svg>\r\n                                    </button>\r\n                                    <ul class=\"dropdown-menu action-dropdown\" aria-labelledby=\"dropdownMenuButton1\">\r\n                                        <li v-if=\"can.editUser\"><Link class=\"dropdown-item\" >Edit</Link></li>\r\n                                        <li v-if=\"can.editUser\"><hr class=\"dropdown-divider action-divider\"></li>\r\n                                        <li v-if=\"can.deleteUser\"><Link class=\"text-danger dropdown-item\" >Delete</Link></li>\r\n                                    </ul>\r\n                                </div>\r\n                            </td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n                <div class=\"row justify-content-center\">\r\n                    <div class=\"col-md-12\">\r\n                        <pagination :next=\"person_infos.next_page_url\" :prev=\"person_infos.prev_page_url\" />\r\n                    </div>\r\n                </div>\r\n                <div class=\"row justify-content-center\">\r\n                    <div class=\"col-md-12\">\r\n                        <p>\r\n                            {{ person_infos.from }} to {{ person_infos.to }} of\r\n                            {{ person_infos.total }} entries\r\n                        </p>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        ")])], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -386,15 +381,9 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "page-item"
 };
-
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Previous");
-
-var _hoisted_4 = {
+var _hoisted_3 = {
   "class": "page-item"
 };
-
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Next");
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
@@ -405,7 +394,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "preserve-scroll": ""
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_3];
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Previous")];
     }),
     _: 1
     /* STABLE */
@@ -419,14 +408,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }])
   }, "Previous", 2
   /* CLASS */
-  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_4, [$props.next ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
+  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_3, [$props.next ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
     key: 0,
     "class": "page-link",
     href: $props.next,
     "preserve-scroll": ""
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_5];
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Next")];
     }),
     _: 1
     /* STABLE */
@@ -509,13 +498,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Index_vue_vue_type_template_id_2057cb50__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Index.vue?vue&type=template&id=2057cb50 */ "./resources/js/Pages/Time_Sheets/Index.vue?vue&type=template&id=2057cb50");
 /* harmony import */ var _Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Index.vue?vue&type=script&lang=js */ "./resources/js/Pages/Time_Sheets/Index.vue?vue&type=script&lang=js");
+<<<<<<< HEAD
 /* harmony import */ var D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+=======
+/* harmony import */ var C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+>>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
 
 
 
 
 ;
+<<<<<<< HEAD
 const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_2057cb50__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Time_Sheets/Index.vue"]])
+=======
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_2057cb50__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Time_Sheets/Index.vue"]])
+>>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
 /* hot reload */
 if (false) {}
 
@@ -537,7 +534,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Filter_vue_vue_type_template_id_09f80c58__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filter.vue?vue&type=template&id=09f80c58 */ "./resources/js/Shared/Filter.vue?vue&type=template&id=09f80c58");
 /* harmony import */ var _Filter_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filter.vue?vue&type=script&lang=js */ "./resources/js/Shared/Filter.vue?vue&type=script&lang=js");
 /* harmony import */ var _Filter_vue_vue_type_style_index_0_id_09f80c58_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Filter.vue?vue&type=style&index=0&id=09f80c58&lang=css */ "./resources/js/Shared/Filter.vue?vue&type=style&index=0&id=09f80c58&lang=css");
+<<<<<<< HEAD
 /* harmony import */ var D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+=======
+/* harmony import */ var C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+>>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
 
 
 
@@ -545,7 +546,11 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
+<<<<<<< HEAD
 const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Filter_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Filter_vue_vue_type_template_id_09f80c58__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Filter.vue"]])
+=======
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Filter_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Filter_vue_vue_type_template_id_09f80c58__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Filter.vue"]])
+>>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
 /* hot reload */
 if (false) {}
 
@@ -566,13 +571,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Pagination_vue_vue_type_template_id_7ed7fa14__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Pagination.vue?vue&type=template&id=7ed7fa14 */ "./resources/js/Shared/Pagination.vue?vue&type=template&id=7ed7fa14");
 /* harmony import */ var _Pagination_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pagination.vue?vue&type=script&lang=js */ "./resources/js/Shared/Pagination.vue?vue&type=script&lang=js");
+<<<<<<< HEAD
 /* harmony import */ var D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+=======
+/* harmony import */ var C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+>>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
 
 
 
 
 ;
+<<<<<<< HEAD
 const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Pagination_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Pagination_vue_vue_type_template_id_7ed7fa14__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Pagination.vue"]])
+=======
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Pagination_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Pagination_vue_vue_type_template_id_7ed7fa14__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Pagination.vue"]])
+>>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
 /* hot reload */
 if (false) {}
 

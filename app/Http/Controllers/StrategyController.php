@@ -21,22 +21,22 @@ class StrategyController extends Controller
     }
     public function index(Request $request, $id, $ismfo)
     {
-        //dd($id);
-        $data=[];
+        // dd($id);
+        $data = [];
 
-        if($ismfo==1){
+        if ($ismfo == 1) {
             //dd("true: ".$ismfo);
             $data = $this->model
-                ->where('idmfo',$id)
+                ->where('idmfo', $id)
                 ->with('mfos')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
-        }else{
-            $ismfo=0;
+        } else {
+            $ismfo = 0;
             //dd("false: ".$ismfo);
             $data = $this->model
-                ->where('idpaps',$id)
+                ->where('idpaps', $id)
                 ->with('paps')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
@@ -44,14 +44,14 @@ class StrategyController extends Controller
         }
 
 
-        return inertia('Strategies/Index',[
-            "data"=>$data,
-            "idpaps"=>$id,
-            "ismfo"=>$ismfo,
+        return inertia('Strategies/Index', [
+            "data" => $data,
+            "idpaps" => $id,
+            "ismfo" => $ismfo,
             "filters" => $request->only(['search']),
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -60,24 +60,24 @@ class StrategyController extends Controller
     public function create(Request $request, $id, $ismfo)
     {
         $mfos = MajorFinalOutput::get();
-        $paps=ProgramAndProject::get();
-        $idpaps=0;
-        $idmfo=0;
-        if($ismfo==1){
+        $paps = ProgramAndProject::get();
+        $idpaps = 0;
+        $idmfo = 0;
+        if ($ismfo == 1) {
             $idmfo = $id;
-        }else{
+        } else {
             $idpaps = $id;
         }
         //dd('$idmfo: '.$idmfo.'idpaps: '.$idpaps);
-        return inertia('Strategies/Create',[
-            'idpaps'=>$idpaps,
-            'idmfo'=>$idmfo,
-            'paps'=>$paps,
-            'mfos'=>$mfos,
-            'ismfo'=>$ismfo,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+        return inertia('Strategies/Create', [
+            'idpaps' => $idpaps,
+            'idmfo' => $idmfo,
+            'paps' => $paps,
+            'mfos' => $mfos,
+            'ismfo' => $ismfo,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -86,25 +86,24 @@ class StrategyController extends Controller
     public function store(Request $request)
     {
         //dd($request);
-        $ismfo='0';
+        $ismfo = '0';
 
         $attributes = $request->validate([
-            'idpaps'=>'required',
-            'idmfo'=>'required',
+            'idpaps' => 'required',
+            'idmfo' => 'required',
             'description' => 'required',
         ]);
         $this->model->create($attributes);
         //$request->pass='';
-        if($request->idpaps=='0'){
-            $ismfo='1';
-            return redirect('/strategies/'.$request->idmfo.'/'.$ismfo.'/strat/mfo')
-                ->with('message','Outcome added');
-        }else{
-            $ismfo='0';
-            return redirect('/strategies/'.$request->idpaps.'/'.$ismfo.'/strat/mfo')
-                ->with('message','Outcome added');
+        if ($request->idpaps == '0') {
+            $ismfo = '1';
+            return redirect('/strategies/' . $request->idmfo . '/' . $ismfo . '/strat/mfo')
+                ->with('message', 'Outcome added');
+        } else {
+            $ismfo = '0';
+            return redirect('/strategies/' . $request->idpaps . '/' . $ismfo . '/strat/mfo')
+                ->with('message', 'Outcome added');
         }
-
     }
 
 
@@ -114,9 +113,18 @@ class StrategyController extends Controller
     }
 
 
-    public function edit(Request $request, $id, $idpaps)
+    public function edit(Request $request, $id, $idpaps, $ismfo)
     {
-        $paps=ProgramAndProject::get();
+        $mfos = MajorFinalOutput::get();
+        $paps = ProgramAndProject::get();
+        $idpaps = 0;
+        $idmfo = 0;
+        if ($ismfo == 1) {
+            $idmfo = $id;
+        } else {
+            $idpaps = $id;
+        }
+        $paps = ProgramAndProject::get();
         $data = $this->model->where('id', $id)->first([
             'id',
             'description',
@@ -125,11 +133,14 @@ class StrategyController extends Controller
 
         return inertia('Strategies/Create', [
             "editData" => $data,
-            "paps"=>$paps,
-            "idpaps"=> $idpaps,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            "paps" => $paps,
+            "idpaps" => $idpaps,
+            'idmfo' => $idmfo,
+            'mfos' => $mfos,
+            'ismfo' => $ismfo,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -140,12 +151,12 @@ class StrategyController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
-            'description'=>$request->description,
-            'idpaps'=>$request->idpaps
+            'description' => $request->description,
+            'idpaps' => $request->idpaps
         ]);
 
-        return redirect('/strategies/'.$request->idpaps)
-                ->with('message','Strategy updated');
+        return redirect('/strategies/' . $request->idpaps)
+            ->with('message', 'Strategy updated');
     }
 
 
@@ -156,29 +167,29 @@ class StrategyController extends Controller
         //dd($strat->idpaps);
         $count_imp = ImplementationPlan::where('idstrategy', $id)->count();
         $count_act = Activity::where('strategy_id', $id)->count();
-        $ismfo="0";
-        if($strat->idpaps=="0"){
-            $ismfo="1";
+        $ismfo = "0";
+        if ($strat->idpaps == "0") {
+            $ismfo = "1";
         }
-        $msg="";
-        $status ="";
-        if($count_imp>0 || $count_act>0){
-            $msg="Unable to delete!";
-            if($count_imp>0){
-                $msg = $msg." \nDelete its child implementation plans first!";
+        $msg = "";
+        $status = "";
+        if ($count_imp > 0 || $count_act > 0) {
+            $msg = "Unable to delete!";
+            if ($count_imp > 0) {
+                $msg = $msg . " \nDelete its child implementation plans first!";
             }
-            if($count_act>0){
-                $msg = $msg." \nDelete its child activities first!";
+            if ($count_act > 0) {
+                $msg = $msg . " \nDelete its child activities first!";
             }
-            $status ="error";
-        }else{
-            $msg="GAD Issue successfully deleted!";
-            $status ="message";
+            $status = "error";
+        } else {
+            $msg = "GAD Issue successfully deleted!";
+            $status = "message";
 
             $data = $this->model->findOrFail($id);
             $data->delete();
         }
         //dd($request->raao_id);
-        return redirect('/strategies/'.$idpaps.'/'.$ismfo.'/strat/mfo')->with($status, $msg);
+        return redirect('/strategies/' . $idpaps . '/' . $ismfo . '/strat/mfo')->with($status, $msg);
     }
 }

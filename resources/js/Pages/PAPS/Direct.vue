@@ -25,10 +25,19 @@
                 </svg>
             </Link> -->
         </div>
-        <filtering v-if="filter" @closeFilter="filter=false">
+        <filtering v-if="filter" @closeFilter="filter = false">
+            <div v-if="$page.props.auth.user.department_code === '04'">
+                Filter by Office
+                <select v-model="FFUNCCOD" class="form-control" @change="filterMFOs()">
+                    <option v-for="FFUNCCOD in offices" :value="FFUNCCOD.FFUNCCOD">
+                        {{ FFUNCCOD.FFUNCTION }}
+                    </option>
+                </select>
+            </div>
+
             Filter by MFO
             <select v-model="mfosel" class="form-control" @change="filterData()">
-                <option v-for="mfo in mfos" :value="mfo.id">
+                <option v-for="mfo in mfos_data" :value="mfo.id">
                     {{ mfo.mfo_desc }}
                 </option>
             </select>
@@ -50,24 +59,41 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data" :key="dat.id">
-                                <td><div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div></td>
+                                <td>
+                                    <div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div>
+                                </td>
                                 <td>
                                     <!-- <div v-if="dat.type==='GAS'">General Administration and Support (GAS) - {{ dat.paps_desc }}</div> -->
-                                    <div >{{ dat.paps_desc }}</div>
+                                    <div>{{ dat.paps_desc }}</div>
                                 </td>
                                 <td>{{ dat.MOV }}</td>
                                 <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    <div class="dropdown dropstart">
+                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${ismfo}/strat/mfo`">Strategies</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/revision/${dat.id}`">PPA Profile</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li>
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                            <!--/{id}/{idinteroutcome}/edit-->
+                                            <li>
+                                                <Link class="dropdown-item"
+                                                    :href="`/strategies/${dat.id}/${ismfo}/strat/mfo`">Strategies</Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/revision/${dat.id}`">PPA Profile</Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete
+                                                </Link>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -83,7 +109,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <p >
+                        <p>
                             {{ data.from }} to {{ data.to }} of
                             {{ data.total }} entries
                         </p>
@@ -92,7 +118,10 @@
 
             </div>
         </div>
-
+        <!-- FFUNCCOD: {{ FFUNCCOD }} <br />
+        mfosel: {{ mfosel }} -->
+        <!-- {{ FFUNCCOD }} <br />
+        {{ offices }} -->
     </div>
 </template>
 <script>
@@ -102,6 +131,7 @@ export default {
     props: {
         data: Object,
         filters: Object,
+        offices: Object,
         // idinteroutcome: String,
         // idoutcome: String,
         // idmfo: String,
@@ -109,14 +139,17 @@ export default {
         mfos: Object
     },
     data() {
-        return{
+        return {
             search: this.$props.filters.search,
             filter: false,
             ismfo: 0,
+            mfos_data: [],
+            FFUNCCOD: "",
+            mfosel: "",
         }
     },
     watch: {
-            search: _.debounce(function (value) {
+        search: _.debounce(function (value) {
             this.$inertia.get(
                 "/paps/direct",
                 { search: value },
@@ -131,25 +164,39 @@ export default {
     components: {
         Pagination, Filtering,
     },
-
-    methods:{
-
-
+    mounted() {
+        this.mfos_data = this.mfos;
+    },
+    methods: {
         deleteMFO(id) {
             let text = "WARNING!\nAre you sure you want to delete the PAP?";
-              if (confirm(text) == true) {
-                this.$inertia.delete("/paps/" + id+"/");
+            if (confirm(text) == true) {
+                this.$inertia.delete("/paps/" + id + "/");
             }
         },
         showFilter() {
             //alert("show filter");
             this.filter = !this.filter
         },
-        async clearFilter(){
-            this.mfosel="";
+        async clearFilter() {
+            this.mfosel = "";
             this.filterData();
         },
-        async filterData(){
+        async filterMFOs() {
+            this.mfos_data = [];
+            // await axios.post("/paps/major/final/outputs/filter", { FFUNCCOD: this.form.FFUNCCOD }).then((response) => {
+            //     this.mfos_data = response.data.data
+            // });
+            try {
+                var my_url = "/paps/major/final/outputs/filter/" + this.FFUNCCOD;
+                // alert(my_url);
+                const response = await axios.get(my_url, { FFUNCCOD: this.FFUNCCOD });
+                this.mfos_data = response.data.data;
+            } catch (error) {
+                console.error("Error fetching MFOs:", error);
+            }
+        },
+        async filterData() {
             //alert(this.mfosel);
 
             this.$inertia.get(
@@ -168,17 +215,19 @@ export default {
 };
 </script>
 <style>
-            .row-centered {
-                text-align:center;
-            }
-            .col-centered {
-                display:inline-block;
-                float:none;
-                text-align:left;
-                margin-right:-4px;
-            }
-            .pos{
-                position: top;
-                top: 240px;
-            }
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+.pos {
+    position: top;
+    top: 240px;
+}
 </style>

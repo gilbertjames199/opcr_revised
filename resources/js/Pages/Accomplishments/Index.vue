@@ -18,21 +18,25 @@
                 </div>
 
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/accomplishments/${target_id}/create`">Add Accomplishment</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/accomplishments/${target_id}/create`">Add Accomplishment
+                    </Link>
                     From
-                    <input  type="date" class="frm-control-sm" v-model="accomp_date_from"/>
+                    <input type="date" class="frm-control-sm" v-model="accomp_date_from" />
                     To
-                    <input  type="date" class="frm-control-sm" v-model="accomp_date_to"/>
+                    <input type="date" class="frm-control-sm" v-model="accomp_date_to" />
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="filterByDate()">Filter</button>
                     <button class="btn btn-danger btn-sm mL-2 text-white" @click="clearAllFilter()">Clear Filters</button>
                 </div>
 
             </div>
             <Link :href="`/targets/return/${target_id}`">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                <path fill-rule="evenodd"
+                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+            </svg>
             </Link>
         </div>
         <div class="peers fxw-nw jc-sb ai-c">
@@ -69,7 +73,7 @@
                                 <td>{{ dat.accomplishment_qty }}</td>
                                 <td>{{ dat.remarks }}</td>
                                 <td>
-                                    <span v-if="dat.validated_status=='No'" class="td-one">
+                                    <span v-if="dat.validated_status == 'No'" class="td-one">
                                         {{ dat.validated_status }}
                                     </span>
                                     <span v-else>{{ dat.validated_status }}</span>
@@ -81,18 +85,28 @@
                                 <td>{{ dat.deterring_logistics }}</td>
                                 <td>{{ dat.deterring_timeliness }}</td> -->
                                 <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    <div class="dropdown dropstart">
+                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <li>
-                                                <button class="dropdown-item" @click="showModal(dat.id, dat.concerns_competency,dat.validated_date, dat.validated_remarks, dat.validated_status)" >Validations</button>
+                                                <button class="dropdown-item"
+                                                    @click="showModal(dat.id, dat.concerns_competency, dat.validated_date, dat.validated_remarks, dat.validated_status)">Validations</button>
                                             </li>
-                                            <li><Link class="dropdown-item" @click="editAccomplishment(dat.id, dat.validated_status)">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteUser(dat.id)">Delete</Link></li>
+                                            <li>
+                                                <Link class="dropdown-item"
+                                                    @click="editAccomplishment(dat.id, dat.validated_status)">Edit</Link>
+                                            </li>
+                                            <li>
+                                                <Link class="text-danger dropdown-item" @click="deleteUser(dat.id)">Delete
+                                                </Link>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -107,7 +121,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <p >
+                        <p>
                             {{ data.from }} to {{ data.to }} of
                             {{ data.total }} entries
                         </p>
@@ -116,6 +130,7 @@
 
             </div>
         </div>
+        <!--VALIDATION MODAL-->
         <ValidationModal v-if="displayModal" @close-modal-event="hideModal">
             <div>ID: {{ this.form.accomp_id }}</div>{{ form.val_date }}
             <!--<div>Description: {{ this.my_desc }}</div>-->
@@ -126,41 +141,24 @@
                 <option>No</option>
             </select>
             <label for="">Validated Remarks</label>
-            <input type="text"
-                    v-model="form.val_rem"
-                    class="form-control"
-                    autocomplete="chrome-off"
-                    :readonly="valid_status=='Yes'"
-            >
+            <input type="text" v-model="form.val_rem" class="form-control" autocomplete="chrome-off"
+                :readonly="valid_status == 'Yes'">
             <label for="">Validated Date</label>
-            <input type="date"
-                    v-model="form.val_date"
-                    class="form-control"
-                    autocomplete="chrome-off"
-                    :readonly="valid_status=='Yes'"
-                    @change="setdate()"
-            >
+            <input type="date" v-model="form.val_date" class="form-control" autocomplete="chrome-off"
+                :readonly="valid_status == 'Yes'" @change="setdate()">
             <hr />
-            <div v-if="valid_status==='Yes'">
-                <button type="button"
-                        class="btn btn-danger"
-                        style="font-weight: bold; color: white"
-                        @click="hideModal()">
-                            CLOSE
+            <div v-if="valid_status === 'Yes'">
+                <button type="button" class="btn btn-danger" style="font-weight: bold; color: white" @click="hideModal()">
+                    CLOSE
                 </button>
             </div>
             <div v-else>
-                <button type="button"
-                        class="btn btn-primary"
-                        style="font-weight: bold; color: white"
-                        @click="saveValidation()">
-                            SAVE
+                <button type="button" class="btn btn-primary" style="font-weight: bold; color: white"
+                    @click="saveValidation()">
+                    SAVE
                 </button>&nbsp;
-                <button type="button"
-                        class="btn btn-danger"
-                        style="font-weight: bold; color: white"
-                        @click="hideModal()">
-                            CANCEL
+                <button type="button" class="btn btn-danger" style="font-weight: bold; color: white" @click="hideModal()">
+                    CANCEL
                 </button>
             </div>
 
@@ -182,7 +180,7 @@ export default {
         target_description: String
     },
     data() {
-        return{
+        return {
             displayModal: false,
             form: useForm({
                 val_date: null,
@@ -199,13 +197,13 @@ export default {
             search: this.$props.filters.search,
         }
     },
-    computed:{
-        myDispModal(){
+    computed: {
+        myDispModal() {
             //return this.displayModal;
             return 1;
         }
     },
-    mounted(){
+    mounted() {
         //this.showModal('1','Description');
 
     },
@@ -214,7 +212,7 @@ export default {
         //:href="`/accomplishments/${dat.id}/list`"
         search: _.debounce(function (value) {
             this.$inertia.get(
-                "/accomplishments/"+this.target_id+'/list',
+                "/accomplishments/" + this.target_id + '/list',
                 {
                     search: value,
                     accomp_date_from: this.accomp_date_from,
@@ -229,22 +227,22 @@ export default {
         }, 300),
 
     },
-    methods:{
-        deleteUser(id){
+    methods: {
+        deleteUser(id) {
             let text = "WARNING!\nAre you sure you want to delete the record?";
             if (confirm(text) == true) {
                 //alert('target id: '+this.target_id);
-                this.$inertia.delete("/accomplishments/" + id+'/'+this.target_id);
+                this.$inertia.delete("/accomplishments/" + id + '/' + this.target_id);
             }
         },
         showModal(id, desc, dt, rm, stat) {
-            this.form.my_desc=desc;
-            this.form.accomp_id=id;
+            this.form.my_desc = desc;
+            this.form.accomp_id = id;
             this.displayModal = true;
-            this.form.val_date=dt;
-            this.form.val_rem=rm;
-            this.form.val_status=stat;
-            this.valid_status=stat;
+            this.form.val_date = dt;
+            this.form.val_rem = rm;
+            this.form.val_status = stat;
+            this.valid_status = stat;
             //alert('showModal'+this.displayModal);
         },
         hideModal() {
@@ -252,24 +250,24 @@ export default {
             this.displayModal = false;
             //alert('hideModal'+this.displayModal);
         },
-        saveValidation(){
-            this.form.targ_id=this.target_id;
+        saveValidation() {
+            this.form.targ_id = this.target_id;
             this.form.post("/accomplishments/validation", this.form);
             this.displayModal = false;
         },
-        editAccomplishment(id, validated_status){
+        editAccomplishment(id, validated_status) {
             //alert(validated_status);
-            if(validated_status==='No'){
-                this.$inertia.get("/accomplishments/" + id+'/'+this.target_id+'/edit');
-            }else if(validated_status===null){
-                this.$inertia.get("/accomplishments/" + id+'/'+this.target_id+'/edit');
-            }else{
+            if (validated_status === 'No') {
+                this.$inertia.get("/accomplishments/" + id + '/' + this.target_id + '/edit');
+            } else if (validated_status === null) {
+                this.$inertia.get("/accomplishments/" + id + '/' + this.target_id + '/edit');
+            } else {
                 alert("Already validated! You can't edit this accomplishment.")
             }
         },
-        filterByDate(){
+        filterByDate() {
             this.$inertia.get(
-                "/accomplishments/"+this.target_id+"/list",
+                "/accomplishments/" + this.target_id + "/list",
                 {
                     search: this.search,
                     accomp_date_from: this.accomp_date_from,
@@ -282,12 +280,12 @@ export default {
                 }
             );
         },
-        clearAllFilter(){
-            this.search=null;
-            this.accomp_date_from=null;
-            this.accomp_date_to=null;
+        clearAllFilter() {
+            this.search = null;
+            this.accomp_date_from = null;
+            this.accomp_date_to = null;
             this.$inertia.get(
-                "/accomplishments/"+this.target_id+"/list",
+                "/accomplishments/" + this.target_id + "/list",
                 {
                     /*search: this.search,
                     accomp_date_from: this.accomp_date_from,
@@ -301,37 +299,40 @@ export default {
             );
         },
 
-        filterAccomplishment(){
+        filterAccomplishment() {
 
         },
-        setdate(){
-            if(this.form.val_date!=null){
-                this.form.val_status="Yes"
-            }else{
-                this.form.val_status="No"
+        setdate() {
+            if (this.form.val_date != null) {
+                this.form.val_status = "Yes"
+            } else {
+                this.form.val_status = "No"
             }
-            if(this.form.val_date===""){
-                this.form.val_status="No"
+            if (this.form.val_date === "") {
+                this.form.val_status = "No"
             }
         }
     }
 };
 </script>
 <style>
-    .row-centered {
-        text-align:center;
-    }
-    .col-centered {
-        display:inline-block;
-        float:none;
-        text-align:left;
-        margin-right:-4px;
-    }
-    .pos{
-        position: top;
-        top: 240px;
-    }
-    .td-one{
-        color: red;
-    }
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+.pos {
+    position: top;
+    top: 240px;
+}
+
+.td-one {
+    color: red;
+}
 </style>

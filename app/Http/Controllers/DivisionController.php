@@ -15,12 +15,15 @@ class DivisionController extends Controller
         $this->model=$model;
     }
     public function index(Request $request, $FFUNCCOD){
-        $dept = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
+        // dd($FFUNCCOD);
+        $dept = FFUNCCOD::where('department_code', $FFUNCCOD)->first();
+
         $data = $this->model
-                    ->where('FFUNCCOD', $FFUNCCOD)
+                    ->where('department_code', $FFUNCCOD)
                     ->orderBy('created_at', 'desc')
                     ->paginate(10)
                     ->withQueryString();
+        // dd($dept);
         return inertia('Division/Index',[
                     "data"=>$data,
                     "dept"=>$dept,

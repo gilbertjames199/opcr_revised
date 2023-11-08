@@ -10,24 +10,25 @@
             <h2>{{ office }}</h2>
             &nbsp;
 
-            <div v-if="auth.user.office.ffunccod==='1031'">
+            <div v-if="auth.user.office.ffunccod === '1031'">
                 <button class="btn btn-primary mt-3 text-white"
-                    @click="showModalAd(auth.user.office.ffunccod, auth.user.office.office)"
-                    > Print Logframe
+                    @click="showModalAd(auth.user.office.ffunccod, auth.user.office.office)"> Print Logframe
                 </button>
             </div>
             <div v-else>
                 <button class="btn btn-primary mt-3 text-white"
-                    @click="showModal(auth.user.office.ffunccod, auth.user.office.office)"
-                    > Print Logframe
+                    @click="showModal(auth.user.office.ffunccod, auth.user.office.office)"> Print Logframe
                 </button>
 
             </div>
             <Link :href="`/logframe`">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                <path fill-rule="evenodd"
+                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+            </svg>
             </Link>
         </div>
         <div class="peers fxw-nw jc-sb ai-c">
@@ -51,7 +52,7 @@
                     </Link>
                 </div>
             </div>-->
-<!--
+            <!--
             <Link :href="`/mfos/${idinteroutcome}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -65,16 +66,21 @@
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
-                    <table class="table table-sm table-hover table-bordered border-dark" >
+                    <table class="table table-sm table-hover table-bordered border-dark">
                         <tbody>
                             <tr>
                                 <td>SOCIETAL GOAL</td>
-                                <td v-for="soc in societal" colspan="4">{{ soc.description }}</td>
+                                <td colspan="4">
+                                    <div v-for="soc in societal">
+                                        <div align="justify" v-html="soc.description"></div>
+                                        <hr>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>SECTOR OUTCOMES</td>
                                 <td colspan="4">
-                                    <div v-if="FFUNCCOD===1031">
+                                    <div v-if="FFUNCCOD === 1031">
                                         <div v-if="sec_econ">
                                             Economic Services Sector:
                                             {{ sec_econ }}
@@ -94,7 +100,8 @@
                                     </div>
                                     <div v-else>
                                         <div v-for="sec in sec_goal">
-                                            {{ sec.goal_description }}
+                                            <div align="justify" v-html="sec.goal_description"></div>
+                                            <!-- {{ sec.goal_description }} -->
                                         </div>
                                     </div>
                                 </td>
@@ -102,18 +109,21 @@
                             <tr>
                                 <td>ORGANIZATIONAL OUTCOME</td>
                                 <td colspan="4">
-                                <div v-for="org in organizational">
-                                    <div> {{ org.goal_description }}</div>
-                                </div>
-                            </td>
+                                    <div v-for="org in organizational">
+                                        <!-- <div> {{ org.goal_description }}</div> -->
+                                        <div align="justify" v-html="org.goal_description"></div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr v-for="(mfo, index) in mfos" :key="index">
                                 <td :rowspan="mfo_rowspan" v-if="index == 0">MAJOR FINAL OUTPUTS</td>
-                                <td><Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link></td>
+                                <td>
+                                    <Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link>
+                                </td>
                                 <td class="pL-2" colspan="2">
                                     <div v-for="pap in mfo.paps">
                                         <a :href="`/revision/${pap.id}`" target="_blank">{{ pap.paps_desc }}</a><br>
-                                        <span v-if="pap.MOV!=='-'">(<i>MOV: {{ pap.MOV }}</i>)</span>
+                                        <span v-if="pap.MOV !== '-'">(<i>MOV: {{ pap.MOV }}</i>)</span>
                                         <div style="color: white"> .</div>
                                     </div>
                                 </td>
@@ -168,20 +178,20 @@ export default {
         // filters: Object,
     },
     data() {
-        return{
+        return {
             //search: this.$props.filters.search,
             mfo_rowspan: 0,
             displayModal: false,
         }
     },
-    mounted(){
+    mounted() {
         //this.isOne();
-        this.mfo_rowspan=this.mfos.length;
+        this.mfo_rowspan = this.mfos.length;
     },
     watch: {
-            search: _.debounce(function (value) {
+        search: _.debounce(function (value) {
             this.$inertia.get(
-                "/paps/"+this.idmfo,
+                "/paps/" + this.idmfo,
                 { search: value },
                 {
                     preserveScroll: true,
@@ -191,9 +201,9 @@ export default {
             );
         }, 300),
     },
-    computed:{
-        officeCap(){
-            var cap=this.office;
+    computed: {
+        officeCap() {
+            var cap = this.office;
             return cap;
         }
     },
@@ -201,29 +211,32 @@ export default {
         Pagination, Filtering, Modal,
     },
 
-    methods:{
+    methods: {
 
-        getToRep(ffunccod, ffunction){
+        getToRep(ffunccod, ffunction) {
             // alert(data[0].FFUNCCOD);
-            var linkt="http://";
+            var linkt = "http://";
             var jasper_ip = this.jasper_ip;
-            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FLogFrame&reportUnit=%2Freports%2Fplanning_system%2FLogFrame%2FLogframe&standAlone=true&decorate=no&output=pdf';
+            //var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FLogFrame&reportUnit=%2Freports%2Fplanning_system%2FLogFrame%2FLogframe&standAlone=true&decorate=no&output=pdf';
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FNLogFrame%2FLogframe&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FNLogFrame&standAlone=true&decorate=no&output=pdf'
             var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
-            var link1 = linkt + jasper_ip +jasper_link + params;
+            var link1 = linkt + jasper_ip + jasper_link + params;
+            // alert('getToRep: ' + link1);
             return link1;
         },
-        showModal(ffunccod, ffunction){
+        showModal(ffunccod, ffunction) {
             // alert(ffunccod+"\n"+ffunction);
             this.my_link = this.getToRep(ffunccod, ffunction);
             this.displayModal = true;
         },
-        showModalAd(ffunccod, ffunction){
+        showModalAd(ffunccod, ffunction) {
             //alert("showModalAd\n"+ffunccod+"\n"+ffunction);
-            var linkt="http://";
+            var linkt = "http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLogframe_spcl%2FMAIN_LOGFRAME&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLogframe_spcl&decorate=no&output=pdf'
             var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
-            var link1 = linkt + jasper_ip +jasper_link + params;
+            var link1 = linkt + jasper_ip + jasper_link + params;
+            // alert('showModalAd: ' + link1);
             this.displayModal = true;
             this.my_link = link1;
 
@@ -236,17 +249,19 @@ export default {
 };
 </script>
 <style>
-            .row-centered {
-                text-align:center;
-            }
-            .col-centered {
-                display:inline-block;
-                float:none;
-                text-align:left;
-                margin-right:-4px;
-            }
-            .pos{
-                position: top;
-                top: 240px;
-            }
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+.pos {
+    position: top;
+    top: 240px;
+}
 </style>

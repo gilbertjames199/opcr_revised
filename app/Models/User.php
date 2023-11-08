@@ -15,8 +15,8 @@ use App\Models\Permission;
 
 //for email verification
 use Illuminate\Auth\Events\Registered;
-
-class User extends Authenticatable implements HasMedia, MustVerifyEmail
+//, MustVerifyEmail
+class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
 
@@ -25,10 +25,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     protected $primaryKey = "recid";
     protected $rememberTokenName = false;
     protected $fillable = [
-        'name',
+        'FullName',
+        'UserName',
+        'UserPassword',
+        'UserType',
         'email',
-        'email_verified_at',
-        'password'
+        'department_code',
+        'office',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -56,11 +60,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
-
     }
     //,'user_id','permission_id'
-    public function permissions(){
-        return $this->belongsToMany(Permission::class,'permission_user')->withPivot('permission_id');
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'permission_user')->withPivot('permission_id');
     }
 
     //for email verification
@@ -68,6 +72,4 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     {
         event(new Registered($value));
     }
-
-
 }

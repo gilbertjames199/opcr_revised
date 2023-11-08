@@ -4,10 +4,13 @@
             <h3>{{ pageTitle }} Division division_outputs</h3>
             <!-- <h4>{{ dept.FFUNCTION }}</h4> -->
             <Link :href="`/division_outputs`">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                <path fill-rule="evenodd"
+                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+            </svg>
             </Link>
         </div>
 
@@ -41,63 +44,62 @@
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
-                <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
+                <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">
                     Save changes
                 </button>
             </form>
         </div>
 
     </div>
-
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
 import Places from "@/Shared/PlacesShared";
 
 export default {
-        props: {
-            editData: Object,
-            mfos: Object,
-            divisions: Object,
-        },
+    props: {
+        editData: Object,
+        mfos: Object,
+        divisions: Object,
+    },
 
-        data() {
-            return {
-                submitted: false,
-                form: useForm({
-                    output: "",
-                    idmfo: "",
-                    division_id: "",
-                    id: null
-                }),
-                pageTitle: ""
-            };
-        },
+    data() {
+        return {
+            submitted: false,
+            form: useForm({
+                output: "",
+                idmfo: "",
+                division_id: "",
+                id: null
+            }),
+            pageTitle: ""
+        };
+    },
 
-        mounted() {
+    mounted() {
+
+        if (this.editData !== undefined) {
+            this.pageTitle = "Edit"
+            this.form.output = this.editData.output
+            this.form.idmfo = this.editData.idmfo
+            this.form.division_id = this.editData.division_id
+            this.form.id = this.editData.id
+        } else {
+            this.pageTitle = "Create"
+            //this.form.FFUNCCOD = this.FFUNCCOD
+        }
+
+    },
+
+    methods: {
+        submit() {
 
             if (this.editData !== undefined) {
-                this.pageTitle= "Edit"
-                this.form.output=this.editData.output
-                this.form.idmfo=this.editData.idmfo
-                this.form.division_id=this.editData.division_id
-                this.form.id =this.editData.id
+                this.form.patch("/division_outputs/", this.form);
             } else {
-                this.pageTitle = "Create"
-                //this.form.FFUNCCOD = this.FFUNCCOD
+                this.form.post("/division_outputs/store", this.form);
             }
-
         },
-
-        methods: {
-            submit() {
-
-                if (this.editData !== undefined) {
-                    this.form.patch("/division_outputs/", this.form);
-                } else {
-                    this.form.post("/division_outputs/store", this.form);
-                }
-            },
-        },
-    };
-    </script>
+    },
+};
+</script>

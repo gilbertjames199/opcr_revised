@@ -20,31 +20,32 @@ class HandleInertiaRequests extends Middleware
     {
         if (auth()->check()) {
             $profile =  User::where('recid', auth()->user()->recid)->first();
-            $office = DB::connection('mysql2')->table('offices')->where('department_code',auth()->user()->department_code)->first();
+            $office = DB::connection('mysql2')->table('offices')->where('department_code', auth()->user()->department_code)->first();
 
             return array_merge(parent::share($request), [
                 'auth' => auth()->user() ? [ //if there is a user
                     'user' => [
-                         'FullName' => ucfirst(auth()->user()->FullName),
-                         'UserName' =>auth()->user()->UserName,
-                         'UserType' =>auth()->user()->UserType,
-                         'department_code' =>auth()->user()->department_code,
-                         'office'=>$office,
+                        'FullName' => ucfirst(auth()->user()->FullName),
+                        'UserName' => auth()->user()->UserName,
+                        'UserType' => auth()->user()->UserType,
+                        'department_code' => auth()->user()->department_code,
+                        'office' => $office,
 
-                    //     'level' =>auth()->user()->level,
-                    //     'municipality' =>auth()->user()->municipality,
-                    //     'barangay' =>auth()->user()->barangay,
-                    //     'photo' => $profile ? $profile->getUrl() : ''
+                        //     'level' =>auth()->user()->level,
+                        //     'municipality' =>auth()->user()->municipality,
+                        //     'barangay' =>auth()->user()->barangay,
+                        //     'photo' => $profile ? $profile->getUrl() : ''
                     ]
                 ] : null,
                 'flash' => [
                     'message' => fn () => $request->session()->get('message'),
                     'error' => fn () => $request->session()->get('error'),
+                    'info' => fn () => $request->session()->get('info'),
+                    'deleted' => fn () => $request->session()->get('deleted'),
                 ],
             ]);
         }
 
         return [];
-
     }
 }

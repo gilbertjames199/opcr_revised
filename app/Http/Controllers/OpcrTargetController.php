@@ -139,7 +139,7 @@ class OpcrTargetController extends Controller
     }
     public function create(Request $request, $opcr_list_id){
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
-        //dd($request->idpaps);
+        // dd($request->idpaps);
         //
         $paps = ProgramAndProject::where('FFUNCCOD', $opcr_list->FFUNCCOD)->get();
         $success_indicators = SuccessIndicator::where('idpaps', $request->idpaps)->get();

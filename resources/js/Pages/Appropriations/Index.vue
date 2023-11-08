@@ -10,16 +10,18 @@
             <h3>Programmed Appropriation and Obligation by Object of Expenditure </h3>
             <div class="peer">
                 <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
-                <Link class="btn btn-primary btn-sm"
-                        :href="`/appropriations/create/${paps.id}`">
-                    Add Appropriations
+                <Link class="btn btn-primary btn-sm" :href="`/appropriations/create/${paps.id}`">
+                Add Appropriations
                 </Link>
                 <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
                 <Link :href="`/AIP/direct`">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                    </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
                 </Link>
             </div>
             <!--/AIP/direct
@@ -56,19 +58,28 @@
                                 <td>{{ dat.object_of_expenditure }}</td>
                                 <td>{{ dat.account_code }}</td>
                                 <td>{{ dat.category }}</td>
-                                <td style="text-align: right">{{ format_number_conv(dat.first_sem,2,true) }}</td>
-                                <td style="text-align: right">{{ format_number_conv(dat.second_sem,2,true) }}</td>
-                                <td style="text-align: right">{{ format_number_conv(dat.budget_year,2,true) }}</td>
+                                <td style="text-align: right">{{ format_number_conv(dat.first_sem, 2, true) }}</td>
+                                <td style="text-align: right">{{ format_number_conv(dat.second_sem, 2, true) }}</td>
+                                <td style="text-align: right">{{ format_number_conv(dat.budget_year, 2, true) }}</td>
                                 <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    <div class="dropdown dropstart">
+                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/appropriations/${dat.id}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteApprop(dat.id)">Delete</Link></li>
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/appropriations/${dat.id}/edit`">Edit
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="text-danger dropdown-item" @click="deleteApprop(dat.id)">Delete
+                                                </Link>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -115,16 +126,16 @@ export default {
         // filters: Object,
     },
     data() {
-        return{
+        return {
             my_link: "",
             displayModal: false,
             //search: this.$props.filters.search,
         }
     },
     watch: {
-            search: _.debounce(function (value) {
+        search: _.debounce(function (value) {
             this.$inertia.get(
-                "/paps/"+this.idmfo,
+                "/paps/" + this.idmfo,
                 { search: value },
                 {
                     preserveScroll: true,
@@ -138,9 +149,9 @@ export default {
         Pagination, Filtering, Modal,
     },
 
-    methods:{
+    methods: {
 
-        showCreate(){
+        showCreate() {
             this.$inertia.get(
                 "/targets/create",
                 {
@@ -159,17 +170,17 @@ export default {
                 this.$inertia.delete("/appropriations/" + id);
             }
         },
-        getToRep(ffunccod, ffunction, MOOE, PS){
+        getToRep(ffunccod, ffunction, MOOE, PS) {
             // alert(data[0].FFUNCCOD);
-            var linkt="http://";
+            var linkt = "http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR_Standard&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Standard%2FOPCR&standAlone=true&decorate=no&output=pdf';
             var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&MOOE=' + MOOE + '&PS=' + PS;
-            var link1 = linkt + jasper_ip +jasper_link + params;
+            var link1 = linkt + jasper_ip + jasper_link + params;
             return link1;
         },
 
-        showModal(ffunccod, ffunction, MOOE, PS){
+        showModal(ffunccod, ffunction, MOOE, PS) {
             this.my_link = this.getToRep(ffunccod, ffunction, MOOE, PS);
             this.displayModal = true;
         },
@@ -181,17 +192,19 @@ export default {
 };
 </script>
 <style>
-            .row-centered {
-                text-align:center;
-            }
-            .col-centered {
-                display:inline-block;
-                float:none;
-                text-align:left;
-                margin-right:-4px;
-            }
-            .pos{
-                position: top;
-                top: 240px;
-            }
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+.pos {
+    position: top;
+    top: 240px;
+}
 </style>
