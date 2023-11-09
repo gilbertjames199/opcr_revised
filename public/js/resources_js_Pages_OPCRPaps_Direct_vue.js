@@ -23,6 +23,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -43,18 +45,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     mfos: Object
   },
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       my_link: "",
       displayModal: false,
       search: this.$props.filters.search,
       filter: false,
-      FFUNCCOD: "",
-      mfos_data: [],
-      filter_FFUNCCOD: "",
-      filter_mooe: "",
-      filter_FFUNCTION: "",
-      filter_Ps: ""
-    };
+      FFUNCCOD: ""
+    }, _defineProperty(_ref, "FFUNCCOD", this.$props.filters.FFUNCOD), _defineProperty(_ref, "mfos_data", []), _defineProperty(_ref, "filter_FFUNCCOD", ""), _defineProperty(_ref, "filter_mooe", ""), _defineProperty(_ref, "filter_FFUNCTION", ""), _defineProperty(_ref, "filter_Ps", ""), _ref;
   },
   watch: {
     search: _.debounce(function (value) {

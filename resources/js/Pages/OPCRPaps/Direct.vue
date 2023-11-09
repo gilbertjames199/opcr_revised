@@ -203,6 +203,7 @@ export default {
             search: this.$props.filters.search,
             filter: false,
             FFUNCCOD: "",
+            FFUNCCOD: this.$props.filters.FFUNCOD,
             mfos_data: [],
             filter_FFUNCCOD: "",
             filter_mooe: "",
