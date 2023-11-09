@@ -69,6 +69,7 @@ class IndividualFinalOutputController extends Controller
         $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
         $showPerPage = 10;
         $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
+        dd("individual");
         return inertia('IndividualOutputs/Index', [
             "data" => $paginatedResult,
         ]);
@@ -356,16 +357,6 @@ class IndividualFinalOutputController extends Controller
                                     $time_range_code
                                 );
                             }
-                            // $details = [
-                            //     "index" => $rowIndex,
-                            //     "ipcr_code" => $ipcr_code,
-                            //     "dept_code" => $dept_code,
-                            //     "dept" => $dept,
-                            //     "FFUNCCOD" => $FFUNCCOD,
-                            //     "my_mfo" => $mfo_desc
-                            // ];
-
-                            // array_push($row_index_arr, $details);
                         }
                     }
                 }
@@ -466,37 +457,9 @@ class IndividualFinalOutputController extends Controller
         $time_based,
         $time_range_code
     ) {
-        // $my_indiviudal = IndividualFinalOutput::where("ipcr_code", $ipcr_code)
-        //     ->where("idmfo", $idmfo)
-        //     ->where("idsubmfo", $idsubmfo)
-        //     ->where("id_div_output", $id_div_output)
-        //     ->where("individual_output", $indiv)
-        //     ->first();
-        // if (!$my_indiviudal) {
-        //     $ind = new IndividualFinalOutput;
-        //     $ind->ipcr_code = $ipcr_code;
-        //     $ind->idmfo = $idmfo;
-        //     $ind->idsubmfo = $idsubmfo;
-        //     $ind->id_div_output = $id_div_output;
-        //     $ind->individual_output = $indiv;
-        //     $ind->performance_measure = $perf;
-        //     $ind->success_indicator = $success;
-        //     $ind->concerned_indiviual = $con;
-        //     $ind->quantity_type = $quantity_type;
-        //     $ind->quality_error = $quality_error;
-        //     $ind->time_based = $time_based;
-        //     $ind->time_range_code = $time_range_code;
-        //     $ind->save();
-
-        // }
-        // dd($)
         $my_individual = IndividualFinalOutput::updateOrInsert(
             [
                 'ipcr_code' => $ipcr_code,
-                // 'idmfo' => $idmfo,
-                // 'idsubmfo' => $idsubmfo,
-                // 'id_div_output' => $id_div_output,
-                // 'individual_output' => $indiv,
             ],
             [
                 'ipcr_code' => $ipcr_code,

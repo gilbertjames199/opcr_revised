@@ -76,6 +76,7 @@ use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
 use App\Http\Controllers\IPCRController;
+use App\Http\Controllers\TimeRangeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEmployeesController;
 use Illuminate\Support\Facades\Mail;
@@ -690,6 +691,16 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [IndividualFinalOutputController::class, 'destroy']);
         Route::post('/import/file/data', [IndividualFinalOutputController::class, 'importIPCR']);
     });
+
+    Route::prefix('/timerange')->group(function () {
+        Route::get('/', [TimeRangeController::class, 'index']);
+        Route::get('/create', [TimeRangeController::class, 'create']);
+        Route::post('/store', [TimeRangeController::class, 'store']);
+        Route::get('/{id}/edit', [TimeRangeController::class, 'edit']);
+        Route::patch('/', [TimeRangeController::class, 'update']);
+        Route::delete('/{id}', [IndividualFinalOutputController::class, 'destroy']);
+        Route::post('/import/file/data', [TimeRangeController::class, 'importIPCR']);
+    });
     Route::prefix('/division_outputs')->group(function () {
         Route::get('/', [DivisionOutputController::class, 'index']);
         Route::get('/create', [DivisionOutputController::class, 'create']);
@@ -839,6 +850,9 @@ Route::prefix('print')->group(function () {
     Route::get('/jasuser', [RAAOController::class, 'raao_jasper_user']);
     Route::get('/LogFrame/{FFUNCCOD}', [LogFrameController::class, 'printLog']);
 });
+Route::prefix('target/print')->group(function () {
+    Route::get('/types', [TargetController::class, 'target_types']);
+});
 Route::prefix('opcr/print')->group(function () {
     Route::get('/rating/form', [OfficePerformanceCommitmentRatingController::class, 'print_class']);
     Route::get('/rating', [OfficePerformanceCommitmentRatingController::class, 'print_class3']);
@@ -849,6 +863,7 @@ Route::prefix('opcr/print')->group(function () {
     Route::get('/rating', [OfficePerformanceCommitmentRatingController::class, 'print_rating']);
     Route::get('/office', [OfficePerformanceCommitmentRatingController::class, 'print_office']);
 });
+
 Route::get('test/opcr_id/{opcr_id}', [OfficePerformanceCommitmentRatingListController::class, 'getRating']);
 Route::prefix('printlog')->group(function () {
     Route::get('/SocGoal', [LogFrameController::class, 'SocGoal']);
