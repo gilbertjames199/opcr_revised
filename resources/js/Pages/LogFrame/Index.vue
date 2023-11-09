@@ -70,6 +70,10 @@
                                                     Print Logframe
                                                 </button>
                                             </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/opcrlist/${functional.FFUNCCOD}`">OPCR
+                                                </Link>
+                                            </li>
                                             <!-- <li><Link class="dropdown-item" :href="`/logframe/${functional.FFUNCCOD}`">View Logframe</Link></li> -->
                                         </ul>
                                     </div>

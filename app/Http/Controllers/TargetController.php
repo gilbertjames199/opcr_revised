@@ -557,45 +557,4 @@ class TargetController extends Controller
     public function direct_targets(Request $request)
     {
     }
-    // ,
-    //     $idsemestral,
-    //     $employee_name,
-    //     $emp_status,
-    //     $office,
-    //     $division,
-    //     $immediate,
-    //     $next_higher,
-    //     $sem,
-    //     $year
-    public function target_types(
-        Request $request
-    ) {
-        $arr = [
-            [
-                "employee_name" => $request->employee_name,
-                "emp_status" => $request->emp_status,
-                "office" => $request->office,
-                "division" => $request->division,
-                "immediate" => $request->immediate,
-                "next_higher" => $request->next_higher,
-                "sem" => $request->sem,
-                "year" => $request->year,
-                "idsemestral" => $request->idsemestral,
-                "type" => "Core Function"
-            ],
-            [
-                "employee_name" => $request->employee_name,
-                "emp_status" => $request->emp_status,
-                "office" => $request->office,
-                "division" => $request->division,
-                "immediate" => $request->immediate,
-                "next_higher" => $request->next_higher,
-                "sem" => $request->sem,
-                "year" => $request->year,
-                "idsemestral" => $request->idsemestral,
-                "type" => "Support Function"
-            ]
-        ];
-        return $arr;
-    }
 }
