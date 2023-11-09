@@ -136,39 +136,6 @@
                         </li>
                     </ul>
                 </li>
-<<<<<<< HEAD
-                        <li>
-                            <Link class="sidebar-link" href="/mfos/direct" :class="{'active': $page.url === '/mfos/direct'}">
-
-                                <span class="title">Major Final Output</span>
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link class="sidebar-link" href="/paps/direct" :class="{'active': $page.url === '/paps/direct'}">
-
-                                <span class="title">Programs, Activities, Projects</span>
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link class="sidebar-link" :href="`/logframe/${$page.props.auth.user.office.ffunccod}`" :class="{'active': $page.url === `/logframe/${$page.props.auth.user.office.ffunccod}`}">
-                                <span class="title">View Logframe</span>
-                            </Link>
-                        </li>
-                        </ul>
-                    </li>
-
-                <li class="nav-item">
-                    <Link class="sidebar-link" href="/opcrlist" :class="{'active': $page.url === '/opcrlist'}">
-                        <span></span>
-                        <span class="icon-holder">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
-                                <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z"/>
-                            </svg>
-                        </span>
-                        <span class="title">OPCR</span>
-=======
 
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/opcrlist" :class="{ 'active': $page.url === '/opcrlist' }">
@@ -184,21 +151,10 @@
                         </svg>
                     </span>
                     <span class="title">OPCR</span>
->>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
                     </Link>
                 </li>
 
                 <!-- <li class="nav-item">
-<<<<<<< HEAD
-                    <Link class="sidebar-link" href="/IPCR/direct" :class="{'active': $page.url === '/IPCR/direct'}">
-                        <span></span>
-                        <span class="icon-holder">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter-square-fill" viewBox="0 0 16 16">
-                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm.5 5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1 0-1zM4 8.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm2 3a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5z"/>
-                            </svg>
-                        </span>
-                        <span class="title">IPCR</span>
-=======
                     <Link class="sidebar-link" href="/IPCR/direct" :class="{ 'active': $page.url === '/IPCR/direct' }">
                     <span></span>
                     <span class="icon-holder">
@@ -212,7 +168,6 @@
                             </svg>
                     </span>
                     <span class="title">IPCR</span>
->>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
                     </Link>
                 </li> -->
 
@@ -223,16 +178,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
                             </svg> -->
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
-                                <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z"/>
-                            </svg> -->
-                <!-- </span>
-                        <span class="title">AIP</span>
-                    </Link>
-                </li> -->
-
-                <li class="nav-item">
-<<<<<<< HEAD
+                            <li>
                     <Link class="sidebar-link" href="/AIP/direct" :class="{'active': $page.url === '/AIP/direct'}">
                         <span></span>
                         <span class="icon-holder">
@@ -242,12 +188,11 @@
                             </svg>
                         </span>
                         <span class="title">LBP Form</span>
-=======
+ </Link>
                     <Link class="sidebar-link" href="/AIP/direct" :class="{ 'active': $page.url === '/AIP/direct' }">
                     <span></span>
                     <span class="icon-holder">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-card-text" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
                             <path
                                 d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
                             <path
@@ -258,7 +203,7 @@
                             </svg> -->
                     </span>
                     <span class="title">LBP Form</span>
->>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
+
                     </Link>
                 </li>
                 <!-- <li class="nav-item">
@@ -277,21 +222,6 @@
                 </li> -->
 
                 <li class="nav-item">
-<<<<<<< HEAD
-                    <Link class="sidebar-link" href="/AddAccomplishment/" :class="{'active': $page.url === '/AddAccomplishment/'}">
-                        <span></span>
-                        <span class="icon-holder">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-fill" viewBox="0 0 16 16">
-                                 <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z"/>
-                                    </svg>
-                        </span>
-                        <span class="title">Accomplishment Report</span>
-                    </Link>
-                </li>
-
-                <hr >
-                <li  class="nav-item dropdown" >
-=======
                     <Link class="sidebar-link" href="/AddAccomplishment/"
                         :class="{ 'active': $page.url === '/AddAccomplishment/' }">
                     <span></span>
@@ -368,7 +298,6 @@
 
                 <!--Other Libraries-->
                 <li class="nav-item dropdown">
->>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
                     <a class="dropdown-toggle" href="javascript:void(0);">
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
@@ -431,82 +360,8 @@
                                 </li>
                             </ul>
                         </li>
-<<<<<<< HEAD
-                        <li>
-                            <Link class="sidebar-link" href="/EconomicAgenda" :class="{'active': $page.url === '/EconomicAgenda'}">
-                                <span class="title">Socio-Economic Agenda</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link class="sidebar-link" href="/SDG" :class="{'active': $page.url === '/SDG'}">
-                                <span class="title">Sustainable Devt Goals</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link class="sidebar-link" href="/ELA" :class="{'active': $page.url === '/ELA'}">
-                                <span class="title">Executive Legislative Agenda</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link class="sidebar-link" href="/ResearchAgenda" :class="{'active': $page.url === '/ResearchAgenda'}">
-                                <span class="title">Research Agenda</span>
-                            </Link>
-                        </li>
-                    </ul>
-                </li>
-                <li  class="nav-item dropdown" >
-                    <a class="dropdown-toggle" href="javascript:void(0);">
-                        <span class="title">Outcomes</span>
-                        <span class="arrow">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-                            </svg>
-                        </span>
-                    </a>
-                    <ul  class="dropdown-menu">
-                        <li>
-                            <Link class="sidebar-link" href="/Organization" :class="{'active': $page.url === '/Organization'}">
-
-                                <span class="title">Organizational Outcomes</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link class="sidebar-link" href="/Sectoral" :class="{'active': $page.url === '/Sectoral'}">
-
-                                <span class="title">Sectoral Outcomes</span>
-                            </Link>
-                        </li>
-                    </ul>
-                </li>
-                <!--***************************-->
-                <li  class="nav-item dropdown" >
-                    <a class="dropdown-toggle" href="javascript:void(0);">
-                        <span class="title">Outputs</span>
-                        <span class="arrow">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-                            </svg>
-                        </span>
-                    </a>
-                    <ul  class="dropdown-menu">
-                        <li>
-                            <Link class="sidebar-link" href="/individual/outputs" :class="{'active': $page.url === '/individual/outputs'}">
-                                <span class="title">Individual Outputs</span>
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link class="sidebar-link" href="/division_outputs" :class="{'active': $page.url === '/division_outputs'}">
-                                <span class="title">Division Outputs</span>
-                            </Link>
-                        </li>
-                    </ul>
-                </li>
-                <!--****************************-->
-=======
 
                         <!--****************************-->
->>>>>>> 1fc75b325aef4a34762d330380e8e48fc987cd42
                         <li>
                             <Link class="sidebar-link" href="/HGDGChecklist"
                                 :class="{ 'active': $page.url === '/HGDGChecklist' }">

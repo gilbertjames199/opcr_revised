@@ -149,8 +149,8 @@
 
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <!-- <pagination :next="data.next_page_url" :prev="data.prev_page_url" /> -->
-                        <Pagination_Preserved :links="data.links" />
+                        <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
+                        <!-- <Pagination_Preserved :links="data.links" /> -->
                     </div>
                 </div>
                 <div class="row justify-content-center">
