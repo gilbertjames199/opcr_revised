@@ -3079,6 +3079,22 @@ var map = {
 		"./resources/js/Pages/Targets/Index.vue",
 		"resources_js_Pages_Targets_Index_vue"
 	],
+	"./TimeRange/Create": [
+		"./resources/js/Pages/TimeRange/Create.vue",
+		"resources_js_Pages_TimeRange_Create_vue"
+	],
+	"./TimeRange/Create.vue": [
+		"./resources/js/Pages/TimeRange/Create.vue",
+		"resources_js_Pages_TimeRange_Create_vue"
+	],
+	"./TimeRange/Index": [
+		"./resources/js/Pages/TimeRange/Index.vue",
+		"resources_js_Pages_TimeRange_Index_vue"
+	],
+	"./TimeRange/Index.vue": [
+		"./resources/js/Pages/TimeRange/Index.vue",
+		"resources_js_Pages_TimeRange_Index_vue"
+	],
 	"./Time_Sheets/Index": [
 		"./resources/js/Pages/Time_Sheets/Index.vue",
 		"resources_js_Pages_Time_Sheets_Index_vue"

@@ -1,11 +1,12 @@
 <template>
     <Head>
-        <title>Home</title>
+        <title>Divisions</title>
     </Head>
 
-    <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
-    </p>-->
     <div class="row gap-20 masonry pos-r">
+        <div class="peers fxw-nw jc-sb ai-c">
+            <!-- <h4>{{ dept.FFUNCTION }}</h4> -->
+        </div>
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Time Range</h3>
             <div class="peers">
@@ -13,11 +14,11 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/TimelinessRemarks/create/${idpaps}`">Add Timeliness
-                    Remarks</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
-                </div>
-                <Link :href="`/OPCRpaps/direct`">
+                    <!-- <Link class="btn btn-primary btn-sm" :href="`/individual/outputs/create`">Add IFO</Link> -->
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal()">Import</button>
+                    <!-- <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
+                </div>&nbsp;
+                <Link :href="`/logframe`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                     viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -27,12 +28,7 @@
                 </svg>
                 </Link>
             </div>
-            <!-- <Link :href="'/Sectoral'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
-            </Link> -->
+
         </div>
 
         <div class="masonry-sizer col-md-6"></div>
@@ -43,14 +39,24 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Timeliness Remarks</th>
+                                <th>IPCR Code</th>
+                                <th>Major Final Output</th>
+                                <th>Sub MFO</th>
+                                <th>Division Output</th>
+                                <th>Individual Output</th>
+                                <th>Performance Measure</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            <tr v-for="dat in data.data">
-                                <td>{{ dat.timeliness_remarks }}</td>
+                            <!-- <tr v-for="dat in data.data">
+                                <td>{{ dat.ipcr_code }}</td>
+                                <td>{{ dat.mfo_desc }}</td>
+                                <td>{{ dat.submfo_description }}</td>
+                                <td>{{ dat.output }}</td>
+                                <td>{{ dat.individual_output }}</td>
+                                <td>{{ dat.performance_measure }}</td>
                                 <td>
                                     <div class="dropdown dropstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button"
@@ -63,102 +69,106 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <li>
-                                                <Link class="dropdown-item" :href="`/TimelinessRemarks/${dat.id}/edit`">Edit
-                                                </Link>
+                                                <Link class="dropdown-item" :href="`/individual/outputs/${dat.id}/edit`">
+                                                Edit</Link>
                                             </li>
                                             <li>
-                                                <Link class="text-danger dropdown-item" @click="deleteOutput(dat.id)">Delete
+                                                <Link class="text-danger dropdown-item" @click="deleteIFO(dat.id)">Delete
                                                 </Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
+                        <!-- <pagination :next="data.next_page_url" :prev="data.prev_page_url" /> -->
                     </div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <p>
-                            {{ data.from }} to {{ data.to }} of
-                            {{ data.total }} entries
+                            <!-- {{ data.from }} to {{ data.to }} of
+                            {{ data.total }} entries -->
                         </p>
                     </div>
                 </div>
 
             </div>
         </div>
-
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <h1>Upload Excel File</h1><br>
+            <form @submit.prevent="submit">
+                <input type="file" @input="form.myfile = $event.target.files[0]" @change="onFileChanged()" />
+                <progress v-if="form.progress" class="form-control" :value="form.progress.percentage" max="100">
+                    {{ form.progress.percentage }}%
+                </progress>
+                <button type="submit" class="btn btn-primary btn-sm mL-2 text-white">Submit</button>
+            </form>
+        </Modal>
     </div>
 </template>
+
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
-        paps: Object,
-        idpaps: String
+        dept: Object,
+        FFUNCCOD: String
     },
     data() {
         return {
-
+            form: this.$inertia.form({
+                myfile: null,
+                name: null,
+                avatar: null,
+                type: true,
+            }),
+            set_type: false,
+            my_status: '0',
+            my_id: 0,
+            my_date: null,
+            displayModal: false,
+            displayDisappModal: false
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal
     },
 
     methods: {
-
-        showCreate() {
-            this.$inertia.get(
-                "/targets/create",
-                {
-                    raao_id: this.raao_id
-                },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        },
-        deleteOutput(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Timeliness Remarks?" + id;
+        deleteIFO(id) {
+            let text = "WARNING!\nAre you sure you want to delete the Individual Final Output?";
             if (confirm(text) == true) {
-                this.$inertia.delete("/TimelinessRemarks/" + id);
+                this.$inertia.delete("/individual/outputs/" + id);
             }
         },
-        getAccomplishment(tar_id) {
-            this.$inertia.get(
-                "/accomplishments",
-                {
-                    idtarget: tar_id
-                },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
+        onFileChanged() {
+            this.form.myfile = this.$refs.myFile.files[0];
+            console.log(this.form.myfile)
         },
-        getPercent(accomp, targqty) {
-            var accSum = 0;
-            accomp.forEach(myFunction);
-            function myFunction(item) {
-                accSum += parseFloat(item.accomplishment_qty)
+        submit() {
+            if (!this.form.myfile) {
+                alert("No file chosen!");
+            } else {
+                // alert('submit');
+                this.form.post('/timerange/import/file/data')
+            }
 
-            }
-            var percentt = (accSum / targqty) * 100
-            percentt = this.format_number(percentt, 2, true)
-            return percentt;
+        },
+        showModal() {
+            this.displayModal = true
+        },
+        hideModal() {
+            this.displayModal = false
         }
+
     }
 };
 </script>
@@ -177,4 +187,5 @@ export default {
 .pos {
     position: top;
     top: 240px;
-}</style>
+}
+</style>
