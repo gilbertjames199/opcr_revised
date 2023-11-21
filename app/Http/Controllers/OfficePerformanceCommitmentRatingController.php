@@ -817,20 +817,31 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $ps = "0.00";
 
         //Department Head
-
-        $office_id = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->department_code;
-        $empl_id = Office::where('id', $office_id)->first()->empl_id;
-        $dept_head = UserEmployees::where('empl_id', $empl_id)->first()->employee_name;
-
+        $office_id = "";
+        $empl_id = "";
+        $dept_head = "";
+        if ($FFUNCCOD) {
+            $office_id = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->department_code;
+            $empl_id = Office::where('id', $office_id)->first()->empl_id;
+            $dept_head = UserEmployees::where('empl_id', $empl_id)->first()->employee_name;
+        }
         //Get OPCR Date
-        $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
-        $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
-        $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
-        $start = $dateStart->format('F');
-        $end = $dateEnd->format('F Y');
-        $opcr_date = $start . " to " . $end;
-        $opcr_date = Str::upper($opcr_date);
-
+        $my_opcr = "";
+        $dateStart = "";
+        $dateEnd = "";
+        $start = "";
+        $end = "";
+        $opcr_date = "";
+        $opcr_date = "";
+        if ($opcr_id) {
+            $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+            $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+            $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+            $start = $dateStart->format('F');
+            $end = $dateEnd->format('F Y');
+            $opcr_date = $start . " to " . $end;
+            $opcr_date = Str::upper($opcr_date);
+        }
 
         //TOTAL, SUM, AVERAGE
         $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
