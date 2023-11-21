@@ -15,7 +15,7 @@
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/individual/outputs/create`">Add IFO</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal()">Import</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal1()">Import</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>&nbsp;
                 <Link :href="`/logframe`">
@@ -124,11 +124,12 @@ export default {
             my_id: 0,
             my_date: null,
             displayModal: false,
-            displayDisappModal: false
+            displayDisappModal: false,
+            showModal: false,
         }
     },
     components: {
-        Pagination, Filtering,Modal
+        Pagination, Filtering, Modal
     },
 
     methods:{
@@ -150,7 +151,7 @@ export default {
             }
 
         },
-        showModal(){
+        showModal1(){
             this.displayModal=true
         },
         hideModal(){
