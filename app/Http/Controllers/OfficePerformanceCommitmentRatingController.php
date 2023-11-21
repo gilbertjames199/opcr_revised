@@ -807,7 +807,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
     }
 
     //PRINT ACCOMPLISHMENTS
-    public function print_accomplishment(Request $request, $opcr_id, $FFUNCCOD)
+    public function print_accomplishment(Request $request)
     {
         $opcr_id = $request->opcr_id;
         $FFUNCCOD = $request->FFUNCCOD;
