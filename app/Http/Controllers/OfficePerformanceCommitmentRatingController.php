@@ -817,6 +817,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $ps = "0.00";
 
         //Department Head
+
         $office_id = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->department_code;
         $empl_id = Office::where('id', $office_id)->first()->empl_id;
         $dept_head = UserEmployees::where('empl_id', $empl_id)->first()->employee_name;
