@@ -53,7 +53,6 @@
                             <tbody>
                                 <!--v-if="index === 0 || opcr.mfo_desc !== opcrs[index - 1].mfo_desc"
                                         :rowspan="getRowspan(opcr.mfo_desc, index)"-->
-
                                 <tr v-for="(opcr, index) in form.opcrs" :key="index">
                                     <!--MFO-->
                                     <td v-if="index === 0 || opcr.mfo_desc !== opcrs[index - 1].mfo_desc"
@@ -200,7 +199,7 @@ export default {
         this.form.opcrs = this.opcrs
     },
     mounted() {
-        this.form.opcrs = this.opcrs
+        // this.form.opcrs = this.opcrs
         // if (localStorage.getItem('reloaded')) {
         //     // The page was just reloaded. Clear the value from local storage
         //     // so that it will reload the next time this page is visited.
