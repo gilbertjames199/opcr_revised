@@ -53,42 +53,34 @@
                             <tbody>
                                 <!--v-if="index === 0 || opcr.mfo_desc !== opcrs[index - 1].mfo_desc"
                                         :rowspan="getRowspan(opcr.mfo_desc, index)"-->
-                                <tr v-for="(opcr, index) in form.opcrs" :key="index">
-                                    <!--MFO-->
+                                <tr v-for="(opcr, index) in opcrs" :key="index">
                                     <td v-if="index === 0 || opcr.mfo_desc !== opcrs[index - 1].mfo_desc"
                                         :rowspan="getRowspan(opcr.mfo_desc, index)" style="vertical-align:middle">
                                         {{ opcr.mfo_desc }}
                                     </td>
-                                    <!--Success Indicator-->
                                     <td v-if="index === 0 || opcr.success_indicator !== opcrs[index - 1].success_indicator"
                                         :rowspan="getRowspanIndicator(opcr.success_indicator, index)"
                                         style="vertical-align:middle">
                                         {{ opcr.success_indicator }}
                                     </td>
-                                    <!--Alloted Budget-->
                                     <td :rowspan="form.opcrs.length" v-if="index === 0" style="vertical-align:middle">
                                         PS = {{ halfSem(ps) }} <br>(annual={{ format_number_conv(ps) }}) <br><br>MOOE = {{
                                             halfSem(mooe) }} (annual={{ format_number_conv(mooe) }})
                                     </td>
-                                    <!--Accountable Division-->
                                     <td v-if="index === 0 || opcr.office_accountable !== opcrs[index - 1].office_accountable"
                                         :rowspan="getRowspan2(opcr.office_accountable, index)"
                                         style="vertical-align:middle">
                                         {{ opcr.office_accountable }}
                                     </td>
-                                    <!--Actual Accomplsihemnts-->
                                     <td><textarea v-model="form.opcrs[index].accomplishments"></textarea></td>
-                                    <!--Rating Q-->
                                     <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
                                             min="1" max="5" step="1">
                                     </td>
-                                    <!--Rating E-->
                                     <td>
                                         <input v-model="form.opcrs[index].rating_e" class="centered-input" type="number"
                                             min="1" max="5" step="1">
                                     </td>
-                                    <!--Rating T-->
                                     <td>
                                         <input v-model="form.opcrs[index].rating_t" class="centered-input" type="number"
                                             min="1" max="5" step="1">
@@ -197,6 +189,12 @@ export default {
     },
     beforeMount() {
         this.form.opcrs = this.opcrs
+        if (localStorage.getItem('reloaded')) {
+            localStorage.removeItem('reloaded');
+        } else {
+            localStorage.setItem('reloaded', '1');
+            location.reload();
+        }
     },
     mounted() {
         // this.form.opcrs = this.opcrs
