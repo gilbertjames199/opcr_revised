@@ -899,3 +899,7 @@ Route::prefix('print/appropriations')->group(function () {
     Route::get('/paps/categories/list', [AppropriationController::class, 'paps_categories']);
     Route::get('/paps/appropriations/print/all', [AppropriationController::class, 'appropriations']);
 });
+
+Route::prefix('accomplishments/print')->group(function () {
+    Route::get('/{opcr_id}/{FFUNCCOD}', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
+});
