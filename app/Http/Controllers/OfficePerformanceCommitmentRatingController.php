@@ -172,6 +172,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
     }
     public function index(Request $request, $opcr_id, $FFUNCCOD)
     {
+        // dd("rating");
         $dept_code = auth()->user()->department_code;
         //Check if the OPCR Form for the OPCR List is empty or not
         $opcr = $this->model->where('opcr_id', $opcr_id)->get();
@@ -309,7 +310,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $total = number_format($averageSum, 2);
         $ave_pre = $total / $count;
         $ave = number_format($ave_pre, 2);
-
+        // dd('ave: ' . $ave);
         //********************************************* */
         return inertia('OPCR/Form/Index', [
             'total' => $total,
@@ -817,8 +818,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $ps = "0.00";
 
         //Department Head
-        $office_id = "";
-        $empl_id = "";
         $dept_head = "";
         if ($FFUNCCOD) {
             $office_id = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->department_code;
@@ -826,12 +825,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $dept_head = UserEmployees::where('empl_id', $empl_id)->first()->employee_name;
         }
         //Get OPCR Date
-        $my_opcr = "";
-        $dateStart = "";
-        $dateEnd = "";
-        $start = "";
-        $end = "";
-        $opcr_date = "";
         $opcr_date = "";
         if ($opcr_id) {
             $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
@@ -855,7 +848,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $ave_pre = $total / $count;
         $ave = number_format($ave_pre, 2);
         //OPCR
-        $opcrs = $this->model->select(
+        return $this->model->select(
             'office_performance_commitment_ratings.id',
             'office_performance_commitment_ratings.success_indicator_id',
             'office_performance_commitment_ratings.accomplishments',
@@ -912,6 +905,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
             });
         //********************************************** */
 
-        return $opcrs;
+
     }
 }

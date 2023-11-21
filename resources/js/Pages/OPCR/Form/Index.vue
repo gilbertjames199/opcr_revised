@@ -15,10 +15,13 @@
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div> -->
                 <Link :href="`/opcrlist/${FFUNCCOD}`">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                    </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
                 </Link>
             </div>
         </div>
@@ -37,7 +40,7 @@
                                     <th rowspan="2">Alloted Budget</th>
                                     <th rowspan="2">Accountable Division</th>
                                     <th rowspan="2">Actual Accomplishments</th>
-                                    <th colspan="4" >Rating</th>
+                                    <th colspan="4">Rating</th>
                                     <th rowspan="2">Remarks</th>
                                 </tr>
                                 <tr class="bg-secondary text-white">
@@ -54,9 +57,7 @@
                                 <tr v-for="(opcr, index) in form.opcrs" :key="index">
                                     <!--MFO-->
                                     <td v-if="index === 0 || opcr.mfo_desc !== opcrs[index - 1].mfo_desc"
-                                        :rowspan="getRowspan(opcr.mfo_desc, index)"
-                                        style="vertical-align:middle"
-                                    >
+                                        :rowspan="getRowspan(opcr.mfo_desc, index)" style="vertical-align:middle">
                                         {{ opcr.mfo_desc }}
                                     </td>
                                     <!--Success Indicator-->
@@ -66,29 +67,32 @@
                                         {{ opcr.success_indicator }}
                                     </td>
                                     <!--Alloted Budget-->
-                                    <td :rowspan="form.opcrs.length" v-if="index===0" style="vertical-align:middle">
-                                        PS = {{ halfSem(ps) }} <br>(annual={{ format_number_conv(ps)  }}) <br><br>MOOE = {{ halfSem(mooe) }} (annual={{ format_number_conv(mooe)  }})
+                                    <td :rowspan="form.opcrs.length" v-if="index === 0" style="vertical-align:middle">
+                                        PS = {{ halfSem(ps) }} <br>(annual={{ format_number_conv(ps) }}) <br><br>MOOE = {{
+                                            halfSem(mooe) }} (annual={{ format_number_conv(mooe) }})
                                     </td>
                                     <!--Accountable Division-->
                                     <td v-if="index === 0 || opcr.office_accountable !== opcrs[index - 1].office_accountable"
                                         :rowspan="getRowspan2(opcr.office_accountable, index)"
-                                        style="vertical-align:middle"
-                                    >
+                                        style="vertical-align:middle">
                                         {{ opcr.office_accountable }}
                                     </td>
                                     <!--Actual Accomplsihemnts-->
                                     <td><textarea v-model="form.opcrs[index].accomplishments"></textarea></td>
                                     <!--Rating Q-->
                                     <td>
-                                        <input v-model="form.opcrs[index].rating_q" class="centered-input"  type="number" min="1" max="5" step="1">
+                                        <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
+                                            min="1" max="5" step="1">
                                     </td>
                                     <!--Rating E-->
                                     <td>
-                                        <input v-model="form.opcrs[index].rating_e" class="centered-input"  type="number" min="1" max="5" step="1">
+                                        <input v-model="form.opcrs[index].rating_e" class="centered-input" type="number"
+                                            min="1" max="5" step="1">
                                     </td>
                                     <!--Rating T-->
                                     <td>
-                                        <input v-model="form.opcrs[index].rating_t" class="centered-input"  type="number" min="1" max="5" step="1">
+                                        <input v-model="form.opcrs[index].rating_t" class="centered-input" type="number"
+                                            min="1" max="5" step="1">
                                     </td>
                                     <td>{{ getAverage(index) }}</td>
                                     <td><input type="text" v-model="form.opcrs[index].remarks" /></td>
@@ -139,9 +143,8 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <button type="button"
-                                class="btn btn-primary mt-3 text-white"
-                                @click="submit()" :disabled="form.processing">
+                        <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()"
+                            :disabled="form.processing">
                             Save changes
                         </button>
                         <!-- <pagination :next="data.next_page_url" :prev="data.prev_page_url" /> -->
@@ -149,7 +152,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <p >
+                        <p>
                             <!-- {{ opcrs[0].mfo_desc }} ** {{ opcrs[1].mfo_desc }} <br>
                             {{ opcrs[2].mfo_desc }} ** {{ opcrs[3].mfo_desc }} -->
                             <!-- {{ data.from }} to {{ data.to }} of
@@ -180,40 +183,45 @@ export default {
         opcrs: Object,
     },
     data() {
-        return{
+        return {
             total_ave: 0,
             form: useForm({
                 opcrs: [],
             })
         }
     },
-    computed:{
+    computed: {
 
     },
     components: {
         Pagination, Filtering,
     },
-    mounted(){
+    beforeMount() {
         this.form.opcrs = this.opcrs
-        if (localStorage.getItem('reloaded')) {
-            // The page was just reloaded. Clear the value from local storage
-            // so that it will reload the next time this page is visited.
-            localStorage.removeItem('reloaded');
-        } else {
-            // Set a flag so that we know not to reload the page twice.
-            localStorage.setItem('reloaded', '1');
-            location.reload();
-        }
     },
-    methods:{
+    // mounted() {
+    //     this.form.opcrs = this.opcrs
+    //     // if (localStorage.getItem('reloaded')) {
+    //     //     // The page was just reloaded. Clear the value from local storage
+    //     //     // so that it will reload the next time this page is visited.
+    //     //     localStorage.removeItem('reloaded');
+    //     // } else {
+    //     //     // Set a flag so that we know not to reload the page twice.
+    //     //     /*
+    //     //     localStorage.setItem('reloaded', '1');
+    //     //     location.reload();
+    //     //     */
+    //     // }
+    // },
+    methods: {
 
-        halfSem(amount){
-            var ret = parseFloat(amount)/2;
-            return this.format_number_conv(ret,2,true);
+        halfSem(amount) {
+            var ret = parseFloat(amount) / 2;
+            return this.format_number_conv(ret, 2, true);
         },
         deleteEla(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Executive Legislative Agenda?"+id;
-              if (confirm(text) == true) {
+            let text = "WARNING!\nAre you sure you want to delete the Executive Legislative Agenda?" + id;
+            if (confirm(text) == true) {
                 this.$inertia.delete("/ELA/" + id);
             }
         },
@@ -224,7 +232,7 @@ export default {
             for (let i = parseFloat(index) + 1; i < this.opcrs.length; i++) {
                 if (this.opcrs[i].mfo_desc === row) {
                     //alert('equal '+this.opcrs[i].mfo_desc + '\n row: '+ row.mfo_length);
-                    count=parseFloat(count)+1;
+                    count = parseFloat(count) + 1;
                 } else {
                     break;
                 }
@@ -239,7 +247,7 @@ export default {
             for (let i = parseFloat(index) + 1; i < this.opcrs.length; i++) {
                 if (this.opcrs[i].office_accountable === row) {
                     //alert('equal '+this.opcrs[i].mfo_desc + '\n row: '+ row.mfo_length);
-                    count=parseFloat(count)+1;
+                    count = parseFloat(count) + 1;
                 } else {
                     break;
                 }
@@ -254,7 +262,7 @@ export default {
             for (let i = parseFloat(index) + 1; i < this.opcrs.length; i++) {
                 if (this.opcrs[i].success_indicator === row) {
                     //alert('equal '+this.opcrs[i].mfo_desc + '\n row: '+ row.mfo_length);
-                    count=parseFloat(count)+1;
+                    count = parseFloat(count) + 1;
                 } else {
                     break;
                 }
@@ -262,23 +270,23 @@ export default {
 
             return count;
         },
-        getTotalAverage(){
-            var total=0;
-            for(let i =0; i<this.form.opcrs.length; i++){
-                var rat_e= this.form.opcrs[i].rating_e;
+        getTotalAverage() {
+            var total = 0;
+            for (let i = 0; i < this.form.opcrs.length; i++) {
+                var rat_e = this.form.opcrs[i].rating_e;
                 var rat_q = this.form.opcrs[i].rating_q;
                 var rat_t = this.form.opcrs[i].rating_t;
-                var avee = parseFloat(rat_e)+parseFloat(rat_q)+parseFloat(rat_t)
-                total = total +(avee/3);
+                var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+                total = total + (avee / 3);
             }
-            this.total_ave=total;
-            return this.format_number_conv(total,2,true);
+            this.total_ave = total;
+            return this.format_number_conv(total, 2, true);
 
         },
-        getAverageAll(){
-            var aver = parseFloat(this.total_ave)/(parseFloat(this.form.opcrs.length));
+        getAverageAll() {
+            var aver = parseFloat(this.total_ave) / (parseFloat(this.form.opcrs.length));
             this.total_ave = aver;
-            return this.format_number_conv(aver,2,true)
+            return this.format_number_conv(aver, 2, true)
         },
         numberInput(value) {
             if (value < 1) {
@@ -292,44 +300,44 @@ export default {
                 event.preventDefault();
             }
         },
-        getAverage(ind){
-            if(parseFloat(this.opcrs[ind].rating_e)>5){
-                this.opcrs[ind].rating_e=5;
+        getAverage(ind) {
+            if (parseFloat(this.opcrs[ind].rating_e) > 5) {
+                this.opcrs[ind].rating_e = 5;
             }
-            if(this.opcrs[ind].rating_e==""){
-                this.opcrs[ind].rating_e=1;
+            if (this.opcrs[ind].rating_e == "") {
+                this.opcrs[ind].rating_e = 1;
             }
-            if(this.opcrs[ind].rating_q==""){
-                this.opcrs[ind].rating_q=1;
+            if (this.opcrs[ind].rating_q == "") {
+                this.opcrs[ind].rating_q = 1;
             }
-            if(this.opcrs[ind].rating_t==""){
-                this.opcrs[ind].rating_t=1;
+            if (this.opcrs[ind].rating_t == "") {
+                this.opcrs[ind].rating_t = 1;
             }
-            if(parseFloat(this.opcrs[ind].rating_e)<1){
-                this.opcrs[ind].rating_e=1;
-            }
-
-            if(parseFloat(this.opcrs[ind].rating_q)>5){
-                this.opcrs[ind].rating_q=5;
-            }
-            if(parseFloat(this.opcrs[ind].rating_q)<1){
-                this.opcrs[ind].rating_q=1;
+            if (parseFloat(this.opcrs[ind].rating_e) < 1) {
+                this.opcrs[ind].rating_e = 1;
             }
 
-            if(parseFloat(this.opcrs[ind].rating_t)>5){
-                this.opcrs[ind].rating_t=5;
+            if (parseFloat(this.opcrs[ind].rating_q) > 5) {
+                this.opcrs[ind].rating_q = 5;
             }
-            if(parseFloat(this.opcrs[ind].rating_t)<1){
-                this.opcrs[ind].rating_t=1;
+            if (parseFloat(this.opcrs[ind].rating_q) < 1) {
+                this.opcrs[ind].rating_q = 1;
             }
-            var ave = parseFloat(this.opcrs[ind].rating_e)+ parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
-            ave = this.format_number_conv(ave/3,2,true);
+
+            if (parseFloat(this.opcrs[ind].rating_t) > 5) {
+                this.opcrs[ind].rating_t = 5;
+            }
+            if (parseFloat(this.opcrs[ind].rating_t) < 1) {
+                this.opcrs[ind].rating_t = 1;
+            }
+            var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
+            ave = this.format_number_conv(ave / 3, 2, true);
             return ave;
         },
-        submit(){
-            if(isNaN(this.total_ave)){
+        submit() {
+            if (isNaN(this.total_ave)) {
                 alert('Some values are empty!');
-            }else{
+            } else {
                 let text = "WARNING!\nAre you sure you want to save changes to this OPCR?";
                 if (confirm(text) == true) {
                     let jsonString = JSON.stringify(this.form.opcrs);
@@ -355,17 +363,19 @@ export default {
 };
 </script>
 <style>
-            .row-centered {
-                text-align:center;
-            }
-            .col-centered {
-                display:inline-block;
-                float:none;
-                text-align:left;
-                margin-right:-4px;
-            }
-            .pos{
-                position: top;
-                top: 240px;
-            }
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+.pos {
+    position: top;
+    top: 240px;
+}
 </style>
