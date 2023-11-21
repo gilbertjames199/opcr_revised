@@ -310,7 +310,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $total = number_format($averageSum, 2);
         $ave_pre = $total / $count;
         $ave = number_format($ave_pre, 2);
-        // dd('ave: ' . $ave);
+        dd('ave: ' . $ave);
         //********************************************* */
         return inertia('OPCR/Form/Index', [
             'total' => $total,
