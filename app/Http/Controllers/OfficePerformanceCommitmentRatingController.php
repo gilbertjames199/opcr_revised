@@ -823,7 +823,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $office_id = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->department_code;
             $empl_id = Office::where('id', $office_id)->first()->empl_id;
             $employee = UserEmployees::where('empl_id', $empl_id)->first();
-            $dept_head = $employee->first_name . ' ' . $employee->middle_name[0] . $employee->last_name;
+            $dept_head = $employee->first_name . ' ' . $employee->middle_name[0] . '. ' . $employee->last_name;
         }
         //Get OPCR Date
         $opcr_date = "";

@@ -124,6 +124,7 @@ class OpcrTargetController extends Controller
         //dd('targ');
         return inertia('OPCR/Target/Index', [
             "opcr_list_id" => $opcr_list_id,
+            "opcr_list" => $opcr_list,
             "opcr_id" => $opcr_list_id,
             "data" => $data,
             "FFUNCCOD" => $opcr_list->FFUNCCOD,
@@ -146,6 +147,7 @@ class OpcrTargetController extends Controller
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
         $paps = ProgramAndProject::where('FFUNCCOD', $opcr_list->FFUNCCOD)
             ->get();
+        // dd($request->idpaps);
         $paps_selected = $paps->where('id', $request->idpaps)->first();
         $success_indicators = SuccessIndicator::where('idpaps', $request->idpaps)->get();
         $outputs = Output::where('idpaps', $request->idpaps)->get();
@@ -171,7 +173,7 @@ class OpcrTargetController extends Controller
     }
     public function store(Request $request)
     {
-        //dd($request);
+        // dd($request);
         //dd($request->target_success_indicator);
         $attributes = $request->validate([
             'output_id' => 'required',
@@ -206,8 +208,9 @@ class OpcrTargetController extends Controller
     }
     public function edit(Request $request, $opcr_list_id)
     {
-        // dd($request);
-        $data = $this->model->where('id', $opcr_list_id)->first();
+        // dd($opcr_list_id);
+        $opcr_target_id = $request->opcr_target_id;
+        $data = $this->model->where('id', $opcr_target_id)->first();
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $data->office_performance_commitment_rating_list_id)->first();
         $paps = ProgramAndProject::where('FFUNCCOD', $opcr_list->FFUNCCOD)->get();
         $paps_selected = ProgramAndProject::where('id', $request->idpaps)->first();
@@ -219,6 +222,7 @@ class OpcrTargetController extends Controller
         // dd($request->idpaps);
         return inertia('OPCR/Target/Create', [
             "opcr_list_id" => $opcr_list_id,
+            "opcr_id" => $request->opcr_id,
             "idpaps" => $request->idpaps,
             "editData" => $data,
             "paps" => $paps,
@@ -234,6 +238,7 @@ class OpcrTargetController extends Controller
             ],
         ]);
     }
+
     public function update(Request $request)
     {
         $data = $this->model->findOrFail($request->id);

@@ -11,9 +11,8 @@
                     d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
             </svg>
             </Link>
-
         </div>
-        <div>
+        <div v-if="paps_selected">
             Programs, Activities, and Projects: <u>{{ paps_selected.paps_desc }}</u>
         </div>
 
@@ -95,6 +94,11 @@
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
                     Save changes
                 </button>
+                {{ this.editData }}
+                <br>*****************<br>
+                {{ qualities }}
+                <br>*****************<br>
+                {{ success_indicators }}
             </form>
         </div>
 
@@ -238,7 +242,7 @@ export default {
             var ind_qual = document.getElementById("selectQuality").selectedIndex;
             var ind_eff = document.getElementById("selectRating").selectedIndex;
             var ind_time = document.getElementById("selectTimeliness").selectedIndex;
-            alert(ind_time)
+            // alert(ind_time)
             var out = this.outputs[ind_output].Outputs;
             var qual = this.qualities[ind_qual].quality;
             var eff = this.ratings[ind_eff].efficiency_quantity;
@@ -246,7 +250,7 @@ export default {
             var my_sentence = this.form.quantity + " " + eff + " " + out + " " + time + " " + " with " + qual;
             alert(my_sentence)
             this.correctedSentence = await this.correctSentence(my_sentence);
-
+            alert(this.correctedSentence)
         },
         async setVal() {
             this.form.target_success_indicator = this.setSentence();
