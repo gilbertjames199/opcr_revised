@@ -53,7 +53,7 @@
                             <tbody>
                                 <!--v-if="index === 0 || opcr.mfo_desc !== opcrs[index - 1].mfo_desc"
                                         :rowspan="getRowspan(opcr.mfo_desc, index)"-->
-                                <tr v-for="(opcr, index) in opcrs" :key="index">
+                                <tr v-for="(opcr, index) in form.opcrs" :key="index">
                                     <td v-if="index === 0 || opcr.mfo_desc !== opcrs[index - 1].mfo_desc"
                                         :rowspan="getRowspan(opcr.mfo_desc, index)" style="vertical-align:middle">
                                         {{ opcr.mfo_desc }}

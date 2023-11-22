@@ -822,7 +822,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
         if ($FFUNCCOD) {
             $office_id = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->department_code;
             $empl_id = Office::where('id', $office_id)->first()->empl_id;
-            $dept_head = UserEmployees::where('empl_id', $empl_id)->first()->employee_name;
+            $employee = UserEmployees::where('empl_id', $empl_id)->first();
+            $dept_head = $employee->first_name . ' ' . $employee->middle_name[0] . $employee->last_name;
         }
         //Get OPCR Date
         $opcr_date = "";
@@ -835,7 +836,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $opcr_date = $start . " to " . $end;
             $opcr_date = Str::upper($opcr_date);
         }
-
+        //Carbon Date
+        $date_now = Carbon::now()->format('F d, Y');
         //TOTAL, SUM, AVERAGE
         $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
             ->where('opcr_id', $opcr_id)
@@ -875,7 +877,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
             ->get()
-            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps) {
+            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now) {
                 return [
                     "id" => $item->id,
                     "success_indicator_id" => $item->success_indicator_id,
@@ -901,6 +903,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "mooe" => $mooe,
                     "ps" => $ps,
                     "FFUNCCOD" => $FFUNCCOD,
+                    "date_now" => $date_now,
                 ];
             });
         //********************************************** */
