@@ -285,4 +285,12 @@ class OpcrTargetController extends Controller
 
         return $text;
     }
+    public function submit_opcr_target(Request $request, $opcr_list_id)
+    {
+        // dd($opcr_list_id);
+        $update_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)
+            ->update(['target_status' => 0]);
+        return redirect('/opcrtarget/' . $opcr_list_id)
+            ->with('info', 'Office performance target submitted!');
+    }
 }

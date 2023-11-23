@@ -74,18 +74,21 @@
                                     </td>
                                     <td><textarea v-model="form.opcrs[index].accomplishments"></textarea></td>
                                     <td>
-                                        <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
-                                            min="1" max="5" step="1">
+                                        <!-- class="centered-input" -->
+                                        <input v-model="form.opcrs[index].rating_q" type="number" min="0" max="5" step="1">
+                                        one
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_e" class="centered-input" type="number"
-                                            min="1" max="5" step="1">
+                                            min="0" max="5" step="1">
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_t" class="centered-input" type="number"
-                                            min="1" max="5" step="1">
+                                            min="0" max="5" step="1">
                                     </td>
-                                    <td>{{ getAverage(index) }}</td>
+                                    <td>
+                                        {{ getAverage(index) }}
+                                    </td>
                                     <td><input type="text" v-model="form.opcrs[index].remarks" /></td>
                                 </tr>
                                 <tr>
@@ -211,7 +214,6 @@ export default {
         // }
     },
     methods: {
-
         halfSem(amount) {
             var ret = parseFloat(amount) / 2;
             return this.format_number_conv(ret, 2, true);
@@ -234,7 +236,6 @@ export default {
                     break;
                 }
             }
-
             return count;
         },
         getRowspan2(row, ind) {
@@ -255,7 +256,6 @@ export default {
         getRowspanIndicator(row, ind) {
             let count = 1;
             const index = ind;
-
             for (let i = parseFloat(index) + 1; i < this.opcrs.length; i++) {
                 if (this.opcrs[i].success_indicator === row) {
                     //alert('equal '+this.opcrs[i].mfo_desc + '\n row: '+ row.mfo_length);
@@ -274,7 +274,20 @@ export default {
                 var rat_q = this.form.opcrs[i].rating_q;
                 var rat_t = this.form.opcrs[i].rating_t;
                 var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
-                total = total + (avee / 3);
+                var div = 0;
+                if (parseFloat(rat_e) < 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_q) < 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_t) < 1) {
+                    div = div + 1;
+                }
+                if (div == 0) {
+                    div = 1;
+                }
+                total = total + (avee / div);
             }
             this.total_ave = total;
             return this.format_number_conv(total, 2, true);
@@ -286,8 +299,8 @@ export default {
             return this.format_number_conv(aver, 2, true)
         },
         numberInput(value) {
-            if (value < 1) {
-                this.numberInput = 1;
+            if (value < 0) {
+                this.numberInput = 0;
             } else if (value > 5) {
                 this.numberInput = 5;
             }
@@ -298,38 +311,53 @@ export default {
             }
         },
         getAverage(ind) {
+            // alert("getAverage");
             if (parseFloat(this.opcrs[ind].rating_e) > 5) {
                 this.opcrs[ind].rating_e = 5;
             }
             if (this.opcrs[ind].rating_e == "") {
-                this.opcrs[ind].rating_e = 1;
+                this.opcrs[ind].rating_e = 0;
             }
             if (this.opcrs[ind].rating_q == "") {
-                this.opcrs[ind].rating_q = 1;
+                this.opcrs[ind].rating_q = 0;
             }
             if (this.opcrs[ind].rating_t == "") {
-                this.opcrs[ind].rating_t = 1;
+                this.opcrs[ind].rating_t = 0;
             }
-            if (parseFloat(this.opcrs[ind].rating_e) < 1) {
-                this.opcrs[ind].rating_e = 1;
+            if (parseFloat(this.opcrs[ind].rating_e) < 0) {
+                this.opcrs[ind].rating_e = 0;
             }
 
             if (parseFloat(this.opcrs[ind].rating_q) > 5) {
                 this.opcrs[ind].rating_q = 5;
             }
-            if (parseFloat(this.opcrs[ind].rating_q) < 1) {
-                this.opcrs[ind].rating_q = 1;
+            if (parseFloat(this.opcrs[ind].rating_q) < 0) {
+                this.opcrs[ind].rating_q = 0;
             }
 
             if (parseFloat(this.opcrs[ind].rating_t) > 5) {
                 this.opcrs[ind].rating_t = 5;
             }
-            if (parseFloat(this.opcrs[ind].rating_t) < 1) {
-                this.opcrs[ind].rating_t = 1;
+            if (parseFloat(this.opcrs[ind].rating_t) < 0) {
+                this.opcrs[ind].rating_t = 0;
+            }
+            var div = 0;
+            if (parseFloat(this.opcrs[ind].rating_e) >= 1) {
+                div = div + 1;
+            }
+            if (parseFloat(this.opcrs[ind].rating_q) >= 1) {
+                div = div + 1;
+            }
+            if (parseFloat(this.opcrs[ind].rating_t) >= 1) {
+                div = div + 1;
+            }
+            if (div == 0) {
+                div = 1;
             }
             var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
-            ave = this.format_number_conv(ave / 3, 2, true);
+            ave = this.format_number_conv(ave / div, 2, true);
             return ave;
+
         },
         submit() {
             if (isNaN(this.total_ave)) {

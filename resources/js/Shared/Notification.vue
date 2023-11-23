@@ -1,6 +1,6 @@
 <template>
     <!-- <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"> -->
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1000">
+    <div class="position-fixed top-50 end-50 translate-middle p-3" style="z-index: 1000">
         <div class="toast align-items-center rounded" role="alert" aria-atomic="true" aria-live="polite"
             data-bs-autohide="true" data-bs-delay="5000">
             <!-- //class="d-flex text-white bg-success" -->
@@ -99,6 +99,20 @@ export default {
 </script>
 
 <style>
+/* Increase the font size of the toast body */
+.toast-body {
+    font-size: 1.25rem;
+    /* Adjust the size as needed */
+}
+
+/* Increase the size of the SVG icons */
+.toast-body svg {
+    width: 50px;
+    /* Adjust the width as needed */
+    height: 50px;
+    /* Adjust the height as needed */
+}
+
 .bg-gradient-success {
     background: linear-gradient(to right, #036219, #80f541);
     /* border-radius: 10px; */
@@ -124,5 +138,4 @@ export default {
 /* .toast-rounded {
     border-radius: 10px; */
 /* Add rounded corners
-} */
-</style>
+} */</style>

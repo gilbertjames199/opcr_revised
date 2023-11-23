@@ -76,6 +76,7 @@ use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
 use App\Http\Controllers\IPCRController;
+use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
 use App\Http\Controllers\TimeRangeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEmployeesController;
@@ -643,6 +644,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{opcr_list_id}/edit', [OpcrTargetController::class, 'edit']);
         Route::patch('/', [OpcrTargetController::class, 'update']);
         Route::delete('/{id}', [OpcrTargetController::class, 'destroy']);
+        // /opcrtarget/" + this.opcr_list_id + "/submit/target/opcr/now
+        Route::post('/{opcr_list_id}/submit/target/opcr/now', [OpcrTargetController::class, 'submit_opcr_target']);
     });
     //OPCR Accomplishment
     Route::prefix('opcraccomplishment')->group(function () {
@@ -654,6 +657,19 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [OpcrAccomplishmentController::class, 'destroy']);
     });
 
+    //REVIEW/APPROVE Accomplishments/Targets/Ratings
+    Route::prefix('review-approve')->group(function () {
+        Route::prefix('/targets')->group(function () {
+            Route::get('/', [TargetAccomplishmentReviewApproveController::class, 'index_target']);
+            Route::get('/{opcr_list_id}/review', [TargetAccomplishmentReviewApproveController::class, 'reviewOPCRTarget']);
+            Route::get('/{opcr_list_id}/approve/opcr', [TargetAccomplishmentReviewApproveController::class, 'reviewOPCRTarget']);
+        });
+        // approveOPCRTarget
+        // reviewOPCRAccomplishment
+        // approveOPCRAccomplishment
+        // reviewOPCRRating
+        // approveOPCRRating
+    });
     //IPCR List
     Route::prefix('IPCR')->group(function () {
         Route::get('/direct', [OpcrAccomplishmentController::class, 'index']);
