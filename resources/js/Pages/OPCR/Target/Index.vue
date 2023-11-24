@@ -65,7 +65,7 @@
                                 </td>
                                 <td>{{ dat.success_indicator }}</td>
                                 <td>{{ dat.target_success_indicator }}</td>
-                                <td>{{ dat.quantity }} {{ dat.id }}</td>
+                                <td>{{ dat.quantity }} </td>
                                 <td>
                                     <div class="dropdown dropstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button"
