@@ -64,7 +64,7 @@ class LogFrameController extends Controller
 
     public function showlog($FFUNCCOD)
     {
-
+        // dd('showlog');
         // === null
         if ($FFUNCCOD == null || $FFUNCCOD == "" || $FFUNCCOD == "null") {
             // dd($FFUNCCOD . " inside !FFUNCCOD is null");
@@ -102,7 +102,6 @@ class LogFrameController extends Controller
 
         $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
             ->with('paps')
-            ->where('id', '>', '45')
             ->get();
         //$id= auth()->user()->recid;
         $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();

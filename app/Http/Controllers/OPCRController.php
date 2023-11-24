@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\FFUNCCOD;
 use App\Models\AccountAccess;
 use App\Models\BudgetRequirement;
@@ -29,65 +30,67 @@ class OPCRController extends Controller
     protected $model;
     public function __construct(AccountAccess $model)
     {
-        $this->model=$model;
+        $this->model = $model;
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
-        $functions =$this->model
-                        ->select('ff.FFUNCCOD','FFUNCTION')
-                        ->Join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','=','accountaccess.ffunccod')
-                        ->where('iduser',auth()->user()->recid)
-                        ->get()
-                        ->map(function($item){
-                            $my_year = now()->year;
+        $functions = $this->model
+            ->select('ff.FFUNCCOD', 'FFUNCTION')
+            ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
+            ->where('iduser', auth()->user()->recid)
+            ->get()
+            ->map(function ($item) {
+                $my_year = now()->year;
 
-                            // dd($my_year);
+                // dd($my_year);
 
-                            //REVISION PLAN ID/ GET MOOE & PS
-                            $revision_plan = RevisionPlan::where('idmfo','0')
-                                                ->where('idpaps','0')
-                                                ->where('FFUNCCOD', $item->FFUNCCOD)
-                                                ->where('year_period', $my_year)
-                                                ->first();
-                            $mooe="0.00";
-                            $ps = "0.00";
-                            if($revision_plan){
-                                $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
-                                        ->where('category','Maintenance, Operating, and Other Expenses')
-                                        ->sum('amount');
+                //REVISION PLAN ID/ GET MOOE & PS
+                $revision_plan = RevisionPlan::where('idmfo', '0')
+                    ->where('idpaps', '0')
+                    ->where('FFUNCCOD', $item->FFUNCCOD)
+                    ->where('year_period', $my_year)
+                    ->first();
+                $mooe = "0.00";
+                $ps = "0.00";
+                if ($revision_plan) {
+                    $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                        ->where('category', 'Maintenance, Operating, and Other Expenses')
+                        ->sum('amount');
 
-                                $ps1 =BudgetRequirement::where('revision_plan_id', $revision_plan->id)
-                                        ->where('category','Personnel Services')
-                                        ->sum('amount');
-                                $mooe2 = (float)$mooe1;
-                                $ps2 = (float)$ps1;
-                                $mooe = number_format($mooe2,2);
-                                $ps = number_format($ps2,2);
-                            }else{
-                                //dd("empty no ps budget");
-                            }
-                            return [
-                                "FFUNCCOD"=>$item->FFUNCCOD,
-                                "FFUNCTION"=>$item->FFUNCTION,
-                                "MOOE"=>$mooe,
-                                "PS"=>$ps,
-                            ];
-                        });
+                    $ps1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+                        ->where('category', 'Personnel Services')
+                        ->sum('amount');
+                    $mooe2 = (float)$mooe1;
+                    $ps2 = (float)$ps1;
+                    $mooe = number_format($mooe2, 2);
+                    $ps = number_format($ps2, 2);
+                } else {
+                    //dd("empty no ps budget");
+                }
+                return [
+                    "FFUNCCOD" => $item->FFUNCCOD,
+                    "FFUNCTION" => $item->FFUNCTION,
+                    "MOOE" => $mooe,
+                    "PS" => $ps,
+                ];
+            });
 
 
-                        //YEAR NOW
+        //YEAR NOW
 
-        $mooe="0.00";
+        $mooe = "0.00";
         $ps = "0.00";
         return inertia('OPCR/Index', [
-            "data"=>$functions,
-            "MOOE"=>$mooe,
-            "PS"=>$ps,
+            "data" => $functions,
+            "MOOE" => $mooe,
+            "PS" => $ps,
         ]);
     }
 
-    public function showopcr(Request $request, $FFUNCCOD){
+    public function showopcr(Request $request, $FFUNCCOD)
+    {
 
         // $data = $this->model
         //         ->where('idpaps',$id)
@@ -111,30 +114,30 @@ class OPCRController extends Controller
                     GROUP_CONCAT(quality SEPARATOR ',') as qualities
                     FROM `qualities` GROUP BY idpaps";
         $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
-        $office=$functions->pluck('FFUNCTION');
+        $office = $functions->pluck('FFUNCTION');
         $results = DB::table('major_final_outputs')
-        ->select(
-            'major_final_outputs.id',
-            'major_final_outputs.mfo_desc',
-            'program_and_projects.id',
-            'program_and_projects.paps_desc',
-            'outputs.Outputs',
-            'performances.performance',
-            'success_indicators.success_indicator',
-            'office_accountables.office_accountable',
-            'ratings.numerical_rating',
-            'ratings.adjectival_rating',
-            'ratings.efficiency_quantity',
-            'rating_remarks.rating_remarks',
-            'qualities.qualities',
-            'quality_remarks.quality_remarks',
-            'timelinesses.timeliness',
-            'timeliness_remarks.timeliness_remarks',
-            'monitorings.monitoring'
-        )
-        // ->selectRaw("
-        // GROUP_CONCAT(DISTINCT ratings.numerical_rating SEPARATOR ',') AS numerical_ratings
-        // ")
+            ->select(
+                'major_final_outputs.id',
+                'major_final_outputs.mfo_desc',
+                'program_and_projects.id',
+                'program_and_projects.paps_desc',
+                'outputs.Outputs',
+                'performances.performance',
+                'success_indicators.success_indicator',
+                'office_accountables.office_accountable',
+                'ratings.numerical_rating',
+                'ratings.adjectival_rating',
+                'ratings.efficiency_quantity',
+                'rating_remarks.rating_remarks',
+                'qualities.qualities',
+                'quality_remarks.quality_remarks',
+                'timelinesses.timeliness',
+                'timeliness_remarks.timeliness_remarks',
+                'monitorings.monitoring'
+            )
+            // ->selectRaw("
+            // GROUP_CONCAT(DISTINCT ratings.numerical_rating SEPARATOR ',') AS numerical_ratings
+            // ")
             ->leftJoin('program_and_projects', 'major_final_outputs.id', '=', 'program_and_projects.idmfo')
             ->leftJoin('outputs', 'program_and_projects.id', '=', 'outputs.idpaps')
             ->leftJoin('performances', 'program_and_projects.id', '=', 'performances.idpaps')
@@ -150,142 +153,150 @@ class OPCRController extends Controller
             // ->leftJoinSub($timelinessSub, 'timelinesses', 'program_and_projects.id', '=', 'timelinesses.idpaps')
             ->get()
             ->groupBy('mfo_desc');
-            // dd($results);
-            foreach ($results as $key => $row) {
+        // dd($results);
+        foreach ($results as $key => $row) {
 
-                foreach ($row as $key => $value) {
-                    // dd($value['numerical_ratings']);
-                    $value->numerical_rating = explode(',',$value->numerical_rating);
-                    $value->adjectival_rating = explode(',',$value->adjectival_rating);
-                    $value->efficiency_quantity = explode(',',$value->efficiency_quantity);
-                    $value->qualities = explode(',',$value->qualities);
-                    $value->timeliness = explode(',', $value->timeliness);
-                }
+            foreach ($row as $key => $value) {
+                // dd($value['numerical_ratings']);
+                $value->numerical_rating = explode(',', $value->numerical_rating);
+                $value->adjectival_rating = explode(',', $value->adjectival_rating);
+                $value->efficiency_quantity = explode(',', $value->efficiency_quantity);
+                $value->qualities = explode(',', $value->qualities);
+                $value->timeliness = explode(',', $value->timeliness);
             }
+        }
 
-            // dd($results);
-            // dd($results);
-            // ->map(function($item){
-            //     $rating = rating::where('idpaps',$item->id)->get();
-            //     return [];
-            // });
+        // dd($results);
+        // dd($results);
+        // ->map(function($item){
+        //     $rating = rating::where('idpaps',$item->id)->get();
+        //     return [];
+        // });
         return inertia('OPCR/OPCR', [
-            "data"=>$results,
-            "FFUNCCOD"=>$office,
+            "data" => $results,
+            "FFUNCCOD" => $office,
         ]);
     }
-    public function OPCRprint(Request $request){
-        $mfos =MajorFinalOutput::where('FFUNCCOD', $request->id)->get()
-        ->map(function($item)use($request){
-            $MOOE = $request->MOOE;
-            $PS = $request->PS;
-            $functions = $request->FUNCTION;
-            $paps = ProgramAndProject::where('idmfo', $item->id)
-                                ->get()->map(function($itemp){
-                                    $Output=Output::where('idpaps', $itemp->id)
-                                    ->get()->map(function($item){
-                                        return ["Outputs"=>$item->Outputs];
-                                    });
-                                    $performance=Performance::where('idpaps', $itemp->id)
-                                    ->get()->map(function($item){
-                                        return["performance"=>$item->performance];
-                                    });
-                                    $success_indicator=SuccessIndicator::where('idpaps', $itemp-> id)
-                                    ->get()->map(function($item){
-                                        return["success_indicator"=>$item->success_indicator];
-                                    });
-                                    $office=OfficeAccountable::where('idpaps', $itemp->id)
-                                    ->get()->map(function($item){
-                                        return["office_accountable"=>$item->office_accountable];
-                                    });
-                                    $rating=rating::where('idpaps', $itemp->id)
-                                    ->get()->map(function($item){
-                                        return["numerical_rating"=>$item->numerical_rating,
-                                        "adjectival_rating"=>$item->adjectival_rating,
-                                        "efficiency_quantity"=>$item->efficiency_quantity];
-                                    });
-
-                                    $rating_remark=RatingRemarks::where('idpaps',$itemp->id)
-                                    ->get()->map(function($item){
-                                        return["rating_remarks"=>$item->rating_remarks];
-                                    });
-
-                                    $quality=Quality::where('idpaps',$itemp->id)
-                                    ->get()->map(function($item){
-                                        return["quality"=>$item->quality];
-                                    });
-
-                                    $quality_remarks=QualityRemarks::where('idpaps', $itemp->id)
-                                    ->get()->map(function($item){
-                                        return["quality_remarks"=>$item->quality_remarks];
-                                    });
-
-                                    $timeliness=Timeliness::where('idpaps', $itemp->id)
-                                    ->get()->map(function($item){
-                                        return["timeliness"=>$item->timeliness];
-                                    });
-
-                                    $timelienss_remarks=TimelinessRemarks::where('idpaps', $itemp->id)
-                                    ->get()->map(function($item){
-                                        return["timeliness_remarks"=>$item->timeliness_remarks];
-                                    });
-
-                                    $monitor=Monitoring::where('idpaps',$itemp->id)
-                                    ->get()->map(function($item){
-                                        return["monitoring"=>$item->monitoring];
-                                    });
-
-                                    return ["paps_desc"=>$itemp->paps_desc,
-                                            "Outputs"=>$Output,
-                                            "Performance"=>$performance,
-                                            "Success_Indicator"=>$success_indicator,
-                                            "Office_Accountable"=>$office,
-                                            "Rating"=>$rating,
-                                            "Rating_Remarks"=>$rating_remark,
-                                            "Quality"=>$quality,
-                                            "Quality_remarks"=>$quality_remarks,
-                                            "Timeliness"=>$timeliness,
-                                            "Timeliness_Remarks"=>$timelienss_remarks,
-                                            "Monitoring"=>$monitor];
-                                });
+    public function OPCRprint(Request $request)
+    {
+        $mfos = MajorFinalOutput::where('FFUNCCOD', $request->id)->get()
+            ->map(function ($item) use ($request) {
+                $MOOE = $request->MOOE;
+                $PS = $request->PS;
+                $functions = $request->FUNCTION;
+                $paps = ProgramAndProject::where('idmfo', $item->id)
+                    ->get()->map(function ($itemp) {
+                        $Output = Output::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
+                                return ["Outputs" => $item->Outputs];
+                            });
+                        $performance = Performance::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
+                                return ["performance" => $item->performance];
+                            });
+                        $success_indicator = SuccessIndicator::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
+                                return ["success_indicator" => $item->success_indicator];
+                            });
+                        $office = OfficeAccountable::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
+                                return ["office_accountable" => $item->office_accountable];
+                            });
+                        $rating = rating::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
                                 return [
-                                    "MOOE"=>$MOOE,
-                                    "PS"=>$PS,
-                                    "Function"=>strtoupper($functions),
-                                    "mfo_desc"=>$item->mfo_desc,
-                                        "paps"=>$paps];
+                                    "numerical_rating" => $item->numerical_rating,
+                                    "adjectival_rating" => $item->adjectival_rating,
+                                    "efficiency_quantity" => $item->efficiency_quantity
+                                ];
+                            });
 
-        });
+                        $rating_remark = RatingRemarks::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
+                                return ["rating_remarks" => $item->rating_remarks];
+                            });
+
+                        $quality = Quality::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
+                                return ["quality" => $item->quality];
+                            });
+
+                        $quality_remarks = QualityRemarks::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
+                                return ["quality_remarks" => $item->quality_remarks];
+                            });
+
+                        $timeliness = Timeliness::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
+                                return ["timeliness" => $item->timeliness];
+                            });
+
+                        $timelienss_remarks = TimelinessRemarks::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
+                                return ["timeliness_remarks" => $item->timeliness_remarks];
+                            });
+
+                        $monitor = Monitoring::where('idpaps', $itemp->id)
+                            ->get()->map(function ($item) {
+                                return ["monitoring" => $item->monitoring];
+                            });
+
+                        return [
+                            "paps_desc" => $itemp->paps_desc,
+                            "Outputs" => $Output,
+                            "Performance" => $performance,
+                            "Success_Indicator" => $success_indicator,
+                            "Office_Accountable" => $office,
+                            "Rating" => $rating,
+                            "Rating_Remarks" => $rating_remark,
+                            "Quality" => $quality,
+                            "Quality_remarks" => $quality_remarks,
+                            "Timeliness" => $timeliness,
+                            "Timeliness_Remarks" => $timelienss_remarks,
+                            "Monitoring" => $monitor
+                        ];
+                    });
+                return [
+                    "MOOE" => $MOOE,
+                    "PS" => $PS,
+                    "Function" => strtoupper($functions),
+                    "mfo_desc" => $item->mfo_desc,
+                    "paps" => $paps
+                ];
+            });
 
         return $mfos;
     }
 
 
-    public function MFO(Request $request){
+    public function MFO(Request $request)
+    {
         $functions = strtoupper($request->FUNCTION);
         $MOOE = $request->MOOE;
         $PS = $request->PS;
 
-        $mfos =MajorFinalOutput::select(DB::raw('"'.$functions.'" as FUNCTION'),"mfo_desc","id")
-        ->selectRaw("'$MOOE' as MOOE, '$PS' as PS")->where('FFUNCCOD', $request->id)
-        ->get();
+        $mfos = MajorFinalOutput::select(DB::raw('"' . $functions . '" as FUNCTION'), "mfo_desc", "id")
+            ->selectRaw("'$MOOE' as MOOE, '$PS' as PS")->where('FFUNCCOD', $request->id)
+            ->where("id", ">", "45")
+            ->get();
         return $mfos;
     }
 
-    public function PAPS(Request $request){
+    public function PAPS(Request $request)
+    {
 
 
         $paps = ProgramAndProject::select(
-                'program_and_projects.id',
-                'program_and_projects.paps_desc',
-                'outputs.Outputs',
-                'performances.performance',
-                'success_indicators.success_indicator',
-                'office_accountables.office_accountable',
-                'rating_remarks.rating_remarks',
-                'quality_remarks.quality_remarks',
-                'timeliness_remarks.timeliness_remarks',
-                'monitorings.monitoring'
+            'program_and_projects.id',
+            'program_and_projects.paps_desc',
+            'outputs.Outputs',
+            'performances.performance',
+            'success_indicators.success_indicator',
+            'office_accountables.office_accountable',
+            'rating_remarks.rating_remarks',
+            'quality_remarks.quality_remarks',
+            'timeliness_remarks.timeliness_remarks',
+            'monitorings.monitoring'
         )
 
 
@@ -297,42 +308,45 @@ class OPCRController extends Controller
             ->leftJoin('quality_remarks', 'program_and_projects.id', '=', 'quality_remarks.idpaps')
             ->leftJoin('timeliness_remarks', 'program_and_projects.id', '=', 'timeliness_remarks.idpaps')
             ->leftJoin('monitorings', 'program_and_projects.id', '=', 'monitorings.idpaps')
-        ->where('idmfo', $request->idmfo)
-        ->get();
+            ->where('idmfo', $request->idmfo)
+            ->get();
         return $paps;
     }
 
-    public function Rating(Request $request){
-        $rating=rating::where('idpaps', $request->idpaps)
-        ->get();
+    public function Rating(Request $request)
+    {
+        $rating = rating::where('idpaps', $request->idpaps)
+            ->get();
 
         return $rating;
     }
 
-    public function Quality(Request $request){
-        $quality=Quality::select("id","quality","idpaps")->where('idpaps', $request->idpaps)
-        ->get();
+    public function Quality(Request $request)
+    {
+        $quality = Quality::select("id", "quality", "idpaps")->where('idpaps', $request->idpaps)
+            ->get();
 
         return $quality;
     }
 
-    public function Timeliness(Request $request){
-        $timeliness=Timeliness::select("id","timeliness","idpaps")->where('idpaps', $request->idpaps)
-        ->get();
+    public function Timeliness(Request $request)
+    {
+        $timeliness = Timeliness::select("id", "timeliness", "idpaps")->where('idpaps', $request->idpaps)
+            ->get();
 
         return $timeliness;
     }
 
-    public function viewOPCR(Request $request){
-        $link=$request->link;
-        $link=str_replace("abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-", "",$link);
+    public function viewOPCR(Request $request)
+    {
+        $link = $request->link;
+        $link = str_replace("abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-", "", $link);
 
-        $link="http://".$link;
+        $link = "http://" . $link;
         // dd($link);
         // dd($link);
         return inertia('OPCR/Form/Print', [
             "link" => $link,
         ]);
     }
-
 }
