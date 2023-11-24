@@ -9,6 +9,7 @@ use App\Models\FFUNCCOD;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
 use App\Models\OpcrTarget;
+use App\Models\ProgramAndProject;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,64 +26,69 @@ class TargetAccomplishmentReviewApproveController extends Controller
     public function index_target(Request $request)
     {
         // $data = $this->revapp->paginate(10);
-        $data = $this->revapp
-            ->where('target_status', '>', -1)
-            ->where('target_status', '<', 2)
-            ->orderBy('year', 'desc')
-            ->orderBy('semester', 'desc')
-            ->paginate(10);
-        $data->getCollection()->transform(function ($item) {
-            $opcr_id = $item->id;
-            //OFFICE
-            $office = FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)
-                ->first();
-            //TOTAL & AVERAGE
-            $averageSum = $this->getRating($opcr_id);
-            $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
-            if ($count < 1) {
-                $count = 1;
-            }
-            $total = number_format($averageSum, 2);
-            $ave_pre = $total / $count;
-            $ave = number_format($ave_pre, 2);
+        if (auth()->user()->department_code == '04') {
+            $data = $this->revapp
+                ->where('target_status', '>', -1)
+                ->where('target_status', '<', 2)
+                ->orderBy('year', 'desc')
+                ->orderBy('semester', 'desc')
+                ->paginate(10);
+            $data->getCollection()->transform(function ($item) {
+                $opcr_id = $item->id;
+                //OFFICE
+                $office = FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)
+                    ->first();
+                //TOTAL & AVERAGE
+                $averageSum = $this->getRating($opcr_id);
+                $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+                if ($count < 1) {
+                    $count = 1;
+                }
+                $total = number_format($averageSum, 2);
+                $ave_pre = $total / $count;
+                $ave = number_format($ave_pre, 2);
 
-            //OPCR LIST
-            $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+                //OPCR LIST
+                $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
 
-            //OPCR DATE
-            $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
-            $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
-            $start = $dateStart->format('F');
-            $end = $dateEnd->format('F Y');
-            $opcr_date = $start . " to " . $end;
-            $opcr_date = Str::upper($opcr_date);
+                //OPCR DATE
+                $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+                $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+                $start = $dateStart->format('F');
+                $end = $dateEnd->format('F Y');
+                $opcr_date = $start . " to " . $end;
+                $opcr_date = Str::upper($opcr_date);
 
-            //YEAR NOW
-            $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
-            //dd($my_year);
-            //REVISION PLAN ID/ GET MOOE & PS
+                //YEAR NOW
+                $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
+                //dd($my_year);
+                //REVISION PLAN ID/ GET MOOE & PS
 
-            return [
-                'id' => $item->id,
-                'semester' => $item->semester,
-                'date_from' => $item->date_from,
-                'date_to' => $item->date_to,
-                'year' => $item->year,
-                'FFUNCCOD' => $item->FFUNCCOD,
-                'target_status' => $item->target_status,
-                'rating_status' => $item->rating_status,
-                'accomplishment_status' => $item->accomplishment_status,
-                'allotment' => $item->allotment,
-                'total' => $total,
-                'ave' => $ave,
-                'opcr_date' => $opcr_date,
-                'office' => $office
-            ];
-        });
-        // dd($data);
-        return inertia('Review-Approve/OPCR/Targets/Index', [
-            'data' => $data
-        ]);
+                return [
+                    'id' => $item->id,
+                    'semester' => $item->semester,
+                    'date_from' => $item->date_from,
+                    'date_to' => $item->date_to,
+                    'year' => $item->year,
+                    'FFUNCCOD' => $item->FFUNCCOD,
+                    'target_status' => $item->target_status,
+                    'rating_status' => $item->rating_status,
+                    'accomplishment_status' => $item->accomplishment_status,
+                    'allotment' => $item->allotment,
+                    'total' => $total,
+                    'ave' => $ave,
+                    'opcr_date' => $opcr_date,
+                    'office' => $office
+                ];
+            });
+            // dd($data);
+            return inertia('Review-Approve/OPCR/Targets/Index', [
+                'data' => $data
+            ]);
+        } else {
+            return redirect('/forbidden')
+                ->with('error', 'Access forbidden!');
+        }
     }
     public function reviewOPCRTarget(Request $request, $opcr_list_id)
     {
@@ -98,6 +104,30 @@ class TargetAccomplishmentReviewApproveController extends Controller
             ->update(['target_status' => 2]);
         return redirect('/opcrtarget/' . $opcr_list_id)
             ->with('info', 'Office performance target approved!');
+    }
+    public function viewTarget(Request $request, $opcr_list_id)
+    {
+        $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
+        $data = ProgramAndProject::where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
+            ->select(
+                'major_final_outputs.mfo_desc',
+                'program_and_projects.id AS idpaps',
+                'program_and_projects.paps_desc',
+                'OPT.id',
+                'OPT.target_success_indicator',
+                'OPT.quantity',
+                'SU.success_indicator'
+            )
+            ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
+            ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
+            ->leftjoin(DB::raw('(Select id,
+                                                        office_performance_commitment_rating_list_id,
+                                                        idpaps, quantity, target_success_indicator
+                             FROM opcr_targets WHERE opcr_targets.office_performance_commitment_rating_list_id=' . $opcr_list_id . ') AS OPT'), 'OPT.idpaps', 'program_and_projects.id')
+            ->orderBy('major_final_outputs.mfo_desc', 'asc')
+            ->orderBy('program_and_projects.paps_desc', 'asc')
+            ->get();
+        return $data;
     }
     public function reviewOPCRAccomplishment(Request $request, $opcr_list_id)
     {

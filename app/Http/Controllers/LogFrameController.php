@@ -64,16 +64,18 @@ class LogFrameController extends Controller
 
     public function showlog($FFUNCCOD)
     {
-        // dd($FFUNCCOD);
+
         // === null
         if ($FFUNCCOD == null || $FFUNCCOD == "" || $FFUNCCOD == "null") {
             // dd($FFUNCCOD . " inside !FFUNCCOD is null");
+
             $ffunccody = auth()->user()->office;
             // dd("ffunccody: " . $ffunccody);
             if ($ffunccody != null) {
                 // dd("Null ang ffunccody333 ");
-
+                // dd(auth()->user()->office);
                 $FFUNCCOD = $ffunccody;
+                // dd('FFUNCCOD: ' . $FFUNCCOD);
             }
         }
         // else {
@@ -98,9 +100,13 @@ class LogFrameController extends Controller
         // dd($sec_goal);
         $organizational = OrganizationalGoal::where('FFUNCCOD', $FFUNCCOD)->get();
 
-        $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)->with('paps')->get();
+        $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
+            ->with('paps')
+            ->where('id', '>', '45')
+            ->get();
         //$id= auth()->user()->recid;
         $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
+        // dd($FFUNCCOD);
         $office = $functions->pluck('FFUNCTION');
         // dd($mfos);
         // dd("FFUNCCOD123: " . $FFUNCCOD);
@@ -215,6 +221,7 @@ class LogFrameController extends Controller
     public function mfo(Request $request)
     {
         $mfos = MajorFinalOutput::select("mfo_desc", "id")->where('FFUNCCOD', $request->id)
+            ->where('id', '>', '45')
             ->get();
         return $mfos;
     }

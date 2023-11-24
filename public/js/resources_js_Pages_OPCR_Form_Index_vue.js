@@ -42,18 +42,17 @@ __webpack_require__.r(__webpack_exports__);
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_2__["default"],
     Filtering: _Shared_Filter__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  beforeMount: function beforeMount() {
-    this.form.opcrs = this.opcrs;
-
-    if (localStorage.getItem('reloaded')) {
-      localStorage.removeItem('reloaded');
-    } else {
-      localStorage.setItem('reloaded', '1');
-      location.reload();
-    }
-  },
-  mounted: function mounted() {// this.form.opcrs = this.opcrs
-    // if (localStorage.getItem('reloaded')) {
+  // beforeMount() {
+  //     this.form.opcrs = this.opcrs
+  //     if (localStorage.getItem('reloaded')) {
+  //         localStorage.removeItem('reloaded');
+  //     } else {
+  //         localStorage.setItem('reloaded', '1');
+  //         location.reload();
+  //     }
+  // },
+  mounted: function mounted() {
+    this.form.opcrs = this.opcrs; // if (localStorage.getItem('reloaded')) {
     //     // The page was just reloaded. Clear the value from local storage
     //     // so that it will reload the next time this page is visited.
     //     localStorage.removeItem('reloaded');
@@ -550,17 +549,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, null, 8
     /* PROPS */
-    , _hoisted_22), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.opcrs[index].accomplishments]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" class=\"centered-input\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    , _hoisted_22), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.opcrs[index].accomplishments]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return $data.form.opcrs[index].rating_q = $event;
       },
+      "class": "centered-input",
       type: "number",
       min: "0",
       max: "5",
       step: "1"
     }, null, 8
     /* PROPS */
-    , _hoisted_23), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.opcrs[index].rating_q]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" one ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    , _hoisted_23), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.opcrs[index].rating_q]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return $data.form.opcrs[index].rating_e = $event;
       },
