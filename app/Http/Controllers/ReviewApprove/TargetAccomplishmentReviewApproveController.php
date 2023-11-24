@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FFUNCCOD;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
+use App\Models\OpcrRemarks;
 use App\Models\OpcrTarget;
 use App\Models\ProgramAndProject;
 use Carbon\Carbon;
@@ -93,17 +94,71 @@ class TargetAccomplishmentReviewApproveController extends Controller
     public function reviewOPCRTarget(Request $request, $opcr_list_id)
     {
         // dd('Review: ' . $opcr_list_id);
+        // $table->string('type')->comment('target/rating/accomplishment');
+        // $table->string('number')->comment('indicate if this remark is the first,second, third, etc');
+        // $table->string('status')->comment('indicate if remark is for');
+        // $table->string('remarks');
+        // dd($request);
         $update_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)
             ->update(['target_status' => 1]);
-        return redirect('/opcrtarget/' . $opcr_list_id)
+        $opcr_num = OpcrRemarks::where('id_opcr_list', $opcr_list_id)
+            ->orderBy('number', 'desc')->first();
+        $opcr_rem = new OpcrRemarks();
+        $opcr_rem->id_opcr_list = $opcr_list_id;
+        $opcr_rem->type = "target";
+        if ($opcr_num) {
+            $num = (int)$opcr_num->number + 1;
+            $opcr_rem->number = "" . $num . "";
+        } else {
+            $opcr_rem->number = "1";
+        }
+        $opcr_rem->status = "review";
+        $opcr_rem->remarks = $request->remarks;
+        $opcr_rem->save();
+        return redirect('/review-approve/targets')
             ->with('info', 'Office performance target reviewed!');
     }
     public function approveOPCRTarget(Request $request, $opcr_list_id)
     {
+        // dd("approve");
         $update_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)
             ->update(['target_status' => 2]);
-        return redirect('/opcrtarget/' . $opcr_list_id)
-            ->with('info', 'Office performance target approved!');
+        $opcr_num = OpcrRemarks::orderBy('number', 'desc')->first();
+        $opcr_rem = new OpcrRemarks();
+        $opcr_rem->id_opcr_list = $opcr_list_id;
+        $opcr_rem->type = "target";
+        if ($opcr_num) {
+            $num = (int)$opcr_num->number + 1;
+            $opcr_rem->number = "" . $num . "";
+        } else {
+            $opcr_rem->number = "1";
+        }
+        $opcr_rem->status = "approve";
+        $opcr_rem->remarks = $request->remarks;
+        $opcr_rem->save();
+        return redirect('/review-approve/targets')
+            ->with('message', 'Office performance target approved!');
+    }
+    public function returnOpcrTarget(Request $request, $opcr_list_id)
+    {
+        // dd("return: " . $opcr_list_id);
+        $update_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)
+            ->update(['target_status' => -2]);
+        $opcr_num = OpcrRemarks::orderBy('number', 'desc')->first();
+        $opcr_rem = new OpcrRemarks();
+        $opcr_rem->id_opcr_list = $opcr_list_id;
+        $opcr_rem->type = "target";
+        if ($opcr_num) {
+            $num = (int)$opcr_num->number + 1;
+            $opcr_rem->number = "" . $num . "";
+        } else {
+            $opcr_rem->number = "1";
+        }
+        $opcr_rem->status = "return";
+        $opcr_rem->remarks = $request->remarks;
+        $opcr_rem->save();
+        return redirect('/review-approve/targets')
+            ->with('error', 'Office performance target returned!');
     }
     public function viewTarget(Request $request, $opcr_list_id)
     {

@@ -237,11 +237,11 @@ class UserController extends Controller
         $ppu = auth()->user()->UserPassword;
         //dd("OLD PASS: " . $pold . " CURRENT: " . $pp);
         if ($pold != $ppu) {
-            // return back()->with('error', 'Wrong Credentials');
+            return back()->with('error', 'Wrong Credentials');
         }
 
         if ($new !== $confirm) {
-            //return back()->with('error', 'Not the same');
+            return back()->with('error', 'Not the same');
         }
         // $user = DB::connection('mysql2')
         //     ->table('systemusers')
@@ -252,7 +252,7 @@ class UserController extends Controller
         // $user->save();
         //auth()->user()->recid
         DB::connection('mysql2')->table('systemusers')
-            ->where('recid', '=', '19')
+            ->where('recid', '=', auth()->user()->recid)
             ->update([
                 'UserPassword' => md5($new)
                 // Add more columns and values to update as needed

@@ -59,7 +59,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.paps_desc">{{ form.errors.paps_desc }}</div>
 
                 <label for="">Description</label>
-                <input type="text" v-model="form.MOV" @input="limitWordCount" class="form-control" autocomplete="chrome-off">
+                <input type="text" v-model="form.MOV" maxlength="200" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.MOV">{{ form.errors.MOV }}</div>
 
                 <label for="">Type</label>

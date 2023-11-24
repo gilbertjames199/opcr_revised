@@ -99,10 +99,11 @@ class LogFrameController extends Controller
             ->get();
         // dd($sec_goal);
         $organizational = OrganizationalGoal::where('FFUNCCOD', $FFUNCCOD)->get();
-
-        $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
-            ->with('paps')
-            ->get();
+        if ($FFUNCCOD)
+            $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
+                ->with('paps')
+                ->where('id', '>', '50')
+                ->get();
         //$id= auth()->user()->recid;
         $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
         // dd($FFUNCCOD);
