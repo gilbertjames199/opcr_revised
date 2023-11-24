@@ -129,16 +129,6 @@
                                                 <Link v-if="isNotEmptyObject(dat.output)" class="text-danger dropdown-item"
                                                     @click="deleteStandard(dat.id)">Delete Standard</Link>
                                             </li>
-                                            <li>
-                                                <Link class="dropdown-item" :href="`/Rating/${dat.id}`">Ratings</Link>
-                                            </li>
-                                            <li>
-                                                <Link class="dropdown-item" :href="`/Quality/${dat.id}`">Quality</Link>
-                                            </li>
-                                            <li>
-                                                <Link class="dropdown-item" :href="`/Timeliness/${dat.id}`">Timeliness
-                                                </Link>
-                                            </li>
                                         </ul>
                                     </div>
                                 </td>
