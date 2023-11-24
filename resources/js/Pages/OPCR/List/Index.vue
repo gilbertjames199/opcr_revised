@@ -6,6 +6,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Office Performance Commitment Rating (OPCR)</h3>
+
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -17,7 +18,9 @@
             </div>
         </div>
 
-        <div class="masonry-sizer col-md-6"></div>
+        <div class="masonry-sizer col-md-6">
+            <b>Office</b>: <u>{{ office.FFUNCTION }}</u>
+        </div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
@@ -39,29 +42,43 @@
                                 <td>{{ opcr_list.semester }}</td>
                                 <td>{{ formatMonth(opcr_list.date_from) }} to {{ formatMonthYear(opcr_list.date_to) }}</td>
                                 <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    <div class="dropdown dropstart">
+                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">Edit</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/opcr/form/${opcr_list.id}/${FFUNCCOD}`">Rating</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/opcrtarget/${opcr_list.id}`">Target</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/opcraccomplishment/${opcr_list.id}`">Accomplishment</Link></li>
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">Edit
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item"
+                                                    :href="`/opcr/form/${opcr_list.id}/${FFUNCCOD}`">Rating</Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/opcrtarget/${opcr_list.id}`">Target
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/opcraccomplishment/${opcr_list.id}`">
+                                                Accomplishment</Link>
+                                            </li>
                                             <li>
                                                 <!--goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, opcr_id)-->
-                                                <button class="dropdown-item"
-                                                    @click="showModal(opcr_list.FFUNCCOD,
-                                                                opcr_list.total,
-                                                                opcr_list.ave,
-                                                                opcr_list.dept_head,
-                                                                opcr_list.opcr_date,
-                                                                opcr_list.mooe,
-                                                                opcr_list.ps,
-                                                                opcr_list.id
-                                                            )">
+                                                <button class="dropdown-item" @click="showModal(opcr_list.FFUNCCOD,
+                                                    opcr_list.total,
+                                                    opcr_list.ave,
+                                                    opcr_list.dept_head,
+                                                    opcr_list.opcr_date,
+                                                    opcr_list.mooe,
+                                                    opcr_list.ps,
+                                                    opcr_list.id
+                                                )">
                                                     Download PDF
                                                 </button>
                                             </li>
@@ -97,7 +114,6 @@
             </div>
         </Modal>
     </div>
-
 </template>
 
 <script>
@@ -112,7 +128,7 @@ export default {
         FFUNCCOD: String
     },
     data() {
-        return{
+        return {
             my_link: "",
             displayModal: false,
         }
@@ -120,36 +136,36 @@ export default {
     components: {
         Pagination, Filtering, Modal
     },
-    methods:{
+    methods: {
         deleteRA(id) {
             let text = "WARNING!\nAre you sure you want to delete the Research Agenda?";
-              if (confirm(text) == true) {
+            if (confirm(text) == true) {
                 this.$inertia.delete("/ResearchAgenda/" + id);
             }
         },
         goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
             //alert("opcr_id: " + id);
-            var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            var linkt = "abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Fform%2FMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR%2Fform&decorate=no&output=pdf';
             var params = '&total=' + total + '&ave=' + ave + '&dept_head=' + dept_head +
                 '&opcr_date=' + opcr_date + '&mooe=' + mooe + '&ps=' + ps +
                 '&FFUNCCOD=' + FFUNCCOD + '&opcr_id=' + id;
-            var linkl = linkt+jasper_ip + jasper_link + params;
+            var linkl = linkt + jasper_ip + jasper_link + params;
             const link = document.createElement('a');
-            link.href='/opcr/form/print/o/p/c/r?link=' + encodeURIComponent(linkl);
+            link.href = '/opcr/form/print/o/p/c/r?link=' + encodeURIComponent(linkl);
             link.target = '_blank';
             link.click();
         },
-        viewlink(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id){
+        viewlink(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
             //var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
-            var linkt="http://";
+            var linkt = "http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Fform%2FMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR%2Fform&decorate=no&output=pdf';
             var params = '&total=' + total + '&ave=' + ave + '&dept_head=' + dept_head +
                 '&opcr_date=' + opcr_date + '&mooe=' + mooe + '&ps=' + ps +
                 '&FFUNCCOD=' + FFUNCCOD + '&opcr_id=' + id;
-            var linkl = linkt+jasper_ip + jasper_link + params;
+            var linkl = linkt + jasper_ip + jasper_link + params;
 
             return linkl;
         },
@@ -164,17 +180,19 @@ export default {
 };
 </script>
 <style>
-            .row-centered {
-                text-align:center;
-            }
-            .col-centered {
-                display:inline-block;
-                float:none;
-                text-align:left;
-                margin-right:-4px;
-            }
-            .pos{
-                position: top;
-                top: 240px;
-            }
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+.pos {
+    position: top;
+    top: 240px;
+}
 </style>

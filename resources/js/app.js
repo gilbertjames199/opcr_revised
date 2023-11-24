@@ -206,6 +206,24 @@ createInertiaApp({
                         var numm = parseFloat(number);
                         return numm.toLocaleString('en-US', { useGrouping: include_comma, minimumFractionDigits: num_decimals, maximumFractionDigits: num_decimals });
                     },
+                    getStatus(stat_num) {
+                        if (typeof stat_num !== 'string') {
+                            stat_num = String(stat_num);
+                        }
+                        if (stat_num === '-2') {
+                            return 'Returned';
+                        } else if (stat_num === '-1') {
+                            return 'Saved';
+                        } else if (stat_num === '0') {
+                            return 'Submitted';
+                        } else if (stat_num === '1') {
+                            return 'Reviewed';
+                        } else if (stat_num === '2') {
+                            return 'Approved';
+                        } else {
+                            return 'Unknown Status';
+                        }
+                    },
                     GAD_remark(val) {
                         var num = parseFloat(val);
                         var remarks = "GAD is insivible";

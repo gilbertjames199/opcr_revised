@@ -218,7 +218,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                     'ps' => $ps,
                 ];
             });
-        //dd($opcr_lists);
+        // dd($opcr_lists);
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
 
         return inertia('OPCR/List/Index', [
@@ -259,7 +259,8 @@ class OfficePerformanceCommitmentRatingListController extends Controller
     public function store(Request $request)
     {
         //dd($request);
-        $dept_code = auth()->user()->department_code;
+        $dept_code = FFUNCCOD::where('FFUNCCOD', $request->FFUNCCOD)->first()->department_code;
+        // $dept_code = auth()->user()->department_code;
         $request->merge(['department_code' => $dept_code]);
         $attributes = $request->validate([
             'semester' => 'required',
