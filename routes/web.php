@@ -72,6 +72,7 @@ use App\Http\Controllers\DailyAccomplishmentController;
 use App\Http\Controllers\AddAccomplishmentController;
 use App\Http\Controllers\AppropriationController;
 use App\Http\Controllers\DivisionOutputController;
+use App\Http\Controllers\ForbiddenController;
 use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
@@ -105,6 +106,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/user/employees')->group(function () {
         Route::get('/', [UserEmployeesController::class, 'index']);
         Route::get('/sync/employees/list', [UserEmployeesController::class, 'syncemployees']);
+    });
+    //FOrbidden
+    Route::prefix('/forbidden')->group(function () {
+        Route::get('/', [ForbiddenController::class, 'index']);
     });
     //Users
     Route::prefix('/users')->group(function () {
@@ -663,6 +668,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [TargetAccomplishmentReviewApproveController::class, 'index_target']);
             Route::get('/{opcr_list_id}/review', [TargetAccomplishmentReviewApproveController::class, 'reviewOPCRTarget']);
             Route::get('/{opcr_list_id}/approve/opcr', [TargetAccomplishmentReviewApproveController::class, 'reviewOPCRTarget']);
+            Route::get('/{opcr_list_id}/view/opcr/target/submission', [TargetAccomplishmentReviewApproveController::class, 'viewTarget']);
         });
         // approveOPCRTarget
         // reviewOPCRAccomplishment

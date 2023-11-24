@@ -24,16 +24,22 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = $this->model
-            ->when($request->search, function ($query, $searchItem) {
-                $query->where('UserName', 'like', '%' . $searchItem . '%')
-                    ->orWhere('FullName', 'like', '%' . $searchItem . '%');
-            })
-            ->paginate(10);
-        return inertia('Users/Index', [
-            "filters" => $request->only(['search']),
-            "users" => $users,
-        ]);
+        // dd(auth()->user()->department_code);
+        if (auth()->user()->department_code == '04') {
+            $users = $this->model
+                ->when($request->search, function ($query, $searchItem) {
+                    $query->where('UserName', 'like', '%' . $searchItem . '%')
+                        ->orWhere('FullName', 'like', '%' . $searchItem . '%');
+                })
+                ->paginate(10);
+            return inertia('Users/Index', [
+                "filters" => $request->only(['search']),
+                "users" => $users,
+            ]);
+        } else {
+            return redirect('/forbidden')
+                ->with('error', 'Access forbidden!');
+        }
     }
     //public function sync_users()
     // public function index(Request $request)
@@ -145,6 +151,7 @@ class UserController extends Controller
             ->first()->department_code;
         // dd($department_code);
         //save user
+        // dd($request);
         DB::connection('mysql2')->table('systemusers')
             ->insert([
                 'FullName' => $request->FullName,
@@ -230,11 +237,11 @@ class UserController extends Controller
         $ppu = auth()->user()->UserPassword;
         //dd("OLD PASS: " . $pold . " CURRENT: " . $pp);
         if ($pold != $ppu) {
-            return back()->with('error', 'Wrong Credentials');
+            // return back()->with('error', 'Wrong Credentials');
         }
 
         if ($new !== $confirm) {
-            return back()->with('error', 'Not the same');
+            //return back()->with('error', 'Not the same');
         }
         // $user = DB::connection('mysql2')
         //     ->table('systemusers')
@@ -243,8 +250,9 @@ class UserController extends Controller
         // dd(auth()->user()->recid);
         // $user->password = md5($new);
         // $user->save();
+        //auth()->user()->recid
         DB::connection('mysql2')->table('systemusers')
-            ->where('recid', '=', auth()->user()->recid)
+            ->where('recid', '=', '19')
             ->update([
                 'UserPassword' => md5($new)
                 // Add more columns and values to update as needed

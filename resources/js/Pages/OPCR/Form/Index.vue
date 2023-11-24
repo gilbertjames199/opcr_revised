@@ -76,7 +76,7 @@
                                     <td>
                                         <!-- class="centered-input" -->
                                         <input v-model="form.opcrs[index].rating_q" type="number" min="0" max="5" step="1">
-                                        one
+                                        <!-- one -->
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_e" class="centered-input" type="number"
