@@ -14,7 +14,7 @@
                                 </div>
                                 <div class="peer peer-greed">
                                     <h5 class="lh-1 mB-0 logo-text" style="color: #ffdc78; font-size: x-large !important;">
-                                        Admin
+                                        OPMS
                                     </h5>
                                 </div>
                             </div>
