@@ -11,13 +11,16 @@
             &nbsp;
 
             <div v-if="auth.user.office.ffunccod === '1031'">
-                <button class="btn btn-primary mt-3 text-white"
-                    @click="showModalAd(auth.user.office.ffunccod, auth.user.office.office)"> Print Logframe
+
+                <button class="btn btn-primary mt-3 text-white" @click="showModalAd(ffunccod, office)"> Print Logframe
                 </button>
             </div>
             <div v-else>
-                <button class="btn btn-primary mt-3 text-white"
-                    @click="showModal(auth.user.office.ffunccod, auth.user.office.office)"> Print Logframe
+                <!-- FFUNCCOD: {{ FFUNCCOD }} <br>
+                office: {{ office }} <br>
+                auth.user.office.ffunccod: {{ auth.user.office.ffunccod }} <br>
+                auth.user.office.office: {{ auth.user.office.office }}<br> -->
+                <button class="btn btn-primary mt-3 text-white" @click="showModal(FFUNCCOD, office)"> Print Logframe
                 </button>
 
             </div>
@@ -171,7 +174,8 @@ export default {
         mfos: Object,
         office: String,
         functional: Object,
-        auth: Object
+        auth: Object,
+        FFUNCCOD: String
         // idinteroutcome: String,
         // idmfo: String,
         // can: Object,

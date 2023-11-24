@@ -29,7 +29,8 @@ __webpack_require__.r(__webpack_exports__);
     mfos: Object,
     office: String,
     functional: Object,
-    auth: Object // idinteroutcome: String,
+    auth: Object,
+    FFUNCCOD: String // idinteroutcome: String,
     // idmfo: String,
     // can: Object,
     // filters: Object,
@@ -351,12 +352,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("   "), $props.auth.user.office.ffunccod === '1031' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary mt-3 text-white",
     onClick: _cache[0] || (_cache[0] = function ($event) {
-      return $options.showModalAd($props.auth.user.office.ffunccod, $props.auth.user.office.office);
+      return $options.showModalAd(_ctx.ffunccod, $props.office);
     })
-  }, " Print Logframe ")])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, " Print Logframe ")])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FFUNCCOD: {{ FFUNCCOD }} <br>\n                office: {{ office }} <br>\n                auth.user.office.ffunccod: {{ auth.user.office.ffunccod }} <br>\n                auth.user.office.office: {{ auth.user.office.office }}<br> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary mt-3 text-white",
     onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.showModal($props.auth.user.office.ffunccod, $props.auth.user.office.office);
+      return $options.showModal($props.FFUNCCOD, $props.office);
     })
   }, " Print Logframe ")])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/logframe"
@@ -376,7 +377,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_16), _hoisted_17]);
   }), 256
   /* UNKEYED_FRAGMENT */
-  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [_ctx.FFUNCCOD === 1031 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_20, [$props.sec_econ ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, " Economic Services Sector: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.sec_econ), 1
+  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [$props.FFUNCCOD === 1031 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_20, [$props.sec_econ ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, " Economic Services Sector: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.sec_econ), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.sec_social ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Social Services Sector: "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.sec_social, function (soc) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(soc.goal_description), 1
