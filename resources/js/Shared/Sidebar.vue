@@ -14,7 +14,7 @@
                                 </div>
                                 <div class="peer peer-greed">
                                     <h5 class="lh-1 mB-0 logo-text" style="color: #ffdc78; font-size: x-large !important;">
-                                        Admin
+                                        OPMS
                                     </h5>
                                 </div>
                             </div>
@@ -179,7 +179,7 @@
                                 <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
                             </svg> -->
                             <li>
-                    <Link class="sidebar-link" href="/AIP/direct" :class="{'active': $page.url === '/AIP/direct'}">
+                    <!-- <Link class="sidebar-link" href="/AIP/direct" :class="{'active': $page.url === '/AIP/direct'}">
                         <span></span>
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
@@ -188,7 +188,7 @@
                             </svg>
                         </span>
                         <span class="title">LBP Form</span>
- </Link>
+ </Link> -->
                     <Link class="sidebar-link" href="/AIP/direct" :class="{ 'active': $page.url === '/AIP/direct' }">
                     <span></span>
                     <span class="icon-holder">

@@ -58,8 +58,8 @@
                 <input type="text" v-model="form.paps_desc" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.paps_desc">{{ form.errors.paps_desc }}</div>
 
-                <label for="">Means of Verification </label>
-                <input type="text" v-model="form.MOV" class="form-control" autocomplete="chrome-off">
+                <label for="">Description</label>
+                <input type="text" v-model="form.MOV" @input="limitWordCount" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.MOV">{{ form.errors.MOV }}</div>
 
                 <label for="">Type</label>
@@ -355,6 +355,16 @@ export default {
     },
 
     methods: {
+     limitWordCount() {
+            // Get the words from the input text
+            const words = this.form.MOV.split(/\s+/);
+
+            // Limit the input to 50 words
+            if (words.length > 50) {
+                // If the word count exceeds 50, truncate the input
+                this.form.MOV = words.slice(0, 50).join(' ');
+            }
+        },
         submit() {
             if (this.form.type == "GAS") {
                 this.form.idmfo = "0";
