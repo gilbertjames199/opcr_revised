@@ -74,9 +74,8 @@
                                     </td>
                                     <td><textarea v-model="form.opcrs[index].accomplishments"></textarea></td>
                                     <td>
-                                        <!-- class="centered-input" -->
-                                        <input v-model="form.opcrs[index].rating_q" type="number" min="0" max="5" step="1">
-                                        <!-- one -->
+                                        <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
+                                            min="0" max="5" step="1">
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_e" class="centered-input" type="number"
@@ -190,17 +189,17 @@ export default {
     components: {
         Pagination, Filtering,
     },
-    beforeMount() {
-        this.form.opcrs = this.opcrs
-        if (localStorage.getItem('reloaded')) {
-            localStorage.removeItem('reloaded');
-        } else {
-            localStorage.setItem('reloaded', '1');
-            location.reload();
-        }
-    },
+    // beforeMount() {
+    //     this.form.opcrs = this.opcrs
+    //     if (localStorage.getItem('reloaded')) {
+    //         localStorage.removeItem('reloaded');
+    //     } else {
+    //         localStorage.setItem('reloaded', '1');
+    //         location.reload();
+    //     }
+    // },
     mounted() {
-        // this.form.opcrs = this.opcrs
+        this.form.opcrs = this.opcrs
         // if (localStorage.getItem('reloaded')) {
         //     // The page was just reloaded. Clear the value from local storage
         //     // so that it will reload the next time this page is visited.

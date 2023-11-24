@@ -103,7 +103,8 @@ class OPCRPAPSController extends Controller
             })
             ->when($request->FFUNCCOD, function ($query, $searchItem) {
                 $query->where('FFUNCCOD', '=', $searchItem);
-            });
+            })
+            ->where('idmfo', '>', '45');
 
         $mfos = MajorFinalOutput::all();
         if ($dept_code != '04') {

@@ -100,7 +100,10 @@ class LogFrameController extends Controller
         // dd($sec_goal);
         $organizational = OrganizationalGoal::where('FFUNCCOD', $FFUNCCOD)->get();
 
-        $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)->with('paps')->get();
+        $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
+            ->with('paps')
+            ->where('id', '>', '45')
+            ->get();
         //$id= auth()->user()->recid;
         $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
         // dd($FFUNCCOD);
@@ -218,6 +221,7 @@ class LogFrameController extends Controller
     public function mfo(Request $request)
     {
         $mfos = MajorFinalOutput::select("mfo_desc", "id")->where('FFUNCCOD', $request->id)
+            ->where('id', '>', '45')
             ->get();
         return $mfos;
     }

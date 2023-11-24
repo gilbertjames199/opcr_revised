@@ -135,14 +135,21 @@
                 </table>
             </div>
             <div class="d-flex justify-content-center">
-                <button v-if="opcr_current.target_status == 0" @click="showModal2('v')"
+                <label>REMARKS: </label>&nbsp;&nbsp;&nbsp;
+                <input class="form-control" v-model="remarks" type="text" /><br />
+            </div>
+            <div>
+                <hr>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button v-if="opcr_current.target_status == 0" @click="reviewSubmit()"
                     class="btn btn-primary text-white">Review</button>&nbsp;
                 <button v-if="opcr_current.target_status == 1" @click="showModal2('a')"
                     class="btn btn-success text-white">Approve</button>&nbsp;
                 <button @click="showModal2('r')" class="btn btn-danger text-white">Return</button>
             </div>
         </Modal>
-        <Modal2 v-if="displayModal2" @close-modal-event="hideModal">
+        <!-- <Modal2 v-if="displayModal2" @close-modal-event="hideModal">
             <button @click="backTo()" class="btn btn-light">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
@@ -154,11 +161,11 @@
             </button>
             {{ mode }} Remarks:
             <input class="form-control" v-model="remarks" type="text" />
-            <!-- viewModal(opcr_id, status, opcr) -->
+            viewModal(opcr_id, status, opcr)
             &nbsp;
             <button @click="confirmSubmission()" class="btn btn-primary text-white">Done</button>&nbsp;
             <button @click="hideModal()" class="btn btn-danger text-white">Cancel</button>
-        </Modal2>
+        </Modal2> -->
     </div>
 </template>
 <script>

@@ -396,7 +396,7 @@ class PAPController extends Controller
     {
         //dd("direct");
         //dd($request->mfosel);
-        $offices = FFUNCCOD::all();
+        $offices = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->get();
         $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
             ->when($request->search, function ($query, $searchItem) {
@@ -405,6 +405,7 @@ class PAPController extends Controller
             ->when($request->mfosel, function ($query, $searchItem) {
                 $query->where('idmfo', '=', $searchItem);
             })
+            ->where('idmfo', '>', '45')
             ->orderByRaw(
                 DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
                             WHEN program_and_projects.type = 'Project' THEN 1
@@ -422,7 +423,7 @@ class PAPController extends Controller
             ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
         $result = clone ($data);
-        $mfos = MajorFinalOutput::all();
+        $mfos = MajorFinalOutput::where('id', '>', '45')->get();
         if (auth()->user()->recid !== 545) {
             $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
             $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
@@ -446,7 +447,9 @@ class PAPController extends Controller
     {
         $MY_FFUNCCOD = $FFUNCCOD;
         // dd($FFUNCCOD);
-        $data = MajorFinalOutput::where('FFUNCCOD', $MY_FFUNCCOD)->get();
+        $data = MajorFinalOutput::where('FFUNCCOD', $MY_FFUNCCOD)
+            ->where('id', '>', '45')
+            ->get();
         return ['data' => $data];
     }
 }
