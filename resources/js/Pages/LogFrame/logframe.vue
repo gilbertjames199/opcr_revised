@@ -126,7 +126,7 @@
                                 <td class="pL-2" colspan="2">
                                     <div v-for="pap in mfo.paps">
                                         <a :href="`/revision/${pap.id}`" target="_blank">{{ pap.paps_desc }}</a><br>
-                                        <span v-if="pap.MOV !== '-'">(<i>MOV: {{ pap.MOV }}</i>)</span>
+                                        <span v-if="pap.MOV !== '-'">(<i>Description: {{ pap.MOV }}</i>)</span>
                                         <div style="color: white"> .</div>
                                     </div>
                                 </td>
