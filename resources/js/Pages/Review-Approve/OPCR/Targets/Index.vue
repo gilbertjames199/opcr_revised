@@ -136,7 +136,7 @@
             </div>
             <div class="d-flex justify-content-center">
                 <label>REMARKS: </label>&nbsp;&nbsp;&nbsp;
-                <input class="form-control" v-model="remarks" type="text" /><br />
+                <input class="form-control" v-model="form.remarks" type="text" /><br />
             </div>
             <div>
                 <hr>
@@ -144,9 +144,9 @@
             <div class="d-flex justify-content-center">
                 <button v-if="opcr_current.target_status == 0" @click="reviewSubmit()"
                     class="btn btn-primary text-white">Review</button>&nbsp;
-                <button v-if="opcr_current.target_status == 1" @click="showModal2('a')"
+                <button v-if="opcr_current.target_status == 1" @click="approveSubmit()"
                     class="btn btn-success text-white">Approve</button>&nbsp;
-                <button @click="showModal2('r')" class="btn btn-danger text-white">Return</button>
+                <button @click="returnSubmit()" class="btn btn-danger text-white">Return</button>
             </div>
         </Modal>
         <!-- <Modal2 v-if="displayModal2" @close-modal-event="hideModal">
@@ -162,13 +162,16 @@
             {{ mode }} Remarks:
             <input class="form-control" v-model="remarks" type="text" />
             viewModal(opcr_id, status, opcr)
-            &nbsp;
+            &nbsp;v-if="auth.user.office.department_code == '04'"
             <button @click="confirmSubmission()" class="btn btn-primary text-white">Done</button>&nbsp;
             <button @click="hideModal()" class="btn btn-danger text-white">Cancel</button>
         </Modal2> -->
+        {{ auth }}
+        {{ auth.user.office.department_code }}
     </div>
 </template>
 <script>
+import { useForm } from "@inertiajs/inertia-vue3";
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
@@ -187,6 +190,10 @@ export default {
             opcr_current: [],
             remarks: "",
             mode: "",
+            form: useForm({
+                remarks: "",
+                opcr_list_id: "",
+            })
         }
     },
     components: {
@@ -277,10 +284,52 @@ export default {
 
         },
         reviewSubmit() {
-            $url = '/review-approve/targets/{opcr_list_id}/review';
+            // var opcr_list_id_here = this.opcr_current.id;
+            var url = '/review-approve/targets/' + this.opcr_current.id + '/review';
+            this.form.opcr_list_id = this.opcr_current.id;
+            let text = "WARNING!\nAre you sure you want to review the IPCR Target?";
+            // alert("/ipcrtargets/" + ipcr_id + "/"+ this.id+"/delete")
+            if (confirm(text) == true) {
+                this.form.get(url, this.form);
+            }
+            this.hideModal();
+            this.clearForm();
         },
-        approveSubmit() { },
-        returnSubmit() { },
+        approveSubmit() {
+            //  Route:: prefix('review-approve') -> group(function () {
+            //     Route:: prefix('/targets') -> group(function () {
+            //         Route:: get('/', [TargetAccomplishmentReviewApproveController:: class, 'index_target']);
+            //         Route:: get('/{opcr_list_id}/review', [TargetAccomplishmentReviewApproveController:: class, 'reviewOPCRTarget']);
+            //         Route:: get('/{opcr_list_id}/approve/opcr'
+            // alert('review-approve')
+            var url = '/review-approve/targets/approve/' + this.opcr_current.id + '/opcr';
+            this.form.opcr_list_id = this.opcr_current.id;
+            let text = "WARNING!\nAre you sure you want to approve the IPCR Target?";
+            // alert(url)
+            if (confirm(text) == true) {
+                this.form.post(url, this.form);
+            }
+            this.hideModal();
+            this.clearForm();
+        },
+        returnSubmit() {
+            ///{opcr_list_id}/view/opcr/target/submission
+            // /return/remarks / { opcr_list_id } / opcr
+            var url = '/review-approve/targets/return/remarks/' + this.opcr_current.id + '/opcr';
+            this.form.opcr_list_id = this.opcr_current.id;
+            let text = "WARNING!\nAre you sure you want to return the IPCR Target?";
+            // alert(url)
+            if (confirm(text) == true) {
+                this.form.post(url, this.form);
+            }
+
+            this.hideModal();
+            this.clearForm();
+        },
+        clearForm() {
+            this.form.remarks = "";
+            this.form.opcr_list_id = "";
+        }
     }
 };
 </script>

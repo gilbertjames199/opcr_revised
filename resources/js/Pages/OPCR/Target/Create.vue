@@ -94,11 +94,11 @@
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
                     Save changes
                 </button>
-                {{ this.editData }}
+                <!-- {{ this.editData }}
                 <br>*****************<br>
                 {{ qualities }}
                 <br>*****************<br>
-                {{ success_indicators }}
+                {{ success_indicators }} -->
             </form>
         </div>
 

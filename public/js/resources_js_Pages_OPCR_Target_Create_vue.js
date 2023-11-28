@@ -420,23 +420,6 @@ var _hoisted_27 = {
   "class": "fs-6 c-red-500"
 };
 var _hoisted_28 = ["disabled"];
-
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
-/* HOISTED */
-);
-
-var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
-/* HOISTED */
-);
-
-var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
-/* HOISTED */
-);
-
-var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
-/* HOISTED */
-);
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
@@ -617,13 +600,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $data.form.processing
   }, " Save changes ", 8
   /* PROPS */
-  , _hoisted_28), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.editData) + " ", 1
-  /* TEXT */
-  ), _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("*****************"), _hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.qualities) + " ", 1
-  /* TEXT */
-  ), _hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("*****************"), _hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.success_indicators), 1
-  /* TEXT */
-  )], 32
+  , _hoisted_28), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ this.editData }}\n                <br>*****************<br>\n                {{ qualities }}\n                <br>*****************<br>\n                {{ success_indicators }} ")], 32
   /* HYDRATE_EVENTS */
   )])]);
 }

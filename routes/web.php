@@ -667,7 +667,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix('/targets')->group(function () {
             Route::get('/', [TargetAccomplishmentReviewApproveController::class, 'index_target']);
             Route::get('/{opcr_list_id}/review', [TargetAccomplishmentReviewApproveController::class, 'reviewOPCRTarget']);
-            Route::get('/{opcr_list_id}/approve/opcr', [TargetAccomplishmentReviewApproveController::class, 'reviewOPCRTarget']);
+            Route::post('/approve/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'approveOPCRTarget']);
+            Route::post('/return/remarks/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'returnOpcrTarget']);
             Route::get('/{opcr_list_id}/view/opcr/target/submission', [TargetAccomplishmentReviewApproveController::class, 'viewTarget']);
         });
         // approveOPCRTarget

@@ -15,6 +15,11 @@ class CreateOpcrRemarksTable extends Migration
     {
         Schema::create('opcr_remarks', function (Blueprint $table) {
             $table->id();
+            $table->string('id_opcr_list');
+            $table->string('type')->comment('target/rating/accomplishment');
+            $table->string('number')->comment('indicate if this remark is the first,second, third, etc');
+            $table->string('status')->comment('indicate if remark is for');
+            $table->string('remarks');
             $table->timestamps();
         });
     }
