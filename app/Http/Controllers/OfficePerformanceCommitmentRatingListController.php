@@ -122,8 +122,10 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         $dept_code = auth()->user()->department_code;
         $office = DB::connection('mysql2')->table('offices')
             ->where('department_code', $dept_code)
+            ->where('office', 'LIKE', '%Office%')
             ->first()->office;
         $office_lower = Str::lower($office);
+        // dd($office_lower);
         //dd($office_lower);
         //dd($office_lower);
         // dd(auth()->user()->department_code);
@@ -132,6 +134,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         //             ->first()->FFUNCCOD;
         $FFUNCCOD = DB::connection('mysql2')->table('functions')
             ->where('department_code', auth()->user()->department_code)
+            ->where('FFUNCTION', 'LIKE', '%Office%')
             ->first()->FFUNCCOD;
         //$FFUNCCOD = user()
         //dd($FFUNCCOD);
