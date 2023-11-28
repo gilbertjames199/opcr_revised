@@ -31,8 +31,10 @@ class OpcrTargetController extends Controller
     public function index(Request $request, $opcr_list_id)
     {
         // dd("targ");
-        //->where('OPT.office_performance_commitment_rating_list_id', $opcr_list_id)
+        //->where('OPT.office_performance_commitment_rating_list_id', $opcr_list_id)   $opcr_list->FFUNCCOD
+
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
+        // dd($opcr_list->FFUNCCOD);
         $data = ProgramAndProject::where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
             ->select(
                 'major_final_outputs.mfo_desc',
@@ -53,7 +55,7 @@ class OpcrTargetController extends Controller
             ->orderBy('program_and_projects.paps_desc', 'asc')
             ->get();
 
-        //dd($data);
+        // dd($data);
         //dd('OPCR Targets index');
         $opcr_id = $opcr_list_id;
         $FFUNCCOD = $opcr_list->FFUNCCOD;
