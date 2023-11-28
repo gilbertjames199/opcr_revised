@@ -107,6 +107,7 @@ class LogFrameController extends Controller
         $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
         // dd($FFUNCCOD);
         $office = $functions->pluck('FFUNCTION');
+
         // dd($mfos);
         // dd("FFUNCCOD123: " . $FFUNCCOD);
         // dd($office[0]);

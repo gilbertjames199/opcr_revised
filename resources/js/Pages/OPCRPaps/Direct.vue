@@ -94,7 +94,7 @@
                             <tr class="bg-secondary text-white">
                                 <th>Major Final Output</th>
                                 <th>PAPS Description</th>
-                                <th>Means of Verification</th>
+                                <th>Description</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
