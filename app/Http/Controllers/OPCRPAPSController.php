@@ -144,10 +144,13 @@ class OPCRPAPSController extends Controller
                         "PS" => $ps,
                     ];
                 });
+            // $data = clone ($data)
+            //     ->Join(DB::raw('fms.accountaccess acc'), 'acc.FFUNCCOD', '=', 'program_and_projects.FFUNCCOD')
+            //     ->Join(DB::raw('fms.systemusers sysu'), 'sysu.recid', '=', 'acc.iduser')
+            //     ->where('sysu.recid', $idn);
             $data = clone ($data)
-                ->Join(DB::raw('fms.accountaccess acc'), 'acc.FFUNCCOD', '=', 'program_and_projects.FFUNCCOD')
-                ->Join(DB::raw('fms.systemusers sysu'), 'sysu.recid', '=', 'acc.iduser')
-                ->where('sysu.recid', $idn);
+                ->where('program_and_projects.FFUNCCOD', auth()->user()->office);
+            // dd($data);
             $idn = auth()->user()->recid;
             $access = DB::connection('mysql2')->table('accountaccess')
                 ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
