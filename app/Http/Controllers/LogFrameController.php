@@ -64,13 +64,13 @@ class LogFrameController extends Controller
 
     public function showlog($FFUNCCOD)
     {
-        // dd('showlog');
+        // dd($FFUNCCOD);
         // === null
         if ($FFUNCCOD == null || $FFUNCCOD == "" || $FFUNCCOD == "null") {
             // dd($FFUNCCOD . " inside !FFUNCCOD is null");
 
             $ffunccody = auth()->user()->office;
-            // dd("ffunccody: " . $ffunccody);
+            dd("ffunccody: " . $ffunccody);
             if ($ffunccody != null) {
                 // dd("Null ang ffunccody333 ");
                 // dd(auth()->user()->office);
@@ -78,13 +78,7 @@ class LogFrameController extends Controller
                 // dd('FFUNCCOD: ' . $FFUNCCOD);
             }
         }
-        // else {
-        //     dd("FFUNCCOD is not szcnull");
-        // }
-
-        //dd('showlog');
         $soc_goal = SocietalGoal::get();
-        //econ
         $sec_goal_econ = Sectoral::Join('sectors', 'sectors.id', 'sectoral_goals.sector')
             ->where('sectors.sector_name', 'LIKE', '%Econ%')
             ->get();
@@ -97,21 +91,17 @@ class LogFrameController extends Controller
         $sec_goal = Sectoral::Join('sectors', 'sectors.id', 'sectoral_goals.sector')
             ->where('FFUNCCOD', $FFUNCCOD)
             ->get();
-        // dd($sec_goal);
         $organizational = OrganizationalGoal::where('FFUNCCOD', $FFUNCCOD)->get();
-        if ($FFUNCCOD)
+        if ($FFUNCCOD) {
             $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
                 ->with('paps')
                 ->where('id', '>', '50')
                 ->get();
-        //$id= auth()->user()->recid;
+        }
+
         $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
-        // dd($FFUNCCOD);
         $office = $functions->pluck('FFUNCTION');
 
-        // dd($mfos);
-        // dd("FFUNCCOD123: " . $FFUNCCOD);
-        // dd($office[0]);
         return inertia('LogFrame/logframe', [
             "societal" => $soc_goal,
             "sec_econ" => $sec_goal_econ,
