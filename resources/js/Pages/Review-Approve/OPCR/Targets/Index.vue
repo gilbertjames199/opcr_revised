@@ -166,8 +166,8 @@
             <button @click="confirmSubmission()" class="btn btn-primary text-white">Done</button>&nbsp;
             <button @click="hideModal()" class="btn btn-danger text-white">Cancel</button>
         </Modal2> -->
-        {{ auth }}
-        {{ auth.user.office.department_code }}
+        <!-- {{ auth }}
+        {{ auth.user.office.department_code }} -->
     </div>
 </template>
 <script>
