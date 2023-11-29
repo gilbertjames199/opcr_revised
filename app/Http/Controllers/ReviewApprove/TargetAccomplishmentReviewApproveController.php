@@ -36,6 +36,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->paginate(10);
             $data->getCollection()->transform(function ($item) {
                 $opcr_id = $item->id;
+                // dd($item);
                 //OFFICE
                 $office = FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)
                     ->first();

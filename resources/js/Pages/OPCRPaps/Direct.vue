@@ -103,7 +103,7 @@
                                 <td>
                                     <div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div>
                                 </td>
-                                <td>{{ dat.paps_desc }}</td>
+                                <td>{{ dat }}{{ dat.paps_desc }}</td>
                                 <td>{{ dat.MOV }}</td>
                                 <td>
                                     <div class="dropdown dropstart">
