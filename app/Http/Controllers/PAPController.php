@@ -394,7 +394,7 @@ class PAPController extends Controller
     }
     public function direct(Request $request)
     {
-        //dd("direct");
+        // dd("direct");
         //dd($request->mfosel);
         $offices = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->get();
         $idn = auth()->user()->recid;
@@ -428,10 +428,10 @@ class PAPController extends Controller
             $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
             $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
         }
-
+        // dd($accessFFUNCCOD);
         $showPerPage = 10;
         $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
-
+        // dd($accessFFUNCCOD);
         return inertia('PAPS/Direct', [
             "offices" => $offices,
             "data" => $paginatedResult,

@@ -70,7 +70,7 @@ class LogFrameController extends Controller
             // dd($FFUNCCOD . " inside !FFUNCCOD is null");
 
             $ffunccody = auth()->user()->office;
-            dd("ffunccody: " . $ffunccody);
+            // dd("ffunccody: " . $ffunccody);
             if ($ffunccody != null) {
                 // dd("Null ang ffunccody333 ");
                 // dd(auth()->user()->office);
@@ -97,6 +97,7 @@ class LogFrameController extends Controller
                 ->with('paps')
                 ->where('id', '>', '50')
                 ->get();
+            // dd($FFUNCCOD);
         }
 
         $functions = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->get();
