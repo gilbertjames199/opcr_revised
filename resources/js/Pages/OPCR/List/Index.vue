@@ -37,8 +37,8 @@
                         </thead>
                         <tbody>
                             <tr v-for="opcr_list in opcr_lists">
-                                <td>OPCR </td>
-                                <td>{{ opcr_list.id }} - {{ office.FFUNCTION }} </td>
+                                <td>OPCR</td>
+                                <td>{{ office.FFUNCTION }} </td>
                                 <td>{{ opcr_list.semester }}</td>
                                 <td>{{ formatMonth(opcr_list.date_from) }} to {{ formatMonthYear(opcr_list.date_to) }}</td>
                                 <td>
