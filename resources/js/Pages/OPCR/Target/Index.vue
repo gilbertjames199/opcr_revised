@@ -96,7 +96,8 @@
                                             <li v-else>
                                                 <Link class="text-danger dropdown-item"
                                                     :href="`/OPCRpaps/create/${dat.idpaps}`">
-                                                Add OPCR Standard {{ dat.idpaps }}
+                                                Add OPCR Standard
+                                                <!-- {{ dat.idpaps }} -->
                                                 </Link>
                                             </li>
                                             <!-- <li><Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">Edit</Link></li>
