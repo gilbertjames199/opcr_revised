@@ -305,25 +305,25 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //     ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
         //     ->get();
         // dd($FFUNCCOD);
-        $opcrs = ProgramAndProject::select(
-            'office_performance_commitment_ratings.id',
-            'office_performance_commitment_ratings.success_indicator_id',
-            'office_performance_commitment_ratings.accomplishments',
-            'office_performance_commitment_ratings.rating_q',
-            'office_performance_commitment_ratings.rating_e',
-            'office_performance_commitment_ratings.rating_t',
-            'office_performance_commitment_ratings.remarks',
-            'office_performance_commitment_ratings.FFUNCCOD',
-            'office_performance_commitment_ratings.opcr_id',
-            'program_and_projects.paps_desc',
-            'mfo.mfo_desc',
-            'mfo.created_at'
-        )
-            ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'program_and_projects.idmfo')
-            ->leftjoin('office_performance_commitment_ratings', 'office_performance_commitment_ratings.id_paps', 'program_and_projects.id')
-            ->where('mfo.FFUNCCOD', $FFUNCCOD)
-            ->get();
-        dd($opcrs);
+        // $opcrs = ProgramAndProject::select(
+        //     'office_performance_commitment_ratings.id',
+        //     'office_performance_commitment_ratings.success_indicator_id',
+        //     'office_performance_commitment_ratings.accomplishments',
+        //     'office_performance_commitment_ratings.rating_q',
+        //     'office_performance_commitment_ratings.rating_e',
+        //     'office_performance_commitment_ratings.rating_t',
+        //     'office_performance_commitment_ratings.remarks',
+        //     'office_performance_commitment_ratings.FFUNCCOD',
+        //     'office_performance_commitment_ratings.opcr_id',
+        //     'program_and_projects.paps_desc',
+        //     'mfo.mfo_desc',
+        //     'mfo.created_at'
+        // )
+        //     ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'program_and_projects.idmfo')
+        //     ->leftjoin('office_performance_commitment_ratings', 'office_performance_commitment_ratings.id_paps', 'program_and_projects.id')
+        //     ->where('mfo.FFUNCCOD', $FFUNCCOD)
+        //     ->get();
+        // dd($opcrs);
         //return $opcrs;
         //return $mfos;
         //********************************************** */
