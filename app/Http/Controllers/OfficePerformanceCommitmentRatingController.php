@@ -277,6 +277,53 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
             ->get();
+
+        // $opcrs = ProgramAndProject::select(
+        //     'office_performance_commitment_ratings.id',
+        //     'office_performance_commitment_ratings.success_indicator_id',
+        //     'office_performance_commitment_ratings.accomplishments',
+        //     'office_performance_commitment_ratings.rating_q',
+        //     'office_performance_commitment_ratings.rating_e',
+        //     'office_performance_commitment_ratings.rating_t',
+        //     'office_performance_commitment_ratings.remarks',
+        //     'office_performance_commitment_ratings.FFUNCCOD',
+        //     'office_performance_commitment_ratings.opcr_id',
+        //     'SU.success_indicator',
+        //     'off.office_accountable',
+        //     'program_and_projects.paps_desc',
+        //     'mfo.mfo_desc',
+        //     'mfo.created_at'
+        // )
+        //     ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'program_and_projects.idmfo')
+        //     ->leftjoin('office_performance_commitment_ratings', 'office_performance_commitment_ratings.id_paps', 'program_and_projects.id')
+        //     ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
+        //     ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
+        //     ->leftjoin('office_accountables AS off', 'off.idpaps', 'program_and_projects.id')
+        //     ->orderBy('mfo.mfo_desc', 'asc')
+        //     ->where('mfo.mfo_desc', '<>', '')
+        //     ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
+        //     ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
+        //     ->get();
+        // dd($FFUNCCOD);
+        $opcrs = ProgramAndProject::select(
+            'office_performance_commitment_ratings.id',
+            'office_performance_commitment_ratings.success_indicator_id',
+            'office_performance_commitment_ratings.accomplishments',
+            'office_performance_commitment_ratings.rating_q',
+            'office_performance_commitment_ratings.rating_e',
+            'office_performance_commitment_ratings.rating_t',
+            'office_performance_commitment_ratings.remarks',
+            'office_performance_commitment_ratings.FFUNCCOD',
+            'office_performance_commitment_ratings.opcr_id',
+            'program_and_projects.paps_desc',
+            'mfo.mfo_desc',
+            'mfo.created_at'
+        )
+            ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'program_and_projects.idmfo')
+            ->leftjoin('office_performance_commitment_ratings', 'office_performance_commitment_ratings.id_paps', 'program_and_projects.id')
+            ->where('mfo.FFUNCCOD', $FFUNCCOD)
+            ->get();
+        dd($opcrs);
         //return $opcrs;
         //return $mfos;
         //********************************************** */
@@ -311,6 +358,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $total = number_format($averageSum, 2);
         $ave_pre = $total / $count;
         $ave = number_format($ave_pre, 2);
+        // dd($opcrs);
         // dd('ave: ' . $ave);
         //********************************************* */
         return inertia('OPCR/Form/Index', [
