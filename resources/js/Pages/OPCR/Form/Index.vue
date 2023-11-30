@@ -274,13 +274,13 @@ export default {
                 var rat_t = this.form.opcrs[i].rating_t;
                 var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
                 var div = 0;
-                if (parseFloat(rat_e) < 1) {
+                if (parseFloat(rat_e) > 1) {
                     div = div + 1;
                 }
-                if (parseFloat(rat_q) < 1) {
+                if (parseFloat(rat_q) > 1) {
                     div = div + 1;
                 }
-                if (parseFloat(rat_t) < 1) {
+                if (parseFloat(rat_t) > 1) {
                     div = div + 1;
                 }
                 if (div == 0) {
@@ -288,12 +288,35 @@ export default {
                 }
                 total = total + (avee / div);
             }
-            this.total_ave = total;
+            // this.total_ave = total;
             return this.format_number_conv(total, 2, true);
 
         },
         getAverageAll() {
-            var aver = parseFloat(this.total_ave) / (parseFloat(this.form.opcrs.length));
+            var total_div = 0;
+            var total = 0;
+            for (let i = 0; i < this.form.opcrs.length; i++) {
+                var rat_e = this.form.opcrs[i].rating_e;
+                var rat_q = this.form.opcrs[i].rating_q;
+                var rat_t = this.form.opcrs[i].rating_t;
+                var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+                var div = 0;
+                if (parseFloat(rat_e) > 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_q) > 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_t) > 1) {
+                    div = div + 1;
+                }
+                if (div == 0) {
+                    div = 1;
+                }
+                total_div = total_div + div;
+                total = total + (avee / div);
+            }
+            var aver = parseFloat(total) / (parseFloat(total_div));
             this.total_ave = aver;
             return this.format_number_conv(aver, 2, true)
         },
