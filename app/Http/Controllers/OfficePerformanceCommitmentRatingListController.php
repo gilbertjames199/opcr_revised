@@ -99,6 +99,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                     'year' => $item->year,
                     'FFUNCCOD' => $item->FFUNCCOD,
                     'allotment' => $item->allotment,
+                    'target_status' => $item->target_status,
                     'total' => $total,
                     'ave' => $ave,
                     'dept_head' => $dept_head,
@@ -118,7 +119,6 @@ class OfficePerformanceCommitmentRatingListController extends Controller
     }
     public function direct(Request $request)
     {
-
         $dept_code = auth()->user()->department_code;
         $office = DB::connection('mysql2')->table('offices')
             ->where('department_code', $dept_code)
@@ -213,6 +213,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                     'year' => $item->year,
                     'FFUNCCOD' => $item->FFUNCCOD,
                     'allotment' => $item->allotment,
+                    'target_status' => $item->target_status,
                     'total' => $total,
                     'ave' => $ave,
                     'dept_head' => $dept_head,

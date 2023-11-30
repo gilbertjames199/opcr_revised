@@ -150,6 +150,7 @@ class OPCRPAPSController extends Controller
             //     ->where('sysu.recid', $idn);
             $data = clone ($data)
                 ->where('program_and_projects.FFUNCCOD', auth()->user()->office);
+            // dd(auth()->user()->office);
             // dd($data);
             $idn = auth()->user()->recid;
             $access = DB::connection('mysql2')->table('accountaccess')
@@ -195,6 +196,7 @@ class OPCRPAPSController extends Controller
                         "PS" => $ps,
                     ];
                 });
+            // dd($data);
         }
         $data = clone ($data)->orderBy('created_at', 'desc')->get();
         // dd($data);
