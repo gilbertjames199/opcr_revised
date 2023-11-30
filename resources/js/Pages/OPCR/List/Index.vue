@@ -20,6 +20,7 @@
 
         <div class="masonry-sizer col-md-6">
             <b>Office</b>: <u>{{ office.FFUNCTION }}</u>
+            <p><i>Note: You can only rate if the target is approved</i></p>
         </div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -37,7 +38,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="opcr_list in opcr_lists">
-                                <td>OPCR</td>
+                                <td>OPCR </td>
                                 <td>{{ office.FFUNCTION }} </td>
                                 <td>{{ opcr_list.semester }}</td>
                                 <td>{{ formatMonth(opcr_list.date_from) }} to {{ formatMonthYear(opcr_list.date_to) }}</td>
@@ -57,8 +58,11 @@
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link class="dropdown-item"
-                                                    :href="`/opcr/form/${opcr_list.id}/${FFUNCCOD}`">Rating</Link>
+                                                <Button class="dropdown-item"
+                                                    :disabled="parseFloat(opcr_list.target_status) < 2"
+                                                    :href="`/opcr/form/${opcr_list.id}/${FFUNCCOD}`">
+                                                    Rating
+                                                </Button>
                                             </li>
                                             <li>
                                                 <Link class="dropdown-item" :href="`/opcrtarget/${opcr_list.id}`">Target
