@@ -20,7 +20,7 @@
 
         <div class="masonry-sizer col-md-6">
             <b>Office</b>: <u>{{ office.FFUNCTION }}</u>
-            <p><i>Note: You can only rate if the target is approved</i></p>
+            <p><i>Note: You can only rate once target is approved</i></p>
         </div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
