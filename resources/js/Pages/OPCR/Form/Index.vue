@@ -178,6 +178,8 @@ export default {
     data() {
         return {
             total_ave: 0,
+            total_comp: 0,
+            // total_divisor: 0,
             form: useForm({
                 opcrs: [],
             })
@@ -273,14 +275,15 @@ export default {
                 var rat_q = this.form.opcrs[i].rating_q;
                 var rat_t = this.form.opcrs[i].rating_t;
                 var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+                // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
                 var div = 0;
-                if (parseFloat(rat_e) > 1) {
+                if (parseFloat(rat_e) >= 1) {
                     div = div + 1;
                 }
-                if (parseFloat(rat_q) > 1) {
+                if (parseFloat(rat_q) >= 1) {
                     div = div + 1;
                 }
-                if (parseFloat(rat_t) > 1) {
+                if (parseFloat(rat_t) >= 1) {
                     div = div + 1;
                 }
                 if (div == 0) {
@@ -288,6 +291,7 @@ export default {
                 }
                 total = total + (avee / div);
             }
+            // total = "44.44555555";
             // this.total_ave = total;
             return this.format_number_conv(total, 2, true);
 
@@ -301,22 +305,24 @@ export default {
                 var rat_t = this.form.opcrs[i].rating_t;
                 var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
                 var div = 0;
-                if (parseFloat(rat_e) > 1) {
+                if (parseFloat(rat_e) >= 1) {
                     div = div + 1;
                 }
-                if (parseFloat(rat_q) > 1) {
+                if (parseFloat(rat_q) >= 1) {
                     div = div + 1;
                 }
-                if (parseFloat(rat_t) > 1) {
+                if (parseFloat(rat_t) >= 1) {
                     div = div + 1;
                 }
                 if (div == 0) {
                     div = 1;
                 }
-                total_div = total_div + div;
+                // total_div = total_div + div;
                 total = total + (avee / div);
             }
-            var aver = parseFloat(total) / (parseFloat(total_div));
+            // this.total_divisor = this.form.opcrs.length;
+            this.total_comp
+            var aver = parseFloat(total) / (parseFloat(this.form.opcrs.length));
             this.total_ave = aver;
             return this.format_number_conv(aver, 2, true)
         },
