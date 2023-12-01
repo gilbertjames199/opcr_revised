@@ -206,6 +206,39 @@ class OpcrTargetController extends Controller
         $targ->idpaps = $request->idpaps;
         $targ->office_performance_commitment_rating_list_id = $request->office_performance_commitment_rating_list_id;
         $targ->save();
+        //TEST $targ->id
+        // dd($targ->id);
+        //Office Performance Commitment Rating
+        $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $request->office_performance_commitment_rating_list_id)
+            ->first();
+        // dd($opcr_list);
+        $v_q = "3";
+        $v_r = "3";
+        $v_t = "3";
+        if ($request->quantity == null) {
+            $v_q = "0";
+        }
+        if ($request->quality_id == null) {
+            $v_r = "0";
+        }
+        if ($request->ratings_id == null) {
+            $v_t = "0";
+        }
+        //GENERATE RATING FOR THE TARGET
+        $success = SuccessIndicator::where('idpaps', $request->idpaps)->first();
+        $opcrf = new OfficePerformanceCommitmentRating();
+        $opcrf->id_paps = $request->idpaps;
+        $opcrf->id_opcr_target = $targ->id;
+        $opcrf->success_indicator_id = $success->id;
+        $opcrf->accomplishments = "";
+        $opcrf->rating_q = "1";
+        $opcrf->rating_e = "1";
+        $opcrf->rating_t = "1";
+        $opcrf->remarks = "-";
+        $opcrf->opcr_id    = $request->office_performance_commitment_rating_list_id;
+        $opcrf->FFUNCCOD = $opcr_list->FFUNCCOD;
+        $opcrf->department_code = $opcr_list->department_code;
+        $opcrf->save();
         return redirect('/opcrtarget/' . $request->office_performance_commitment_rating_list_id)
             ->with('message', 'Office performance target added!');
     }
@@ -268,6 +301,8 @@ class OpcrTargetController extends Controller
         $opcr_list = OpcrTarget::findOrFail($request->id);
         $opcr_list->delete();
         $opcr_id = $opcr_list->office_performance_commitment_rating_list_id;
+
+        OfficePerformanceCommitmentRating::where('id_opcr_target', $request->id)->delete();
         return redirect('/opcrtarget/' . $opcr_id)
             ->with('error', 'Office performance goal deleted!');
     }

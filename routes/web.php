@@ -742,7 +742,11 @@ Route::middleware('auth')->group(function () {
         Route::patch('/', [SubMfoController::class, 'update']);
         Route::delete('/{id}', [SubMfoController::class, 'destroy']);
     });
-
+    //UPDATE current opcr_ratings
+    Route::prefix('/update/opcr/')->group(function () {
+        Route::get('/rating', [OfficePerformanceCommitmentRatingController::class, 'update_current']);
+        Route::get('/generate/rating', [OfficePerformanceCommitmentRatingController::class, 'generate_rating']);
+    });
     // Route::prefix('/aip')->group(function(){
     //     Route::get('/{id}',[aip_controller::class,'index']);
     //     Route::get('/create/{id}',[aip_controller::class,'create']);

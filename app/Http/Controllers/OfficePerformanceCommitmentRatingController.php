@@ -172,66 +172,66 @@ class OfficePerformanceCommitmentRatingController extends Controller
     }
     public function index(Request $request, $opcr_id, $FFUNCCOD)
     {
-        // dd("rating");
+        //GET Department Code
         $dept_code = auth()->user()->department_code;
         //Check if the OPCR Form for the OPCR List is empty or not
         $opcr = $this->model->where('opcr_id', $opcr_id)->get();
-        $list = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
-
-        $my_year = Carbon::parse($list->date_to)->format('Y');
-        //dd($my_year);
         $cnt = $opcr->count();
 
+        $list = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+        $my_year = Carbon::parse($list->date_to)->format('Y');
+
+
         //dd($FFUNCCOD);
-        $succid = [];
-        //Load all success indicators
-        $success_indicators = SuccessIndicator::select(
-            'success_indicators.id',
-            'success_indicators.success_indicator'
-        )
-            ->join('program_and_projects AS paps', 'paps.id', 'success_indicators.idpaps')
-            ->where('FFUNCCOD', $FFUNCCOD)
-            ->get();
-        if ($cnt < 1) {
-            //IF the OPCR List has no OPCR Ratings, generate OPCR ratings for each Success Indicator
-            //Save OPC Rating for each success indicator with rating of 1 for Q,E,and T
-            foreach ($success_indicators as $success_indicator) {
-                $opcrf = new OfficePerformanceCommitmentRating();
-                $opcrf->success_indicator_id = $success_indicator->id;
-                array_push($succid, $success_indicator->id);
-                $opcrf->accomplishments = "";
-                $opcrf->rating_q = "1";
-                $opcrf->rating_e = "1";
-                $opcrf->rating_t = "1";
-                $opcrf->remarks = "-";
-                $opcrf->FFUNCCOD = $FFUNCCOD;
-                $opcrf->department_code = $dept_code;
-                $opcrf->opcr_id    = $opcr_id;
-                $opcrf->save();
-            }
-            //dd('EMPTY: '.$cnt);
-        } else {
-            $exist = $this->model->where('FFUNCCOD', $FFUNCCOD)
-                ->get();
-            $existingSuccessIndicatorIds = $exist->pluck('success_indicator_id')->toArray();
-            foreach ($success_indicators as $success_indicator) {
-                $successIndicatorId = $success_indicator->id;
-                if (!in_array($successIndicatorId, $existingSuccessIndicatorIds)) {
-                    OfficePerformanceCommitmentRating::create([
-                        'success_indicator_id' => $successIndicatorId,
-                        'accomplishments' => '',
-                        'rating_q' => '1',
-                        'rating_e' => '1',
-                        'rating_t' => '1',
-                        'remarks' => '-',
-                        'FFUNCCOD' => $FFUNCCOD,
-                        'department_code' => $dept_code,
-                        'opcr_id' => $opcr_id
-                    ]);
-                }
-            }
-            //dd('COUNT: '.$cnt);
-        }
+        // $succid = [];
+        // //Load all success indicators
+        // $success_indicators = SuccessIndicator::select(
+        //     'success_indicators.id',
+        //     'success_indicators.success_indicator'
+        // )
+        //     ->join('program_and_projects AS paps', 'paps.id', 'success_indicators.idpaps')
+        //     ->where('FFUNCCOD', $FFUNCCOD)
+        //     ->get();
+        // if ($cnt < 1) {
+        //IF the OPCR List has no OPCR Ratings, generate OPCR ratings for each Success Indicator
+        //Save OPC Rating for each success indicator with rating of 1 for Q,E,and T
+        // foreach ($success_indicators as $success_indicator) {
+        //     $opcrf = new OfficePerformanceCommitmentRating();
+        //     $opcrf->success_indicator_id = $success_indicator->id;
+        //     array_push($succid, $success_indicator->id);
+        //     $opcrf->accomplishments = "";
+        //     $opcrf->rating_q = "1";
+        //     $opcrf->rating_e = "1";
+        //     $opcrf->rating_t = "1";
+        //     $opcrf->remarks = "-";
+        //     $opcrf->FFUNCCOD = $FFUNCCOD;
+        //     $opcrf->department_code = $dept_code;
+        //     $opcrf->opcr_id    = $opcr_id;
+        //     $opcrf->save();
+        // }
+        //dd('EMPTY: '.$cnt);
+        // } else {
+        // $exist = $this->model->where('FFUNCCOD', $FFUNCCOD)
+        //     ->get();
+        // $existingSuccessIndicatorIds = $exist->pluck('success_indicator_id')->toArray();
+        // foreach ($success_indicators as $success_indicator) {
+        //     $successIndicatorId = $success_indicator->id;
+        //     if (!in_array($successIndicatorId, $existingSuccessIndicatorIds)) {
+        //         // OfficePerformanceCommitmentRating::create([
+        //         //     'success_indicator_id' => $successIndicatorId,
+        //         //     'accomplishments' => '',
+        //         //     'rating_q' => '1',
+        //         //     'rating_e' => '1',
+        //         //     'rating_t' => '1',
+        //         //     'remarks' => '-',
+        //         //     'FFUNCCOD' => $FFUNCCOD,
+        //         //     'department_code' => $dept_code,
+        //         //     'opcr_id' => $opcr_id
+        //         // ]);
+        //     }
+        // }
+        //dd('COUNT: '.$cnt);
+        // }
         //REVISION PLAN ID
         $revision_plan = RevisionPlan::where('idmfo', '0')
             ->where('idpaps', '0')
@@ -963,5 +963,80 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //********************************************** */
 
 
+    }
+
+    //UPDATE CURRENT
+    public function update_current(Request $request)
+    {
+        // dd('update_current');
+        // $opcrtargets = OfficePerformanceCommitmentRating::select()
+        //     ->leftjoin('program_and_projects', 'program_and_projects.id', 'office_performance_commitment_ratings.id_paps')
+        //     ->get();
+        // dd($opcrtargets);
+
+        $opcr_lists = OfficePerformanceCommitmentRatingList::get();
+        // dd($opcr_lists);
+        foreach ($opcr_lists as $opcr_list) {
+            $opcr_targets = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list->id)
+                ->get();
+            // dd($opcr_targets);
+            foreach ($opcr_targets as $opcr_target) {
+                // $paps = ProgramAndProject::where('id',$opcr_target->idpaps)->first();
+                $opcr_id = $opcr_target->office_performance_commitment_rating_list_id;
+
+                $success_indic = SuccessIndicator::where('idpaps', $opcr_target->idpaps)->first();
+                // dd($success_indic);
+                if ($success_indic !== null) {
+                    $idpaps = $opcr_target->idpaps;
+                    $success_id = $success_indic->id;
+                    // dd($success_id);
+                    OfficePerformanceCommitmentRating::where('success_indicator_id', $success_id)
+                        ->where('opcr_id', $opcr_id)
+                        ->update([
+                            'id_paps' => $idpaps,
+                            'id_opcr_target' => $opcr_target->id
+                        ]);
+                }
+            }
+        }
+        OfficePerformanceCommitmentRating::where('id_opcr_target', '0')->delete();
+        $opcr = OfficePerformanceCommitmentRating::get();
+
+        return $opcr;
+    }
+    //GENERATE RATING
+    public function generate_rating(Request $request)
+    {
+        // dd("generate rating");
+        OfficePerformanceCommitmentRating::truncate();
+        //Generate Ratings based on existing OPCR Targets
+        $targets = OpcrTarget::all();
+        foreach ($targets as $target) {
+            $target_id = $target->id;
+            $idpaps = $target->idpaps;
+            $opcr_id = $target->office_performance_commitment_rating_list_id;
+            $success = SuccessIndicator::where('idpaps', $idpaps)->first();
+            if ($success !== null) {
+                $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)
+                    ->first();
+                $opcrf = new OfficePerformanceCommitmentRating();
+                $opcrf->id_paps = $idpaps;
+                $opcrf->id_opcr_target = $target_id;
+                $opcrf->success_indicator_id = $success->id;
+                $opcrf->accomplishments = "";
+                $opcrf->rating_q = "3";
+                $opcrf->rating_e = "3";
+                $opcrf->rating_t = "3";
+                $opcrf->remarks = "-";
+                $opcrf->opcr_id    = $opcr_id;
+                $opcrf->FFUNCCOD = $opcr_list->FFUNCCOD;
+                $opcrf->department_code = $opcr_list->department_code;
+                $opcrf->save();
+            }
+            // dd($idpaps);
+
+        }
+        $opcr_all = OfficePerformanceCommitmentRating::all();
+        return $opcr_all;
     }
 }
