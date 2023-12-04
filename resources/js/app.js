@@ -35,12 +35,18 @@ import VueSelect from 'vue-select';
 //import { BootstrapVue } from 'bootstrap-vue';
 /*.use(BootstrapVue)
       .use(IconsPlugin) */
+//VUE TOOLTIP
+// import VTooltip from 'v-tooltip';
+
 //VUE Quill Editor
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 //Vue Multiselect 3
 import Multiselect from '@vueform/multiselect';
+
+//VUE Sweetalert
+import VueSweetalert2 from 'vue-sweetalert2';
 
 const FilePond = vueFilePond(
     FilePondPluginFileValidateType,
@@ -50,6 +56,8 @@ const FilePond = vueFilePond(
     FilePondPluginImageTransform
 );
 //.use(yearPicker)
+
+// .use(VTooltip)
 createInertiaApp({
     resolve: async name => {
         let page = (await import(`./Pages/${name}`)).default;
@@ -59,6 +67,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(VueSweetalert2)
             .component("multiselect", Multiselect)
             .component("Link", Link)
             .component("Head", Head)

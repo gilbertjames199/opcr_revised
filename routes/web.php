@@ -100,6 +100,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [DashBoardController::class, 'index']);
     });
 
+
+    //HOME
     Route::prefix('/home')->group(function () {
         Route::get('/', [DashBoardController::class, 'index']);
     });
@@ -788,6 +790,24 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [AddAccomplishmentController::class, 'update']);
         Route::delete('/{id}', [AddAccomplishmentController::class, 'destroy']);
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //Non-existent Routes
+    Route::get('{any}', [DashBoardController::class, 'not_found'])->where('any', '.*');
 });
 
 
