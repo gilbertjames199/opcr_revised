@@ -375,13 +375,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/getUrl.js */ "./node_modules/css-loader/dist/runtime/getUrl.js");
 /* harmony import */ var _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _not_found_jpg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./not_found.jpg */ "./resources/js/Pages/NotFound/not_found.jpg");
+/* harmony import */ var _dribbble_1_gif__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dribbble_1.gif */ "./resources/js/Pages/NotFound/dribbble_1.gif");
 // Imports
 
 
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
-var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_not_found_jpg__WEBPACK_IMPORTED_MODULE_2__["default"]);
+var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_dribbble_1_gif__WEBPACK_IMPORTED_MODULE_2__["default"]);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\n    text-align: center;\n}\n.col-centered {\n    display: inline-block;\n    float: none;\n    text-align: left;\n    margin-right: -4px;\n}\n.pos {\n    position: top;\n    top: 240px;\n}\n\n/*NOT FOUND*/\n.page_404 {\n    padding: 40px 0;\n    background: #fff;\n    font-family: 'Arvo', serif;\n}\n.page_404 img {\n    width: 100%;\n}\n.four_zero_four_bg {\n\n    background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n    height: 400px;\n    background-position: center;\n}\n.four_zero_four_bg h1 {\n    font-size: 80px;\n}\n.four_zero_four_bg h3 {\n    font-size: 80px;\n}\n.link_404 {\n    color: #fff !important;\n    padding: 10px 20px;\n    background: #39ac31;\n    margin: 20px 0;\n    display: inline-block;\n}\n.contant_box_404 {\n    margin-top: -50px;\n}\n", ""]);
 // Exports
@@ -436,17 +436,17 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n    /* Override default value of 'no
 
 /***/ }),
 
-/***/ "./resources/js/Pages/NotFound/not_found.jpg":
-/*!***************************************************!*\
-  !*** ./resources/js/Pages/NotFound/not_found.jpg ***!
-  \***************************************************/
+/***/ "./resources/js/Pages/NotFound/dribbble_1.gif":
+/*!****************************************************!*\
+  !*** ./resources/js/Pages/NotFound/dribbble_1.gif ***!
+  \****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/not_found.jpg?f26e36392ebf3292f526ac11352d7a97");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/dribbble_1.gif?181c5a6430bcb77324b13a6776d7fc60");
 
 /***/ }),
 

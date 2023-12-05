@@ -87,7 +87,7 @@ export default {
 
 .four_zero_four_bg {
 
-    background-image: url('not_found.jpg');
+    background-image: url('dribbble_1.gif');
     height: 400px;
     background-position: center;
 }

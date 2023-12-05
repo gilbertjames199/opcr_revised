@@ -220,6 +220,7 @@ class OPCRPAPSController extends Controller
             "PS" => $ps,
             "data" => $paginatedResult,
             "mfos" => $mfos,
+            "FFUNCCODVAL" => $request->FFUNCCOD,
             "filters" => $request->only(['search']),
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),

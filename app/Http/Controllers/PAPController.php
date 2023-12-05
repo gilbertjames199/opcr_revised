@@ -396,7 +396,7 @@ class PAPController extends Controller
     {
         // dd("direct");
         //dd($request->mfosel);
-        $offices = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->get();
+        $offices = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->orderBy('FFUNCTION', 'ASC')->get();
         $idn = auth()->user()->recid;
         $data = $this->model->with('MFO')
             ->when($request->search, function ($query, $searchItem) {

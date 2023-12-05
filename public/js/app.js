@@ -112,6 +112,7 @@ __webpack_require__.r(__webpack_exports__);
         if (value.message) {
           this.$swal({
             icon: 'success',
+            iconColor: 'white',
             title: value.message,
             timer: 5000,
             // Set duration
@@ -123,6 +124,7 @@ __webpack_require__.r(__webpack_exports__);
         } else if (value.error) {
           this.$swal({
             icon: 'error',
+            iconColor: 'white',
             title: value.error,
             timer: 5000,
             // Set duration
@@ -134,6 +136,7 @@ __webpack_require__.r(__webpack_exports__);
         } else if (value.info) {
           this.$swal({
             icon: 'info',
+            iconColor: 'white',
             title: value.info,
             timer: 5000,
             // Set duration
@@ -145,6 +148,7 @@ __webpack_require__.r(__webpack_exports__);
         } else if (value.deleted) {
           this.$swal({
             icon: 'warning',
+            iconColor: 'white',
             title: value.deleted,
             timer: 5000,
             // Set duration

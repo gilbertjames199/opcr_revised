@@ -94,6 +94,7 @@ export default {
                 if (value.message) {
                     this.$swal({
                         icon: 'success',
+                        iconColor: 'white',
                         title: value.message,
                         timer: 5000, // Set duration
                         timerProgressBar: true,
@@ -104,6 +105,7 @@ export default {
                 } else if (value.error) {
                     this.$swal({
                         icon: 'error',
+                        iconColor: 'white',
                         title: value.error,
                         timer: 5000, // Set duration
                         timerProgressBar: true,
@@ -114,6 +116,7 @@ export default {
                 } else if (value.info) {
                     this.$swal({
                         icon: 'info',
+                        iconColor: 'white',
                         title: value.info,
                         timer: 5000, // Set duration
                         timerProgressBar: true,
@@ -124,6 +127,7 @@ export default {
                 } else if (value.deleted) {
                     this.$swal({
                         icon: 'warning',
+                        iconColor: 'white',
                         title: value.deleted,
                         timer: 5000, // Set duration
                         timerProgressBar: true,
