@@ -107,13 +107,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.form.quality_id = this.qualities[i].id;
       }
 
-      if (count_e >= 0) {
+      if (count_e > 0) {
         var g = parseFloat(count_e) / 2;
         g = Math.floor(g);
         this.form.ratings_id = this.ratings[g].id;
       }
 
-      if (count_t >= 0) {
+      if (count_t > 0) {
         var h = parseFloat(count_t) / 2;
         h = Math.floor(h);
         this.form.timeliness_id = this.timeliness[h].id;
@@ -600,7 +600,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $data.form.processing
   }, " Save changes ", 8
   /* PROPS */
-  , _hoisted_28), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" idpaps: {{ idpaps }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ this.editData }}\n                <br>*****************<br>\n                {{ qualities }}\n                <br>*****************<br>\n                {{ success_indicators }} ")], 32
+  , _hoisted_28), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div style=\"color: inherit\">idpaps: {{ idpaps }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ this.editData }}\n                <br>*****************<br>\n                {{ qualities }}\n                <br>*****************<br>\n                {{ success_indicators }} ")], 32
   /* HYDRATE_EVENTS */
   )])]);
 }
