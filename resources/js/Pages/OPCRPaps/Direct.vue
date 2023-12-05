@@ -92,6 +92,7 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
+                                <th v-if="auth.user.department_code == '04'">Office</th>
                                 <th>Major Final Output</th>
                                 <th>PAPS Description</th>
                                 <th>Description</th>
@@ -100,6 +101,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data" :key="dat.id">
+                                <td v-if="auth.user.department_code == '04'">{{ dat.office.FFUNCTION }}</td>
                                 <td>
                                     <div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div>
                                 </td>
@@ -136,7 +138,7 @@
                         </tbody>
                     </table>
                 </div>
-
+                <!-- {{ auth }} -->
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination v-if="FFUNCCOD" :next="make_url(data.next_page_url)"
