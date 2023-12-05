@@ -807,7 +807,7 @@ Route::middleware('auth')->group(function () {
 
 
     //Non-existent Routes
-    Route::get('{any}', [DashBoardController::class, 'not_found'])->where('any', '.*');
+    // Route::get('{any}', [DashBoardController::class, 'not_found'])->where('any', '.*');
 });
 
 
