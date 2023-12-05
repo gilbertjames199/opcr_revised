@@ -293,7 +293,7 @@ class OpcrTargetController extends Controller
         ]);
 
         return redirect('/opcrtarget/' . $request->office_performance_commitment_rating_list_id)
-            ->with('message', 'Office performance target added!');
+            ->with('info', 'Office performance target added!');
     }
     public function destroy(Request $request)
     {
