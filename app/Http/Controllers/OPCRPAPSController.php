@@ -94,6 +94,7 @@ class OPCRPAPSController extends Controller
         $idn = auth()->user()->recid;
 
         $data = $this->model->with('MFO')->with('output')
+            ->with('office')
             ->distinct('program_and_projects.id')
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');

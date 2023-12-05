@@ -157,6 +157,7 @@ class OpcrTargetController extends Controller
         $qualities = Quality::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
         $ratings = rating::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
         $timeliness = Timeliness::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
+        // dd($request->idpaps);
         // "paps_selected" => $paps_selected,
         return inertia('OPCR/Target/Create', [
             "opcr_list_id" => $opcr_list_id,

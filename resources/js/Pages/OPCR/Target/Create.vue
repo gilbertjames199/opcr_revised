@@ -94,6 +94,7 @@
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
                     Save changes
                 </button>
+                <!-- idpaps: {{ idpaps }} -->
                 <!-- {{ this.editData }}
                 <br>*****************<br>
                 {{ qualities }}
@@ -146,7 +147,6 @@ export default {
     },
 
     mounted() {
-
         if (this.editData !== undefined) {
             this.pageTitle = "Edit"
             this.form.target_success_indicator = this.editData.target_success_indicator
