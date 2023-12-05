@@ -234,7 +234,8 @@ class MFOController extends Controller
         // dd(auth()->user());
         if ($dept_code == '04') {
             // dd($dept_code . ' is equal to 04');
-            $office = FFUNCCOD::all();
+            //$offices = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->orderBy('FFUNCTION', 'ASC')->get();
+            $office = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->orderBy('FFUNCTION', 'ASC')->get();
             $data = $this->model->with(['office' => function ($query) {
                 $query->orderBy('FFUNCTION', 'asc');
             }])->select(
