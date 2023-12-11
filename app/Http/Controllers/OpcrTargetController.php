@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BudgetRequirement;
+use App\Models\FFUNCCOD;
 use App\Models\Implementing_team;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
@@ -124,7 +125,8 @@ class OpcrTargetController extends Controller
         } else {
             //dd("empty no ps budget");
         }
-        //dd('targ');
+        $off = FFUNCCOD::where('FFUNCCOD', $opcr_list->FFUNCCOD)->first();
+        // dd('targ');
         return inertia('OPCR/Target/Index', [
             "opcr_list_id" => $opcr_list_id,
             "opcr_list" => $opcr_list,
@@ -137,6 +139,7 @@ class OpcrTargetController extends Controller
             'opcr_date' => $opcr_date,
             'mooe' => $mooe,
             'ps' => $ps,
+            'office' => $off,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
