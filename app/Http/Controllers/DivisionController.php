@@ -12,40 +12,43 @@ class DivisionController extends Controller
     protected $model;
     public function __construct(Division $model)
     {
-        $this->model=$model;
+        $this->model = $model;
     }
-    public function index(Request $request, $FFUNCCOD){
+    public function index(Request $request, $FFUNCCOD)
+    {
         // dd($FFUNCCOD);
         $dept = FFUNCCOD::where('department_code', $FFUNCCOD)->first();
 
         $data = $this->model
-                    ->where('department_code', $FFUNCCOD)
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(10)
-                    ->withQueryString();
+            ->where('department_code', $FFUNCCOD)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
         // dd($dept);
-        return inertia('Division/Index',[
-                    "data"=>$data,
-                    "dept"=>$dept,
-                    "FFUNCCOD"=>$FFUNCCOD,
-                    'can'=>[
-                        'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                        'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+        return inertia('Division/Index', [
+            "data" => $data,
+            "dept" => $dept,
+            "FFUNCCOD" => $FFUNCCOD,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
-    public function create(Request $request, $FFUNCCOD){
+    public function create(Request $request, $FFUNCCOD)
+    {
         $dept = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
-        return inertia('Division/Create',[
-            "dept"=>$dept,
-            'FFUNCCOD'=>$FFUNCCOD,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+        return inertia('Division/Create', [
+            "dept" => $dept,
+            'FFUNCCOD' => $FFUNCCOD,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
         $attributes = $request->validate([
             'description'    => 'required',
@@ -53,47 +56,52 @@ class DivisionController extends Controller
         ]);
         // dd($attributes);
         $this->model->create($attributes);
-        return redirect('/divisions/'.$request->FFUNCCOD)
-                ->with('message','Division added');
+        return redirect('/divisions/' . $request->FFUNCCOD)
+            ->with('message', 'Division added');
     }
-    public function edit(Request $request, $id){
+    public function edit(Request $request, $id)
+    {
+        // dd("Divisions: " . $id);
         $editData = $this->model
             ->where('id', $id)->first([
                 'id',
-                'description',
+                'division_name1',
                 'FFUNCCOD'
-        ]);
+            ]);
+        // dd($editData);
         $dept = FFUNCCOD::where('FFUNCCOD', $editData->FFUNCCOD)->first();
-        return inertia('Division/Create',[
-            "dept"=>$dept,
-            'FFUNCCOD'=>$editData->FFUNCCOD,
-            "dept"=>$dept,
-            "editData"=>$editData,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+        return inertia('Division/Create', [
+            "dept" => $dept,
+            'FFUNCCOD' => $editData->FFUNCCOD,
+            "dept" => $dept,
+            "editData" => $editData,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         //dd("update");
         $data = $this->model->findOrFail($request->id);
         $data->update([
-            'description'        =>$request->description,
-            'FFUNCCOD'                 =>$request->FFUNCCOD
+            'description'        => $request->description,
+            'FFUNCCOD'                 => $request->FFUNCCOD
         ]);
 
-        return redirect('/divisions/'.$request->FFUNCCOD)
-                ->with('message','Research Agenda updated');
+        return redirect('/divisions/' . $request->FFUNCCOD)
+            ->with('message', 'Research Agenda updated');
     }
-    public function destroy(Request $request){
+    public function destroy(Request $request)
+    {
         $data = $this->model->findOrFail($request->id);
         $FFUNCCOD = $data->FFUNCCOD;
         $data->delete();
-        return redirect('/divisions/'.$FFUNCCOD)->with('warning', 'Division Deleted');
+        return redirect('/divisions/' . $FFUNCCOD)->with('warning', 'Division Deleted');
     }
 
-    public function loadDivisions(Request $request, $FFUNCCOD){
-
+    public function loadDivisions(Request $request, $FFUNCCOD)
+    {
     }
 }

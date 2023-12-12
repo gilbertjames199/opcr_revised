@@ -94,6 +94,7 @@
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
                     Save changes
                 </button>
+                <!-- <div style="color: inherit">idpaps: {{ idpaps }}</div> -->
                 <!-- {{ this.editData }}
                 <br>*****************<br>
                 {{ qualities }}
@@ -146,7 +147,6 @@ export default {
     },
 
     mounted() {
-
         if (this.editData !== undefined) {
             this.pageTitle = "Edit"
             this.form.target_success_indicator = this.editData.target_success_indicator
@@ -197,12 +197,12 @@ export default {
                 i = Math.floor(i);
                 this.form.quality_id = this.qualities[i].id;
             }
-            if (count_e >= 0) {
+            if (count_e > 0) {
                 var g = parseFloat(count_e) / 2;
                 g = Math.floor(g);
                 this.form.ratings_id = this.ratings[g].id;
             }
-            if (count_t >= 0) {
+            if (count_t > 0) {
                 var h = parseFloat(count_t) / 2;
                 h = Math.floor(h);
                 this.form.timeliness_id = this.timeliness[h].id;

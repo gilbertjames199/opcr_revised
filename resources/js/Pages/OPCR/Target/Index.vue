@@ -37,10 +37,13 @@
 
             </div>
         </div>
-
-        <div class="masonry-sizer col-md-6">
-            <b>Status</b>: {{ getStatus(opcr_list.target_status) }}
+        <div class="peers fxw-nw jc-sb ai-c">
+            <div v-if="office"><b>Office: </b><u>{{ office.FFUNCTION }}</u></div>
+            <p><b>Status</b>: {{ getStatus(opcr_list.target_status) }}</p>
         </div>
+        <!-- <div class="masonry-sizer col-md-6">
+            <b>Status</b>: {{ getStatus(opcr_list.target_status) }}
+        </div> -->
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
@@ -96,7 +99,8 @@
                                             <li v-else>
                                                 <Link class="text-danger dropdown-item"
                                                     :href="`/OPCRpaps/create/${dat.idpaps}`">
-                                                Add OPCR Standard {{ dat.idpaps }}
+                                                Add OPCR Standard
+                                                <!-- {{ dat.idpaps }} -->
                                                 </Link>
                                             </li>
                                             <!-- <li><Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">Edit</Link></li>
@@ -133,6 +137,7 @@
                 <iframe :src="my_link" style="width:100%; height:400px" />
             </div>
         </Modal>
+        <!-- {{ office }} -->
     </div>
 </template>
 
@@ -152,7 +157,8 @@ export default {
         opcr_date: String,
         mooe: String,
         ps: String,
-        opcr_list: Object
+        opcr_list: Object,
+        office: Object
     },
     data() {
         return {

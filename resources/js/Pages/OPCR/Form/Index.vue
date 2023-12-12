@@ -178,6 +178,8 @@ export default {
     data() {
         return {
             total_ave: 0,
+            total_comp: 0,
+            // total_divisor: 0,
             form: useForm({
                 opcrs: [],
             })
@@ -200,17 +202,17 @@ export default {
     // },
     mounted() {
         this.form.opcrs = this.opcrs
-        // if (localStorage.getItem('reloaded')) {
-        //     // The page was just reloaded. Clear the value from local storage
-        //     // so that it will reload the next time this page is visited.
-        //     localStorage.removeItem('reloaded');
-        // } else {
-        //     // Set a flag so that we know not to reload the page twice.
-        //     /*
-        //     localStorage.setItem('reloaded', '1');
-        //     location.reload();
-        //     */
-        // }
+        if (localStorage.getItem('reloaded')) {
+            // The page was just reloaded. Clear the value from local storage
+            // so that it will reload the next time this page is visited.
+            localStorage.removeItem('reloaded');
+        } else {
+            // Set a flag so that we know not to reload the page twice.
+
+            localStorage.setItem('reloaded', '1');
+            location.reload();
+
+        }
     },
     methods: {
         halfSem(amount) {
@@ -273,14 +275,15 @@ export default {
                 var rat_q = this.form.opcrs[i].rating_q;
                 var rat_t = this.form.opcrs[i].rating_t;
                 var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+                // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
                 var div = 0;
-                if (parseFloat(rat_e) < 1) {
+                if (parseFloat(rat_e) >= 1) {
                     div = div + 1;
                 }
-                if (parseFloat(rat_q) < 1) {
+                if (parseFloat(rat_q) >= 1) {
                     div = div + 1;
                 }
-                if (parseFloat(rat_t) < 1) {
+                if (parseFloat(rat_t) >= 1) {
                     div = div + 1;
                 }
                 if (div == 0) {
@@ -288,12 +291,38 @@ export default {
                 }
                 total = total + (avee / div);
             }
-            this.total_ave = total;
+            // total = "44.44555555";
+            // this.total_ave = total;
             return this.format_number_conv(total, 2, true);
 
         },
         getAverageAll() {
-            var aver = parseFloat(this.total_ave) / (parseFloat(this.form.opcrs.length));
+            var total_div = 0;
+            var total = 0;
+            for (let i = 0; i < this.form.opcrs.length; i++) {
+                var rat_e = this.form.opcrs[i].rating_e;
+                var rat_q = this.form.opcrs[i].rating_q;
+                var rat_t = this.form.opcrs[i].rating_t;
+                var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+                var div = 0;
+                if (parseFloat(rat_e) >= 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_q) >= 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_t) >= 1) {
+                    div = div + 1;
+                }
+                if (div == 0) {
+                    div = 1;
+                }
+                // total_div = total_div + div;
+                total = total + (avee / div);
+            }
+            // this.total_divisor = this.form.opcrs.length;
+            this.total_comp
+            var aver = parseFloat(total) / (parseFloat(this.form.opcrs.length));
             this.total_ave = aver;
             return this.format_number_conv(aver, 2, true)
         },

@@ -99,6 +99,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                     'year' => $item->year,
                     'FFUNCCOD' => $item->FFUNCCOD,
                     'allotment' => $item->allotment,
+                    'target_status' => $item->target_status,
                     'total' => $total,
                     'ave' => $ave,
                     'dept_head' => $dept_head,
@@ -118,12 +119,13 @@ class OfficePerformanceCommitmentRatingListController extends Controller
     }
     public function direct(Request $request)
     {
-
         $dept_code = auth()->user()->department_code;
         $office = DB::connection('mysql2')->table('offices')
             ->where('department_code', $dept_code)
+            ->where('office', 'LIKE', '%Office%')
             ->first()->office;
         $office_lower = Str::lower($office);
+        // dd($office_lower);
         //dd($office_lower);
         //dd($office_lower);
         // dd(auth()->user()->department_code);
@@ -132,6 +134,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         //             ->first()->FFUNCCOD;
         $FFUNCCOD = DB::connection('mysql2')->table('functions')
             ->where('department_code', auth()->user()->department_code)
+            ->where('FFUNCTION', 'LIKE', '%Office%')
             ->first()->FFUNCCOD;
         //$FFUNCCOD = user()
         //dd($FFUNCCOD);
@@ -210,6 +213,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                     'year' => $item->year,
                     'FFUNCCOD' => $item->FFUNCCOD,
                     'allotment' => $item->allotment,
+                    'target_status' => $item->target_status,
                     'total' => $total,
                     'ave' => $ave,
                     'dept_head' => $dept_head,
@@ -276,7 +280,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
             ->where('FFUNCCOD', $request->FFUNCCOD)
             ->first();
         $type = 'error';
-        $msg = "OPCR for the year (" . $request->year . ") and semester (" . $request->semester . ") already exists. Save unsuccessful.";
+        $msg = "OPCR for the year (" . $request->year . ") and semester (" . $request->semester . ") already exists. ";
         if (!$found) {
             $this->model->create($attributes);
             $msg = "Added new OPCR!";

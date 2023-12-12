@@ -248,7 +248,7 @@ class UserController extends Controller
         //     ->where('recid', auth()->user()->id)
         //     ->first();
         // dd(auth()->user()->recid);
-        // $user->password = md5($new);
+        // $user->password = md5($new);             auth()->user()->recid
         // $user->save();
         //auth()->user()->recid
         DB::connection('mysql2')->table('systemusers')

@@ -20,6 +20,10 @@
 
         <div class="masonry-sizer col-md-6">
             <b>Office</b>: <u>{{ office.FFUNCTION }}</u>
+            <p><i
+                    title="To have your targets approved, click on the target button associated with the selected OPCR. Upon reaching the target page, click the submit button located at the top right of the targets form.">Note:
+                    You can only rate once target is approved </i>
+            </p>
         </div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -57,8 +61,14 @@
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link class="dropdown-item"
-                                                    :href="`/opcr/form/${opcr_list.id}/${FFUNCCOD}`">Rating</Link>
+                                                <Button class="dropdown-item disabled"
+                                                    v-if="parseFloat(opcr_list.target_status) < 2" disabled>
+                                                    Rating
+                                                </Button>
+                                                <Link class="dropdown-item" v-else
+                                                    :href="`/opcr/form/${opcr_list.id}/${FFUNCCOD}`">
+                                                Rating
+                                                </Link>
                                             </li>
                                             <li>
                                                 <Link class="dropdown-item" :href="`/opcrtarget/${opcr_list.id}`">Target

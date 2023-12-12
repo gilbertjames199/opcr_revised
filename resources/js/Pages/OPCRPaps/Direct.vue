@@ -92,6 +92,7 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
+                                <th v-if="auth.user.department_code == '04'">Office</th>
                                 <th>Major Final Output</th>
                                 <th>PAPS Description</th>
                                 <th>Description</th>
@@ -100,6 +101,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="dat in data.data" :key="dat.id">
+                                <td v-if="auth.user.department_code == '04'">{{ dat.office.FFUNCTION }}</td>
                                 <td>
                                     <div v-if="dat.m_f_o">{{ dat.m_f_o.mfo_desc }}</div>
                                 </td>
@@ -136,10 +138,13 @@
                         </tbody>
                     </table>
                 </div>
-
+                <!-- {{ auth }} -->
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
+                        <pagination v-if="FFUNCCOD" :next="make_url(data.next_page_url)"
+                            :prev="make_url(data.prev_page_url)" />
+                        <pagination v-else :next="data.next_page_url" :prev="data.prev_page_url" />
+                        <!-- {{ make_url(data.prev_page_url) }} -->
                         <!-- <Pagination_Preserved :links="data.links" /> -->
                     </div>
                 </div>
@@ -183,7 +188,8 @@ export default {
         // idmfo: String,
         idpaps: Number,
         can: Object,
-        mfos: Object
+        mfos: Object,
+        FFUNCCODVAL: String,
     },
 
     data() {
@@ -218,7 +224,9 @@ export default {
         Pagination, Filtering, Modal, Pagination_Preserved
     },
     mounted() {
-
+        if (this.FFUNCCODVAL != undefined) {
+            this.FFUNCCOD = this.FFUNCCODVAL
+        }
         if (this.auth.user.department_code !== '04') {
             this.filter_FFUNCCOD = this.functions[0].FFUNCCOD
             this.filter_FFUNCTION = this.functions[0].FFUNCTION
@@ -337,6 +345,12 @@ export default {
 
 
         },
+        make_url(my_url) {
+            if (my_url === null)
+                return null
+            else
+                return my_url + "&FFUNCCOD=" + this.FFUNCCOD;
+        }
     }
 };
 </script>

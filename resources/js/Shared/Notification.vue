@@ -1,10 +1,8 @@
 <template>
-    <!-- <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"> -->
-    <div class="position-fixed top-50 end-50 translate-middle p-3" style="z-index: 1000">
-        <div class="toast align-items-center rounded" role="alert" aria-atomic="true" aria-live="polite"
-            data-bs-autohide="true" data-bs-delay="5000">
-            <!-- //class="d-flex text-white bg-success" -->
-            <div class="d-flex text-white bg-gradient-success" v-if="$page.props.flash.message !== null">
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1000">
+        <div class="toast align-items-center" role="alert" aria-atomic="true" aria-live="polite" data-bs-autohide="true"
+            data-bs-delay="5000">
+            <!-- <div class="d-flex text-white bg-gradient-success" v-if="$page.props.flash.message !== null">
                 <div class="toast-body">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-backspace-fill"
                         viewBox="0 0 16 16" style="fill: #94ffb0;">
@@ -20,9 +18,9 @@
                     {{ $page.props.flash.message }}
                 </div>
                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
+            </div> -->
 
-            <div class="d-flex text-white bg-gradient-danger" v-if="$page.props.flash.error !== null">
+            <!-- <div class="d-flex text-white bg-gradient-danger" v-if="$page.props.flash.error !== null">
                 <div class="toast-body">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-backspace-fill"
                         viewBox="0 0 16 16" style="fill: #FF5733;">
@@ -36,9 +34,9 @@
                     &nbsp;<b>{{ $page.props.flash.error }}</b>
                 </div>
                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
+            </div> -->
 
-            <div class="d-flex text-white bg-gradient-info" v-if="$page.props.flash.info !== null">
+            <!-- <div class="d-flex text-white bg-gradient-info" v-if="$page.props.flash.info !== null">
                 <div class="toast-body">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-backspace-fill"
                         viewBox="0 0 16 16" style="fill: #b8f8ff;">
@@ -50,9 +48,9 @@
                     {{ $page.props.flash.info }}
                 </div>
                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
+            </div> -->
 
-            <div class="d-flex text-white bg-gradient-deleted" v-if="$page.props.flash.deleted !== null">
+            <!-- <div class="d-flex text-white bg-gradient-deleted" v-if="$page.props.flash.deleted !== null">
                 <div class="toast-body">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-backspace-fill"
                         viewBox="0 0 16 16" style="fill: #f46c89;">
@@ -64,16 +62,20 @@
                     {{ $page.props.flash.deleted }}
                 </div>
                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <!-- <div class="d-flex text-white bg-gradient-success-fin" v-if="$page.props.flash.success !== null">
-                <div class="toast-body">
-                    {{ $page.props.flash.success }}
-                </div>
             </div> -->
-            <!-- <div class="d-flex text-white bg-gradient-success-fin" v-if="$page.props.flash.success !== null">
+
+            <!--**********************-->
+            <!-- <div class="d-flex text-white bg-success" v-if="$page.props.flash.message !== null">
                 <div class="toast-body">
-                    {{ $page.props.flash.success }}
-                </div>
+                    {{$page.props.flash.message}}
+            </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+
+            <div class="d-flex text-white bg-danger" v-if="$page.props.flash.error !== null">
+                <div class="toast-body">
+                    {{$page.props.flash.error}}
+            </div>
                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div> -->
 
@@ -82,15 +84,58 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
     watch: {
         '$page.props.flash': {
             handler(value) {
 
-                let myAlert = document.querySelector('.toast')
-                // let bsAlert = new window.bootstrap.Toast(myAlert)
-                let bsAlert = new bootstrap.Toast(myAlert)
-                bsAlert.show()
+                if (value.message) {
+                    this.$swal({
+                        icon: 'success',
+                        iconColor: 'white',
+                        title: value.message,
+                        timer: 5000, // Set duration
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: `bg-gradient-success`
+                        }
+                    });
+                } else if (value.error) {
+                    this.$swal({
+                        icon: 'error',
+                        iconColor: 'white',
+                        title: value.error,
+                        timer: 5000, // Set duration
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: `bg-gradient-danger`
+                        }
+                    });
+                } else if (value.info) {
+                    this.$swal({
+                        icon: 'info',
+                        iconColor: 'white',
+                        title: value.info,
+                        timer: 5000, // Set duration
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: `bg-gradient-info`
+                        }
+                    });
+                } else if (value.deleted) {
+                    this.$swal({
+                        icon: 'warning',
+                        iconColor: 'white',
+                        title: value.deleted,
+                        timer: 5000, // Set duration
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: `bg-gradient-deleted`
+                        }
+                    });
+                }
             },
             deep: true
         },
@@ -99,43 +144,47 @@ export default {
 </script>
 
 <style>
-/* Increase the font size of the toast body */
-.toast-body {
-    font-size: 1.25rem;
-    /* Adjust the size as needed */
-}
-
-/* Increase the size of the SVG icons */
-.toast-body svg {
-    width: 50px;
-    /* Adjust the width as needed */
-    height: 50px;
-    /* Adjust the height as needed */
-}
-
-.bg-gradient-success {
+/* .bg-gradient-success {
     background: linear-gradient(to right, #036219, #80f541);
-    /* border-radius: 10px; */
-    /* Dark to light shade */
+    /* border-radius: 10px;
+    /* Dark to light shade
 }
 
 .bg-gradient-danger {
     background: linear-gradient(to right, #62030d, #ffb82a);
-    /* border-radius: 10px; */
-    /* Dark to light shade */
+    /* border-radius: 10px;
+    /* Dark to light shade
 }
 
 .bg-gradient-info {
     background: linear-gradient(to right, #0031f7, #4cdfe7);
-    /* border-radius: 10px; */
+    /* border-radius: 10px;
 }
 
 .bg-gradient-deleted {
     background: linear-gradient(to right, #860202, #fb7676);
-    /* border-radius: 10px; */
+    /* border-radius: 10px;
+} */
+
+/* Define corresponding classes for SweetAlert backgrounds */
+.bg-gradient-success.swal2-popup {
+    background: linear-gradient(to right, #036219, #80f541) !important;
 }
 
-/* .toast-rounded {
-    border-radius: 10px; */
-/* Add rounded corners
-} */</style>
+.bg-gradient-danger.swal2-popup {
+    background: linear-gradient(to right, #62030d, #ffb82a) !important;
+}
+
+.bg-gradient-info.swal2-popup {
+    background: linear-gradient(to right, #0031f7, #4cdfe7) !important;
+}
+
+.bg-gradient-deleted.swal2-popup {
+    background: linear-gradient(to right, #860202, #fb7676) !important;
+}
+
+/* Define the text color class for SweetAlert dialogs */
+.swal2-title {
+    color: white !important;
+}
+</style>

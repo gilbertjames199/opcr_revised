@@ -36,19 +36,21 @@ class SectoralController extends Controller
             $showPerPage = 10;
             $paginatedResult = PaginationHelper::paginate($data, $showPerPage);
         } else {
+            // dd(auth()->user()->office);
             $data = $this->model
+                ->where('FFUNCCOD', auth()->user()->office)
                 ->orderBy('created_at', 'desc')
                 ->with('sectors')
                 ->get();
-            $access = DB::connection('mysql2')->table('accountaccess')
-                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
-                ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
-                ->where('systemusers.recid', $idn)
-                ->get();
-            $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
-            $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+            // $access = DB::connection('mysql2')->table('accountaccess')
+            //     ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+            //     ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
+            //     ->where('systemusers.recid', $idn)
+            //     ->get();
+            // $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+            // $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
             $showPerPage = 10;
-            $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
+            $paginatedResult = PaginationHelper::paginate($data, $showPerPage);
             // dd($paginatedResult);
         }
 

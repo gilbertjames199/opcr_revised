@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BudgetRequirement;
+use App\Models\FFUNCCOD;
 use App\Models\Implementing_team;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
@@ -31,8 +32,10 @@ class OpcrTargetController extends Controller
     public function index(Request $request, $opcr_list_id)
     {
         // dd("targ");
-        //->where('OPT.office_performance_commitment_rating_list_id', $opcr_list_id)
+        //->where('OPT.office_performance_commitment_rating_list_id', $opcr_list_id)   $opcr_list->FFUNCCOD
+
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
+        // dd($opcr_list->FFUNCCOD);
         $data = ProgramAndProject::where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
             ->select(
                 'major_final_outputs.mfo_desc',
@@ -49,11 +52,12 @@ class OpcrTargetController extends Controller
                                                         office_performance_commitment_rating_list_id,
                                                         idpaps, quantity, target_success_indicator
                              FROM opcr_targets WHERE opcr_targets.office_performance_commitment_rating_list_id=' . $opcr_list_id . ') AS OPT'), 'OPT.idpaps', 'program_and_projects.id')
+            ->where('major_final_outputs.id', '>', '45')
             ->orderBy('major_final_outputs.mfo_desc', 'asc')
             ->orderBy('program_and_projects.paps_desc', 'asc')
             ->get();
 
-        //dd($data);
+        // dd($data);
         //dd('OPCR Targets index');
         $opcr_id = $opcr_list_id;
         $FFUNCCOD = $opcr_list->FFUNCCOD;
@@ -121,7 +125,8 @@ class OpcrTargetController extends Controller
         } else {
             //dd("empty no ps budget");
         }
-        //dd('targ');
+        $off = FFUNCCOD::where('FFUNCCOD', $opcr_list->FFUNCCOD)->first();
+        // dd('targ');
         return inertia('OPCR/Target/Index', [
             "opcr_list_id" => $opcr_list_id,
             "opcr_list" => $opcr_list,
@@ -134,6 +139,7 @@ class OpcrTargetController extends Controller
             'opcr_date' => $opcr_date,
             'mooe' => $mooe,
             'ps' => $ps,
+            'office' => $off,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -154,6 +160,7 @@ class OpcrTargetController extends Controller
         $qualities = Quality::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
         $ratings = rating::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
         $timeliness = Timeliness::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
+        // dd($request->idpaps);
         // "paps_selected" => $paps_selected,
         return inertia('OPCR/Target/Create', [
             "opcr_list_id" => $opcr_list_id,
@@ -203,6 +210,39 @@ class OpcrTargetController extends Controller
         $targ->idpaps = $request->idpaps;
         $targ->office_performance_commitment_rating_list_id = $request->office_performance_commitment_rating_list_id;
         $targ->save();
+        //TEST $targ->id
+        // dd($targ->id);
+        //Office Performance Commitment Rating
+        $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $request->office_performance_commitment_rating_list_id)
+            ->first();
+        // dd($opcr_list);
+        $v_q = "3";
+        $v_r = "3";
+        $v_t = "3";
+        if ($request->quantity == null) {
+            $v_q = "0";
+        }
+        if ($request->quality_id == null) {
+            $v_r = "0";
+        }
+        if ($request->ratings_id == null) {
+            $v_t = "0";
+        }
+        //GENERATE RATING FOR THE TARGET
+        $success = SuccessIndicator::where('idpaps', $request->idpaps)->first();
+        $opcrf = new OfficePerformanceCommitmentRating();
+        $opcrf->id_paps = $request->idpaps;
+        $opcrf->id_opcr_target = $targ->id;
+        $opcrf->success_indicator_id = $success->id;
+        $opcrf->accomplishments = "";
+        $opcrf->rating_q = "1";
+        $opcrf->rating_e = "1";
+        $opcrf->rating_t = "1";
+        $opcrf->remarks = "-";
+        $opcrf->opcr_id    = $request->office_performance_commitment_rating_list_id;
+        $opcrf->FFUNCCOD = $opcr_list->FFUNCCOD;
+        $opcrf->department_code = $opcr_list->department_code;
+        $opcrf->save();
         return redirect('/opcrtarget/' . $request->office_performance_commitment_rating_list_id)
             ->with('message', 'Office performance target added!');
     }
@@ -257,7 +297,7 @@ class OpcrTargetController extends Controller
         ]);
 
         return redirect('/opcrtarget/' . $request->office_performance_commitment_rating_list_id)
-            ->with('message', 'Office performance target added!');
+            ->with('info', 'Office performance target added!');
     }
     public function destroy(Request $request)
     {
@@ -265,6 +305,8 @@ class OpcrTargetController extends Controller
         $opcr_list = OpcrTarget::findOrFail($request->id);
         $opcr_list->delete();
         $opcr_id = $opcr_list->office_performance_commitment_rating_list_id;
+
+        OfficePerformanceCommitmentRating::where('id_opcr_target', $request->id)->delete();
         return redirect('/opcrtarget/' . $opcr_id)
             ->with('error', 'Office performance goal deleted!');
     }

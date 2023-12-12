@@ -100,6 +100,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [DashBoardController::class, 'index']);
     });
 
+
+    //HOME
     Route::prefix('/home')->group(function () {
         Route::get('/', [DashBoardController::class, 'index']);
     });
@@ -742,7 +744,11 @@ Route::middleware('auth')->group(function () {
         Route::patch('/', [SubMfoController::class, 'update']);
         Route::delete('/{id}', [SubMfoController::class, 'destroy']);
     });
-
+    //UPDATE current opcr_ratings
+    Route::prefix('/update/opcr/')->group(function () {
+        Route::get('/rating', [OfficePerformanceCommitmentRatingController::class, 'update_current']);
+        Route::get('/generate/rating', [OfficePerformanceCommitmentRatingController::class, 'generate_rating']);
+    });
     // Route::prefix('/aip')->group(function(){
     //     Route::get('/{id}',[aip_controller::class,'index']);
     //     Route::get('/create/{id}',[aip_controller::class,'create']);
@@ -784,6 +790,9 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [AddAccomplishmentController::class, 'update']);
         Route::delete('/{id}', [AddAccomplishmentController::class, 'destroy']);
     });
+
+    //Non-existent Routes
+    //
 });
 
 
@@ -926,3 +935,8 @@ Route::prefix('print/appropriations')->group(function () {
 Route::prefix('opcr-accomplishments/print')->group(function () {
     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
 });
+
+
+
+//Non-existent routes
+Route::get('{any}', [DashBoardController::class, 'not_found'])->where('any', '.*')->middleware('auth');

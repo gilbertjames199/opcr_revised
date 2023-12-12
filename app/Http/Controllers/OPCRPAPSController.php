@@ -94,6 +94,7 @@ class OPCRPAPSController extends Controller
         $idn = auth()->user()->recid;
 
         $data = $this->model->with('MFO')->with('output')
+            ->with('office')
             ->distinct('program_and_projects.id')
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');
@@ -144,10 +145,14 @@ class OPCRPAPSController extends Controller
                         "PS" => $ps,
                     ];
                 });
+            // $data = clone ($data)
+            //     ->Join(DB::raw('fms.accountaccess acc'), 'acc.FFUNCCOD', '=', 'program_and_projects.FFUNCCOD')
+            //     ->Join(DB::raw('fms.systemusers sysu'), 'sysu.recid', '=', 'acc.iduser')
+            //     ->where('sysu.recid', $idn);
             $data = clone ($data)
-                ->Join(DB::raw('fms.accountaccess acc'), 'acc.FFUNCCOD', '=', 'program_and_projects.FFUNCCOD')
-                ->Join(DB::raw('fms.systemusers sysu'), 'sysu.recid', '=', 'acc.iduser')
-                ->where('sysu.recid', $idn);
+                ->where('program_and_projects.FFUNCCOD', auth()->user()->office);
+            // dd(auth()->user()->office);
+            // dd($data);
             $idn = auth()->user()->recid;
             $access = DB::connection('mysql2')->table('accountaccess')
                 ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
@@ -192,6 +197,7 @@ class OPCRPAPSController extends Controller
                         "PS" => $ps,
                     ];
                 });
+            // dd($data);
         }
         $data = clone ($data)->orderBy('created_at', 'desc')->get();
         // dd($data);
@@ -215,6 +221,7 @@ class OPCRPAPSController extends Controller
             "PS" => $ps,
             "data" => $paginatedResult,
             "mfos" => $mfos,
+            "FFUNCCODVAL" => $request->FFUNCCOD,
             "filters" => $request->only(['search']),
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
