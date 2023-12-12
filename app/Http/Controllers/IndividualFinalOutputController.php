@@ -264,6 +264,7 @@ class IndividualFinalOutputController extends Controller
                         // if($dept_code==="-"){$dept_code="00";}
                         // if(!$FFUNCCOD){$FFUNCCOD="0";}
                         if ($rowIndex > 4) {
+                            // dd($mfo_desc);
                             if ($ipcr_code == null) {
                                 continue;
                             }
