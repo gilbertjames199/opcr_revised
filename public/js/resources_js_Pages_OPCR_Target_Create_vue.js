@@ -600,11 +600,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $data.form.processing
   }, " Save changes ", 8
   /* PROPS */
-<<<<<<< HEAD
-  , _hoisted_28), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ this.editData }}\r\n                <br>*****************<br>\r\n                {{ qualities }}\r\n                <br>*****************<br>\r\n                {{ success_indicators }} ")], 32
-=======
   , _hoisted_28), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div style=\"color: inherit\">idpaps: {{ idpaps }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ this.editData }}\n                <br>*****************<br>\n                {{ qualities }}\n                <br>*****************<br>\n                {{ success_indicators }} ")], 32
->>>>>>> c89bbba91c23faa3dbb709b5859efa1ed604dded
   /* HYDRATE_EVENTS */
   )])]);
 }

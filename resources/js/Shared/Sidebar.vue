@@ -194,7 +194,6 @@
                     <span class="title">LBP Form</span>
                     </Link>
 
-<<<<<<< HEAD
 
                     <!-- <Link class="sidebar-link" href="/AIP/direct" :class="{ 'active': $page.url === '/AIP/direct' }">
                     <span></span>
@@ -209,8 +208,6 @@
                     </span>
                     <span class="title">LBP Form</span>
                     </Link> -->
-=======
->>>>>>> c89bbba91c23faa3dbb709b5859efa1ed604dded
                 </li>
                 <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/DailyAccomplishment/direct" :class="{'active': $page.url === '/DailyAccomplishment/direct'}">
