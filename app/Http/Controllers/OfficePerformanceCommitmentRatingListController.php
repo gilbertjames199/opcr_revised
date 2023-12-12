@@ -280,7 +280,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
             ->where('FFUNCCOD', $request->FFUNCCOD)
             ->first();
         $type = 'error';
-        $msg = "OPCR for the year (" . $request->year . ") and semester (" . $request->semester . ") already exists. Save unsuccessful.";
+        $msg = "OPCR for the year (" . $request->year . ") and semester (" . $request->semester . ") already exists. ";
         if (!$found) {
             $this->model->create($attributes);
             $msg = "Added new OPCR!";

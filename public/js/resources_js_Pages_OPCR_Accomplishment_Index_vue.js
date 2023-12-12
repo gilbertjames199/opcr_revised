@@ -327,8 +327,11 @@ var _hoisted_26 = {
 var _hoisted_27 = {
   key: 1
 };
+var _hoisted_28 = {
+  key: 2
+};
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -336,7 +339,7 @@ var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -433,7 +436,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
     }, 1032
     /* PROPS, DYNAMIC_SLOTS */
-    , ["onClick"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    , ["onClick"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), dat.target_success_indicator ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "text-danger dropdown-item",
       onClick: function onClick($event) {
         return $options.createAccomplishments(dat.idpaps, dat.idtarget, dat.actual_accomplishments);
@@ -447,10 +450,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
     }, 1032
     /* PROPS, DYNAMIC_SLOTS */
-    , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"dropdown-item\" :href=\"`/opcrlist/${opcr_list.id}/edit`\">Edit</Link></li>\n                                            <li><Link class=\"dropdown-item\" :href=\"`/opcr/form/${opcr_list.id}/${FFUNCCOD}`\">Rating</Link></li>\n                                            <li><Link class=\"dropdown-item\" :href=\"`/opcrtarget/${opcr_list.id}`\">Target</Link></li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ")])])])]);
+    , ["onClick"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"dropdown-item\" :href=\"`/opcrlist/${opcr_list.id}/edit`\">Edit</Link></li>\n                                            <li><Link class=\"dropdown-item\" :href=\"`/opcr/form/${opcr_list.id}/${FFUNCCOD}`\">Rating</Link></li>\n                                            <li><Link class=\"dropdown-item\" :href=\"`/opcrtarget/${opcr_list.id}`\">Target</Link></li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ")])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])]), _hoisted_28, _hoisted_29])])])], 64
+  ))])])]), _hoisted_29, _hoisted_30])])])], 64
   /* STABLE_FRAGMENT */
   );
 }
