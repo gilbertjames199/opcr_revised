@@ -104551,8 +104551,6 @@ exports["default"] = (sfc, props) => {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/vue-sweetalert2/dist/vue-sweetalert.umd.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/vue-sweetalert2/dist/vue-sweetalert.umd.js ***!
@@ -104564,7 +104562,6 @@ exports["default"] = (sfc, props) => {
 
 /***/ }),
 
->>>>>>> c89bbba91c23faa3dbb709b5859efa1ed604dded
 /***/ "./node_modules/vue/dist/vue.esm-bundler.js":
 /*!**************************************************!*\
   !*** ./node_modules/vue/dist/vue.esm-bundler.js ***!
