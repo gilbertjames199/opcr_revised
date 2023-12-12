@@ -93,7 +93,7 @@
                                                 <Link class="text-danger dropdown-item"
                                                     @click="deleteAccomplishment(dat.id)">Delete </Link>
                                             </li>
-                                            <li>
+                                            <li v-if="dat.target_success_indicator">
                                                 <Link class="text-danger dropdown-item"
                                                     @click="createAccomplishments(dat.idpaps, dat.idtarget, dat.actual_accomplishments)">
                                                 Add Accomplishment <!-- {{ dat.idpaps }} - {{ dat.idtarget }} -->
