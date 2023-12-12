@@ -74,10 +74,10 @@
                                                 <Link class="dropdown-item" :href="`/opcrtarget/${opcr_list.id}`">Target
                                                 </Link>
                                             </li>
-                                            <li>
+                                            <!-- <li>
                                                 <Link class="dropdown-item" :href="`/opcraccomplishment/${opcr_list.id}`">
                                                 Accomplishment</Link>
-                                            </li>
+                                            </li> -->
                                             <li>
                                                 <!--goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, opcr_id)-->
                                                 <button class="dropdown-item" @click="showModal(opcr_list.FFUNCCOD,
