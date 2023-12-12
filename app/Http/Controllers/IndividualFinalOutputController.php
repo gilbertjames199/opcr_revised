@@ -69,7 +69,7 @@ class IndividualFinalOutputController extends Controller
         $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
         $showPerPage = 10;
         $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
-        dd("individual");
+        // dd("individual");
         return inertia('IndividualOutputs/Index', [
             "data" => $paginatedResult,
         ]);
@@ -239,7 +239,13 @@ class IndividualFinalOutputController extends Controller
                         $time_based = $cells[10]->getValue();
                         $time_range_code = $cells[11]->getValue();
                         $dept_code = $cells[12]->getValue();
-
+                        $activity = $cells[13]->getValue();
+                        $verb = $cells[14]->getValue();
+                        $error_feedback = $cells[15]->getValue();
+                        $within = $cells[16]->getValue();
+                        $unit_of_time = $cells[17]->getValue();
+                        $concatenate = $cells[18]->getValue();
+                        $from_excel = $cells[19]->getValue();
                         // $dept = $cells[9]->getValue();
                         if ($dept_code === "HOSPITALS") {
                             $FFUNCCOD_1 = "4421-1";
@@ -294,7 +300,14 @@ class IndividualFinalOutputController extends Controller
                                     $quantity_type,
                                     $quality_error,
                                     $time_based,
-                                    $time_range_code
+                                    $time_range_code,
+                                    $activity,
+                                    $verb,
+                                    $error_feedback,
+                                    $within,
+                                    $unit_of_time,
+                                    $concatenate,
+                                    $from_excel,
                                 );
                                 $this->saveIndivOutput(
                                     $ipcr_code,
@@ -308,7 +321,14 @@ class IndividualFinalOutputController extends Controller
                                     $quantity_type,
                                     $quality_error,
                                     $time_based,
-                                    $time_range_code
+                                    $time_range_code,
+                                    $activity,
+                                    $verb,
+                                    $error_feedback,
+                                    $within,
+                                    $unit_of_time,
+                                    $concatenate,
+                                    $from_excel,
                                 );
                                 $this->saveIndivOutput(
                                     $ipcr_code,
@@ -322,7 +342,14 @@ class IndividualFinalOutputController extends Controller
                                     $quantity_type,
                                     $quality_error,
                                     $time_based,
-                                    $time_range_code
+                                    $time_range_code,
+                                    $activity,
+                                    $verb,
+                                    $error_feedback,
+                                    $within,
+                                    $unit_of_time,
+                                    $concatenate,
+                                    $from_excel,
                                 );
                                 $this->saveIndivOutput(
                                     $ipcr_code,
@@ -336,7 +363,14 @@ class IndividualFinalOutputController extends Controller
                                     $quantity_type,
                                     $quality_error,
                                     $time_based,
-                                    $time_range_code
+                                    $time_range_code,
+                                    $activity,
+                                    $verb,
+                                    $error_feedback,
+                                    $within,
+                                    $unit_of_time,
+                                    $concatenate,
+                                    $from_excel,
                                 );
                             } else {
                                 $idmfo = $this->saveMFO($mfo_desc, $dept_code, $FFUNCCOD);
@@ -354,7 +388,14 @@ class IndividualFinalOutputController extends Controller
                                     $quantity_type,
                                     $quality_error,
                                     $time_based,
-                                    $time_range_code
+                                    $time_range_code,
+                                    $activity,
+                                    $verb,
+                                    $error_feedback,
+                                    $within,
+                                    $unit_of_time,
+                                    $concatenate,
+                                    $from_excel,
                                 );
                             }
                         }
@@ -455,7 +496,14 @@ class IndividualFinalOutputController extends Controller
         $quantity_type,
         $quality_error,
         $time_based,
-        $time_range_code
+        $time_range_code,
+        $activity,
+        $verb,
+        $error_feedback,
+        $within,
+        $unit_of_time,
+        $concatenate,
+        $from_excel
     ) {
         $my_individual = IndividualFinalOutput::updateOrInsert(
             [
@@ -474,6 +522,13 @@ class IndividualFinalOutputController extends Controller
                 'quality_error' => $quality_error,
                 'time_based' => $time_based,
                 'time_range_code' => $time_range_code,
+                'activity' => $activity,
+                'verb' => $verb,
+                'error_feedback' => $error_feedback,
+                'within' => $within,
+                'unit_of_time' => $unit_of_time,
+                'concatenate' => $concatenate,
+                'from_excel' => $from_excel,
             ]
         );
         $my_indiviudal = IndividualFinalOutput::where("ipcr_code", $ipcr_code)
