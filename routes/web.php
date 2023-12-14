@@ -939,4 +939,4 @@ Route::prefix('opcr-accomplishments/print')->group(function () {
 
 
 //Non-existent routes
-Route::get('{any}', [DashBoardController::class, 'not_found'])->where('any', '.*')->middleware('auth');
+//Route::get('{any}', [DashBoardController::class, 'not_found'])->where('any', '.*')->middleware('auth');

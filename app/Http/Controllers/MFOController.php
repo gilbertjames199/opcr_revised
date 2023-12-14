@@ -249,13 +249,15 @@ class MFOController extends Controller
                 ->when($request->FFUNCCOD, function ($query, $searchItem) {
                     $query->where('FFUNCCOD', '=', $searchItem);
                 })
-                ->orderBy('created_at', 'desc')
+                ->orderBy('department_code', 'asc')
+                ->orderBy('mfo_desc', 'asc')
                 ->paginate(10)
                 ->withQueryString();
         } else {
             $data = $this->model->with('office')->select('major_final_outputs.mfo_desc', 'major_final_outputs.id', 'major_final_outputs.FFUNCCOD')
                 ->where('department_code', auth()->user()->department_code)
-                ->orderBy('created_at', 'desc')
+                ->orderBy('department_code', 'asc')
+                ->orderBy('mfo_desc', 'asc')
                 ->paginate(10)
                 ->withQueryString();
         }

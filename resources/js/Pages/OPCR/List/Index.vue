@@ -61,11 +61,15 @@
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Button class="dropdown-item disabled"
+                                                <!-- <Button class="dropdown-item disabled"
                                                     v-if="parseFloat(opcr_list.target_status) < 2" disabled>
                                                     Rating
                                                 </Button>
                                                 <Link class="dropdown-item" v-else
+                                                    :href="`/opcr/form/${opcr_list.id}/${FFUNCCOD}`">
+                                                Rating
+                                                </Link> -->
+                                                <Link class="dropdown-item"
                                                     :href="`/opcr/form/${opcr_list.id}/${FFUNCCOD}`">
                                                 Rating
                                                 </Link>
