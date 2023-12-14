@@ -46,16 +46,21 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $user = User::where('UserName', $request->UserName)
-                ->where('UserPassword',md5($request->UserPassword))
-                ->first();
-        if($user){
-            Auth::login($user,true);
+            ->where('UserPassword', md5($request->UserPassword))
+            ->first();
+        if ($user) {
+            Auth::login($user, true);
+        } else {
+            //$mssg = 'Invalid username or password; username: ' . $request->UserName . ' password: ' . $request->UserPassword;
+            $mssg = 'Invalid username or password';
+            return back()->withErrors(['message' => $mssg])->withInput($request->only('UserName'));
         }
-        return redirect('/');
 
+        return redirect('/');
     }
 
-    public function logout(){
+    public function logout()
+    {
         Auth::guard('web')->logout();
         request()->session()->invalidate();
         return inertia()->location('/');
