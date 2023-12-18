@@ -568,7 +568,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $ave_sum = OfficePerformanceCommitmentRating::select(DB::raw('(rating_q+rating_e+rating_t)/3 AS average_sum'))
             ->where('office_performance_commitment_ratings', $opcr_id)
             ->sum();
-        dd($ave_sum);
+        // dd($ave_sum);
         $data = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
             ->orderBy('mfo_desc', 'asc')
             ->get()
