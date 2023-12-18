@@ -139,6 +139,10 @@
                         <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()"
                             :disabled="form.processing">
                             Save changes
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-success mt-3 text-white" @click="showModal()"
+                            :disabled="form.processing">
+                            Print
                         </button>
                         <!-- <pagination :next="data.next_page_url" :prev="data.prev_page_url" /> -->
                     </div>
@@ -156,13 +160,41 @@
 
             </div>
         </div>
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="justify-content-center">
+                <div style="text-align: center">
+                    <h4>OFFICE PERFORMANCE COMMITMENT AND RATING FORM</h4>
+                </div>
 
+                <div class="masonry-item w-100">
+                    <div class="bgc-white p-20 bd">
+                        <div class="table-responsive">
+                            <!-- {{ report_link }} -->
+                            <iframe :src="report_link" style="width:100%; height:450px" />
+                        </div>
+                    </div>
+                </div>
+                <div style="align: center">
+                    <!-- <button class="btn btn-primary text-white" @click="submitAction('1')" v-if="emp_status === '0'">
+                        Review
+                    </button>
+                    <button class="btn btn-primary text-white" @click="submitAction('2')" v-if="emp_status === '1'">
+                        Approve
+                    </button>&nbsp;
+                    <button class="btn btn-danger text-white" @click="showModal3()">
+                        Return
+                    </button> -->
+                </div>
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
+
 export default {
     props: {
         opcr_id: String,
@@ -179,6 +211,8 @@ export default {
         return {
             total_ave: 0,
             total_comp: 0,
+            displayModal: false,
+
             // total_divisor: 0,
             form: useForm({
                 opcrs: [],
@@ -189,7 +223,7 @@ export default {
 
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal
     },
     // beforeMount() {
     //     this.form.opcrs = this.opcrs
@@ -411,7 +445,26 @@ export default {
             }
 
         },
+        showModal() {
 
+            // alert("e_name: " + e_name);
+            this.viewlink();
+            this.displayModal = true;
+
+        },
+        viewlink() {
+            // var linkt = "abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            var linkt = "http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Rating&standAlone=true&fbclid=IwAR1PZD2108LiuvPwxw4IoCBioYDFnY-NdpOVtDe7XKRWoKYcR5bANaX7x1M&standAlone=true&decorate=no&output=pdf';
+            var params = '&opcr_id=' + this.opcr_id + '&FFUNCCOD=' + this.FFUNCCOD;
+            var linkl = linkt + jasper_ip + jasper_link + params;
+            this.report_link = linkl;
+            return linkl;
+        },
+        hideModal() {
+            this.displayModal = false;
+        },
     }
 };
 </script>
