@@ -63,7 +63,7 @@ class OpcrTargetController extends Controller
         //                 FROM opcr_targets
         //                 WHERE opcr_targets.office_performance_commitment_rating_list_id=' .
         //         $opcr_list_id . ') AS OPT'), 'OPT.idpaps', 'program_and_projects.id')
-        dd($data->pluck('quantity'));
+        // dd($data->pluck('quantity'));
         //dd('OPCR Targets index');
         $opcr_id = $opcr_list_id;
         $FFUNCCOD = $opcr_list->FFUNCCOD;
