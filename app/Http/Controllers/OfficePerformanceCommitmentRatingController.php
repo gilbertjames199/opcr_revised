@@ -906,7 +906,75 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $total = number_format($averageSum, 2);
         $ave_pre = $total / $count;
         $ave = number_format($ave_pre, 2);
-        //OPCR
+        //DISTINCT SUCCESS INDICATOR
+        // $distinctSuccessIndicators = OfficePerformanceCommitmentRating::select('success_indicator_id')
+        //     ->where('opcr_id', $opcr_id)
+        //     ->where('FFUNCCOD', $FFUNCCOD)
+        //     ->distinct()
+        //     ->pluck('success_indicator_id');
+
+        // $result = $this->model->select(
+        //     'office_performance_commitment_ratings.id',
+        //     'office_performance_commitment_ratings.success_indicator_id',
+        //     'office_performance_commitment_ratings.accomplishments',
+        //     'office_performance_commitment_ratings.rating_q',
+        //     'office_performance_commitment_ratings.rating_e',
+        //     'office_performance_commitment_ratings.rating_t',
+        //     'office_performance_commitment_ratings.remarks',
+        //     'office_performance_commitment_ratings.FFUNCCOD',
+        //     'office_performance_commitment_ratings.opcr_id',
+        //     'SU.success_indicator',
+        //     'off.office_accountable',
+        //     'PAPS.paps_desc',
+        //     'mfo.mfo_desc',
+        //     'mfo.created_at',
+        //     'opcr_targets.quantity',
+        //     'PAPS.id AS idpaps'
+        // )
+        //     ->join('success_indicators AS SU', function ($join) {
+        //         $join->on('SU.id', '=', 'office_performance_commitment_ratings.success_indicator_id');
+        //     })
+        //     ->join('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
+        //     ->join('office_accountables AS off', 'off.idpaps', 'PAPS.id')
+        //     ->join('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
+        //     ->join('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
+        //     ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
+        //     ->whereIn('office_performance_commitment_ratings.success_indicator_id', $distinctSuccessIndicators)
+        //     ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
+        //     ->orderBy('mfo.mfo_desc', 'asc')
+        //     ->get()
+        //     ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now) {
+        //         return [
+        //             "id" => $item->id,
+        //             "success_indicator_id" => $item->success_indicator_id,
+        //             "accomplishments" => $item->accomplishments,
+        //             "rating_q" => $item->rating_q,
+        //             "rating_e" => $item->rating_e,
+        //             "rating_t" => $item->rating_t,
+        //             "remarks" => $item->remarks,
+        //             "FFUNCCOD" => $item->FFUNCCOD,
+        //             "idpaps" => $item->idpaps,
+        //             "opcr_id" => $item->opcr_id,
+        //             "success_indicator" => $item->success_indicator,
+        //             "office_accountable" => $item->office_accountable,
+        //             "paps_desc" => $item->paps_desc,
+        //             "quantity" => $item->quantity,
+        //             "mfo_desc" => $item->mfo_desc,
+        //             "created_at" => $item->created_at,
+        //             "total" => $total,
+        //             "ave" => $ave,
+        //             "dept_head" => $dept_head,
+        //             "opcr_date" => $opcr_date,
+        //             "opcr_id" => $opcr_id,
+        //             "mooe" => $mooe,
+        //             "ps" => $ps,
+        //             "FFUNCCOD" => $FFUNCCOD,
+        //             "date_now" => $date_now,
+        //         ];
+        //     });
+        // return $result;
+        //
+        // dd("Driri");
         return $this->model->select(
             'office_performance_commitment_ratings.id',
             'office_performance_commitment_ratings.success_indicator_id',
@@ -932,8 +1000,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->leftjoin('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
-            ->distinct('SU.success_indicator')
             ->orderBy('mfo.mfo_desc', 'asc')
+            ->groupBy('office_performance_commitment_ratings.id')
             ->get()
             ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now) {
                 return [
