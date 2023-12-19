@@ -182,6 +182,17 @@ createInertiaApp({
                             "2099",
                             "2100",
                         ],
+                        measurement_units: [
+                            'meter', 'kilometer', 'mile', 'yard', // Units of measure for distance
+                            'centimeter', 'inch', 'foot', 'meter', // Units of measure for length
+                            'gram', 'kilogram', 'ounce', 'pound', // Units of measure for weight
+                            'milliliter', 'liter', 'gallon', 'cubic meter', // Units of measure for volume
+                            'volt', 'kilovolt', 'megavolt' // Units of measure for voltage
+                            // Add other measurement units as needed
+                        ],
+                        comparison_operators: [
+                            '<', '>', '≥', '≤'
+                        ],
                         get jasper_ip() {
                             var lo = "192.168.6.23:8080/";
                             var gl = "122.54.19.171:8080/";

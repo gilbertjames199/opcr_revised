@@ -200,12 +200,15 @@ class OpcrTargetController extends Controller
         //$correctedSentence = $this->correctSentence($sentence);
         //dd($correctedSentence);
         //**************** */
-        //dd($request);
+        // dd($request);
         $targ = new OpcrTarget();
         $targ->id = $request->id;
         $targ->target_success_indicator = $request->target_success_indicator;
         $targ->output_id = $request->output_id;
         $targ->quantity = $request->quantity;
+        $targ->quantity_unit = $request->quantity_unit;
+        $targ->comparison_operator = $request->comparison_operator;
+        $targ->is_zero = $request->is_zero;
         $targ->quality_id = $request->quality_id;
         $targ->ratings_id = $request->ratings_id;
         $targ->timeliness_id = $request->timeliness_id;
@@ -286,9 +289,13 @@ class OpcrTargetController extends Controller
     {
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
+        // dd($request);
         $data->update([
             'target_success_indicator' => $request->target_success_indicator,
             'quantity' => $request->quantity,
+            'quantity_unit' => $request->quantity_unit,
+            'comparison_operator' => $request->comparison_operator,
+            'is_zero' => $request->is_zero,
             'output_id' => $request->output_id,
             'quality_id' => $request->quality_id,
             'ratings_id' => $request->ratings_id,
