@@ -930,6 +930,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
             ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             ->leftjoin('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
+            ->distinct('office_performance_commitment_ratings.id')
             ->orderBy('mfo.mfo_desc', 'asc')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
