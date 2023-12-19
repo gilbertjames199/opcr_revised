@@ -72,7 +72,10 @@
                                         style="vertical-align:middle">
                                         {{ opcr.office_accountable }}
                                     </td>
-                                    <td><textarea v-model="form.opcrs[index].accomplishments"></textarea></td>
+                                    <td>
+                                        <!-- {{ opcr.id }} -->
+                                        <textarea v-model="form.opcrs[index].accomplishments"></textarea>
+                                    </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
                                             min="0" max="5" step="1">
@@ -134,6 +137,7 @@
                         </tbody>
                     </table>
                 </div>
+                <span class="text-danger font-weight-bold"><b>SAVE CHANGES THEN PRINT</b></span>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()"
@@ -432,7 +436,8 @@ export default {
                         "/opcr/form/store",
                         {
                             opcrs: jsonString,
-                            FFUNCCOD: this.FFUNCCOD
+                            FFUNCCOD: this.FFUNCCOD,
+                            opcr_id: this.opcr_id
                         },
                         {
                             preserveScroll: true,
@@ -453,11 +458,14 @@ export default {
 
         },
         viewlink() {
+            var tot = this.getTotalAverage();
+            var ave = this.getAverageAll();
             // var linkt = "abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
             var linkt = "http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Rating&standAlone=true&fbclid=IwAR1PZD2108LiuvPwxw4IoCBioYDFnY-NdpOVtDe7XKRWoKYcR5bANaX7x1M&standAlone=true&decorate=no&output=pdf';
-            var params = '&opcr_id=' + this.opcr_id + '&FFUNCCOD=' + this.FFUNCCOD;
+            var params = '&opcr_id=' + this.opcr_id + '&FFUNCCOD=' + this.FFUNCCOD +
+                '&total=' + tot + '&average=' + ave;
             var linkl = linkt + jasper_ip + jasper_link + params;
             this.report_link = linkl;
             return linkl;

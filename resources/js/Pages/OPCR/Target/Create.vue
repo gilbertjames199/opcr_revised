@@ -35,11 +35,41 @@
                 <input type="text" v-model="form.target_success_indicator" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.target_success_indicator">{{
                     form.errors.target_success_indicator }}</div>
-                <div>
-                    <label for="">Quantity</label>
-                    <input type="number" v-model="form.quantity" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.quantity">{{ form.errors.quantity }}</div>
+
+                <div class="peers fxw-nw jc-sb ai-c">
+                    <div class="col-md-3">
+                        <label for="">Quantity</label>
+                        <input type="number" v-model="form.quantity" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.quantity">{{ form.errors.quantity }}</div>
+                        <label for="isZeroCheckbox">Is Zero?&nbsp;</label>
+                        <input type="checkbox" id="isZeroCheckbox" true-value="1" false-value="0" class="form-check-input"
+                            v-model="form.is_zero">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Unit:&nbsp;</label>
+                        <select class="form-select" v-model="form.quantity_unit">
+                            <option value=""></option>
+                            <option v-for="(unit, index) in measurement_units" :value="unit" :key="index">{{
+                                unit }}</option>
+                            <option value="others">Others, please specify</option>
+                        </select>
+                        <label v-if="form.quantity_unit === 'others'">Others, please specify</label>
+                        <input type="text" v-model="other_quant" v-if="form.quantity_unit === 'others'" class="form-control"
+                            autocomplete="chrome-off">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Comparison Operator:&nbsp;</label>
+                        <select class="form-select" v-model="form.comparison_operator">
+                            <option></option>
+                            <option v-for="(comp, index) in comparison_operators" :value="comp" :key="index">{{
+                                comp }}</option>
+                        </select>
+                    </div>
                 </div>
+
+                <div></div>
+
+
                 <!--TARGET*******************************************-->
                 <!--OUTPUT-->
                 <label for="">Output</label>
@@ -130,6 +160,7 @@ export default {
             success_indicator_holder: "",
             submitted: false,
             correctedSentence: "",
+            other_quant: "",
             form: useForm({
                 target_success_indicator: "",
                 output_id: "",
@@ -137,12 +168,16 @@ export default {
                 ratings_id: "",
                 timeliness_id: "",
                 remarks_final: "",
+                quantity_unit: "",
+                comparison_operator: "",
+                is_zero: 0,
                 quantity: "",
                 idpaps: "",
                 office_performance_commitment_rating_list_id: "",
                 id: null
             }),
-            pageTitle: ""
+            pageTitle: "",
+            isStringFound: false
         };
     },
 
@@ -155,11 +190,20 @@ export default {
             this.form.ratings_id = this.editData.ratings_id
             this.form.timeliness_id = this.editData.timeliness_id
             this.form.quantity = this.editData.quantity
+            this.form.quantity_unit = this.editData.quantity_unit
+            this.form.comparison_operator = this.editData.comparison_operator
+            this.form.is_zero = this.editData.is_zero
             this.form.idpaps = this.editData.idpaps
             this.form.office_performance_commitment_rating_list_id = this.editData.office_performance_commitment_rating_list_id
             this.form.id = this.editData.id
             this.form.remarks_final = this.editData.remarks_final
             this.success_indicator_holder = this.editData.target_success_indicator
+            const values = Object.values(this.measurement_units);
+            this.isStringFound = values.some(value => value.includes(this.editData.quantity_unit));
+            if (this.isStringFound == false) {
+                this.other_quant = this.editData.quantity_unit
+                this.form.quantity_unit = "others"
+            }
         } else {
             this.pageTitle = "Create"
             this.form.idpaps = this.idpaps;
@@ -171,7 +215,11 @@ export default {
 
     methods: {
         submit() {
-
+            //other_quant
+            if (this.form.quantity_unit === 'others') {
+                this.form.quantity_unit = this.other_quant;
+            }
+            // alert('other_quant: ' + this.other_quant + 'this.form.quantity_unit' + this.form.quantity_unit);
             if (this.success_indicator_holder === "") {
                 alert("Select success indicator first!");
             } else {
@@ -248,9 +296,9 @@ export default {
             var eff = this.ratings[ind_eff].efficiency_quantity;
             var time = this.ratings[ind_time].ind_time;
             var my_sentence = this.form.quantity + " " + eff + " " + out + " " + time + " " + " with " + qual;
-            alert(my_sentence)
+            // alert(my_sentence)
             this.correctedSentence = await this.correctSentence(my_sentence);
-            alert(this.correctedSentence)
+            // alert(this.correctedSentence)
         },
         async setVal() {
             this.form.target_success_indicator = this.setSentence();

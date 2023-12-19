@@ -61,7 +61,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(dat, index) in data" :key="index">
-                                <td>{{ dat.mfo_desc }} {{ }}</td>
+                                <td>{{ dat.mfo_desc }}</td>
                                 <td v-if="index === 0 || dat.paps_desc !== data[index - 1].paps_desc"
                                     :rowspan="getRowspanPaps(dat.paps_desc, index)" style="vertical-align:middle">
                                     {{ dat.paps_desc }}

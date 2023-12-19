@@ -411,7 +411,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
         }
         //dd($opcrs);
         //dd('opcrlist');
-        return redirect('/opcrlist/' . $request->FFUNCCOD)
+        // return redirect('/opcrlist/' . $request->FFUNCCOD)
+        //     ->with('message', 'OPCR Rating Done!');
+        // dd($request);
+        return redirect('/opcr/form/' . $request->opcr_id . '/' . $request->FFUNCCOD)
             ->with('message', 'OPCR Rating Done!');
     }
     public function edit(Request $request)
