@@ -65,8 +65,18 @@
                                 <td v-if="index === 0 || dat.paps_desc !== data[index - 1].paps_desc"
                                     :rowspan="getRowspanPaps(dat.paps_desc, index)" style="vertical-align:middle">
                                     {{ dat.paps_desc }}
+
                                 </td>
-                                <td>{{ dat.success_indicator }}</td>
+                                <td>{{ dat.success_indicator }}
+                                    <!-- **************************
+                                    idpaps: &nbsp; &nbsp;{{ dat.idpaps }} <br>
+                                    id: &nbsp; &nbsp;{{ dat.id }} <br>
+                                    idmfo: &nbsp; &nbsp;{{ dat.idmfo }} <br>
+                                    su_id: &nbsp; &nbsp;{{ dat.su_id }} <br>
+                                    office_performance_commitment_rating_list_id: &nbsp; &nbsp;{{
+                                        dat.office_performance_commitment_rating_list_id }} <br> -->
+
+                                </td>
                                 <td>{{ dat.target_success_indicator }}</td>
                                 <td>{{ dat.quantity }} </td>
                                 <td>

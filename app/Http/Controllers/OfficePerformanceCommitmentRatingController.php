@@ -734,6 +734,16 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // $ps ="4,533,455.00";
         // $FFUNCCOD = "1121";
         // $opcr_id="2";
+        $approver = 'Dorothy Montejo Gonzaga';
+        $pos = 'Governor';
+        if ($FFUNCCOD == '1021') {
+            $approver = 'Jayvee Tyron L. Uy';
+            $pos = 'Vice Governor';
+        }
+        if ($FFUNCCOD == '1016') {
+            $approver = 'Jayvee Tyron L. Uy';
+            $pos = 'Vice Governor';
+        }
 
         $date_now = Carbon::now()->format('F d, Y');
         return [
@@ -746,6 +756,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'ps' => $ps,
             'FFUNCCOD' => $FFUNCCOD,
             'opcr_id' => $opcr_id,
+            "approver" => $approver,
+            "position" => $pos,
         ];
     }
     public function print_mfo(Request $request)

@@ -44,16 +44,20 @@ class OpcrTargetController extends Controller
                 'OPT.id',
                 'OPT.target_success_indicator',
                 'OPT.quantity',
-                'SU.success_indicator'
+                'SU.success_indicator',
+                'program_and_projects.idmfo',
+                'SU.id AS su_id',
+                'OPT.office_performance_commitment_rating_list_id',
             )
+            ->leftjoin('opcr_targets AS OPT', 'OPT.idpaps', 'program_and_projects.id')
             ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
             ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
-            ->leftjoin('opcr_targets AS OPT', 'OPT.idpaps', 'program_and_projects.id')
             ->where('major_final_outputs.id', '>', '45')
             ->where('OPT.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
             ->orderBy('major_final_outputs.mfo_desc', 'asc')
             ->orderBy('program_and_projects.paps_desc', 'asc')
             ->orderBy('SU.success_indicator', 'asc')
+            ->groupBy('OPT.id')
             ->get();
         // return $data;
         //AFTER SUCCESS INDICATOR
