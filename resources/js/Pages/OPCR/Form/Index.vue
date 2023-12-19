@@ -72,7 +72,10 @@
                                         style="vertical-align:middle">
                                         {{ opcr.office_accountable }}
                                     </td>
-                                    <td><textarea v-model="form.opcrs[index].accomplishments"></textarea></td>
+                                    <td>
+                                        <!-- {{ opcr.id }} -->
+                                        <textarea v-model="form.opcrs[index].accomplishments"></textarea>
+                                    </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
                                             min="0" max="5" step="1">

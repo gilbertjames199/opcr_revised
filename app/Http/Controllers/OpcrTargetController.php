@@ -49,14 +49,17 @@ class OpcrTargetController extends Controller
             ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
             ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
             ->leftjoin(DB::raw('(Select id,
-                                                        office_performance_commitment_rating_list_id,
-                                                        idpaps, quantity, target_success_indicator
-                             FROM opcr_targets WHERE opcr_targets.office_performance_commitment_rating_list_id=' . $opcr_list_id . ') AS OPT'), 'OPT.idpaps', 'program_and_projects.id')
+                            office_performance_commitment_rating_list_id,
+                            idpaps, quantity, target_success_indicator
+                        FROM opcr_targets
+                        WHERE opcr_targets.office_performance_commitment_rating_list_id=' .
+                $opcr_list_id . ') AS OPT'), 'OPT.idpaps', 'program_and_projects.id')
             ->where('major_final_outputs.id', '>', '45')
             ->orderBy('major_final_outputs.mfo_desc', 'asc')
             ->orderBy('program_and_projects.paps_desc', 'asc')
+            ->orderBy('SU.success_indicator', 'asc')
             ->get();
-
+        // return $data;
         // dd($data);
         //dd('OPCR Targets index');
         $opcr_id = $opcr_list_id;
