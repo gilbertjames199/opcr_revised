@@ -17,6 +17,18 @@
         </div>
 
         <div class="col-md-8">
+            <!--<div>
+                qualities:
+                {{ qualities }}
+                <br>
+                {{ editData.quality_id }}
+                <br>
+                quality_exp:
+                {{ quality_exp }}
+                <br>
+                editData:
+                {{ editData }}
+            </div>-->
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
 
@@ -153,6 +165,7 @@ export default {
         ratings: Object,
         timeliness: Object,
         paps_selected: Object,
+        quality_exp: Object
     },
 
     data() {

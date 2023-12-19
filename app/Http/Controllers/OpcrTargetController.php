@@ -163,6 +163,8 @@ class OpcrTargetController extends Controller
         $qualities = Quality::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
         $ratings = rating::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
         $timeliness = Timeliness::where('idpaps', $request->idpaps)->orderBy('numerical_rating', 'desc')->get();
+
+        $quality_exp = Quality::where('id', '1429')->get();
         // dd($request->idpaps);
         // "paps_selected" => $paps_selected,
         return inertia('OPCR/Target/Create', [
@@ -175,6 +177,7 @@ class OpcrTargetController extends Controller
             'qualities' => $qualities,
             'ratings' => $ratings,
             'timeliness' => $timeliness,
+            'quality_exp' => $quality_exp,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -254,6 +257,7 @@ class OpcrTargetController extends Controller
     }
     public function edit(Request $request, $opcr_list_id)
     {
+        // dd($request->idpaps);
         // dd($opcr_list_id);
         $opcr_target_id = $request->opcr_target_id;
         $data = $this->model->where('id', $opcr_target_id)->first();
@@ -265,6 +269,7 @@ class OpcrTargetController extends Controller
         $qualities = Quality::where('idpaps', $data->idpaps)->orderBy('numerical_rating', 'desc')->get();
         $ratings = rating::where('idpaps', $data->idpaps)->orderBy('efficiency_quantity', 'desc')->get();
         $timeliness = Timeliness::where('idpaps', $data->idpaps)->orderBy('numerical_rating', 'desc')->get();
+        $quality_exp = Quality::where('id', '1429')->get();
         // dd($request->idpaps);
         return inertia('OPCR/Target/Create', [
             "opcr_list_id" => $opcr_list_id,
@@ -278,6 +283,7 @@ class OpcrTargetController extends Controller
             'timeliness' => $timeliness,
             "success_indicators" => $success_indicators,
             'paps_selected' => $paps_selected,
+            'quality_exp' => $quality_exp,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -307,7 +313,7 @@ class OpcrTargetController extends Controller
         ]);
 
         return redirect('/opcrtarget/' . $request->office_performance_commitment_rating_list_id)
-            ->with('info', 'Office performance target added!');
+            ->with('info', 'Office performance target updated!');
     }
     public function destroy(Request $request)
     {
