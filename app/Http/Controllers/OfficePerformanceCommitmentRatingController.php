@@ -931,9 +931,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             ->leftjoin('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
             ->distinct('office_performance_commitment_ratings.id')
-            ->orderBy('mfo.mfo_desc', 'asc')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
+            ->orderBy('mfo.mfo_desc', 'asc')
             ->get()
             ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now) {
                 return [
