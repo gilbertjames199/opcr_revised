@@ -1010,6 +1010,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $approver = 'Jayvee Tyron L. Uy';
                     $pos = 'Vice Governor';
                 }
+                if ($FFUNCCOD == '1016') {
+                    $approver = 'Jayvee Tyron L. Uy';
+                    $pos = 'Vice Governor';
+                }
                 return [
                     "id" => $item->id,
                     "success_indicator_id" => $item->success_indicator_id,
