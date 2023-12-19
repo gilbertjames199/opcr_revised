@@ -1004,6 +1004,12 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
             ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now) {
+                $approver = 'Dorothy Montejo Gonzaga';
+                $pos = 'Governor';
+                if ($FFUNCCOD == '1021') {
+                    $approver = 'Jayvee Tyron L. Uy';
+                    $pos = 'Vice Governor';
+                }
                 return [
                     "id" => $item->id,
                     "success_indicator_id" => $item->success_indicator_id,
@@ -1030,6 +1036,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "ps" => $ps,
                     "FFUNCCOD" => $FFUNCCOD,
                     "date_now" => $date_now,
+                    "approver" => $approver,
+                    "position" => $pos,
                 ];
             });
         //********************************************** */
