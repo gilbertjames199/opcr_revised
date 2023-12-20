@@ -910,16 +910,19 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //Carbon Date
         $date_now = Carbon::now()->format('F d, Y');
         //TOTAL, SUM, AVERAGE
-        $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
-            ->where('opcr_id', $opcr_id)
-            ->first()->average_sum;
-        $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
-        if ($count < 1) {
-            $count = 1;
-        };
-        $total = number_format($averageSum, 2);
-        $ave_pre = $total / $count;
-        $ave = number_format($ave_pre, 2);
+        // $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
+        //     ->where('opcr_id', $opcr_id)
+        //     ->first()->average_sum;
+        // $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+        // if ($count < 1) {
+        //     $count = 1;
+        // };
+        // $total = number_format($averageSum, 2);
+        // $ave_pre = $total / $count;
+        // $ave = number_format($ave_pre, 2);
+        $total = number_format($request->total, 2);
+        $ave = number_format($request->average, 2);
+        // dd($total);
         //DISTINCT SUCCESS INDICATOR
         // $distinctSuccessIndicators = OfficePerformanceCommitmentRating::select('success_indicator_id')
         //     ->where('opcr_id', $opcr_id)
@@ -1005,12 +1008,15 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'mfo.mfo_desc',
             'mfo.created_at',
             'opcr_targets.quantity',
-            'PAPS.id AS idpaps'
+            'PAPS.id AS idpaps',
+            'mfo.from_excel',
+            'mfo.id AS mfo_idmfo',
+            'PAPS.idmfo AS paps_idmfo'
         )
             ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
             ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
             ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
-            ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
+            ->join('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             ->leftjoin('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->whereNull('mfo.from_excel')
@@ -1029,6 +1035,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $approver = 'Jayvee Tyron L. Uy';
                     $pos = 'Vice Governor';
                 }
+                // dd("average: " . $ave);
                 return [
                     "id" => $item->id,
                     "success_indicator_id" => $item->success_indicator_id,
@@ -1057,6 +1064,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "date_now" => $date_now,
                     "approver" => $approver,
                     "position" => $pos,
+                    // "from_excel" => $item->from_excel,
+                    // "mfo_idmfo" => $item->mfo_idmfo,
+                    // "paps_idmfo" => $item->paps_idmfo
                 ];
             });
         //********************************************** */
