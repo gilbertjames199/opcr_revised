@@ -36,29 +36,51 @@ class OpcrTargetController extends Controller
 
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
         // dd($opcr_list->FFUNCCOD);
-        $data = ProgramAndProject::where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
-            ->select(
-                'major_final_outputs.mfo_desc',
-                'program_and_projects.id AS idpaps',
-                'program_and_projects.paps_desc',
-                'OPT.id',
-                'OPT.target_success_indicator',
-                'OPT.quantity',
-                'SU.success_indicator',
-                'program_and_projects.idmfo',
-                'SU.id AS su_id',
-                'OPT.office_performance_commitment_rating_list_id',
-            )
+        // $papsu = ProgramAndProject::where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
+        //     ->leftJoin('opcr_targets AS OPT', 'OPT.idpaps', 'program_and_projects.id')
+        //     ->where('OPT.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
+        //     ->select('program_and_projects.*', 'OPT.*') // Select columns you need
+        //     ->get();
+        // dd($papsu);
+        $data = ProgramAndProject::select(
+            'major_final_outputs.mfo_desc',
+            'program_and_projects.id AS idpaps',
+            'program_and_projects.paps_desc',
+            'OPT.id',
+            'OPT.target_success_indicator',
+            'OPT.quantity',
+            'SU.success_indicator',
+            'program_and_projects.idmfo',
+            'SU.id AS su_id',
+            'OPT.office_performance_commitment_rating_list_id',
+        )
             ->leftjoin('opcr_targets AS OPT', 'OPT.idpaps', 'program_and_projects.id')
             ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
             ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
+            ->where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
             ->where('major_final_outputs.id', '>', '45')
-            ->where('OPT.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
+            // ->where('OPT.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
             ->orderBy('major_final_outputs.mfo_desc', 'asc')
             ->orderBy('program_and_projects.paps_desc', 'asc')
             ->orderBy('SU.success_indicator', 'asc')
             ->groupBy('OPT.id')
-            ->get();
+            ->get()
+            ->map(function ($item) {
+
+                return [
+                    'mfo_desc' => $item->major,
+                    'idpaps' => $item->idpaps,
+                    'paps_desc' => $item->paps_desc,
+                    'id' => $item->id,
+                    'target_success_indicator' => $item->target_success_indicator,
+                    'quantity' => $item->quantity,
+                    'success_indicator' => $item->success_indicator,
+                    'idmfo' => $item->idmfo,
+                    'su_id' => $item->su_id,
+                    'office_performance_commitment_rating_list_id' => $item->office_performance_commitment_rating_list_id,
+                ];
+            });
+        // dd($data);
         // return $data;
         //AFTER SUCCESS INDICATOR
         // ->leftjoin(DB::raw('(Select id,
