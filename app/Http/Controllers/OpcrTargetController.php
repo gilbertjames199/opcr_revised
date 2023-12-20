@@ -46,38 +46,52 @@ class OpcrTargetController extends Controller
             'major_final_outputs.mfo_desc',
             'program_and_projects.id AS idpaps',
             'program_and_projects.paps_desc',
-            'OPT.id',
-            'OPT.target_success_indicator',
-            'OPT.quantity',
+            // 'OPT.id',
+            // 'OPT.target_success_indicator',
+            // 'OPT.quantity',
             'SU.success_indicator',
             'program_and_projects.idmfo',
             'SU.id AS su_id',
-            'OPT.office_performance_commitment_rating_list_id',
+            // 'OPT.office_performance_commitment_rating_list_id',
         )
-            ->leftjoin('opcr_targets AS OPT', 'OPT.idpaps', 'program_and_projects.id')
+            // ->leftjoin('opcr_targets AS OPT', 'OPT.idpaps', 'program_and_projects.id')
             ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
             ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
             ->where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
             ->where('major_final_outputs.id', '>', '45')
+            ->whereNull('from_excel')
             // ->where('OPT.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
             ->orderBy('major_final_outputs.mfo_desc', 'asc')
             ->orderBy('program_and_projects.paps_desc', 'asc')
             ->orderBy('SU.success_indicator', 'asc')
-            ->groupBy('OPT.id')
+            // ->groupBy('OPT.id')
             ->get()
-            ->map(function ($item) {
-
+            ->map(function ($item) use ($opcr_list_id) {
+                $targ = OpcrTarget::where('opcr_targets.idpaps', $item->idpaps)
+                    ->where('opcr_targets.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
+                    ->first();
+                // dd($targ);
+                $target_success_indicator = "";
+                $quantity = "";
+                $opcr_id = "";
+                $office_performance_commitment_rating_list_id = "";
+                if ($targ) {
+                    $target_success_indicator = $targ->target_success_indicator;
+                    $quantity = $targ->quantity;
+                    $opcr_id = $targ->id;
+                    $office_performance_commitment_rating_list_id = $targ->office_performance_commitment_rating_list_id;
+                }
                 return [
                     'mfo_desc' => $item->major,
                     'idpaps' => $item->idpaps,
                     'paps_desc' => $item->paps_desc,
-                    'id' => $item->id,
-                    'target_success_indicator' => $item->target_success_indicator,
-                    'quantity' => $item->quantity,
+                    'id' => $opcr_id,
+                    'target_success_indicator' => $target_success_indicator,
+                    'quantity' => $quantity,
                     'success_indicator' => $item->success_indicator,
                     'idmfo' => $item->idmfo,
                     'su_id' => $item->su_id,
-                    'office_performance_commitment_rating_list_id' => $item->office_performance_commitment_rating_list_id,
+                    'office_performance_commitment_rating_list_id' => $office_performance_commitment_rating_list_id,
                 ];
             });
         // dd($data);
