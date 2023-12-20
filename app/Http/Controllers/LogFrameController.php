@@ -96,6 +96,7 @@ class LogFrameController extends Controller
             $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
                 ->with('paps')
                 ->where('id', '>', '50')
+                ->whereNull('from_excel')
                 ->get();
             // dd($FFUNCCOD);
         }
@@ -214,6 +215,7 @@ class LogFrameController extends Controller
     {
         $mfos = MajorFinalOutput::select("mfo_desc", "id")->where('FFUNCCOD', $request->id)
             ->where('id', '>', '45')
+            ->whereNull('from_excel')
             ->get();
         return $mfos;
     }

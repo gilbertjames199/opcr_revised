@@ -429,7 +429,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
     }
     public function getMFOs($FFUNCCOD)
     {
-        $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)->get()
+        $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
+            ->get()
             ->map(function ($item) use ($FFUNCCOD) {
                 $paps = ProgramAndProject::where('idmfo', $item->id)
                     ->get()->map(function ($itemp) {
@@ -1012,6 +1013,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             ->leftjoin('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
+            ->whereNull('major_final_outputs.from_excel')
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
             ->orderBy('mfo.mfo_desc', 'asc')
             ->groupBy('office_performance_commitment_ratings.id')
