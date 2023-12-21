@@ -10,16 +10,17 @@
             <h2>{{ office }}</h2>
             &nbsp;
 
-            <div v-if="auth.user.office.ffunccod === '1031'">
+            <!-- <div v-if="auth.user.office.ffunccod === '1031'">
 
                 <button class="btn btn-primary mt-3 text-white" @click="showModalAd(ffunccod, office)"> Print Logframe
                 </button>
-            </div>
-            <div v-else>
-                <!-- FFUNCCOD: {{ FFUNCCOD }} <br>
+            </div> -->
+            <!-- <div v-else> -->
+            <!-- FFUNCCOD: {{ FFUNCCOD }} <br>
                 office: {{ office }} <br>
                 auth.user.office.ffunccod: {{ auth.user.office.ffunccod }} <br>
                 auth.user.office.office: {{ auth.user.office.office }}<br> -->
+            <div>
                 <button class="btn btn-primary mt-3 text-white" @click="showModal(FFUNCCOD, office)"> Print Logframe
                 </button>
 
