@@ -8,6 +8,7 @@ use App\Models\Implementing_team;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
 use App\Models\OpcrTarget;
+use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -328,5 +329,55 @@ class OfficePerformanceCommitmentRatingListController extends Controller
     }
     public function destroy(Request $request)
     {
+    }
+    public function copy_from_to(Request $request, $opcr_list_id_from, $opcr_list_id_to)
+    {
+        // dd("opcr_list_id_from: " . $opcr_list_id_from);
+
+        $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id_from)
+            ->first();
+        // ->map(function($item)use($opcr_list_id_to){
+        //     OpcrTarget
+        // });
+        $FFUNCCOD = $my_opcr->FFUNCCOD;
+        // dd($my_opcr->FFUNCCOD);
+        // ->join('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
+        $paps = ProgramAndProject::where('FFUNCCOD', $FFUNCCOD)
+            ->get()
+            ->map(function ($item) use ($opcr_list_id_from, $opcr_list_id_to) {
+                $copied_target = OpcrTarget::where('idpaps', $item->id)
+                    ->where('office_performance_commitment_rating_list_id', $opcr_list_id_from)
+                    ->first();
+                // dd("copied target");
+                if ($copied_target) {
+                    $to_target = OpcrTarget::where('idpaps', $item->id)
+                        ->where('office_performance_commitment_rating_list_id', $opcr_list_id_to)
+                        ->first();
+                    if ($to_target) {
+                        // dd("naa na dili na ka add");
+                    } else {
+                        $my_new = new OpcrTarget();
+                        $my_new->target_success_indicator = $copied_target->target_success_indicator;
+                        $my_new->output_id = $copied_target->output_id;
+                        $my_new->quality_id = $copied_target->quality_id;
+                        $my_new->ratings_id = $copied_target->ratings_id;
+                        $my_new->timeliness_id = $copied_target->timeliness_id;
+                        $my_new->remarks_q = $copied_target->remarks_q;
+                        $my_new->remarks_e = $copied_target->remarks_e;
+                        $my_new->remarks_t = $copied_target->remarks_t;
+                        $my_new->remarks_final = $copied_target->remarks_final;
+                        $my_new->quantity = $copied_target->quantity;
+                        $my_new->quantity_unit = $copied_target->quantity_unit;
+                        $my_new->comparison_operator = $copied_target->comparison_operator;
+                        $my_new->is_zero = $copied_target->is_zero;
+                        $my_new->idpaps = $copied_target->idpaps;
+                        $my_new->office_performance_commitment_rating_list_id = $opcr_list_id_to;
+                        $my_new->save();
+                    }
+                }
+            });
+        // dd($paps);
+        return redirect('/opcrlist/' . $FFUNCCOD)
+            ->with('message', 'Successfully added!');
     }
 }

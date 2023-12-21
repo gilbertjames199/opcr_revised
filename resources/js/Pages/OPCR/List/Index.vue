@@ -57,6 +57,12 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <li>
+                                                <Button class="dropdown-item"
+                                                    @click="showModal2(opcr_list.id, opcr_list.date_from, opcr_list.date_to)">
+                                                    Copy Targets
+                                                </Button>
+                                            </li>
+                                            <li>
                                                 <Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">Edit
                                                 </Link>
                                             </li>
@@ -127,6 +133,19 @@
                 <iframe :src="my_link" style="width:100%; height:400px" />
             </div>
         </Modal>
+        <Modal2 v-if="displayModal2" @close-modal-event="hideModal2">
+            <!-- <div>{{ opcr_lists }}</div> -->
+            opcr_id_passed: {{ opcr_id_passed }}<div></div>
+            copied_opcr_id: {{ copied_opcr_id }}
+            Copy targets of OPCR for {{ current_period }}
+            <select class="form-select" v-model="copied_opcr_id">
+                <option></option>
+                <option v-for="(opcr_list, key) in opcr_lists" :key="opcr_list.id" :value="opcr_list.id">
+                    {{ formatMonth(opcr_list.date_from) }} to {{ formatMonthYear(opcr_list.date_to) }}
+                </option>
+            </select>
+            <button class="btn btn-primary btn-sm text-white " @click="copyOPCR()">Done</button>
+        </Modal2>
     </div>
 </template>
 
@@ -134,7 +153,9 @@
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
-
+import Modal2 from "@/Shared/PrintModal";
+// import { inertia } from '@inertiajs/inertia'
+import { useForm } from "@inertiajs/inertia-vue3";
 export default {
     props: {
         opcr_lists: Object,
@@ -145,10 +166,14 @@ export default {
         return {
             my_link: "",
             displayModal: false,
+            displayModal2: false,
+            copied_opcr_id: "",
+            opcr_id_passed: "",
+            current_period: ""
         }
     },
     components: {
-        Pagination, Filtering, Modal
+        Pagination, Filtering, Modal, Modal2
     },
     methods: {
         deleteRA(id) {
@@ -190,6 +215,37 @@ export default {
         hideModal() {
             this.displayModal = false;
         },
+        showModal2(opcr_id_passed_here, from, to) {
+            this.current_period = this.formatMonth(from) + " to " + this.formatMonthYear(to);
+            this.opcr_id_passed = opcr_id_passed_here;
+            // this.my_link = this.viewlink(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id);
+            this.displayModal2 = true;
+        },
+        hideModal2() {
+            this.displayModal2 = false;
+        },
+        copyOPCR() {
+            let text = "WARNING!\nAre you sure you want to copy targets for  " + this.current_period + " ?";
+            // alert("/ipcrtargets/" + ipcr_id + "/"+ this.id+"/delete")
+            if (confirm(text) == true) {
+                // this.$inertia.delete("/ipcrtargets/" + ipcr_id + "/" + this.id + "/delete");
+                // this.copied_opcr_id;
+                var url = "/opcrlist/FROM/" + this.copied_opcr_id + "/TO/" + this.opcr_id_passed;
+                // var url = "/review-approve/targets/" + opcr_id + "/view/opcr/target/submission"
+                this.$inertia.post(url);
+                // , {
+                //     params: {
+
+                //     }
+                // }).catch;
+                // .then((response) => {
+                //     this.opcr_data = response.data;
+                // }).catch((error) => {
+                //     console.error(error);
+                // });
+            }
+
+        }
     }
 };
 </script>

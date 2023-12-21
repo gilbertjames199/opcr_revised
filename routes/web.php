@@ -641,6 +641,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [OfficePerformanceCommitmentRatingListController::class, 'edit']);
         Route::patch('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'update']);
         Route::delete('/{id}', [OfficePerformanceCommitmentRatingListController::class, 'destroy']);
+        Route::post('/FROM/{opcr_list_id_from}/TO/{opcr_list_id_to}', [OfficePerformanceCommitmentRatingListController::class, 'copy_from_to']);
     });
 
     //OPCR Target
