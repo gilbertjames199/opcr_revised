@@ -234,6 +234,7 @@ class LogFrameController extends Controller
                     ->where('idmfo', $request->idmfo)
                     ->groupBy('paps_desc');
             })
+            ->orderBy('program_and_projects.paps_desc', 'ASC')
             ->get();
         return $paps;
     }
@@ -244,7 +245,8 @@ class LogFrameController extends Controller
             ->where('FFUNCCOD', $request->id)
             ->get()
             ->map(function ($item) {
-                $orgg = strip_tags($item->SectoralDescription);
+                // $orgg = strip_tags($item->SectoralDescription);
+                $orgg = $item->SectoralDescription;
                 return [
                     "SectoralDescription" => $orgg,
                     "id" => $item->id,

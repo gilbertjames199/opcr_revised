@@ -413,9 +413,9 @@ class PAPController extends Controller
                             WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
                             END")
             )
-            ->orderBy('program_and_projects.created_at', 'desc')
+            ->orderBy('program_and_projects.paps_desc', 'ASC')
             ->get();
-
+        // dd($data);
         $access = DB::connection('mysql2')->table('accountaccess')
             ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
             ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
