@@ -75,7 +75,6 @@
                                     su_id: &nbsp; &nbsp;{{ dat.su_id }} <br>
                                     office_performance_commitment_rating_list_id: &nbsp; &nbsp;{{
                                         dat.office_performance_commitment_rating_list_id }} <br> -->
-
                                 </td>
                                 <td>{{ dat.target_success_indicator }}</td>
                                 <td>{{ dat.quantity }} </td>

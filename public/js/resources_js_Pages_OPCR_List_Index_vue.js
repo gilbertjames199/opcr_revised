@@ -14,7 +14,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Filter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Shared/Filter */ "./resources/js/Shared/Filter.vue");
 /* harmony import */ var _Shared_Pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Shared/Pagination */ "./resources/js/Shared/Pagination.vue");
 /* harmony import */ var _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Shared/PrintModal */ "./resources/js/Shared/PrintModal.vue");
+/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
 
+
+
+ // import { inertia } from '@inertiajs/inertia'
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -26,13 +30,18 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       my_link: "",
-      displayModal: false
+      displayModal: false,
+      displayModal2: false,
+      copied_opcr_id: "",
+      opcr_id_passed: "",
+      current_period: ""
     };
   },
   components: {
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_1__["default"],
     Filtering: _Shared_Filter__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Modal: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_2__["default"]
+    Modal: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Modal2: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   methods: {
     deleteRA: function deleteRA(id) {
@@ -69,6 +78,34 @@ __webpack_require__.r(__webpack_exports__);
     },
     hideModal: function hideModal() {
       this.displayModal = false;
+    },
+    showModal2: function showModal2(opcr_id_passed_here, from, to) {
+      this.current_period = this.formatMonth(from) + " to " + this.formatMonthYear(to);
+      this.opcr_id_passed = opcr_id_passed_here; // this.my_link = this.viewlink(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id);
+
+      this.displayModal2 = true;
+    },
+    hideModal2: function hideModal2() {
+      this.displayModal2 = false;
+    },
+    copyOPCR: function copyOPCR() {
+      var text = "WARNING!\nAre you sure you want to copy targets for  " + this.current_period + " ?"; // alert("/ipcrtargets/" + ipcr_id + "/"+ this.id+"/delete")
+
+      if (confirm(text) == true) {
+        // this.$inertia.delete("/ipcrtargets/" + ipcr_id + "/" + this.id + "/delete");
+        // this.copied_opcr_id;
+        var url = "/opcrlist/FROM/" + this.copied_opcr_id + "/TO/" + this.opcr_id_passed; // var url = "/review-approve/targets/" + opcr_id + "/view/opcr/target/submission"
+
+        this.$inertia.post(url); // , {
+        //     params: {
+        //     }
+        // }).catch;
+        // .then((response) => {
+        //     this.opcr_data = response.data;
+        // }).catch((error) => {
+        //     console.error(error);
+        // });
+      }
     }
   }
 });
@@ -277,12 +314,26 @@ var _hoisted_24 = {
   "class": "d-flex justify-content-center"
 };
 var _hoisted_25 = ["src"];
+
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_28 = ["value"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
+  var _component_Button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Button");
+
   var _component_Modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal");
+
+  var _component_Modal2 = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal2");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Head, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -321,7 +372,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonth(opcr_list.date_from)) + " to " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(opcr_list.date_to)), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+      "class": "dropdown-item",
+      onClick: function onClick($event) {
+        return $options.showModal2(opcr_list.id, opcr_list.date_from, opcr_list.date_to);
+      }
+    }, {
+      "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Copy Targets ")];
+      }),
+      _: 2
+      /* DYNAMIC */
+
+    }, 1032
+    /* PROPS, DYNAMIC_SLOTS */
+    , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "dropdown-item",
       href: "/opcrlist/".concat(opcr_list.id, "/edit")
     }, {
@@ -381,6 +446,43 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 8
       /* PROPS */
       , _hoisted_25)])];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.displayModal2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Modal2, {
+    key: 1,
+    onCloseModalEvent: $options.hideModal2
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>{{ opcr_lists }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" opcr_id_passed: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_id_passed), 1
+      /* TEXT */
+      ), _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" copied_opcr_id: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.copied_opcr_id) + " Copy targets of OPCR for " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.current_period) + " ", 1
+      /* TEXT */
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+        "class": "form-select",
+        "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+          return $data.copied_opcr_id = $event;
+        })
+      }, [_hoisted_27, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.opcr_lists, function (opcr_list, key) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+          key: opcr_list.id,
+          value: opcr_list.id
+        }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonth(opcr_list.date_from)) + " to " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(opcr_list.date_to)), 9
+        /* TEXT, PROPS */
+        , _hoisted_28);
+      }), 128
+      /* KEYED_FRAGMENT */
+      ))], 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.copied_opcr_id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        "class": "btn btn-primary btn-sm text-white",
+        onClick: _cache[2] || (_cache[2] = function ($event) {
+          return $options.copyOPCR();
+        })
+      }, "Done")];
     }),
     _: 1
     /* STABLE */
