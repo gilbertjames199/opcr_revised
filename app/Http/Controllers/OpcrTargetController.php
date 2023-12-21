@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BudgetRequirement;
 use App\Models\FFUNCCOD;
 use App\Models\Implementing_team;
+use App\Models\Office;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
 use App\Models\OpcrTarget;
@@ -15,6 +16,7 @@ use App\Models\rating;
 use App\Models\RevisionPlan;
 use App\Models\SuccessIndicator;
 use App\Models\Timeliness;
+use App\Models\UserEmployees;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -121,16 +123,25 @@ class OpcrTargetController extends Controller
 
         //PG Department Head
         //********************************************** */
-        $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
-            ->where('role', 'like', '%Department Head%')
-            ->count();
+        // $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+        //     ->where('role', 'like', '%Department Head%')
+        //     ->count();
         $dept_head = "N/A";
-        if ($count_pgdh > 0) {
-            $dh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
-                ->where('role', 'like', '%Department Head%')
-                ->first()->name;
-            $dept_head = Str::upper($dh);
+        $pg_empl_id = Office::where('FFUNCCOD', $FFUNCCOD)->first();
+        if ($pg_empl_id) {
+
+            $emp = UserEmployees::where('empl_id', $pg_empl_id->empl_id)->first();
+            if ($emp) {
+                $dept_head = $emp->first_name . ' ' . $emp->middle_name[0] . ' ' . $emp->last_name;
+            }
         }
+        // dd($dept_head);
+        // if ($count_pgdh > 0) {
+        //     $dh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+        //         ->where('role', 'like', '%Department Head%')
+        //         ->first()->name;
+        //     $dept_head = Str::upper($dh);
+        // }
 
         //OPCR LIST
         $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
