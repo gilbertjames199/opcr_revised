@@ -135,8 +135,8 @@
         </Modal>
         <Modal2 v-if="displayModal2" @close-modal-event="hideModal2">
             <!-- <div>{{ opcr_lists }}</div> -->
-            opcr_id_passed: {{ opcr_id_passed }}<div></div>
-            copied_opcr_id: {{ copied_opcr_id }}
+            <!-- opcr_id_passed: {{ opcr_id_passed }}<div></div>
+            copied_opcr_id: {{ copied_opcr_id }} -->
             Copy targets of OPCR for {{ current_period }}
             <select class="form-select" v-model="copied_opcr_id">
                 <option></option>
@@ -225,25 +225,31 @@ export default {
             this.displayModal2 = false;
         },
         copyOPCR() {
-            let text = "WARNING!\nAre you sure you want to copy targets for  " + this.current_period + " ?";
-            // alert("/ipcrtargets/" + ipcr_id + "/"+ this.id+"/delete")
-            if (confirm(text) == true) {
-                // this.$inertia.delete("/ipcrtargets/" + ipcr_id + "/" + this.id + "/delete");
-                // this.copied_opcr_id;
-                var url = "/opcrlist/FROM/" + this.copied_opcr_id + "/TO/" + this.opcr_id_passed;
-                // var url = "/review-approve/targets/" + opcr_id + "/view/opcr/target/submission"
-                this.$inertia.post(url);
-                // , {
-                //     params: {
+            if (this.copied_opcr_id != this.opcr_id_passed) {
 
-                //     }
-                // }).catch;
-                // .then((response) => {
-                //     this.opcr_data = response.data;
-                // }).catch((error) => {
-                //     console.error(error);
-                // });
+                let text = "WARNING!\nAre you sure you want to copy targets for  " + this.current_period + " ?";
+                // alert("/ipcrtargets/" + ipcr_id + "/"+ this.id+"/delete")
+                if (confirm(text) == true) {
+                    // this.$inertia.delete("/ipcrtargets/" + ipcr_id + "/" + this.id + "/delete");
+                    // this.copied_opcr_id;
+                    var url = "/opcrlist/FROM/" + this.copied_opcr_id + "/TO/" + this.opcr_id_passed;
+                    // var url = "/review-approve/targets/" + opcr_id + "/view/opcr/target/submission"
+                    this.$inertia.post(url);
+                    // , {
+                    //     params: {
+
+                    //     }
+                    // }).catch;
+                    // .then((response) => {
+                    //     this.opcr_data = response.data;
+                    // }).catch((error) => {
+                    //     console.error(error);
+                    // });
+                }
+            } else {
+                alert("Select a different OPCR to copy!");
             }
+
 
         }
     }

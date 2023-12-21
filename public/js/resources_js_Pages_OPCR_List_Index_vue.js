@@ -89,22 +89,26 @@ __webpack_require__.r(__webpack_exports__);
       this.displayModal2 = false;
     },
     copyOPCR: function copyOPCR() {
-      var text = "WARNING!\nAre you sure you want to copy targets for  " + this.current_period + " ?"; // alert("/ipcrtargets/" + ipcr_id + "/"+ this.id+"/delete")
+      if (this.copied_opcr_id != this.opcr_id_passed) {
+        var text = "WARNING!\nAre you sure you want to copy targets for  " + this.current_period + " ?"; // alert("/ipcrtargets/" + ipcr_id + "/"+ this.id+"/delete")
 
-      if (confirm(text) == true) {
-        // this.$inertia.delete("/ipcrtargets/" + ipcr_id + "/" + this.id + "/delete");
-        // this.copied_opcr_id;
-        var url = "/opcrlist/FROM/" + this.copied_opcr_id + "/TO/" + this.opcr_id_passed; // var url = "/review-approve/targets/" + opcr_id + "/view/opcr/target/submission"
+        if (confirm(text) == true) {
+          // this.$inertia.delete("/ipcrtargets/" + ipcr_id + "/" + this.id + "/delete");
+          // this.copied_opcr_id;
+          var url = "/opcrlist/FROM/" + this.copied_opcr_id + "/TO/" + this.opcr_id_passed; // var url = "/review-approve/targets/" + opcr_id + "/view/opcr/target/submission"
 
-        this.$inertia.post(url); // , {
-        //     params: {
-        //     }
-        // }).catch;
-        // .then((response) => {
-        //     this.opcr_data = response.data;
-        // }).catch((error) => {
-        //     console.error(error);
-        // });
+          this.$inertia.post(url); // , {
+          //     params: {
+          //     }
+          // }).catch;
+          // .then((response) => {
+          //     this.opcr_data = response.data;
+          // }).catch((error) => {
+          //     console.error(error);
+          // });
+        }
+      } else {
+        alert("Select a different OPCR to copy!");
       }
     }
   }
@@ -315,15 +319,11 @@ var _hoisted_24 = {
 };
 var _hoisted_25 = ["src"];
 
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, null, -1
-/* HOISTED */
-);
-
-var _hoisted_28 = ["value"];
+var _hoisted_27 = ["value"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -457,22 +457,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onCloseModalEvent: $options.hideModal2
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>{{ opcr_lists }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" opcr_id_passed: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_id_passed), 1
-      /* TEXT */
-      ), _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" copied_opcr_id: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.copied_opcr_id) + " Copy targets of OPCR for " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.current_period) + " ", 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>{{ opcr_lists }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" opcr_id_passed: {{ opcr_id_passed }}<div></div>\n            copied_opcr_id: {{ copied_opcr_id }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Copy targets of OPCR for " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.current_period) + " ", 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
         "class": "form-select",
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.copied_opcr_id = $event;
         })
-      }, [_hoisted_27, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.opcr_lists, function (opcr_list, key) {
+      }, [_hoisted_26, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.opcr_lists, function (opcr_list, key) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
           key: opcr_list.id,
           value: opcr_list.id
         }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonth(opcr_list.date_from)) + " to " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(opcr_list.date_to)), 9
         /* TEXT, PROPS */
-        , _hoisted_28);
+        , _hoisted_27);
       }), 128
       /* KEYED_FRAGMENT */
       ))], 512
