@@ -631,8 +631,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.paps_desc]]), $data.form.errors.paps_desc ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.paps_desc), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+    rows: "4",
     "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.form.MOV = $event;
     }),
@@ -757,7 +757,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_51)], 32
   /* HYDRATE_EVENTS */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{  form }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" mfos_data: {{ mfos_data }}\r\n        <br /><br /><br />\r\n        FFUNCCOD: {{ form.FFUNCCOD }}<br />\r\n        dataMFO: {{ formattedMFOs }}\r\n        <br />\r\n        <br />\r\n        <br />\r\n        {{ mfos }} ")]);
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{  form }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" mfos_data: {{ mfos_data }}\n        <br /><br /><br />\n        FFUNCCOD: {{ form.FFUNCCOD }}<br />\n        dataMFO: {{ formattedMFOs }}\n        <br />\n        <br />\n        <br />\n        {{ mfos }} ")]);
 }
 
 /***/ }),
