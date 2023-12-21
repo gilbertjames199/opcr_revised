@@ -901,6 +901,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $opcr_date = "";
         if ($opcr_id) {
             $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+            // dd($opcr_id);
             $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
             $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
             $start = $dateStart->format('F');
@@ -1036,22 +1037,26 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $approver = 'Jayvee Tyron L. Uy';
                     $pos = 'Vice Governor';
                 }
-                // $var_q = $item->rating_q;
-                // $var_e = $item->rating_e;
-                // $var_t = $item->rating_t;
+                $var_q = $item->rating_q;
+                $var_e = $item->rating_e;
+                $var_t = $item->rating_t;
 
-                // $div = 3;
-                // if ($var_q < 1) {
-                //     $div = $div - 1;
-                // }
-                // if ($var_e < 1) {
-                //     $div = $div - 1;
-                // }
-                // if ($var_t < 1) {
-                //     $div = $div - 1;
-                // }
-                // $sum = $var_q + $var_e + $var_t;
-                // $ave_qet = $sum / $div;
+                $div = 3;
+                if ($var_q < 1) {
+                    $div = $div - 1;
+                }
+                if ($var_e < 1) {
+                    $div = $div - 1;
+                }
+                if ($var_t < 1) {
+                    $div = $div - 1;
+                }
+                $sum = $var_q + $var_e + $var_t;
+                $ave_qet = 0;
+                if ($div > 0) {
+                    $ave_qet = $sum / $div;
+                }
+
 
                 // dd("average: " . $ave);
                 return [
@@ -1082,7 +1087,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "date_now" => $date_now,
                     "approver" => $approver,
                     "position" => $pos,
-                    // "ave_qet" => $ave_qet
+                    "ave_qet" => $ave_qet
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
                     // "paps_idmfo" => $item->paps_idmfo
