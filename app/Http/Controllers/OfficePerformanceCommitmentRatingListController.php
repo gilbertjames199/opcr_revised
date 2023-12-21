@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\BudgetRequirement;
 use App\Models\FFUNCCOD;
 use App\Models\Implementing_team;
+use App\Models\Office;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
 use App\Models\OpcrTarget;
 use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
+use App\Models\SuccessIndicator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -340,11 +342,16 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         //     OpcrTarget
         // });
         $FFUNCCOD = $my_opcr->FFUNCCOD;
+        $dept_code = "00";
+        $dept = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
+        if ($dept) {
+            $dept_code = $dept->department_code;
+        }
         // dd($my_opcr->FFUNCCOD);
         // ->join('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
         $paps = ProgramAndProject::where('FFUNCCOD', $FFUNCCOD)
             ->get()
-            ->map(function ($item) use ($opcr_list_id_from, $opcr_list_id_to) {
+            ->map(function ($item) use ($opcr_list_id_from, $opcr_list_id_to, $FFUNCCOD, $dept_code) {
                 $copied_target = OpcrTarget::where('idpaps', $item->id)
                     ->where('office_performance_commitment_rating_list_id', $opcr_list_id_from)
                     ->first();
@@ -353,9 +360,11 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                     $to_target = OpcrTarget::where('idpaps', $item->id)
                         ->where('office_performance_commitment_rating_list_id', $opcr_list_id_to)
                         ->first();
+                    // dd("office_performance_commitment_rating_list_id: " . $opcr_list_id_to);
                     if ($to_target) {
                         // dd("naa na dili na ka add");
                     } else {
+
                         $my_new = new OpcrTarget();
                         $my_new->target_success_indicator = $copied_target->target_success_indicator;
                         $my_new->output_id = $copied_target->output_id;
@@ -373,6 +382,26 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                         $my_new->idpaps = $copied_target->idpaps;
                         $my_new->office_performance_commitment_rating_list_id = $opcr_list_id_to;
                         $my_new->save();
+                        $success = SuccessIndicator::where('idpaps', $copied_target->idpaps)->first();
+                        $test_rating = OfficePerformanceCommitmentRating::where('id_opcr_target', $my_new->id)
+                            ->first();
+                        // dd($test_rating);
+                        if ($test_rating) {
+                        } else {
+                            $opcrf = new OfficePerformanceCommitmentRating();
+                            $opcrf->id_paps = $item->id;
+                            $opcrf->id_opcr_target = $my_new->id;
+                            $opcrf->success_indicator_id = $success->id;
+                            $opcrf->accomplishments = "";
+                            $opcrf->rating_q = "1";
+                            $opcrf->rating_e = "1";
+                            $opcrf->rating_t = "1";
+                            $opcrf->remarks = "-";
+                            $opcrf->opcr_id    = $opcr_list_id_to;
+                            $opcrf->FFUNCCOD = $FFUNCCOD;
+                            $opcrf->department_code = $dept_code;
+                            $opcrf->save();
+                        }
                     }
                 }
             });
