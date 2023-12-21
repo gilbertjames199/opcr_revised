@@ -77,7 +77,7 @@
                                         dat.office_performance_commitment_rating_list_id }} <br> -->
                                 </td>
                                 <td>{{ dat.target_success_indicator }}</td>
-                                <td>{{ dat.quantity }} </td>
+                                <td>{{ format_number_conv(dat.quantity, 2, true) }} </td>
                                 <td>
                                     <div class="dropdown dropstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button"
