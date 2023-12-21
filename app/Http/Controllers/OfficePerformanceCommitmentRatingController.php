@@ -765,6 +765,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
     public function print_mfo(Request $request)
     {
         $mfos = MajorFinalOutput::where('FFUNCCOD', $request->FFUNCCOD)
+            ->whereNull('from_excel')
             ->get()
             ->map(function ($item) use ($request) {
                 return [
