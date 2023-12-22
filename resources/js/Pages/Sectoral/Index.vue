@@ -43,7 +43,8 @@
                             <tr v-for="dat in data.data">
                                 <td v-if="auth.user.department_code === '04'">{{ dat.office.FFUNCTION }}</td>
                                 <td>
-                                    <div align="justify" v-html="dat.goal_description"></div>
+                                    <!-- <div align="justify" v-html="dat.goal_description"></div> -->
+                                    {{ truncateText(getPlainTextWithoutTags(dat.goal_description), 10) }}
                                 </td>
                                 <td>{{ dat.sectors.sector_name }}</td>
                                 <td>

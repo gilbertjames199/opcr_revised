@@ -61,7 +61,8 @@
                                     <td v-if="index === 0 || opcr.success_indicator !== opcrs[index - 1].success_indicator"
                                         :rowspan="getRowspanIndicator(opcr.success_indicator, index)"
                                         style="vertical-align:middle">
-                                        {{ opcr.success_indicator }}
+                                        <!-- {{ opcr.success_indicator }} -->
+                                        {{ opcr.target_success_indicator }}
                                     </td>
                                     <td :rowspan="form.opcrs.length" v-if="index === 0" style="vertical-align:middle">
                                         PS = {{ halfSem(ps) }} <br>(annual={{ format_number_conv(ps) }}) <br><br>MOOE = {{
