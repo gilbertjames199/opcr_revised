@@ -223,8 +223,11 @@ createInertiaApp({
                         return number.toLocaleString('en-US', { useGrouping: include_comma, minimumFractionDigits: num_decimals, maximumFractionDigits: num_decimals });
                     },
                     format_number_conv(number, num_decimals, include_comma) {
+
                         var numm = parseFloat(number);
                         return numm.toLocaleString('en-US', { useGrouping: include_comma, minimumFractionDigits: num_decimals, maximumFractionDigits: num_decimals });
+
+
                     },
                     getStatus(stat_num) {
                         if (typeof stat_num !== 'string') {
