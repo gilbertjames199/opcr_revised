@@ -361,6 +361,7 @@ class LogFrameController extends Controller
                     "sector" => $item->sector
                 ];
             });
+        // dd($sectoral);
         return $sectoral;
     }
 }
