@@ -348,13 +348,13 @@ class LogFrameController extends Controller
             ->get()
             ->map(function ($item) {
                 $sec_desc = $item->SectoralDescription;
-                $sec_desc = preg_replace('/<[^>]*>/', '', $sec_desc);
+                // $sec_desc = preg_replace('/<[^>]*>/', '', $sec_desc);
 
                 // Step 2: Remove escape characters (e.g., \n)
-                $sec_desc = str_replace(["\n", "\r", "\t"], ' ', $sec_desc);
+                // $sec_desc = str_replace(["\n", "\r", "\t"], ' ', $sec_desc);
 
                 // Step 3: Remove &nbsp; entities
-                $sec_desc = str_replace('&nbsp;', ' ', $sec_desc);
+                // $sec_desc = str_replace('&nbsp;', ' ', $sec_desc);
                 return [
                     "SectoralDescription" => $sec_desc,
                     "id" => $item->id,
