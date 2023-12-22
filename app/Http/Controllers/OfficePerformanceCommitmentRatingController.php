@@ -262,6 +262,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'office_performance_commitment_ratings.remarks',
             'office_performance_commitment_ratings.FFUNCCOD',
             'office_performance_commitment_ratings.opcr_id',
+            'opcr_targets.target_success_indicator',
             'SU.success_indicator',
             'off.office_accountable',
             'PAPS.paps_desc',
@@ -272,6 +273,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
             ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
             ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
+            ->leftjoin('opcr_targets', 'opcr_targets.id', 'office_performance_commitment_ratings.id_opcr_target')
             ->orderBy('mfo.mfo_desc', 'asc')
             ->groupBy('office_performance_commitment_ratings.id_opcr_target')
             ->where('mfo.mfo_desc', '<>', '')

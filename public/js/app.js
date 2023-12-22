@@ -1429,6 +1429,10 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_8___default()((filepond_plu
           } else {
             return text;
           }
+        },
+        getPlainTextWithoutTags: function getPlainTextWithoutTags(htmlString) {
+          // Use a regular expression to remove HTML tags
+          return htmlString.replace(/<[^>]+>/g, '');
         }
       }
     }).mount(el);

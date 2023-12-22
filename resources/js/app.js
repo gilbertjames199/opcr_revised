@@ -409,6 +409,10 @@ createInertiaApp({
                         } else {
                             return text;
                         }
+                    },
+                    getPlainTextWithoutTags(htmlString) {
+                        // Use a regular expression to remove HTML tags
+                        return htmlString.replace(/<[^>]+>/g, '');
                     }
                 }
             })
