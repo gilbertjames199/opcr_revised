@@ -68,7 +68,7 @@
                                             <li>
                                                 <button class="dropdown-item"
                                                     @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)">
-                                                    Print Logframe
+                                                    Print Logframe ...
                                                 </button>
                                             </li>
                                             <li>

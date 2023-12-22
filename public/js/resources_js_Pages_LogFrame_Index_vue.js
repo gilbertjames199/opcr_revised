@@ -331,7 +331,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.showModal(functional.FFUNCCOD, functional.FFUNCTION);
       }
-    }, " Print Logframe ", 8
+    }, " Print Logframe ... ", 8
     /* PROPS */
     , _hoisted_15)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "dropdown-item",
