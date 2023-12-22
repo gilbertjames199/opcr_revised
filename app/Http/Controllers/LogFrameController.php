@@ -267,9 +267,9 @@ class LogFrameController extends Controller
             ->where('FFUNCCOD', $request->id)
             ->get()
             ->map(function ($item) {
-                $orgg = strip_tags($item->organizationalOutcome);
+                // $orgg = strip_tags($item->organizationalOutcome);
                 return [
-                    "organizationalOutcome" => $orgg,
+                    "organizationalOutcome" => $item->organizationalOutcome,
                     "id" => $item->id,
                 ];
             });
