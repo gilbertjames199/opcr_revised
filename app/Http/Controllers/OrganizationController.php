@@ -18,27 +18,34 @@ class OrganizationController extends Controller
         $this->model = $model;
     }
 
-
-    //
     public function index(Request $request)
     {
         $idn = auth()->user()->recid;
+        $dept_code = auth()->user()->department_code;
         // dd($idn);
-        $data = $this->model
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $data = [];
+        if ($dept_code == '04') {
+            $data = $this->model
+                ->orderBy('created_at', 'desc')
+                ->get();
+            $result = $data;
+        } else {
+            $data = $this->model
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-        //USER ACCESS
-        $idn = auth()->user()->recid;
-        $access = DB::connection('mysql2')->table('accountaccess')
-            ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
-            ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
-            ->where('systemusers.recid', $idn)
-            ->get();
-        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+            //USER ACCESS
+            $idn = auth()->user()->recid;
+            $access = DB::connection('mysql2')->table('accountaccess')
+                ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
+                ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
+                ->where('systemusers.recid', $idn)
+                ->get();
+            $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
 
-        //FILTER PAPS
-        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+            //FILTER PAPS
+            $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        }
         $showPerPage = 10;
         $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
         //dd($data);

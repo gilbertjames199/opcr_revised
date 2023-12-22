@@ -82,9 +82,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>SECTOR OUTCOMES</td>
+                                <td>SECTOR OUTCOMES </td>
                                 <td colspan="4">
-                                    <div v-if="FFUNCCOD === 1031">
+                                    <!-- <div v-if="FFUNCCOD === 1031">
                                         <div v-if="sec_econ">
                                             Economic Services Sector:
                                             {{ sec_econ }}
@@ -102,9 +102,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div v-else>
+                                    <div v-else> -->
+                                    <div>
                                         <div v-for="sec in sec_goal">
+                                            <!-- <QuillEditor v-model:content="sec.goal_description" contentType="html"
+                                                toolbar="false" /> -->
                                             <div align="justify" v-html="sec.goal_description"></div>
+
                                             <!-- {{ sec.goal_description }} -->
                                         </div>
                                     </div>

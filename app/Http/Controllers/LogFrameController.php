@@ -91,6 +91,7 @@ class LogFrameController extends Controller
         $sec_goal = Sectoral::Join('sectors', 'sectors.id', 'sectoral_goals.sector')
             ->where('FFUNCCOD', $FFUNCCOD)
             ->get();
+        // dd($sec_goal->pluck('goal_description'));
         $organizational = OrganizationalGoal::where('FFUNCCOD', $FFUNCCOD)->get();
         if ($FFUNCCOD) {
             $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)
