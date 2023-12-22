@@ -58,13 +58,14 @@
                                                     Logframe Details
                                                 </a>
                                             </li>
-                                            <li v-if="functional.FFUNCCOD === '1031'">
+                                            <!-- <li v-if="functional.FFUNCCOD === '1031'">
                                                 <button class="dropdown-item"
                                                     @click="showModalAd(functional.FFUNCCOD, functional.FFUNCTION)">
                                                     Print Logframe
                                                 </button>
                                             </li>
-                                            <li v-else>
+                                            <li v-else> -->
+                                            <li>
                                                 <button class="dropdown-item"
                                                     @click="showModal(functional.FFUNCCOD, functional.FFUNCTION)">
                                                     Print Logframe
