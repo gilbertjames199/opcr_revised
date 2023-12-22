@@ -274,18 +274,11 @@ var _hoisted_13 = {
   "aria-labelledby": "dropdownMenuButton1"
 };
 var _hoisted_14 = ["href"];
-var _hoisted_15 = {
-  key: 0
-};
-var _hoisted_16 = ["onClick"];
-var _hoisted_17 = {
-  key: 1
-};
-var _hoisted_18 = ["onClick"];
-var _hoisted_19 = {
+var _hoisted_15 = ["onClick"];
+var _hoisted_16 = {
   "class": "d-flex justify-content-center"
 };
-var _hoisted_20 = ["src"];
+var _hoisted_17 = ["src"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -333,21 +326,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       href: "/logframe/".concat(functional.FFUNCCOD)
     }, " Logframe Details ", 8
     /* PROPS */
-    , _hoisted_14)]), functional.FFUNCCOD === '1031' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-      "class": "dropdown-item",
-      onClick: function onClick($event) {
-        return $options.showModalAd(functional.FFUNCCOD, functional.FFUNCTION);
-      }
-    }, " Print Logframe ", 8
-    /* PROPS */
-    , _hoisted_16)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    , _hoisted_14)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li v-if=\"functional.FFUNCCOD === '1031'\">\n                                                <button class=\"dropdown-item\"\n                                                    @click=\"showModalAd(functional.FFUNCCOD, functional.FFUNCTION)\">\n                                                    Print Logframe\n                                                </button>\n                                            </li>\n                                            <li v-else> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "dropdown-item",
       onClick: function onClick($event) {
         return $options.showModal(functional.FFUNCCOD, functional.FFUNCTION);
       }
     }, " Print Logframe ", 8
     /* PROPS */
-    , _hoisted_18)])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    , _hoisted_15)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "dropdown-item",
       href: "/opcrlist/".concat(functional.FFUNCCOD)
     }, {
@@ -367,7 +353,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onCloseModalEvent: $options.hideModal
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
         src: $data.my_link,
         style: {
           "width": "100%",
@@ -375,7 +361,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, null, 8
       /* PROPS */
-      , _hoisted_20)])];
+      , _hoisted_17)])];
     }),
     _: 1
     /* STABLE */
