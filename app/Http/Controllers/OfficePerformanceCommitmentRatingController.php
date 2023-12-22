@@ -1013,7 +1013,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'PAPS.id AS idpaps',
             'mfo.from_excel',
             'mfo.id AS mfo_idmfo',
-            'PAPS.idmfo AS paps_idmfo'
+            'PAPS.idmfo AS paps_idmfo',
+            'opcr_targets.target_success_indicator AS target_success_indicator'
         )
             ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
             ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
@@ -1087,7 +1088,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "date_now" => $date_now,
                     "approver" => $approver,
                     "position" => $pos,
-                    "ave_qet" => $ave_qet
+                    "ave_qet" => $ave_qet,
+                    "target_success_indicator" => $item->target_success_indicator
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
                     // "paps_idmfo" => $item->paps_idmfo
