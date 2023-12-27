@@ -783,6 +783,14 @@ class OfficePerformanceCommitmentRatingController extends Controller
     public function print_paps(Request $request)
     {
         $paps = ProgramAndProject::where('idmfo', $request->idmfo)
+            ->join('opcr_targets', 'opcr_targets.idpaps', 'program_and_projects.id')
+            ->join(
+                'office_performance_commitment_ratings',
+                'office_performance_commitment_ratings.id_opcr_target',
+                'opcr_targets.id'
+            )
+            ->where('office_performance_commitment_rating_list_id.id', $request->opcr_id)
+            ->groupBy('program_and_projects.id')
             ->get()
             ->map(function ($item) use ($request) {
                 return [
