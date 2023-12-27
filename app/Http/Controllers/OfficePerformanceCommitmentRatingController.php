@@ -17,6 +17,7 @@ use App\Models\RevisionPlan;
 use App\Models\SuccessIndicator;
 use App\Models\UserEmployees;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -1045,13 +1046,25 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $var_t = $item->rating_t;
 
                 $div = 3;
-                if ($var_q < 1) {
+                try {
+                    if (intval($var_q) < 1) {
+                        $div = $div - 1;
+                    }
+                } catch (Exception $e) {
                     $div = $div - 1;
                 }
-                if ($var_e < 1) {
+                try {
+                    if (intval($var_e) < 1) {
+                        $div = $div - 1;
+                    }
+                } catch (Exception $e) {
                     $div = $div - 1;
                 }
-                if ($var_t < 1) {
+                try {
+                    if (intval($var_t) < 1) {
+                        $div = $div - 1;
+                    }
+                } catch (Exception $e) {
                     $div = $div - 1;
                 }
                 $sum = $var_q + $var_e + $var_t;
@@ -1059,8 +1072,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 if ($div > 0) {
                     $ave_qet = $sum / $div;
                 }
-
-
                 // dd("average: " . $ave);
                 return [
                     "id" => $item->id,
