@@ -151,6 +151,7 @@
                 <iframe :src="my_link" style="width:100%; height:400px" />
             </div>
         </Modal>
+
         <!-- {{ office }} -->
     </div>
 </template>
@@ -185,8 +186,6 @@ export default {
     },
 
     methods: {
-
-
         deleteTarget(id) {
             let text = "WARNING!\nAre you sure you want to delete the Target?";
             if (confirm(text) == true) {
@@ -201,7 +200,6 @@ export default {
             } else {
                 this.$inertia.get("/opcrtarget/create/" + this.opcr_list_id, { "idpaps": idpaps });
             }
-
         },
         getRowspanPaps(row, ind) {
 
@@ -230,7 +228,7 @@ export default {
                 '&opcr_date=' + this.opcr_date + '&mooe=' + this.mooe + '&ps=' + this.ps +
                 '&FFUNCCOD=' + this.FFUNCCOD + '&opcr_id=' + this.opcr_list_id;
             var linkl = linkt + jasper_ip + jasper_link + params;
-
+            // alert(linkl);
             return linkl;
         },
         showModal(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
