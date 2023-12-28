@@ -1028,10 +1028,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'opcr_targets.target_success_indicator AS target_success_indicator'
         )
             ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
-            ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
+            ->join('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
             ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
             ->join('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
-            ->leftjoin('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
+            ->join('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->whereNull('mfo.from_excel')
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
