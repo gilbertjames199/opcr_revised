@@ -64,7 +64,7 @@ class OpcrTargetController extends Controller
             ->whereNull('from_excel')
             // ->where('OPT.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
             ->orderBy('major_final_outputs.mfo_desc', 'asc')
-            ->orderBy('program_and_projects.paps_desc', 'asc')
+            // ->orderBy('program_and_projects.paps_desc', 'asc')
             ->orderBy('SU.success_indicator', 'asc')
             // ->groupBy('OPT.id')
             ->get()
@@ -84,7 +84,7 @@ class OpcrTargetController extends Controller
                     $office_performance_commitment_rating_list_id = $targ->office_performance_commitment_rating_list_id;
                 }
                 return [
-                    'mfo_desc' => $item->major,
+                    'mfo_desc' => $item->mfo_desc,
                     'idpaps' => $item->idpaps,
                     'paps_desc' => $item->paps_desc,
                     'id' => $opcr_id,
