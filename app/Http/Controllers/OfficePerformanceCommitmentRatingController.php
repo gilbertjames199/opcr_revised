@@ -1085,6 +1085,16 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 if ($div > 0) {
                     $ave_qet = $sum / $div;
                 }
+                $adj = "Outstanding";
+                if (intval($ave) < 4.51) {
+                    $adj = "Very Satisfactory";
+                } else if (intval($ave) < 3.51) {
+                    $adj = "Satisfactory";
+                } else if (intval($ave) < 2.51) {
+                    $adj = "Unsatisfactory";
+                } else if (intval($ave) < 1.51) {
+                    $adj = "Poor";
+                }
                 // dd("average: " . $ave);
                 return [
                     "id" => $item->id,
@@ -1115,7 +1125,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "approver" => $approver,
                     "position" => $pos,
                     "ave_qet" => $ave_qet,
-                    "target_success_indicator" => $item->target_success_indicator
+                    "target_success_indicator" => $item->target_success_indicator,
+                    "adjectival" => $adj,
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
                     // "paps_idmfo" => $item->paps_idmfo
