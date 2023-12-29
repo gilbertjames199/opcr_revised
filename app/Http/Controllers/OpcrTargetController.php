@@ -137,6 +137,10 @@ class OpcrTargetController extends Controller
                 if ($suff) {
                     $dept_head = $dept_head . ', ' . $suff;
                 }
+                $post = $emp->postfix_name;
+                if ($post) {
+                    $dept_head = $dept_head . ', ' . $post;
+                }
             }
         }
         // dd($dept_head);
