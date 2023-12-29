@@ -1035,7 +1035,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'mfo.from_excel',
             'mfo.id AS mfo_idmfo',
             'PAPS.idmfo AS paps_idmfo',
-            'opcr_targets.target_success_indicator AS target_success_indicator'
+            'opcr_targets.target_success_indicator AS target_success_indicator',
+            'opcr_targets.quantity_unit'
         )
             ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
             ->join('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
@@ -1120,6 +1121,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "office_accountable" => $item->office_accountable,
                     "paps_desc" => $item->paps_desc,
                     "quantity" => $item->quantity,
+                    "quantity_unit" => $item->quantity_unit,
                     "mfo_desc" => $item->mfo_desc,
                     "created_at" => $item->created_at,
                     "total" => $total,
