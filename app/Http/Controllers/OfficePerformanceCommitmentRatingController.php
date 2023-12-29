@@ -1086,13 +1086,15 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $ave_qet = $sum / $div;
                 }
                 $adj = "Outstanding";
-                if (intval($ave) < 4.51) {
+                if (intval($ave) >= 4.51) {
+                    $adj = "Outstanding";
+                } else if (intval($ave) >= 3.51) {
                     $adj = "Very Satisfactory";
-                } else if (intval($ave) < 3.51) {
+                } else if (intval($ave) >= 2.51) {
                     $adj = "Satisfactory";
-                } else if (intval($ave) < 2.51) {
+                } else if (intval($ave) >= 1.51) {
                     $adj = "Unsatisfactory";
-                } else if (intval($ave) < 1.51) {
+                } else {
                     $adj = "Poor";
                 }
                 // dd("average: " . $ave);
