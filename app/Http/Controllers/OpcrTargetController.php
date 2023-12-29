@@ -133,6 +133,10 @@ class OpcrTargetController extends Controller
             $emp = UserEmployees::where('empl_id', $pg_empl_id->empl_id)->first();
             if ($emp) {
                 $dept_head = $emp->first_name . ' ' . $emp->middle_name[0] . ' ' . $emp->last_name;
+                $suff = $emp->suffix_name;
+                if ($suff) {
+                    $dept_head = $dept_head . ', ' . $suff;
+                }
             }
         }
         // dd($dept_head);
