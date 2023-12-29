@@ -909,10 +909,11 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $dept_head = $employee->first_name . ' ' . $employee->middle_name[0] . '. ' .
                 $employee->last_name;
             $suff = $employee->suffix_name;
-            $post = $employee->postfix_name;
+
             if ($suff) {
                 $dept_head = $dept_head . ', ' . $suff;
             }
+            $post = $employee->postfix_name;
             if ($post) {
                 $dept_head = $dept_head . ', ' . $post;
             }
