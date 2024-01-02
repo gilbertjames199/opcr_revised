@@ -64,10 +64,11 @@
                                         <!-- {{ opcr.success_indicator }} -->
                                         {{ opcr.target_success_indicator }}
                                     </td>
-                                    <td :rowspan="form.opcrs.length" v-if="index === 0" style="vertical-align:middle">
+                                    <!-- <td :rowspan="form.opcrs.length" v-if="index === 0" style="vertical-align:middle">
                                         PS = {{ halfSem(ps) }} <br>(annual={{ format_number_conv(ps) }}) <br><br>MOOE = {{
                                             halfSem(mooe) }} (annual={{ format_number_conv(mooe) }})
-                                    </td>
+                                    </td> -->
+                                    <td></td>
                                     <td v-if="index === 0 || opcr.office_accountable !== opcrs[index - 1].office_accountable"
                                         :rowspan="getRowspan2(opcr.office_accountable, index)"
                                         style="vertical-align:middle">
