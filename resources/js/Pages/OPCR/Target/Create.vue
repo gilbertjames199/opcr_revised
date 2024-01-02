@@ -217,6 +217,7 @@ export default {
                 this.other_quant = this.editData.quantity_unit
                 this.form.quantity_unit = "others"
             }
+            this.other_quant = this.editData.quantity_unit
         } else {
             this.pageTitle = "Create"
             this.form.idpaps = this.idpaps;
