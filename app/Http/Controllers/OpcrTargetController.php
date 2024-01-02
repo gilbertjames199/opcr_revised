@@ -65,7 +65,7 @@ class OpcrTargetController extends Controller
             // ->where('OPT.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
             ->orderBy('major_final_outputs.mfo_desc', 'asc')
             // ->orderBy('program_and_projects.paps_desc', 'asc')
-            ->orderBy('SU.success_indicator', 'asc')
+            // ->orderBy('SU.success_indicator', 'asc')
             // ->groupBy('OPT.id')
             ->get()
             ->map(function ($item) use ($opcr_list_id) {
