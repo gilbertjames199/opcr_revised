@@ -186,15 +186,20 @@ __webpack_require__.r(__webpack_exports__);
 
         if (div == 0) {
           div = 1;
+        }
+
+        if (avee > 0) {
+          total_div = total_div + 1;
         } // total_div = total_div + div;
 
 
         total = total + avee / div;
       } // this.total_divisor = this.form.opcrs.length;
+      //this.total_comp
 
 
-      this.total_comp;
-      var aver = parseFloat(total) / parseFloat(this.form.opcrs.length);
+      var aver = parseFloat(total) / total_div; //(parseFloat(this.form.opcrs.length));
+
       this.total_ave = aver;
       return this.format_number_conv(aver, 2, true);
     },
