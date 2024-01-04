@@ -1050,7 +1050,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->whereNull('mfo.from_excel')
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
-            ->orderBy('mfo.mfo_desc', 'asc')
+            ->orderBy('mfo.id', 'asc')
+            ->orderBy('PAPS.id', 'asc')
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
             ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now) {
