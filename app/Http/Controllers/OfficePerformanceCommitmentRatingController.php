@@ -1066,36 +1066,36 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $var_t = $item->rating_t;
 
                 $div = 3;
-                if (intval($var_q) < 1) {
-                    $div = $div - 1;
-                }
-                if (intval($var_e) < 1) {
-                    $div = $div - 1;
-                }
-                if (intval($var_t) < 1) {
-                    $div = $div - 1;
-                }
-                // try {
-                //     if (intval($var_q) < 1) {
-                //         $div = $div - 1;
-                //     }
-                // } catch (Exception $e) {
+                // if (floatval($var_q) <= 0) {
                 //     $div = $div - 1;
                 // }
-                // try {
-                //     if (intval($var_e) < 1) {
-                //         $div = $div - 1;
-                //     }
-                // } catch (Exception $e) {
+                // if (floatval($var_e) <= 0) {
                 //     $div = $div - 1;
                 // }
-                // try {
-                //     if (intval($var_t) < 1) {
-                //         $div = $div - 1;
-                //     }
-                // } catch (Exception $e) {
+                // if (floatval($var_t) <= 0) {
                 //     $div = $div - 1;
                 // }
+                try {
+                    if (intval($var_q) < 1) {
+                        $div = $div - 1;
+                    }
+                } catch (Exception $e) {
+                    $div = $div - 1;
+                }
+                try {
+                    if (intval($var_e) < 1) {
+                        $div = $div - 1;
+                    }
+                } catch (Exception $e) {
+                    $div = $div - 1;
+                }
+                try {
+                    if (intval($var_t) < 1) {
+                        $div = $div - 1;
+                    }
+                } catch (Exception $e) {
+                    $div = $div - 1;
+                }
                 $sum = $var_q + $var_e + $var_t;
                 $ave_qet = 0;
                 if ($div > 0) {
