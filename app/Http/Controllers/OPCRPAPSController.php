@@ -199,7 +199,11 @@ class OPCRPAPSController extends Controller
                 });
             // dd($data);
         }
-        $data = clone ($data)->orderBy('created_at', 'desc')->get();
+        $data = clone ($data)
+            ->orderBy('program_and_projects.idmfo', 'ASC')
+            ->orderBy('program_and_projects.id', 'ASC')
+            // ->orderBy('created_at', 'desc')
+            ->get();
         // dd($data);
 
 
