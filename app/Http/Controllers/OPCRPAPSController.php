@@ -112,8 +112,6 @@ class OPCRPAPSController extends Controller
             $functions = clone ($functions)
                 ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
                 ->where('iduser', auth()->user()->recid)
-                ->orderBy('program_and_projects.idmfo', 'ASC')
-                ->orderBy('program_and_projects.id', 'ASC')
                 ->get()
                 ->map(function ($item) {
                     $my_year = now()->year;
@@ -166,8 +164,6 @@ class OPCRPAPSController extends Controller
         } else {
             $functions = clone ($functions)
                 ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
-                ->orderBy('program_and_projects.idmfo', 'ASC')
-                ->orderBy('program_and_projects.id', 'ASC')
                 ->get()
                 ->map(function ($item) {
                     $my_year = now()->year;
