@@ -275,12 +275,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
             ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             ->leftjoin('opcr_targets', 'opcr_targets.id', 'office_performance_commitment_ratings.id_opcr_target')
-            ->orderBy('mfo.mfo_desc', 'asc')
-            ->groupBy('office_performance_commitment_ratings.id_opcr_target')
-            ->groupBy('opcr_targets.idpaps')
             ->where('mfo.mfo_desc', '<>', '')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
+            ->orderBy('mfo.id', 'asc')
+            ->orderBy('PAPS.id', 'asc')
+            ->groupBy('office_performance_commitment_ratings.id_opcr_target')
+            ->groupBy('opcr_targets.idpaps')
             ->get();
 
         // $opcrs = ProgramAndProject::select(
