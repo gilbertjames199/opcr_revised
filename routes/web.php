@@ -78,6 +78,7 @@ use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
 use App\Http\Controllers\IPCRController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
+use App\Http\Controllers\SentenceParserController;
 use App\Http\Controllers\TimeRangeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEmployeesController;
@@ -792,6 +793,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [AddAccomplishmentController::class, 'destroy']);
     });
 
+    // Sentence Identifier Tester
+    Route::prefix('/sentence')->group(function () {
+        Route::get('/', [SentenceParserController::class, 'my_method1']);
+    });
     //Non-existent Routes
     //
 });
@@ -938,6 +943,8 @@ Route::prefix('opcr-accomplishments/print')->group(function () {
 });
 
 
-
+Route::prefix('opcr-accomplishments/print')->group(function () {
+    Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
+});
 //Non-existent routes
 Route::get('{any}', [DashBoardController::class, 'not_found'])->where('any', '.*')->middleware('auth');

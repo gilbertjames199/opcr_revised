@@ -20,10 +20,10 @@
 
         <div class="masonry-sizer col-md-6">
             <b>Office</b>: <u>{{ office.FFUNCTION }}</u>
-            <p><i
+            <!-- <p><i
                     title="To have your targets approved, click on the target button associated with the selected OPCR. Upon reaching the target page, click the submit button located at the top right of the targets form.">Note:
                     You can only rate once target is approved </i>
-            </p>
+            </p> -->
         </div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
