@@ -1047,7 +1047,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
             ->join('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             ->join('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
-            ->join('opcr_targets', 'opcr_targets.id','office_performance_commitment_ratings.id_opcr_target')
+            ->join('opcr_targets', 'opcr_targets.id', 'office_performance_commitment_ratings.id_opcr_target')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->whereNull('mfo.from_excel')
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
@@ -1118,7 +1118,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 } else {
                     $adj = "Poor";
                 }
-                $quant = OpcrTarget::where()
+                // $quant = OpcrTarget::where()
 
                 // dd("average: " . $ave);
                 return [
