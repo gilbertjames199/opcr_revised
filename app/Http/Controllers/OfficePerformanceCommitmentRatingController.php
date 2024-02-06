@@ -800,6 +800,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->where('program_and_projects.idmfo', $request->idmfo)
             ->join('opcr_targets', 'opcr_targets.idpaps', 'program_and_projects.id')
             ->OrderBy('program_and_projects.id', 'ASC')
+            ->groupBy('program_and_projects.id')
             ->get()
             ->map(function ($item) use ($request) {
                 return [
