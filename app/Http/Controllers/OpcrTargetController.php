@@ -104,7 +104,7 @@ class OpcrTargetController extends Controller
         // ->leftjoin(DB::raw('(Select id,
         //                     office_performance_commitment_rating_list_id,
         //                     idpaps, quantity, target_success_indicator
-        //                 FROM opcr_targets
+        //                 FROM opcr_targetshttp://192.168.6.89/ipcrsemestral/831/direct
         //                 WHERE opcr_targets.office_performance_commitment_rating_list_id=' .
         //         $opcr_list_id . ') AS OPT'), 'OPT.idpaps', 'program_and_projects.id')
         // dd($data->pluck('quantity'));
