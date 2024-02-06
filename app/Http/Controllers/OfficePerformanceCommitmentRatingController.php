@@ -794,7 +794,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //     ->where('office_performance_commitment_rating_list_id.id', $request->opcr_id)
         //     ->groupBy('program_and_projects.id')
         $paps = ProgramAndProject::where('idmfo', $request->idmfo)
-            ->join('opcr_targets', 'opcr_targets.idpaps', 'program_and_projects.id')
             ->OrderBy('id', 'ASC')
             ->get()
             ->map(function ($item) use ($request) {
