@@ -799,9 +799,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'program_and_projects.FFUNCCOD',
             'program_and_projects.opcr_id',
         )
-            ->where('idmfo', $request->idmfo)
+            ->where('program_and_projects.idmfo', $request->idmfo)
             ->join('opcr_targets', 'opcr_targets.idpaps', 'program_and_projects.id')
-            ->OrderBy('id', 'ASC')
+            ->OrderBy('program_and_projects.id', 'ASC')
             ->get()
             ->map(function ($item) use ($request) {
                 return [
