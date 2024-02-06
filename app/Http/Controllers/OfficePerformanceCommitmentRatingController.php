@@ -795,9 +795,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //     ->groupBy('program_and_projects.id')
         $paps = ProgramAndProject::select(
             'program_and_projects.id',
-            'program_and_projects.paps_desc',
-            'program_and_projects.FFUNCCOD',
-            'program_and_projects.opcr_id',
+            'program_and_projects.paps_desc'
         )
             ->where('program_and_projects.idmfo', $request->idmfo)
             ->join('opcr_targets', 'opcr_targets.idpaps', 'program_and_projects.id')
