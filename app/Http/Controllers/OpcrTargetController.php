@@ -33,48 +33,29 @@ class OpcrTargetController extends Controller
     }
     public function index(Request $request, $opcr_list_id)
     {
-        // dd("targ");
-        //->where('OPT.office_performance_commitment_rating_list_id', $opcr_list_id)   $opcr_list->FFUNCCOD
-
+        // dd('ddddd');
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
-        // dd($opcr_list->FFUNCCOD);
-        // $papsu = ProgramAndProject::where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
-        //     ->leftJoin('opcr_targets AS OPT', 'OPT.idpaps', 'program_and_projects.id')
-        //     ->where('OPT.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
-        //     ->select('program_and_projects.*', 'OPT.*') // Select columns you need
-        //     ->get();
-        // dd($papsu);
         $data = ProgramAndProject::select(
             'major_final_outputs.mfo_desc',
             'program_and_projects.id AS idpaps',
             'program_and_projects.paps_desc',
-            // 'OPT.id',
-            // 'OPT.target_success_indicator',
-            // 'OPT.quantity',
             'SU.success_indicator',
             'program_and_projects.idmfo',
             'SU.id AS su_id',
-            // 'OPT.office_performance_commitment_rating_list_id',
         )
-            // ->leftjoin('opcr_targets AS OPT', 'OPT.idpaps', 'program_and_projects.id')
             ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
             ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
             ->where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
             ->where('major_final_outputs.id', '>', '45')
             ->whereNull('from_excel')
+            ->groupBy('program_and_projects.id')
             ->orderBy('program_and_projects.idmfo', 'ASC')
             ->orderBy('program_and_projects.id', 'ASC')
-            // ->where('OPT.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
-            // ->orderBy('major_final_outputs.mfo_desc', 'asc')
-            // ->orderBy('program_and_projects.paps_desc', 'asc')
-            // ->orderBy('SU.success_indicator', 'asc')
-            // ->groupBy('OPT.id')
             ->get()
             ->map(function ($item) use ($opcr_list_id) {
                 $targ = OpcrTarget::where('opcr_targets.idpaps', $item->idpaps)
                     ->where('opcr_targets.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
                     ->first();
-                // dd($targ);
                 $target_success_indicator = "";
                 $quantity = "";
                 $opcr_id = "";
@@ -98,17 +79,8 @@ class OpcrTargetController extends Controller
                     'office_performance_commitment_rating_list_id' => $office_performance_commitment_rating_list_id,
                 ];
             });
-        // dd($data);
-        // return $data;
+
         //AFTER SUCCESS INDICATOR
-        // ->leftjoin(DB::raw('(Select id,
-        //                     office_performance_commitment_rating_list_id,
-        //                     idpaps, quantity, target_success_indicator
-        //                 FROM opcr_targetshttp://192.168.6.89/ipcrsemestral/831/direct
-        //                 WHERE opcr_targets.office_performance_commitment_rating_list_id=' .
-        //         $opcr_list_id . ') AS OPT'), 'OPT.idpaps', 'program_and_projects.id')
-        // dd($data->pluck('quantity'));
-        //dd('OPCR Targets index');
         $opcr_id = $opcr_list_id;
         $FFUNCCOD = $opcr_list->FFUNCCOD;
         //TOTAL & AVERAGE
@@ -125,9 +97,6 @@ class OpcrTargetController extends Controller
 
         //PG Department Head
         //********************************************** */
-        // $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
-        //     ->where('role', 'like', '%Department Head%')
-        //     ->count();
         $dept_head = "N/A";
         $pg_empl_id = Office::where('FFUNCCOD', $FFUNCCOD)->first();
         if ($pg_empl_id) {
@@ -145,13 +114,6 @@ class OpcrTargetController extends Controller
                 }
             }
         }
-        // dd($dept_head);
-        // if ($count_pgdh > 0) {
-        //     $dh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
-        //         ->where('role', 'like', '%Department Head%')
-        //         ->first()->name;
-        //     $dept_head = Str::upper($dh);
-        // }
 
         //OPCR LIST
         $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
@@ -166,8 +128,7 @@ class OpcrTargetController extends Controller
 
         //YEAR NOW
         $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
-        //dd($my_year);
-        //REVISION PLAN ID/ GET MOOE & PS
+
         $revision_plan = RevisionPlan::where('idmfo', '0')
             ->where('idpaps', '0')
             ->where('FFUNCCOD', $FFUNCCOD)
@@ -189,11 +150,9 @@ class OpcrTargetController extends Controller
             $ps2 = $ps2 / 2;
             $mooe = number_format($mooe2, 2);
             $ps = number_format($ps2, 2);
-        } else {
-            //dd("empty no ps budget");
         }
+        // dd("dd");
         $off = FFUNCCOD::where('FFUNCCOD', $opcr_list->FFUNCCOD)->first();
-        // dd('targ');
         return inertia('OPCR/Target/Index', [
             "opcr_list_id" => $opcr_list_id,
             "opcr_list" => $opcr_list,
@@ -212,8 +171,6 @@ class OpcrTargetController extends Controller
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
-        //$opcr_target_list = ProgramAndProject::where('FFUNCCOD', $opcr_list->FFUNCCOD)->get();
-        //dd($opcr_target_list);
     }
     public function create(Request $request, $opcr_list_id)
     {
