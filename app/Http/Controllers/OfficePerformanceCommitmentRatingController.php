@@ -885,7 +885,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
     public function print_office(Request $request)
     {
         $idpaps = $request->idpaps;
-        $office_accountable = OfficeAccountable::where('idpaps', $idpaps)->get();
+        $office_accountable = OfficeAccountable::where('idpaps', $idpaps)
+            ->groupBy('office_accountable')->get();
         return $office_accountable;
     }
 
