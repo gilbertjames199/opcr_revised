@@ -182,58 +182,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $list = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
         $my_year = Carbon::parse($list->date_to)->format('Y');
 
-
-        //dd($FFUNCCOD);
-        // $succid = [];
-        // //Load all success indicators
-        // $success_indicators = SuccessIndicator::select(
-        //     'success_indicators.id',
-        //     'success_indicators.success_indicator'
-        // )
-        //     ->join('program_and_projects AS paps', 'paps.id', 'success_indicators.idpaps')
-        //     ->where('FFUNCCOD', $FFUNCCOD)
-        //     ->get();
-        // if ($cnt < 1) {
-        //IF the OPCR List has no OPCR Ratings, generate OPCR ratings for each Success Indicator
-        //Save OPC Rating for each success indicator with rating of 1 for Q,E,and T
-        // foreach ($success_indicators as $success_indicator) {
-        //     $opcrf = new OfficePerformanceCommitmentRating();
-        //     $opcrf->success_indicator_id = $success_indicator->id;
-        //     array_push($succid, $success_indicator->id);
-        //     $opcrf->accomplishments = "";
-        //     $opcrf->rating_q = "1";
-        //     $opcrf->rating_e = "1";
-        //     $opcrf->rating_t = "1";
-        //     $opcrf->remarks = "-";
-        //     $opcrf->FFUNCCOD = $FFUNCCOD;
-        //     $opcrf->department_code = $dept_code;
-        //     $opcrf->opcr_id    = $opcr_id;
-        //     $opcrf->save();
-        // }
-        //dd('EMPTY: '.$cnt);
-        // } else {
-        // $exist = $this->model->where('FFUNCCOD', $FFUNCCOD)
-        //     ->get();
-        // $existingSuccessIndicatorIds = $exist->pluck('success_indicator_id')->toArray();
-        // foreach ($success_indicators as $success_indicator) {
-        //     $successIndicatorId = $success_indicator->id;
-        //     if (!in_array($successIndicatorId, $existingSuccessIndicatorIds)) {
-        //         // OfficePerformanceCommitmentRating::create([
-        //         //     'success_indicator_id' => $successIndicatorId,
-        //         //     'accomplishments' => '',
-        //         //     'rating_q' => '1',
-        //         //     'rating_e' => '1',
-        //         //     'rating_t' => '1',
-        //         //     'remarks' => '-',
-        //         //     'FFUNCCOD' => $FFUNCCOD,
-        //         //     'department_code' => $dept_code,
-        //         //     'opcr_id' => $opcr_id
-        //         // ]);
-        //     }
-        // }
-        //dd('COUNT: '.$cnt);
-        // }
-        //REVISION PLAN ID
         $revision_plan = RevisionPlan::where('idmfo', '0')
             ->where('idpaps', '0')
             ->where('FFUNCCOD', $FFUNCCOD)
@@ -253,6 +201,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             //dd("empty no ps budget");
         }
         //$opcr = $this->model->where('FFUNCCOD', $FFUNCCOD)->get();
+        // dd($opcr_id . ' FFUNCCOD:' . $FFUNCCOD);
         $opcrs = $this->model->select(
             'office_performance_commitment_ratings.id',
             'office_performance_commitment_ratings.success_indicator_id',
@@ -271,10 +220,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'mfo.created_at'
         )
             ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
-            ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
-            ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
-            ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             ->leftjoin('opcr_targets', 'opcr_targets.id', 'office_performance_commitment_ratings.id_opcr_target')
+            ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'opcr_targets.idpaps')
+            ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
+            ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
             ->where('mfo.mfo_desc', '<>', '')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
@@ -283,7 +232,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->groupBy('office_performance_commitment_ratings.id_opcr_target')
             ->groupBy('opcr_targets.idpaps')
             ->get();
-
+        // dd($opcrs->pluck('target_success_indicator'));
         // $opcrs = ProgramAndProject::select(
         //     'office_performance_commitment_ratings.id',
         //     'office_performance_commitment_ratings.success_indicator_id',
