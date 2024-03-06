@@ -76,7 +76,7 @@
                                     </td>
                                     <td>
                                         <!-- {{ opcr.id }} -->
-                                        <textarea v-model="form.opcrs[index].accomplishments"></textarea>
+                                        <textarea v-model="form.opcrs[index].accomplishments" style="height: inherit"></textarea>
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
@@ -241,6 +241,7 @@ export default {
     //     }
     // },
     mounted() {
+        //this.adjustTextareaHeight();
         this.form.opcrs = this.opcrs
         if (localStorage.getItem('reloaded')) {
             // The page was just reloaded. Clear the value from local storage
@@ -480,6 +481,13 @@ export default {
         hideModal() {
             this.displayModal = false;
         },
+        // adjustTextareaHeight() {
+        //     const textarea = this.$refs.textarea;
+        //     if (textarea) {
+        //         const rowHeight = textarea.parentNode.offsetHeight; // Height of the table row
+        //         textarea.style.height = rowHeight + 'px';
+        //     }
+        // }
     }
 };
 </script>

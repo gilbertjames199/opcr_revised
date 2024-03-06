@@ -58,6 +58,7 @@ __webpack_require__.r(__webpack_exports__);
   //     }
   // },
   mounted: function mounted() {
+    //this.adjustTextareaHeight();
     this.form.opcrs = this.opcrs;
 
     if (localStorage.getItem('reloaded')) {
@@ -314,7 +315,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     hideModal: function hideModal() {
       this.displayModal = false;
-    }
+    } // adjustTextareaHeight() {
+    //     const textarea = this.$refs.textarea;
+    //     if (textarea) {
+    //         const rowHeight = textarea.parentNode.offsetHeight; // Height of the table row
+    //         textarea.style.height = rowHeight + 'px';
+    //     }
+    // }
+
   }
 });
 
@@ -660,6 +668,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_18)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ opcr.id }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return $data.form.opcrs[index].accomplishments = $event;
+      },
+      style: {
+        "height": "inherit"
       }
     }, null, 8
     /* PROPS */
