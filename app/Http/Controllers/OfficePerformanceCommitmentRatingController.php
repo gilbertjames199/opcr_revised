@@ -732,11 +732,12 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //     });
         $mfos = MajorFinalOutput::where('FFUNCCOD', $request->FFUNCCOD)
             ->whereNull('from_excel')
-            ->whereExists(function ($query) {
+            ->whereExists(function ($query) use ($request) {
                 $query->select(DB::raw(1))
                     ->from('opcr_targets')
                     ->join('program_and_projects', 'opcr_targets.idpaps', '=', 'program_and_projects.idmfo')
-                    ->whereRaw('program_and_projects.idmfo = major_final_outputs.id');
+                    ->where('opcr_targets.office_performance_commitment_rating_list_id')
+                    ->whereRaw('program_and_projects.idmfo = major_final_outputs.id', $request->opcr_id);
             })
             ->orderBy('id', 'ASC')
             ->get()
