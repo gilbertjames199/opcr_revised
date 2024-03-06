@@ -735,9 +735,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->whereExists(function ($query) use ($request) {
                 $query->select(DB::raw(1))
                     ->from('opcr_targets')
-                    ->join('program_and_projects', 'opcr_targets.idpaps', '=', 'program_and_projects.idmfo')
-                    ->where('opcr_targets.office_performance_commitment_rating_list_id', $request->opcr_id)
-                    ->whereRaw('program_and_projects.idmfo = major_final_outputs.id');
+                    ->join('program_and_projects', 'opcr_targets.idpaps', '=', 'program_and_projects.id')
+                    ->where('opcr_targets.office_performance_commitment_rating_list_id', $request->opcr_id);
+                // ->whereRaw('program_and_projects.idmfo = major_final_outputs.id');
             })
             ->orderBy('id', 'ASC')
             ->get()
