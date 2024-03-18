@@ -309,6 +309,7 @@ class OPCRController extends Controller
             ->leftJoin('timeliness_remarks', 'program_and_projects.id', '=', 'timeliness_remarks.idpaps')
             ->leftJoin('monitorings', 'program_and_projects.id', '=', 'monitorings.idpaps')
             ->where('idmfo', $request->idmfo)
+            ->groupBy('program_and_projects.id')
             ->get();
         return $paps;
     }
