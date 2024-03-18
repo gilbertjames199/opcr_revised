@@ -804,7 +804,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('printOPCR')->group(function () {
     // Route::get('/FFUNCOD', [OPCRController::class, 'OPCRprint']);
-    Route::get('/MFOS', [OPCRController::class, 'MFO']);
+    Route::get('/FFUNCOD', [OPCRController::class, 'MFO']);
     Route::get('/PAPS', [OPCRController::class, 'PAPS']);
     Route::get('/Rating', [OPCRController::class, 'Rating']);
     Route::get('/Quality', [OPCRController::class, 'Quality']);
