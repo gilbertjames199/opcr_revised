@@ -284,8 +284,6 @@ class OPCRController extends Controller
 
     public function PAPS(Request $request)
     {
-
-
         $paps = ProgramAndProject::select(
             'program_and_projects.id',
             'program_and_projects.paps_desc',
@@ -298,8 +296,6 @@ class OPCRController extends Controller
             'timeliness_remarks.timeliness_remarks',
             'monitorings.monitoring'
         )
-
-
             ->leftJoin('outputs', 'program_and_projects.id', '=', 'outputs.idpaps')
             ->leftJoin('performances', 'program_and_projects.id', '=', 'performances.idpaps')
             ->leftJoin('success_indicators', 'program_and_projects.id', '=', 'success_indicators.idpaps')
@@ -311,6 +307,7 @@ class OPCRController extends Controller
             ->where('idmfo', $request->idmfo)
             ->groupBy('program_and_projects.id')
             ->get();
+
         return $paps;
     }
 

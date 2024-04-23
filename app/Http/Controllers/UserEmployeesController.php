@@ -15,19 +15,22 @@ class UserEmployeesController extends Controller
     protected $us_em;
     public function __construct(UserEmployees $us_em)
     {
-        $this->us_em=$us_em;
+        $this->us_em = $us_em;
     }
-    public function index(Request $request){
-        $data = $this->us_em->with('Division')->where('department_code',auth()->user()->department_code)
-                ->paginate(10);
-        return inertia('Users/Employees/Index',
-        [
-            "users"=>$data
-        ]
+    public function index(Request $request)
+    {
+        $data = $this->us_em->with('Division')->where('department_code', auth()->user()->department_code)
+            ->paginate(10);
+        return inertia(
+            'Users/Employees/Index',
+            [
+                "users" => $data
+            ]
         );
     }
 
-    public function syncemployees(Request $request){
+    public function syncemployees(Request $request)
+    {
         $apiUrl = 'http://hris.dvodeoro.ph:91/api/ListOfEmployees4IPCR';
 
         // Initialize Guzzle HTTP client
@@ -56,16 +59,16 @@ class UserEmployeesController extends Controller
             //dd($data);
             // Now $data contains the API response as an array, and you can process it as needed
             $length = count($data);
-            $mapped_data =[];
-            for($i=0; $i<$length; $i++){
+            $mapped_data = [];
+            for ($i = 0; $i < $length; $i++) {
                 // $this->saveUserEmployees($data[$i]);
                 $val = $this->saveUserEmployees($data[$i]);
                 array_push($mapped_data, $val);
                 $this->saveUserCredentials($data[$i]);
             }
             //dd($mapped_data);
-            $chunk_data = array_chunk($mapped_data,1000);
-            foreach($chunk_data as $key=>$value){
+            $chunk_data = array_chunk($mapped_data, 1000);
+            foreach ($chunk_data as $key => $value) {
                 foreach ($value as $data) {
                     UserEmployees::updateOrCreate(
                         ['empl_id' => $data['empl_id']],
@@ -88,56 +91,59 @@ class UserEmployeesController extends Controller
             ]);
         }
         return redirect('/user/employees')
-                ->with('message','Employee list synced successfully!');
+            ->with('message', 'Employee list synced successfully!');
         //dd("done");
     }
-    public function saveUserEmployees($datum){
-
+    public function saveUserEmployees($datum)
+    {
+        // dd($datum);
         return [
-                    'empl_id'=>$datum['empl_id'],
-                    'employee_name'=>$datum['employee_name'],
-                    'last_name'=>$datum['last_name'],
-                    'first_name'=>$datum['first_name'],
-                    'middle_name'=>$datum['middle_name'],
-                    'suffix_name'=>$datum['suffix_name'],
-                    'postfix_name'=>$datum['postfix_name'],
-                    'gender'=>$datum['gender'],
-                    'birth_date'=>$datum['birth_date'],
-                    'age'=>$datum['age'],
-                    'department_code'=>$datum['department_code'],
-                    'subdepartment_code'=>$datum['subdepartment_code'],
-                    'division_code'=>$datum['division_code'],
-                    'section_code'=>$datum['section_code'],
-                    'position_code'=>$datum['position_code'],
-                    'position_long_title'=>$datum['position_long_title'],
-                    'position_short_title'=>$datum['position_short_title'],
-                    'position_title1'=>$datum['position_title1'],
-                    'position_title2'=>$datum['position_title2'],
-                    'is_pghead'=>$datum['is_pghead'],
-                    'salary_grade'=>$datum['salary_grade'],
-                    'employment_type'=>$datum['employment_type'],
-                    'employment_type_descr'=>$datum['employment_type_descr'],
-                ];
-
+            'empl_id' => $datum['empl_id'],
+            'employee_name' => $datum['employee_name'],
+            'last_name' => $datum['last_name'],
+            'first_name' => $datum['first_name'],
+            'middle_name' => $datum['middle_name'],
+            'suffix_name' => $datum['suffix_name'],
+            'postfix_name' => $datum['postfix_name'],
+            'gender' => $datum['gender'],
+            'birth_date' => $datum['birth_date'],
+            'age' => $datum['age'],
+            'department_code' => $datum['department_code'],
+            'subdepartment_code' => $datum['subdepartment_code'],
+            'division_code' => $datum['division_code'],
+            'section_code' => $datum['section_code'],
+            'position_code' => $datum['position_code'],
+            'position_long_title' => $datum['position_long_title'],
+            'position_short_title' => $datum['position_short_title'],
+            'position_title1' => $datum['position_title1'],
+            'position_title2' => $datum['position_title2'],
+            'is_pghead' => $datum['is_pghead'],
+            'salary_grade' => $datum['salary_grade'],
+            'employment_type' => $datum['employment_type'],
+            'employment_type_descr' => $datum['employment_type_descr'],
+            'designate_department_code' => $datum['designate_department_code']
+        ];
     }
-    public function saveUserCredentials($datum){
+    public function saveUserCredentials($datum)
+    {
         $emplo = UserEmployeeCredential::where('username', $datum['empl_id'])
-                    ->get();
+            ->get();
 
-        if(count($emplo)<1){
+        if (count($emplo) < 1) {
             $emc = new UserEmployeeCredential;
             $emc->username = $datum['empl_id'];
             $emc->password = md5('password1.');
-            $emc->department_code= $datum['department_code'];
+            $emc->department_code = $datum['department_code'];
             $emc->division_code = $datum['division_code'];
             $emc->save();
         }
     }
-    public function saveUser($datum){
+    public function saveUser($datum)
+    {
         $emplo = UserEmployees::where('empl_id', $datum['empl_id'])
-                    ->get();
+            ->get();
         //dd(count($emplo));
-        if(count($emplo)<1){
+        if (count($emplo) < 1) {
             $emp = new UserEmployees;
             $emp->empl_id = $datum['empl_id'];
             $emp->employee_name = $datum['employee_name'];
