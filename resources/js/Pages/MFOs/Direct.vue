@@ -1,4 +1,5 @@
 <template>
+
     <Head>
         <title>Home</title>
     </Head>
@@ -69,7 +70,8 @@
                                         <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <!--/{id}/{idinteroutcome}/edit-->
                                             <li>
-                                                <Link class="dropdown-item" :href="`/paps/${dat.id}`">Programs and Projects
+                                                <Link class="dropdown-item" :href="`/paps/${dat.id}`">Programs and
+                                                Projects
                                                 </Link>
                                             </li>
                                             <li>
@@ -86,10 +88,10 @@
                                             <li>
                                                 <Link class="dropdown-item" :href="`/mfos/${dat.id}/edit`">Edit</Link>
                                             </li>
-                                            <li>
+                                            <!-- <li>
                                                 <Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete
                                                 </Link>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                     </div>
                                 </td>
