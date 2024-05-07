@@ -1,4 +1,5 @@
 <template>
+
     <Head>
         <title>Home</title>
     </Head>
@@ -18,10 +19,13 @@
                 </div>
             </div>
             <Link :href="`/inter_outcome/${idoutcome}`">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                <path fill-rule="evenodd"
+                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+            </svg>
             </Link>
         </div>
 
@@ -41,18 +45,34 @@
                             <tr v-for="dat in data.data">
                                 <td>{{ dat.mfo_desc }} </td>
                                 <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    <div class="dropdown dropstart">
+                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1"><!--/{id}/{idinteroutcome}/edit-->
-                                            <li><Link class="dropdown-item" :href="`/paps/${dat.id}`">Programs and Projects</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/mforevision/${dat.id}`">MFO Profile</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/strategies/${dat.id}/${ismfo}/strat/mfo`">Strategies</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/mfos/${dat.id}/${dat.idinteroutcome}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li>
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                            <!--/{id}/{idinteroutcome}/edit-->
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/paps/${dat.id}`">Programs and
+                                                Projects</Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/mforevision/${dat.id}`">MFO Profile
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item"
+                                                    :href="`/strategies/${dat.id}/${ismfo}/strat/mfo`">Strategies</Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item"
+                                                    :href="`/mfos/${dat.id}/${dat.idinteroutcome}/edit`">Edit</Link>
+                                            </li>
+                                            <!-- <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li> -->
                                         </ul>
                                     </div>
                                 </td>
@@ -68,7 +88,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <p >
+                        <p>
                             {{ data.from }} to {{ data.to }} of
                             {{ data.total }} entries
                         </p>
@@ -90,7 +110,7 @@ export default {
         idoutcome: String
     },
     data() {
-        return{
+        return {
             ismfo: 1,
         }
     },
@@ -98,9 +118,9 @@ export default {
         Pagination, Filtering,
     },
 
-    methods:{
+    methods: {
 
-        showCreate(){
+        showCreate() {
             this.$inertia.get(
                 "/targets/create",
                 {
@@ -115,25 +135,27 @@ export default {
         },
         deleteMFO(id) {
             let text = "WARNING!\nAre you sure you want to delete the MFO?";
-              if (confirm(text) == true) {
-                this.$inertia.delete("/mfos/" + id+"/"+this.idinteroutcome);
+            if (confirm(text) == true) {
+                this.$inertia.delete("/mfos/" + id + "/" + this.idinteroutcome);
             }
         }
     }
 };
 </script>
 <style>
-            .row-centered {
-                text-align:center;
-            }
-            .col-centered {
-                display:inline-block;
-                float:none;
-                text-align:left;
-                margin-right:-4px;
-            }
-            .pos{
-                position: top;
-                top: 240px;
-            }
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+.pos {
+    position: top;
+    top: 240px;
+}
 </style>

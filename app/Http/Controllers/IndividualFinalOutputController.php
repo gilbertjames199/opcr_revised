@@ -225,6 +225,7 @@ class IndividualFinalOutputController extends Controller
                 if ($sheet->getIndex() === 0) {
                     foreach ($sheet->getRowIterator() as $rowIndex => $row) {
                         $cells = $row->getCells();
+
                         //$my_index = $rowIndex;
                         $ipcr_code = $cells[0]->getValue();
                         $mfo_desc = $cells[1]->getValue();
@@ -246,6 +247,7 @@ class IndividualFinalOutputController extends Controller
                         $unit_of_time = $cells[17]->getValue();
                         $concatenate = $cells[18]->getValue();
                         $from_excel = $cells[19]->getValue();
+
                         // $dept = $cells[9]->getValue();
                         if ($dept_code === "HOSPITALS") {
                             $FFUNCCOD_1 = "4421-1";
