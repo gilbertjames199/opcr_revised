@@ -121,7 +121,8 @@ class UserEmployeesController extends Controller
             'salary_grade' => $datum['salary_grade'],
             'employment_type' => $datum['employment_type'],
             'employment_type_descr' => $datum['employment_type_descr'],
-            'designate_department_code' => $datum['designate_department_code']
+            'designate_department_code' => $datum['designate_department_code'],
+            'active_status' => $datum['active_status']
         ];
     }
     public function saveUserCredentials($datum)
