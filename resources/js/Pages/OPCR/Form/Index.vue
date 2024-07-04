@@ -1,4 +1,5 @@
 <template>
+
     <Head>
         <title>OPCR</title>
     </Head>
@@ -76,7 +77,8 @@
                                     </td>
                                     <td>
                                         <!-- {{ opcr.id }} -->
-                                        <textarea v-model="form.opcrs[index].accomplishments" style="height: inherit"></textarea>
+                                        <textarea v-model="form.opcrs[index].accomplishments"
+                                            style="height: inherit"></textarea>
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
@@ -93,7 +95,8 @@
                                     <td>
                                         {{ getAverage(index) }}
                                     </td>
-                                    <td><input type="text" v-model="form.opcrs[index].remarks" /></td>
+                                    <td><textarea v-model="form.opcrs[index].remarks"
+                                            style="height: inherit"></textarea></td>
                                 </tr>
                                 <tr>
                                     <td colspan="5"></td>

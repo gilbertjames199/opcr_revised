@@ -121,7 +121,7 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"row gap-20 masonry pos-r\"><section class=\"page_404\"><div class=\"container\"><div class=\"row\"><div class=\"col-sm-12\"><div class=\"col-sm-10 col-sm-offset-1 text-center\"><div class=\"four_zero_four_bg\"><h1 class=\"text-center text-danger\">404</h1></div><div class=\"contant_box_404\"><h3 class=\"h2 text-danger\"> Look like you&#39;re lost </h3><p>the page you are looking for not avaible!</p><a href=\"\" class=\"link_404\">Go to Home</a></div></div></div></div></div></section></div>", 1);
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"row gap-20 masonry pos-r\"><section class=\"page_404\"><div class=\"container\"><div class=\"row\"><div class=\"col-sm-12\"><div class=\"col-sm-10 col-sm-offset-1 text-center\"><div class=\"four_zero_four_bg\"><h1 class=\"text-center text-danger\">404</h1></div><div class=\"contant_box_404\"><h3 class=\"h2 text-danger\"> Look like you&#39;re lost! </h3><p>The page you are looking for is not available.</p><a href=\"\" class=\"link_404\">Go to Home</a></div></div></div></div></div></section></div>", 1);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
