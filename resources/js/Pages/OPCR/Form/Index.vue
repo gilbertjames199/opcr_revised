@@ -70,7 +70,7 @@
                                             halfSem(mooe) }} (annual={{ format_number_conv(mooe) }})
                                     </td> -->
                                     <td>
-                                        {{ opcr }}
+                                        <!-- {{ opcr }} -->
                                     </td>
                                     <td v-if="index === 0 || opcr.office_accountable !== opcrs[index - 1].office_accountable"
                                         :rowspan="getRowspan2(opcr.office_accountable, index)"

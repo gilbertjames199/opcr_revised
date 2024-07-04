@@ -1097,6 +1097,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 // $quant = OpcrTarget::where()
 
                 // dd("average: " . $ave);
+                // dd($item->id);
+                if ($item->id = 684) {
+                    // dd($item);
+                }
                 return [
                     "id" => $item->id,
                     "success_indicator_id" => $item->success_indicator_id,
