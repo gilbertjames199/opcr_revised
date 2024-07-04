@@ -69,7 +69,9 @@
                                         PS = {{ halfSem(ps) }} <br>(annual={{ format_number_conv(ps) }}) <br><br>MOOE = {{
                                             halfSem(mooe) }} (annual={{ format_number_conv(mooe) }})
                                     </td> -->
-                                    <td></td>
+                                    <td>
+                                        {{ opcr }}
+                                    </td>
                                     <td v-if="index === 0 || opcr.office_accountable !== opcrs[index - 1].office_accountable"
                                         :rowspan="getRowspan2(opcr.office_accountable, index)"
                                         style="vertical-align:middle">
