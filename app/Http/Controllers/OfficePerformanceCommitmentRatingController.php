@@ -232,60 +232,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->groupBy('office_performance_commitment_ratings.id_opcr_target')
             ->groupBy('opcr_targets.idpaps')
             ->get();
-        // dd($opcrs->pluck('target_success_indicator'));
-        // $opcrs = ProgramAndProject::select(
-        //     'office_performance_commitment_ratings.id',
-        //     'office_performance_commitment_ratings.success_indicator_id',
-        //     'office_performance_commitment_ratings.accomplishments',
-        //     'office_performance_commitment_ratings.rating_q',
-        //     'office_performance_commitment_ratings.rating_e',
-        //     'office_performance_commitment_ratings.rating_t',
-        //     'office_performance_commitment_ratings.remarks',
-        //     'office_performance_commitment_ratings.FFUNCCOD',
-        //     'office_performance_commitment_ratings.opcr_id',
-        //     'SU.success_indicator',
-        //     'off.office_accountable',
-        //     'program_and_projects.paps_desc',
-        //     'mfo.mfo_desc',
-        //     'mfo.created_at'
-        // )
-        // ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'program_and_projects.idmfo')
-        // ->leftjoin('office_performance_commitment_ratings', 'office_performance_commitment_ratings.id_paps', 'program_and_projects.id')
-        // ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
-        // ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
-        // ->leftjoin('office_accountables AS off', 'off.idpaps', 'program_and_projects.id')
-        // ->orderBy('mfo.mfo_desc', 'asc')
-        // ->where('mfo.mfo_desc', '<>', '')
-        // ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
-        // ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
-        // ->get();
-        // dd($FFUNCCOD);
-        // $opcrs = ProgramAndProject::select(
-        //     'office_performance_commitment_ratings.id',
-        //     'office_performance_commitment_ratings.success_indicator_id',
-        //     'office_performance_commitment_ratings.accomplishments',
-        //     'office_performance_commitment_ratings.rating_q',
-        //     'office_performance_commitment_ratings.rating_e',
-        //     'office_performance_commitment_ratings.rating_t',
-        //     'office_performance_commitment_ratings.remarks',
-        //     'office_performance_commitment_ratings.FFUNCCOD',
-        //     'office_performance_commitment_ratings.opcr_id',
-        //     'program_and_projects.id AS id_paps',
-        //     'program_and_projects.paps_desc',
-        //     'mfo.FFUNCCOD',
-        //     'mfo.mfo_desc',
-        //     'mfo.created_at'
-        // )
-        //     ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'program_and_projects.idmfo')
-        //     ->leftjoin('office_performance_commitment_ratings', 'office_performance_commitment_ratings.id_paps', 'program_and_projects.id')
-        //     ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
-        //     ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
-        //     ->leftjoin('office_accountables AS off', 'off.idpaps', 'program_and_projects.id')
-        //     ->where('mfo.FFUNCCOD', $FFUNCCOD)
-        //     ->get();
-        // dd($opcrs[10]);
-        //return $opcrs;
-        //return $mfos;
+        dd($opcrs);
         //********************************************** */
         $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
             ->where('role', 'like', '%Department Head%')
@@ -995,6 +942,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // return $result;
         //
         // dd("Driri");
+        // dd($opcr_id);
         return $this->model->select(
             'office_performance_commitment_ratings.id',
             'office_performance_commitment_ratings.success_indicator_id',
@@ -1019,7 +967,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'opcr_targets.quantity_unit'
         )
             ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
-            ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
+            ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'office_performance_commitment_ratings.id_paps')
             ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
             ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             // ->join('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
