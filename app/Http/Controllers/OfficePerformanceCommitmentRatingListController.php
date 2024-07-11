@@ -28,7 +28,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
     public function index(Request $request, $FFUNCCOD)
     {
         $ffunction = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
-        dd($ffunction);
+        // dd($ffunction);
         // $office = Office::where('depar')
         $opcr_lists = $this->model->where('FFUNCCOD', $FFUNCCOD)
             ->orderBy('year', 'desc')
