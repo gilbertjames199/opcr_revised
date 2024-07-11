@@ -1,4 +1,5 @@
 <template>
+
     <Head>
         <title>List of OPCRs</title>
     </Head>
@@ -44,7 +45,8 @@
                                 <td>OPCR </td>
                                 <td>{{ office.FFUNCTION }} </td>
                                 <td>{{ opcr_list.semester }}</td>
-                                <td>{{ formatMonth(opcr_list.date_from) }} to {{ formatMonthYear(opcr_list.date_to) }}</td>
+                                <td>{{ formatMonth(opcr_list.date_from) }} to {{ formatMonthYear(opcr_list.date_to) }}
+                                </td>
                                 <td>
                                     <div class="dropdown dropstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button"
@@ -63,7 +65,8 @@
                                                 </Button>
                                             </li>
                                             <li>
-                                                <Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">Edit
+                                                <Link class="dropdown-item" :href="`/opcrlist/${opcr_list.id}/edit`">
+                                                Edit
                                                 </Link>
                                             </li>
                                             <li>
@@ -91,14 +94,14 @@
                                             <li>
                                                 <!--goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, opcr_id)-->
                                                 <button class="dropdown-item" @click="showModal(opcr_list.FFUNCCOD,
-                                                    opcr_list.total,
-                                                    opcr_list.ave,
-                                                    opcr_list.dept_head,
-                                                    opcr_list.opcr_date,
-                                                    opcr_list.mooe,
-                                                    opcr_list.ps,
-                                                    opcr_list.id
-                                                )">
+                        opcr_list.total,
+                        opcr_list.ave,
+                        opcr_list.dept_head,
+                        opcr_list.opcr_date,
+                        opcr_list.mooe,
+                        opcr_list.ps,
+                        opcr_list.id
+                    )">
                                                     Download PDF
                                                 </button>
                                             </li>

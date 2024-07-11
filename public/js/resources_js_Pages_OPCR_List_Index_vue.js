@@ -385,7 +385,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       href: "/opcrlist/".concat(opcr_list.id, "/edit")
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Edit ")];
+        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Edit ")];
       }),
       _: 2
       /* DYNAMIC */

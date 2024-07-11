@@ -139,16 +139,22 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         // $FFUNCCOD = DB::connection('mysql2')->table('functions')
         //             ->whereRaw('LOWER(functions.FFUNCTION) LIKE ?', ['%'.$office_lower.'%'])
         //             ->first()->FFUNCCOD;
-        $FFUNCCOD = DB::connection('mysql2')->table('functions')
+        $dept = DB::connection('mysql2')->table('functions')
             ->where('department_code', auth()->user()->department_code)
             ->where('FFUNCTION', 'LIKE', '%Office%')
-            ->first()->FFUNCCOD;
+            ->first();
+
+
+        // dd($dept);
+        $FFUNCCOD = $dept->FFUNCCOD;
+        $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
+        // dd($FFUNCCOD);
         //$FFUNCCOD = user()
         //dd($FFUNCCOD);
         $opcr_lists = $this->model->where('FFUNCCOD', $FFUNCCOD)
             ->orderBy('year', 'desc')
             ->orderBy('semester', 'desc')
-            ->get()->map(function ($item) use ($FFUNCCOD) {
+            ->get()->map(function ($item) use ($FFUNCCOD, $dept) {
                 $opcr_id = $item->id;
                 //TOTAL & AVERAGE
                 $averageSum = $this->getRating($opcr_id);
@@ -162,17 +168,18 @@ class OfficePerformanceCommitmentRatingListController extends Controller
 
                 //PG Department Head
                 //********************************************** */
-                $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
-                    ->where('role', 'like', '%Department Head%')
-                    ->count();
-                $dept_head = "N/A";
-                if ($count_pgdh > 0) {
-                    $dh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
-                        ->where('role', 'like', '%Department Head%')
-                        ->first()->name;
-                    $dept_head = Str::upper($dh);
-                }
-
+                // $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                //     ->where('role', 'like', '%Department Head%')
+                //     ->count();
+                // $dept_head = "N/A";
+                // if ($count_pgdh > 0) {
+                //     $dh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                //         ->where('role', 'like', '%Department Head%')
+                //         ->first()->name;
+                //     $dept_head = Str::upper($dh);
+                // }
+                $dept_head = $dept->DEPTHEAD;
+                // dd($dept);
                 //OPCR LIST
                 $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
 
@@ -230,7 +237,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                 ];
             });
         // dd($opcr_lists);
-        $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
+
 
         return inertia('OPCR/List/Index', [
             "opcr_lists" => $opcr_lists,
