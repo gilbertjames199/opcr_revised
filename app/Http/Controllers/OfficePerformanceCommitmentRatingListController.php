@@ -27,10 +27,13 @@ class OfficePerformanceCommitmentRatingListController extends Controller
     }
     public function index(Request $request, $FFUNCCOD)
     {
+        $ffunction = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
+        dd($ffunction);
+        // $office = Office::where('depar')
         $opcr_lists = $this->model->where('FFUNCCOD', $FFUNCCOD)
             ->orderBy('year', 'desc')
             ->orderBy('semester', 'desc')
-            ->get()->map(function ($item) use ($FFUNCCOD) {
+            ->get()->map(function ($item) use ($FFUNCCOD, $ffunction) {
                 $opcr_id = $item->id;
                 //TOTAL & AVERAGE
                 $averageSum = $this->getRating($opcr_id);
@@ -44,17 +47,18 @@ class OfficePerformanceCommitmentRatingListController extends Controller
 
                 //PG Department Head
                 //********************************************** */
-                $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
-                    ->where('role', 'like', '%Department Head%')
-                    ->count();
-                $dept_head = "N/A";
-                if ($count_pgdh > 0) {
-                    $dh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
-                        ->where('role', 'like', '%Department Head%')
-                        ->first()->name;
-                    $dept_head = Str::upper($dh);
-                }
+                // $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                //     ->where('role', 'like', '%Department Head%')
+                //     ->count();
+                // $dept_head = "N/A";
+                // if ($count_pgdh > 0) {
+                //     $dh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
+                //         ->where('role', 'like', '%Department Head%')
+                //         ->first()->name;
+                //     $dept_head = Str::upper($dh);
+                // }
 
+                $dept_head = $ffunction->DEPTHEAD;
                 //OPCR LIST
                 $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
 
