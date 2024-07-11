@@ -232,7 +232,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->groupBy('office_performance_commitment_ratings.id_opcr_target')
             ->groupBy('opcr_targets.idpaps')
             ->get();
-        dd($opcrs);
+        // dd($opcrs);
         //********************************************** */
         $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
             ->where('role', 'like', '%Department Head%')
