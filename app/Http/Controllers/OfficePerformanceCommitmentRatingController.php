@@ -128,7 +128,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'mfo.created_at'
         )
             ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
-            ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
+            // ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
+            ->leftjoin('opcr_targets', 'opcr_targets.id', 'office_performance_commitment_ratings.id_opcr_target')
             ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
             ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             ->orderBy('mfo.mfo_desc', 'asc')

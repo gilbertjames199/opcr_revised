@@ -265,6 +265,8 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   scope: "col"
 }, "Name"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col"
+}, "Username"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  scope: "col"
 }, "Role"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
   style: {
@@ -372,6 +374,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: index
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.FullName), 1
     /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.UserName), 1
+    /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.UserType), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<td>{{ user.id }}</td>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
@@ -386,7 +390,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
     }, 1032
     /* PROPS, DYNAMIC_SLOTS */
-    , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<li>v-if=\"verifyPermissions(user.can.canEditUsers, user.can.canUpdateUserPermissions, user.can.canDeleteUsers)\"<Link class=\"dropdown-item\" :href=\"`/users/${user.id}/edit`\">Permissions</Link></li>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                                    <li v-if=\"user.can.canUpdateUserPermissions\"><button class=\"dropdown-item\" @click=\"showModal(user.id, user.name)\">Permissions</button></li>\r\n                                    <li v-if=\"user.can.canDeleteUsers\"><hr class=\"dropdown-divider action-divider\"></li>\r\n                                    <li v-if=\"user.can.canDeleteUsers\"><Link class=\"text-danger dropdown-item\" @click=\"deleteUser(user.id)\">Delete</Link></li> ")])])])]);
+    , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<li>v-if=\"verifyPermissions(user.can.canEditUsers, user.can.canUpdateUserPermissions, user.can.canDeleteUsers)\"<Link class=\"dropdown-item\" :href=\"`/users/${user.id}/edit`\">Permissions</Link></li>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\n                                    <li v-if=\"user.can.canUpdateUserPermissions\"><button class=\"dropdown-item\" @click=\"showModal(user.id, user.name)\">Permissions</button></li>\n                                    <li v-if=\"user.can.canDeleteUsers\"><hr class=\"dropdown-divider action-divider\"></li>\n                                    <li v-if=\"user.can.canDeleteUsers\"><Link class=\"text-danger dropdown-item\" @click=\"deleteUser(user.id)\">Delete</Link></li> ")])])])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" read the explanation in the Paginate.vue component "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <pagination :links=\"users.links\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {
@@ -394,7 +398,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     prev: $props.users.prev_page_url
   }, null, 8
   /* PROPS */
-  , ["next", "prev"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <PermissionsModal v-if=\"displayModal\" @close-modal-event=\"hideModal\" >\r\n            permission array\r\n            My Value {{ form.my_id }}\r\n                <span style=\"font-weight: bold\">Name: </span>{{ this.my_name }}\r\n                <input  v-model=\"form.my_id\" type=\"hidden\" >\r\n                <multiselect v-model=\"form.value\"\r\n                            :options=\"permission_particular\"\r\n                            mode=\"tags\"\r\n                            :searchable=\"true\"\r\n                />\r\n                <br>\r\n                <button type=\"button\" class=\"btn btn-primary\" style=\"font-weight: bold; color: white\" @click=\"submitChanges()\">SAVE</button>&nbsp;\r\n                <button type=\"button\" class=\"btn btn-danger\" style=\"font-weight: bold; color: white\" @click=\"hideModal()\">CANCEL</button>\r\n            <form @submit.prevent=\"submit()\">\r\n\r\n            </form>\r\n        </PermissionsModal> ")])], 64
+  , ["next", "prev"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <PermissionsModal v-if=\"displayModal\" @close-modal-event=\"hideModal\" >\n            permission array\n            My Value {{ form.my_id }}\n                <span style=\"font-weight: bold\">Name: </span>{{ this.my_name }}\n                <input  v-model=\"form.my_id\" type=\"hidden\" >\n                <multiselect v-model=\"form.value\"\n                            :options=\"permission_particular\"\n                            mode=\"tags\"\n                            :searchable=\"true\"\n                />\n                <br>\n                <button type=\"button\" class=\"btn btn-primary\" style=\"font-weight: bold; color: white\" @click=\"submitChanges()\">SAVE</button>&nbsp;\n                <button type=\"button\" class=\"btn btn-danger\" style=\"font-weight: bold; color: white\" @click=\"hideModal()\">CANCEL</button>\n            <form @submit.prevent=\"submit()\">\n\n            </form>\n        </PermissionsModal> ")])], 64
   /* STABLE_FRAGMENT */
   );
 }
