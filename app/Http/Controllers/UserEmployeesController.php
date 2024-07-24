@@ -31,8 +31,9 @@ class UserEmployeesController extends Controller
 
     public function syncemployees(Request $request)
     {
-        $apiUrl = 'http://hris.dvodeoro.ph:91/api/ListOfEmployees4IPCR';
+        // $apiUrl = 'http://hris.dvodeoro.ph:91/api/ListOfEmployees4IPCR';
 
+        $apiUrl = 'http://hrisd:191/api/ListOfEmployees4IPCR';
         // Initialize Guzzle HTTP client
         //$client = new Client();
         $data = [];

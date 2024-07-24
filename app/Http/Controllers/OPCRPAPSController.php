@@ -358,6 +358,7 @@ class OPCRPAPSController extends Controller
         $timeliness_r = Timeliness::where('idpaps', $id)->orderBy('id')->get();
 
         $paps = ProgramAndProject::findOrFail($id);
+
         return inertia('OPCRPaps/Create', [
             "Output" => $outputs,
             "Performance" => $performance,
