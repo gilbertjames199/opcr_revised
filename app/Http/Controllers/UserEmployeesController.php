@@ -76,15 +76,7 @@ class UserEmployeesController extends Controller
                         $data
                     );
                 }
-                // DB::table('user_employees')->upsert($value,['empl_id']
-                // );
             }
-            //dd($data[0]['department_code']);
-            // For example, return the data using Inertia::render
-            // return Inertia::render('YourComponent', [
-            //     'data' => $data, // Pass the retrieved data to the view
-            // ]);
-
         } catch (\Exception $e) {
             // Handle any errors that might occur during the API request
             return Inertia::render('ErrorView', [
@@ -95,6 +87,13 @@ class UserEmployeesController extends Controller
             ->with('message', 'Employee list synced successfully!');
         //dd("done");
     }
+    // DB::table('user_employees')->upsert($value,['empl_id']
+    // );
+    //dd($data[0]['department_code']);
+    // For example, return the data using Inertia::render
+    // return Inertia::render('YourComponent', [
+    //     'data' => $data, // Pass the retrieved data to the view
+    // ]);
     public function saveUserEmployees($datum)
     {
         // dd($datum);
