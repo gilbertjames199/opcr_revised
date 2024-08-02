@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\UserEmployeeCredential;
 use App\Models\UserEmployees;
+// use Clockwork\Request\Log;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class UserEmployeesController extends Controller
@@ -20,6 +22,8 @@ class UserEmployeesController extends Controller
     public function index(Request $request)
     {
         $data = $this->us_em->with('Division')->where('department_code', auth()->user()->department_code)
+            ->where('active_status', 'ACTIVE')
+            ->orderBy('employee_name', 'ASC')
             ->paginate(10);
         return inertia(
             'Users/Employees/Index',
@@ -64,19 +68,23 @@ class UserEmployeesController extends Controller
             $length = count($data);
             $mapped_data = [];
             for ($i = 0; $i < $length; $i++) {
-                // $this->saveUserEmployees($data[$i]);
                 $val = $this->saveUserEmployees($data[$i]);
                 array_push($mapped_data, $val);
-                $this->saveUserCredentials($data[$i]);
             }
             //dd($mapped_data);
             $chunk_data = array_chunk($mapped_data, 1000);
             foreach ($chunk_data as $key => $value) {
                 foreach ($value as $data) {
-                    UserEmployees::updateOrCreate(
-                        ['empl_id' => $data['empl_id']],
-                        $data
-                    );
+                    try {
+                        $userEmployee = UserEmployees::where('empl_id', $data['empl_id'])->first();
+                        if ($userEmployee) {
+                            $userEmployee->update($data);
+                        } else {
+                            UserEmployees::create($data);
+                        }
+                    } catch (\Exception $e) {
+                        Log::error('Error updating employee: ' . $e->getMessage());
+                    }
                 }
             }
         } catch (\Exception $e) {
