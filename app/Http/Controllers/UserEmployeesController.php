@@ -82,6 +82,7 @@ class UserEmployeesController extends Controller
                         } else {
                             UserEmployees::create($data);
                         }
+                        $this->saveUserCredentials($data);
                     } catch (\Exception $e) {
                         Log::error('Error updating employee: ' . $e->getMessage());
                     }
