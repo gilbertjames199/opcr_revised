@@ -209,7 +209,7 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"masonry-sizer col-md-6\"></div><div class=\"masonry-item w-100\"><div class=\"row gap-20\"></div><div class=\"bgc-white p-20 bd\"><div class=\"table-responsive\"><table class=\"table table-sm table-borderless table-striped table-hover\"><thead><tr class=\"bg-secondary text-white\"><th>IPCR Code</th><th>Major Final Output</th><th>Sub MFO</th><th>Division Output</th><th>Individual Output</th><th>Performance Measure</th><th>Action</th></tr></thead><tbody><!-- &lt;tr v-for=&quot;dat in data.data&quot;&gt;\n                                &lt;td&gt;{{ dat.ipcr_code }}&lt;/td&gt;\n                                &lt;td&gt;{{ dat.mfo_desc }}&lt;/td&gt;\n                                &lt;td&gt;{{ dat.submfo_description }}&lt;/td&gt;\n                                &lt;td&gt;{{ dat.output }}&lt;/td&gt;\n                                &lt;td&gt;{{ dat.individual_output }}&lt;/td&gt;\n                                &lt;td&gt;{{ dat.performance_measure }}&lt;/td&gt;\n                                &lt;td&gt;\n                                    &lt;div class=&quot;dropdown dropstart&quot;&gt;\n                                        &lt;button class=&quot;btn btn-secondary btn-sm action-btn&quot; type=&quot;button&quot;\n                                            id=&quot;dropdownMenuButton1&quot; data-bs-toggle=&quot;dropdown&quot; aria-expanded=&quot;false&quot;&gt;\n                                            &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot;\n                                                fill=&quot;currentColor&quot; class=&quot;bi bi-three-dots&quot; viewBox=&quot;0 0 16 16&quot;&gt;\n                                                &lt;path\n                                                    d=&quot;M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z&quot; /&gt;\n                                            &lt;/svg&gt;\n                                        &lt;/button&gt;\n                                        &lt;ul class=&quot;dropdown-menu action-dropdown&quot; aria-labelledby=&quot;dropdownMenuButton1&quot;&gt;\n                                            &lt;li&gt;\n                                                &lt;Link class=&quot;dropdown-item&quot; :href=&quot;`/individual/outputs/${dat.id}/edit`&quot;&gt;\n                                                Edit&lt;/Link&gt;\n                                            &lt;/li&gt;\n                                            &lt;li&gt;\n                                                &lt;Link class=&quot;text-danger dropdown-item&quot; @click=&quot;deleteIFO(dat.id)&quot;&gt;Delete\n                                                &lt;/Link&gt;\n                                            &lt;/li&gt;\n                                        &lt;/ul&gt;\n                                    &lt;/div&gt;\n                                &lt;/td&gt;\n                            &lt;/tr&gt; --></tbody></table></div><div class=\"row justify-content-center\"><div class=\"col-md-12\"><!-- &lt;pagination :next=&quot;data.next_page_url&quot; :prev=&quot;data.prev_page_url&quot; /&gt; --></div></div><div class=\"row justify-content-center\"><div class=\"col-md-12\"><p><!-- {{ data.from }} to {{ data.to }} of\n                            {{ data.total }} entries --></p></div></div></div></div>", 2);
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"masonry-sizer col-md-6\"></div><div class=\"masonry-item w-100\"><div class=\"row gap-20\"></div><div class=\"bgc-white p-20 bd\"><div class=\"table-responsive\"><table class=\"table table-sm table-borderless table-striped table-hover\"><thead><tr class=\"bg-secondary text-white\"><th>IPCR Code</th><th>Major Final Output</th><th>Sub MFO</th><th>Division Output</th><th>Individual Output</th><th>Performance Measure</th><th>Action</th></tr></thead><tbody><!-- &lt;tr v-for=&quot;dat in data.data&quot;&gt;\r\n                                &lt;td&gt;{{ dat.ipcr_code }}&lt;/td&gt;\r\n                                &lt;td&gt;{{ dat.mfo_desc }}&lt;/td&gt;\r\n                                &lt;td&gt;{{ dat.submfo_description }}&lt;/td&gt;\r\n                                &lt;td&gt;{{ dat.output }}&lt;/td&gt;\r\n                                &lt;td&gt;{{ dat.individual_output }}&lt;/td&gt;\r\n                                &lt;td&gt;{{ dat.performance_measure }}&lt;/td&gt;\r\n                                &lt;td&gt;\r\n                                    &lt;div class=&quot;dropdown dropstart&quot;&gt;\r\n                                        &lt;button class=&quot;btn btn-secondary btn-sm action-btn&quot; type=&quot;button&quot;\r\n                                            id=&quot;dropdownMenuButton1&quot; data-bs-toggle=&quot;dropdown&quot; aria-expanded=&quot;false&quot;&gt;\r\n                                            &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot;\r\n                                                fill=&quot;currentColor&quot; class=&quot;bi bi-three-dots&quot; viewBox=&quot;0 0 16 16&quot;&gt;\r\n                                                &lt;path\r\n                                                    d=&quot;M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z&quot; /&gt;\r\n                                            &lt;/svg&gt;\r\n                                        &lt;/button&gt;\r\n                                        &lt;ul class=&quot;dropdown-menu action-dropdown&quot; aria-labelledby=&quot;dropdownMenuButton1&quot;&gt;\r\n                                            &lt;li&gt;\r\n                                                &lt;Link class=&quot;dropdown-item&quot; :href=&quot;`/individual/outputs/${dat.id}/edit`&quot;&gt;\r\n                                                Edit&lt;/Link&gt;\r\n                                            &lt;/li&gt;\r\n                                            &lt;li&gt;\r\n                                                &lt;Link class=&quot;text-danger dropdown-item&quot; @click=&quot;deleteIFO(dat.id)&quot;&gt;Delete\r\n                                                &lt;/Link&gt;\r\n                                            &lt;/li&gt;\r\n                                        &lt;/ul&gt;\r\n                                    &lt;/div&gt;\r\n                                &lt;/td&gt;\r\n                            &lt;/tr&gt; --></tbody></table></div><div class=\"row justify-content-center\"><div class=\"col-md-12\"><!-- &lt;pagination :next=&quot;data.next_page_url&quot; :prev=&quot;data.prev_page_url&quot; /&gt; --></div></div><div class=\"row justify-content-center\"><div class=\"col-md-12\"><p><!-- {{ data.from }} to {{ data.to }} of\r\n                            {{ data.total }} entries --></p></div></div></div></div>", 2);
 
 var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Upload Excel File", -1
 /* HOISTED */
@@ -544,7 +544,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\n    text-align: center;\n}\n.col-centered {\n    display: inline-block;\n    float: none;\n    text-align: left;\n    margin-right: -4px;\n}\n.pos {\n    position: top;\n    top: 240px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\r\n    text-align: center;\n}\n.col-centered {\r\n    display: inline-block;\r\n    float: none;\r\n    text-align: left;\r\n    margin-right: -4px;\n}\n.pos {\r\n    position: top;\r\n    top: 240px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -697,7 +697,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Index_vue_vue_type_template_id_2463d03a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Index.vue?vue&type=template&id=2463d03a */ "./resources/js/Pages/TimeRange/Index.vue?vue&type=template&id=2463d03a");
 /* harmony import */ var _Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Index.vue?vue&type=script&lang=js */ "./resources/js/Pages/TimeRange/Index.vue?vue&type=script&lang=js");
 /* harmony import */ var _Index_vue_vue_type_style_index_0_id_2463d03a_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Index.vue?vue&type=style&index=0&id=2463d03a&lang=css */ "./resources/js/Pages/TimeRange/Index.vue?vue&type=style&index=0&id=2463d03a&lang=css");
-/* harmony import */ var C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -705,7 +705,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_2463d03a__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/TimeRange/Index.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_2463d03a__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/TimeRange/Index.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -727,7 +727,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Filter_vue_vue_type_template_id_09f80c58__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filter.vue?vue&type=template&id=09f80c58 */ "./resources/js/Shared/Filter.vue?vue&type=template&id=09f80c58");
 /* harmony import */ var _Filter_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filter.vue?vue&type=script&lang=js */ "./resources/js/Shared/Filter.vue?vue&type=script&lang=js");
 /* harmony import */ var _Filter_vue_vue_type_style_index_0_id_09f80c58_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Filter.vue?vue&type=style&index=0&id=09f80c58&lang=css */ "./resources/js/Shared/Filter.vue?vue&type=style&index=0&id=09f80c58&lang=css");
-/* harmony import */ var C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -735,7 +735,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Filter_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Filter_vue_vue_type_template_id_09f80c58__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Filter.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Filter_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Filter_vue_vue_type_template_id_09f80c58__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Filter.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -756,13 +756,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Pagination_vue_vue_type_template_id_7ed7fa14__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Pagination.vue?vue&type=template&id=7ed7fa14 */ "./resources/js/Shared/Pagination.vue?vue&type=template&id=7ed7fa14");
 /* harmony import */ var _Pagination_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pagination.vue?vue&type=script&lang=js */ "./resources/js/Shared/Pagination.vue?vue&type=script&lang=js");
-/* harmony import */ var C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Pagination_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Pagination_vue_vue_type_template_id_7ed7fa14__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Pagination.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Pagination_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Pagination_vue_vue_type_template_id_7ed7fa14__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Pagination.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -784,7 +784,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PrintModal_vue_vue_type_template_id_e8c5b748_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PrintModal.vue?vue&type=template&id=e8c5b748&scoped=true */ "./resources/js/Shared/PrintModal.vue?vue&type=template&id=e8c5b748&scoped=true");
 /* harmony import */ var _PrintModal_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PrintModal.vue?vue&type=script&lang=js */ "./resources/js/Shared/PrintModal.vue?vue&type=script&lang=js");
 /* harmony import */ var _PrintModal_vue_vue_type_style_index_0_id_e8c5b748_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PrintModal.vue?vue&type=style&index=0&id=e8c5b748&scoped=true&lang=css */ "./resources/js/Shared/PrintModal.vue?vue&type=style&index=0&id=e8c5b748&scoped=true&lang=css");
-/* harmony import */ var C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -792,7 +792,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_raao_incase_raao_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_PrintModal_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PrintModal_vue_vue_type_template_id_e8c5b748_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-e8c5b748"],['__file',"resources/js/Shared/PrintModal.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_PrintModal_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PrintModal_vue_vue_type_template_id_e8c5b748_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-e8c5b748"],['__file',"resources/js/Shared/PrintModal.vue"]])
 /* hot reload */
 if (false) {}
 

@@ -67,6 +67,11 @@ class ProgramAndProject extends Model
         return $this->hasMany(Output::class, 'idpaps', 'id');
     }
 
+    public function opcr_stardard()
+    {
+        return $this->belongsTo(opcr_standard::class, 'id', 'idpaps');
+    }
+
     public function office()
     {
         return $this->hasOne(FFUNCCOD::class, 'FFUNCCOD', 'FFUNCCOD');

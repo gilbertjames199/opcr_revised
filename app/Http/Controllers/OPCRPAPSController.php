@@ -8,6 +8,7 @@ use App\Models\BudgetRequirement;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring;
 use App\Models\OfficeAccountable;
+use App\Models\opcr_standard;
 use App\Models\Output;
 use App\Models\Performance;
 use App\Models\ProgramAndProject;
@@ -26,11 +27,13 @@ use Illuminate\Support\Facades\Auth;
 class OPCRPAPSController extends Controller
 {
     protected $model;
+    protected $model1;
     protected $function;
-    public function __construct(ProgramAndProject $model, AccountAccess $function)
+    public function __construct(ProgramAndProject $model, AccountAccess $function, opcr_standard $model1)
     {
         //$this->middleware(['auth','verified']);
         $this->model = $model;
+        $this->model1 = $model1;
         $this->function = $function;
     }
 
@@ -93,7 +96,7 @@ class OPCRPAPSController extends Controller
 
         $idn = auth()->user()->recid;
 
-        $data = $this->model->with('MFO')->with('output')
+        $data = $this->model->with('MFO')->with('opcr_stardard')
             ->with('office')
             ->distinct('program_and_projects.id')
             ->when($request->search, function ($query, $searchItem) {
@@ -250,130 +253,44 @@ class OPCRPAPSController extends Controller
 
     public function store(Request $request)
     {
-        // dd(count($request->NumericalRating));
-        // dd($request->adjectivalRating);
-
+        // dd($request->all());
         $id = $request->idpaps;
+        // dd($id);
         $attributes = $request->validate([
-            'Outputs' => 'required',
-            'PerformanceMeasure' => 'required',
-            'SuccessIndicator' => 'required',
-            'OfficeAccountable' => 'required',
-            'Monitoring' => 'required',
+            'output' => 'required',
+            'performance_measure' => 'required',
+            'success_indicator' => 'required',
+            'office_accountable' => 'required',
+            'monitoring' => 'required',
+            'prescribed_period' => 'required',
+            'quality1' => 'required',
+            'quality2' => 'required',
+            'quality3' => 'required',
+            'efficiency1' => 'required',
+            'efficiency2' => 'required',
+            'efficiency3' => 'required',
+            'timeliness' => 'required',
             'idpaps' => 'required',
-            // 'RatingRemarks' => 'required',
-            // 'QualityRemarks' => 'required',
-            // 'TimelinessRemarks' => 'required'
         ]);
 
-        $output = new Output();
-        $output->idpaps = $request->idpaps;
-        $output->Outputs = $request->Outputs;
-        $output->save();
 
-        $performance = new Performance();
-        $performance->idpaps = $request->idpaps;
-        $performance->performance = $request->PerformanceMeasure;
-        $performance->save();
-
-        $success = new SuccessIndicator();
-        $success->idpaps = $request->idpaps;
-        $success->success_indicator = $request->SuccessIndicator;
-        $success->save();
-
-        $officeaccountable = new OfficeAccountable();
-        $officeaccountable->idpaps = $request->idpaps;
-        $officeaccountable->office_accountable = $request->OfficeAccountable;
-        $officeaccountable->save();
-
-        $monitoring = new Monitoring();
-        $monitoring->idpaps = $request->idpaps;
-        $monitoring->monitoring = $request->Monitoring;
-        $monitoring->save();
-
-        $RatingRemarks = new RatingRemarks();
-        $RatingRemarks->idpaps = $request->idpaps;
-        $RatingRemarks->rating_remarks = $request->RatingRemarks;
-        $RatingRemarks->save();
-
-        $QualityRemarks = new QualityRemarks();
-        $QualityRemarks->idpaps = $request->idpaps;
-        $QualityRemarks->quality_remarks = $request->QualityRemarks;
-        $QualityRemarks->save();
-
-        $TimelinessRemarks = new TimelinessRemarks();
-        $TimelinessRemarks->idpaps = $request->idpaps;
-        $TimelinessRemarks->timeliness_remarks = $request->TimelinessRemarks;
-        $TimelinessRemarks->save();
-
-        for ($i = 0; $i < count($request->NumericalRating); $i++) {
-            $ratings = new rating();
-            // if (!$request->numerical_rating) {
-            //     $ratings->numerical_rating = "-";
-            // } else {
-            //     $ratings->numerical_rating = $request->NumericalRating[$i];
-            // }
-            $ratings->numerical_rating = $request->NumericalRating[$i];
-            $ratings->adjectival_rating = $request->AdjectivalRating[$i];
-            $ratings->efficiency_quantity = $request->Efficiency[$i];
-            $ratings->idpaps = $request->idpaps;
-            $ratings->save();
-        }
-
-        for ($i = 0; $i < count($request->NumericalRating1); $i++) {
-            $qualities = new Quality();
-            $qualities->numerical_rating = $request->NumericalRating1[$i];
-            $qualities->adjectival_rating = $request->AdjectivalRating1[$i];
-            $qualities->quality = $request->Quality[$i];
-            $qualities->idpaps = $request->idpaps;
-            $qualities->save();
-        }
-        for ($i = 0; $i < count($request->NumericalRating2); $i++) {
-            $timelinesses = new Timeliness();
-            $timelinesses->numerical_rating = $request->NumericalRating2[$i];
-            $timelinesses->adjectival_rating = $request->AdjectivalRating2[$i];
-            $timelinesses->timeliness = $request->Timeliness[$i];
-            $timelinesses->idpaps = $request->idpaps;
-            $timelinesses->save();
-        }
-        //dd($attributes);
-        //$this->model->create($attributes);
+        // opcr_standard::create($attributes);
+        // dd($attributes);
+        $this->model1->create($attributes);
         return redirect('OPCRpaps/direct')
             ->with('message', 'Standard added');
     }
 
     public function edit(Request $request, $id)
     {
-        $outputs = Output::where('idpaps', $id)->first();
-        $performance = Performance::where('idpaps', $id)->first();
-        $success = SuccessIndicator::where('idpaps', $id)->first();
-        $office = OfficeAccountable::where('idpaps', $id)->first();
-        $monitoring = Monitoring::where('idpaps', $id)->first();
-        $rating = RatingRemarks::where('idpaps', $id)->first();
-        $quality = QualityRemarks::where('idpaps', $id)->first();
-        $timeliness = TimelinessRemarks::where('idpaps', $id)->first();
-
-        $ratings_r = rating::where('idpaps', $id)->orderBy('id')->get();
-        $qualities_r = Quality::where('idpaps', $id)->orderBy('id')->get();
-        $timeliness_r = Timeliness::where('idpaps', $id)->orderBy('id')->get();
-
         $paps = ProgramAndProject::findOrFail($id);
-
+        $opcr_standard = opcr_standard::where('idpaps', $id)->first();
+        // dd($opcr_standard);
         return inertia('OPCRPaps/Create', [
-            "Output" => $outputs,
-            "Performance" => $performance,
-            "Success" => $success,
-            "Office" => $office,
-            "Monitoring" => $monitoring,
-            "RatingRemarks" => $rating,
-            "QualityRemarks" => $quality,
-            "TimelinessRemarks" => $timeliness,
+            "opcr_standard" => $opcr_standard,
             "editData" => $paps,
             "idpaps" => $id,
             'paps' => $paps,
-            'ratings_r' => $ratings_r,
-            'qualities_r' => $qualities_r,
-            'timeliness_r' => $timeliness_r,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -383,120 +300,25 @@ class OPCRPAPSController extends Controller
 
     public function update(Request $request, $id)
     {
-        rating::where('idpaps', $id)->delete();
-        for ($i = 0; $i < count($request->NumericalRating); $i++) {
-            $ratings = new rating();
-            $ratings->numerical_rating = $request->NumericalRating[$i];
-            $ratings->adjectival_rating = $request->AdjectivalRating[$i];
-            $ratings->efficiency_quantity = $request->Efficiency[$i];
-            $ratings->idpaps = $request->id;
-            $ratings->save();
-        }
-        Quality::where('idpaps', $id)->delete();
-        for ($i = 0; $i < count($request->NumericalRating1); $i++) {
-            $qualities = new Quality();
-            $qualities->numerical_rating = $request->NumericalRating1[$i];
-            $qualities->adjectival_rating = $request->AdjectivalRating1[$i];
-            $qualities->quality = $request->Quality[$i];
-            $qualities->idpaps = $request->id;
-            $qualities->save();
-        }
-        Timeliness::where('idpaps', $id)->delete();
-        for ($i = 0; $i < count($request->NumericalRating2); $i++) {
-            $timelinesses = new Timeliness();
-            $timelinesses->numerical_rating = $request->NumericalRating2[$i];
-            $timelinesses->adjectival_rating = $request->AdjectivalRating2[$i];
-            $timelinesses->timeliness = $request->Timeliness[$i];
-            $timelinesses->idpaps = $request->id;
-            $timelinesses->save();
-        }
-        // dd($id);
-        $outputs = Output::where('idpaps', $id)->first();
-        $performance = Performance::where('idpaps', $id)->first();
-        $success = SuccessIndicator::where('idpaps', $id)->first();
-        $office = OfficeAccountable::where('idpaps', $id)->first();
-        $monitoring = Monitoring::where('idpaps', $id)->first();
-        $rating = RatingRemarks::where('idpaps', $id)->first();
-        $quality = QualityRemarks::where('idpaps', $id)->first();
-        $timeliness = TimelinessRemarks::where('idpaps', $id)->first();
-        // dd($id);
-        // dd($office);
-        // dd($request);
-        // $data = $this->model->findOrFail($request->id);
-        //dd($request->plan_period);
-        // dd($outputs);
-        // dd($quality);
-        $outputs->update([
-            'Outputs' => $request->Outputs,
+
+        // dd($request->all());
+        $opcr_standard = opcr_standard::where('idpaps', $id)->first();
+
+        $opcr_standard->update([
+            'output' => $request->output,
+            'performance_measure' => $request->performance_measure,
+            'success_indicator' => $request->success_indicator,
+            'office_accountable' => $request->office_accountable,
+            'monitoring' => $request->monitoring,
+            'prescribed_period' => $request->prescribed_period,
+            'quality1' => $request->quality1,
+            'quality2' => $request->quality2,
+            'quality3' => $request->quality3,
+            'efficiency1' => $request->efficiency1,
+            'efficiency2' => $request->efficiency2,
+            'efficiency3' => $request->efficiency3,
             'idpaps' => $id
         ]);
-
-        $performance->update([
-            'performance' => $request->PerformanceMeasure,
-            'idpaps' => $id
-        ]);
-
-        $success->update([
-            'success_indicator' => $request->SuccessIndicator,
-            'idpaps' => $id
-        ]);
-
-        $office->update([
-            'office_accountable' => $request->OfficeAccountable,
-            'idpaps' => $id
-        ]);
-
-        $monitoring->update([
-            'monitoring' => $request->Monitoring,
-            'idpaps' => $id
-        ]);
-        if ($rating == null) {
-            if ($request->RatingRemarks == null) {
-            } else {
-                RatingRemarks::create([
-                    'RatingRemarks' => $request->RatingRemarks,
-                    'idpaps' => $id
-                ]);
-            }
-        } else {
-            $rating->update([
-                'rating_remarks' => $request->RatingRemarks,
-                'idpaps' => $id
-            ]);
-        }
-
-        if ($quality == null) {
-            // dd("nul ang quality remarks sa database");
-            if ($request->QualityRemarks == null) {
-                // dd("nul ang quality remarks request/payload");
-            } else {
-                // dd($request->QualityRemarks);
-                QualityRemarks::create([
-                    'quality_remarks' => $request->QualityRemarks,
-                    'idpaps' => $id
-                ]);
-            }
-        } else {
-            $quality->update([
-                'quality_remarks' => $request->QualityRemarks,
-                'idpaps' => $id
-            ]);
-        }
-
-        if ($timeliness == null) {
-            if ($request->TimelinessRemarks == null) {
-            } else {
-                TimelinessRemarks::create([
-                    'timeliness_remarks' => $request->TimelinessRemarks,
-                    'idpaps' => $id
-                ]);
-            }
-        } else {
-            $timeliness->update([
-                'timeliness_remarks' => $request->TimelinessRemarks,
-                'idpaps' => $id
-            ]);
-        }
 
         return redirect('OPCRpaps/direct')
             ->with('info', 'Standard updated');
@@ -505,35 +327,19 @@ class OPCRPAPSController extends Controller
     public function destroy(Request $request, $id)
     {
 
-        // $outputs = Output::where('idpaps', $id)->first();
-        // $performance = Performance::where('idpaps', $id)->first();
-        // $success = SuccessIndicator::where('idpaps', $id)->first();
-        // $office = OfficeAccountable::where('idpaps', $id)->first();
-        // $monitoring = Monitoring::where('idpaps', $id)->first();
-        // $rating = RatingRemarks::where('idpaps', $id)->first();
-        // $quality = QualityRemarks::where('idpaps', $id)->first();
-        // $timeliness = TimelinessRemarks::where('idpaps', $id)->first();
 
-        // $outputs->delete();
-        // $performance->delete();
-        // $success->delete();
-        // $office->delete();
-        // $monitoring->delete();
-        // $rating->delete();
-        // $quality->delete();
-        // $timeliness->delete();
-        Output::where('idpaps', $id)->delete();
-        Performance::where('idpaps', $id)->delete();
-        SuccessIndicator::where('idpaps', $id)->delete();
-        OfficeAccountable::where('idpaps', $id)->delete();
-        Monitoring::where('idpaps', $id)->delete();
-        RatingRemarks::where('idpaps', $id)->delete();
-        QualityRemarks::where('idpaps', $id)->delete();
-        TimelinessRemarks::where('idpaps', $id)->delete();
+        opcr_standard::where('idpaps', $id)->delete();
+        // Performance::where('idpaps', $id)->delete();
+        // SuccessIndicator::where('idpaps', $id)->delete();
+        // OfficeAccountable::where('idpaps', $id)->delete();
+        // Monitoring::where('idpaps', $id)->delete();
+        // RatingRemarks::where('idpaps', $id)->delete();
+        // QualityRemarks::where('idpaps', $id)->delete();
+        // TimelinessRemarks::where('idpaps', $id)->delete();
 
-        rating::where('idpaps', $id)->delete();
-        Quality::where('idpaps', $id)->delete();
-        Timeliness::where('idpaps', $id)->delete();
+        // rating::where('idpaps', $id)->delete();
+        // Quality::where('idpaps', $id)->delete();
+        // Timeliness::where('idpaps', $id)->delete();
         //dd($request->raao_id);
         return redirect('OPCRpaps/direct')->with('warning', 'Output Deleted');
     }
