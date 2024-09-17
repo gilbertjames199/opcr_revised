@@ -271,12 +271,13 @@ class OPCRController extends Controller
 
     public function MFO(Request $request)
     {
+        // dd($request->all());
         $functions = strtoupper($request->FUNCTION);
         $MOOE = $request->MOOE;
         $PS = $request->PS;
 
-        $mfos = MajorFinalOutput::select(DB::raw('"' . $functions . '" as FUNCTION'), "mfo_desc", "id")
-            ->selectRaw("'$MOOE' as MOOE, '$PS' as PS")->where('FFUNCCOD', $request->id)
+        $mfos = MajorFinalOutput::select(DB::raw('"' . $functions . '" as `FUNCTION`'), "mfo_desc", "id")
+            ->where('FFUNCCOD', $request->id)
             ->where("id", ">", "45")
             ->get();
         return $mfos;
@@ -287,23 +288,22 @@ class OPCRController extends Controller
         $paps = ProgramAndProject::select(
             'program_and_projects.id',
             'program_and_projects.paps_desc',
-            'outputs.Outputs',
-            'performances.performance',
-            'success_indicators.success_indicator',
-            'office_accountables.office_accountable',
-            'rating_remarks.rating_remarks',
-            'quality_remarks.quality_remarks',
-            'timeliness_remarks.timeliness_remarks',
-            'monitorings.monitoring'
+            'opcr_standards.output',
+            'opcr_standards.performance_measure',
+            'opcr_standards.success_indicator',
+            'opcr_standards.office_accountable',
+            'opcr_standards.monitoring',
+            'opcr_standards.prescribed_period',
+            'opcr_standards.quality1',
+            'opcr_standards.quality2',
+            'opcr_standards.quality3',
+            'opcr_standards.efficiency1',
+            'opcr_standards.efficiency2',
+            'opcr_standards.efficiency3',
+            'opcr_standards.timeliness',
+
         )
-            ->leftJoin('outputs', 'program_and_projects.id', '=', 'outputs.idpaps')
-            ->leftJoin('performances', 'program_and_projects.id', '=', 'performances.idpaps')
-            ->leftJoin('success_indicators', 'program_and_projects.id', '=', 'success_indicators.idpaps')
-            ->leftJoin('office_accountables', 'program_and_projects.id', '=', 'office_accountables.idpaps')
-            ->leftJoin('rating_remarks', 'program_and_projects.id', '=', 'rating_remarks.idpaps')
-            ->leftJoin('quality_remarks', 'program_and_projects.id', '=', 'quality_remarks.idpaps')
-            ->leftJoin('timeliness_remarks', 'program_and_projects.id', '=', 'timeliness_remarks.idpaps')
-            ->leftJoin('monitorings', 'program_and_projects.id', '=', 'monitorings.idpaps')
+            ->leftJoin('opcr_standards', 'program_and_projects.id', '=', 'opcr_standards.idpaps')
             ->where('idmfo', $request->idmfo)
             ->groupBy('program_and_projects.id')
             ->get();

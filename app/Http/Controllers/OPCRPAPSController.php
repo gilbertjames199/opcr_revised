@@ -329,18 +329,6 @@ class OPCRPAPSController extends Controller
 
 
         opcr_standard::where('idpaps', $id)->delete();
-        // Performance::where('idpaps', $id)->delete();
-        // SuccessIndicator::where('idpaps', $id)->delete();
-        // OfficeAccountable::where('idpaps', $id)->delete();
-        // Monitoring::where('idpaps', $id)->delete();
-        // RatingRemarks::where('idpaps', $id)->delete();
-        // QualityRemarks::where('idpaps', $id)->delete();
-        // TimelinessRemarks::where('idpaps', $id)->delete();
-
-        // rating::where('idpaps', $id)->delete();
-        // Quality::where('idpaps', $id)->delete();
-        // Timeliness::where('idpaps', $id)->delete();
-        //dd($request->raao_id);
         return redirect('OPCRpaps/direct')->with('warning', 'Output Deleted');
     }
 }
