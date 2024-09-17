@@ -120,15 +120,15 @@
                                         <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <!--/{id}/{idinteroutcome}/edit-->
                                             <li>
-                                                <Link v-if="isEmptyObject(dat.output)" class="dropdown-item"
+                                                <Link v-if="isEmptyObject(dat.opcr_stardard)" class="dropdown-item"
                                                     :href="`/OPCRpaps/create/${dat.id}`">Add Standard</Link>
                                             </li>
                                             <li>
-                                                <Link v-if="isNotEmptyObject(dat.output)" class="dropdown-item"
+                                                <Link v-if="isNotEmptyObject(dat.opcr_stardard)" class="dropdown-item"
                                                     :href="`/OPCRpaps/edit/${dat.id}`">Edit Standard</Link>
                                             </li>
                                             <li>
-                                                <Link v-if="isNotEmptyObject(dat.output)" class="text-danger dropdown-item"
+                                                <Link v-if="isNotEmptyObject(dat.opcr_stardard)" class="text-danger dropdown-item"
                                                     @click="deleteStandard(dat.id)">Delete Standard</Link>
                                             </li>
                                         </ul>
@@ -286,8 +286,8 @@ export default {
             // alert(data[0].FFUNCCOD);
             var linkt = "http://";
             var jasper_ip = this.jasper_ip;
-            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR_Standard&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Standard%2FOPCRStandard&standAlone=true&decorate=no&output=pdf';
-            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&MOOE=' + MOOE + '&PS=' + PS;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2Fopcr_standard&standAlone=true&decorate=no&output=pdf';
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
             var link1 = linkt + jasper_ip + jasper_link + params;
             return link1;
         },
@@ -307,10 +307,10 @@ export default {
         },
         isEmptyObject(obj) {
             // Check if the object is empty
-            return Object.keys(obj).length === 0;
+            return obj === null
         },
         isNotEmptyObject(obj) {
-            return Object.keys(obj).length > 0;
+            return obj !== null
         },
         pageChange(direction, limit_local) {
             var num = 0;
