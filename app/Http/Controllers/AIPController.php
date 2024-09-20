@@ -210,14 +210,14 @@ class AIPController extends Controller
 
     public function MFO(Request $request)
     {
-
         $functions = $request->FUNCTION;
         $date = $request->Date;
 
-        $mfos = MajorFinalOutput::select(DB::raw('"' . $functions . '" as FUNCTION'), "mfo_desc", "id")
-            ->selectRaw("'$date' as Date")
+        $mfos = MajorFinalOutput::select(DB::raw('"' . $functions . '" as `FUNCTION`'), "mfo_desc", "id")
+            ->selectRaw("'$date' as `Date`")
             ->where('FFUNCCOD', $request->id)
             ->get();
+
         return $mfos;
     }
 
