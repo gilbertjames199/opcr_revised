@@ -113,9 +113,10 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                     'opcr_date' => $opcr_date,
                     'mooe' => $mooe,
                     'ps' => $ps,
+                    'type' => $item->type
                 ];
             });
-        //dd($opcr_lists);
+        dd($opcr_lists);
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
 
         return inertia('OPCR/List/Index', [
@@ -133,7 +134,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
             ->first()->office;
         $office_lower = Str::lower($office);
         // dd($office_lower);
-        //dd($office_lower);
+        // dd($office_lower);
         //dd($office_lower);
         // dd(auth()->user()->department_code);
         // $FFUNCCOD = DB::connection('mysql2')->table('functions')
@@ -234,6 +235,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                     'opcr_date' => $opcr_date,
                     'mooe' => $mooe,
                     'ps' => $ps,
+                    'type' => $item->type
                 ];
             });
         // dd($opcr_lists);
@@ -276,10 +278,11 @@ class OfficePerformanceCommitmentRatingListController extends Controller
     }
     public function store(Request $request)
     {
-        //dd($request);
+        // dd($request);
         $dept_code = FFUNCCOD::where('FFUNCCOD', $request->FFUNCCOD)->first()->department_code;
         // $dept_code = auth()->user()->department_code;
         $request->merge(['department_code' => $dept_code]);
+        $request->merge(['type' => 'n']);
         $attributes = $request->validate([
             'semester' => 'required',
             'date_from' => 'required',
@@ -287,7 +290,8 @@ class OfficePerformanceCommitmentRatingListController extends Controller
             'year'  => 'required',
             'FFUNCCOD' => 'required',
             'department_code' => 'required',
-            'allotment' => 'required'
+            'allotment' => 'required',
+            'type' => 'required'
         ]);
         $found = $this->model->where('year', $request->year)
             ->where('semester', $request->semester)
@@ -340,9 +344,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         return redirect('/opcrlist/' . $request->FFUNCCOD)
             ->with('info', 'Updated new OPCR!');
     }
-    public function destroy(Request $request)
-    {
-    }
+    public function destroy(Request $request) {}
     public function copy_from_to(Request $request, $opcr_list_id_from, $opcr_list_id_to)
     {
         // dd("opcr_list_id_from: " . $opcr_list_id_from);

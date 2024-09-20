@@ -16,6 +16,7 @@ use App\Models\rating;
 use App\Models\RevisionPlan;
 use App\Models\SuccessIndicator;
 use App\Models\Timeliness;
+use App\Models\User;
 use App\Models\UserEmployees;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -35,14 +36,16 @@ class OpcrTargetController extends Controller
     {
         // dd('ddddd');
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
-        $data = ProgramAndProject::select(
-            'major_final_outputs.mfo_desc',
-            'program_and_projects.id AS idpaps',
-            'program_and_projects.paps_desc',
-            'SU.success_indicator',
-            'program_and_projects.idmfo',
-            'SU.id AS su_id',
-        )
+        $counter = 0;
+        $data = ProgramAndProject::with('opcrtarget')
+            ->select(
+                'major_final_outputs.mfo_desc',
+                'program_and_projects.id AS idpaps',
+                'program_and_projects.paps_desc',
+                'SU.success_indicator',
+                'program_and_projects.idmfo',
+                'SU.id AS su_id',
+            )
             ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
             ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
             ->where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
@@ -52,10 +55,20 @@ class OpcrTargetController extends Controller
             ->orderBy('program_and_projects.idmfo', 'ASC')
             ->orderBy('program_and_projects.id', 'ASC')
             ->get()
-            ->map(function ($item) use ($opcr_list_id) {
+            ->map(function ($item) use ($opcr_list_id, &$counter) {
+                // $counter += 1;
                 $targ = OpcrTarget::where('opcr_targets.idpaps', $item->idpaps)
                     ->where('opcr_targets.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
                     ->first();
+                // dd($item);
+                // if (count($item->opcrtarget) > 0) {
+                //     dd($counter);
+                // }
+                // dd($item);
+                // if ($counter === 1) {
+                // dd($item->opcrtarget);
+                // }
+                // dd($targ);
                 $target_success_indicator = "";
                 $quantity = "";
                 $opcr_id = "";
@@ -371,5 +384,402 @@ class OpcrTargetController extends Controller
             ->update(['target_status' => 0]);
         return redirect('/opcrtarget/' . $opcr_list_id)
             ->with('info', 'Office performance target submitted!');
+    }
+
+    public function indexrevised(Request $request, $opcr_list_id)
+    {
+        // dd($opcr_list_id);
+        $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
+        $counter = 0;
+        $data = ProgramAndProject::with('opcrtarget')
+            ->select(
+                'major_final_outputs.mfo_desc',
+                'program_and_projects.id AS idpaps',
+                'program_and_projects.paps_desc',
+                'SU.success_indicator',
+                'program_and_projects.idmfo',
+                'SU.id AS su_id',
+            )
+            ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
+            ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
+            ->where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
+            ->where('major_final_outputs.id', '>', '45')
+            ->whereNull('from_excel')
+            ->groupBy('program_and_projects.id')
+            ->orderBy('program_and_projects.idmfo', 'ASC')
+            ->orderBy('program_and_projects.id', 'ASC')
+            ->get()
+            ->map(function ($item) use ($opcr_list_id, &$counter) {
+                $counter += 1;
+                // dd('rrererer');
+                $targ = OpcrTarget::where('opcr_targets.idpaps', $item->idpaps)
+                    ->where('opcr_targets.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
+                    ->first();
+
+
+                // dd($item);
+                // if (count($item->opcrtarget) > 0) {
+                //     dd($counter);
+                // }
+                // dd($item);
+                // if ($counter === 1) {
+                // dd($item->opcrtarget);
+                // }
+                // dd($targ);
+                $target_success_indicator = "";
+                $quantity = "";
+                $opcr_id = "";
+                $office_performance_commitment_rating_list_id = "";
+                if ($targ) {
+                    $target_success_indicator = $targ->target_success_indicator;
+                    $quantity = $targ->quantity;
+                    $opcr_id = $targ->id;
+                    $office_performance_commitment_rating_list_id = $targ->office_performance_commitment_rating_list_id;
+                }
+                // if ($counter == 7) {
+                //     dd($item->is_included);
+                // }
+
+                return [
+                    'mfo_desc' => $item->mfo_desc,
+                    'idpaps' => $item->idpaps,
+                    'paps_desc' => $item->paps_desc,
+                    'id' => $opcr_id,
+                    'target_success_indicator' => $target_success_indicator,
+                    'quantity' => $quantity,
+                    'success_indicator' => $item->success_indicator,
+                    'idmfo' => $item->idmfo,
+                    'su_id' => $item->su_id,
+                    'opcr_target' => $targ,
+                    'opcr_target_binary' => $targ ? ($targ->is_included ? true : false) : false,
+                    'office_performance_commitment_rating_list_id' => $opcr_list_id,
+                ];
+            });
+        // dd($data);
+        // dd('item');
+        // $data->pluck()
+        //AFTER SUCCESS INDICATOR
+        $opcr_id = $opcr_list_id;
+        $FFUNCCOD = $opcr_list->FFUNCCOD;
+        //TOTAL & AVERAGE
+        $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
+            ->where('opcr_id', $opcr_id)
+            ->first()->average_sum;
+        $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+        if ($count < 1) {
+            $count = 1;
+        }
+        $total = number_format($averageSum, 2);
+        $ave_pre = $total / $count;
+        $ave = number_format($ave_pre, 2);
+
+        //PG Department Head
+        //********************************************** */
+        $dept_head = "N/A";
+        $pg_empl_id = Office::where('FFUNCCOD', $FFUNCCOD)->first();
+        if ($pg_empl_id) {
+
+            $emp = UserEmployees::where('empl_id', $pg_empl_id->empl_id)->first();
+            if ($emp) {
+                $dept_head = $emp->first_name . ' ' . $emp->middle_name[0] . ' ' . $emp->last_name;
+                $suff = $emp->suffix_name;
+                if ($suff) {
+                    $dept_head = $dept_head . ', ' . $suff;
+                }
+                $post = $emp->postfix_name;
+                if ($post) {
+                    $dept_head = $dept_head . ', ' . $post;
+                }
+            }
+        }
+
+        //OPCR LIST
+        $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+
+        //OPCR DATE
+        $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+        $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+        $start = $dateStart->format('F');
+        $end = $dateEnd->format('F Y');
+        $opcr_date = $start . " to " . $end;
+        $opcr_date = Str::upper($opcr_date);
+
+        //YEAR NOW
+        $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
+
+        // $revision_plan = RevisionPlan::where('idmfo', '0')
+        //     ->where('idpaps', '0')
+        //     ->where('FFUNCCOD', $FFUNCCOD)
+        //     ->where('year_period', $my_year)
+        //     ->first();
+        // $mooe = "0.00";
+        // $ps = "0.00";
+        // if ($revision_plan) {
+        //     $mooe1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+        //         ->where('category', 'Maintenance, Operating, and Other Expenses')
+        //         ->sum('amount');
+
+        //     $ps1 = BudgetRequirement::where('revision_plan_id', $revision_plan->id)
+        //         ->where('category', 'Personnel Services')
+        //         ->sum('amount');
+        //     $mooe2 = (float)$mooe1;
+        //     $ps2 = (float)$ps1;
+        //     $mooe2 = $mooe2 / 2;
+        //     $ps2 = $ps2 / 2;
+        //     $mooe = number_format($mooe2, 2);
+        //     $ps = number_format($ps2, 2);
+        // }
+        // dd("dd");
+        $off = FFUNCCOD::where('FFUNCCOD', $opcr_list->FFUNCCOD)->first();
+        return inertia('OPCR/Target/New/Index', [
+            "opcr_list_id" => $opcr_list_id,
+            "opcr_list" => $opcr_list,
+            "opcr_id" => $opcr_list_id,
+            "data" => $data,
+            "FFUNCCOD" => $opcr_list->FFUNCCOD,
+            'total' => $total,
+            'ave' => $ave,
+            'dept_head' => $dept_head,
+            'opcr_date' => $opcr_date,
+            // 'mooe' => $mooe,
+            // 'ps' => $ps,
+            'office' => $off,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+            ],
+        ]);
+    }
+
+    public function storerevised(Request $request, $idopcr, $idpaps)
+    {
+        // dd($request);
+        //dd($request->target_success_indicator);
+        // $attributes = $request->validate([
+        //     'output_id' => 'required',
+        //     'idpaps' => 'required',
+        //     'office_performance_commitment_rating_list_id' => 'required',
+        // ]);
+
+        //SENTENCE******************
+        // $output = Output::where('idpaps',$request->idpaps)->first()->Outputs;
+        // $quality = Quality::where('idpaps',$request->idpaps)->first()->quality;
+        // $rating =rating::where('idpaps',$request->idpaps)->first()->efficiency_quantity;
+        // $timeliness =Timeliness::where('idpaps',$request->idpaps)->first()->timeliness;
+        //$sentence = $request->quantity.' ('.$rating.') '.$output.' '.$timeliness.' with '.$quality.'.';
+        //$correctedSentence = $this->correctSentence($sentence);
+        //dd($correctedSentence);
+        //**************** */
+        // dd($request);
+        // dd($idopcr);
+        $opcr = OpcrTarget::where('idpaps', $idpaps)->where('office_performance_commitment_rating_list_id', $idopcr)->first();
+        if ($opcr) {
+            $opcr->is_included = '1';
+            // $opcr_id = $opcr_list->office_performance_commitment_rating_list_id;
+            $opcr->save();
+        } else {
+            $targ = new OpcrTarget();
+            $targ->id = $request->id;
+            $targ->target_success_indicator = ' ';
+            $targ->output_id = ' ';
+            $targ->quantity = 0;
+            $targ->quantity_unit = ' ';
+            $targ->comparison_operator = ' ';
+            $targ->is_zero = '';
+            $targ->quality_id = ' ';
+            $targ->ratings_id = ' ';
+            $targ->timeliness_id = ' ';
+            $targ->remarks_final = ' ';
+            $targ->idpaps = $idpaps;
+            $targ->is_included = '1';
+            $targ->office_performance_commitment_rating_list_id = $idopcr;
+            $targ->save();
+            //TEST $targ->id
+            // dd($targ->id);
+            //Office Performance Commitment Rating
+            // $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $idopcr)
+            // ->first();
+            // dd($opcr_list);
+            // $v_q = "3";
+            // $v_r = "3";
+            // $v_t = "3";
+            // if ($request->quantity == null) {
+            //     $v_q = "0";
+            // }
+            // if ($request->quality_id == null) {
+            //     $v_r = "0";
+            // }
+            // if ($request->ratings_id == null) {
+            //     $v_t = "0";
+            // }
+            //GENERATE RATING FOR THE TARGET
+            // $success = SuccessIndicator::where('idpaps', $request->idpaps)->first();
+            // $opcrf = new OfficePerformanceCommitmentRating();
+            // $opcrf->id_paps = $request->idpaps;
+            // $opcrf->id_opcr_target = $targ->id;
+            // $opcrf->success_indicator_id = $success->id;
+            // $opcrf->accomplishments = "";
+            // $opcrf->rating_q = "1";
+            // $opcrf->rating_e = "1";
+            // $opcrf->rating_t = "1";
+            // $opcrf->remarks = "-";
+            // $opcrf->opcr_id    = $request->office_performance_commitment_rating_list_id;
+            // $opcrf->FFUNCCOD = $opcr_list->FFUNCCOD;
+            // $opcrf->department_code = $opcr_list->department_code;
+            // $opcrf->save();
+            // return redirect('/opcrtargetrevised/' . $idopcr)
+            //     ->with('message', 'Office performance target added!');
+        }
+
+        return redirect()->back();
+    }
+    public function destroyrevised(Request $request)
+    {
+        // dd("delete");
+        $opcr_list = OpcrTarget::findOrFail($request->id);
+        $opcr_list->is_included = '0';
+        $opcr_id = $opcr_list->office_performance_commitment_rating_list_id;
+        $opcr_list->save();
+        // OfficePerformanceCommitmentRating::where('id_opcr_target', $request->id)->delete();
+        return redirect('/opcrtargetrevised/' . $opcr_id);
+        // ->with('error', 'Office performance goal deleted!');
+    }
+    public function savePaps(Request $request, $idopcr, $bulk_selected)
+    {
+        $bulk_selected = filter_var($bulk_selected, FILTER_VALIDATE_BOOLEAN);
+        $bul = '0';
+        if ($bulk_selected === true) {
+            // dd($bulk_selected . ' true');
+            $bul = '1';
+        }
+        $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $idopcr)->first();
+        ProgramAndProject::with('opcrtarget')
+            ->select(
+                'major_final_outputs.mfo_desc',
+                'program_and_projects.id AS idpaps',
+                'program_and_projects.paps_desc',
+                'SU.success_indicator',
+                'program_and_projects.idmfo',
+                'SU.id AS su_id',
+            )
+            ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
+            ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
+            ->where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
+            ->where('major_final_outputs.id', '>', '45')
+            ->whereNull('from_excel')
+            ->groupBy('program_and_projects.id')
+            ->orderBy('program_and_projects.idmfo', 'ASC')
+            ->orderBy('program_and_projects.id', 'ASC')
+            ->get()
+            ->map(function ($item) use ($idopcr, &$counter, $bul) {
+                $opcr = OpcrTarget::where('idpaps', $item->idpaps)->where('office_performance_commitment_rating_list_id', $idopcr)->first();
+                // dd($bul);
+                if ($opcr) {
+                    $opcr->is_included = $bul;
+                    $opcr->save();
+                } else {
+                    $targ = new OpcrTarget();
+                    // $targ->id = $request->id;
+                    $targ->target_success_indicator = ' ';
+                    $targ->output_id = ' ';
+                    $targ->quantity = 0;
+                    $targ->quantity_unit = ' ';
+                    $targ->comparison_operator = ' ';
+                    $targ->is_zero = '';
+                    $targ->quality_id = ' ';
+                    $targ->ratings_id = ' ';
+                    $targ->timeliness_id = ' ';
+                    $targ->remarks_final = ' ';
+                    $targ->idpaps = $item->idpaps;
+                    $targ->is_included = $bul;
+                    $targ->office_performance_commitment_rating_list_id = $idopcr;
+                    $targ->save();
+                }
+
+                return ['item' => $item];
+            });
+        return redirect()->back();
+    }
+    public function storerevisedbulk(Request $request, $idopcr, $idpaps)
+    {
+
+        $opcr = OpcrTarget::where('idpaps', $idpaps)->where('office_performance_commitment_rating_list_id', $idopcr)->first();
+        if ($opcr) {
+            $opcr->is_included = '1';
+            $opcr->save();
+        } else {
+            $targ = new OpcrTarget();
+            $targ->id = $request->id;
+            $targ->target_success_indicator = ' ';
+            $targ->output_id = ' ';
+            $targ->quantity = 0;
+            $targ->quantity_unit = ' ';
+            $targ->comparison_operator = ' ';
+            $targ->is_zero = '';
+            $targ->quality_id = ' ';
+            $targ->ratings_id = ' ';
+            $targ->timeliness_id = ' ';
+            $targ->remarks_final = ' ';
+            $targ->idpaps = $idpaps;
+            $targ->is_included = '1';
+            $targ->office_performance_commitment_rating_list_id = $idopcr;
+            $targ->save();
+        }
+
+        return redirect()->back();
+    }
+    public function print_opcr_targets(Request $request)
+    {
+        $opcr_target = OpcrTarget::where('office_performance_commitment_rating_list_id', $request->idopcr)
+            ->with(['paps', 'paps.MFO', 'paps.opcr_stardard'])
+            ->get()
+            ->map(function ($item) {
+                $mfo_desc = "";
+                $paps_desc = "";
+                $success_indicator = "";
+                $prescribed_period = "";
+                $quality1 = "";
+                $quality2 = "";
+                $quality3 = "";
+                $efficiency1 = "";
+                $efficiency2 = "";
+                $efficiency3 = "";
+                $timeliness = "";
+                // dd($item->paps->opcr_standard[0]);
+                if ($item->paps) {
+                    $paps_desc = $item->paps->paps_desc;
+                    if ($item->paps->MFO) {
+                        $mfo_desc = $item->paps->MFO->mfo_desc;
+                    }
+                    if ($item->paps->opcr_stardard) {
+                        // dd($item->paps->opcr_stardard->output);
+                        $success_indicator = $item->paps->opcr_stardard->output;
+                        $quality1 = $item->paps->opcr_stardard->quality1;
+                        $quality2 = $item->paps->opcr_stardard->quality2;
+                        $quality3 = $item->paps->opcr_stardard->quality3;
+                        $efficiency1 = $item->paps->opcr_stardard->efficiency1;
+                        $efficiency2 = $item->paps->opcr_stardard->efficiency2;
+                        $efficiency3 = $item->paps->opcr_stardard->efficiency3;
+                        $timeliness = $item->paps->opcr_stardard->timeliness;
+                    }
+                }
+                return [
+                    'mfo' => $mfo_desc,
+                    'paps' => $paps_desc,
+                    'success_indicator' => $success_indicator,
+                    'prescribed_period' => $prescribed_period,
+                    'quality1' => $quality1,
+                    'quality2' => $quality2,
+                    'quality3' => $quality3,
+                    'efficiency1' => $efficiency1,
+                    'efficiency2' => $efficiency2,
+                    'efficiency3' => $efficiency3,
+                    'timeliness' => $timeliness,
+                    'idpaps' => $item->paps->id
+                    // 'item' => $item
+                ];
+            });
+
+        return $opcr_target;
     }
 }

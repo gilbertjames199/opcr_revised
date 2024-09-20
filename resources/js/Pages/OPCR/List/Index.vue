@@ -42,7 +42,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="opcr_list in opcr_lists">
-                                <td>OPCR </td>
+                                <td>OPCR  </td>
                                 <td>{{ office.FFUNCTION }} </td>
                                 <td>{{ opcr_list.semester }}</td>
                                 <td>{{ formatMonth(opcr_list.date_from) }} to {{ formatMonthYear(opcr_list.date_to) }}
@@ -83,8 +83,12 @@
                                                 Rating
                                                 </Link>
                                             </li>
-                                            <li>
+                                            <li v-if="opcr_list.type==='0'">
                                                 <Link class="dropdown-item" :href="`/opcrtarget/${opcr_list.id}`">Target
+                                                </Link>
+                                            </li>
+                                            <li v-if="opcr_list.type==='n'">
+                                                <Link class="dropdown-item" :href="`/opcrtargetrevised/${opcr_list.id}`">Target New
                                                 </Link>
                                             </li>
                                             <!-- <li>

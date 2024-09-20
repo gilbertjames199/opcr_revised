@@ -88,6 +88,7 @@ use App\Models\ImplementationPlan;
 use App\Models\IntermediateOutcome;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OpcrAccomplishment;
+use App\Models\OpcrTarget;
 use App\Models\UserOffice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -325,8 +326,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/', [StrategyController::class, 'update']);
     });
     //MFOStrategies
-    Route::prefix('/mfostrategies')->group(function () {
-    });
+    Route::prefix('/mfostrategies')->group(function () {});
     //Activities
     Route::prefix('/activities')->group(function () {
         Route::get('/{idstrat}', [ActivityController::class, 'index']);
@@ -610,8 +610,7 @@ Route::middleware('auth')->group(function () {
     });
 
     //SubSector
-    Route::prefix('/subsector')->group(function () {
-    });
+    Route::prefix('/subsector')->group(function () {});
 
     //DIVISIONS
     Route::prefix('divisions')->group(function () {
@@ -655,6 +654,19 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [OpcrTargetController::class, 'destroy']);
         // /opcrtarget/" + this.opcr_list_id + "/submit/target/opcr/now
         Route::post('/{opcr_list_id}/submit/target/opcr/now', [OpcrTargetController::class, 'submit_opcr_target']);
+    });
+
+    Route::prefix('opcrtargetrevised')->group(function () {
+        Route::get('/{opcr_list_id}', [OpcrTargetController::class, 'indexrevised']);
+        // Route::get('/create/{opcr_list_id}', [OpcrTargetController::class, 'create']);
+        Route::post('/store/{idopcr}/{idpaps}', [OpcrTargetController::class, 'storerevised']);
+        Route::post('/loopstore/{idopcr}', [OpcrTargetController::class, 'storeloop']);
+        Route::post('/store/bulk/then/{idopcr}/{bulk_selected}', [OpcrTargetController::class, 'savePaps']);
+        // Route::get('/{opcr_list_id}/edit', [OpcrTargetController::class, 'edit']);
+        // Route::patch('/', [OpcrTargetController::class, 'update']);
+        Route::delete('/{id}', [OpcrTargetController::class, 'destroyrevised']);
+        // // /opcrtarget/" + this.opcr_list_id + "/submit/target/opcr/now
+        // Route::post('/{opcr_list_id}/submit/target/opcr/now', [OpcrTargetController::class, 'submit_opcr_target']);
     });
     //OPCR Accomplishment
     Route::prefix('opcraccomplishment')->group(function () {
@@ -942,7 +954,9 @@ Route::prefix('opcr-accomplishments/print')->group(function () {
     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
 });
 
-
+Route::prefix('opcr_target/print')->group(function () {
+    Route::get('/new', [OpcrTargetController::class, 'print_opcr_targets']);
+});
 // Route::prefix('opcr-accomplishments/print')->group(function () {
 //     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
 // });

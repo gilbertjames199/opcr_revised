@@ -76,4 +76,9 @@ class ProgramAndProject extends Model
     {
         return $this->hasOne(FFUNCCOD::class, 'FFUNCCOD', 'FFUNCCOD');
     }
+
+    public function opcrtarget()
+    {
+        return $this->hasMany(OpcrTarget::class, 'idpaps', 'id');
+    }
 }

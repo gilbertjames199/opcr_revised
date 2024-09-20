@@ -9,8 +9,11 @@ class OpcrTarget extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='opcr_targets';
-    protected $guarded = [
+    protected $table = 'opcr_targets';
+    protected $guarded = [];
 
-    ];
+    public function paps()
+    {
+        return $this->belongsTo(ProgramAndProject::class, 'idpaps', 'id');
+    }
 }
