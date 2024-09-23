@@ -784,6 +784,13 @@ class OpcrTargetController extends Controller
                         $timeliness = $item->paps->opcr_stardard->timeliness;
                     }
                 }
+                // $period = "";
+                if ($sem === 'First Semester') {
+                    // dd($sem);
+                    $period = "January to June, " . $year;
+                } else {
+                    $period = "July to December, " . $year;
+                }
                 return [
                     'mfo' => $mfo_desc,
                     'paps' => $paps_desc,
@@ -800,7 +807,8 @@ class OpcrTargetController extends Controller
                     'office' => $office,
                     'pgHead' => $pgHead,
                     'sem' => $sem,
-                    'year' => $year
+                    'year' => $year,
+                    'period' => $period
                     // 'item' => $item
                 ];
             });
