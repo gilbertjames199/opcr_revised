@@ -116,7 +116,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
                     'type' => $item->type
                 ];
             });
-        dd($opcr_lists);
+        // dd($opcr_lists);
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first();
 
         return inertia('OPCR/List/Index', [

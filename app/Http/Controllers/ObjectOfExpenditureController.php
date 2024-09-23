@@ -42,6 +42,7 @@ class ObjectOfExpenditureController extends Controller
             ->when($request->raaotype, function ($query, $searchItem) use ($request) {
                 $query->where('raaohs.FRAOTYPE', $request->raaotype);
             })
+            ->where('ooes.FACTCODE', 'LIKE', '5%')
             ->join('raaods', 'raaods.idraao', 'raaohs.recid')
             ->join('ooes', 'ooes.recid', 'raaods.idooe')
             ->groupBy('ooes.recid')

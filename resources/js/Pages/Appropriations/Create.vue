@@ -78,7 +78,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
                 <!--******************************-->
                 <label>Objects of Expenditure</label>&nbsp;
-                <!-- idooe: {{ form.idooe }} -->
+                idooe: {{ form.idooe }}
                 <div>
                     <multiselect :options="formattedOOEs" :searchable="true" v-model="form.idooe" label="label"
                         track-by="label" @close="setOOEValue">
