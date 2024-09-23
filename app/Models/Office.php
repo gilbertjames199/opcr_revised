@@ -13,4 +13,9 @@ class Office extends Model
     protected $guarded = [
         'id'
     ];
+
+    public function pgHead()
+    {
+        return $this->belongsTo(UserEmployees::class, 'empl_id', 'empl_id');
+    }
 }
