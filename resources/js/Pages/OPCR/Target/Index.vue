@@ -147,7 +147,7 @@
         </div>
         <Modal v-if="displayModal" @close-modal-event="hideModal">
             <div class="d-flex justify-content-center">
-
+                <!-- {{ my_link }} -->
                 <iframe :src="my_link" style="width:100%; height:400px" />
             </div>
         </Modal>
@@ -224,9 +224,11 @@ export default {
             var linkt = "http://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Ftarget%2FOPCR_TARGET&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR%2Ftarget&decorate=no&output=pdf';
+            // var jasper_link ='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Ftarget_opcr&standAlone=true&decorate=no&output=pdf'
             var params = '&total=' + this.total + '&ave=' + this.ave + '&dept_head=' + this.dept_head +
                 '&opcr_date=' + this.opcr_date + '&mooe=' + this.mooe + '&ps=' + this.ps +
                 '&FFUNCCOD=' + this.FFUNCCOD + '&opcr_id=' + this.opcr_list_id;
+            // var params = '&idopcr='+ this.opcr_list_id;
             var linkl = linkt + jasper_ip + jasper_link + params;
             // alert(linkl);
             return linkl;

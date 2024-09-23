@@ -96,8 +96,7 @@
                                                 Accomplishment</Link>
                                             </li> -->
                                             <li>
-                                                <!--goToRep(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, opcr_id)-->
-                                                <button class="dropdown-item" @click="showModal(opcr_list.FFUNCCOD,
+                                                <button v-if="opcr_list.type==='0'" class="dropdown-item" @click="showModal(opcr_list.FFUNCCOD,
                         opcr_list.total,
                         opcr_list.ave,
                         opcr_list.dept_head,
@@ -106,6 +105,9 @@
                         opcr_list.ps,
                         opcr_list.id
                     )">
+                                                    Download PDF
+                                                </button>
+                                                <button v-if="opcr_list.type==='n'" class="dropdown-item" @click="showModalNew(opcr_list.id)">
                                                     Download PDF
                                                 </button>
                                             </li>
@@ -218,6 +220,20 @@ export default {
         showModal(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
             this.my_link = this.viewlink(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id);
             this.displayModal = true;
+        },
+        showModalNew(opcr_id){
+            this.my_link = this.viewlinkNew(opcr_id);
+            this.displayModal=true;
+        },
+        viewlinkNew(opcrid) {
+            //var linkt ="abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            var linkt = "http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link ='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Ftarget_opcr&standAlone=true&decorate=no&output=pdf'
+            var params = '&idopcr='+ opcrid;
+            var linkl = linkt + jasper_ip + jasper_link + params;
+
+            return linkl;
         },
         hideModal() {
             this.displayModal = false;
