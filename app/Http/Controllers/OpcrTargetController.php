@@ -731,6 +731,7 @@ class OpcrTargetController extends Controller
     public function print_opcr_targets(Request $request)
     {
         $opcr_target = OpcrTarget::where('office_performance_commitment_rating_list_id', $request->idopcr)
+            ->where('is_included', '1')
             ->with(['paps', 'paps.MFO', 'paps.opcr_stardard'])
             ->get()
             ->map(function ($item) {
