@@ -746,6 +746,7 @@ class OpcrTargetController extends Controller
                 $efficiency2 = "";
                 $efficiency3 = "";
                 $timeliness = "";
+                $monitoring = "";
                 // dd($item->paps->opcr_standard[0]);
                 if ($item->paps) {
                     $paps_desc = $item->paps->paps_desc;
@@ -762,6 +763,7 @@ class OpcrTargetController extends Controller
                         $efficiency2 = $item->paps->opcr_stardard->efficiency2;
                         $efficiency3 = $item->paps->opcr_stardard->efficiency3;
                         $timeliness = $item->paps->opcr_stardard->timeliness;
+                        $monitoring = $item->paps->opcr_stardard->monitoring;
                     }
                 }
                 return [
@@ -776,6 +778,7 @@ class OpcrTargetController extends Controller
                     'efficiency2' => $efficiency2,
                     'efficiency3' => $efficiency3,
                     'timeliness' => $timeliness,
+                    'monitoring' => $monitoring,
                     'idpaps' => $item->paps->id
                     // 'item' => $item
                 ];
