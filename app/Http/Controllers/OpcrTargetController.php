@@ -798,6 +798,7 @@ class OpcrTargetController extends Controller
                     'efficiency2' => $efficiency2,
                     'efficiency3' => $efficiency3,
                     'timeliness' => $timeliness,
+                    'monitoring' => $monitoring,
                     'idpaps' => $item->paps->id,
                     'office' => $office,
                     'pgHead' => $pgHead,
