@@ -793,14 +793,9 @@ class OpcrTargetController extends Controller
                     'efficiency2' => $efficiency2,
                     'efficiency3' => $efficiency3,
                     'timeliness' => $timeliness,
-<<<<<<< HEAD
-                    'monitoring' => $monitoring,
-                    'idpaps' => $item->paps->id
-=======
                     'idpaps' => $item->paps->id,
                     'office' => $office,
                     'pgHead' => $pgHead
->>>>>>> 58e88f8a418abb9ea967a3a7a9ad5018f161fd12
                     // 'item' => $item
                 ];
             });
