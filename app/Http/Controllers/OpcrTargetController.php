@@ -730,26 +730,31 @@ class OpcrTargetController extends Controller
     }
     public function print_opcr_targets(Request $request)
     {
+
         $opcr_sem = OfficePerformanceCommitmentRatingList::with(['office', 'office.pgHead'])
             ->where('id', $request->idopcr)
             ->first();
-        $office = $opcr_sem->office ? $opcr_sem->office->office : '';
+        // dd($opcr_sem);
+
+        $sem = $opcr_sem ? $opcr_sem->semester : '';
+        $year = $opcr_sem ? $opcr_sem->year : '';
+        $office = $opcr_sem ? ($opcr_sem->office ? $opcr_sem->office->office : '') : '';
         // dd($opcr_sem->office->pgHead);
-        $first_name = $opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->first_name : '') : '';
+        $first_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->first_name : '') : '') : '';
         // $middle_name = $opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->middle_name : ($opcr_sem->office->pgHead->middle_name ? substr($opcr_sem->office->pgHead->middle_name, 0, 1) . '.' : '')) : '';
-        $middle_name = $opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->middle_name ? $opcr_sem->office->pgHead->middle_name : '') : '') : '';
+        $middle_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->middle_name ? $opcr_sem->office->pgHead->middle_name : '') : '') : '') : '';
 
         // dd(substr($middle_name, 0, 1));
-        $last_name = $opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->last_name : '') : '';
-        $suffix_name = $opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->suffix_name ? ', ' . $opcr_sem->office->pgHead->suffix_name : '') : '') : '';
-        $postfix_name = $opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '';
+        $last_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->last_name : '') : '') : '';
+        $suffix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->suffix_name ? ', ' . $opcr_sem->office->pgHead->suffix_name : '') : '') : '') : '';
+        $postfix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '') : '';
         $pgHead = $first_name . ' ' . ($middle_name ? substr($middle_name, 0, 1) . '. ' : '') . $last_name . $suffix_name . $postfix_name;
         // dd($opcr_sem);
         $opcr_target = OpcrTarget::where('office_performance_commitment_rating_list_id', $request->idopcr)
             ->where('is_included', '1')
             ->with(['paps', 'paps.MFO', 'paps.opcr_stardard'])
             ->get()
-            ->map(function ($item) use ($office, $pgHead) {
+            ->map(function ($item) use ($office, $pgHead, $sem, $year) {
                 $mfo_desc = "";
                 $paps_desc = "";
                 $success_indicator = "";
@@ -793,7 +798,9 @@ class OpcrTargetController extends Controller
                     'timeliness' => $timeliness,
                     'idpaps' => $item->paps->id,
                     'office' => $office,
-                    'pgHead' => $pgHead
+                    'pgHead' => $pgHead,
+                    'sem' => $sem,
+                    'year' => $year
                     // 'item' => $item
                 ];
             });
