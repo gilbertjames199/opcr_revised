@@ -147,8 +147,10 @@
                         <fieldset class="border p-4">
                             <legend class="float-none w-auto"><b>Timeliness Rating </b></legend>
                             <div>
-                                <input type="text" v-model="form.timeliness" placeholder="Enter Time" class="form-control">
-
+                            <select class="form-control" v-model="form.timeliness" :disabled="isDisabled">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
                             </div>
 
                         </fieldset>
