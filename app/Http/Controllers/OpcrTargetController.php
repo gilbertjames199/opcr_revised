@@ -759,6 +759,7 @@ class OpcrTargetController extends Controller
                 $paps_desc = "";
                 $success_indicator = "";
                 $prescribed_period = "";
+                $office_accountable = "";
                 $quality1 = "";
                 $quality2 = "";
                 $quality3 = "";
@@ -776,6 +777,7 @@ class OpcrTargetController extends Controller
                     if ($item->paps->opcr_stardard) {
                         // dd($item->paps->opcr_stardard->output);
                         $success_indicator = $item->paps->opcr_stardard->output;
+                        $office_accountable = $item->paps->opcr_stardard->office_accountable;
                         $quality1 = $item->paps->opcr_stardard->quality1;
                         $quality2 = $item->paps->opcr_stardard->quality2;
                         $quality3 = $item->paps->opcr_stardard->quality3;
@@ -798,6 +800,7 @@ class OpcrTargetController extends Controller
                     'paps' => $paps_desc,
                     'success_indicator' => $success_indicator,
                     'prescribed_period' => $prescribed_period,
+                    'office_accountable' => $office_accountable,
                     'quality1' => $quality1,
                     'quality2' => $quality2,
                     'quality3' => $quality3,
