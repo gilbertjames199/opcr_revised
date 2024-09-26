@@ -256,10 +256,10 @@ class OPCRPAPSController extends Controller
         // dd($request->all());
         $id = $request->idpaps;
         // dd($id);
+
         $attributes = $request->validate([
             'output' => 'required',
             'performance_measure' => 'required',
-            'success_indicator' => 'required',
             'office_accountable' => 'required',
             'monitoring' => 'required',
             'prescribed_period' => 'required',
@@ -273,7 +273,7 @@ class OPCRPAPSController extends Controller
             'idpaps' => 'required',
         ]);
 
-
+        // dd($attributes);
         // opcr_standard::create($attributes);
         // dd($attributes);
         $this->model1->create($attributes);
@@ -307,7 +307,6 @@ class OPCRPAPSController extends Controller
         $opcr_standard->update([
             'output' => $request->output,
             'performance_measure' => $request->performance_measure,
-            'success_indicator' => $request->success_indicator,
             'office_accountable' => $request->office_accountable,
             'monitoring' => $request->monitoring,
             'prescribed_period' => $request->prescribed_period,
@@ -317,6 +316,7 @@ class OPCRPAPSController extends Controller
             'efficiency1' => $request->efficiency1,
             'efficiency2' => $request->efficiency2,
             'efficiency3' => $request->efficiency3,
+            'timeliness' => $request->timeliness,
             'idpaps' => $id
         ]);
 

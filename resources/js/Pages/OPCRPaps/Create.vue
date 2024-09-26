@@ -30,13 +30,13 @@
                 <input type="text" v-model="form.output" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.output">{{ form.errors.output }}</div>
 
-                <label for="">Performance Measures</label>
+                <label for="">Performance Measures / Success Indicator</label>
                 <input type="text" v-model="form.performance_measure" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.performance_measure">{{ form.errors.performance_measure }}</div>
 
-                <label for="">Success Indicator</label>
+                <!-- <label for="">Success Indicator</label>
                 <input type="text" v-model="form.success_indicator" class="form-control" autocomplete="positionchrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.success_indicator">{{ form.errors.success_indicator }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.success_indicator">{{ form.errors.success_indicator }}</div> -->
 
                 <label for="">Office/Individual Accountable</label>
                 <input type="text" v-model="form.office_accountable" class="form-control" autocomplete="positionchrome-off">
@@ -211,7 +211,6 @@ export default {
             form: useForm({
                 output: "",
                 performance_measure: "",
-                success_indicator: "",
                 office_accountable: "",
                 monitoring: "",
                 prescribed_period:"",
@@ -228,7 +227,13 @@ export default {
             pageTitle: ""
         };
     },
-
+    watch: {
+        'form.efficiency1'(newValue) {
+        if (newValue === 'Yes') {
+            this.form.timeliness = 'No'; // Set timeliness to No when efficiency1 is Yes
+        }
+        }
+    },
     mounted() {
         this.form.idpaps = this.idpaps;
         if (this.editData !== undefined) {
@@ -238,7 +243,6 @@ export default {
             this.pageTitle = "Edit"
             this.form.output = this.opcr_standard.output
             this.form.performance_measure = this.opcr_standard.performance_measure
-            this.form.success_indicator = this.opcr_standard.success_indicator
             this.form.office_accountable = this.opcr_standard.office_accountable
             this.form.monitoring = this.opcr_standard.monitoring
             this.form.prescribed_period = this.opcr_standard.prescribed_period

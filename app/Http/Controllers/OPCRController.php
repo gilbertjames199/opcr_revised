@@ -290,7 +290,6 @@ class OPCRController extends Controller
             'program_and_projects.paps_desc',
             'opcr_standards.output',
             'opcr_standards.performance_measure',
-            'opcr_standards.success_indicator',
             'opcr_standards.office_accountable',
             'opcr_standards.monitoring',
             'opcr_standards.prescribed_period',
