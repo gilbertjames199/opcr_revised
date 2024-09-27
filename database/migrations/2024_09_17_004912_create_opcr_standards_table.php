@@ -17,7 +17,6 @@ class CreateOpcrStandardsTable extends Migration
             $table->id();
             $table->string('output');
             $table->string('performance_measure');
-            $table->string('success_indicator');
             $table->string('office_accountable');
             $table->string('monitoring');
             $table->string('prescribed_period');
