@@ -776,7 +776,7 @@ class OpcrTargetController extends Controller
                     }
                     if ($item->paps->opcr_stardard) {
                         // dd($item->paps->opcr_stardard->output);
-                        $success_indicator = $item->paps->opcr_stardard->output;
+                        $success_indicator = $item->paps->opcr_stardard->performance_measure;
                         $office_accountable = $item->paps->opcr_stardard->office_accountable;
                         $quality1 = $item->paps->opcr_stardard->quality1;
                         $quality2 = $item->paps->opcr_stardard->quality2;
