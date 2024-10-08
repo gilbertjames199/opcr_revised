@@ -128,6 +128,7 @@ class OfficePerformanceCommitmentRatingListController extends Controller
     public function direct(Request $request)
     {
         $dept_code = auth()->user()->department_code;
+        // dd($dept_code);
         $office = DB::connection('mysql2')->table('offices')
             ->where('department_code', $dept_code)
             ->where('office', 'LIKE', '%Office%')
