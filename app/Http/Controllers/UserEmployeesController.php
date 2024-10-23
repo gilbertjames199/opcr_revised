@@ -38,8 +38,9 @@ class UserEmployeesController extends Controller
         // $apiUrl = 'http://hris.dvodeoro.ph:91/api/ListOfEmployees4IPCR';
 
         // $apiUrl = 'http://hrisd:191/api/ListOfEmployees4IPCR';
-        $apiUrl = 'http://192.168.7.49:91/api/ListOfEmployees4IPCR';
+        // $apiUrl = 'http://192.168.7.49:91/api/ListOfEmployees4IPCR';
         // $apiUrl = 'http://122.53.120.26:89/api/ListOfEmployees4IPCR';
+        $apiUrl = 'http://hris.dvodeoro.local:91/api/ListOfEmployees4IPCR';
         // Initialize Guzzle HTTP client
         //$client = new Client();
         $data = [];
