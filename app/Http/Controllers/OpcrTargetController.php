@@ -9,6 +9,7 @@ use App\Models\Office;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
 use App\Models\OpcrTarget;
+use App\Models\OpcrTargetBudget;
 use App\Models\Output;
 use App\Models\ProgramAndProject;
 use App\Models\Quality;
@@ -637,9 +638,13 @@ class OpcrTargetController extends Controller
     {
         // dd("delete");
         $opcr_list = OpcrTarget::findOrFail($request->id);
+        $idpaps = $opcr_list->idpaps;
+        $opcr_list_id = $opcr_list->id;
+        dd($opcr_list);
         $opcr_list->is_included = '0';
         $opcr_id = $opcr_list->office_performance_commitment_rating_list_id;
         $opcr_list->save();
+        $opcr_target_budget = OpcrTargetBudget::where('idpaps', $idpaps)->where('opcr_list_id', $opcr_list_id)->delete();
         // OfficePerformanceCommitmentRating::where('id_opcr_target', $request->id)->delete();
         return redirect('/opcrtargetrevised/' . $opcr_id);
         // ->with('error', 'Office performance goal deleted!');

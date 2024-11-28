@@ -64,11 +64,13 @@ class UserEmployeesController extends Controller
 
             // Get the JSON response from the API and decode it into an associative array
             $data = json_decode($response->getBody(), true);
+            // dd($data);
             //dd($data);
             // Now $data contains the API response as an array, and you can process it as needed
             $length = count($data);
             $mapped_data = [];
             for ($i = 0; $i < $length; $i++) {
+                // dd($i);
                 $val = $this->saveUserEmployees($data[$i]);
                 array_push($mapped_data, $val);
             }

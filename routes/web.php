@@ -77,6 +77,7 @@ use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
 use App\Http\Controllers\IPCRController;
+use App\Http\Controllers\OpcrTargetBudgetController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
 use App\Http\Controllers\SentenceParserController;
 use App\Http\Controllers\TimeRangeController;
@@ -89,6 +90,7 @@ use App\Models\IntermediateOutcome;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OpcrAccomplishment;
 use App\Models\OpcrTarget;
+use App\Models\OpcrTargetBudget;
 use App\Models\UserOffice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -667,6 +669,12 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [OpcrTargetController::class, 'destroyrevised']);
         // // /opcrtarget/" + this.opcr_list_id + "/submit/target/opcr/now
         // Route::post('/{opcr_list_id}/submit/target/opcr/now', [OpcrTargetController::class, 'submit_opcr_target']);
+    });
+    //OPCR Budgeting
+    Route::prefix('opcrbudgeting')->group(function () {
+        Route::get('/{opcr_list_id}', [OpcrTargetBudgetController::class, 'create']);
+        // Route::get('/create/{opcr_list_id}', [OpcrTargetBudgetController::class, 'create']);
+        Route::post('/store', [OpcrTargetBudgetController::class, 'store']);
     });
     //OPCR Accomplishment
     Route::prefix('opcraccomplishment')->group(function () {
