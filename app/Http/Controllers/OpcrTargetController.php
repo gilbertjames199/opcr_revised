@@ -399,7 +399,9 @@ class OpcrTargetController extends Controller
                 'SU.success_indicator',
                 'program_and_projects.idmfo',
                 'SU.id AS su_id',
+                'opcr_standards.performance_measure'
             )
+            ->leftjoin('opcr_standards', 'opcr_standards.idpaps', 'program_and_projects.id')
             ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
             ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
             ->where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
@@ -439,6 +441,7 @@ class OpcrTargetController extends Controller
                 // if ($counter == 7) {
                 //     dd($item->is_included);
                 // }
+                // dd($item);
 
                 return [
                     'mfo_desc' => $item->mfo_desc,
@@ -448,6 +451,7 @@ class OpcrTargetController extends Controller
                     'target_success_indicator' => $target_success_indicator,
                     'quantity' => $quantity,
                     'success_indicator' => $item->success_indicator,
+                    'performance_measure' => $item->performance_measure,
                     'idmfo' => $item->idmfo,
                     'su_id' => $item->su_id,
                     'opcr_target' => $targ,
