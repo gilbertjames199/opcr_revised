@@ -72,6 +72,10 @@ class ProgramAndProject extends Model
         return $this->belongsTo(opcr_standard::class, 'id', 'idpaps');
     }
 
+    public function success_indicator()
+    {
+        return $this->hasOne(SuccessIndicator::class, 'idpaps', 'id');
+    }
     public function office()
     {
         return $this->hasOne(FFUNCCOD::class, 'FFUNCCOD', 'FFUNCCOD');

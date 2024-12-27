@@ -171,8 +171,8 @@ __webpack_require__.r(__webpack_exports__);
       this.form.FFUNCCOD = this.editData.FFUNCCOD;
       this.form.raaotype = this.editData.raaotype;
       this.filterProgram();
-      this.form.idprogram = this.editData.idprogram; //this.loadOOE();
-
+      this.form.idprogram = this.editData.idprogram;
+      this.loadOOE();
       this.form.idooe = this.editData.idooe;
       this.form.account_code = this.editData.account_code;
       this.form.past_year = this.editData.past_year;

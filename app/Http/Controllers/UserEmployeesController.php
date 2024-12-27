@@ -38,8 +38,9 @@ class UserEmployeesController extends Controller
         // $apiUrl = 'http://hris.dvodeoro.ph:91/api/ListOfEmployees4IPCR';
 
         // $apiUrl = 'http://hrisd:191/api/ListOfEmployees4IPCR';
-        $apiUrl = 'http://192.168.7.49:91/api/ListOfEmployees4IPCR';
+        // $apiUrl = 'http://192.168.7.49:91/api/ListOfEmployees4IPCR';
         // $apiUrl = 'http://122.53.120.26:89/api/ListOfEmployees4IPCR';
+        $apiUrl = 'http://hris.dvodeoro.local:91/api/ListOfEmployees4IPCR';
         // Initialize Guzzle HTTP client
         //$client = new Client();
         $data = [];
@@ -63,11 +64,13 @@ class UserEmployeesController extends Controller
 
             // Get the JSON response from the API and decode it into an associative array
             $data = json_decode($response->getBody(), true);
+            // dd($data);
             //dd($data);
             // Now $data contains the API response as an array, and you can process it as needed
             $length = count($data);
             $mapped_data = [];
             for ($i = 0; $i < $length; $i++) {
+                // dd($i);
                 $val = $this->saveUserEmployees($data[$i]);
                 array_push($mapped_data, $val);
             }

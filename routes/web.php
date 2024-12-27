@@ -70,13 +70,17 @@ use App\Http\Controllers\AIPController;
 use App\Http\Controllers\aip_controller;
 use App\Http\Controllers\DailyAccomplishmentController;
 use App\Http\Controllers\AddAccomplishmentController;
+use App\Http\Controllers\AnnualInvestmentPlanController;
+use App\Http\Controllers\AppropriationAmountController;
 use App\Http\Controllers\AppropriationController;
 use App\Http\Controllers\DivisionOutputController;
+use App\Http\Controllers\ExpectedOutputController;
 use App\Http\Controllers\ForbiddenController;
 use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
 use App\Http\Controllers\IPCRController;
+use App\Http\Controllers\OpcrTargetBudgetController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
 use App\Http\Controllers\SentenceParserController;
 use App\Http\Controllers\TimeRangeController;
@@ -84,11 +88,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEmployeesController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
+use App\Models\AnnualInvestmentPlan;
 use App\Models\ImplementationPlan;
 use App\Models\IntermediateOutcome;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OpcrAccomplishment;
 use App\Models\OpcrTarget;
+use App\Models\OpcrTargetBudget;
 use App\Models\UserOffice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -668,6 +674,12 @@ Route::middleware('auth')->group(function () {
         // // /opcrtarget/" + this.opcr_list_id + "/submit/target/opcr/now
         // Route::post('/{opcr_list_id}/submit/target/opcr/now', [OpcrTargetController::class, 'submit_opcr_target']);
     });
+    //OPCR Budgeting
+    Route::prefix('opcrbudgeting')->group(function () {
+        Route::get('/{opcr_list_id}', [OpcrTargetBudgetController::class, 'create']);
+        // Route::get('/create/{opcr_list_id}', [OpcrTargetBudgetController::class, 'create']);
+        Route::post('/store', [OpcrTargetBudgetController::class, 'store']);
+    });
     //OPCR Accomplishment
     Route::prefix('opcraccomplishment')->group(function () {
         Route::get('/{opcr_list_id}', [OpcrAccomplishmentController::class, 'index']);
@@ -804,7 +816,35 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [AddAccomplishmentController::class, 'update']);
         Route::delete('/{id}', [AddAccomplishmentController::class, 'destroy']);
     });
+    // Annual Investment Plans
+    Route::prefix('/annual-investment-plans')->group(function () {
+        Route::get('/', [AnnualInvestmentPlanController::class, 'index']);
+        Route::get('/create', [AnnualInvestmentPlanController::class, 'create']);
+        Route::post('/', [AnnualInvestmentPlanController::class, 'store']);
+        Route::get('/{id}/edit', [AnnualInvestmentPlanController::class, 'edit']);
+        Route::patch('/{id}', [AnnualInvestmentPlanController::class, 'update']);
+        Route::delete('/{id}', [AnnualInvestmentPlanController::class, 'destroy']);
+    });
 
+    // Expected Outputs
+    Route::prefix('/expected-outputs')->group(function () {
+        Route::get('/{aip_id}', [ExpectedOutputController::class, 'index']);
+        Route::get('/create/{aip_id}', [ExpectedOutputController::class, 'create']);
+        Route::post('/', [ExpectedOutputController::class, 'store']);
+        Route::get('/{id}/edit/{aip_id}', [ExpectedOutputController::class, 'edit']);
+        Route::patch('/{id}', [ExpectedOutputController::class, 'update']);
+        Route::delete('/{id}', [ExpectedOutputController::class, 'destroy']);
+    });
+
+    // Appropriations
+    Route::prefix('/appropriation-amounts')->group(function () {
+        Route::get('/{aip_id}', [AppropriationAmountController::class, 'index']);
+        Route::get('/create/{aip_id}', [AppropriationAmountController::class, 'create']);
+        Route::post('/', [AppropriationAmountController::class, 'store']);
+        Route::get('/{id}/edit/{aip_id}', [AppropriationAmountController::class, 'edit']);
+        Route::patch('/{id}', [AppropriationAmountController::class, 'update']);
+        Route::delete('/{id}', [AppropriationAmountController::class, 'destroy']);
+    });
     // Sentence Identifier Tester
     Route::prefix('/sentence')->group(function () {
         Route::get('/', [SentenceParserController::class, 'my_method1']);
