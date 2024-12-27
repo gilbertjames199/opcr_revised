@@ -777,6 +777,18 @@ class OpcrTargetController extends Controller
                 $efficiency3 = "";
                 $timeliness = "";
                 $monitoring = "";
+
+                $approver = 'Dorothy Montejo Gonzaga';
+                $pos = 'Governor';
+                $FFUNCCOD = $item->FFUNCCOD;
+                if ($FFUNCCOD == '1021') {
+                    $approver = 'Jayvee Tyron L. Uy';
+                    $pos = 'Vice Governor';
+                }
+                if ($FFUNCCOD == '1016') {
+                    $approver = 'Jayvee Tyron L. Uy';
+                    $pos = 'Vice Governor';
+                }
                 // dd($item->paps->opcr_standard[0]);
                 if ($item->paps) {
                     $paps_desc = $item->paps->paps_desc;
@@ -823,7 +835,9 @@ class OpcrTargetController extends Controller
                     'pgHead' => $pgHead,
                     'sem' => $sem,
                     'year' => $year,
-                    'period' => $period
+                    'period' => $period,
+                    'approver' => $approver,
+                    'pos' => $pos
                     // 'item' => $item
                 ];
             });
@@ -851,6 +865,8 @@ class OpcrTargetController extends Controller
                 'period' => ($sem === 'First Semester')
                     ? "January to June, " . $year
                     : "July to December, " . $year,
+                'approver' => '',
+                'pos' => ''
             ]]);
         }
         return $opcr_target;
