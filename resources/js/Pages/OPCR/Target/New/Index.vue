@@ -77,7 +77,7 @@
                                     {{ dat.paps_desc }}
                                 </td>
                                 <td>
-                                    {{ dat.success_indicator }}
+                                    {{ dat.performance_measure }}
                                 </td>
 
                             </tr>
