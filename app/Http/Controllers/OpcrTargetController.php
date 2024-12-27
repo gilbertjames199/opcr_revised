@@ -759,7 +759,14 @@ class OpcrTargetController extends Controller
         $postfix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '') : '';
         $pgHead = $first_name . ' ' . ($middle_name ? substr($middle_name, 0, 1) . '. ' : '') . $last_name . $suffix_name . $postfix_name;
         // dd($opcr_sem);
-        $opcr_target = OpcrTarget::with(['paps', 'paps.MFO', 'paps.opcr_stardard'])
+        $opcr_target = OpcrTarget::with([
+            'paps' => function ($query) {
+                $query->orderBy('id', 'asc')
+                    ->orderBy('idmfo', 'asc');
+            },
+            'paps.MFO',
+            'paps.opcr_stardard'
+        ])
             ->where('office_performance_commitment_rating_list_id', $request->idopcr)
             ->where('is_included', '1')
             ->get()
