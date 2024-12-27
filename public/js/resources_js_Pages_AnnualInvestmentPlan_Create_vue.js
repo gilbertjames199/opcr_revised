@@ -109,6 +109,15 @@ __webpack_require__.r(__webpack_exports__);
     //         past_year: dataOoes.past_year
     //     }));
     // },
+    plannedTotal: function plannedTotal() {
+      var _this$form = this.form,
+          planned_mooe = _this$form.planned_mooe,
+          planned_ps = _this$form.planned_ps,
+          planned_co = _this$form.planned_co,
+          planned_fe = _this$form.planned_fe;
+      this.form.planned_total = (planned_mooe || 0) + (planned_ps || 0) + (planned_co || 0) + (planned_fe || 0);
+      return (planned_mooe || 0) + (planned_ps || 0) + (planned_co || 0) + (planned_fe || 0);
+    },
     formattedPrograms: function formattedPrograms() {
       var _this = this;
 
@@ -219,95 +228,12 @@ __webpack_require__.r(__webpack_exports__);
         this.form.patch("/annual-investment-plans/" + this.editData.id, this.form);
       } else {
         this.form.post("/annual-investment-plans/", this.form);
-      } // this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4);
-      // var aip_mooe = parseFloat(this.aip.MOOE);
-      // var aip_ps = parseFloat(this.aip.PS);
-      // var aip_co = parseFloat(this.aip.CO);
-      // var app_mooe = parseFloat(this.total_budget_year.total_approp_mooe) + parseFloat(this.form.budget_year);
-      // var app_ps = parseFloat(this.total_budget_year.total_ps_approp) + parseFloat(this.form.budget_year);
-      // var app_co = parseFloat(this.total_budget_year.total_co_approp) + parseFloat(this.form.budget_year);
-      // var addable = true;
-      //var adval=0;
-      // var possible_difference = 0;
-      // var maxi = parseFloat(0);
-      // if (this.form.category == 'Capital Outlay') {
-      //     if (app_co > aip_co) {
-      //         addable = false;
-      //         // possible_difference=aip_co - parseFloat(this.total_budget_year.total_co_approp);
-      //         maxi = parseFloat(aip_co);
-      //     }
-      // }
-      // if (this.form.category == 'Maintenance, Operating, and Other Expenses') {
-      //     if (app_mooe > aip_mooe) {
-      //         maxi = parseFloat(aip_mooe);
-      //         addable = false;
-      //         // possible_difference=aip_mooe - parseFloat(this.total_budget_year.total_approp_mooe);
-      //     }
-      // }
-      // if (this.form.category == 'Personnel Services') {
-      //     if (app_ps > aip_ps) {
-      //         maxi = parseFloat(app_ps);
-      //         addable = false;
-      //         // possible_difference=aip_ps - parseFloat(this.total_budget_year.total_ps_approp);
-      //     }
-      // }
-      // if (addable == false) {
-      //     if (this.editData !== undefined) {
-      //         this.form.patch("/appropriations/", this.form);
-      //     } else {
-      //         alert("The maximum allowable value for budget year is only " + maxi + ". ")
-      //     }
-      // } else {
-      //     if (this.editData !== undefined) {
-      //         this.form.patch("/appropriations/", this.form);
-      //     } else {
-      //         // alert("Sample");
-      //         var url = "/appropriations/store"
-      //         // alert('for store '+url);
-      //         this.form.post(url);
-      //     }
-      // }
-
-    },
-    addAccount: function addAccount() {
-      // if (!this.accounts.includes(this.typed)) this.accounts.push(this.typed);
-      // this.selected = this.typed;
-      alert('addAccount');
-    },
-    searchPrograms: function searchPrograms() {//this.program_typed = searchText;
-      //alert(this.program_typed)
-      // const matchedPrograms = this.formattedPrograms.filter(
-      //     (program) => program.label.toLowerCase().includes(this.typed.toLowerCase())
-      // );
-      // if (matchedPrograms.length > 0) {
-      //     // Set the first matching program's value (recid) to form.idprogram
-      //     this.form.idprogram = matchedPrograms[0].value;
-      // } else {
-      //     // Handle the case when there are no matching programs
-      //     // For example, you can clear the form.idprogram or show an error message
-      //     this.form.idprogram = null;
-      // }
-      //alert(typed);
-      // if (!this.formattedPrograms.includes(this.typed)) this.formattedPrograms.push(this.typed);
-      // this.selected = this.typed;
-      // Find the program whose label matches the typed search text (case-insensitive)
-      // const matchedProgram = this.formattedPrograms.find(
-      //     (formattedPrograms) => formattedPrograms.label.toLowerCase() === this.typed.toLowerCase()
-      // );
-      // if (matchedProgram) {
-      //     // Set the selected program's value (recid) to form.idprogram
-      //     this.form.idprogram = matchedProgram.value;
-      // } else {
-      //     // Handle the case when the search text doesn't match any program
-      //     // You may want to add some error handling here or reset the value
-      //     this.form.idprogram = null;
-      // }
+      }
     },
     setCode: function setCode() {
       var ind = this.accounts.indexOf(this.chart_selected);
       this.form.account_code = this.codes[ind];
-      this.form.object_of_expenditure = this.chart_selected; // this.budget_code = this.budgets.indexOf(this.form.account_code.toString());
-      // this.form.particulars = this.chart_selected
+      this.form.object_of_expenditure = this.chart_selected;
     },
     searchByAccountCode: function searchByAccountCode() {
       var ind = this.codes.indexOf(this.form.account_code.toString());
@@ -323,27 +249,9 @@ __webpack_require__.r(__webpack_exports__);
       this.form.year = parseFloat(yr) + 1;
     },
     filterProgram: function filterProgram() {
-      // this.form.idprogram=null;
-      // this.form.idooe=null;
       var selectElement = this.$refs.raaoSelect;
       this.form.category = selectElement.options[selectElement.selectedIndex].text;
     },
-    // loadOOE() {
-    //     this.dt_ooes = [];
-    //     var year1 = parseFloat(this.form.year) - 1;
-    //     axios.get("/ooes/filtered/ooes", {
-    //         params: {
-    //             program_id: this.form.program_id,
-    //             FFUNCCOD: this.form.FFUNCCOD,
-    //             raaotype: this.form.raao_type,
-    //             year: year1
-    //         }
-    //     }).then((response) => {
-    //         this.dt_ooes = response.data;
-    //     }).catch((error) => {
-    //         console.error(error);
-    //     });
-    // },
     setOOEValue: function setOOEValue() {
       var _this2 = this;
 
@@ -729,12 +637,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "form-control",
     "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
-      return $data.form.planned_total = $event;
+      return $options.plannedTotal = $event;
     }),
-    type: "number"
+    type: "number",
+    readonly: ""
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.planned_total]]), $data.form.errors.planned_total ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.planned_total), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $options.plannedTotal]]), $data.form.errors.planned_total ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.planned_total), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "hidden",

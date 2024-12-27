@@ -755,9 +755,9 @@ class OpcrTargetController extends Controller
         $postfix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '') : '';
         $pgHead = $first_name . ' ' . ($middle_name ? substr($middle_name, 0, 1) . '. ' : '') . $last_name . $suffix_name . $postfix_name;
         // dd($opcr_sem);
-        $opcr_target = OpcrTarget::where('office_performance_commitment_rating_list_id', $request->idopcr)
+        $opcr_target = OpcrTarget::with(['paps', 'paps.MFO', 'paps.opcr_stardard'])
+            ->where('office_performance_commitment_rating_list_id', $request->idopcr)
             ->where('is_included', '1')
-            ->with(['paps', 'paps.MFO', 'paps.opcr_stardard'])
             ->get()
             ->map(function ($item) use ($office, $pgHead, $sem, $year) {
                 $mfo_desc = "";
@@ -824,6 +824,66 @@ class OpcrTargetController extends Controller
                 ];
             });
 
+        if ($opcr_target->isEmpty()) {
+            $opcr_target = collect([[
+                'mfo' => "",
+                'paps' => "",
+                'success_indicator' => "",
+                'prescribed_period' => "",
+                'office_accountable' => "",
+                'quality1' => "",
+                'quality2' => "",
+                'quality3' => "",
+                'efficiency1' => "",
+                'efficiency2' => "",
+                'efficiency3' => "",
+                'timeliness' => "",
+                'monitoring' => "",
+                'idpaps' => null,
+                'office' => $office,
+                'pgHead' => $pgHead,
+                'sem' => $sem,
+                'year' => $year,
+                'period' => ($sem === 'First Semester')
+                    ? "January to June, " . $year
+                    : "July to December, " . $year,
+            ]]);
+        }
         return $opcr_target;
+    }
+    public function printing_targets_new(Request $request)
+    {
+        $opcr_id = $request->opcr_id;
+        $opcr_sem = OfficePerformanceCommitmentRatingList::with(['office', 'office.pgHead', 'paps.opcr_stardard'])
+            ->where('id', $request->opcr_id)
+            ->first();
+        // dd($opcr_sem);
+
+        $sem = $opcr_sem ? $opcr_sem->semester : '';
+        $year = $opcr_sem ? $opcr_sem->year : '';
+        $office = $opcr_sem ? ($opcr_sem->office ? $opcr_sem->office->office : '') : '';
+        // dd($opcr_sem->office->pgHead);
+        $first_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->first_name : '') : '') : '';
+        // $middle_name = $opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->middle_name : ($opcr_sem->office->pgHead->middle_name ? substr($opcr_sem->office->pgHead->middle_name, 0, 1) . '.' : '')) : '';
+        $middle_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->middle_name ? $opcr_sem->office->pgHead->middle_name : '') : '') : '') : '';
+
+        // dd(substr($middle_name, 0, 1));
+        $last_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->last_name : '') : '') : '';
+        $suffix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->suffix_name ? ', ' . $opcr_sem->office->pgHead->suffix_name : '') : '') : '') : '';
+        $postfix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '') : '';
+        $pgHead = $first_name . ' ' . ($middle_name ? substr($middle_name, 0, 1) . '. ' : '') . $last_name . $suffix_name . $postfix_name;
+        $data = OpcrTarget::with(['paps', 'paps.MFO'])
+            ->where('office_performance_commitment_rating_list_id', $opcr_id, $pgHead, $sem, $year)
+            ->where('is_included', '1')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'mfo' => $item->paps ? ($item->paps->MFO ? $item->paps->MFO->mfo_desc : "") : "",
+                    'paps' => $item->paps ? $item->paps->paps_desc : "",
+                    'success_indicator' => $item->target_success_indicator,
+                ];
+            });
+
+        dd($data);
     }
 }
