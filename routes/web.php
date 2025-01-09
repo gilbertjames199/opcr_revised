@@ -620,8 +620,8 @@ Route::middleware('auth')->group(function () {
 
     //DIVISIONS
     Route::prefix('divisions')->group(function () {
-        Route::get('/{FFUNCCOD}', [DivisionController::class, 'index']);
-        Route::get('/create/{FFUNCCOD}', [DivisionController::class, 'create']);
+        Route::get('/{papsID}', [DivisionController::class, 'index']);
+        Route::get('/create/{papsID}', [DivisionController::class, 'create']);
         Route::post('/store', [DivisionController::class, 'store']);
         Route::get('/{id}/edit', [DivisionController::class, 'edit']);
         Route::patch('/{id}', [DivisionController::class, 'update']);

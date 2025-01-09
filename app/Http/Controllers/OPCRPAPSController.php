@@ -286,7 +286,7 @@ class OPCRPAPSController extends Controller
         $paps = ProgramAndProject::findOrFail($id);
         $opcr_standard = opcr_standard::where('idpaps', $id)->first();
         // dd($opcr_standard);
-        return inertia('OPCRPaps/Create', [
+        return inertia('OPCRPaps/Cr eate', [
             "opcr_standard" => $opcr_standard,
             "editData" => $paps,
             "idpaps" => $id,

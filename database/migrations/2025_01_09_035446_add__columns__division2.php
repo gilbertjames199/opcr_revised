@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDivisionOutputsTable extends Migration
+class AddColumnsDivision2 extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateDivisionOutputsTable extends Migration
      */
     public function up()
     {
-        Schema::create('division_outputs', function (Blueprint $table) {
-            $table->id();
-            $table->text('output');
-            $table->timestamps();
+        Schema::table('division_outputs', function (Blueprint $table) {
+            //
+            $table->integer('quantity');
         });
     }
 
@@ -27,6 +26,8 @@ class CreateDivisionOutputsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('division_outputs');
+        Schema::table('division_outputs', function (Blueprint $table) {
+            //
+        });
     }
 }
