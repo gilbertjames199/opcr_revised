@@ -996,6 +996,7 @@ Route::prefix('opcr-accomplishments/print')->group(function () {
 
 Route::prefix('opcr_target/print')->group(function () {
     Route::get('/new', [OpcrTargetController::class, 'print_opcr_targets']);
+    Route::get('/new/printing', [OpcrTargetController::class, 'printing_targets_new']);
 });
 // Route::prefix('opcr-accomplishments/print')->group(function () {
 //     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
