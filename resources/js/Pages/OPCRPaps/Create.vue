@@ -34,6 +34,10 @@
                 <input type="text" v-model="form.performance_measure" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.performance_measure">{{ form.errors.performance_measure }}</div>
 
+                <label for="">Verb</label>
+                <input type="text" v-model="form.verb" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.verb">{{ form.errors.verb }}</div>
+
                 <!-- <label for="">Success Indicator</label>
                 <input type="text" v-model="form.success_indicator" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.success_indicator">{{ form.errors.success_indicator }}</div> -->
@@ -191,6 +195,8 @@ export default {
         ratings_r: Object,
         qualities_r: Object,
         timeliness_r: Object,
+        verb: Object,
+        quantity: Object
     },
     components: {
         //BootstrapModalNoJquery,
@@ -221,6 +227,8 @@ export default {
                 efficiency2:"",
                 efficiency3:"",
                 timeliness: "",
+                quantity: "",
+                verb:"",
                 idpaps: "",
                 id: null
             }),

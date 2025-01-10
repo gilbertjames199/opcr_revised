@@ -79,12 +79,15 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <!--/{id}/{idinteroutcome}/edit-->
-                                            <li>
+                                            <!-- <li>
                                                 <Link class="dropdown-item"
                                                     :href="`/strategies/${dat.id}/${ismfo}/strat/mfo`">Strategies</Link>
-                                            </li>
-                                            <li>
+                                            </li> -->
+                                            <!-- <li>
                                                 <Link class="dropdown-item" :href="`/revision/${dat.id}`">PPA Profile</Link>
+                                            </li> -->
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/divisions/${dat.id}`">Division Output</Link>
                                             </li>
                                             <li>
                                                 <Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit
