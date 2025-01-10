@@ -255,9 +255,7 @@ class PAPController extends Controller
         return redirect('/paps/' . $request->idmfo)
             ->with('message', 'Programs and Projects(PAPS) added');
     }
-    public function show(ProgramAndProject $programAndProject)
-    {
-    }
+    public function show(ProgramAndProject $programAndProject) {}
     public function edit(ProgramAndProject $programAndProject, $id, $idmfo)
     {
         $year_object = DB::connection('mysql2')
@@ -353,7 +351,7 @@ class PAPController extends Controller
             'research_agenda' => $request->research_agenda
         ]);
         //dd('updated');
-        return redirect('/paps/' . $request->idmfo)
+        return redirect('/paps/direct')
             ->with('info', 'Program and Projects updated');
     }
     public function destroy(Request $request, $id)
