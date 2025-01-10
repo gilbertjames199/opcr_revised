@@ -78,11 +78,12 @@ class AnnualInvestmentPlanController extends Controller
                 DB::raw('TRIM(raaohs.FFUNCCOD) AS FFUNCCOD')
             )
             ->join('raaohs', 'raaohs.idprogram', 'programs.recid')
-            ->where('raaohs.tyear', $year_c)
+            ->where('raaohs.tyear', (intval($year_p) - 1))
             ->OrderBy('programs.FPROGRAM')
             ->groupBy('raaohs.recid')
             ->get();
-
+        // dd($year_c);
+        //DAPAT year_c sa WHERE ang nakafilter
         $ooes = [];
         return inertia("AnnualInvestmentPlan/Create", [
             // "pap1" => $paps,

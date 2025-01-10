@@ -126,12 +126,12 @@
                             <tr v-for="(mfo, index) in mfos" :key="index">
                                 <td :rowspan="mfo_rowspan" v-if="index == 0">MAJOR FINAL OUTPUTS</td>
                                 <td>
-                                    <Link :href="`/paps/${mfo.id}`"><b>{{ mfo.mfo_desc }}</b></Link>
+                                    <Link :href="`/paps/${mfo.id}`" ><b>{{ mfo.mfo_desc }}</b></Link>
                                 </td>
                                 <td class="pL-2" colspan="2">
                                     <div v-for="pap in mfo.paps">
                                         <a :href="`/revision/${pap.id}`" target="_blank">{{ pap.paps_desc }}</a><br>
-                                        <span v-if="pap.MOV !== '-'">(<i>Description: {{ pap.MOV }}</i>)</span>
+                                        <span v-if="pap.MOV !== '-' && pap.MOV">(<i>Description: {{ pap.MOV }}</i>)</span>
                                         <div style="color: white"> .</div>
                                     </div>
                                 </td>
