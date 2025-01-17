@@ -80,6 +80,7 @@ use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
 use App\Http\Controllers\IPCRController;
+use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
 use App\Http\Controllers\SentenceParserController;
@@ -346,6 +347,12 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/logframe')->group(function () {
         Route::get('/', [LogFrameController::class, 'index']);
         Route::get('/{idstrat}', [LogFrameController::class, 'showlog']);
+    });
+    //Office AIP Code
+    // /office-aip-code/${functional.department_code}
+    Route::prefix('/office-aip-code')->group(function () {
+        Route::get('/{FFUNCCOD}', [OfficeAipCodeController::class, 'edit']);
+        Route::patch('/', [OfficeAipCodeController::class, 'update']);
     });
     //MFO
     Route::prefix('/mfos')->group(function () {

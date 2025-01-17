@@ -43,9 +43,14 @@
                                             <!--/{id}/{idinteroutcome}/edit
                                             <li><Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deletePAPS(dat.id)">Delete</Link></li>-->
+
                                             <li>
                                                 <Link class="dropdown-item"
                                                     :href="`/divisions/${functional.department_code}`">Divisions</Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item"
+                                                    :href="`/office-aip-code/${functional.department_code}`">AIP Code</Link>
                                             </li>
                                             <li>
                                                 <Link class="dropdown-item"
