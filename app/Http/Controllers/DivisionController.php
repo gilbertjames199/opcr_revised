@@ -137,6 +137,21 @@ class DivisionController extends Controller
         $paps = ProgramAndProject::select(
             'program_and_projects.id',
             'program_and_projects.paps_desc',
+
+        )
+            ->where('program_and_projects.idmfo', $request->idmfo)
+            ->groupBy('program_and_projects.id')
+            ->get();
+
+        return $paps;
+    }
+
+    public function DPCR(Request $request)
+    {
+        $dpcr = Division::select(
+            'program_and_projects.id',
+            'program_and_projects.paps_desc',
+            'division_outputs.id',
             'division_outputs.output',
             'division_outputs.performance_measure',
             'division_outputs.office_accountable',
@@ -149,14 +164,13 @@ class DivisionController extends Controller
             'division_outputs.efficiency2',
             'division_outputs.efficiency3',
             'division_outputs.timeliness',
-
+            'division_outputs.idpaps',
         )
-            ->leftJoin('division_outputs', 'program_and_projects.id', '=', 'division_outputs.idpaps')
-            ->where('program_and_projects.idmfo', $request->idmfo)
-            ->groupBy('program_and_projects.id')
+            ->leftJoin('program_and_projects', 'division_outputs.idpaps', '=', 'program_and_projects.id')
+            ->where('division_outputs.idpaps', $request->idpaps)
             ->get();
 
-        return $paps;
+        return $dpcr;
     }
     public function update(Request $request)
     {
