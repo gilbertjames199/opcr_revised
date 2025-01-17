@@ -998,6 +998,11 @@ Route::prefix('opcr_target/print')->group(function () {
     Route::get('/new', [OpcrTargetController::class, 'print_opcr_targets']);
     Route::get('/new/printing', [OpcrTargetController::class, 'printing_targets_new']);
 });
+
+Route::prefix('division/print')->group(function () {
+    Route::get('/MFO_print', [DivisionController::class, 'MFO_Division']);
+    Route::get('/PAPS_print', [DivisionController::class, 'PAPS_Division']);
+});
 // Route::prefix('opcr-accomplishments/print')->group(function () {
 //     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
 // });

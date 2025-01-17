@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Division;
 use App\Models\FFUNCCOD;
+use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DivisionController extends Controller
 {
@@ -114,6 +116,47 @@ class DivisionController extends Controller
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
+    }
+
+    public function MFO_Division(Request $request)
+    {
+        $functions = strtoupper($request->FUNCTION);
+
+        $mfos = MajorFinalOutput::select(DB::raw('"' . $functions . '" as `FUNCTION`'), "mfo_desc", "id")
+            ->where('FFUNCCOD', $request->id)
+            ->where("id", ">", "45")
+            ->get();
+
+        return $mfos;
+
+        // dd($mfos);
+    }
+
+    public function PAPS_Division(Request $request)
+    {
+        $paps = ProgramAndProject::select(
+            'program_and_projects.id',
+            'program_and_projects.paps_desc',
+            'division_outputs.output',
+            'division_outputs.performance_measure',
+            'division_outputs.office_accountable',
+            'division_outputs.monitoring',
+            'division_outputs.prescribed_period',
+            'division_outputs.quality1',
+            'division_outputs.quality2',
+            'division_outputs.quality3',
+            'division_outputs.efficiency1',
+            'division_outputs.efficiency2',
+            'division_outputs.efficiency3',
+            'division_outputs.timeliness',
+
+        )
+            ->leftJoin('division_outputs', 'program_and_projects.id', '=', 'division_outputs.idpaps')
+            ->where('idmfo', $request->idmfo)
+            ->groupBy('program_and_projects.id')
+            ->get();
+
+        return $paps;
     }
     public function update(Request $request)
     {
