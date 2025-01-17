@@ -152,7 +152,7 @@ class DivisionController extends Controller
 
         )
             ->leftJoin('division_outputs', 'program_and_projects.id', '=', 'division_outputs.idpaps')
-            ->where('idmfo', $request->idmfo)
+            ->where('program_and_projects.idmfo', $request->idmfo)
             ->groupBy('program_and_projects.id')
             ->get();
 
