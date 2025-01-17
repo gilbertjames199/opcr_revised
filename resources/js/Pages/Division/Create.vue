@@ -195,7 +195,6 @@ export default {
             submitted: false,
             form: useForm({
                 output: "",
-                // performance_measure: "",
                 office_accountable: "",
                 monitoring: "",
                 prescribed_period:"",

@@ -14,6 +14,10 @@
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(
+                        FFUNCCODE,
+                        office
+                    )">Print DPCR Standard</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -125,16 +129,25 @@
         mfosel: {{ mfosel }} -->
         <!-- {{ FFUNCCOD }} <br />
         {{ offices }} -->
+         <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
+
+                <iframe :src="my_link" style="width:100%; height:500px" />
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
         filters: Object,
         offices: Object,
+        FFUNCCODE: Object,
+        office: Object,
         // idinteroutcome: String,
         // idoutcome: String,
         // idmfo: String,
@@ -143,12 +156,14 @@ export default {
     },
     data() {
         return {
+            displayModal: false,
             search: this.$props.filters.search,
             filter: false,
             ismfo: 0,
             mfos_data: [],
-            FFUNCCOD: "",
             mfosel: "",
+            FFUNCCOD: "",
+            filter_FFUNCTION: "",
         }
     },
     watch: {
@@ -165,12 +180,26 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, Modal,
     },
     mounted() {
         this.mfos_data = this.mfos;
     },
     methods: {
+    showModal(ffunccod, ffunction) {
+            // alert("FFUNCCOD: " + ffunccod + "\n "
+            //     + " FFUNCTION: " + ffunction + "\n " +
+            //     "MOOE: " + MOOE + " \n" +
+            //     "PS: " + PS
+            // )
+            console.log("test1: "+ffunccod);
+            console.log("test2: "+ffunction);
+            this.my_link = this.getToRep(ffunccod, ffunction);
+            this.displayModal = true;
+        },
+        hideModal() {
+            this.displayModal = false;
+        },
         deleteMFO(id) {
             let text = "WARNING!\nAre you sure you want to delete the PAP?";
             if (confirm(text) == true) {
@@ -180,6 +209,15 @@ export default {
         showFilter() {
             //alert("show filter");
             this.filter = !this.filter
+        },
+          getToRep(ffunccod, ffunction) {
+            // alert(data[0].FFUNCCOD);
+            var linkt = "http://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FDPCR&reportUnit=%2Freports%2Fplanning_system%2FDPCR%2FDPCR_Standard&standAlone=true&decorate=no&output=pdf';
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
+            var link1 = linkt + jasper_ip + jasper_link + params;
+            return link1;
         },
         async clearFilter() {
             this.mfosel = "";
