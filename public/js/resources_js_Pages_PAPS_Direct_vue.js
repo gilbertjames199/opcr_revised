@@ -67,6 +67,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     Modal: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   mounted: function mounted() {
+    if (this.auth.user.department_code === '04') {}
+
     this.mfos_data = this.mfos;
   },
   methods: {
@@ -290,7 +292,7 @@ var _hoisted_3 = {
   "class": "peers fxw-nw jc-sb ai-c"
 };
 
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "Programs and Projects ", -1
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "Programs and Projects", -1
 /* HOISTED */
 );
 
@@ -427,7 +429,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary btn-sm mL-2 text-white",
     onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.showModal($props.FFUNCCODE, $props.office);
+      return $options.showModal($data.FFUNCCOD, $props.office);
     })
   }, "Print DPCR Standard"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary btn-sm mL-2 text-white",
