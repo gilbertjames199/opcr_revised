@@ -31,6 +31,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     filters: Object,
     offices: Object,
     FFUNCCODE: Object,
+    department_code: Object,
     office: Object,
     // idinteroutcome: String,
     // idoutcome: String,
@@ -47,6 +48,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       mfos_data: [],
       mfosel: "",
       FFUNCCOD: "",
+      func_code: "",
+      func_name: "",
       filter_FFUNCTION: ""
     };
   },
@@ -67,11 +70,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     Modal: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   mounted: function mounted() {
-    if (this.auth.user.department_code === '04') {}
-
+    this.office_function();
     this.mfos_data = this.mfos;
   },
   methods: {
+    office_function: function office_function() {
+      var _this = this;
+
+      if (this.department_code === '04') {
+        var selectedOffice = this.offices.find(function (office) {
+          return office.FFUNCCOD === _this.FFUNCCOD;
+        });
+        this.func_code = this.FFUNCCOD;
+        this.func_name = selectedOffice ? selectedOffice.FFUNCTION : ''; //  console.log(this.func_name)
+      } else {
+        this.func_code = this.FFUNCCODE;
+        this.func_name = this.office;
+      }
+    },
     showModal: function showModal(ffunccod, ffunction) {
       // alert("FFUNCCOD: " + ffunccod + "\n "
       //     + " FFUNCTION: " + ffunction + "\n " +
@@ -107,16 +123,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return link1;
     },
     clearFilter: function clearFilter() {
-      var _this = this;
+      var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this.mfosel = "";
+                _this2.mfosel = "";
 
-                _this.filterData();
+                _this2.filterData();
 
               case 2:
               case "end":
@@ -127,7 +143,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     filterMFOs: function filterMFOs() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var my_url, response;
@@ -135,39 +151,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _this2.mfos_data = []; // await axios.post("/paps/major/final/outputs/filter", { FFUNCCOD: this.form.FFUNCCOD }).then((response) => {
+                _this3.office_function();
+
+                _this3.mfos_data = []; // await axios.post("/paps/major/final/outputs/filter", { FFUNCCOD: this.form.FFUNCCOD }).then((response) => {
                 //     this.mfos_data = response.data.data
                 // });
 
-                _context2.prev = 1;
-                my_url = "/paps/major/final/outputs/filter/" + _this2.FFUNCCOD; // alert(my_url);
+                _context2.prev = 2;
+                my_url = "/paps/major/final/outputs/filter/" + _this3.FFUNCCOD; // alert(my_url);
 
-                _context2.next = 5;
+                _context2.next = 6;
                 return axios.get(my_url, {
-                  FFUNCCOD: _this2.FFUNCCOD
+                  FFUNCCOD: _this3.FFUNCCOD
                 });
 
-              case 5:
+              case 6:
                 response = _context2.sent;
-                _this2.mfos_data = response.data.data;
-                _context2.next = 12;
+                _this3.mfos_data = response.data.data;
+                _context2.next = 13;
                 break;
 
-              case 9:
-                _context2.prev = 9;
-                _context2.t0 = _context2["catch"](1);
+              case 10:
+                _context2.prev = 10;
+                _context2.t0 = _context2["catch"](2);
                 console.error("Error fetching MFOs:", _context2.t0);
 
-              case 12:
+              case 13:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[1, 9]]);
+        }, _callee2, null, [[2, 10]]);
       }))();
     },
     filterData: function filterData() {
-      var _this3 = this;
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
@@ -175,8 +193,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context3.prev = _context3.next) {
               case 0:
                 //alert(this.mfosel);
-                _this3.$inertia.get("/paps/direct", {
-                  mfosel: _this3.mfosel
+                _this4.$inertia.get("/paps/direct", {
+                  mfosel: _this4.mfosel
                 }, {
                   preserveScroll: true,
                   preserveState: true,
@@ -292,7 +310,7 @@ var _hoisted_3 = {
   "class": "peers fxw-nw jc-sb ai-c"
 };
 
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "Programs and Projects", -1
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "Programs and Projects ", -1
 /* HOISTED */
 );
 
@@ -429,7 +447,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary btn-sm mL-2 text-white",
     onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.showModal($data.FFUNCCOD, $props.office);
+      return $options.showModal($data.func_code, $data.func_name);
     })
   }, "Print DPCR Standard"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary btn-sm mL-2 text-white",

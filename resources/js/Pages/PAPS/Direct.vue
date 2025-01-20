@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Programs and Projects</h3>
+            <h3>Programs and Projects </h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -15,8 +15,8 @@
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(
-                        FFUNCCOD,
-                        office
+                        func_code,
+                        func_name
                     )">Print DPCR Standard</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
@@ -147,6 +147,7 @@ export default {
         filters: Object,
         offices: Object,
         FFUNCCODE: Object,
+        department_code: Object,
         office: Object,
         // idinteroutcome: String,
         // idoutcome: String,
@@ -163,6 +164,8 @@ export default {
             mfos_data: [],
             mfosel: "",
             FFUNCCOD: "",
+            func_code: "",
+            func_name: "",
             filter_FFUNCTION: "",
         }
     },
@@ -183,13 +186,22 @@ export default {
         Pagination, Filtering, Modal,
     },
     mounted() {
-        if(this.auth.user.department_code === '04'){
-
-        }
+        this.office_function()
         this.mfos_data = this.mfos;
     },
     methods: {
+    office_function(){
+        if(this.department_code === '04'){
+            const selectedOffice = this.offices.find(office => office.FFUNCCOD === this.FFUNCCOD);
+            this.func_code = this.FFUNCCOD
+            this.func_name = selectedOffice ? selectedOffice.FFUNCTION : '';
 
+            //  console.log(this.func_name)
+        } else {
+            this.func_code = this.FFUNCCODE
+            this.func_name = this.office
+        }
+    },
 
     showModal(ffunccod, ffunction) {
             // alert("FFUNCCOD: " + ffunccod + "\n "
@@ -229,6 +241,8 @@ export default {
             this.filterData();
         },
         async filterMFOs() {
+            this.office_function();
+
             this.mfos_data = [];
             // await axios.post("/paps/major/final/outputs/filter", { FFUNCCOD: this.form.FFUNCCOD }).then((response) => {
             //     this.mfos_data = response.data.data
