@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Programs and Projects </h3>
+            <h3>Programs and Projects</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -15,7 +15,7 @@
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(
-                        FFUNCCODE,
+                        FFUNCCOD,
                         office
                     )">Print DPCR Standard</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
@@ -183,9 +183,14 @@ export default {
         Pagination, Filtering, Modal,
     },
     mounted() {
+        if(this.auth.user.department_code === '04'){
+
+        }
         this.mfos_data = this.mfos;
     },
     methods: {
+
+
     showModal(ffunccod, ffunction) {
             // alert("FFUNCCOD: " + ffunccod + "\n "
             //     + " FFUNCTION: " + ffunction + "\n " +

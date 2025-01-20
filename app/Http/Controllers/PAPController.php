@@ -396,8 +396,9 @@ class PAPController extends Controller
         //dd($request->mfosel);
         $offices = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->orderBy('FFUNCTION', 'ASC')->get();
         $idn = auth()->user()->recid;
-        $FFUNCCODE = auth()->user()->FFUNCCOD2;
+        $FFUNCCODE = auth()->user()->office;
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCODE)->first();
+        // dd($auth()->user());
 
         // dd($office->FFUNCTION);
         $data = $this->model->with('MFO')
