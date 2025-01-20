@@ -398,9 +398,10 @@ class PAPController extends Controller
         $idn = auth()->user()->recid;
         $FFUNCCODE = auth()->user()->office;
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCODE)->first();
+        $department_code = $office->department_code;
         // dd($auth()->user());
 
-        // dd($office->FFUNCTION);
+        // dd($department_code);
         $data = $this->model->with('MFO')
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');
@@ -437,6 +438,7 @@ class PAPController extends Controller
         // dd($accessFFUNCCOD);
         return inertia('PAPS/Direct', [
             "FFUNCCODE" => $FFUNCCODE,
+            "department_code" => $department_code,
             "offices" => $offices,
             'office' => $office->FFUNCTION,
             "data" => $paginatedResult,
