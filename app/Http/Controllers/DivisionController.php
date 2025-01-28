@@ -61,6 +61,7 @@ class DivisionController extends Controller
             'office_accountable' => 'required',
             'monitoring' => 'required',
             'prescribed_period' => 'required',
+            'performance_measure' => 'required',
             'quality1' => 'required',
             'quality2' => 'required',
             'quality3' => 'required',
@@ -68,14 +69,9 @@ class DivisionController extends Controller
             'efficiency2' => 'required',
             'efficiency3' => 'required',
             'timeliness' => 'required',
-            'quantity' => 'required',
             'idpaps' => 'required',
         ]);
 
-        $verb = $request->input('verb'); // Retrieve verb directly from the request
-        $output = $attributes['output']; // Get output from the validated attributes
-        $prescribed_period = $attributes['prescribed_period']; // Get output from the validated attributes
-        $attributes['performance_measure'] = "{$verb} {$output} with a satisfactory rating for quality/effectiveness and satisfactory in efficiency at {$prescribed_period}";
 
         // dd($attributes);
         $this->model->create($attributes);
@@ -92,6 +88,7 @@ class DivisionController extends Controller
                 'id',
                 'output',
                 'office_accountable',
+                'performance_measure',
                 'monitoring',
                 'prescribed_period',
                 'quality1',
@@ -180,6 +177,7 @@ class DivisionController extends Controller
         $data->update([
             'output' => $request->output,
             'office_accountable' => $request->office_accountable,
+            'performance_measure' => $request->performance_measure,
             'monitoring' => $request->monitoring,
             'prescribed_period' => $request->prescribed_period,
             'quality1' => $request->quality1,
