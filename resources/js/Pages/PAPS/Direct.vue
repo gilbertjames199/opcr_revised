@@ -187,6 +187,8 @@ export default {
     },
     mounted() {
         this.office_function()
+        this.func_name = this.office
+        this.func_code = this.FFUNCCODE
         this.mfos_data = this.mfos;
     },
     methods: {

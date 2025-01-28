@@ -71,6 +71,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     this.office_function();
+    this.func_name = this.office;
+    this.func_code = this.FFUNCCODE;
     this.mfos_data = this.mfos;
   },
   methods: {
