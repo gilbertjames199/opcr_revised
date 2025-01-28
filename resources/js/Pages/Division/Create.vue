@@ -30,8 +30,8 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.performance_measure">{{ form.errors.performance_measure }}</div> -->
 
                 <label for="">Verb</label>
-                <input type="text" v-model="form.verb" class="form-control" autocomplete="positionchrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.verb">{{ form.errors.verb }}</div>
+                <input type="text" v-model="form.performance_measure" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.performance_measure">{{ form.errors.performance_measure }}</div>
 
                 <!-- <label for="">Success Indicator</label>
                 <input type="text" v-model="form.success_indicator" class="form-control" autocomplete="positionchrome-off">
@@ -134,11 +134,7 @@
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
-                              <div v-if="form.efficiency2 === 'Yes'">
-                            <br>
-                            <label for="quantity">Quantity</label>
-                            <input type="number" class="form-control" id="quantity" v-model="form.quantity" :disabled="isDisabled" />
-                        </div>
+
                             <br>
                             <label for="">Optimum use or resources (e.g., money, logistics, office supplies)</label>
                             <select class="form-control" v-model="form.efficiency3" :disabled="isDisabled">
@@ -186,8 +182,7 @@ export default {
         Output: Object,
         // Performance: Object,
         idpaps: Number,
-        verb: Object,
-        quantity: Object
+        performance_measure: Object,
     },
 
     data() {
@@ -205,8 +200,7 @@ export default {
                 efficiency2:"",
                 efficiency3:"",
                 timeliness: "",
-                quantity: 0,
-                verb:"",
+                performance_measure:"",
                 idpaps: "",
                 id: null
             }),
@@ -216,11 +210,11 @@ export default {
 
     mounted() {
         console.log(this.editData);
- this.form.idpaps = this.idpaps;
+        this.form.idpaps = this.idpaps;
         if (this.editData !== undefined) {
             this.pageTitle = "Edit"
             this.form.output = this.editData.output
-            // this.form.performance_measure = this.opcr_standard.performance_measure
+            this.form.performance_measure = this.editData.performance_measure
             this.form.office_accountable = this.editData.office_accountable
             this.form.monitoring = this.editData.monitoring
             this.form.prescribed_period = this.editData.prescribed_period
@@ -231,7 +225,6 @@ export default {
             this.form.efficiency2 = this.editData.efficiency2
             this.form.efficiency3 = this.editData.efficiency3
             this.form.timeliness = this.editData.timeliness
-            this.form.verb = this.editData.verb
             this.form.idpaps = this.editData.idpaps
             this.form.id = this.editData.id
         } else {
@@ -246,11 +239,6 @@ export default {
             this.form.timeliness = 'No'; // Set timeliness to No when efficiency1 is Yes
         }
         },
-        'form.efficiency2'(newValue) {
-        if (newValue === 'Yes') {
-            this.form.quantity = 0; // Set timeliness to No when efficiency1 is Yes
-        }
-        }
     },
 
     methods: {

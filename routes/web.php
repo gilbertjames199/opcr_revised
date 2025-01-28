@@ -741,8 +741,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('/individual/outputs')->group(function () {
-        Route::get('/', [IndividualFinalOutputController::class, 'index']);
-        Route::get('/create', [IndividualFinalOutputController::class, 'create']);
+        Route::get('/{idDPCR}', [IndividualFinalOutputController::class, 'index']);
+        Route::get('/create/{idDPCR}', [IndividualFinalOutputController::class, 'create']);
         Route::post('/store', [IndividualFinalOutputController::class, 'store']);
         Route::get('/{id}/edit', [IndividualFinalOutputController::class, 'edit']);
         Route::patch('/', [IndividualFinalOutputController::class, 'update']);

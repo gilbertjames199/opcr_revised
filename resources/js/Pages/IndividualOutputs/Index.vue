@@ -5,20 +5,20 @@
 
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <!-- <h4>{{ dept.FFUNCTION }}</h4> -->
+            <h4>{{ dpcr.output }}</h4>
         </div>
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Individual Final Outputs</h3>
             <div class="peers">
-                <div class="peer mR-10">
+                <!-- <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
+                </div> -->
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/individual/outputs/create`">Add IFO</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal1()">Import</button>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                    <Link class="btn btn-primary btn-sm" :href="`/individual/outputs/create/${idDPCR}`">Add Individual Output</Link>
+                    <!-- <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal1()">Import</button> -->
+                    <!-- <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
                 </div>&nbsp;
-                <Link :href="`/logframe`">
+                <Link :href="`/divisions/${idpaps}`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                         <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -36,24 +36,16 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>IPCR Code</th>
-                                <th>Major Final Output</th>
-                                <th>Sub MFO</th>
-                                <th>Division Output</th>
                                 <th>Individual Output</th>
-                                <th>Performance Measure</th>
+                                <th>Success Indicator/PM</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
 
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.ipcr_code }}</td>
-                                <td>{{ dat.mfo_desc }}</td>
-                                <td>{{ dat.submfo_description }}</td>
-                                <td>{{ dat.output }}</td>
                                 <td>{{ dat.individual_output }}</td>
-                                <td>{{ dat.performance_measure }}</td>
+                                <td>{{ dat.performance_measure + " " + dat.individual_output + " with a satisfactory rating for quality/effectiveness and satisfactory in efficiency at " + dat.prescribed_period }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -109,7 +101,10 @@ export default {
     props: {
         data: Object,
         dept: Object,
-        FFUNCCOD: String
+        FFUNCCOD: String,
+        idDPCR: String,
+        idpaps: String,
+        dpcr: Object,
     },
     data() {
         return{

@@ -9,200 +9,146 @@ use App\Models\FFUNCCOD;
 use App\Models\IndividualFinalOutput;
 use App\Models\MajorFinalOutput;
 use App\Models\SubMfo;
+use App\Models\User;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class IndividualFinalOutputController extends Controller
 {
-    protected $ifo, $submfo, $mfo, $division, $div_output;
-    public function __construct(IndividualFinalOutput $ifo, SubMfo $submfo, Division $division, DivisionOutput $div_output, MajorFinalOutput $mfo)
+    protected $model;
+    public function __construct(IndividualFinalOutput $model)
     {
-        $this->ifo = $ifo;
-        $this->submfo = $submfo;
-        $this->division = $division;
-        $this->div_output = $div_output;
-        $this->mfo = $mfo;
+        $this->model = $model;
     }
 
-
-    public function index(Request $request)
+    public function index(Request $request, $id)
     {
-        //************************ */
-        //ACCESS
-        $idn = auth()->user()->recid;
-        $access = DB::connection('mysql2')->table('accountaccess')
-            ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
-            ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
-            ->where('systemusers.recid', $idn)
+
+        // dd($id);
+
+        $data = IndividualFinalOutput::where('idDPCR', $id)
             ->get();
-        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
 
-        //************************ */
 
-        //DIVISIONS
-        $divs = $this->division->get();
-        $divs = $divs->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $paps = Division::where('id', $id)->first();
 
-        //MFOs
-        $mfos = $this->mfo->get();
-        $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
-
-        $data = IndividualFinalOutput::select(
-            'individual_final_outputs.ipcr_code',
-            'individual_final_outputs.id',
-            'individual_final_outputs.individual_output',
-            'individual_final_outputs.performance_measure',
-            'divisions.division_name1 AS division',
-            'division_outputs.output',
-            'major_final_outputs.mfo_desc',
-            'major_final_outputs.FFUNCCOD',
-            'sub_mfos.submfo_description'
-        )
-            ->leftjoin('division_outputs', 'division_outputs.id', 'individual_final_outputs.id_div_output')
-            ->leftjoin('divisions', 'divisions.id', 'division_outputs.division_id')
-            ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'division_outputs.idmfo')
-            ->leftjoin('sub_mfos', 'sub_mfos.id', 'individual_final_outputs.idsubmfo')
-            ->orderBy('individual_final_outputs.ipcr_code')
-            ->get();
-        $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $result = $data;
         $showPerPage = 10;
         $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
         // dd("individual");
         return inertia('IndividualOutputs/Index', [
+            "idDPCR" => $id,
+            'idpaps' => $paps->idpaps,
+            'dpcr' => $paps,
             "data" => $paginatedResult,
         ]);
     }
-    public function create(Request $request)
+    public function create(Request $request, $idDPCR)
     {
-        //ACCESS
-        $idn = auth()->user()->recid;
-        $access = DB::connection('mysql2')->table('accountaccess')
-            ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
-            ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
-            ->where('systemusers.recid', $idn)
-            ->get();
-        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
 
-        //************************ */
+        // dd($idDPCR);
 
-        //DIVISIONS
-        $divs = $this->division
-            ->where('department_code', auth()->user()->department_code)
-            ->get();
-        //dd(auth()->user()->department_code);
-        //$divs = $divs->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        $dpcr = Division::where('id', $idDPCR)->first();
 
-        //MFOs
-        $mfos = $this->mfo->get();
-        $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
-
-        //subMFOs
-        $submfos = $this->submfo
-            ->select('sub_mfos.id', 'sub_mfos.submfo_description', 'sub_mfos.idmfo')
-            ->join('major_final_outputs', 'major_final_outputs.id', 'sub_mfos.idmfo')
-            ->where('department_code', auth()->user()->department_code)
-            ->get();
-        //dd($submfos);
-
-        //DIVISION OUTPUTS
-        $div_outputs = $this->div_output
-            ->select('division_outputs.id', 'division_outputs.output', 'division_outputs.output')
-            ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'division_outputs.idmfo')
-            ->where('major_final_outputs.department_code', auth()->user()->department_code)
-            ->get();
-        //dd($div_outputs);
+        // dd($dpcr);
         return inertia('IndividualOutputs/Create', [
-            "divisions" => $divs,
-            "mfos" => $mfos,
-            "div_outputs" => $div_outputs,
-            "submfos" => $submfos
+            "dpcr" => $dpcr,
+            'iddpcr' => $idDPCR,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+            ],
         ]);
     }
     public function store(Request $request)
     {
-        //dd($request);
+        // dd($request->all());
         $attributes = $request->validate([
-            'ipcr_code' => 'required',
-            'idmfo' => 'required',
-            'idsubmfo' => 'required',
-            'id_div_output' => 'required',
             'individual_output' => 'required',
             'performance_measure' => 'required',
+            'prescribed_period' => 'required',
+            'quality1' => 'required',
+            'quality2' => 'required',
+            'quality3' => 'required',
+            'efficiency1' => 'required',
+            'efficiency2' => 'required',
+            'efficiency3' => 'required',
+            'timeliness' => 'required',
+            'idDPCR' => 'required',
         ]);
-        $this->ifo->create($attributes);
-        return redirect('/individual/outputs')
-            ->with('message', 'Division Output added');
+
+        $attributes['type'] = "Unique";
+
+        // dd($verb);
+        $this->model->create($attributes);
+        return redirect('/individual/outputs/' . $request->idDPCR)
+            ->with('message', 'Individual Output added');
     }
     public function edit(Request $request, $id)
     {
-        //ACCESS 147
-        $idn = auth()->user()->recid;
-        $access = DB::connection('mysql2')->table('accountaccess')
-            ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
-            ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
-            ->where('systemusers.recid', $idn)
-            ->get();
-        $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
+        // dd($request->all());
 
-        //************************ */
+        // dd($id);
+        $editData = $this->model
+            ->where('id', $id)->first([
+                'id',
+                'individual_output',
+                'prescribed_period',
+                'performance_measure',
+                'quality1',
+                'quality2',
+                'quality3',
+                'efficiency1',
+                'efficiency2',
+                'efficiency3',
+                'timeliness',
+                'idDPCR',
+            ]);
 
-        //DIVISIONS
-        $divs = $this->division
-            ->where('department_code', auth()->user()->department_code)
-            ->get();
-
-        //MFOs
-        $mfos = $this->mfo->get();
-        $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
-
-        //subMFOs
-        //$idmfos = $mfos->pluck('id');
-        $submfos = $this->submfo
-            ->select('sub_mfos.id', 'sub_mfos.submfo_description', 'sub_mfos.idmfo')
-            ->join('major_final_outputs', 'major_final_outputs.id', 'sub_mfos.idmfo')
-            ->where('department_code', auth()->user()->department_code)
-            ->get();
-
-        //DIVISION OUTPUTS
-        $div_outputs = $this->div_output->get();
-
-        //INDIVIDUAL FINAL OUTPUT
-        $data = $this->ifo->where('id', $id)->first();
-        $div_output_id = $data->id_div_output;
-
-        $division_id = $this->div_output->where('id', $div_output_id)->first()->division_id;
+        $data = Division::where('id', $editData->idDPCR)->first();
         return inertia('IndividualOutputs/Create', [
-            "divisions" => $divs,
-            "mfos" => $mfos,
-            "div_outputs" => $div_outputs,
-            "submfos" => $submfos,
-            "editData" => $data,
-            "divid" => $division_id
+            "data" => $data,
+            'iddpcr' => $editData->idDPCR,
+            "editData" => $editData,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+            ],
         ]);
     }
     public function update(Request $request)
     {
-        //dd($request);
-        $mifo = $this->ifo->find($request->id);
-        $mifo->ipcr_code = $request->ipcr_code;
-        $mifo->idmfo = $request->idmfo;
-        $mifo->idsubmfo = $request->idsubmfo;
-        $mifo->id_div_output = $request->id_div_output;
-        $mifo->individual_output = $request->individual_output;
-        $mifo->performance_measure = $request->performance_measure;
-        $mifo->save();
-        return redirect('/individual/outputs')
+        $data = $this->model->findOrFail($request->id);
+        // dd($request->all());
+
+        $data->update([
+            'individual_output' => $request->individual_output,
+            'prescribed_period' => $request->prescribed_period,
+            'performance_measure' => $request->performance_measure,
+            'quality1' => $request->quality1,
+            'quality2' => $request->quality2,
+            'quality3' => $request->quality3,
+            'efficiency1' => $request->efficiency1,
+            'efficiency2' => $request->efficiency2,
+            'efficiency3' => $request->efficiency3,
+            'timeliness' => $request->timeliness,
+        ]);
+
+        return redirect('/individual/outputs/' . $request->idDPCR)
             ->with('message', 'Division Output updated');
     }
     public function destroy(Request $request, $id)
     {
-
-        $data = $this->ifo->findOrFail($id);
+        // dd($request->all());
+        $data = $this->model->findOrFail($id);
+        $iddpcr = $data->idDPCR;
+        // dd($iddpcr);
         $data->delete();
         //dd($request->raao_id);
-        return redirect('/individual/outputs')->with('warning', 'IFO Deleted');
+        return redirect('/individual/outputs/' . $iddpcr)->with('warning', 'IFO Deleted');
     }
     public function importIPCR(Request $request)
     {
