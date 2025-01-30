@@ -78,6 +78,7 @@ class IndividualFinalOutputController extends Controller
             'efficiency3' => 'required',
             'timeliness' => 'required',
             'idDPCR' => 'required',
+            'department_code' => 'required',
         ]);
 
         $attributes['type'] = "Unique";
