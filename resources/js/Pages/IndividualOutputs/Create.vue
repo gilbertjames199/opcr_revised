@@ -170,6 +170,7 @@ export default {
             submfos: Object,
             divid: Object,
             iddpcr: Number,
+            auth: Object,
         },
 
         data() {
@@ -190,6 +191,7 @@ export default {
                 efficiency3:"",
                 timeliness: "",
                 performance_measure:"",
+                department_code: "",
                 idDPCR: "",
                 id: null
                 }),
@@ -218,7 +220,9 @@ export default {
         },
     },
         mounted() {
+            // console.log(this.auth.user.department_code);
             this.form.idDPCR = this.iddpcr;
+            this.form.department_code = this.auth.user.department_code;
             if (this.editData !== undefined) {
                 this.form.individual_output = this.editData.individual_output
             this.form.prescribed_period = this.editData.prescribed_period

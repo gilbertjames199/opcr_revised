@@ -23,7 +23,8 @@ __webpack_require__.r(__webpack_exports__);
     div_outputs: Object,
     submfos: Object,
     divid: Object,
-    iddpcr: Number
+    iddpcr: Number,
+    auth: Object
   },
   data: function data() {
     return {
@@ -43,6 +44,7 @@ __webpack_require__.r(__webpack_exports__);
         efficiency3: "",
         timeliness: "",
         performance_measure: "",
+        department_code: "",
         idDPCR: "",
         id: null
       }),
@@ -76,7 +78,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    // console.log(this.auth.user.department_code);
     this.form.idDPCR = this.iddpcr;
+    this.form.department_code = this.auth.user.department_code;
 
     if (this.editData !== undefined) {
       this.form.individual_output = this.editData.individual_output;
