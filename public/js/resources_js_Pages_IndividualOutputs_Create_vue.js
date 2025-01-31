@@ -33,6 +33,7 @@ __webpack_require__.r(__webpack_exports__);
       my_submfos: [],
       division_id: null,
       idmfo: null,
+      showPrescribedPeriod: false,
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         individual_output: "",
         prescribed_period: "",
@@ -79,7 +80,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.showPrescribedPeriod = false; // Hide it when No is selected
 
-        this.form.prescribed_period = ''; // Clear the input value
+        this.form.prescribed_period = 'No'; // Clear the input value
       }
     }
   },
@@ -486,7 +487,7 @@ var _hoisted_72 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 var _hoisted_73 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Please provide specific time (e.g. Every 1st Monday of the Month, December 31 of the year)", -1
+}, "Please provide specific time (e.g., Every 1st Monday of the Month, December 31 of the year)", -1
 /* HOISTED */
 );
 
@@ -586,7 +587,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: _ctx.isDisabled
   }, _hoisted_53, 8
   /* PROPS */
-  , _hoisted_50), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.efficiency1]]), _ctx.showPrescribedPeriod ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_54, [_hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  , _hoisted_50), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.efficiency1]]), $data.showPrescribedPeriod ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_54, [_hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $data.form.prescribed_period = $event;

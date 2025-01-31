@@ -145,7 +145,7 @@
                         <fieldset class="border p-4">
                             <legend class="float-none w-auto"><b>Timeliness Rating </b></legend>
                             <div>
-                                <label for="">Please provide specific time (e.g. Every 1st Monday of the Month, December 31 of the year)</label>
+                                <label for="">Please provide specific time (e.g., Every 1st Monday of the Month, December 31 of the year)</label>
                                 <input type="text" v-model="form.timeliness" class="form-control" autocomplete="positionchrome-off">
 
                             </div>
@@ -188,6 +188,7 @@ export default {
                 my_submfos: [],
                 division_id: null,
                 idmfo: null,
+                showPrescribedPeriod: false,
                 form: useForm({
                 individual_output: "",
                 prescribed_period:"",
@@ -227,7 +228,7 @@ export default {
             this.showPrescribedPeriod = true; // Show the prescribed period field
         } else {
             this.showPrescribedPeriod = false; // Hide it when No is selected
-            this.form.prescribed_period = ''; // Clear the input value
+            this.form.prescribed_period = 'No'; // Clear the input value
         }
 
         },
