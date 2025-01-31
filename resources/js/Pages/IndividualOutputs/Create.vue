@@ -33,9 +33,9 @@
                 <!-- <label for="">Success Indicator</label>
                 <input type="text" v-model="form.success_indicator" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.success_indicator">{{ form.errors.success_indicator }}</div> -->
-                <label for="">Prescribed Period</label>
+                <!-- <label for="">Prescribed Period</label>
                 <input type="text" v-model="form.prescribed_period" class="form-control" autocomplete="positionchrome-off" >
-                <div class="fs-6 c-red-500" v-if="form.errors.prescribed_period">{{ form.errors.prescribed_period }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.prescribed_period">{{ form.errors.prescribed_period }}</div> -->
                 <br>
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -116,6 +116,13 @@
                                 <option value="No">No</option>
                             </select>
 
+                            <div v-if="showPrescribedPeriod">
+    <label for="">Prescribed Period</label>
+    <input type="text" v-model="form.prescribed_period" class="form-control" autocomplete="positionchrome-off">
+    <div class="fs-6 c-red-500" v-if="form.errors.prescribed_period">{{ form.errors.prescribed_period }}</div>
+    <br>
+</div>
+
                             <br>
                             <label for="">Number of requests/applications acted upon over number of request/applications received</label>
                             <select class="form-control" v-model="form.efficiency2" :disabled="isDisabled">
@@ -138,6 +145,7 @@
                         <fieldset class="border p-4">
                             <legend class="float-none w-auto"><b>Timeliness Rating </b></legend>
                             <div>
+                                <label for="">Please provide specific time (e.g. Every 1st Monday of the Month, December 31 of the year)</label>
                                 <input type="text" v-model="form.timeliness" class="form-control" autocomplete="positionchrome-off">
 
                             </div>
@@ -213,10 +221,15 @@ export default {
             }
         },
         watch: {
-        'form.efficiency1'(newValue) {
+         'form.efficiency1'(newValue) {
         if (newValue === 'Yes') {
             this.form.timeliness = 'No'; // Set timeliness to No when efficiency1 is Yes
+            this.showPrescribedPeriod = true; // Show the prescribed period field
+        } else {
+            this.showPrescribedPeriod = false; // Hide it when No is selected
+            this.form.prescribed_period = ''; // Clear the input value
         }
+
         },
     },
         mounted() {

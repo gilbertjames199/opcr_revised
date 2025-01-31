@@ -209,7 +209,7 @@ export default {
     },
 
     mounted() {
-        console.log(this.editData);
+        // console.log(this.editData);
         this.form.idpaps = this.idpaps;
         if (this.editData !== undefined) {
             this.pageTitle = "Edit"
