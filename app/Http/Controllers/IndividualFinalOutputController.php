@@ -65,7 +65,7 @@ class IndividualFinalOutputController extends Controller
     }
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $attributes = $request->validate([
             'individual_output' => 'required',
             'performance_measure' => 'required',
