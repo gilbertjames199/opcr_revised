@@ -47,7 +47,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log(this.editData);
+    // console.log(this.editData);
     this.form.idpaps = this.idpaps;
 
     if (this.editData !== undefined) {
