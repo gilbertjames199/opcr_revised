@@ -242,6 +242,7 @@ export default {
             this.form.idDPCR = this.iddpcr;
             this.form.department_code = this.auth.user.department_code;
             if (this.editData !== undefined) {
+                this.pageTitle = "Edit"
                 this.form.individual_output = this.editData.individual_output
             this.form.prescribed_period = this.editData.prescribed_period
             this.form.quality1 = this.editData.quality1

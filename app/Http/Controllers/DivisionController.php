@@ -103,10 +103,11 @@ class DivisionController extends Controller
             ]);
         // dd($editData);
         $data = ProgramAndProject::where('id', $editData->idpaps)->first();
+        $paps = ProgramAndProject::where('id', $editData->idpaps)->first();
         return inertia('Division/Create', [
             "data" => $data,
             'idpaps' => $editData->idpaps,
-            "data" => $data,
+            "paps" => $paps,
             "editData" => $editData,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
