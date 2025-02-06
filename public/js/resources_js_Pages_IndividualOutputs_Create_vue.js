@@ -95,6 +95,7 @@ __webpack_require__.r(__webpack_exports__);
     this.form.department_code = this.auth.user.department_code;
 
     if (this.editData !== undefined) {
+      this.pageTitle = "Edit";
       this.form.individual_output = this.editData.individual_output;
       this.form.prescribed_period = this.editData.prescribed_period;
       this.form.quality1 = this.editData.quality1;

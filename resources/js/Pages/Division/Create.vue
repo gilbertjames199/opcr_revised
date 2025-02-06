@@ -13,7 +13,7 @@
             </svg>
             </Link>
         </div>
-<h5>{{"Division Output: " + paps.paps_desc }}</h5>
+<h5>{{"PAPS: " + paps.paps_desc }}</h5>
 
         <div class="col-md-8">
             <form @submit.prevent="submit()">

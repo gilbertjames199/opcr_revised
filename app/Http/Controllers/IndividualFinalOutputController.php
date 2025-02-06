@@ -109,11 +109,14 @@ class IndividualFinalOutputController extends Controller
                 'idDPCR',
             ]);
 
+        $dpcr = Division::where('id', $editData->idDPCR)->first();
+
         $data = Division::where('id', $editData->idDPCR)->first();
         return inertia('IndividualOutputs/Create', [
             "data" => $data,
             'iddpcr' => $editData->idDPCR,
             "editData" => $editData,
+            "dpcr" => $dpcr,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
