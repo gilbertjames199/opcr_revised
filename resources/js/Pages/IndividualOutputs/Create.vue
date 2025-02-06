@@ -1,7 +1,8 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Individual Final Output</h3>
+            <h3>{{ pageTitle }} Individual Output</h3>
+
             <!-- <h4>{{ dept.FFUNCTION }}</h4> -->
             <Link :href="`/individual/outputs/${iddpcr}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -10,6 +11,7 @@
                 </svg>
             </Link>
         </div>
+        <h5>{{"Division Output: " + dpcr.output }}</h5>
 
 
         <div class="col-md-8">
@@ -55,7 +57,7 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact"
-                            aria-selected="false" :disabled="form.efficiency1 === 'Yes'">
+                            aria-selected="false" :disabled="form.efficiency1 === 'Yes'" :class="{'text-decoration-line-through': form.efficiency1 === 'Yes'}">
                             Timeliness
                         </button>
                     </li>
@@ -74,7 +76,6 @@
                                                     <option value="Client Satisfaction">Client Satisfaction</option>
                                                     <option value="Accuracy">Accuracy</option>
                                                     <option value="Completeness/Comprehensiveness">Completeness/Comprehensiveness</option>
-                                                    <option value="Personal Initiative">Personal Initiative</option>
                                                 </select>
 
                                             </div>
@@ -86,7 +87,6 @@
                                                     <option value="Client Satisfaction">Client Satisfaction</option>
                                                     <option value="Accuracy">Accuracy</option>
                                                     <option value="Completeness/Comprehensiveness">Completeness/Comprehensiveness</option>
-                                                    <option value="Personal Initiative">Personal Initiative</option>
                                                 </select>
                                             </div>
                                             <br>
@@ -97,7 +97,7 @@
                                                     <option value="Client Satisfaction">Client Satisfaction</option>
                                                     <option value="Accuracy">Accuracy</option>
                                                     <option value="Completeness/Comprehensiveness">Completeness/Comprehensiveness</option>
-                                                    <option value="Personal Initiative">Personal Initiative</option>
+                                                    <option value="Creativity/Innovation/Personal Initiative">Creativity/Innovation/Personal Initiative</option>
                                                 </select>
                                             </div>
 
@@ -145,7 +145,7 @@
                         <fieldset class="border p-4">
                             <legend class="float-none w-auto"><b>Timeliness Rating </b></legend>
                             <div>
-                                <label for="">Please provide specific time (e.g., Every 1st Monday of the Month, December 31 of the year)</label>
+                                <label for="">Please provide specific time (e.g., Every 1st Monday of the Month, December 31)</label>
                                 <input type="text" v-model="form.timeliness" class="form-control" autocomplete="positionchrome-off">
 
                             </div>
@@ -178,6 +178,7 @@ export default {
             submfos: Object,
             divid: Object,
             iddpcr: Number,
+            dpcr: Object,
             auth: Object,
         },
 
@@ -194,7 +195,7 @@ export default {
                 prescribed_period:"",
                 quality1:"",
                 quality2:"",
-                quality3:"",
+                quality3: "Creativity/Innovation/Personal Initiative",
                 efficiency1:"",
                 efficiency2:"",
                 efficiency3:"",
@@ -204,6 +205,7 @@ export default {
                 idDPCR: "",
                 id: null
                 }),
+                isDisabled: false,
                 pageTitle: ""
             };
         },
@@ -222,11 +224,13 @@ export default {
             }
         },
         watch: {
-         'form.efficiency1'(newValue) {
+          'form.efficiency1'(newValue) {
         if (newValue === 'Yes') {
             this.form.timeliness = 'No'; // Set timeliness to No when efficiency1 is Yes
             this.showPrescribedPeriod = true; // Show the prescribed period field
+            this.form.prescribed_period = "";
         } else {
+            this.form.timeliness = "";
             this.showPrescribedPeriod = false; // Hide it when No is selected
             this.form.prescribed_period = 'No'; // Clear the input value
         }

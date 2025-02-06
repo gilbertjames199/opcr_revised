@@ -45,7 +45,7 @@
 
                             <tr v-for="dat in data.data">
                                 <td>{{ dat.output }}</td>
-                                <td>{{ dat.performance_measure + " " + dat.output + " with a satisfactory rating for quality/effectiveness and satisfactory in efficiency at " + dat.prescribed_period }}</td>
+                                <td>{{ dat.efficiency1 == 'Yes' ? dat.performance_measure + " " + dat.output + " with a satisfactory rating for quality/effectiveness and satisfactory in efficiency within " + dat.prescribed_period : dat.performance_measure + " " + dat.output + " with a satisfactory rating for quality/effectiveness and satisfactory in efficiency on or before " + dat.timeliness  }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
