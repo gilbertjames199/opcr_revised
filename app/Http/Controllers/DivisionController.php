@@ -58,8 +58,6 @@ class DivisionController extends Controller
         $id = $request->idpaps;
         $attributes = $request->validate([
             'output' => 'required',
-            'office_accountable' => 'required',
-            'monitoring' => 'required',
             'prescribed_period' => 'required',
             'performance_measure' => 'required',
             'quality1' => 'required',
@@ -73,6 +71,8 @@ class DivisionController extends Controller
         ]);
 
 
+        $attributes['monitoring'] = "N/A";
+        $attributes['office_accountable'] = "N/A";
         // dd($attributes);
         $this->model->create($attributes);
         return redirect('/divisions/' . $request->idpaps)
