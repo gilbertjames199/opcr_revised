@@ -35,7 +35,7 @@
 
                 <div class="form-check mt-2">
                     <input type="checkbox" id="notRated" v-model="form.not_rated" class="form-check-input">
-                    <label for="notRated" class="form-check-label">Not to be Rated?</label>
+                    <label for="notRated" class="form-check-label">Not to be Rated</label>
                 </div>
 
                 <!-- <label for="">Success Indicator</label>

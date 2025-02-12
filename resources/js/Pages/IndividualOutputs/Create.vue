@@ -34,7 +34,7 @@
 
                 <div class="form-check mt-2">
                     <input type="checkbox" id="notRated" v-model="form.not_rated" class="form-check-input">
-                    <label for="notRated" class="form-check-label">Not to be Rated?</label>
+                    <label for="notRated" class="form-check-label">Not to be Rated</label>
                 </div>
 
                 <!-- <label for="">Success Indicator</label>
@@ -129,7 +129,7 @@
                             </div>
 
                             <br>
-                            <label for="">Number of requests/applications acted upon over number of request/applications received</label>
+                            <label for="">Quantity Based (ex. Number of requests/applications acted upon over number of request/applications received)</label>
                             <select class="form-control" v-model="form.efficiency2">
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
