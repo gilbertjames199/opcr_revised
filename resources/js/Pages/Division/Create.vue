@@ -33,6 +33,11 @@
                 <input type="text" v-model="form.performance_measure" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.performance_measure">{{ form.errors.performance_measure }}</div>
 
+                <div class="form-check mt-2">
+                    <input type="checkbox" id="notRated" v-model="form.not_rated" class="form-check-input">
+                    <label for="notRated" class="form-check-label">Not to be Rated?</label>
+                </div>
+
                 <!-- <label for="">Success Indicator</label>
                 <input type="text" v-model="form.success_indicator" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.success_indicator">{{ form.errors.success_indicator }}</div> -->
@@ -69,7 +74,7 @@
                             <legend class="float-none w-auto"><b>Quality/Effectiveness</b></legend>
 
                             <div>
-                                                <select class="form-control" v-model="form.quality1" :disabled="isDisabled">
+                                                <select class="form-control" v-model="form.quality1">
                                                     <option value="Acceptability">Acceptability</option>
                                                     <option value="Meeting Standard">Meeting Standard</option>
                                                     <option value="Client Satisfaction">Client Satisfaction</option>
@@ -80,7 +85,7 @@
                                             </div>
                                             <br>
                                              <div>
-                                                <select class="form-control" v-model="form.quality2" :disabled="isDisabled">
+                                                <select class="form-control" v-model="form.quality2">
                                                     <option value="Acceptability">Acceptability</option>
                                                     <option value="Meeting Standard">Meeting Standard</option>
                                                     <option value="Client Satisfaction">Client Satisfaction</option>
@@ -90,7 +95,7 @@
                                             </div>
                                             <br>
                                              <div>
-                                                <select class="form-control" v-model="form.quality3" :disabled="isDisabled">
+                                                <select class="form-control" v-model="form.quality3" :disabled="true">
                                                     <option value="Acceptability">Acceptability</option>
                                                     <option value="Meeting Standard">Meeting Standard</option>
                                                     <option value="Client Satisfaction">Client Satisfaction</option>
@@ -116,21 +121,21 @@
                             </select>
 
                             <div v-if="showPrescribedPeriod">
-    <label for="">Prescribed Period</label>
-    <input type="text" v-model="form.prescribed_period" class="form-control" autocomplete="positionchrome-off">
-    <div class="fs-6 c-red-500" v-if="form.errors.prescribed_period">{{ form.errors.prescribed_period }}</div>
-    <br>
-</div>
+                                <label for="">Prescribed Period</label>
+                                <input type="text" v-model="form.prescribed_period" class="form-control" autocomplete="positionchrome-off">
+                                <div class="fs-6 c-red-500" v-if="form.errors.prescribed_period">{{ form.errors.prescribed_period }}</div>
+                                <br>
+                            </div>
                             <br>
                             <label for="">Number of requests/applications acted upon over number of request/applications received</label>
-                            <select class="form-control" v-model="form.efficiency2" :disabled="isDisabled">
+                            <select class="form-control" v-model="form.efficiency2">
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
 
                             <br>
                             <label for="">Optimum use or resources (e.g., money, logistics, office supplies)</label>
-                            <select class="form-control" v-model="form.efficiency3" :disabled="isDisabled">
+                            <select class="form-control" v-model="form.efficiency3" :disabled="true">
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
@@ -145,7 +150,7 @@
                             <legend class="float-none w-auto"><b>Timeliness Rating </b></legend>
                             <div>
                             <label for="">Please provide specific time (e.g., Every 1st Monday of the Month, December 31)</label>
-                             <input type="text" v-model="form.timeliness" class="form-control" autocomplete="positionchrome-off">
+                             <input type="text" v-model="form.timeliness" class="form-control" autocomplete="positionchrome-off" :disabled="isDisabled">
                             </div>
 
                         </fieldset>
@@ -187,7 +192,7 @@ export default {
                 quality3: "Creativity/Innovation/Personal Initiative", // Default value
                 efficiency1:"",
                 efficiency2:"",
-                efficiency3:"",
+                efficiency3:"Yes",
                 timeliness: "",
                 performance_measure:"",
                 idpaps: "",
@@ -222,6 +227,22 @@ export default {
 
     },
     watch: {
+        'form.not_rated'(newValue) {
+        if (newValue) {
+            this.isDisabled = true;
+            this.form.efficiency1 = "No"; // Set efficiency1 to "No" when Not to be Rated is checked
+            this.$nextTick(() => {
+                    this.form.timeliness = "No"; // Ensure Vue updates the input field properly
+                });
+            this.$nextTick(() => {
+                this.form.prescribed_period = 'No'; // Ensure Vue updates the input field properly
+            });
+        } else {
+            this.isDisabled = false;
+            this.form.efficiency1 = ""; // Set efficiency1 to "No" when Not to be Rated is checked
+            this.form.timeliness = "";
+        }
+    },
          'form.efficiency1'(newValue) {
         if (newValue === 'Yes') {
             this.form.timeliness = 'No'; // Set timeliness to No when efficiency1 is Yes
