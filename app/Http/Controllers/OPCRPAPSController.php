@@ -260,8 +260,6 @@ class OPCRPAPSController extends Controller
         $attributes = $request->validate([
             'output' => 'required',
             'performance_measure' => 'required',
-            'office_accountable' => 'required',
-            'monitoring' => 'required',
             'prescribed_period' => 'required',
             'quality1' => 'required',
             'quality2' => 'required',
@@ -273,9 +271,13 @@ class OPCRPAPSController extends Controller
             'idpaps' => 'required',
         ]);
 
+        $attributes['monitoring'] = "N/A";
+        $attributes['office_accountable'] = "N/A";
+
         // dd($attributes);
         // opcr_standard::create($attributes);
         // dd($attributes);
+
         $this->model1->create($attributes);
         return redirect('OPCRpaps/direct')
             ->with('message', 'Standard added');

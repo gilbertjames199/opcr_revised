@@ -302,7 +302,7 @@ var _hoisted_10 = {
 var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": "notRated",
   "class": "form-check-label"
-}, "Not to be Rated?", -1
+}, "Not to be Rated", -1
 /* HOISTED */
 );
 
@@ -454,7 +454,7 @@ var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Number of requests/applications acted upon over number of request/applications received", -1
+}, "Quantity Based (ex. Number of requests/applications acted upon over number of request/applications received)", -1
 /* HOISTED */
 );
 
