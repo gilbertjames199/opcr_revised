@@ -13,4 +13,9 @@ class Program extends Model
     protected $guarded = [
         'id',
     ];
+
+    // public function raaohs()
+    // {
+    //     return $this->hasMany(RAAOHS::class, 'idprogram', 'recid');
+    // }
 }

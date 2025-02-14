@@ -46,9 +46,10 @@ class RevisionPlanController extends Controller
                 'ff.FFUNCTION'
             )
                 ->Join(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
-                ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'paps.FFUNCCOD')
-                ->Join(DB::raw('fms.accountaccess acc'), 'acc.ffunccod', '=', 'ff.FFUNCCOD')
-                ->where('acc.iduser', '=', $myid)
+                ->Join(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
+                ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
+                // ->Join(DB::raw('fms.accountaccess acc'), 'acc.ffunccod', '=', 'ff.FFUNCCOD')
+                // ->where('acc.iduser', '=', $myid)
                 ->where('idpaps', '=', $idpaps)
                 ->get()
                 ->map(function ($item) {

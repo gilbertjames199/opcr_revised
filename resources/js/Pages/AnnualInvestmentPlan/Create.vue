@@ -13,7 +13,8 @@
             </svg>
             </Link>
         </div>
-        <h6>Programs, Projects, and Activities (PAPS) Selected:</h6>
+        <!-- <h6>Programs, Projects, and Activities (PAPS) Selected:</h6> -->
+         <!-- 23423904u2484 -->
         <!-- <div class="col-md-8">
             <button class="btn btn-secondary" @click="showModal" :disabled="submitted">Permissions</button>
         </div> -->
@@ -44,20 +45,32 @@
                 </div> -->
                 <!--*****************************-->
                 <label>YEAR</label>
-                <input type="number" class="form-control" v-model="form.year" />
+                <input type="number" class="form-control" v-model="form.year" @change="getOOEOTotal"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.year">{{ form.errors.year }}</div>
 
+                <label>PROGRAM</label>&nbsp;
+                <br>idprogram {{ form.program_id }}
+                <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
+                <div>
+                    <multiselect :options="formattedPrograms" :searchable="true" v-model="form.program_id" label="label"
+                        track-by="label" @change="getOOEOTotal" :disabled="editData !== undefined">
+                    </multiselect>
+                </div>
+                <div class="fs-6 c-red-500" v-if="form.errors.program_id">{{ form.errors.program_id }}</div>
+
                 <label>OFFICE</label>
-                <!-- {{ form.FFUNCCOD }} -->
-                <select class="form-control" v-model="form.FFUNCCOD">
+                {{ form.FFUNCCOD }}
+                office AIP: {{  office_aip[form.FFUNCCOD] }}
+                <select class="form-control" v-model="form.FFUNCCOD" @change="getOOEOTotal">
                     <option></option>
                     <option v-for="functione in functions" :value="functione.FFUNCCOD">{{ functione.FFUNCTION }}</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
 
                 <label>RAAO TYPE</label>
-                <!-- {{ form.raaotype }} -->
-                <select class="form-control" v-model="form.raao_type" ref="raaoSelect" @click="filterProgram">
+                {{ form.raao_type }}
+                <!-- @click="filterProgram" -->
+                <select class="form-control" v-model="form.raao_type" ref="raaoSelect" @change="getOOEOTotal">
                     <option></option>
                     <option value="1">Personnel Services</option>
                     <option value="2">Maintenance, Operating, and Other Expenses</option>
@@ -67,15 +80,18 @@
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.raao_type">{{ form.errors.raao_type }}</div>
 
-                <label>PROGRAM</label>&nbsp;
-                <!-- <br>{{ form.idprogram }} -->
-                <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
-                <div>
-                    <multiselect :options="formattedPrograms" :searchable="true" v-model="form.program_id" label="label"
-                        track-by="label" >
-                    </multiselect>
-                </div>
-                <div class="fs-6 c-red-500" v-if="form.errors.program_id">{{ form.errors.program_id }}</div>
+
+                <label>RAAO Description</label>&nbsp;
+                <input class="form-control" v-model="form.raao_desc" type="text"/>
+                <div class="fs-6 c-red-500" v-if="form.errors.raao_desc">{{ form.errors.raao_desc }}</div>
+
+                <label>Sector</label>&nbsp;
+                <select class="form-control" v-model="sector_code" ref="raaoSelect" @change="setAIPInitialValue">
+                    <option value="1000">General Public Services Sector</option>
+                    <option value="3000">Social Services Sector</option>
+                    <option value="8000">Economic Services Sector</option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.aip_code">{{ form.errors.aip_code }}</div>
 
                 <label>AIP Code</label>&nbsp;
                 <input class="form-control" v-model="form.aip_code" type="text"/>
@@ -84,11 +100,14 @@
                 <label>Source</label>&nbsp;
                 <select class="form-select" v-model="form.source">
                     <option>AIP</option>
-                    <option>SIPA</option>
+                    <option>SIP#1</option>
+                    <option>SIP#2</option>
+                    <option>SIP#3</option>
+                    <option>SIP#4</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.source">{{ form.errors.source }}</div>
 
-                <label>Planned PS</label>&nbsp;
+                <!-- <label>Planned PS</label>&nbsp;
                 <input class="form-control" v-model="form.planned_ps" type="number"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.planned_ps">{{ form.errors.planned_ps }}</div>
 
@@ -102,12 +121,11 @@
 
                 <label>Planned Capital Outlay</label>&nbsp;
                 <input class="form-control" v-model="form.planned_co" type="number"/>
-                <div class="fs-6 c-red-500" v-if="form.errors.planned_co">{{ form.errors.planned_co }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.planned_co">{{ form.errors.planned_co }}</div> -->
 
-                <label>Planned Total</label>&nbsp;
-                <input class="form-control" v-model="plannedTotal" type="number" readonly/>
-                <div class="fs-6 c-red-500" v-if="form.errors.planned_total">{{ form.errors.planned_total }}</div>
-
+                <!-- <label>Planned Total</label>&nbsp;
+                <input class="form-control" v-model="form.planned_total" type="number" readonly/>
+                <div class="fs-6 c-red-500" v-if="form.errors.planned_total">{{ form.errors.planned_total }}</div> -->
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
@@ -120,6 +138,7 @@
                 {{ total_budget_year }} -->
                 <!-- trte {{ formattedPrograms }} -->
                 <!-- {{ dt_ooes }} -->
+                  {{ programs[0] }}
             </form>
         </div>
 
@@ -185,6 +204,7 @@ export default {
                 approved_fe: "",
                 approved_co: "",
                 approved_total: "",
+                raao_desc: "",
                 id: null
                 // object_of_expenditure: "",
                 // account_code: "",
@@ -198,12 +218,15 @@ export default {
                 // CCET: "",
 
             }),
+            sector_code: "",
             pageTitle: "",
             data_programs: [],
             dt_prog: [],
             data_ooes: [],
             dt_ooes: [],
             dt_ooes_length: [],
+            planned_total: 0,
+            aip_initial_value: ""
         };
     },
     computed: {
@@ -220,29 +243,31 @@ export default {
         //         past_year: dataOoes.past_year
         //     }));
         // },
-        plannedTotal() {
-            const { planned_mooe, planned_ps, planned_co, planned_fe } = this.form;
-            this.form.planned_total = (planned_mooe || 0) + (planned_ps || 0) +  (planned_co || 0) + (planned_fe || 0);
-            return (
-                (planned_mooe || 0) +
-                (planned_ps || 0) +
-                (planned_co || 0) +
-                (planned_fe || 0)
-            );
-        },
+        // plannedTotal() {
+        //     const { planned_mooe, planned_ps, planned_co, planned_fe } = this.form;
+        //     this.form.planned_total = (planned_mooe || 0) + (planned_ps || 0) +  (planned_co || 0) + (planned_fe || 0);
+        //     return (
+        //         (planned_mooe || 0) +
+        //         (planned_ps || 0) +
+        //         (planned_co || 0) +
+        //         (planned_fe || 0)
+        //     );
+        // },
         formattedPrograms() {
             let dataPrograms = this.programs;
-            if (this.form.raao_type) {
-                dataPrograms = dataPrograms.filter((program) => program.ftype === this.form.raao_type);
-            }
+            // if (this.form.raao_type) {
+            //     dataPrograms = dataPrograms.filter((program) => program.ftype === this.form.raao_type);
+            // }
             if (this.form.FFUNCCOD) {
                 dataPrograms = dataPrograms.filter((program) => program.FFUNCCOD === this.form.FFUNCCOD);
             }
-
+// + "-"+program.tyear + " - "+program.FRAODESC + " - "+program.raohsid,
+// + " raohsid: "+program.FFUNCCOD+ " recid: "+program.recid
             return dataPrograms.map((program) => ({
                 value: program.recid,
-                label: program.FPROGRAM,
+                label: program.FPROGRAM ,
                 raaotype: program.ftype,
+                FRAODESC: program.FRAODESC,
                 FFUNCCOD: program.FFUNCCOD,
                 raohsid: program.raohsid
             }));
@@ -281,6 +306,7 @@ export default {
         this.data_programs = this.programs.map(programs => programs.FPROGRAM);
         this.dt_ooes = [];
         this.dt_ooes = this.ooes;
+        // this.getOOEOTotal()
         // this.pap_selected = this.pap1.paps_desc
         if (this.editData !== undefined) {
             if (this.bari) {
@@ -291,10 +317,12 @@ export default {
             this.form.year = this.editData.year
             this.form.FFUNCCOD = this.editData.FFUNCCOD
             this.form.raao_type = this.editData.raao_type
-            this.filterProgram();
+            // this.filterProgram();
+            this.sector_code=this.getFirstFourChars(this.editData.aip_code)
             this.form.program_id = this.editData.program_id
-            this.form.aip_code=this.editData.aip_code
+
             this.form.source=this.editData.source
+            this.form.raao_desc = this.editData.raao_desc
             this.form.planned_ps=this.editData.planned_ps
             this.form.planned_mooe=this.editData.planned_mooe
             this.form.planned_fe=this.editData.planned_fe
@@ -306,6 +334,7 @@ export default {
             this.form.approved_co=this.editData.approved_co
             this.form.approved_total=this.editData.approved_total
             this.form.final_tag=this.editData.final_tag
+            this.form.aip_code=this.editData.aip_code
             //this.loadOOE();
             // this.form.idooe = this.editData.idooe
             // this.form.account_code = this.editData.account_code
@@ -322,6 +351,10 @@ export default {
             // this.searchByAccountCodeForEditMounted();
         } else {
             this.pageTitle = "Create "
+            this.form.planned_ps=0
+            this.form.planned_mooe=0
+            this.form.planned_fe=0
+            this.form.planned_co=0
             // this.form.idpaps = this.pap1.id
             this.setCurrentYear()
         }
@@ -330,16 +363,39 @@ export default {
 
     methods: {
         submit() {
-            if(this.editData!==undefined){
-                this.form.patch("/annual-investment-plans/"+this.editData.id, this.form);
+            if(this.sector_code){
+                if(this.editData!==undefined){
+                    this.form.patch("/annual-investment-plans/"+this.editData.id, this.form);
 
+                }else{
+                    this.form.post("/annual-investment-plans/", this.form);
+                }
             }else{
-                this.form.post("/annual-investment-plans/", this.form);
+                alert("Select a sector first!!!");
             }
+
 
         },
 
-
+        async getOOEOTotal(){
+            // const params = {
+            //         params: this.form
+            //     };
+            // await axios.get("/annual-investment-plans/total/amount/of/ooe",params).then((response)=>{
+            //         var tot = response.data.total_famount
+            //         if(parseFloat(tot)>=0){
+            //             this.form.planned_total =tot
+            //         }else{
+            //             this.form.planned_total=0
+            //         }
+            //         this.form.raao_desc = response.data.FRAODESC
+            //     console.log(response.data)
+            //     console.log(response.data.total)
+            // });
+            // // this.form.planned_total=0;
+            // this.setAIPInitialValue()
+            // this.setRaaoDesc()
+        },
 
         setCode() {
             var ind = this.accounts.indexOf(this.chart_selected);
@@ -351,6 +407,30 @@ export default {
             this.chart_selected = this.accounts[parseInt(ind)];
             this.form.object_of_expenditure = this.chart_selected
 
+        },
+        setRaaoDesc(){
+            if (this.form.program_id) {
+                // if (this.form.raao_type) {
+                //     filteredPrograms = filteredPrograms.filter(program => program.raaotype === this.form.raao_type);
+                // }
+                // const selectedProgram = this.formattedPrograms.find(program => program.value === this.form.program_id);
+                const selectedProgram = this.formattedPrograms.find(program =>
+                    program.value === this.form.program_id // Include raaotype condition only if raao_type is not null
+                );
+                if(this.form.raao_type===""){
+                    selectedProgram = this.formattedPrograms.find(program =>
+                    program.value === this.form.program_id && program.raaotype === this.form.raao_type // Include raaotype condition only if raao_type is not null
+                );
+                }
+                if (selectedProgram) {
+                    // alert(selectedProgram);
+                    this.form.raao_desc = selectedProgram.FRAODESC;
+                } else {
+                    this.form.raao_desc = null;
+                }
+            } else {
+                this.form.raao_desc = null;
+            }
         },
         searchByAccountCodeForEditMounted() {
             var ind = this.codes.indexOf(this.form.account_code.toString());
@@ -367,7 +447,22 @@ export default {
             this.form.category = selectElement.options[selectElement.selectedIndex].text;
 
         },
+        setAIPInitialValue(){
 
+            if(this.sector_code){
+                this.form.aip_code=this.sector_code+"-"
+            }
+            if(this.form.FFUNCCOD){
+                if(this.sector_code){
+                    this.form.aip_code=this.sector_code+"-"+this.office_aip[this.form.FFUNCCOD]+"-"
+                }else{
+                    this.form.aip_code=this.office_aip[this.form.FFUNCCOD]+"-"
+                }
+                // alert(this.form.aip_code)
+            }else{
+                // alert("no ffunccod")
+            }
+        },
         setOOEValue() {
             var prog_sel = this.dt_ooes.filter(ooes => ooes.recid === this.form.idooe);
             this.form.account_code = prog_sel[0].FACTCODE;
@@ -377,6 +472,7 @@ export default {
             this.form.second_sem = this.format_number_conv(prog_sel[0].sem2, 2, false);
             this.form.past_year = this.format_number_conv(prog_sel[0].past_year, 2, false);
         },
+
 
     },
 

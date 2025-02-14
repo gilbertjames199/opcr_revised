@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RAAOHS extends Model
 {
@@ -31,10 +32,19 @@ class RAAOHS extends Model
         'excludetag',
         'previd'
     ];
-    protected $table='raaohs';
+    protected $table = 'raaohs';
 
     public function ooe()
     {
-        return $this->hasOne(OOE::class,'recid','idooe');
+        return $this->hasOne(OOE::class, 'recid', 'idooe');
+    }
+    // public function ooes(): BelongsTo
+    // {
+    //     // , 'recid', 'idooe'
+    //     return $this->belongsTo(OOE::class, "recid", "idooe");
+    // }
+    public function program()
+    {
+        return $this->hasOne(Program::class, 'recid', 'idprogram');
     }
 }

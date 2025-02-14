@@ -28,6 +28,8 @@ class MajorFinalOutput extends Model
     {
         return $this->hasOne(FFUNCCOD::class, 'FFUNCCOD', 'FFUNCCOD');
     }
+
+
     public static function rules()
     {
         return [

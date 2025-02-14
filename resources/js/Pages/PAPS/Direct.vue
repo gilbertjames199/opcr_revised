@@ -17,7 +17,6 @@
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
-
             <!-- <Link :href="`/inter_outcome/${idoutcome}`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -79,13 +78,13 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <!--/{id}/{idinteroutcome}/edit-->
-                                            <!-- <li>
+                                            <li>
                                                 <Link class="dropdown-item"
                                                     :href="`/strategies/${dat.id}/${ismfo}/strat/mfo`">Strategies</Link>
-                                            </li> -->
-                                            <!-- <li>
+                                            </li>
+                                            <li>
                                                 <Link class="dropdown-item" :href="`/revision/${dat.id}`">PPA Profile</Link>
-                                            </li> -->
+                                            </li>
                                             <li>
                                                 <Link class="dropdown-item" :href="`/divisions/${dat.id}`">Division Output</Link>
                                             </li>
