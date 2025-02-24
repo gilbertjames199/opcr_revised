@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Division;
 use App\Models\FFUNCCOD;
+use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DivisionController extends Controller
 {
@@ -56,9 +58,8 @@ class DivisionController extends Controller
         $id = $request->idpaps;
         $attributes = $request->validate([
             'output' => 'required',
-            'office_accountable' => 'required',
-            'monitoring' => 'required',
             'prescribed_period' => 'required',
+            'performance_measure' => 'required',
             'quality1' => 'required',
             'quality2' => 'required',
             'quality3' => 'required',
@@ -66,15 +67,12 @@ class DivisionController extends Controller
             'efficiency2' => 'required',
             'efficiency3' => 'required',
             'timeliness' => 'required',
-            'quantity' => 'required',
             'idpaps' => 'required',
         ]);
 
-        $verb = $request->input('verb'); // Retrieve verb directly from the request
-        $output = $attributes['output']; // Get output from the validated attributes
-        $prescribed_period = $attributes['prescribed_period']; // Get output from the validated attributes
-        $attributes['performance_measure'] = "{$verb} {$output} with a satisfactory rating for quality/effectiveness and satisfactory in efficiency at {$prescribed_period}";
 
+        $attributes['monitoring'] = "N/A";
+        $attributes['office_accountable'] = "N/A";
         // dd($attributes);
         $this->model->create($attributes);
         return redirect('/divisions/' . $request->idpaps)
@@ -90,6 +88,7 @@ class DivisionController extends Controller
                 'id',
                 'output',
                 'office_accountable',
+                'performance_measure',
                 'monitoring',
                 'prescribed_period',
                 'quality1',
@@ -104,16 +103,72 @@ class DivisionController extends Controller
             ]);
         // dd($editData);
         $data = ProgramAndProject::where('id', $editData->idpaps)->first();
+        $paps = ProgramAndProject::where('id', $editData->idpaps)->first();
         return inertia('Division/Create', [
             "data" => $data,
             'idpaps' => $editData->idpaps,
-            "data" => $data,
+            "paps" => $paps,
             "editData" => $editData,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
+    }
+
+    public function MFO_Division(Request $request)
+    {
+        $functions = strtoupper($request->FUNCTION);
+
+        $mfos = MajorFinalOutput::select(DB::raw('"' . $functions . '" as `FUNCTION`'), "mfo_desc", "id")
+            ->where('FFUNCCOD', $request->id)
+            ->where("id", ">", "45")
+            ->get();
+
+        return $mfos;
+
+        // dd($mfos);
+    }
+
+    public function PAPS_Division(Request $request)
+    {
+        $paps = ProgramAndProject::select(
+            'program_and_projects.id',
+            'program_and_projects.paps_desc',
+
+        )
+            ->where('program_and_projects.idmfo', $request->idmfo)
+            ->groupBy('program_and_projects.id')
+            ->get();
+
+        return $paps;
+    }
+
+    public function DPCR(Request $request)
+    {
+        $dpcr = Division::select(
+            'program_and_projects.id',
+            'program_and_projects.paps_desc',
+            'division_outputs.id',
+            'division_outputs.output',
+            'division_outputs.performance_measure',
+            'division_outputs.office_accountable',
+            'division_outputs.monitoring',
+            'division_outputs.prescribed_period',
+            'division_outputs.quality1',
+            'division_outputs.quality2',
+            'division_outputs.quality3',
+            'division_outputs.efficiency1',
+            'division_outputs.efficiency2',
+            'division_outputs.efficiency3',
+            'division_outputs.timeliness',
+            'division_outputs.idpaps',
+        )
+            ->leftJoin('program_and_projects', 'division_outputs.idpaps', '=', 'program_and_projects.id')
+            ->where('division_outputs.idpaps', $request->idpaps)
+            ->get();
+
+        return $dpcr;
     }
     public function update(Request $request)
     {
@@ -123,6 +178,7 @@ class DivisionController extends Controller
         $data->update([
             'output' => $request->output,
             'office_accountable' => $request->office_accountable,
+            'performance_measure' => $request->performance_measure,
             'monitoring' => $request->monitoring,
             'prescribed_period' => $request->prescribed_period,
             'quality1' => $request->quality1,

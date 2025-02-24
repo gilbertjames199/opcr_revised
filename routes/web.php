@@ -741,8 +741,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('/individual/outputs')->group(function () {
-        Route::get('/', [IndividualFinalOutputController::class, 'index']);
-        Route::get('/create', [IndividualFinalOutputController::class, 'create']);
+        Route::get('/{idDPCR}', [IndividualFinalOutputController::class, 'index']);
+        Route::get('/create/{idDPCR}', [IndividualFinalOutputController::class, 'create']);
         Route::post('/store', [IndividualFinalOutputController::class, 'store']);
         Route::get('/{id}/edit', [IndividualFinalOutputController::class, 'edit']);
         Route::patch('/', [IndividualFinalOutputController::class, 'update']);
@@ -1005,6 +1005,12 @@ Route::prefix('opcr-accomplishments/print')->group(function () {
 Route::prefix('opcr_target/print')->group(function () {
     Route::get('/new', [OpcrTargetController::class, 'print_opcr_targets']);
     Route::get('/new/printing', [OpcrTargetController::class, 'printing_targets_new']);
+});
+
+Route::prefix('division/print')->group(function () {
+    Route::get('/MFO_print', [DivisionController::class, 'MFO_Division']);
+    Route::get('/PAPS_print', [DivisionController::class, 'PAPS_Division']);
+    Route::get('/dpcr', [DivisionController::class, 'DPCR']);
 });
 // Route::prefix('opcr-accomplishments/print')->group(function () {
 //     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);

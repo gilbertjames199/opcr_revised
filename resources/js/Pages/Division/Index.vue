@@ -45,7 +45,7 @@
 
                             <tr v-for="dat in data.data">
                                 <td>{{ dat.output }}</td>
-                                <td>{{ dat.performance_measure }}</td>
+                                <td>{{  dat.efficiency1 == "No" && dat.timeliness == "No" ? dat.performance_measure + " " + dat.individual_output + " with a satisfactory rating for quality/effectiveness and satisfactory in efficiency" : dat.efficiency1 == 'Yes' ? dat.performance_measure + " " + dat.output + " with a satisfactory rating for quality/effectiveness and satisfactory in efficiency within " + dat.prescribed_period : dat.performance_measure + " " + dat.output + " with a satisfactory rating for quality/effectiveness and satisfactory in efficiency on or before " + dat.timeliness  }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -54,6 +54,7 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                            <li><Link class="dropdown-item" :href="`/individual/outputs/${dat.id}`">Add Individual Output</Link></li>
                                             <li><Link class="dropdown-item" :href="`/divisions/${dat.id}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteRA(dat.id)">Delete</Link></li>
                                         </ul>

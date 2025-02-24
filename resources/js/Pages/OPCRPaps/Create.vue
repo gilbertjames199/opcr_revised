@@ -30,29 +30,17 @@
                 <input type="text" v-model="form.output" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.output">{{ form.errors.output }}</div>
 
-                <label for="">Performance Measures / Success Indicator</label>
+                <label for="">Verb</label>
                 <input type="text" v-model="form.performance_measure" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.performance_measure">{{ form.errors.performance_measure }}</div>
 
-                <label for="">Verb</label>
-                <input type="text" v-model="form.verb" class="form-control" autocomplete="positionchrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.verb">{{ form.errors.verb }}</div>
-
+                <div class="form-check mt-2">
+                    <input type="checkbox" id="notRated" v-model="form.not_rated" class="form-check-input">
+                    <label for="notRated" class="form-check-label">Not to be Rated</label>
+                </div>
                 <!-- <label for="">Success Indicator</label>
                 <input type="text" v-model="form.success_indicator" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.success_indicator">{{ form.errors.success_indicator }}</div> -->
-
-                <label for="">Office/Individual Accountable</label>
-                <input type="text" v-model="form.office_accountable" class="form-control" autocomplete="positionchrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.office_accountable">{{ form.errors.office_accountable }}</div>
-
-                <label for="">Monitoring</label>
-                <input type="text" v-model="form.monitoring" class="form-control" autocomplete="positionchrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.monitoring">{{ form.errors.monitoring }}</div>
-
-                <label for="">Prescribed Period</label>
-                <input type="text" v-model="form.prescribed_period" class="form-control" autocomplete="positionchrome-off" >
-                <div class="fs-6 c-red-500" v-if="form.errors.prescribed_period">{{ form.errors.prescribed_period }}</div>
                 <br>
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -72,7 +60,7 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact"
-                            aria-selected="false" :disabled="form.efficiency1 === 'Yes'">
+                            aria-selected="false" :disabled="form.efficiency1 === 'Yes'" :class="{'text-decoration-line-through': form.efficiency1 === 'Yes'}">
                             Timeliness
                         </button>
                     </li>
@@ -85,7 +73,7 @@
                             <legend class="float-none w-auto"><b>Quality/Effectiveness</b></legend>
 
                             <div>
-                                                <select class="form-control" v-model="form.quality1" :disabled="isDisabled">
+                                                <select class="form-control" v-model="form.quality1">
                                                     <option value="Acceptability">Acceptability</option>
                                                     <option value="Meeting Standard">Meeting Standard</option>
                                                     <option value="Client Satisfaction">Client Satisfaction</option>
@@ -96,7 +84,7 @@
                                             </div>
                                             <br>
                                              <div>
-                                                <select class="form-control" v-model="form.quality2" :disabled="isDisabled">
+                                                <select class="form-control" v-model="form.quality2">
                                                     <option value="Acceptability">Acceptability</option>
                                                     <option value="Meeting Standard">Meeting Standard</option>
                                                     <option value="Client Satisfaction">Client Satisfaction</option>
@@ -106,7 +94,7 @@
                                             </div>
                                             <br>
                                              <div>
-                                                <select class="form-control" v-model="form.quality3" :disabled="isDisabled">
+                                                <select class="form-control" v-model="form.quality3">
                                                     <option value="Acceptability">Acceptability</option>
                                                     <option value="Meeting Standard">Meeting Standard</option>
                                                     <option value="Client Satisfaction">Client Satisfaction</option>
@@ -129,15 +117,22 @@
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
+
+                             <div v-if="showPrescribedPeriod">
+                                <label for="">Prescribed Period</label>
+                                <input type="text" v-model="form.prescribed_period" class="form-control" autocomplete="positionchrome-off">
+                                <div class="fs-6 c-red-500" v-if="form.errors.prescribed_period">{{ form.errors.prescribed_period }}</div>
+                                <br>
+                            </div>
                             <br>
-                            <label for="">Number of requests/applications acted upon over number of request/applications received</label>
-                            <select class="form-control" v-model="form.efficiency2" :disabled="isDisabled">
+                            <label for="">Quantity Based (ex. Number of requests/applications acted upon over number of request/applications received)</label>
+                            <select class="form-control" v-model="form.efficiency2">
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
                             <br>
                             <label for="">Optimum use or resources (e.g., money, logistics, office supplies)</label>
-                            <select class="form-control" v-model="form.efficiency3" :disabled="isDisabled">
+                            <select class="form-control" v-model="form.efficiency3" :disabled="true">
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
@@ -151,10 +146,8 @@
                         <fieldset class="border p-4">
                             <legend class="float-none w-auto"><b>Timeliness Rating </b></legend>
                             <div>
-                            <select class="form-control" v-model="form.timeliness" :disabled="isDisabled">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                            </select>
+                                <label for="">Please provide specific time (e.g., Every 1st Monday of the Month, December 31)</label>
+                             <input type="text" v-model="form.timeliness" class="form-control" autocomplete="positionchrome-off" :disabled="isDisabled">
                             </div>
 
                         </fieldset>
@@ -225,7 +218,7 @@ export default {
                 quality3:"",
                 efficiency1:"",
                 efficiency2:"",
-                efficiency3:"",
+                efficiency3:"Yes",
                 timeliness: "",
                 quantity: "",
                 verb:"",
@@ -239,8 +232,31 @@ export default {
         'form.efficiency1'(newValue) {
         if (newValue === 'Yes') {
             this.form.timeliness = 'No'; // Set timeliness to No when efficiency1 is Yes
+            this.showPrescribedPeriod = true; // Show the prescribed period field
+            this.form.prescribed_period = "";
+        } else {
+            this.form.timeliness = "";
+            this.showPrescribedPeriod = false; // Hide it when No is selected
+            this.form.prescribed_period = 'No'; // Clear the input value
         }
+
+        },
+        'form.not_rated'(newValue) {
+        if (newValue) {
+            this.isDisabled = true;
+            this.form.efficiency1 = "No"; // Set efficiency1 to "No" when Not to be Rated is checked
+            this.$nextTick(() => {
+                    this.form.timeliness = "No"; // Ensure Vue updates the input field properly
+                });
+            this.$nextTick(() => {
+                this.form.prescribed_period = 'No'; // Ensure Vue updates the input field properly
+            });
+        } else {
+            this.isDisabled = false;
+            this.form.efficiency1 = ""; // Set efficiency1 to "No" when Not to be Rated is checked
+            this.form.timeliness = "";
         }
+    },
     },
     mounted() {
         this.form.idpaps = this.idpaps;
