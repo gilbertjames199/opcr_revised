@@ -85,4 +85,9 @@ class ProgramAndProject extends Model
     {
         return $this->hasMany(OpcrTarget::class, 'idpaps', 'id');
     }
+
+    public function divisionOutputs()
+    {
+        return $this->hasMany(DivisionOutput::class, 'idpaps', 'id');
+    }
 }

@@ -40,10 +40,16 @@ class RAAOD extends Model
         'curr_amount',
         'curr_amount2'
     ];
-    protected $table='raaods';
+    protected $table = 'raaods';
 
     public function ooe()
     {
-        return $this->hasOne(OOE::class,'recid','idooe');
+        // return $this->hasOne(OOE::class, 'recid', 'idooe');
+        return $this->belongsTo(OOE::class, 'idooe', 'recid');
+    }
+
+    public function raaohs()
+    {
+        return $this->hasOne(RAAOHS::class, 'recid', 'idraao');
     }
 }

@@ -20,12 +20,13 @@ class AppropriationAmountController extends Controller
     //
     public function index(Request $request, $aip_id)
     {
-
+        // dd($aip_id);
         $data = $this->model->with(['annual_investments', 'annual_investments.program', 'ooe'])
             ->where('aip_id', $aip_id)
             ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
+        // dd($data);
         return inertia('AnnualInvestmentPlan/Appropriations/Index', [
             "data" => $data,
             "aip_id" => $aip_id,
@@ -124,6 +125,7 @@ class AppropriationAmountController extends Controller
                     'famount' => $item->famount
                 ];
             });
+
         // dd($ooes->pluck('sem2'));
         // $functions = AccountAccess::where('iduser', auth()->user()->recid)
         //     ->select('ff.FFUNCCOD', 'ff.FFUNCTION')
@@ -168,6 +170,9 @@ class AppropriationAmountController extends Controller
         $aa->aip_code_parent = $request->aip_code_parent;
         $aa->aip_code_child = $request->aip_code_child;
         $aa->save();
+
+        //autogenerate the appropriation amount
+
         return redirect('/appropriation-amounts/' . $request->aip_id)
             ->with('message', 'Appropriation added');
     }
@@ -180,7 +185,9 @@ class AppropriationAmountController extends Controller
 
         $aip = AnnualInvestmentPlan::where('id', $aip_id)->first();
         // dd($aip->year);
-        $ooes = DB::connection('mysql2')->table('raaohs')
+        // dd($aip);
+        $aip_year = intval($aip->year) - 1;
+        $ooes = DB::connection('mysql2')->table('raaods')
             ->select(
                 'ooes.FACTCODE',
                 'ooes.FOOEDESC',
@@ -194,12 +201,12 @@ class AppropriationAmountController extends Controller
                 'raaohs.idprogram',
                 'raaods.famount'
             )
-            ->whereYear('raaods.fdate', $aip->year)
+            ->whereYear('raaods.fdate', $aip_year)
             ->where('raaohs.idprogram', $aip->program_id)
             ->where('raaohs.FFUNCCOD', $aip->FFUNCCOD)
             ->where('raaohs.FRAOTYPE', $aip->raao_type)
             ->where('ooes.FACTCODE', 'LIKE', '5%')
-            ->join('raaods', 'raaods.idraao', 'raaohs.recid')
+            ->join('raaohs', 'raaods.idraao', 'raaohs.recid')
             ->join('ooes', 'ooes.recid', 'raaods.idooe')
             ->groupBy('ooes.recid')
             ->orderBy('ooes.FOOEDESC')
@@ -261,7 +268,7 @@ class AppropriationAmountController extends Controller
                     'famount' => $item->famount
                 ];
             });
-
+        // dd($ooes);
         return inertia('AnnualInvestmentPlan/Appropriations/Create', [
             'ooes' => $ooes,
             'aip_id' => $aip_id,
@@ -289,17 +296,28 @@ class AppropriationAmountController extends Controller
             'aip_code_child' => 'required',
         ]);
         //dd($attributes);
+        $verify = AppropriationAmount::where('aip_code', $request->aip_code)
+            ->where('id', '!=', $request->id)
+            ->count();
+        // dd($request);
+        // dd($request);
+        // dd($verify);
+        // dd(count($verify));
         // $this->model->create($attributes);
-        $aa = AppropriationAmount::where('id', $id)->first();
-        $aa->aip_id = $request->aip_id;
-        $aa->aip_code = $request->aip_code;
-        $aa->idooe = $request->idooe;
-        $aa->amount = $request->amount;
-        $aa->aip_code_parent = $request->aip_code_parent;
-        $aa->aip_code_child = $request->aip_code_child;
-        $aa->save();
-        return redirect('/appropriation-amounts/' . $request->aip_id)
-            ->with('message', 'Appropriation updated');
+        if (floatval($verify) < 1) {
+            $aa = AppropriationAmount::where('id', $id)->first();
+            $aa->aip_id = $request->aip_id;
+            $aa->aip_code = $request->aip_code;
+            $aa->idooe = $request->idooe;
+            $aa->amount = $request->amount;
+            $aa->aip_code_parent = $request->aip_code_parent;
+            $aa->aip_code_child = $request->aip_code_child;
+            $aa->save();
+            return redirect('/appropriation-amounts/' . $request->aip_id)
+                ->with('message', 'Appropriation updated');
+        } else {
+            return redirect()->back()->with('error', 'AIP code duplicated!! Update request unsuccessful!');
+        }
     }
 
     public function destroy(Request $request, $id)

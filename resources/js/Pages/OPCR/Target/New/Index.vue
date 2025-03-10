@@ -57,6 +57,7 @@
                                 </th>
                                 <th>MFO</th>
                                 <th>PAPS</th>
+                                <th>DPCR</th>
                                 <th>Success Indicator</th>
 
                             </tr>
@@ -75,6 +76,9 @@
                                 <td v-if="index === 0 || dat.paps_desc !== data[index - 1].paps_desc"
                                     :rowspan="getRowspanPaps(dat.paps_desc, index)" style="vertical-align:middle">
                                     {{ dat.paps_desc }}
+                                </td>
+                                <td>
+                                    {{ dat.division_outputs }}
                                 </td>
                                 <td>
                                     {{ dat.performance_measure }}

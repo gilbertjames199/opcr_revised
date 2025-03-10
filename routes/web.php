@@ -831,6 +831,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [AnnualInvestmentPlanController::class, 'edit']);
         Route::patch('/{id}', [AnnualInvestmentPlanController::class, 'update']);
         Route::delete('/{id}', [AnnualInvestmentPlanController::class, 'destroy']);
+        Route::get('/total/amount/of/ooe', [AnnualInvestmentPlanController::class, 'calculate_total_amount']);
     });
 
     // Expected Outputs

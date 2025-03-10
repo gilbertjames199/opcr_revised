@@ -22,6 +22,8 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\AutoLogout::class,
+        \Clockwork\Support\Laravel\ClockworkMiddleware::class,
+
     ];
 
     /**
@@ -40,6 +42,8 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
             //\App\Http\Middleware\SessionTimeout::class,
+            \Clockwork\Support\Laravel\ClockworkMiddleware::class,
+
         ],
 
         'api' => [
