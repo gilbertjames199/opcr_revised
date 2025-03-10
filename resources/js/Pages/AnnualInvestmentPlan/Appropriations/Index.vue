@@ -47,7 +47,7 @@
                             <tr v-for="dat in data.data">
                                 <td>{{ dat.aip_code }}</td>
                                 <td>{{ dat.ooe.FOOEDESC }}</td>
-                                <td>{{ dat.amount }}</td>
+                                <td style="text-align: right">{{ format_number_conv(dat.amount,2,true) }}</td>
                                 <!-- <td>{{ dat.paps.paps_desc }}</td>
                                 <td>{{ dat.output_description }}</td>
                                 <td>{{ dat.output_qty }}</td>

@@ -21,6 +21,7 @@ class UserEmployeesController extends Controller
     }
     public function index(Request $request)
     {
+        // dd($request);
         $data = $this->us_em->with('Division')->where('department_code', auth()->user()->department_code)
             ->where('active_status', 'ACTIVE')
             ->orderBy('employee_name', 'ASC')

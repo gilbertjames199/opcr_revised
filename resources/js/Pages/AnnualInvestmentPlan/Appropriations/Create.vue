@@ -24,7 +24,7 @@
                 <!-- {{ form.idooe }} -->
                 <div>
                     <multiselect :options="formattedOOEs" :searchable="true" v-model="form.idooe" label="label"
-                        track-by="label" @close="setOOEValue">
+                        track-by="label" @close="setOOEValue" :disabled="editData !== undefined">
                     </multiselect>
                 </div>
 
@@ -34,16 +34,21 @@
 
 
                 <div class="form-group">
-                    <label for="">AIP Code</label><div><i>{{ form.aip_code_parent }}, being the parent AIP code, cannot be edited. </i></div>
+                    <label for="">AIP Code</label><div>
+                        <!-- <i>{{ form.aip_code_parent }}, being the parent AIP code, cannot be edited. </i>
+                    -->
+                    </div>
                     <div class="aip-code-wrapper">
+                        <!-- class="aip-code-parent" -->
                         <span class="aip-code-parent">{{ form.aip_code_parent }}-</span>
-                        <input
+                        <input type="text" v-model="form.aip_code_child" class="aip-code-child form-control" autocomplete="chrome-off" >
+                        <!-- <input
                             type="text"
                             class="aip-code-child form-control"
                             v-model="form.aip_code_child"
                             @input="updateChild($event.target.value)"
                             autocomplete="chrome-off"
-                        >
+                        > -->
                     </div>
                 </div>
                 <div class="fs-6 c-red-500" v-if="form.errors.aip_code_child">AIP code is required</div>
@@ -165,6 +170,7 @@ export default {
     methods: {
         submit() {
             this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4);
+            this.form.aip_code = this.form.aip_code_parent+this.form.aip_code_child
             //alert(this.form.target_qty);
             if (this.editData !== undefined) {
                 this.form.aip_code = this.form.aip_code_parent+"-"+this.form.aip_code_child
@@ -187,7 +193,7 @@ export default {
             // this.form.idooe =this.format_number_conv(prog_sel[0].value, 2, false);
             // this.form.past_year = this.format_number_conv(prog_sel[0].past_year, 2, false);
         },
-        updateChild(value) {
+        pdateChild(value) {
             // Directly update the child part
             this.form.aip_code_child = value;
         }
@@ -223,7 +229,9 @@ export default {
 }
 
 .aip-code-child {
-    padding-left: calc(10px + 1ch * var(--parent-length, 10)); /* Space for the parent text */
+    /*padding-left: calc(10px + 1ch * var(--parent-length, 10)); /* Space for the parent text */
+    padding-left: calc(10px + 1ch * var(--parent-length, 5)); /* Space for the parent text */
+    padding-left: calc(10px + 1ch * v-bind(form.aip_code_parent.length + 1));
     border: 1px solid #ccc;
     border-radius: 4px;
     flex-grow: 1;

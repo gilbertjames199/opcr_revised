@@ -88,10 +88,10 @@
                                             <li>
                                                 <Link class="dropdown-item" :href="`/mfos/${dat.id}/edit`">Edit</Link>
                                             </li>
-                                            <!-- <li>
+                                            <li>
                                                 <Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete
                                                 </Link>
-                                            </li> -->
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>

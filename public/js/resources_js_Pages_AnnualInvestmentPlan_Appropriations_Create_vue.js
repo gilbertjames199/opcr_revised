@@ -16,12 +16,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_search_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-search-select */ "./node_modules/vue-search-select/dist/VueSearchSelect.js");
 /* harmony import */ var vue_select2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-select2 */ "./node_modules/vue-select2/dist/vue-select.min.js");
 /* harmony import */ var vue_select2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_select2__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 
 
  //import BootstrapModalNoJquery from './BootstrapModalNoJquery.vue';
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+var __default__ = {
   props: {
     editData: Object,
     ooes: Object,
@@ -104,7 +105,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
-      this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4); //alert(this.form.target_qty);
+      this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4);
+      this.form.aip_code = this.form.aip_code_parent + this.form.aip_code_child; //alert(this.form.target_qty);
 
       if (this.editData !== undefined) {
         this.form.aip_code = this.form.aip_code_parent + "-" + this.form.aip_code_child;
@@ -130,7 +132,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.amount = this.format_number_conv(tot, 2, true); // this.form.idooe =this.format_number_conv(prog_sel[0].value, 2, false);
       // this.form.past_year = this.format_number_conv(prog_sel[0].past_year, 2, false);
     },
-    updateChild: function updateChild(value) {
+    pdateChild: function pdateChild(value) {
       // Directly update the child part
       this.form.aip_code_child = value;
     } // updateChild(value) {
@@ -146,7 +148,24 @@ __webpack_require__.r(__webpack_exports__);
     // }
 
   }
-});
+};
+
+
+var __injectCSSVars__ = function __injectCSSVars__() {
+  (0,vue__WEBPACK_IMPORTED_MODULE_4__.useCssVars)(function (_ctx) {
+    return {
+      "703abc99-form\.aip_code_parent\.length\ \+\ 1": _ctx.form.aip_code_parent.length + 1
+    };
+  });
+};
+
+var __setup__ = __default__.setup;
+__default__.setup = __setup__ ? function (props, ctx) {
+  __injectCSSVars__();
+
+  return __setup__(props, ctx);
+} : __injectCSSVars__;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__default__);
 
 /***/ }),
 
@@ -277,17 +296,21 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_11 = {
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <i>{{ form.aip_code_parent }}, being the parent AIP code, cannot be edited. </i>\r\n                    ")], -1
+/* HOISTED */
+);
+
+var _hoisted_12 = {
   "class": "aip-code-wrapper"
 };
-var _hoisted_12 = {
+var _hoisted_13 = {
   "class": "aip-code-parent"
 };
-var _hoisted_13 = {
+var _hoisted_14 = {
   key: 1,
   "class": "fs-6 c-red-500"
 };
-var _hoisted_14 = ["disabled"];
+var _hoisted_15 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
@@ -307,7 +330,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-8\">\r\n            <button class=\"btn btn-secondary\" @click=\"showModal\" :disabled=\"submitted\">Permissions</button>\r\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ paps }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
   }, [_hoisted_5, _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ form.idooe }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_multiselect, {
@@ -319,10 +342,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     label: "label",
     "track-by": "label",
-    onClose: $options.setOOEValue
+    onClose: $options.setOOEValue,
+    disabled: $props.editData !== undefined
   }, null, 8
   /* PROPS */
-  , ["options", "modelValue", "onClose"])]), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  , ["options", "modelValue", "onClose", "disabled"])]), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.form.amount = $event;
@@ -334,25 +358,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.amount]]), $data.form.errors.amount ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.amount), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.aip_code_parent) + ", being the parent AIP code, cannot be edited. ", 1
-  /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.aip_code_parent) + "-", 1
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" class=\"aip-code-parent\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.aip_code_parent) + "-", 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "class": "aip-code-child form-control",
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.form.aip_code_child = $event;
     }),
-    onInput: _cache[3] || (_cache[3] = function ($event) {
-      return $options.updateChild($event.target.value);
-    }),
+    "class": "aip-code-child form-control",
     autocomplete: "chrome-off"
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.aip_code_child]])])]), $data.form.errors.aip_code_child ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, "AIP code is required")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label for=\"\">Output Quantity</label>\r\n                <input type=\"text\" v-model=\"form.output_qty\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.output_qty\">{{ form.errors.output_qty }}</div>\r\n\r\n                <label for=\"\">Weight (%)</label>\r\n                <input type=\"text\" v-model=\"form.weight\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.weight\">{{ form.errors.weight }}</div>\r\n\r\n                <label for=\"\">OPCR Target</label>\r\n                <input type=\"text\" v-model=\"form.opcr_target\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.opcr_target\">{{ form.errors.opcr_target }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.aip_code_child]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input\r\n                            type=\"text\"\r\n                            class=\"aip-code-child form-control\"\r\n                            v-model=\"form.aip_code_child\"\r\n                            @input=\"updateChild($event.target.value)\"\r\n                            autocomplete=\"chrome-off\"\r\n                        > ")])]), $data.form.errors.aip_code_child ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, "AIP code is required")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label for=\"\">Output Quantity</label>\r\n                <input type=\"text\" v-model=\"form.output_qty\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.output_qty\">{{ form.errors.output_qty }}</div>\r\n\r\n                <label for=\"\">Weight (%)</label>\r\n                <input type=\"text\" v-model=\"form.weight\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.weight\">{{ form.errors.weight }}</div>\r\n\r\n                <label for=\"\">OPCR Target</label>\r\n                <input type=\"text\" v-model=\"form.opcr_target\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.opcr_target\">{{ form.errors.opcr_target }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "hidden",
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.form.id = $event;
     }),
     "class": "form-control",
@@ -362,13 +381,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary mt-3 text-white",
-    onClick: _cache[5] || (_cache[5] = function ($event) {
+    onClick: _cache[4] || (_cache[4] = function ($event) {
       return $options.submit();
     }),
     disabled: $data.form.processing
   }, " Save changes ", 8
   /* PROPS */
-  , _hoisted_14)], 32
+  , _hoisted_15)], 32
   /* HYDRATE_EVENTS */
   )])]);
 }
@@ -501,7 +520,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.aip-code-wrapper {\r\n    display: flex;\r\n    align-items: center;\r\n    position: relative;\n}\n.aip-code-parent {\r\n    position: absolute;\r\n    left: 10px;\r\n    color: #555; /* Slightly dimmed color to differentiate */\r\n    pointer-events: none; /* Prevent interactions */\r\n    z-index: 1;\n}\n.aip-code-child {\r\n    padding-left: calc(10px + 1ch * var(--parent-length, 10)); /* Space for the parent text */\r\n    border: 1px solid #ccc;\r\n    border-radius: 4px;\r\n    flex-grow: 1;\n}\n.aip-code-child:focus {\r\n    outline: none;\r\n    border-color: #007bff;\r\n    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.aip-code-wrapper {\r\n    display: flex;\r\n    align-items: center;\r\n    position: relative;\n}\n.aip-code-parent {\r\n    position: absolute;\r\n    left: 10px;\r\n    color: #555; /* Slightly dimmed color to differentiate */\r\n    pointer-events: none; /* Prevent interactions */\r\n    z-index: 1;\n}\n.aip-code-child {\r\n    /*padding-left: calc(10px + 1ch * var(--parent-length, 10)); /* Space for the parent text */\r\n    padding-left: calc(10px + 1ch * var(--parent-length, 5)); /* Space for the parent text */\r\n    padding-left: calc(10px + 1ch * var(--703abc99-form\\.aip_code_parent\\.length\\ \\+\\ 1));\r\n    border: 1px solid #ccc;\r\n    border-radius: 4px;\r\n    flex-grow: 1;\n}\n.aip-code-child:focus {\r\n    outline: none;\r\n    border-color: #007bff;\r\n    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

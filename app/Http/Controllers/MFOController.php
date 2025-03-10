@@ -123,9 +123,7 @@ class MFOController extends Controller
     }
 
 
-    public function show(MajorFinalOutput $majorFinalOutput)
-    {
-    }
+    public function show(MajorFinalOutput $majorFinalOutput) {}
 
 
     public function edit(MajorFinalOutput $majorFinalOutput, $id)
@@ -214,7 +212,7 @@ class MFOController extends Controller
         $msg = "";
         $status = "";
         if ($count_rev > 0 || $count_paps > 0 || $count_strat > 0) {
-            $msg = "Unable to delete!";
+            $msg = "Unable to delete! \nThe MFO is associated with revision plans(" . $count_rev . "), programs and programs (" . $count_paps . "), and strategies (" . $count_strat . "). \nYou have to delete them first!";
             $status = "error";
         } else {
             $msg = "MFO Successfully deleted!";

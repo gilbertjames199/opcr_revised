@@ -21,6 +21,7 @@ use App\Models\User;
 use App\Models\UserEmployees;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -392,22 +393,32 @@ class OpcrTargetController extends Controller
         // dd($opcr_list_id);
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
         $counter = 0;
-        $data = ProgramAndProject::with('opcrtarget')
-            ->select(
-                'major_final_outputs.mfo_desc',
-                'program_and_projects.id AS idpaps',
-                'program_and_projects.paps_desc',
-                'SU.success_indicator',
-                'program_and_projects.idmfo',
-                'SU.id AS su_id',
-                'opcr_standards.performance_measure'
-            )
-            ->leftjoin('opcr_standards', 'opcr_standards.idpaps', 'program_and_projects.id')
-            ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
-            ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
+        $data = ProgramAndProject::with([
+            'opcrtarget',
+            'opcr_stardard',
+            'MFO',
+            'divisionOutputs',
+            'success_indicator'
+        ])
+            // ->select(
+            //     'major_final_outputs.mfo_desc',
+            //     'program_and_projects.id AS idpaps',
+            //     'program_and_projects.paps_desc',
+            //     'SU.success_indicator',
+            //     'program_and_projects.idmfo',
+            //     'SU.id AS su_id',
+            //     'opcr_standards.performance_measure'
+            // )*******************************************
+            // ->whereHas('opcrtarget', function ($query) use ($opcr_list_id) {
+            //     $query->where('office_performance_commitment_rating_list_id', $opcr_list_id);
+            // })
+            // ->leftjoin('opcr_standards', 'opcr_standards.idpaps', 'program_and_projects.id')
+            // ->leftjoin('major_final_outputs', 'major_final_outputs.id', 'program_and_projects.idmfo')
+            // ->leftjoin('success_indicators AS SU', 'SU.idpaps', 'program_and_projects.id')
             ->where('program_and_projects.FFUNCCOD', $opcr_list->FFUNCCOD)
-            ->where('major_final_outputs.id', '>', '45')
-            ->whereNull('from_excel')
+            ->whereHas('MFO', function ($query) {
+                $query->where('id', '>', '45')->whereNull('from_excel');
+            })
             ->groupBy('program_and_projects.id')
             ->orderBy('program_and_projects.idmfo', 'ASC')
             ->orderBy('program_and_projects.id', 'ASC')
@@ -415,18 +426,42 @@ class OpcrTargetController extends Controller
             ->map(function ($item) use ($opcr_list_id, &$counter) {
                 $counter += 1;
                 // dd('rrererer');
-                $targ = OpcrTarget::where('opcr_targets.idpaps', $item->idpaps)
-                    ->where('opcr_targets.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
-                    ->first();
+                // if (count($item->opcrtarget) > 0) {
+                // dd($item->opcrtarget);
+                // }
+                // $targ = OpcrTarget::where('opcr_targets.idpaps', $item->idpaps)
+                //     ->where('opcr_targets.office_performance_commitment_rating_list_id', '=', $opcr_list_id)
+                //     ->first();
+                $filteredOpcrTargets = $item->opcrtarget->filter(function ($target) use ($opcr_list_id) {
+                    return $target->office_performance_commitment_rating_list_id == $opcr_list_id;
+                });
+                // if ($counter == 2) {
+                //     dd($filteredOpcrTargets->first());
+                // }
+                // dd($filteredOpcrTargets[0]);
+                // dd(count($filteredOpcrTargets));
+                $targ = null;
+                // try {
+                if (!$filteredOpcrTargets->isEmpty()) {
 
+                    $targ = $filteredOpcrTargets->first();
+                }
+                // } catch (Exception $e) {
+                //     // dd($filteredOpcrTargets);
+                //     dd($counter);
+                // }
 
+                // dd(count($item->opcrtarget));
+                // dd($item->opcrtarget);
                 // dd($item);
+                // dd($item);
+                // dd($item[0]->opcrtarget);
                 // if (count($item->opcrtarget) > 0) {
                 //     dd($counter);
                 // }
                 // dd($item);
                 // if ($counter === 1) {
-                // dd($item->opcrtarget);
+                //     dd($item->opcrtarget);
                 // }
                 // dd($targ);
                 $target_success_indicator = "";
@@ -439,14 +474,15 @@ class OpcrTargetController extends Controller
                     $opcr_id = $targ->id;
                     $office_performance_commitment_rating_list_id = $targ->office_performance_commitment_rating_list_id;
                 }
-                // if ($counter == 7) {
-                //     dd($item->is_included);
+                // if ($counter == 33) {
+                //     // dd($item->is_included);
+                //     dd($targ);
                 // }
                 // dd($item);
 
                 return [
-                    'mfo_desc' => $item->mfo_desc,
-                    'idpaps' => $item->idpaps,
+                    'mfo_desc' => $item->MFO ? $item->MFO->mfo_desc : "",
+                    'idpaps' => $item->id,
                     'paps_desc' => $item->paps_desc,
                     'id' => $opcr_id,
                     'target_success_indicator' => $target_success_indicator,
@@ -458,6 +494,7 @@ class OpcrTargetController extends Controller
                     'opcr_target' => $targ,
                     'opcr_target_binary' => $targ ? ($targ->is_included ? true : false) : false,
                     'office_performance_commitment_rating_list_id' => $opcr_list_id,
+                    'division_outputs' => $item->divisionOutputs
                 ];
             });
         // dd($data);
@@ -644,7 +681,7 @@ class OpcrTargetController extends Controller
         $opcr_list = OpcrTarget::findOrFail($request->id);
         $idpaps = $opcr_list->idpaps;
         $opcr_list_id = $opcr_list->id;
-        dd($opcr_list);
+        // dd($opcr_list);
         $opcr_list->is_included = '0';
         $opcr_id = $opcr_list->office_performance_commitment_rating_list_id;
         $opcr_list->save();

@@ -72,7 +72,7 @@
                                                 <Link class="dropdown-item"
                                                     :href="`/mfos/${dat.id}/${dat.idinteroutcome}/edit`">Edit</Link>
                                             </li>
-                                            <!-- <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li> -->
+                                            <li><Link class="text-danger dropdown-item" @click="deleteMFO(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
                                 </td>
