@@ -100,7 +100,9 @@ __webpack_require__.r(__webpack_exports__);
 
         this.showPrescribedPeriod = true; // Show the prescribed period field
 
-        this.form.prescribed_period = "";
+        if (this.form.prescribed_period === "No") {
+          this.form.prescribed_period = "";
+        }
       } else {
         this.form.timeliness = "";
         this.showPrescribedPeriod = false; // Hide it when No is selected

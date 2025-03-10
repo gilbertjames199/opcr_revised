@@ -248,7 +248,9 @@ export default {
         if (newValue === 'Yes') {
             this.form.timeliness = 'No'; // Set timeliness to No when efficiency1 is Yes
             this.showPrescribedPeriod = true; // Show the prescribed period field
-            this.form.prescribed_period = "";
+            if(this.form.prescribed_period === "No"){
+                 this.form.prescribed_period = "";
+            }
         } else {
             this.form.timeliness = "";
             this.showPrescribedPeriod = false; // Hide it when No is selected
