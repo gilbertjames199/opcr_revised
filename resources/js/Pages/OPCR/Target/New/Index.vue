@@ -78,7 +78,15 @@
                                     {{ dat.paps_desc }}
                                 </td>
                                 <td>
-                                    {{ dat.division_outputs }}
+                                    <!-- {{ dat.division_outputs }} -->
+
+                                        <tr v-for="(div_output, div_index) in dat.division_outputs" :key="div_index">
+                                            <td>{{ div_output.output }}
+                                                <hr>
+                                            </td>
+                                        </tr>
+
+
                                 </td>
                                 <td>
                                     {{ dat.performance_measure }}

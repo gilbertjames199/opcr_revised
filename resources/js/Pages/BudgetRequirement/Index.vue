@@ -52,32 +52,32 @@
                 <tbody>
                     <tr>
                         <td>Total Amount</td>
-                        <td>{{ format_number_conv(revs[0].amount,2,true) }}</td>
+                        <td>{{ format_number_conv(implementation_plan,2,true) }}</td>
                         <td>{{ format_number_conv(BUD_total,2,true) }}</td>
                         <td>
-                            <span v-if="revs[0].amount!=BUD_total" style="color:red">
+                            <span v-if="implementation_plan!=BUD_total" style="color:red">
                                 WARNING: Total amount (of project) is not equal to total amount in budgetary requirements!
-                                <span v-if="revs_amount>BUD_total">
-                                    <br>Add {{ getDifference(revs_amount,BUD_total) }} to budgetary requirements
+                                <span v-if="implementation_plan>BUD_total">
+                                    <br>Add {{ getDifference(implementation_plan,BUD_total) }} to budgetary requirements
                                 </span>
-                                <span v-if="revs_amount<BUD_total">
-                                    <br>Remove {{ getDifference(BUD_total,revs_amount)  }} from budgetary requirements
+                                <span v-if="implementation_plan<BUD_total">
+                                    <br>Remove {{ getDifference(BUD_total,implementation_plan)  }} from budgetary requirements
                                 </span>
                             </span>
                             <span v-else>OK</span>
                         </td>
                     </tr>
                     <tr>
-                        <td>GAD Attributed Amount</td>
-                        <td>{{ format_number_conv(revs[0].attributed_amount,2,true) }}</td>
+                        <td>GAD Attributed Amount </td>
+                        <td>{{ format_number_conv(revs_attributed,2,true) }}</td>
                         <td>{{ format_number_conv(GAD_total,2,true) }}</td>
                         <td>
-                            <span v-if="revs[0].attributed_amount!=GAD_total" style="color:red">
+                            <span v-if="revs_attributed!=GAD_total" style="color:red">
                                 WARNING: Total GAD Attributed amount is not equal to Total GAD Attributed Budget!
-                                <span v-if="revs_attributed>GAD_total">
+                                <span v-if="(parseFloat(revs[0].hgdg_percent) * parseFloat(implementation_plan))>GAD_total">
                                     <br>Add {{ getDifference(revs_attributed,GAD_total) }} to total GAD Amount in budgetary requirements
                                 </span>
-                                <span v-if="revs_attributed<GAD_total">
+                                <span v-if="(parseFloat(revs[0].hgdg_percent) * parseFloat(implementation_plan))<GAD_total">
                                     <br>Remove {{ getDifference(GAD_total,revs_attributed)  }} from total GAD Amount in budgetary requirements
                                 </span>
                             </span>
@@ -246,7 +246,7 @@
                                 <tr v-if="cap_gad.length>0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
-                                    <th colspan="2" >SUB TOTAL (NON-GAD) </th>
+                                    <th colspan="2" >SUB TOTAL (GAD) </th>
                                     <th>{{ format_number_conv(s_cap_gad,2,true) }}</th>
                                     <td></td>
                                     <td></td>
@@ -445,7 +445,7 @@ export default {
         filters: Object,
         GAD_total: Number,
         BUD_total: Number,
-
+        implementation_plan: Number,
         s_mooe_gad: Number,
         s_mooe_non: Number,
         s_cap_gad: Number,
@@ -467,7 +467,7 @@ export default {
     },
     mounted(){
         this.revs_amount = parseFloat(this.revs[0].amount);
-        this.revs_attributed = parseFloat(this.revs[0].attributed_amount);
+        this.revs_attributed = parseFloat(this.revs[0].hgdg_percent)*parseFloat(this.implementation_plan);
         this.budg_total=parseFloat(this.BUD_total);
         this.gadg_total=parseFloat(this.GAD_total);
     },

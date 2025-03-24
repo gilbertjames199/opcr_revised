@@ -9,14 +9,20 @@ class Activity extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='activities';
+    protected $table = 'activities';
     protected $fillable = [
         'description',
         'strategy_id'
     ];
 
 
-    public function strat(){
-        return $this -> hasOne(Strategy::class, 'id', 'strategy_id');
+    public function strat()
+    {
+        return $this->hasOne(Strategy::class, 'id', 'strategy_id');
+    }
+
+    public function activityProject()
+    {
+        return $this->hasMany(activityProject::class, 'activity_id', 'id');
     }
 }

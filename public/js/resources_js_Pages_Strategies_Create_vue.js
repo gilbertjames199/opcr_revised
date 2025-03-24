@@ -69,8 +69,8 @@ __webpack_require__.r(__webpack_exports__);
         //alert('patch');
         this.form.patch("/strategies", this.form);
       } else {
-        this.form.id = null;
-        alert('store');
+        this.form.id = null; // alert('store');
+
         this.form.post("/strategies/store", this.form);
       }
     }

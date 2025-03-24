@@ -388,7 +388,7 @@ export default {
 
             } else {
                 this.form.id = null;
-
+                alert(this.from_mfo);
                 if (this.from_mfo == true) {
                     this.form.post("/paps/save", this.form);
                 } else {

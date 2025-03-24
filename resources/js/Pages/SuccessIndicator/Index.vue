@@ -39,7 +39,7 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Success Indicator (Target + Measures)</th>
+                                <th>Strategy</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
