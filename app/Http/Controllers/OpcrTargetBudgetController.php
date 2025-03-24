@@ -78,7 +78,7 @@ class OpcrTargetBudgetController extends Controller
             ->groupBy('raaohs.recid')
             ->groupBy('programs.recid')
             ->get();
-
+        dd($programs);
         $ooes = [];
         return inertia("OPCR/TargetBudget/Create", [
             // "pap1" => $paps,
