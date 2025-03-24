@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityProject;
 use App\Models\BudgetRequirement;
 use App\Models\RevisionPlan;
+use App\Models\StrategyProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,10 +32,19 @@ class BudgetRequirementController extends Controller
         //         ->orderBy('particulars')
         //         ->get();
         $revs = RevisionPlan::where('id', '=', $idrev)->get();
+        // dd($revs);
+        $total = 0;
+        // dd($revs);
+        if ($revs[0]->is_strategy_based) {
+            $total = $this->getStratTotal($idrev);
+        } else {
+            $total = $this->getActivityTotal($idrev);
+        }
+        // dd($total);
         // $end = microtime(true);
         // $difference = $end - $start;
         // dd($difference);
-        //dd($idrev);
+        // dd($idrev);
 
         //MOOE
         $mooe_gad = $this->model->where('revision_plan_id', '=', $idrev)
@@ -122,15 +133,64 @@ class BudgetRequirementController extends Controller
             "s_cap_non" => $s_cap_non,
             "s_ps_gad" => $s_ps_gad,
             "s_ps_non" => $s_ps_non,
-
+            "implementation_plan" => $total,
             "filters" => $request->only(['search']),
             "GAD_total" => $GAD_total,
             "BUD_total" => $BUD_total,
+
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
+    }
+    public function getStratTotal($idrev)
+    {
+        $total = StrategyProject::where('project_id', $idrev)
+            ->select(
+                'ps_q1',
+                'ps_q2',
+                'ps_q3',
+                'ps_q4',
+                'mooe_q1',
+                'mooe_q2',
+                'mooe_q3',
+                'mooe_q4',
+                'co_q1',
+                'co_q2',
+                'co_q3',
+                'co_q4'
+            )
+            ->get();
+
+        $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+            $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+            $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+        return $total;
+    }
+    public function getActivityTotal($idrev)
+    {
+        $total = ActivityProject::where('project_id', $idrev)
+            ->select(
+                'ps_q1',
+                'ps_q2',
+                'ps_q3',
+                'ps_q4',
+                'mooe_q1',
+                'mooe_q2',
+                'mooe_q3',
+                'mooe_q4',
+                'co_q1',
+                'co_q2',
+                'co_q3',
+                'co_q4'
+            )
+            ->get();
+
+        $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+            $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+            $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+        return $total;
     }
     public function create(Request $request, $idrev)
     {

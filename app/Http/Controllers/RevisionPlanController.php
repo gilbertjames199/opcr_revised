@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountAccess;
+use App\Models\ActivityProject;
 use App\Models\BudgetRequirement;
 use App\Models\FFUNCCOD;
 use App\Models\HGDG_Checklist;
@@ -14,6 +15,7 @@ use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
 use App\Models\Risk_manangement;
 use App\Models\Signatory;
+use App\Models\StrategyProject;
 use App\Models\Target;
 use App\Models\TeamPlan;
 use Illuminate\Http\Request;
@@ -94,7 +96,7 @@ class RevisionPlanController extends Controller
         $hgdg = HGDG_Checklist::get();
         $count = RevisionPlan::where('idpaps', $id)->count();
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
-        //dd($max_id);
+        // dd($max_id);
         $duplicate = RevisionPlan::where('id', $max_id)->get();
 
         if ($count > 0) {
@@ -203,6 +205,7 @@ class RevisionPlanController extends Controller
 
         //REVISION PLANS
         $paps = RevisionPlan::where('id', $id)->with('checklist')->first();
+        // dd($paps);
         $scope = $paps->scope;
         $idpaps = $paps->idpaps;
         $idmfo = $paps->idmfo;
@@ -242,69 +245,109 @@ class RevisionPlanController extends Controller
         }
 
         //IMPLEMENTATION PLANS
-        $implement = $this->imp->select(
-            'implementation_plans.id AS id',
-            'strategies.description AS strategy',
-            'implementation_plans.idrev_plan',
-            'implementation_plans.date_from',
-            'implementation_plans.date_to',
-            'implementation_plans.idstrategy',
-            'implementation_plans.cc_topology',
-            'implementation_plans.person_responsible',
-            'issues.description AS issue'
-        )
-            ->where('idrev_plan', $id)
-            ->where('idstrategy', '<>', NULL)
-            ->Join('strategies', 'strategies.id', 'implementation_plans.idstrategy')
-            ->leftJoin('issues', 'issues.id', 'implementation_plans.idissue')
+        // $implement = $this->imp->select(
+        //     'implementation_plans.id AS id',
+        //     'strategies.description AS strategy',
+        //     'implementation_plans.idrev_plan',
+        //     'implementation_plans.date_from',
+        //     'implementation_plans.date_to',
+        //     'implementation_plans.idstrategy',
+        //     'implementation_plans.cc_topology',
+        //     'implementation_plans.person_responsible',
+        //     'issues.description AS issue'
+        // )
+        //     ->where('idrev_plan', $id)
+        //     ->where('idstrategy', '<>', NULL)
+        //     ->Join('strategies', 'strategies.id', 'implementation_plans.idstrategy')
+        //     ->leftJoin('issues', 'issues.id', 'implementation_plans.idissue')
+        //     ->get()
+        //     ->map(function ($item) {
+        //         //dd($item->idrev_plan);
+        //         $activity_implementation = $this->imp
+        //             ->select(
+        //                 'implementation_plans.id AS id',
+        //                 'activities.description AS activity',
+        //                 'implementation_plans.idrev_plan',
+        //                 'implementation_plans.date_from',
+        //                 'implementation_plans.date_to',
+        //                 'implementation_plans.cc_topology',
+        //                 'issues.description AS issue',
+        //                 'strategies.id AS stratt_id',
+        //                 'implementation_plans.person_responsible',
+        //             )
+        //             ->Join('activities', 'activities.id', 'implementation_plans.idactivity')
+        //             ->Join('strategies', 'strategies.id', '=', 'activities.strategy_id')
+        //             ->leftJoin('issues', 'issues.id', 'implementation_plans.idissue')
+        //             ->where('idrev_plan', $item->idrev_plan)
+        //             ->where('strategies.id', $item->idstrategy)
+        //             ->get()
+        //             ->map(function ($item) {
+        //                 return [
+        //                     'id' => $item->id,
+        //                     'idrev_plan' => $item->idrev_plan,
+        //                     'date_from' => convertDateString($item->date_from),
+        //                     'date_to' => convertDateString($item->date_to),
+        //                     'stratt_id' => $item->stratt_id,
+        //                     'cc_topology' => $item->cc_topology,
+        //                     'issue' => $item->issue,
+        //                     'activity' => $item->activity,
+        //                     'person_responsible' => $item->person_responsible,
+        //                 ];
+        //             });
+
+        //         return [
+        //             'id' => $item->id,
+        //             'idrev_plan' => $item->idrev_plan,
+        //             'date_from' => convertDateString($item->date_from),
+        //             'date_to' => convertDateString($item->date_to),
+        //             'idstrategy' => $item->idstrategy,
+        //             'cc_topology' => $item->cc_topology,
+        //             'issue' => $item->issue,
+        //             'strategy' => $item->strategy,
+        //             'activity_implementation' => $activity_implementation,
+        //             'person_responsible' => $item->person_responsible,
+        //         ];
+        //     });
+        $implement = StrategyProject::with(["strategy"])
+            ->where("project_id", $id)
+            ->where("strategy_id", "<>", NULL)
+            ->where("is_active", "1")
             ->get()
-            ->map(function ($item) {
-                //dd($item->idrev_plan);
-                $activity_implementation = $this->imp
-                    ->select(
-                        'implementation_plans.id AS id',
-                        'activities.description AS activity',
-                        'implementation_plans.idrev_plan',
-                        'implementation_plans.date_from',
-                        'implementation_plans.date_to',
-                        'implementation_plans.cc_topology',
-                        'issues.description AS issue',
-                        'strategies.id AS stratt_id',
-                        'implementation_plans.person_responsible',
-                    )
-                    ->Join('activities', 'activities.id', 'implementation_plans.idactivity')
-                    ->Join('strategies', 'strategies.id', '=', 'activities.strategy_id')
-                    ->leftJoin('issues', 'issues.id', 'implementation_plans.idissue')
-                    ->where('idrev_plan', $item->idrev_plan)
-                    ->where('strategies.id', $item->idstrategy)
+            ->map(function ($item) use ($id) {
+                $activity = ActivityProject::with(["activity"])
+                    ->where("project_id", $id)
+                    ->where("activity_id", "<>", NULL)
+                    ->where("is_active", "1")
                     ->get()
-                    ->map(function ($item) {
+                    ->map(function ($item_act) use ($item) {
+
                         return [
-                            'id' => $item->id,
-                            'idrev_plan' => $item->idrev_plan,
-                            'date_from' => convertDateString($item->date_from),
-                            'date_to' => convertDateString($item->date_to),
-                            'stratt_id' => $item->stratt_id,
-                            'cc_topology' => $item->cc_topology,
-                            'issue' => $item->issue,
-                            'activity' => $item->activity,
-                            'person_responsible' => $item->person_responsible,
+                            'id' => $item_act->id,
+                            'idrev_plan' => $item_act->project_id,
+                            'date_from' => convertDateString($item_act->date_from),
+                            'date_to' => convertDateString($item_act->date_to),
+                            'stratt_id' => $item->strategy_id,
+                            'cc_topology' => $item_act->ccet_code,
+                            'issue' => $item_act->issue,
+                            'strategy' => $item_act->activity ? $item_act->activity->description : "",
+                            'activity_implementation' => $item_act->gad_issue,
+                            'person_responsible' => $item_act->responsible,
                         ];
                     });
-
                 return [
                     'id' => $item->id,
-                    'idrev_plan' => $item->idrev_plan,
+                    'idrev_plan' => $item->project_id,
                     'date_from' => convertDateString($item->date_from),
                     'date_to' => convertDateString($item->date_to),
-                    'idstrategy' => $item->idstrategy,
-                    'cc_topology' => $item->cc_topology,
+                    'idstrategy' => $item->strategy_id,
+                    'cc_topology' => $item->ccet_code,
                     'issue' => $item->issue,
-                    'strategy' => $item->strategy,
-                    'activity_implementation' => $activity_implementation,
-                    'person_responsible' => $item->person_responsible,
+                    'strategy' => $item->strategy ? $item->strategy->description : "",
+                    'activity_implementation' => $activity,
+                    'person_responsible' => $item->responsible,
                 ];
             });
+        // dd($implement);
         $mooe_gad = BudgetRequirement::where('revision_plan_id', '=', $id)
             ->where('category', 'Maintenance, Operating, and Other Expenses')
             ->where('category_gad', 'GAD')
@@ -403,78 +446,78 @@ class RevisionPlanController extends Controller
             ->where('acted', 'Approved')->get();
         //IMPLEMENTATION PLAN
         //$implementation_plan = new ImplementationPlan();
-        $data = ImplementationPlan::select(
-            'implementation_plans.id AS id',
-            'strategies.description AS strategy',
-            'implementation_plans.idrev_plan',
-            'implementation_plans.date_from',
-            'implementation_plans.date_to',
-            'implementation_plans.idstrategy',
-            'implementation_plans.cc_topology',
-            'implementation_plans.person_responsible',
-            'issues.description AS issue'
-        )
-            ->where('idrev_plan', $id)
-            ->where('idstrategy', '<>', NULL)
-            ->Join('strategies', 'strategies.id', 'implementation_plans.idstrategy')
-            ->leftJoin('issues', 'issues.id', 'implementation_plans.idissue')
-            ->get()
-            ->map(function ($item) {
-                //dd($item->idrev_plan);
-                $activity_implementation = ImplementationPlan::select(
-                    'implementation_plans.id AS id',
-                    'activities.description AS activity',
-                    'implementation_plans.idrev_plan',
-                    'implementation_plans.date_from',
-                    'implementation_plans.date_to',
-                    'implementation_plans.cc_topology',
-                    'issues.description AS issue',
-                    'strategies.id AS stratt_id',
-                    'implementation_plans.person_responsible',
-                )
-                    ->Join('activities', 'activities.id', 'implementation_plans.idactivity')
-                    ->Join('strategies', 'strategies.id', '=', 'activities.strategy_id')
-                    ->leftJoin('issues', 'issues.id', 'implementation_plans.idissue')
-                    ->where('idrev_plan', $item->idrev_plan)
-                    ->where('strategies.id', $item->idstrategy)
-                    ->get()
-                    ->map(function ($item) {
-                        $targets = Target::where('idimplementation', $item->id)
-                            ->select(
-                                'indicators.description AS indicator_description',
-                                'targets.description AS target_description',
-                                'targets.planned_budget AS budget'
-                            )
-                            ->join('indicators', 'indicators.id', 'targets.idindicator')
-                            ->get();
-                        return [
-                            'id' => $item->id,
-                            'idrev_plan' => $item->idrev_plan,
-                            'date_from' => convertDateString($item->date_from),
-                            'date_to' => convertDateString($item->date_to),
-                            'stratt_id' => $item->stratt_id,
-                            'cc_topology' => $item->cc_topology,
-                            'issue' => $item->issue,
-                            'activity' => $item->activity,
-                            'person_responsible' => $item->person_responsible,
-                            'targets' => $targets,
-                        ];
-                    });
-                $targets = Target::where('idimplementation', $item->id)->get();
-                return [
-                    'id' => $item->id,
-                    'idrev_plan' => $item->idrev_plan,
-                    'date_from' => convertDateString($item->date_from),
-                    'date_to' => convertDateString($item->date_to),
-                    'idstrategy' => $item->idstrategy,
-                    'cc_topology' => $item->cc_topology,
-                    'issue' => $item->issue,
-                    'strategy' => $item->strategy,
-                    'activity_implementation' => $activity_implementation,
-                    'person_responsible' => $item->person_responsible,
-                    'targets' => $targets,
-                ];
-            });
+        // $data = ImplementationPlan::select(
+        //     'implementation_plans.id AS id',
+        //     'strategies.description AS strategy',
+        //     'implementation_plans.idrev_plan',
+        //     'implementation_plans.date_from',
+        //     'implementation_plans.date_to',
+        //     'implementation_plans.idstrategy',
+        //     'implementation_plans.cc_topology',
+        //     'implementation_plans.person_responsible',
+        //     'issues.description AS issue'
+        // )
+        //     ->where('idrev_plan', $id)
+        //     ->where('idstrategy', '<>', NULL)
+        //     ->Join('strategies', 'strategies.id', 'implementation_plans.idstrategy')
+        //     ->leftJoin('issues', 'issues.id', 'implementation_plans.idissue')
+        //     ->get()
+        //     ->map(function ($item) {
+        //         //dd($item->idrev_plan);
+        //         $activity_implementation = ImplementationPlan::select(
+        //             'implementation_plans.id AS id',
+        //             'activities.description AS activity',
+        //             'implementation_plans.idrev_plan',
+        //             'implementation_plans.date_from',
+        //             'implementation_plans.date_to',
+        //             'implementation_plans.cc_topology',
+        //             'issues.description AS issue',
+        //             'strategies.id AS stratt_id',
+        //             'implementation_plans.person_responsible',
+        //         )
+        //             ->Join('activities', 'activities.id', 'implementation_plans.idactivity')
+        //             ->Join('strategies', 'strategies.id', '=', 'activities.strategy_id')
+        //             ->leftJoin('issues', 'issues.id', 'implementation_plans.idissue')
+        //             ->where('idrev_plan', $item->idrev_plan)
+        //             ->where('strategies.id', $item->idstrategy)
+        //             ->get()
+        //             ->map(function ($item) {
+        //                 $targets = Target::where('idimplementation', $item->id)
+        //                     ->select(
+        //                         'indicators.description AS indicator_description',
+        //                         'targets.description AS target_description',
+        //                         'targets.planned_budget AS budget'
+        //                     )
+        //                     ->join('indicators', 'indicators.id', 'targets.idindicator')
+        //                     ->get();
+        //                 return [
+        //                     'id' => $item->id,
+        //                     'idrev_plan' => $item->idrev_plan,
+        //                     'date_from' => convertDateString($item->date_from),
+        //                     'date_to' => convertDateString($item->date_to),
+        //                     'stratt_id' => $item->stratt_id,
+        //                     'cc_topology' => $item->cc_topology,
+        //                     'issue' => $item->issue,
+        //                     'activity' => $item->activity,
+        //                     'person_responsible' => $item->person_responsible,
+        //                     'targets' => $targets,
+        //                 ];
+        //             });
+        //         $targets = Target::where('idimplementation', $item->id)->get();
+        //         return [
+        //             'id' => $item->id,
+        //             'idrev_plan' => $item->idrev_plan,
+        //             'date_from' => convertDateString($item->date_from),
+        //             'date_to' => convertDateString($item->date_to),
+        //             'idstrategy' => $item->idstrategy,
+        //             'cc_topology' => $item->cc_topology,
+        //             'issue' => $item->issue,
+        //             'strategy' => $item->strategy,
+        //             'activity_implementation' => $activity_implementation,
+        //             'person_responsible' => $item->person_responsible,
+        //             'targets' => $targets,
+        //         ];
+        //     });
         $imp_amount = DB::table('targets')
             ->where('implementation_plans.idrev_plan', $id)
             ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
@@ -506,7 +549,7 @@ class RevisionPlanController extends Controller
             "sig_rev" => $sig_rev,
             "sig_prep" => $sig_prep,
             "sig_app" => $sig_app,
-            "data" => $data,
+            // "data" => $data,
             "imp_amount" => $imp_amount,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
@@ -664,6 +707,7 @@ class RevisionPlanController extends Controller
         $rev = new RevisionPlan();
         $rev->FFUNCCOD = $FFUNCCOD;
         $rev->idpaps = "0";
+        // $rev->idpaps = $request->idpaps;
         $rev->year_period = $currentYear;
         $rev->scope = "GAS";
         $rev->project_title = $attributes['project_title'];

@@ -1,7 +1,7 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Profile/Design {{ idpaps }}</h3>
+            <h3>{{ pageTitle }} Profile/Design fsd{{ idpaps }}</h3>
             <Link :href="`/revision/${idpaps}`">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -22,7 +22,7 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
 
-                <label for="">PROGRAMS AND PROJECTS </label>
+                <label for="">PROGRAMS AND PROJECTS</label>
                 <input type="text" v-model="paps[0].paps_desc" class="form-control" />
 
                 <label for="">PROJECT TITLE</label>
@@ -51,7 +51,7 @@
 
                 INTENDED BENEFICIARIES<br>
                 <label for="">MALE</label>
-                <input type="number" v-model="form.beneficiary_male" class="form-control" autocomplete="chrome-off">
+                <input type="number" v-model="form.beneficiary_male" class="form-control" autocomplete="chrome-off" >
                 <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_male">{{ form.errors.beneficiary_male }}</div>
 
                 <label for="">FEMALE</label>
@@ -61,52 +61,60 @@
                 <hr style="background-color: black !important; border:1px; height: 1px;">
                 BASELINE DISAGGREGATED DATA<br>
                 <label for="">MALE</label>
-                <input type="number" v-model="form.baseline_male" class="form-control" autocomplete="chrome-off">
+                <input type="number" v-model="form.baseline_male" class="form-control" autocomplete="chrome-off" @change="setTotal">
                 <div class="fs-6 c-red-500" v-if="form.errors.baseline_male">{{ form.errors.baseline_male }}</div>
 
                 <label for="">FEMALE</label>
-                <input type="number" v-model="form.baseline_female" class="form-control" autocomplete="chrome-off">
+                <input type="number" v-model="form.baseline_female" class="form-control" autocomplete="chrome-off" @change="setTotal">
                 <div class="fs-6 c-red-500" v-if="form.errors.baseline_female">{{ form.errors.baseline_female }}</div>
 
                 <label for="">TOTAL</label>
-                <input type="number" v-model="form.baseline_total" class="form-control" autocomplete="chrome-off">
+                <input type="number" v-model="form.baseline_total" class="form-control" autocomplete="chrome-off" >
                 <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
                 <hr style="background-color: black !important; border:1px; height: 1px;">
 
                 <label for="">RATIONALE</label>
-                <div>words remaining: {{ wordsRemaining }} &nbsp;&nbsp; word count: {{ wordCount }}</div>
-                <textarea v-model="form.rationale" style="height:100px;" @input="limitWords" class="form-control"
-                    autocomplete="chrome-off"></textarea>
+                <!-- <div>words remaining: {{ wordsRemaining }} &nbsp;&nbsp; word count: {{ wordCount }}</div> -->
+                 <QuillEditor theme="snow" v-model:content="form.rationale" @input="limitWords" contentType="html"
+                    toolbar="essential" />
+                <!-- <textarea v-model="form.rationale" style="height:100px;" class="form-control"
+                    autocomplete="chrome-off"></textarea> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
 
                 <label for="">OBJECTIVES</label>
-                <textarea v-model="form.objective" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea>
+                <!-- <textarea v-model="form.objective" style="height:100px;" class="form-control"
+                    autocomplete="chrome-off"></textarea> -->
+                <QuillEditor theme="snow" v-model:content="form.objective" contentType="html" toolbar="essential" />
                 <div class="fs-6 c-red-500" v-if="form.errors.objective">{{ form.errors.objective }}</div>
 
                 <label for="">BENEFICIARIES</label>
-                <textarea v-model="form.beneficiaries" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea>
+                <!-- <textarea v-model="form.beneficiaries" style="height:100px;" class="form-control"
+                    autocomplete="chrome-off"></textarea> -->
+                <QuillEditor theme="snow" v-model:content="form.beneficiaries" contentType="html" toolbar="essential" />
                 <div class="fs-6 c-red-500" v-if="form.errors.beneficiaries">{{ form.errors.beneficiaries }}</div>
 
                 <label for="">IMPLEMENTING TEAM</label>
-                <textarea v-model="form.implementing_team" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea>
+                <QuillEditor theme="snow" v-model:content="form.implementing_team" contentType="html" toolbar="essential" />
+                <!-- <textarea v-model="form.implementing_team" style="height:100px;" class="form-control"
+                    autocomplete="chrome-off"></textarea> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.implementing_team">{{ form.errors.implementing_team }}</div>
 
                 <label for="">PARTNERSHIPS AND SUSTAINABILITY</label>
-                <textarea v-model="form.partnership" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea>
+                <!-- <textarea v-model="form.partnership" style="height:100px;" class="form-control"
+                    autocomplete="chrome-off"></textarea> -->
+                <QuillEditor theme="snow" v-model:content="form.partnership" contentType="html" toolbar="essential" />
                 <div class="fs-6 c-red-500" v-if="form.errors.partnership">{{ form.errors.partnership }}</div>
 
                 <label for="">MONITORING AND EVALUATION</label>
-                <textarea v-model="form.monitoring" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea>
+                <!-- <textarea v-model="form.monitoring" style="height:100px;" class="form-control"
+                    autocomplete="chrome-off"></textarea> -->
+                <QuillEditor theme="snow" v-model:content="form.monitoring" contentType="html" toolbar="essential" />
                 <div class="fs-6 c-red-500" v-if="form.errors.monitoring">{{ form.errors.monitoring }}</div>
 
                 <label for="">RISK MANAGEMENT</label>
-                <textarea v-model="form.risk_management" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea>
+                <!-- <textarea v-model="form.risk_management" style="height:100px;" class="form-control"
+                    autocomplete="chrome-off"></textarea> -->
+                <QuillEditor theme="snow" v-model:content="form.risk_management" contentType="html" toolbar="essential" />
                 <div class="fs-6 c-red-500" v-if="form.errors.risk_management">{{ form.errors.risk_management }}</div>
 
                 <label for="">Checklist/Box Number</label>
@@ -279,6 +287,12 @@ export default {
                 //this.form.rationale = words.slice(0, this.maxWords).join(' ');
             }
         },
+        setTotal(){
+            var male =parseFloat(this.form.baseline_male);
+            var female =parseFloat(this.form.baseline_female);
+            var tot = male + female;
+            this.form.baseline_total =tot
+        }
     },
 };
 </script>

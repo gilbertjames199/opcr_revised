@@ -37,6 +37,9 @@
 // }
 
 
+.table-responsive {
+    overflow: visible !important;
+}
 
 // Bootstrap
 //@import '~bootstrap/scss/bootstrap';
@@ -164,6 +167,10 @@ hr {
 .action-dropdown {
     padding: 0.1rem 0 !important;
     min-width: 8rem;
+}
+
+.dropdown-menu {
+    z-index: 1050 !important;
 }
 
 .action-divider {

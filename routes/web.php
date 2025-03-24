@@ -18,6 +18,7 @@ use App\Http\Controllers\AuthenticationController;
 // use App\Http\Controllers\TimeSheetController;
 use App\Http\Controllers\AccomplishmentController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ActivityProjectController;
 use App\Http\Controllers\BudgetRequirementController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\IndicatorController;
@@ -75,6 +76,7 @@ use App\Http\Controllers\AppropriationAmountController;
 use App\Http\Controllers\AppropriationController;
 use App\Http\Controllers\DivisionOutputController;
 use App\Http\Controllers\ExpectedOutputController;
+use App\Http\Controllers\ExpectedRevisedOutcomeController;
 use App\Http\Controllers\ForbiddenController;
 use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
@@ -84,12 +86,14 @@ use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
 use App\Http\Controllers\SentenceParserController;
+use App\Http\Controllers\StrategyProjectController;
 use App\Http\Controllers\TimeRangeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEmployeesController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\AnnualInvestmentPlan;
+use App\Models\ExpectedRevisedOutcome;
 use App\Models\ImplementationPlan;
 use App\Models\IntermediateOutcome;
 use App\Models\OfficePerformanceCommitmentRating;
@@ -402,6 +406,36 @@ Route::middleware('auth')->group(function () {
         Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
     });
+    //Strategies and Activities
+    Route::prefix('/strategies-and-activities')->group(function () {
+        // /strategies-and-activities/strategies/create
+        Route::get('/{idrevplan}', [StrategyProjectController::class, 'index']);
+        Route::get('/create/{idrevplan}', [StrategyProjectController::class, 'create']);
+        Route::post('/strategies/create', [StrategyProjectController::class, 'store']);
+        Route::get('/{id}/edit', [StrategyProjectController::class, 'edit']);
+        Route::patch('/{id}', [StrategyProjectController::class, 'update']);
+        Route::delete('/{id}', [StrategyProjectController::class, 'destroy']);
+
+        Route::get('/refresh/data/now/{idrevplan}', [StrategyProjectController::class, 'refresh']);
+    });
+    //Strategies and Projects
+    Route::prefix('/strategies-project/r')->group(function () {
+        Route::post('/create', [StrategyProjectController::class, 'createStrategy']);
+        Route::delete('/delete', [StrategyProjectController::class, 'deleteStrategy']);
+        Route::get('/{idrevplan}', [StrategyProjectController::class, 'getStrategies']);
+        Route::post('/save/implementation/{idrevplan}', [StrategyProjectController::class, 'saveAll']);
+    });
+    //Activities and Projects
+    Route::prefix('/activities-project/r')->group(function () {
+        Route::post('/create', [ActivityProjectController::class, 'createActivity']);
+        Route::delete('/delete', [ActivityProjectController::class, 'deleteActivity']);
+    });
+    //Expected Outcomes
+    Route::prefix("/expected-outcomes-revised")->group(function () {
+        //type = strategy or activity
+        //id = id_strategy or activity id
+        Route::get("/{id}/{type}", [ExpectedRevisedOutcomeController::class, 'index']);
+    });
     //Budget
     Route::prefix('/budget')->group(function () {
         Route::get('/{id}', [BudgetRequirementController::class, 'index']);
@@ -425,7 +459,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/create/activity/{idstrat}/{idrev_plan}', [ImplementationPlanController::class, 'act_create']);
         Route::get('/edit/activity/{id}', [ImplementationPlanController::class, 'act_edit']);
     });
-
+    // Strategy-based
+    Route::prefix('/strategy/implementation')->group(function () {
+        Route::get('/{id}', [StrategyProjectController::class, 'strategyImplementation']);
+        // Route::get('/create/{idrev}', [ImplementationPlanController::class, 'create']);
+        // Route::post('/store', [ImplementationPlanController::class, 'store']);
+        Route::get('/edit/{id}', [StrategyProjectController::class, 'edit']);
+        // Route::delete('/{id}', [ImplementationPlanController::class, 'destroy']);
+        // Route::patch('/update/{idrev}', [ImplementationPlanController::class, 'update']);
+        // //implementation/create/activity/${dat.id}
+        // Route::get('/create/activity/{idstrat}/{idrev_plan}', [ImplementationPlanController::class, 'act_create']);
+        // Route::get('/edit/activity/{id}', [ImplementationPlanController::class, 'act_edit']);
+    });
+    //Activity-based IMplementation Plan
+    Route::prefix('/activity/implementation')->group(function () {
+        Route::get('/{id}', [ImplementationPlanController::class, 'index']);
+    });
     //hgdg_checklist
     Route::prefix('/HGDGChecklist')->group(function () {
         Route::get('/', [HGDGChecklistController::class, 'index']);

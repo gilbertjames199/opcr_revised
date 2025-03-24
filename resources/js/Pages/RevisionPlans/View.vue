@@ -110,8 +110,9 @@
                                 <th class="bg-secondary text-white" colspan="1">
                                     <Link :href="`/HGDGScore/${paps.id}`" style="color:white">HGDG Score </Link>
                                 </th>
-                                <td colspan="2">{{ paps.hgdg_score }} -<b>{{ GAD_remark(paps.hgdg_score) }}</b>
-                                    <br>({{ paps.hgdg_percent * 100 }}%)
+                                <td colspan="2">{{ paps.hgdg_score }}
+                                    <!-- -<b>{{ GAD_remark(paps.hgdg_score) }}</b>
+                                    <br>({{ paps.hgdg_percent * 100 }}%) -->
                                 </td>
                             </tr>
                             <tr>
@@ -138,14 +139,13 @@
                     </table>
                     <br>
                     <!--IMPLEMENTATION PLAN-->
-                    <div v-if="data.length > 0">
+                    <div v-if="implementation">
                         <h3>
                             <Link :href="`/implementation/${paps.id}`">Implementation Plan</Link>
                         </h3>
                         <table class="table table-hover table-bordered border-dark">
                             <thead>
                                 <tr class="bg-secondary text-white">
-
                                     <th>Strategies/Activities</th>
                                     <th>Performance Target Indicators</th>
                                     <th>Gender Issues to be Addressed</th>
@@ -154,19 +154,17 @@
                                     <th>Budget</th>
                                     <th>Climate Change Topology Code</th>
                                     <th>Person Responsible</th>
-
                                 </tr>
                             </thead>
                             <tbody>
-                                <!---***********************-->
-                                <template v-for="(dat, index) in data" :key="dat.id">
+                                <template v-for="(dat, index) in implementation" :key="dat.id">
                                     <tr style="background-color:lightgrey; font-weight: bold;">
 
                                         <td><b>{{ dat.strategy }}</b></td>
                                         <td>
-                                            <div v-for="target in dat.targets.data">
+                                            <!-- <div v-for="target in dat.targets.data">
                                                 {{ target.indicator_description }}
-                                            </div>
+                                            </div> -->
                                         </td>
                                         <td>{{ dat.issue }}</td>
                                         <td>
@@ -183,9 +181,9 @@
 
                                             <td>{{ act.activity }}</td>
                                             <td>
-                                                <div v-for="target in act.targets">
+                                                <!-- <div v-for="target in act.targets">
                                                     {{ target.indicator_description }}
-                                                </div>
+                                                </div> -->
                                             </td>
                                             <td>{{ act.issue }}</td>
                                             <td>
@@ -194,16 +192,16 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div v-for="target in act.targets">
+                                                <!-- <div v-for="target in act.targets">
                                                     {{ target.target_description }}
-                                                </div>
+                                                </div> -->
                                             </td>
                                             <td>
-                                                <div v-for="target in act.targets">
+                                                <!-- <div v-for="target in act.targets">
                                                     <div v-if="target.budget > 0">
                                                         {{ format_number_conv(target.budget, 2, true) }}
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </td>
                                             <td>{{ act.cc_topology }}</td>
                                             <td>{{ act.person_responsible }}</td>
@@ -221,7 +219,6 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <!--********************-->
                             </tbody>
                         </table>
                     </div>

@@ -210,6 +210,7 @@ class PAPController extends Controller
                 ->count('id');
             if ($count > 0) {
                 $proceed = "0";
+                $msg = "A PAPS classified as GAS already exists!";
             }
         }
         $msg = "Failed to add Programs and Projects(PAPS)";

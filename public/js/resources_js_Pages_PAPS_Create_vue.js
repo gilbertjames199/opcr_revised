@@ -168,6 +168,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       } else {
         this.form.id = null;
+        alert(this.from_mfo);
 
         if (this.from_mfo == true) {
           this.form.post("/paps/save", this.form);
@@ -761,7 +762,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_51)], 32
   /* HYDRATE_EVENTS */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{  form }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" mfos_data: {{ mfos_data }}\r\n        <br /><br /><br />\r\n        FFUNCCOD: {{ form.FFUNCCOD }}<br />\r\n        dataMFO: {{ formattedMFOs }}\r\n        <br />\r\n        <br />\r\n        <br />\r\n        {{ mfos }} ")]);
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{  form }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" mfos_data: {{ mfos_data }}\n        <br /><br /><br />\n        FFUNCCOD: {{ form.FFUNCCOD }}<br />\n        dataMFO: {{ formattedMFOs }}\n        <br />\n        <br />\n        <br />\n        {{ mfos }} ")]);
 }
 
 /***/ }),
