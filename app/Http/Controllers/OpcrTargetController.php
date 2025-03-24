@@ -862,8 +862,10 @@ class OpcrTargetController extends Controller
                 }
                 return [
                     'mfo' => $mfo_desc,
-                    'paps' => $paps_desc,
-                    'success_indicator' => $success_indicator,
+                    'paps_desc' => $paps_desc,
+
+                    //Success indicator
+                    'performance_measure' => $success_indicator,
                     'prescribed_period' => $prescribed_period,
                     'office_accountable' => $office_accountable,
                     'quality1' => $quality1,
