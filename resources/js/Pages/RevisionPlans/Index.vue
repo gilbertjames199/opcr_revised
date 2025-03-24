@@ -70,7 +70,7 @@
                                         <ul class="dropdown-menu dropdown-menu-start"  aria-labelledby="dropdownMenuButton1">
                                             <li><Link class="dropdown-item" :href="`/budget/${dat.id}`">Budget Requirements </Link></li>
                                             <!-- <li><Link class="dropdown-item" :href="`/implementation/${dat.id}`">Implementation Plan</Link></li> -->
-                                            <li><Link class="dropdown-item" :href="`/team/${dat.id}/revision/plan/team`">Implementating Team</Link></li>
+                                            <li><Link class="dropdown-item" :href="`/team/${dat.id}/revision/plan/team`">Implementing Team</Link></li>
                                             <li><Link class="dropdown-item" :href="`/EvaluationMechanismTool/${dat.id}`">Monitoring and Evaluation</Link></li>
                                             <li><Link class="dropdown-item" :href="`/HGDGScore/${dat.id}`">HGDG Score</Link></li>
                                             <li><Link class="dropdown-item" :href="`/RiskManagement/${dat.id}`">Risk Management</Link></li>
