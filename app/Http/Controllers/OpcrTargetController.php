@@ -781,7 +781,8 @@ class OpcrTargetController extends Controller
             ->where('id', $request->idopcr)
             ->first();
         // dd($opcr_sem);
-
+        $FFUNCCOD = $opcr_sem->FFUNCCOD;
+        // dd($FFUNCCOD);
         $sem = $opcr_sem ? $opcr_sem->semester : '';
         $year = $opcr_sem ? $opcr_sem->year : '';
         $office = $opcr_sem ? ($opcr_sem->office ? $opcr_sem->office->office : '') : '';
@@ -807,7 +808,7 @@ class OpcrTargetController extends Controller
             ->where('office_performance_commitment_rating_list_id', $request->idopcr)
             ->where('is_included', '1')
             ->get()
-            ->map(function ($item) use ($office, $pgHead, $sem, $year) {
+            ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD) {
                 $mfo_desc = "";
                 $paps_desc = "";
                 $success_indicator = "";
@@ -824,7 +825,8 @@ class OpcrTargetController extends Controller
 
                 $approver = 'Dorothy Montejo Gonzaga';
                 $pos = 'Governor';
-                $FFUNCCOD = $item->FFUNCCOD;
+                // $FFUNCCOD = $item->FFUNCCOD;
+                // dd($FFUNCCOD);
                 if ($FFUNCCOD == '1021') {
                     $approver = 'Jayvee Tyron L. Uy';
                     $pos = 'Vice Governor';
