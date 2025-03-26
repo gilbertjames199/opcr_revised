@@ -781,7 +781,11 @@ class OpcrTargetController extends Controller
             ->where('id', $request->idopcr)
             ->first();
         // dd($opcr_sem);
-        $FFUNCCOD = $opcr_sem->FFUNCCOD;
+        $FFUNCCOD = "";
+        if ($opcr_sem) {
+            $FFUNCCOD = $opcr_sem->FFUNCCOD;
+        }
+
         // dd($FFUNCCOD);
         $sem = $opcr_sem ? $opcr_sem->semester : '';
         $year = $opcr_sem ? $opcr_sem->year : '';
