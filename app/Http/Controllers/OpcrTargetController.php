@@ -883,7 +883,7 @@ class OpcrTargetController extends Controller
                     'efficiency3' => $efficiency3,
                     'timeliness' => $timeliness,
                     'monitoring' => $monitoring,
-                    'idpaps' => $item->paps->id,
+                    'idpaps' => $item->paps ? $item->paps->id : "",
                     'office' => $office,
                     'pgHead' => $pgHead,
                     'sem' => $sem,
