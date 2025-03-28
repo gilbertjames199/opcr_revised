@@ -811,6 +811,7 @@ class OpcrTargetController extends Controller
         ])
             ->where('office_performance_commitment_rating_list_id', $request->idopcr)
             ->where('is_included', '1')
+            ->whereHas('paps')
             ->get()
             ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD) {
                 $mfo_desc = "";
