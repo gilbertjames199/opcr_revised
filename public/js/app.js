@@ -2416,6 +2416,14 @@ var map = {
 		"./resources/js/Pages/HPCR_Division/Index.vue",
 		"resources_js_Pages_HPCR_Division_Index_vue"
 	],
+	"./HPCR_Individual/Create": [
+		"./resources/js/Pages/HPCR_Individual/Create.vue",
+		"resources_js_Pages_HPCR_Individual_Create_vue"
+	],
+	"./HPCR_Individual/Create.vue": [
+		"./resources/js/Pages/HPCR_Individual/Create.vue",
+		"resources_js_Pages_HPCR_Individual_Create_vue"
+	],
 	"./HPCR_Individual/Index": [
 		"./resources/js/Pages/HPCR_Individual/Index.vue",
 		"resources_js_Pages_HPCR_Individual_Index_vue"

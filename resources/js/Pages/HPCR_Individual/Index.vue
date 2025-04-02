@@ -5,20 +5,17 @@
 
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h4>Hospital Individual Output: {{ HSPCR.output }}</h4>
+            <h4>Hospital Section Output: {{ HSPCR.output }}</h4>
 
         </div>
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Hospital Section Output</h3>
+            <h3>Hospital Individual Output</h3>
             <div class="peers">
-                <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
+
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/hospital_section/create/${idhdpcr}`">Add Hospital SPCR</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                    <Link class="btn btn-primary btn-sm" :href="`/hospital_individual/create/${idhspcr}`">Add Hospital IPCR</Link>
                 </div>&nbsp;
-                <Link :href="`/hospital_division/${HDPCR.idhpcr}`">
+                <Link :href="`/hospital_section/${HSPCR.idhdpcr}`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                         <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -36,7 +33,7 @@
                     <table class="table table-sm table-borderless table-striped table-hover">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th>Hospital Section Output</th>
+                                <th>Hospital Individual Output</th>
                                 <th>Success Indicator/PM</th>
                                 <th>Action</th>
                             </tr>
@@ -54,8 +51,8 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li><Link class="dropdown-item" :href="`/individual/outputs/${dat.id}`">Add Individual Output</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/hospital_section/${dat.id}/edit`">Edit</Link></li>
+                                            <!-- <li><Link class="dropdown-item" :href="`/individual/outputs/${dat.id}`">Add Individual Output</Link></li> -->
+                                            <li><Link class="dropdown-item" :href="`/hospital_individual/${dat.id}/edit`">Edit</Link></li>
                                             <li><Link class="text-danger dropdown-item" @click="deleteRA(dat.id)">Delete</Link></li>
                                         </ul>
                                     </div>
@@ -107,9 +104,9 @@ export default {
 
 
         deleteRA(id) {
-            let text = "WARNING!\nAre you sure you want to delete this Division Output?";
+            let text = "WARNING!\nAre you sure you want to delete this Individual Output?";
               if (confirm(text) == true) {
-                this.$inertia.delete("/hospital_section/" + id);
+                this.$inertia.delete("/hospital_individual/" + id);
             }
         },
 
