@@ -89,9 +89,15 @@
                                             <li>
                                                 <Link class="dropdown-item" :href="`/revision/${dat.id}`">PPA Profile</Link>
                                             </li>
-                                            <li>
+                                            <li v-if="Number(FFUNCCODE) === 4421">
+                                                <Link class="dropdown-item" :href="`/hospitals/${dat.id}`">Hospital Output</Link>
+                                            </li>
+                                            <li v-else>
                                                 <Link class="dropdown-item" :href="`/divisions/${dat.id}`">Division Output</Link>
                                             </li>
+                                            <!-- <li>
+                                                <Link class="dropdown-item" :href="`/divisions/${dat.id}`">Division Output</Link>
+                                            </li> -->
                                             <li>
                                                 <Link class="dropdown-item" :href="`/paps/${dat.id}/${dat.idmfo}/edit`">Edit
                                                 </Link>

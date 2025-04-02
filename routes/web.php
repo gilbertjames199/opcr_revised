@@ -78,6 +78,10 @@ use App\Http\Controllers\DivisionOutputController;
 use App\Http\Controllers\ExpectedOutputController;
 use App\Http\Controllers\ExpectedRevisedOutcomeController;
 use App\Http\Controllers\ForbiddenController;
+use App\Http\Controllers\HospitalDivisionOutputController;
+use App\Http\Controllers\HospitalIndividualOutputController;
+use App\Http\Controllers\HospitalOutputController;
+use App\Http\Controllers\HospitalSectionOutputController;
 use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
@@ -682,6 +686,43 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [DivisionController::class, 'edit']);
         Route::patch('/{id}', [DivisionController::class, 'update']);
         Route::delete('/{id}', [DivisionController::class, 'destroy']);
+    });
+
+    //HOSPITALS
+    Route::prefix('hospitals')->group(function () {
+        Route::get('/{papsID}', [HospitalOutputController::class, 'index']);
+        Route::get('/create/{papsID}', [HospitalOutputController::class, 'create']);
+        Route::post('/store', [HospitalOutputController::class, 'store']);
+        Route::get('/{id}/edit', [HospitalOutputController::class, 'edit']);
+        Route::patch('/{id}', [HospitalOutputController::class, 'update']);
+        Route::delete('/{id}', [HospitalOutputController::class, 'destroy']);
+    });
+
+    Route::prefix('hospital_division')->group(function () {
+        Route::get('/{idhpcr}', [HospitalDivisionOutputController::class, 'index']);
+        Route::get('/create/{idhpcr}', [HospitalDivisionOutputController::class, 'create']);
+        Route::post('/store', [HospitalDivisionOutputController::class, 'store']);
+        Route::get('/{id}/edit', [HospitalDivisionOutputController::class, 'edit']);
+        Route::patch('/{id}', [HospitalDivisionOutputController::class, 'update']);
+        Route::delete('/{id}', [HospitalDivisionOutputController::class, 'destroy']);
+    });
+
+    Route::prefix('hospital_section')->group(function () {
+        Route::get('/{idhdpcr}', [HospitalSectionOutputController::class, 'index']);
+        Route::get('/create/{idhdpcr}', [HospitalSectionOutputController::class, 'create']);
+        Route::post('/store', [HospitalSectionOutputController::class, 'store']);
+        Route::get('/{id}/edit', [HospitalSectionOutputController::class, 'edit']);
+        Route::patch('/{id}', [HospitalSectionOutputController::class, 'update']);
+        Route::delete('/{id}', [HospitalSectionOutputController::class, 'destroy']);
+    });
+
+    Route::prefix('hospital_individual')->group(function () {
+        Route::get('/{idhspcr}', [HospitalIndividualOutputController::class, 'index']);
+        Route::get('/create/{idhspcr}', [HospitalIndividualOutputController::class, 'create']);
+        Route::post('/store', [HospitalIndividualOutputController::class, 'store']);
+        Route::get('/{id}/edit', [HospitalIndividualOutputController::class, 'edit']);
+        Route::patch('/{id}', [HospitalIndividualOutputController::class, 'update']);
+        Route::delete('/{id}', [HospitalIndividualOutputController::class, 'destroy']);
     });
 
     //Office Performance Commitment Rating Form

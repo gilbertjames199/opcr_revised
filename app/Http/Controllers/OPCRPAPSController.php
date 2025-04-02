@@ -261,6 +261,7 @@ class OPCRPAPSController extends Controller
             'output' => 'required',
             'performance_measure' => 'required',
             'prescribed_period' => 'required',
+            'office_accountable' => 'required',
             'quality1' => 'required',
             'quality2' => 'required',
             'quality3' => 'required',
@@ -272,8 +273,6 @@ class OPCRPAPSController extends Controller
         ]);
 
         $attributes['monitoring'] = "N/A";
-        $attributes['office_accountable'] = "N/A";
-
         // dd($attributes);
         // opcr_standard::create($attributes);
         // dd($attributes);

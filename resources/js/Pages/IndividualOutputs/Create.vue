@@ -252,7 +252,9 @@ export default {
                  this.form.prescribed_period = "";
             }
         } else {
-            this.form.timeliness = "";
+            if(this.form.timeliness === "No"){
+                 this.form.timeliness = "";
+            }
             this.showPrescribedPeriod = false; // Hide it when No is selected
             this.form.prescribed_period = 'No'; // Clear the input value
         }

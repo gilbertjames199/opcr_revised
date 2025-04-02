@@ -228,7 +228,7 @@ var _hoisted_8 = {
 
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "peer"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button @click=\"submitThis()\" class=\"btn btn-primary btn-sm text-white\"8\n                        :disabled=\"opcr_list.target_status > -1\">\n                        Submit\n                    </button> ")], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button @click=\"submitThis()\" class=\"btn btn-primary btn-sm text-white\"8\r\n                        :disabled=\"opcr_list.target_status > -1\">\r\n                        Submit\r\n                    </button> ")], -1
 /* HOISTED */
 );
 
@@ -255,7 +255,7 @@ var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"masonry-item w-100\"><div class=\"row gap-20\"></div><div class=\"bgc-white p-20 bd\"><div class=\"table-responsive\"><table class=\"table table-hover table-striped table-bordered border-dark\"><thead><tr class=\"bg-secondary text-white\"><!-- &lt;th&gt;MFO&lt;/th&gt;\n                                &lt;th&gt;PAPS&lt;/th&gt;\n                                &lt;th&gt;Success Indicator&lt;/th&gt;\n                                &lt;th&gt;Target&lt;/th&gt;\n                                &lt;th&gt;Target Quantity&lt;/th&gt;\n                                &lt;th&gt;Actions&lt;/th&gt; --></tr></thead><tbody><!-- &lt;tr v-for=&quot;(dat, index) in data&quot; :key=&quot;index&quot;&gt;\n                                &lt;td&gt;{{ dat.mfo_desc }}&lt;/td&gt;\n                                &lt;td v-if=&quot;index === 0 || dat.paps_desc !== data[index - 1].paps_desc&quot;\n                                    :rowspan=&quot;getRowspanPaps(dat.paps_desc, index)&quot; style=&quot;vertical-align:middle&quot;&gt;\n                                    {{ dat.paps_desc }}\n\n                                &lt;/td&gt;\n                                &lt;td&gt;{{ dat.success_indicator }}\n\n                                &lt;/td&gt;\n                                &lt;td&gt;{{ dat.target_success_indicator }}&lt;/td&gt;\n                                &lt;td&gt;\n                                    &lt;span v-if=&quot;dat.quantity&quot;&gt;\n                                        {{ format_number_conv(dat.quantity, 2, true) }}\n                                    &lt;/span&gt;\n\n                                &lt;/td&gt;\n                                &lt;td&gt;\n                                    &lt;div class=&quot;dropdown dropstart&quot;&gt;\n                                        &lt;button class=&quot;btn btn-secondary btn-sm action-btn&quot; type=&quot;button&quot;\n                                            id=&quot;dropdownMenuButton1&quot; data-bs-toggle=&quot;dropdown&quot; aria-expanded=&quot;false&quot;&gt;\n                                            &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot;\n                                                fill=&quot;currentColor&quot; class=&quot;bi bi-three-dots&quot; viewBox=&quot;0 0 16 16&quot;&gt;\n                                                &lt;path\n                                                    d=&quot;M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z&quot; /&gt;\n                                            &lt;/svg&gt;\n                                        &lt;/button&gt;\n                                        &lt;ul class=&quot;dropdown-menu action-dropdown&quot; aria-labelledby=&quot;dropdownMenuButton1&quot;&gt;\n                                            &lt;li v-if=&quot;dat.id&quot;&gt;\n                                                &lt;Link class=&quot;dropdown-item&quot;\n                                                    :href=&quot;`/opcrtarget/${opcr_list_id}/edit?idpaps=${dat.idpaps}&amp;opcr_target_id=${dat.id}`&quot;&gt;\n                                                Edit\n                                                &lt;/Link&gt;\n                                            &lt;/li&gt;\n                                            &lt;li v-if=&quot;dat.id&quot;&gt;\n                                                &lt;Link class=&quot;text-danger dropdown-item&quot; @click=&quot;deleteTarget(dat.id)&quot;&gt;Delete\n                                                &lt;/Link&gt;\n                                            &lt;/li&gt;\n                                            &lt;li v-if=&quot;dat.success_indicator &amp;&amp; !dat.id&quot;&gt;\n                                                &lt;Link class=&quot;text-danger dropdown-item&quot;\n                                                    @click=&quot;createTarget(dat.idpaps, dat.success_indicator)&quot;&gt;\n                                                Add Target\n                                                &lt;/Link&gt;\n                                            &lt;/li&gt;\n                                            &lt;li v-else&gt;\n                                                &lt;Link class=&quot;text-danger dropdown-item&quot;\n                                                    :href=&quot;`/OPCRpaps/create/${dat.idpaps}`&quot;&gt;\n                                                Add OPCR Standard\n                                                &lt;/Link&gt;\n                                            &lt;/li&gt;\n                                        &lt;/ul&gt;\n                                    &lt;/div&gt;\n                                &lt;/td&gt;\n                            &lt;/tr&gt; --></tbody></table></div><div class=\"row justify-content-center\"><div class=\"col-md-12\"><!-- &lt;pagination :next=&quot;data.next_page_url&quot; :prev=&quot;data.prev_page_url&quot; /&gt; --></div></div><div class=\"row justify-content-center\"><div class=\"col-md-12\"><!-- &lt;p &gt;\n                            {{ data.from }} to {{ data.to }} of\n                            {{ data.total }} entries\n                        &lt;/p&gt; --></div></div></div></div>", 1);
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"masonry-item w-100\"><div class=\"row gap-20\"></div><div class=\"bgc-white p-20 bd\"><div class=\"table-responsive\"><table class=\"table table-hover table-striped table-bordered border-dark\"><thead><tr class=\"bg-secondary text-white\"><!-- &lt;th&gt;MFO&lt;/th&gt;\r\n                                &lt;th&gt;PAPS&lt;/th&gt;\r\n                                &lt;th&gt;Success Indicator&lt;/th&gt;\r\n                                &lt;th&gt;Target&lt;/th&gt;\r\n                                &lt;th&gt;Target Quantity&lt;/th&gt;\r\n                                &lt;th&gt;Actions&lt;/th&gt; --></tr></thead><tbody><!-- &lt;tr v-for=&quot;(dat, index) in data&quot; :key=&quot;index&quot;&gt;\r\n                                &lt;td&gt;{{ dat.mfo_desc }}&lt;/td&gt;\r\n                                &lt;td v-if=&quot;index === 0 || dat.paps_desc !== data[index - 1].paps_desc&quot;\r\n                                    :rowspan=&quot;getRowspanPaps(dat.paps_desc, index)&quot; style=&quot;vertical-align:middle&quot;&gt;\r\n                                    {{ dat.paps_desc }}\r\n\r\n                                &lt;/td&gt;\r\n                                &lt;td&gt;{{ dat.success_indicator }}\r\n\r\n                                &lt;/td&gt;\r\n                                &lt;td&gt;{{ dat.target_success_indicator }}&lt;/td&gt;\r\n                                &lt;td&gt;\r\n                                    &lt;span v-if=&quot;dat.quantity&quot;&gt;\r\n                                        {{ format_number_conv(dat.quantity, 2, true) }}\r\n                                    &lt;/span&gt;\r\n\r\n                                &lt;/td&gt;\r\n                                &lt;td&gt;\r\n                                    &lt;div class=&quot;dropdown dropstart&quot;&gt;\r\n                                        &lt;button class=&quot;btn btn-secondary btn-sm action-btn&quot; type=&quot;button&quot;\r\n                                            id=&quot;dropdownMenuButton1&quot; data-bs-toggle=&quot;dropdown&quot; aria-expanded=&quot;false&quot;&gt;\r\n                                            &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot;\r\n                                                fill=&quot;currentColor&quot; class=&quot;bi bi-three-dots&quot; viewBox=&quot;0 0 16 16&quot;&gt;\r\n                                                &lt;path\r\n                                                    d=&quot;M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z&quot; /&gt;\r\n                                            &lt;/svg&gt;\r\n                                        &lt;/button&gt;\r\n                                        &lt;ul class=&quot;dropdown-menu action-dropdown&quot; aria-labelledby=&quot;dropdownMenuButton1&quot;&gt;\r\n                                            &lt;li v-if=&quot;dat.id&quot;&gt;\r\n                                                &lt;Link class=&quot;dropdown-item&quot;\r\n                                                    :href=&quot;`/opcrtarget/${opcr_list_id}/edit?idpaps=${dat.idpaps}&amp;opcr_target_id=${dat.id}`&quot;&gt;\r\n                                                Edit\r\n                                                &lt;/Link&gt;\r\n                                            &lt;/li&gt;\r\n                                            &lt;li v-if=&quot;dat.id&quot;&gt;\r\n                                                &lt;Link class=&quot;text-danger dropdown-item&quot; @click=&quot;deleteTarget(dat.id)&quot;&gt;Delete\r\n                                                &lt;/Link&gt;\r\n                                            &lt;/li&gt;\r\n                                            &lt;li v-if=&quot;dat.success_indicator &amp;&amp; !dat.id&quot;&gt;\r\n                                                &lt;Link class=&quot;text-danger dropdown-item&quot;\r\n                                                    @click=&quot;createTarget(dat.idpaps, dat.success_indicator)&quot;&gt;\r\n                                                Add Target\r\n                                                &lt;/Link&gt;\r\n                                            &lt;/li&gt;\r\n                                            &lt;li v-else&gt;\r\n                                                &lt;Link class=&quot;text-danger dropdown-item&quot;\r\n                                                    :href=&quot;`/OPCRpaps/create/${dat.idpaps}`&quot;&gt;\r\n                                                Add OPCR Standard\r\n                                                &lt;/Link&gt;\r\n                                            &lt;/li&gt;\r\n                                        &lt;/ul&gt;\r\n                                    &lt;/div&gt;\r\n                                &lt;/td&gt;\r\n                            &lt;/tr&gt; --></tbody></table></div><div class=\"row justify-content-center\"><div class=\"col-md-12\"><!-- &lt;pagination :next=&quot;data.next_page_url&quot; :prev=&quot;data.prev_page_url&quot; /&gt; --></div></div><div class=\"row justify-content-center\"><div class=\"col-md-12\"><!-- &lt;p &gt;\r\n                            {{ data.from }} to {{ data.to }} of\r\n                            {{ data.total }} entries\r\n                        &lt;/p&gt; --></div></div></div></div>", 1);
 
 var _hoisted_13 = {
   "class": "d-flex justify-content-center"
@@ -317,7 +317,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["href"])])]), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"masonry-sizer col-md-6\">\n            <b>Status</b>: {{ getStatus(opcr_list.target_status) }}\n        </div> "), _hoisted_12, $data.displayModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Modal, {
+  , ["href"])])]), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"masonry-sizer col-md-6\">\r\n            <b>Status</b>: {{ getStatus(opcr_list.target_status) }}\r\n        </div> "), _hoisted_12, $data.displayModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Modal, {
     key: 0,
     onCloseModalEvent: $options.hideModal
   }, {
@@ -419,7 +419,7 @@ var _hoisted_3 = {
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\n            I intend to recreate a simple pagination [simplePaginate()] for performance purpose\n            read https://laravel.com/docs/8.x/pagination#simple-pagination\n\n            If you think you will not have huge dataset in the future you can use\n            the paginate() by uncommenting below and in the actual component.\n        "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Component\n            :is=\"link.url ? 'Link' : 'span'\"\n            v-for=\"link in links\"\n            :href=\"link.url\"\n            v-html=\"link.label\"\n            class=\"p-3 text-decoration-none\"\n            :class=\"{'text-muted' : !link.url, 'fw-bold' : link.active}\"\n        /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_2, [$props.prev ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n            I intend to recreate a simple pagination [simplePaginate()] for performance purpose\r\n            read https://laravel.com/docs/8.x/pagination#simple-pagination\r\n\r\n            If you think you will not have huge dataset in the future you can use\r\n            the paginate() by uncommenting below and in the actual component.\r\n        "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Component\r\n            :is=\"link.url ? 'Link' : 'span'\"\r\n            v-for=\"link in links\"\r\n            :href=\"link.url\"\r\n            v-html=\"link.label\"\r\n            class=\"p-3 text-decoration-none\"\r\n            :class=\"{'text-muted' : !link.url, 'fw-bold' : link.active}\"\r\n        /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_2, [$props.prev ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
     key: 0,
     "class": "page-link",
     href: $props.prev,
@@ -542,7 +542,7 @@ var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
     style: {
       "background-color": "#090137"
     }
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<button type=\"button\" class=\"btn btn-primary\" @click=\"saveChanges\">Save changes</button>\n                        <button type=\"button\" class=\"btn btn-secondary\" @click=\"closeModal\">Close</button>")], -1
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<button type=\"button\" class=\"btn btn-primary\" @click=\"saveChanges\">Save changes</button>\r\n                        <button type=\"button\" class=\"btn btn-secondary\" @click=\"closeModal\">Close</button>")], -1
   /* HOISTED */
   );
 });
@@ -560,7 +560,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.closeModal && $options.closeModal.apply($options, arguments);
     })
-  }, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<p>Modal body text goes here.</p>\n                        <multiselect v-model=\"value\" :options=\"options\" mode=\"tags\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {}, undefined, true)]), _hoisted_11])])])])]);
+  }, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<p>Modal body text goes here.</p>\r\n                        <multiselect v-model=\"value\" :options=\"options\" mode=\"tags\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {}, undefined, true)]), _hoisted_11])])])])]);
 }
 
 /***/ }),
@@ -581,7 +581,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\n    text-align: center;\n}\n.col-centered {\n    display: inline-block;\n    float: none;\n    text-align: left;\n    margin-right: -4px;\n}\n.pos {\n    position: top;\n    top: 240px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\r\n    text-align: center;\n}\n.col-centered {\r\n    display: inline-block;\r\n    float: none;\r\n    text-align: left;\r\n    margin-right: -4px;\n}\n.pos {\r\n    position: top;\r\n    top: 240px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -604,7 +604,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#sidebar-wrapper {\n        width: auto;\n        margin-top: -9px;\n        z-index: 1000;\n        position: fixed;\n        right: 250px;\n        height: 100%;\n        margin-right: -250px;\n        overflow-y: auto;\n        transition: all 0.5s ease;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#sidebar-wrapper {\r\n        width: auto;\r\n        margin-top: -9px;\r\n        z-index: 1000;\r\n        position: fixed;\r\n        right: 250px;\r\n        height: 100%;\r\n        margin-right: -250px;\r\n        overflow-y: auto;\r\n        transition: all 0.5s ease;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -627,7 +627,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n    /* Override default value of 'none' */\n.modal[data-v-e8c5b748] {\n      display: block;\n}\n  ", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\r\n    /* Override default value of 'none' */\n.modal[data-v-e8c5b748] {\r\n      display: block;\n}\r\n  ", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -734,11 +734,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Index_vue_vue_type_template_id_7af6b69f__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Index.vue?vue&type=template&id=7af6b69f */ "./resources/js/Pages/OPCR/TargetBudget/Index.vue?vue&type=template&id=7af6b69f");
 /* harmony import */ var _Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Index.vue?vue&type=script&lang=js */ "./resources/js/Pages/OPCR/TargetBudget/Index.vue?vue&type=script&lang=js");
 /* harmony import */ var _Index_vue_vue_type_style_index_0_id_7af6b69f_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Index.vue?vue&type=style&index=0&id=7af6b69f&lang=css */ "./resources/js/Pages/OPCR/TargetBudget/Index.vue?vue&type=style&index=0&id=7af6b69f&lang=css");
-<<<<<<< HEAD
-/* harmony import */ var _var_www_html_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-=======
-/* harmony import */ var C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
->>>>>>> 8f122f0848c186734be21ba12f5519592df7ee55
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -746,11 +742,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-<<<<<<< HEAD
-const __exports__ = /*#__PURE__*/(0,_var_www_html_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_7af6b69f__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/OPCR/TargetBudget/Index.vue"]])
-=======
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_7af6b69f__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/OPCR/TargetBudget/Index.vue"]])
->>>>>>> 8f122f0848c186734be21ba12f5519592df7ee55
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_7af6b69f__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/OPCR/TargetBudget/Index.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -772,11 +764,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Filter_vue_vue_type_template_id_09f80c58__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filter.vue?vue&type=template&id=09f80c58 */ "./resources/js/Shared/Filter.vue?vue&type=template&id=09f80c58");
 /* harmony import */ var _Filter_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filter.vue?vue&type=script&lang=js */ "./resources/js/Shared/Filter.vue?vue&type=script&lang=js");
 /* harmony import */ var _Filter_vue_vue_type_style_index_0_id_09f80c58_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Filter.vue?vue&type=style&index=0&id=09f80c58&lang=css */ "./resources/js/Shared/Filter.vue?vue&type=style&index=0&id=09f80c58&lang=css");
-<<<<<<< HEAD
-/* harmony import */ var _var_www_html_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-=======
-/* harmony import */ var C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
->>>>>>> 8f122f0848c186734be21ba12f5519592df7ee55
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -784,11 +772,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-<<<<<<< HEAD
-const __exports__ = /*#__PURE__*/(0,_var_www_html_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Filter_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Filter_vue_vue_type_template_id_09f80c58__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Filter.vue"]])
-=======
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Filter_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Filter_vue_vue_type_template_id_09f80c58__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Filter.vue"]])
->>>>>>> 8f122f0848c186734be21ba12f5519592df7ee55
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Filter_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Filter_vue_vue_type_template_id_09f80c58__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Filter.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -809,21 +793,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Pagination_vue_vue_type_template_id_7ed7fa14__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Pagination.vue?vue&type=template&id=7ed7fa14 */ "./resources/js/Shared/Pagination.vue?vue&type=template&id=7ed7fa14");
 /* harmony import */ var _Pagination_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pagination.vue?vue&type=script&lang=js */ "./resources/js/Shared/Pagination.vue?vue&type=script&lang=js");
-<<<<<<< HEAD
-/* harmony import */ var _var_www_html_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-=======
-/* harmony import */ var C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
->>>>>>> 8f122f0848c186734be21ba12f5519592df7ee55
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-<<<<<<< HEAD
-const __exports__ = /*#__PURE__*/(0,_var_www_html_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Pagination_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Pagination_vue_vue_type_template_id_7ed7fa14__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Pagination.vue"]])
-=======
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Pagination_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Pagination_vue_vue_type_template_id_7ed7fa14__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Pagination.vue"]])
->>>>>>> 8f122f0848c186734be21ba12f5519592df7ee55
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Pagination_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Pagination_vue_vue_type_template_id_7ed7fa14__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/Pagination.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -845,11 +821,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PrintModal_vue_vue_type_template_id_e8c5b748_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PrintModal.vue?vue&type=template&id=e8c5b748&scoped=true */ "./resources/js/Shared/PrintModal.vue?vue&type=template&id=e8c5b748&scoped=true");
 /* harmony import */ var _PrintModal_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PrintModal.vue?vue&type=script&lang=js */ "./resources/js/Shared/PrintModal.vue?vue&type=script&lang=js");
 /* harmony import */ var _PrintModal_vue_vue_type_style_index_0_id_e8c5b748_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PrintModal.vue?vue&type=style&index=0&id=e8c5b748&scoped=true&lang=css */ "./resources/js/Shared/PrintModal.vue?vue&type=style&index=0&id=e8c5b748&scoped=true&lang=css");
-<<<<<<< HEAD
-/* harmony import */ var _var_www_html_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-=======
-/* harmony import */ var C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
->>>>>>> 8f122f0848c186734be21ba12f5519592df7ee55
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -857,11 +829,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-<<<<<<< HEAD
-const __exports__ = /*#__PURE__*/(0,_var_www_html_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_PrintModal_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PrintModal_vue_vue_type_template_id_e8c5b748_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-e8c5b748"],['__file',"resources/js/Shared/PrintModal.vue"]])
-=======
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_PrintModal_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PrintModal_vue_vue_type_template_id_e8c5b748_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-e8c5b748"],['__file',"resources/js/Shared/PrintModal.vue"]])
->>>>>>> 8f122f0848c186734be21ba12f5519592df7ee55
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_PrintModal_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PrintModal_vue_vue_type_template_id_e8c5b748_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-e8c5b748"],['__file',"resources/js/Shared/PrintModal.vue"]])
 /* hot reload */
 if (false) {}
 
