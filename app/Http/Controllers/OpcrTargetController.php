@@ -811,6 +811,7 @@ class OpcrTargetController extends Controller
         ])
             ->where('office_performance_commitment_rating_list_id', $request->idopcr)
             ->where('is_included', '1')
+            ->whereHas('paps')
             ->get()
             ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD) {
                 $mfo_desc = "";
@@ -849,6 +850,7 @@ class OpcrTargetController extends Controller
                         // dd($item->paps->opcr_stardard->output);
                         $success_indicator = $item->paps->opcr_stardard->performance_measure;
                         $office_accountable = $item->paps->opcr_stardard->office_accountable;
+                        $prescribed_period = $item->paps->opcr_stardard->prescribed_period;
                         $quality1 = $item->paps->opcr_stardard->quality1;
                         $quality2 = $item->paps->opcr_stardard->quality2;
                         $quality3 = $item->paps->opcr_stardard->quality3;
@@ -882,7 +884,7 @@ class OpcrTargetController extends Controller
                     'efficiency3' => $efficiency3,
                     'timeliness' => $timeliness,
                     'monitoring' => $monitoring,
-                    'idpaps' => $item->paps->id,
+                    'idpaps' => $item->paps ? $item->paps->id : "",
                     'office' => $office,
                     'pgHead' => $pgHead,
                     'sem' => $sem,
