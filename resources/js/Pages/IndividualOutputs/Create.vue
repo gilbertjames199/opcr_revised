@@ -195,7 +195,6 @@ export default {
                 idmfo: null,
                 showPrescribedPeriod: false,
                 form: useForm({
-                not_rated: false,
                 individual_output: "",
                 prescribed_period:"",
                 quality1:"",
@@ -261,12 +260,6 @@ export default {
             this.form.prescribed_period = 'No'; // Clear the input value
         }
     },
-    'form.efficiency1'(newValue) {
-        this.checkIfNotRated();
-    },
-    'form.timeliness'(newValue) {
-        this.checkIfNotRated();
-    }
     },
         mounted() {
             // console.log(this.auth.user.department_code);
@@ -296,11 +289,6 @@ export default {
         },
 
         methods: {
-            checkIfNotRated() {
-        if (this.form.efficiency1 === "No" && this.form.timeliness === "No") {
-            this.form.not_rated = true;
-        }
-    },
             submit() {
 
                 if (this.editData !== undefined) {
