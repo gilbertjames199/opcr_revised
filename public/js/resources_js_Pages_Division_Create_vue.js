@@ -13,10 +13,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
 /* harmony import */ var _Shared_PlacesShared__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Shared/PlacesShared */ "./resources/js/Shared/PlacesShared.vue");
-var _watch;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -32,7 +28,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       submitted: false,
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
-        not_rated: false,
         output: "",
         prescribed_period: "",
         quality1: "",
@@ -73,7 +68,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.pageTitle = "Create"; // this.form.idpaps = this.idpaps
     }
   },
-  watch: (_watch = {
+  watch: {
     'form.not_rated': function formNot_rated(newValue) {
       var _this = this;
 
@@ -113,17 +108,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.form.prescribed_period = 'No'; // Clear the input value
       }
     }
-  }, _defineProperty(_watch, "form.efficiency1", function formEfficiency1(newValue) {
-    this.checkIfNotRated();
-  }), _defineProperty(_watch, 'form.timeliness', function formTimeliness(newValue) {
-    this.checkIfNotRated();
-  }), _watch),
+  },
   methods: {
-    checkIfNotRated: function checkIfNotRated() {
-      if (this.form.efficiency1 === "No" && this.form.timeliness === "No") {
-        this.form.not_rated = true;
-      }
-    },
     submit: function submit() {
       console.log(this.form);
 
@@ -269,7 +255,7 @@ var _hoisted_10 = {
 var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": "notRated",
   "class": "form-check-label"
-}, "Not to be Rated", -1
+}, "Not to be Rated (Prescribed Period/Timeliness)", -1
 /* HOISTED */
 );
 
