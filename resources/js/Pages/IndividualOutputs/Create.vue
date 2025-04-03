@@ -34,7 +34,7 @@
 
                 <div class="form-check mt-2">
                     <input type="checkbox" id="notRated" v-model="form.not_rated" class="form-check-input">
-                    <label for="notRated" class="form-check-label">Not to be Rated</label>
+                    <label for="notRated" class="form-check-label">Not to be Rated  (Prescribed Period/Timeliness)</label>
                 </div>
 
                 <!-- <label for="">Success Indicator</label>
@@ -195,6 +195,7 @@ export default {
                 idmfo: null,
                 showPrescribedPeriod: false,
                 form: useForm({
+                not_rated: false,
                 individual_output: "",
                 prescribed_period:"",
                 quality1:"",
@@ -210,7 +211,8 @@ export default {
                 id: null
                 }),
                 isDisabled: false,
-                pageTitle: ""
+                pageTitle: "",
+
             };
         },
         computed:{
@@ -252,12 +254,18 @@ export default {
                  this.form.prescribed_period = "";
             }
         } else {
-            if(this.form.timeliness === "No"){
+             if(this.form.timeliness === "No"){
                  this.form.timeliness = "";
             }
             this.showPrescribedPeriod = false; // Hide it when No is selected
             this.form.prescribed_period = 'No'; // Clear the input value
         }
+    },
+    'form.efficiency1'(newValue) {
+        this.checkIfNotRated();
+    },
+    'form.timeliness'(newValue) {
+        this.checkIfNotRated();
     }
     },
         mounted() {
@@ -288,6 +296,11 @@ export default {
         },
 
         methods: {
+            checkIfNotRated() {
+        if (this.form.efficiency1 === "No" && this.form.timeliness === "No") {
+            this.form.not_rated = true;
+        }
+    },
             submit() {
 
                 if (this.editData !== undefined) {

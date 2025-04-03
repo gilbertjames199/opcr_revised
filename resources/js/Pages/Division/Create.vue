@@ -185,6 +185,7 @@ export default {
         return {
             submitted: false,
             form: useForm({
+                not_rated: false,
                 output: "",
                 prescribed_period:"",
                 quality1:"",
@@ -257,11 +258,21 @@ export default {
             this.showPrescribedPeriod = false; // Hide it when No is selected
             this.form.prescribed_period = 'No'; // Clear the input value
         }
-
         },
+        'form.efficiency1'(newValue) {
+        this.checkIfNotRated();
+    },
+    'form.timeliness'(newValue) {
+        this.checkIfNotRated();
+    }
     },
 
     methods: {
+        checkIfNotRated() {
+        if (this.form.efficiency1 === "No" && this.form.timeliness === "No") {
+            this.form.not_rated = true;
+        }
+    },
         submit() {
             console.log(this.form);
             if (this.editData !== undefined) {
