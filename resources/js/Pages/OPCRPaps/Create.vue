@@ -40,7 +40,7 @@
 
                 <div class="form-check mt-2">
                     <input type="checkbox" id="notRated" v-model="form.not_rated" class="form-check-input">
-                    <label for="notRated" class="form-check-label">Not to be Rated</label>
+                    <label for="notRated" class="form-check-label">Not to be Rated (Prescribed Period/Timeliness)</label>
                 </div>
                 <!-- <label for="">Success Indicator</label>
                 <input type="text" v-model="form.success_indicator" class="form-control" autocomplete="positionchrome-off">

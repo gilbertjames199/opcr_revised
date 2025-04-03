@@ -302,7 +302,7 @@ var _hoisted_12 = {
 var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": "notRated",
   "class": "form-check-label"
-}, "Not to be Rated", -1
+}, "Not to be Rated (Prescribed Period/Timeliness)", -1
 /* HOISTED */
 );
 
