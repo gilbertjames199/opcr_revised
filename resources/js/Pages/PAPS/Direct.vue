@@ -236,7 +236,7 @@ export default {
         },
           getToRep(ffunccod, ffunction) {
             // alert(data[0].FFUNCCOD);
-            var linkt = "http://";
+            var linkt = "https://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FDPCR&reportUnit=%2Freports%2Fplanning_system%2FDPCR%2FDPCR_Standard&standAlone=true&decorate=no&output=pdf';
             var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction;
