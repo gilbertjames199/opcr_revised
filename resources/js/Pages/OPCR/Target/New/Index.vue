@@ -176,8 +176,8 @@ export default {
         },
         viewlink() {
 
-            var linkt = "http://";
-            var jasper_ip = this.jasper_ip;
+            var linkt = "https://";
+            var jasper_ip = "paps.dvodeoro.ph/";
             // var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Ftarget%2FOPCR_TARGET&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR%2Ftarget&decorate=no&output=pdf';
             // var params = '&total=' + this.total + '&ave=' + this.ave + '&dept_head=' + this.dept_head +
             //     '&opcr_date=' + this.opcr_date + '&mooe=' + this.mooe + '&ps=' + this.ps +
