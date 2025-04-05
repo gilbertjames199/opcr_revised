@@ -1345,7 +1345,7 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_8___default()((filepond_plu
             // var lo = "192.168.6.23:8080/";
             // var gl = "122.54.19.171:8080/";
             // var nw = "122.53.120.27:8080/"
-            var nw_nov = "paps.dvodeoro.ph:8080/";
+            var nw_nov = "paps.dvodeoro.ph/";
             return nw_nov;
           },
 
