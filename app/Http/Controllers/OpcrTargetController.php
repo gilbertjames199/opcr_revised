@@ -797,7 +797,12 @@ class OpcrTargetController extends Controller
             ->where('id', $request->idopcr)
             ->first();
         // dd($opcr_sem);
+        $FFUNCCOD = "";
+        if ($opcr_sem) {
+            $FFUNCCOD = $opcr_sem->FFUNCCOD;
+        }
 
+        // dd($FFUNCCOD);
         $sem = $opcr_sem ? $opcr_sem->semester : '';
         $year = $opcr_sem ? $opcr_sem->year : '';
         $office = $opcr_sem ? ($opcr_sem->office ? $opcr_sem->office->office : '') : '';
@@ -825,8 +830,9 @@ class OpcrTargetController extends Controller
         ])
             ->where('office_performance_commitment_rating_list_id', $request->idopcr)
             ->where('is_included', '1')
+            ->whereHas('paps')
             ->get()
-            ->map(function ($item) use ($office, $pgHead, $sem, $year) {
+            ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD) {
                 $mfo_desc = "";
                 $paps_desc = "";
                 $success_indicator = "";
@@ -843,7 +849,8 @@ class OpcrTargetController extends Controller
 
                 $approver = 'Dorothy Montejo Gonzaga';
                 $pos = 'Governor';
-                $FFUNCCOD = $item->FFUNCCOD;
+                // $FFUNCCOD = $item->FFUNCCOD;
+                // dd($FFUNCCOD);
                 if ($FFUNCCOD == '1021') {
                     $approver = 'Jayvee Tyron L. Uy';
                     $pos = 'Vice Governor';
@@ -862,6 +869,7 @@ class OpcrTargetController extends Controller
                         // dd($item->paps->opcr_stardard->output);
                         $success_indicator = $item->paps->opcr_stardard->performance_measure;
                         $office_accountable = $item->paps->opcr_stardard->office_accountable;
+                        $prescribed_period = $item->paps->opcr_stardard->prescribed_period;
                         $quality1 = $item->paps->opcr_stardard->quality1;
                         $quality2 = $item->paps->opcr_stardard->quality2;
                         $quality3 = $item->paps->opcr_stardard->quality3;
@@ -899,7 +907,7 @@ class OpcrTargetController extends Controller
                     'efficiency3' => $efficiency3,
                     'timeliness' => $timeliness,
                     'monitoring' => $monitoring,
-                    'idpaps' => $item->paps->id,
+                    'idpaps' => $item->paps ? $item->paps->id : "",
                     'office' => $office,
                     'pgHead' => $pgHead,
                     'sem' => $sem,

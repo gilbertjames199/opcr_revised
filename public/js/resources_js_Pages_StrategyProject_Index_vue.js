@@ -1153,7 +1153,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ unsaved }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("u", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.revision_plan.project_title), 1
   /* TEXT */
+<<<<<<< HEAD
   )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"peers\">\n            <input type=checkbox v-model=\"show_inactive\">&nbsp;Show Inactive\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ revision_plan }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" style=\"border-color: #000; border-width: 2px;\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" table-sm  table-bordered "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.form.localData, function (strategy, index) {
+=======
+  )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"peers\">\r\n            <input type=checkbox v-model=\"show_inactive\">&nbsp;Show Inactive\r\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ revision_plan }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.form.localData, function (strategy, index) {
+>>>>>>> d03e31000da46152ea92cf5c4307217bf6d26c00
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
       key: index
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" v-if=\"strategy.is_active === '1' || (strategy.is_active === '0' && show_inactive)\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -1167,6 +1171,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_15), _hoisted_16, _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ strategy.activity }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ strategy.activity.length }}\n                                        {{ strategy.activity_visible }}\n                                        {{ revision_plan.is_strategy_based }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" strategy.activity && strategy.activity.length > 0 && strategy.activity_visible && revision_plan.is_strategy_based "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button v-if=\"revision_plan.is_strategy_based==0\" class=\"btn btn-primary text-white\" @click=\"setStrategyActivityVisibility(strategy.activity_visible, index)\">\n                                            Activities\n                                        </button><br><br> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"dropdown-item\" @click=\"setVisibility(strategy.finance_visible, index)\">\n                                            <span v-if=\"parseFloat(strategy.finance_visible)<1\">Set Cost/Budget</span>\n                                            <span v-else>Hide Cost/Budget</span>\n\n                                            @click=\"setVisibility(strategy.finance_visible, index)\"\n                                        </button> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
       onClick: function onClick($event) {
         return $options.setStrategyActivityVisibility(strategy.activity_visible, index);
+<<<<<<< HEAD
+=======
+      }
+    }, " Activities ", 8
+    /* PROPS */
+    , _hoisted_18), _hoisted_19, _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"dropdown-item\" @click=\"setVisibility(strategy.finance_visible, index)\">\r\n                                            <span v-if=\"parseFloat(strategy.finance_visible)<1\">Set Cost/Budget</span>\r\n                                            <span v-else>Hide Cost/Budget</span>\r\n                                        </button> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+      onClick: function onClick($event) {
+        return $options.setVisibility(strategy.finance_visible, index);
+>>>>>>> d03e31000da46152ea92cf5c4307217bf6d26c00
       },
       style: {
         "cursor": "pointer"
@@ -1308,7 +1321,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onChange: function onChange($event) {
         return $options.updateStrategy(strategy);
       }
-    }, "\n                                        ", 40
+    }, "\r\n                                        ", 40
     /* PROPS, HYDRATE_EVENTS */
     , _hoisted_41)), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.gad_issue]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [strategy.is_active == 1 && $props.revision_plan.is_strategy_based == 1 ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("textarea", {
       key: 0,
@@ -1380,7 +1393,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, [parseFloat(strategy.activity_visible) < 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_55, "Activities")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_56, "Hide Activities"))], 8
     /* PROPS */
+<<<<<<< HEAD
     , _hoisted_54)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\n                                                    <a class=\"dropdown-item\" :href=\"`/activities/${strategy.id}`\">Activities</a>\n                                                </li> ")])])])]), strategy.finance_visible && strategy.is_active == 1 && $props.revision_plan.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_57, [_hoisted_58, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_59, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("     "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_60, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_61, [_hoisted_62, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+=======
+    , _hoisted_44)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                                                    <a class=\"dropdown-item\" :href=\"`/activities/${strategy.id}`\">Activities</a>\r\n                                                </li> ")])])])]), strategy.finance_visible && strategy.is_active == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_47, [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("     "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_51, [_hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_53, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+>>>>>>> d03e31000da46152ea92cf5c4307217bf6d26c00
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return strategy.ps_q1 = $event;
       },
@@ -1892,7 +1909,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "form-control"
       }, null, 40
       /* PROPS, HYDRATE_EVENTS */
+<<<<<<< HEAD
       , _hoisted_135), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, activity.co_q4]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr>\n                                                                                <th>Total:&nbsp;&nbsp;</th>\n                                                                                <td><input v-model=\"activity.ps_total\" class=\"form-control\"/></td>\n                                                                                <td><input v-model=\"activity.mooe_total\" class=\"form-control\"/></td>\n                                                                                <td><input v-model=\"activity.co_total\" class=\"form-control\"/></td>\n                                                                            </tr> ")])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
+=======
+      , _hoisted_122), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, activity.co_q4]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr>\r\n                                                                                <th>Total:&nbsp;&nbsp;</th>\r\n                                                                                <td><input v-model=\"activity.ps_total\" class=\"form-control\"/></td>\r\n                                                                                <td><input v-model=\"activity.mooe_total\" class=\"form-control\"/></td>\r\n                                                                                <td><input v-model=\"activity.co_total\" class=\"form-control\"/></td>\r\n                                                                            </tr> ")])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
+>>>>>>> d03e31000da46152ea92cf5c4307217bf6d26c00
       /* STABLE_FRAGMENT */
       );
     }), 128
@@ -1927,7 +1948,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
+<<<<<<< HEAD
 ___CSS_LOADER_EXPORT___.push([module.id, "\ntextarea {\n\t/* width: 100%;\n    top: 0; left: 0; right: 0; bottom: 0;\n    position: absolute;\n\tresize: none;\n\t-webkit-box-sizing: border-box; /* <=iOS4, <= Android  2.3 */\n      /* -moz-box-sizing: border-box; /* FF1+ */\n           /* box-sizing: border-box; Chrome, IE8, Opera, Safari 5.1 */\n\n    width: 100%;\n    top: 0; left: 0; right: 0; bottom: 0;\n    position: absolute;\n    resize: none;\n    box-sizing: border-box;\n\n    /* Hide scrollbar */\n    overflow: hidden; /* Hides the scrollbar visually */\n    scrollbar-width: none; /* For Firefox */\n    -ms-overflow-style: none;\n\n    /* Auto-resize height */\n    height: auto;\n    overflow: hidden;\n    white-space: pre-wrap;\n}\ntable {\n    border-collapse: collapse;\n}\ntable, th, td {\n    position: relative;\n    border: 1px solid black;\n}\n\n/* Adjust cell height based on content */\n/* td { */\n    /* padding: 0px;\n    vertical-align: top; */\n/* } */\n", ""]);
+=======
+___CSS_LOADER_EXPORT___.push([module.id, "\ntextarea {\r\n\t/* width: 100%;\r\n    top: 0; left: 0; right: 0; bottom: 0;\r\n    position: absolute;\r\n\tresize: none;\r\n\t-webkit-box-sizing: border-box; /* <=iOS4, <= Android  2.3 */\r\n      /* -moz-box-sizing: border-box; /* FF1+ */\r\n           /* box-sizing: border-box; Chrome, IE8, Opera, Safari 5.1 */\r\n\r\n    width: 100%;\r\n    top: 0; left: 0; right: 0; bottom: 0;\r\n    position: absolute;\r\n    resize: none;\r\n    box-sizing: border-box;\r\n\r\n    /* Hide scrollbar */\r\n    overflow: hidden; /* Hides the scrollbar visually */\r\n    scrollbar-width: none; /* For Firefox */\r\n    -ms-overflow-style: none;\r\n\r\n    /* Auto-resize height */\r\n    height: auto;\r\n    overflow: hidden;\r\n    white-space: pre-wrap;\n}\ntable {\r\n    border-collapse: collapse;\n}\ntable, th, td {\r\n    position: relative;\r\n    border: 1px solid black;\n}\r\n\r\n/* Adjust cell height based on content */\ntd {\r\n    padding: 5px;\r\n    vertical-align: top;\n}\r\n", ""]);
+>>>>>>> d03e31000da46152ea92cf5c4307217bf6d26c00
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1976,7 +2001,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Index_vue_vue_type_template_id_dc6f31a0__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Index.vue?vue&type=template&id=dc6f31a0 */ "./resources/js/Pages/StrategyProject/Index.vue?vue&type=template&id=dc6f31a0");
 /* harmony import */ var _Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Index.vue?vue&type=script&lang=js */ "./resources/js/Pages/StrategyProject/Index.vue?vue&type=script&lang=js");
 /* harmony import */ var _Index_vue_vue_type_style_index_0_id_dc6f31a0_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Index.vue?vue&type=style&index=0&id=dc6f31a0&lang=css */ "./resources/js/Pages/StrategyProject/Index.vue?vue&type=style&index=0&id=dc6f31a0&lang=css");
-/* harmony import */ var C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -1984,7 +2009,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_dc6f31a0__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/StrategyProject/Index.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_dc6f31a0__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/StrategyProject/Index.vue"]])
 /* hot reload */
 if (false) {}
 

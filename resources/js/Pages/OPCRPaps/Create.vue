@@ -34,9 +34,13 @@
                 <input type="text" v-model="form.performance_measure" class="form-control" autocomplete="positionchrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.performance_measure">{{ form.errors.performance_measure }}</div>
 
+                <label for="">Division Accountable</label>
+                <input type="text" v-model="form.office_accountable" class="form-control" autocomplete="positionchrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.office_accountable">{{ form.errors.office_accountable }}</div>
+
                 <div class="form-check mt-2">
                     <input type="checkbox" id="notRated" v-model="form.not_rated" class="form-check-input">
-                    <label for="notRated" class="form-check-label">Not to be Rated</label>
+                    <label for="notRated" class="form-check-label">Not to be Rated (Prescribed Period/Timeliness)</label>
                 </div>
                 <!-- <label for="">Success Indicator</label>
                 <input type="text" v-model="form.success_indicator" class="form-control" autocomplete="positionchrome-off">
@@ -237,7 +241,9 @@ export default {
                  this.form.prescribed_period = "";
             }
         } else {
-            this.form.timeliness = "";
+            if(this.form.timeliness === "No"){
+                 this.form.timeliness = "";
+            }
             this.showPrescribedPeriod = false; // Hide it when No is selected
             this.form.prescribed_period = 'No'; // Clear the input value
         }
