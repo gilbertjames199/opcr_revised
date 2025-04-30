@@ -1,7 +1,7 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Profile/Design fsd{{ idpaps }}</h3>
+            <h3>{{ pageTitle }} Profile/Design </h3>
             <Link :href="`/revision/${idpaps}`">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -12,7 +12,7 @@
             </svg>
             </Link>
         </div>
-
+        <!-- {{ form }} -->
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
@@ -49,29 +49,59 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.date_end">{{ form.errors.date_end }}</div>
                 <hr style="background-color: black !important; border:1px; height: 1px;">
 
+                <input type="checkbox" v-model="form.is_strategy_based" :true-value="1"
+                    :false-value="0"/>&nbsp;
+                <label>GROUP BY STRATEGY </label>
+                <div class="fs-6 c-red-500"
+                    v-if="form.errors.is_strategy_based"
+
+                >
+                    {{ form.errors.is_strategy_based }}
+                </div>
+                <br>
+
                 INTENDED BENEFICIARIES<br>
-                <label for="">MALE</label>
-                <input type="number" v-model="form.beneficiary_male" class="form-control" autocomplete="chrome-off" >
-                <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_male">{{ form.errors.beneficiary_male }}</div>
-
-                <label for="">FEMALE</label>
-                <input type="number" v-model="form.beneficiary_female" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_female">{{ form.errors.beneficiary_female }}</div>
-
+                <div class="peers">
+                    <div class="peer mR-10">
+                        <label for="">MALE</label>
+                        <input type="number" v-model="form.beneficiary_male" class="form-control" autocomplete="chrome-off" @change="setIntendedTotal">
+                        <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_male">{{ form.errors.beneficiary_male }}</div>
+                    </div>
+                    <div class="peer mR-10">
+                        <label for="">FEMALE</label>
+                        <input type="number" v-model="form.beneficiary_female" class="form-control" autocomplete="chrome-off" @change="setIntendedTotal">
+                        <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_female">{{ form.errors.beneficiary_female }}</div>
+                    </div>
+                    <div class="peer mR-10">
+                        <label for="">TOTAL</label>
+                        <input type="number" v-model="total_intended" class="form-control" autocomplete="chrome-off">
+                        <!-- <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_female">{{ form.errors.beneficiary_female }}</div> -->
+                    </div>
+                </div>
                 <hr style="background-color: black !important; border:1px; height: 1px;">
                 BASELINE DISAGGREGATED DATA<br>
-                <label for="">MALE</label>
-                <input type="number" v-model="form.baseline_male" class="form-control" autocomplete="chrome-off" @change="setTotal">
-                <div class="fs-6 c-red-500" v-if="form.errors.baseline_male">{{ form.errors.baseline_male }}</div>
+                <div class="peers">
+                    <div class="peer mR-10">
+                        <label for="">MALE</label>
+                        <input type="number" v-model="form.baseline_male" class="form-control" autocomplete="chrome-off" @change="setTotal">
+                        <div class="fs-6 c-red-500" v-if="form.errors.baseline_male">{{ form.errors.baseline_male }}</div>
+                    </div>
 
-                <label for="">FEMALE</label>
-                <input type="number" v-model="form.baseline_female" class="form-control" autocomplete="chrome-off" @change="setTotal">
-                <div class="fs-6 c-red-500" v-if="form.errors.baseline_female">{{ form.errors.baseline_female }}</div>
+                    <div class="peer mR-10">
+                        <label for="">FEMALE</label>
+                        <input type="number" v-model="form.baseline_female" class="form-control" autocomplete="chrome-off" @change="setTotal">
+                        <div class="fs-6 c-red-500" v-if="form.errors.baseline_female">{{ form.errors.baseline_female }}</div>
+                    </div>
+                     <div class="peer mR-10">
+                        <label for="">TOTAL</label>
+                        <input type="number" v-model="form.baseline_total" class="form-control" autocomplete="chrome-off" >
+                        <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
 
-                <label for="">TOTAL</label>
-                <input type="number" v-model="form.baseline_total" class="form-control" autocomplete="chrome-off" >
-                <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
+                     </div>
+                </div>
+
                 <hr style="background-color: black !important; border:1px; height: 1px;">
+
 
                 <label for="">RATIONALE</label>
                 <!-- <div>words remaining: {{ wordsRemaining }} &nbsp;&nbsp; word count: {{ wordCount }}</div> -->
@@ -132,9 +162,8 @@
                 </button>
             </form>
         </div>
-        <!-- {{  form }} -->
-
     </div>
+    <!-- {{ editData }} -->
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -183,8 +212,10 @@ export default {
                 partnership: "",
                 monitoring: "",
                 risk_management: "",
+                is_strategy_based: "",
                 id: null
             }),
+            total_intended: 0,
             pageTitle: ""
         };
     },
@@ -230,9 +261,12 @@ export default {
             this.form.partnership = this.editData.partnership
             this.form.monitoring = this.editData.monitoring
             this.form.risk_management = this.editData.risk_management
+            this.form.is_strategy_based = this.editData.is_strategy_based
+            this.form.id = this.editData.id
 
         } else {
             this.pageTitle = "Create"
+            this.form.is_strategy_based=1
             //this.form.idpaps=this.idpaps
             if (this.duplicate !== undefined) {
                 this.form.idpaps = this.duplicate[0].idpaps
@@ -254,6 +288,7 @@ export default {
                 this.form.partnership = this.duplicate[0].partnership
                 this.form.monitoring = this.duplicate[0].monitoring
                 this.form.risk_management = this.duplicate[0].risk_management
+                this.is_strategy_based = this.duplicate[0].is_strategy_based
             } else {
                 //alert('undefined si idpaps!');
             }
@@ -270,7 +305,7 @@ export default {
             } else {
                 if (this.editData !== undefined) {
                     //alert('patch');
-                    this.form.patch("/strategies/", this.form);
+                    this.form.patch("/revision/", this.form);
                 } else {
                     this.form.id = null;
                     //alert('store');
@@ -292,6 +327,12 @@ export default {
             var female =parseFloat(this.form.baseline_female);
             var tot = male + female;
             this.form.baseline_total =tot
+        },
+        setIntendedTotal(){
+            var male =parseFloat(this.form.beneficiary_male);
+            var female =parseFloat(this.form.beneficiary_female);
+            var tot = male + female;
+            this.total_intended =tot
         }
     },
 };

@@ -77,6 +77,7 @@ use App\Http\Controllers\AppropriationController;
 use App\Http\Controllers\DivisionOutputController;
 use App\Http\Controllers\ExpectedOutputController;
 use App\Http\Controllers\ExpectedRevisedOutcomeController;
+use App\Http\Controllers\ExpectedRevisedOutputController;
 use App\Http\Controllers\ForbiddenController;
 use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
@@ -401,6 +402,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}', [RevisionPlanController::class, 'index']);
         Route::get('/create/{id}', [RevisionPlanController::class, 'create']);
         Route::post('/store', [RevisionPlanController::class, 'store']);
+        Route::get('/edit/{id}', [RevisionPlanController::class, 'edit']);
+        Route::patch('/', [RevisionPlanController::class, 'update']);
         Route::get('/view/project/paps/{id}', [RevisionPlanController::class, 'view']);
         Route::get('/general/administration/services/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas']);
         Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
@@ -435,6 +438,22 @@ Route::middleware('auth')->group(function () {
         //type = strategy or activity
         //id = id_strategy or activity id
         Route::get("/{id}/{type}", [ExpectedRevisedOutcomeController::class, 'index']);
+        Route::get('/create/{project_id}/{type}', [ExpectedRevisedOutcomeController::class, 'create']);
+        Route::post('/store', [ExpectedRevisedOutcomeController::class, 'store']);
+        Route::get('/{id}/{project_id}/edit/{type}', [ExpectedRevisedOutcomeController::class, 'edit']);
+        Route::patch('/{id}', [ExpectedRevisedOutcomeController::class, 'update']);
+        Route::delete('/{id}', [ExpectedRevisedOutcomeController::class, 'destroy']);
+    });
+    //Expected Outputs
+    Route::prefix("/expected-outputs-revised")->group(function () {
+        //type = strategy or activity
+        //id = id_strategy or activity id
+        Route::get("/{id}/{type}", [ExpectedRevisedOutputController::class, 'index']);
+        Route::get('/create/{project_id}/{type}', [ExpectedRevisedOutputController::class, 'create']);
+        Route::post('/store', [ExpectedRevisedOutputController::class, 'store']);
+        Route::get('/{id}/{project_id}/edit/{type}', [ExpectedRevisedOutputController::class, 'edit']);
+        Route::patch('/{id}', [ExpectedRevisedOutputController::class, 'update']);
+        Route::delete('/{id}', [ExpectedRevisedOutputController::class, 'destroy']);
     });
     //Budget
     Route::prefix('/budget')->group(function () {
@@ -733,8 +752,10 @@ Route::middleware('auth')->group(function () {
     //OPCR Budgeting
     Route::prefix('opcrbudgeting')->group(function () {
         Route::get('/{opcr_list_id}', [OpcrTargetBudgetController::class, 'create']);
+        Route::get('/edit/{id}', [OpcrTargetBudgetController::class, 'edit']);
         // Route::get('/create/{opcr_list_id}', [OpcrTargetBudgetController::class, 'create']);
         Route::post('/store', [OpcrTargetBudgetController::class, 'store']);
+        Route::patch('/update/{id}', [OpcrTargetBudgetController::class, 'update']);
     });
     //OPCR Accomplishment
     Route::prefix('opcraccomplishment')->group(function () {

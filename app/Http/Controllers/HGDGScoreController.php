@@ -199,7 +199,7 @@ class HGDGScoreController extends Controller
         // dd($rev_plan);
         $HPercent = $HScore / 20;
         $HPercent = round($HPercent, 4);
-
+        // dd($HPercent);
         // if ($HScore >= 4 && $HScore < 8) {
         //     $HPercent = 0.25;
         // } else if ($HScore >= 8 && $HScore < 15) {

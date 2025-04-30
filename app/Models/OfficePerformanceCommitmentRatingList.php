@@ -16,4 +16,9 @@ class OfficePerformanceCommitmentRatingList extends Model
     {
         return $this->hasOne(Office::class, 'department_code', 'department_code');
     }
+
+    public function opcrTargetBudget()
+    {
+        return $this->hasMany(OpcrTargetBudget::class, 'opcr_list_id', 'id');
+    }
 }

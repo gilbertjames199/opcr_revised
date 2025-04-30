@@ -15,9 +15,11 @@ use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
 use App\Models\Risk_manangement;
 use App\Models\Signatory;
+use App\Models\Strategy;
 use App\Models\StrategyProject;
 use App\Models\Target;
 use App\Models\TeamPlan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,17 +28,22 @@ class RevisionPlanController extends Controller
 {
     protected $model;
     protected $imp;
-    public function __construct(RevisionPlan $model, ImplementationPlan $imp)
+    protected $budget;
+    public function __construct(RevisionPlan $model, ImplementationPlan $imp, BudgetRequirement $budget)
     {
         $this->model = $model;
         $this->imp = $imp;
+        $this->budget = $budget;
     }
     public function index(Request $request, $idpaps)
     {
+        // dd($idpaps);
         $myid = auth()->user()->recid;
         $dept_id = auth()->user()->department_code;
         $FFUNCCOD = FFUNCCOD::where('department_code', $dept_id)->first()->FFUNCCOD;
         $paps = ProgramAndProject::where('id', $idpaps)->first();
+        $budget_controller = new BudgetRequirementController($this->budget);
+        // dd("revision");
         if ($paps->type === "GAS") {
             return redirect('/revision/general/administration/services/' . $FFUNCCOD . '/plan');
         } else {
@@ -45,6 +52,7 @@ class RevisionPlanController extends Controller
                 'revision_plans.project_title',
                 'revision_plans.version',
                 'revision_plans.type',
+                'revision_plans.is_strategy_based',
                 'ff.FFUNCTION'
             )
                 ->Join(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
@@ -54,17 +62,30 @@ class RevisionPlanController extends Controller
                 // ->where('acc.iduser', '=', $myid)
                 ->where('idpaps', '=', $idpaps)
                 ->get()
-                ->map(function ($item) {
+                ->map(function ($item) use ($budget_controller) {
                     $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                         ->sum('amount');
 
-                    $imp_amount = DB::table('targets')
-                        ->where('implementation_plans.idrev_plan', $item->id)
-                        ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
-                        ->select('targets.*', 'implementation_plans.*')
-                        ->sum('targets.planned_budget');
-
-
+                    $imp_amount = 0.00;
+                    // DB::table('targets')
+                    //     ->where('implementation_plans.idrev_plan', $item->id)
+                    //     ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                    //     ->select('targets.*', 'implementation_plans.*')
+                    //     ->sum('targets.planned_budget');
+                    $total = [];
+                    // dd($item);
+                    if ($item->is_strategy_based == 1) {
+                        $total = $budget_controller->getStratTotal($item->id);
+                    } else {
+                        $total = $budget_controller->getActivityTotal($item->id);
+                    }
+                    // dd($item->is_strategy_based);
+                    if ($total) {
+                        $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                            $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                            $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+                    }
+                    // dd($total);
                     return [
                         'FFUNCTION' => $item->FFUNCTION,
                         'id' => $item->id,
@@ -148,6 +169,7 @@ class RevisionPlanController extends Controller
             'checklist_id' => 'required',
             // 'implementing_team'=>'required',
             'partnership' => 'required',
+
             // 'monitoring'=>'required',
             // 'risk_management'=>'required'
         ]);
@@ -190,6 +212,7 @@ class RevisionPlanController extends Controller
         $rev->type = 'p';
         $rev->final = '0';
         $rev->supplemental = '0';
+        $rev->is_strategy_based = $request->is_strategy_based;
         $rev->user_id = auth()->user()->recid;
         $rev->save();
         // if($attributes){
@@ -308,110 +331,287 @@ class RevisionPlanController extends Controller
         //             'person_responsible' => $item->person_responsible,
         //         ];
         //     });
-        $implement = StrategyProject::with(["strategy"])
-            ->where("project_id", $id)
-            ->where("strategy_id", "<>", NULL)
-            ->where("is_active", "1")
-            ->get()
-            ->map(function ($item) use ($id) {
-                $activity = ActivityProject::with(["activity"])
-                    ->where("project_id", $id)
-                    ->where("activity_id", "<>", NULL)
-                    ->where("is_active", "1")
-                    ->get()
-                    ->map(function ($item_act) use ($item) {
+        // $implement = StrategyProject::with(["strategy"])
+        //     ->where("project_id", $id)
+        //     ->where("strategy_id", "<>", NULL)
+        //     ->where("is_active", "1")
+        //     ->get()
+        //     ->map(function ($item) use ($id) {
+        //         $activity = ActivityProject::with(["activity"])
+        //             ->where("project_id", $id)
+        //             ->where("activity_id", "<>", NULL)
+        //             ->where("is_active", "1")
+        //             ->get()
+        //             ->map(function ($item_act) use ($item) {
 
-                        return [
-                            'id' => $item_act->id,
-                            'idrev_plan' => $item_act->project_id,
-                            'date_from' => convertDateString($item_act->date_from),
-                            'date_to' => convertDateString($item_act->date_to),
-                            'stratt_id' => $item->strategy_id,
-                            'cc_topology' => $item_act->ccet_code,
-                            'issue' => $item_act->issue,
-                            'strategy' => $item_act->activity ? $item_act->activity->description : "",
-                            'activity_implementation' => $item_act->gad_issue,
-                            'person_responsible' => $item_act->responsible,
-                        ];
+        //                 return [
+        //                     'id' => $item_act->id,
+        //                     'idrev_plan' => $item_act->project_id,
+        //                     'date_from' => convertDateString($item_act->date_from),
+        //                     'date_to' => convertDateString($item_act->date_to),
+        //                     'stratt_id' => $item->strategy_id,
+        //                     'cc_topology' => $item_act->ccet_code,
+        //                     'issue' => $item_act->issue,
+        //                     'strategy' => $item_act->activity ? $item_act->activity->description : "",
+        //                     'activity_implementation' => $item_act->gad_issue,
+        //                     'person_responsible' => $item_act->responsible,
+        //                 ];
+        //             });
+        //         return [
+        //             'id' => $item->id,
+        //             'idrev_plan' => $item->project_id,
+        //             'date_from' => convertDateString($item->date_from),
+        //             'date_to' => convertDateString($item->date_to),
+        //             'idstrategy' => $item->strategy_id,
+        //             'cc_topology' => $item->ccet_code,
+        //             'issue' => $item->issue,
+        //             'strategy' => $item->strategy ? $item->strategy->description : "",
+        //             'activity_implementation' => $activity,
+        //             'person_responsible' => $item->responsible,
+        //         ];
+        //     });
+        $implement = Strategy::with([
+            'strategyProject' => function ($query) use ($id) {
+                $query->where('project_id', $id)
+                    ->where('is_active', '1');
+            },
+            'strategyProject.expected_output',
+            'strategyProject.expected_outcome',
+            'activity' => function ($query) use ($paps, $id) {
+                if ($paps->is_strategy_based == 0) {
+                    $query->whereHas('activityProject', function ($q) {
+                        $q->where('is_active', '1');
                     });
+                }
+            },
+            'activity.activityProject' => function ($q) use ($id) {
+                $q->where('project_id', $id)
+                    ->where('is_active', '1');
+            },
+            'activity.activityProject.expected_output',
+            'activity.activityProject.expected_outcome',
+        ])->whereHas('strategyProject', function ($query) {
+            $query->where('is_active', '1');
+        })
+            // ->when($paps->is_strategy_based == 0, function ($query) {
+            //     $query->whereHas('activity.activityProject', function ($query) {
+            //         $query->where('is_active', '1');
+            //     });
+            // })
+            ->where('idpaps', $idpaps)
+            ->get()
+            ->map(function ($item) {
+                // dd($item);
+                $item->activity = $item->activity->map(function ($activity) {
+                    $activity->is_selected = $activity->activityProject->count() > 0;
+                    $ps_q1 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q1 > 0 ? $activity->activityProject[0]->ps_q1 : 0) : 0;
+                    $ps_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q2 > 0 ? $activity->activityProject[0]->ps_q2 : 0) : 0;
+                    $ps_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q3 > 0 ? $activity->activityProject[0]->ps_q3 : 0) : 0;
+                    $ps_q4 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q4 > 0 ? $activity->activityProject[0]->ps_q4 : 0) : 0;
+                    $mooe_q1 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->mooe_q1 > 0 ? $activity->activityProject[0]->mooe_q1 : 0) : 0;
+                    $mooe_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->mooe_q2 > 0 ? $activity->activityProject[0]->mooe_q2 : 0) : 0;
+                    $mooe_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->mooe_q3 > 0 ? $activity->activityProject[0]->mooe_q3 : 0) : 0;
+                    $mooe_q4 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->mooe_q4 > 0 ? $activity->activityProject[0]->mooe_q4 : 0) : 0;
+                    $co_q1 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q1 > 0 ? $activity->activityProject[0]->co_q1 : 0) : 0;
+                    $co_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q2 > 0 ? $activity->activityProject[0]->co_q2 : 0) : 0;
+                    $co_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q3 > 0 ? $activity->activityProject[0]->co_q3 : 0) : 0;
+                    $co_q4 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q4 > 0 ? $activity->activityProject[0]->co_q4 : 0) : 0;
+                    $ps_total = floatval($ps_q1) + floatval($ps_q2) + floatval($ps_q3) + floatval($ps_q4);
+                    $mooe_total = floatval($mooe_q1) + floatval($mooe_q2) + floatval($mooe_q3) + floatval($mooe_q4);
+                    $co_total = floatval($co_q1) + floatval($co_q2) + floatval($co_q3) + floatval($co_q4);
+                    // dd($activity->activityProject);
+                    return [
+                        "id" => $activity->id,
+                        "description" => $activity->description,
+                        "target_indicator" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->target_indicator : null,
+                        "activity_id" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->id : null,
+                        "project_id" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->project_id : null,
+                        "ps_q1" => $ps_q1,
+                        "ps_q2" => $ps_q2,
+                        "ps_q3" => $ps_q3,
+                        "ps_q4" => $ps_q4,
+                        "ps_total" => $ps_total,
+                        "mooe_q1" => $mooe_q1,
+                        "mooe_q2" => $mooe_q2,
+                        "mooe_q3" => $mooe_q3,
+                        "mooe_q4" => $mooe_q4,
+                        "mooe_total" => $mooe_total,
+                        "co_q1" => $co_q1,
+                        "co_q2" => $co_q2,
+                        "co_q3" => $co_q3,
+                        "co_q4" => $co_q4,
+                        "co_total" => $co_total,
+                        "gad_issue" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->gad_issue : null,
+                        "ccet_code" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->ccet_code : null,
+                        "responsible" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->responsible : null,
+                        "activityProject" => $activity->activityProject,
+                        "activity" => $activity->activity,
+                        "finance_visible" =>   0,
+                        "is_active" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->is_active : 0,
+                    ];
+                });
+                $ps_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q1 > 0 ? $item->strategyProject[0]->ps_q1 : 0) : 0;
+                $ps_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q2 > 0 ? $item->strategyProject[0]->ps_q2 : 0) : 0;
+                $ps_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q3 > 0 ? $item->strategyProject[0]->ps_q3 : 0) : 0;
+                $ps_q4 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q4 > 0 ? $item->strategyProject[0]->ps_q4 : 0) : 0;
+                $mooe_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->mooe_q1 > 0 ? $item->strategyProject[0]->mooe_q1 : 0) : 0;
+                $mooe_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->mooe_q2 > 0 ? $item->strategyProject[0]->mooe_q2 : 0) : 0;
+                $mooe_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->mooe_q3 > 0 ? $item->strategyProject[0]->mooe_q3 : 0) : 0;
+                $mooe_q4 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->mooe_q4 > 0 ? $item->strategyProject[0]->mooe_q4 : 0) : 0;
+                $co_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q1 > 0 ? $item->strategyProject[0]->co_q1 : 0) : 0;
+                $co_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q2 > 0 ? $item->strategyProject[0]->co_q2 : 0) : 0;
+                $co_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q3 > 0 ? $item->strategyProject[0]->co_q3 : 0) : 0;
+                $co_q4 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q4 > 0 ? $item->strategyProject[0]->co_q4 : 0) : 0;
+                $ps_total = floatval($ps_q1) + floatval($ps_q2) + floatval($ps_q3) + floatval($ps_q4);
+
+                $mooe_total = floatval($mooe_q1) + floatval($mooe_q2) + floatval($mooe_q3) + floatval($mooe_q4);
+                $co_total = floatval($co_q1) + floatval($co_q2) + floatval($co_q3) + floatval($co_q4);
+                // dd($co_total);
+                // dd($item->strategyProject[0]);
                 return [
-                    'id' => $item->id,
-                    'idrev_plan' => $item->project_id,
-                    'date_from' => convertDateString($item->date_from),
-                    'date_to' => convertDateString($item->date_to),
-                    'idstrategy' => $item->strategy_id,
-                    'cc_topology' => $item->ccet_code,
-                    'issue' => $item->issue,
-                    'strategy' => $item->strategy ? $item->strategy->description : "",
-                    'activity_implementation' => $activity,
-                    'person_responsible' => $item->responsible,
+                    "id" => $item->id,
+                    "description" => $item->description,
+                    "target_indicator" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->target_indicator : null,
+                    "strategy_id" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->id : null,
+                    "project_id" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->project_id : null,
+                    "date_from" => $item->strategyProject->count() > 0
+                        ? ($item->strategyProject[0]->date_from
+                            ? $item->strategyProject[0]->date_from
+                            : null)
+                        : null,
+                    "date_to" => $item->strategyProject->count() > 0
+                        ? ($item->strategyProject[0]->date_to
+                            ? Carbon::parse($item->strategyProject[0]->date_to)->format('Y-m-d')
+                            : null)
+                        : null,
+                    "ps_q1" => $ps_q1,
+                    "ps_q2" => $ps_q2,
+                    "ps_q3" => $ps_q3,
+                    "ps_q4" => $ps_q4,
+                    "ps_total" => $ps_total,
+                    "mooe_q1" => $mooe_q1,
+                    "mooe_q2" => $mooe_q2,
+                    "mooe_q3" => $mooe_q3,
+                    "mooe_q4" => $mooe_q4,
+                    "mooe_total" => $mooe_total,
+                    "co_q1" => $co_q1,
+                    "co_q2" => $co_q2,
+                    "co_q3" => $co_q3,
+                    "co_q4" => $co_q4,
+                    "co_total" => $co_total,
+                    "gad_issue" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->gad_issue : null,
+                    "ccet_code" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->ccet_code : null,
+                    "responsible" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->responsible : null,
+                    "strategyProject" => $item->strategyProject,
+                    "activity" => $item->activity,
+                    "finance_visible" => 0,
+                    "is_active" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->is_active : 0,
+                    "activity_visible" => 0,
                 ];
             });
         // dd($implement);
-        $mooe_gad = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Maintenance, Operating, and Other Expenses')
-            ->where('category_gad', 'GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $mooe_non = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Maintenance, Operating, and Other Expenses')
-            ->where('category_gad', 'NON-GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $s_mooe_gad = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Maintenance, Operating, and Other Expenses')
-            ->where('category_gad', 'GAD')
-            ->sum('amount');
-        $s_mooe_non = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Maintenance, Operating, and Other Expenses')
-            ->where('category_gad', 'NON-GAD')
-            ->sum('amount');
+
+        // $mooe_gad = [];
+        // [BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Maintenance, Operating, and Other Expenses')
+        //     ->where('category_gad', 'GAD')
+        //     ->orderBy('category', 'desc')
+        //     ->orderBy('particulars')
+        //     ->get();
+        // dd($mooe_gad);
+        // $mooe_non = [];
+        // BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Maintenance, Operating, and Other Expenses')
+        //     ->where('category_gad', 'NON-GAD')
+        //     ->orderBy('category', 'desc')
+        //     ->orderBy('particulars')
+        //     ->get();
+        // $s_mooe_gad = BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Maintenance, Operating, and Other Expenses')
+        //     ->where('category_gad', 'GAD')
+        //     ->sum('amount');
+        // $s_mooe_non = BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Maintenance, Operating, and Other Expenses')
+        //     ->where('category_gad', 'NON-GAD')
+        //     ->sum('amount');
         //Capital Outlay
-        $cap_gad = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Capital Outlay')
-            ->where('category_gad', 'GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $cap_non = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Capital Outlay')
-            ->where('category_gad', 'NON-GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $s_cap_gad = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Capital Outlay')
-            ->where('category_gad', 'GAD')
-            ->sum('amount');
-        $s_cap_non = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Capital Outlay')
-            ->where('category_gad', 'NON-GAD')
-            ->sum('amount');
+        // $cap_gad = [];
+        // BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Capital Outlay')
+        //     ->where('category_gad', 'GAD')
+        //     ->orderBy('category', 'desc')
+        //     ->orderBy('particulars')
+        //     ->get();
+        // $cap_non = [];
+        // BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Capital Outlay')
+        //     ->where('category_gad', 'NON-GAD')
+        //     ->orderBy('category', 'desc')
+        //     ->orderBy('particulars')
+        //     ->get();
+        // $s_cap_gad = BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Capital Outlay')
+        //     ->where('category_gad', 'GAD')
+        //     ->sum('amount');
+        // $s_cap_non = BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Capital Outlay')
+        //     ->where('category_gad', 'NON-GAD')
+        //     ->sum('amount');
         //Personnel Services
-        $ps_gad = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Personnel Services')
-            ->where('category_gad', 'GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $ps_non = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Personnel Services')
-            ->where('category_gad', 'NON-GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $s_ps_gad = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Personnel Services')
-            ->where('category_gad', 'GAD')
-            ->sum('amount');
-        $s_ps_non = BudgetRequirement::where('revision_plan_id', '=', $id)
-            ->where('category', 'Personnel Services')
-            ->where('category_gad', 'NON-GAD')
-            ->sum('amount');
+        // $ps_gad =
+        // BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Personnel Services')
+        //     ->where('category_gad', 'GAD')
+        //     ->orderBy('category', 'desc')
+        //     ->orderBy('particulars')
+        //     ->get();
+        // $ps_non =
+        // BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Personnel Services')
+        //     ->where('category_gad', 'NON-GAD')
+        //     ->orderBy('category', 'desc')
+        //     ->orderBy('particulars')
+        //     ->get();
+        //     $s_ps_gad = BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Personnel Services')
+        //     ->where('category_gad', 'GAD')
+        //     ->sum('amount');
+        // $s_ps_non = BudgetRequirement::where('revision_plan_id', '=', $id)
+        //     ->where('category', 'Personnel Services')
+        //     ->where('category_gad', 'NON-GAD')
+        //     ->sum('amount');
 
 
+
+        //Budget Revised
+        $budgetRequirements = BudgetRequirement::select(
+            'account_code',
+            DB::raw('MAX(particulars) as particulars'),
+            DB::raw('SUM(CASE WHEN category_gad = "GAD" THEN amount ELSE 0 END) as GAD_amount'),
+            DB::raw('SUM(CASE WHEN category_gad = "NON-GAD" THEN amount ELSE 0 END) as NONGAD_amount'),
+            DB::raw('SUM(amount) as Total'),
+            DB::raw('MAX(source) as Source'),
+            'category'
+        )
+            ->where('revision_plan_id', $id)
+            ->whereIn('category', ['Capital Outlay', 'Maintenance, Operating, and Other Expenses', 'Personnel Services'])
+            ->groupBy('account_code', 'category') // Grouping also by category to categorize data properly
+            ->get();
+
+        // Split results into separate variables
+        $capitalOutlay = $budgetRequirements->where('category', 'Capital Outlay')->values();
+        $maintenanceOperating = $budgetRequirements->where('category', 'Maintenance, Operating, and Other Expenses')->values();
+        $personnelServices = $budgetRequirements->where('category', 'Personnel Services')->values();
+
+        //SUM
+        $s_mooe_gad = (float) number_format($budgetRequirements->where('category', 'Maintenance, Operating, and Other Expenses')->sum('GAD_amount'), 2, '.', '');
+        $s_mooe_non = (float) number_format($budgetRequirements->where('category', 'Maintenance, Operating, and Other Expenses')->sum('NONGAD_amount'), 2, '.', '');
+
+        $s_cap_gad = (float) number_format($budgetRequirements->where('category', 'Capital Outlay')->sum('GAD_amount'), 2, '.', '');
+        $s_cap_non = (float) number_format($budgetRequirements->where('category', 'Capital Outlay')->sum('NONGAD_amount'), 2, '.', '');
+
+        $s_ps_gad = (float) number_format($budgetRequirements->where('category', 'Personnel Services')->sum('GAD_amount'), 2, '.', '');
+        $s_ps_non = (float) number_format($budgetRequirements->where('category', 'Personnel Services')->sum('NONGAD_amount'), 2, '.', '');
         //IMPLEMENTING TEAM
         $team_members = TeamPlan::where('revision_plan_id', $id)
             ->get()
@@ -518,24 +718,33 @@ class RevisionPlanController extends Controller
         //             'targets' => $targets,
         //         ];
         //     });
-        $imp_amount = DB::table('targets')
-            ->where('implementation_plans.idrev_plan', $id)
-            ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
-            ->select('targets.*', 'implementation_plans.*')
-            ->sum('targets.planned_budget');
+        // $imp_amount = DB::table('targets')
+        //     ->where('implementation_plans.idrev_plan', $id)
+        //     ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+        //     ->select('targets.*', 'implementation_plans.*')
+        //     ->sum('targets.planned_budget');
         // dd($imp_amount);
         // dd($functions);
+        $imp_amount = "0.00";
+        // dd($paps);
+        if ($paps->is_strategy_based == 1) {
+            $imp_amount = StrategyProject::where('project_id', $id)->where('is_active', '1')
+                ->sum(DB::raw('ps_q1 + ps_q2 + ps_q3 + ps_q4 + mooe_q1 + mooe_q2 + mooe_q3 + mooe_q4 + co_q1 + co_q2 + co_q3 + co_q4'));
+        } else {
+            $imp_amount = ActivityProject::where('project_id', $id)->where('is_active', '1')
+                ->sum(DB::raw('ps_q1 + ps_q2 + ps_q3 + ps_q4 + mooe_q1 + mooe_q2 + mooe_q3 + mooe_q4 + co_q1 + co_q2 + co_q3 + co_q4'));
+        }
         return inertia('RevisionPlans/View', [
             "paps" => $paps,
             "office" => $functions->FFUNCTION,
             "implementation" => $implement,
 
-            "mooe_gad" => $mooe_gad,
-            "mooe_non" => $mooe_non,
-            "cap_gad" => $cap_gad,
-            "cap_non" => $cap_non,
-            "ps_gad" => $ps_gad,
-            "ps_non" => $ps_non,
+            // "mooe_gad" => $mooe_gad,
+            // "mooe_non" => $mooe_non,
+            // "cap_gad" => $cap_gad,
+            // "cap_non" => $cap_non,
+            // "ps_gad" => $ps_gad,
+            // "ps_non" => $ps_non,
             "s_mooe_gad" => $s_mooe_gad,
             "s_mooe_non" => $s_mooe_non,
             "s_cap_gad" => $s_cap_gad,
@@ -549,6 +758,11 @@ class RevisionPlanController extends Controller
             "sig_rev" => $sig_rev,
             "sig_prep" => $sig_prep,
             "sig_app" => $sig_app,
+
+            //BUDGET REVISED
+            "capitalOutlay" => $capitalOutlay,
+            "maintenanceOperating" => $maintenanceOperating,
+            "personnelServices" => $personnelServices,
             // "data" => $data,
             "imp_amount" => $imp_amount,
             'can' => [
@@ -556,6 +770,78 @@ class RevisionPlanController extends Controller
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
+    }
+    public function edit(Request $request, $id)
+    {
+        $data = RevisionPlan::where('id', $id)->first();
+        $paps = ProgramAndProject::where('id', $data->idpaps)->get();
+        $idpaps = $data->idpaps;
+        if (count($paps) > 0) {
+            $idpaps = $paps[0]->id;
+        }
+        // dd($paps);
+        // dd($idpaps);
+        $hgdg = HGDG_Checklist::get();
+        // $count = RevisionPlan::where('idpaps', $id)->count();
+        // $max_id = RevisionPlan::where('idpaps', $id)->max('id');
+        return inertia('RevisionPlans/Create', [
+            "idpaps" => $idpaps,
+            "hgdgs" => $hgdg,
+            "paps" => $paps,
+            "editData" => $data,
+            "can" => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+            ],
+        ]);
+    }
+    public function update(Request $request)
+    {
+        // dd($request);
+        $rev = RevisionPlan::where('id', $request->id)->first();
+        if ($rev) {
+            $rev->idpaps = $request->idpaps;
+            // $rev->idmfo = $request->idmfo;
+            // $rev->FFUNCCOD = $request->FFUNCCOD;
+            // $rev->year_period = $request->year_period;
+            // $rev->scope = $request->scope;
+            // $rev->aip_code = $request->aip_code;
+            $rev->project_title = $request->project_title;
+            $rev->project_location = $request->project_location;
+            $rev->list_of_lgu_covered = $request->list_of_lgu_covered;
+            $rev->date_start = $request->date_start;
+            $rev->date_end = $request->date_end;
+            $rev->beneficiary_male = $request->beneficiary_male;
+            $rev->beneficiary_female = $request->beneficiary_female;
+            $rev->baseline_male = $request->baseline_male;
+            $rev->baseline_female = $request->baseline_female;
+            $rev->baseline_total = $request->baseline_total;
+            // $rev->amount = $request->amount;
+            // $rev->attributed_amount = $request->attributed_amount;
+            $rev->checklist_id = $request->checklist_id;
+            // $rev->hgdg_score = $request->hgdg_score;
+            // $rev->hgdg_percent = $request->hgdg_percent;
+            $rev->rationale = $request->rationale;
+            $rev->objective = $request->objective;
+            $rev->beneficiaries = $request->beneficiaries;
+            $rev->implementing_team = $request->implementing_team;
+            $rev->partnership = $request->partnership;
+            $rev->monitoring = $request->monitoring;
+            $rev->risk_management = $request->risk_management;
+            // $rev->supplemental = $request->supplemental;
+            $rev->is_strategy_based = $request->is_strategy_based;
+            $rev->is_activity_based = $request->is_activity_based;
+            $rev->save();
+            return redirect('/revision/' . $request->idpaps)
+                ->with('info', 'Revision Plan updated');
+        } else {
+            return redirect('/revision/' . $request->idpaps)
+                ->with('error', 'Revision Plan not found');
+        }
+
+        // $rev->breakdown_by_expected_output = $request->breakdown_by_expected_output;
+
+
     }
     public function gas(Request $request, $FFUNCCOD)
     {

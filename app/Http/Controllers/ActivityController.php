@@ -12,48 +12,52 @@ class ActivityController extends Controller
 {
     //
     protected $model;
-    public function __construct(Activity $model){
-        $this->model=$model;
+    public function __construct(Activity $model)
+    {
+        $this->model = $model;
     }
-    public function index(Request $request, $idstrat){
+    public function index(Request $request, $idstrat)
+    {
 
-        $strat= Strategy::findOrFail($idstrat);
+        $strat = Strategy::findOrFail($idstrat);
         //dd($idstrat);
-        $myidpaps=$strat->idpaps;
-        $myidmfo=$strat->idmfo;
-        //dd($myidmfo);
-        $idpaps=$myidpaps;
-        $idmfo=$myidmfo;
+        // dd($S)
+        $myidpaps = $strat->idpaps;
+        $myidmfo = $strat->idmfo;
+        // dd($myidmfo);
+        $idpaps = $myidpaps;
+        $idmfo = $myidmfo;
         $data = $this->model->with('strat')
-                ->where('strategy_id',$idstrat)
-                ->when($request->search, function($query, $searchItem){
-                    $query->where('description','LIKE','%'.$searchItem.'%');
-                })
-                ->orderBy('created_at', 'desc')
-                ->paginate('10')
-                ->withQueryString();
+            ->where('strategy_id', $idstrat)
+            ->when($request->search, function ($query, $searchItem) {
+                $query->where('description', 'LIKE', '%' . $searchItem . '%');
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate('10')
+            ->withQueryString();
 
-        return inertia('Activities/Index',[
-            "data"=>$data,
-            "idpaps"=>$idpaps,
-            "idstrategy"=>$idstrat,
+        return inertia('Activities/Index', [
+            "data" => $data,
+            "idpaps" => $idpaps,
+            "idmfo" => $idmfo,
+            "idstrategy" => $idstrat,
             "filters" => $request->only(['search']),
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
-
     }
-    public function create(Request $request, $idstrat){
-        $strats=Strategy::get();
+    public function create(Request $request, $idstrat)
+    {
+        $strats = Strategy::get();
         //dd($paps);
-        return inertia('Activities/Create',[
-            'idstrat'=>$idstrat,
-            'strats'=>$strats,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+        return inertia('Activities/Create', [
+            'idstrat' => $idstrat,
+            'strats' => $strats,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -61,17 +65,17 @@ class ActivityController extends Controller
     {
         //dd('activity');
         $attributes = $request->validate([
-            'strategy_id'=>'required',
+            'strategy_id' => 'required',
             'description' => 'required',
         ]);
         $this->model->create($attributes);
         //$request->pass='';
-        return redirect('/activities/'.$request->strategy_id)
-                ->with('message','Activity added');
+        return redirect('/activities/' . $request->strategy_id)
+            ->with('message', 'Activity added');
     }
     public function edit(Request $request, $id, $idstrat)
     {
-        $strats=Strategy::get();
+        $strats = Strategy::get();
         $data = $this->model->where('id', $id)->first([
             'id',
             'description',
@@ -80,11 +84,11 @@ class ActivityController extends Controller
 
         return inertia('Activities/Create', [
             "editData" => $data,
-            'idstrat'=>$idstrat,
-            'strats'=>$strats,
-            'can'=>[
-                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            'idstrat' => $idstrat,
+            'strats' => $strats,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -94,31 +98,31 @@ class ActivityController extends Controller
         $data = $this->model->findOrFail($request->id);
         //dd($request->plan_period);
         $data->update([
-            'description'=>$request->description,
-            'strategy_id'=>$request->strategy_id
+            'description' => $request->description,
+            'strategy_id' => $request->strategy_id
         ]);
 
-        return redirect('/activities/'.$request->strategy_id)
-                ->with('message','Activity updated');
+        return redirect('/activities/' . $request->strategy_id)
+            ->with('message', 'Activity updated');
     }
 
     public function destroy(Request $request, $id, $strategy_id)
     {
-        $msg="";
-        $status="";
+        $msg = "";
+        $status = "";
         $implementation = ImplementationPlan::where('idactivity', $id)->count();
 
-        if($implementation>0){
-            $status="error";
-            $msg ="Unable to delete!";
-        }else{
-            $status="message";
-            $msg ="Activity deleted";
+        if ($implementation > 0) {
+            $status = "error";
+            $msg = "Unable to delete!";
+        } else {
+            $status = "message";
+            $msg = "Activity deleted";
             $data = $this->model->findOrFail($id);
             $data->delete();
         }
         //dd('hahhah '.$msg);
         //dd($request->raao_id);
-        return redirect('/activities/'.$strategy_id)->with($status, $msg);
+        return redirect('/activities/' . $strategy_id)->with($status, $msg);
     }
 }

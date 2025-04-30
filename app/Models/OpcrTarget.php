@@ -16,4 +16,13 @@ class OpcrTarget extends Model
     {
         return $this->belongsTo(ProgramAndProject::class, 'idpaps', 'id');
     }
+
+    public function opcrList()
+    {
+        return $this->belongsTo(
+            OfficePerformanceCommitmentRatingList::class,
+            'office_performance_commitment_rating_list_id',
+            'id'
+        );
+    }
 }

@@ -100,9 +100,9 @@
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Cost of Program</th>
                                 <th colspan="1">Amount (Php)</th>
-                                <td colspan="2">{{ format_number_conv(paps.amount, 2, true) }} </td>
+                                <td colspan="2" class="text-end">{{ format_number_conv(imp_amount, 2, true) }}</td>
                                 <th colspan="1">Attributed GAD Budget (Php) </th>
-                                <td colspan="2">{{ format_number_conv((paps.amount * paps.hgdg_percent), 2, true) }}</td>
+                                <td colspan="2" class="text-end">{{ format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true) }} </td>
                             </tr>
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">HGDG Checklist</th>
@@ -139,10 +139,8 @@
                     </table>
                     <br>
                     <!--IMPLEMENTATION PLAN-->
-                    <div v-if="implementation">
-                        <h3>
-                            <Link :href="`/implementation/${paps.id}`">Implementation Plan</Link>
-                        </h3>
+                    <!-- <div v-if="implementation">
+
                         <table class="table table-hover table-bordered border-dark">
                             <thead>
                                 <tr class="bg-secondary text-white">
@@ -162,9 +160,9 @@
 
                                         <td><b>{{ dat.strategy }}</b></td>
                                         <td>
-                                            <!-- <div v-for="target in dat.targets.data">
+                                            <div v-for="target in dat.targets.data">
                                                 {{ target.indicator_description }}
-                                            </div> -->
+                                            </div>
                                         </td>
                                         <td>{{ dat.issue }}</td>
                                         <td>
@@ -181,9 +179,7 @@
 
                                             <td>{{ act.activity }}</td>
                                             <td>
-                                                <!-- <div v-for="target in act.targets">
-                                                    {{ target.indicator_description }}
-                                                </div> -->
+
                                             </td>
                                             <td>{{ act.issue }}</td>
                                             <td>
@@ -192,16 +188,10 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <!-- <div v-for="target in act.targets">
-                                                    {{ target.target_description }}
-                                                </div> -->
+
                                             </td>
                                             <td>
-                                                <!-- <div v-for="target in act.targets">
-                                                    <div v-if="target.budget > 0">
-                                                        {{ format_number_conv(target.budget, 2, true) }}
-                                                    </div>
-                                                </div> -->
+
                                             </td>
                                             <td>{{ act.cc_topology }}</td>
                                             <td>{{ act.person_responsible }}</td>
@@ -221,6 +211,108 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div> -->
+                    <div v-if="implementation">
+                        <h3>
+                            <!-- /strategies-and-activities/${dat.id} -->
+                            <Link :href="`/strategies-and-activities/${paps.id}`" target="_blank">Implementation Plan</Link>
+                        </h3>
+
+                        <table class="table table-hover table-bordered border-dark">
+                            <thead>
+                                <tr class="bg-secondary text-white">
+                                    <th>Strategies/Activities</th>
+                                    <th>Performance Target Indicators</th>
+                                    <th>Gender Issues to be Addressed</th>
+                                    <th>Timeline</th>
+                                    <th>Expected Output</th>
+                                    <th>Budget</th>
+                                    <th>Climate Change Topology Code</th>
+                                    <th>Person Responsible</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template v-for="(dat, index) in implementation" :key="dat.id">
+                                    <tr style="background-color:lightgrey; font-weight: bold;">
+                                        <td><b>{{ dat.description }}</b></td>
+                                        <td>
+                                            <span v-if="paps.is_strategy_based==1">{{ dat.target_indicator }}</span>
+                                        </td>
+                                        <td><span v-if="paps.is_strategy_based==1">{{ dat.gad_issue }}</span></td>
+                                        <td>
+                                            <span v-if="paps.is_strategy_based==1">
+                                                <span v-if="dat.date_from">{{ formatMonthYear(dat.date_from) }}</span>
+                                                <span v-if="dat.date_from && dat.date_to">&nbsp;to&nbsp;</span>
+                                                <span v-if="dat.date_to">{{ formatMonthYear(dat.date_to) }}</span>
+                                            </span>
+
+
+                                        </td>
+                                        <td>
+                                            <span v-if="paps.is_strategy_based==1">
+                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_output">
+                                                    <div>{{ eo.description }}</div>
+                                                    <hr>
+                                                </div>
+                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_outcome">
+                                                    <div>{{ eo.description }}</div>
+                                                    <hr>
+                                                </div>
+                                            </span>
+
+                                        </td>
+                                        <td class="text-end"><span v-if="paps.is_strategy_based==1">{{ format_number_conv(parseFloat(dat.ps_total) + parseFloat(dat.mooe_total)+ parseFloat(dat.co_total),2,true) }}</span>
+                                        </td>
+                                        <td><span v-if="paps.is_strategy_based==1">{{ dat.ccet_code }}</span></td>
+                                        <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
+                                    </tr>
+
+                                    <template v-if="dat.activity && paps.is_strategy_based==0">
+                                        <tr v-for="(act, subIndex) in dat.activity" :key="subIndex">
+                                            <td><b>{{ act.description }}</b></td>
+                                            <td>
+                                                <span v-if="paps.is_strategy_based==0">{{ act.target_indicator }}</span>
+                                            </td>
+                                            <td><span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}</span></td>
+                                            <td>
+                                                <span v-if="paps.is_strategy_based==0">
+                                                    <span v-if="act.date_from">{{ formatMonthYear(act.date_from) }}</span>
+                                                    <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
+                                                    <span v-if="act.date_to">{{ formatMonthYear(act.date_to) }}</span>
+                                                </span>
+
+
+                                            </td>
+                                            <td>
+                                                <span v-if="paps.is_strategy_based==0">
+                                                    <div v-if="act.activityProject[0]" v-for="eo in act.activityProject[0].expected_output">
+                                                        <div>{{ eo.description }}</div>
+                                                        <hr>
+                                                    </div>
+                                                    <div v-if="act.activityProject[0]" v-for="eo in act.activityProject[0].expected_outcome">
+                                                        <div>{{ eo.description }}</div>
+                                                        <hr>
+                                                    </div>
+                                                </span>
+
+                                            </td>
+                                            <td><span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.ps_total) + parseFloat(act.mooe_total)+ parseFloat(act.co_total),2,true) }}</span>
+                                            </td>
+                                            <td><span v-if="paps.is_strategy_based==0">{{ act.ccet_code }}</span></td>
+                                            <td><span v-if="paps.is_strategy_based==0">{{ act.responsible }}</span></td>
+                                        </tr>
+                                    </template>
+
+                                </template>
+                                <tr>
+                                        <td colspan="5">TOTAL</td>
+                                        <td class="text-end">{{ format_number_conv(imp_amount,2,true) }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                        <!-- {{ implementation }} -->
                     </div>
                     <br>
                     <!--BUDGETARY REQUIREMENTS-->
@@ -229,7 +321,117 @@
                         <h3>
                             <Link :href="`/budget/${paps.id}`">Estimated Cost/Budgetary Requirements</Link>
                         </h3>
+                        <!-- {{ capitalOutlay }}
+                        showBudgetTable: {{ showBudgetTable() }} -->
                         <table v-if="showBudgetTable()" class="table table-hover table-bordered border-dark">
+                            <thead>
+                                <tr class="bg-secondary text-white">
+                                    <th colspan="3">Particular</th>
+                                    <th>Account Code</th>
+                                    <th>GAD Amount (Php)</th>
+                                    <th>Non-GAD Amount (Php)</th>
+                                    <th>Amount (Php)</th>
+                                    <th>Source</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- MOOE **************************************************************** -->
+                                <tr v-if="(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0">
+                                    <td colspan="8"><b>MAINTENANCE, OPERATING, AND OTHER EXPENSES</b></td>
+                                </tr>
+                                <tr v-if="(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0" v-for="mooe in maintenanceOperating">
+                                    <td></td>
+                                    <td colspan="2">{{ mooe.particulars }}</td>
+                                    <td>{{ mooe.account_code }}</td>
+                                    <td class="text-end">{{ format_number_conv(mooe.GAD_amount,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(mooe.NONGAD_amount,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(mooe.Total,2,true) }}</td>
+                                    <td>{{ mooe.Source }}</td>
+                                </tr>
+                                <tr v-if="(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0">
+                                    <td></td>
+                                    <td colspan="3">SUB-TOTAL (MOOE)</td>
+                                    <td class="text-end">{{ format_number_conv(s_mooe_gad,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(s_mooe_non,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true) }}</td>
+                                    <td></td>
+                                </tr>
+                                <!-- PERSONNEL SERVICES ****************************************************** -->
+                                 <tr v-if="(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0">
+                                    <td colspan="8"><b>PERSONNEL SERVICES</b></td>
+                                </tr>
+                                <tr  v-if="(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0" v-for="ps in personnelServices">
+                                    <td></td>
+                                    <td colspan="2">{{ ps.particulars }}</td>
+                                    <td>{{ ps.account_code }}</td>
+                                    <td class="text-end">{{ format_number_conv(ps.GAD_amount,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(ps.NONGAD_amount,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(ps.Total,2,true) }}</td>
+                                    <td>{{ ps.Source }}</td>
+                                </tr>
+                                <tr v-if="(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0">
+                                    <td></td>
+                                    <td colspan="3">SUB-TOTAL (PS)</td>
+                                    <td class="text-end">{{ format_number_conv(s_ps_gad,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(s_ps_non,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true) }}</td>
+                                    <td></td>
+                                </tr>
+                                <!-- CAPITAL OUTLAY*********************************************************** -->
+                                <tr v-if="(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0">
+                                    <td colspan="8"><b>CAPITAL OUTLAY</b></td>
+                                </tr>
+                                <tr v-if="(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0" v-for="cap in capitalOutlay">
+                                    <td></td>
+                                    <td colspan="2">{{ cap.particulars }}</td>
+                                    <td>{{ cap.account_code }}</td>
+                                    <td class="text-end">{{ format_number_conv(cap.GAD_amount,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(cap.NONGAD_amount,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(cap.Total,2,true) }}</td>
+                                    <td>{{ cap.Source }}</td>
+                                </tr>
+                                <tr v-if="(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0">
+                                    <td></td>
+                                    <td colspan="3">SUB-TOTAL (Capital Outlay)</td>
+                                    <td class="text-end">{{ format_number_conv(s_cap_gad,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(s_cap_non,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true) }}</td>
+                                    <td></td>
+                                </tr>
+                                <!-- CAPITAL OUTLAY*********************************************************** -->
+                                <!-- <tr>
+                                    <td colspan="8"><b>CAPITAL OUTLAY</b></td>
+                                </tr>
+                                <tr v-for="cap in capitalOutlay">
+                                    <td></td>
+                                    <td colspan="2">{{ cap.particulars }}</td>
+                                    <td>{{ cap.account_code }}</td>
+                                    <td class="text-end">{{ format_number_conv(cap.GAD_amount,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(cap.NONGAD_amount,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(cap.Total,2,true) }}</td>
+                                    <td>{{ cap.Source }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="3">SUB-TOTAL (Capital Outlay)</td>
+                                    <td class="text-end">{{ format_number_conv(s_cap_gad,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(s_cap_non,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true) }}</td>
+                                    <td></td>
+                                </tr> -->
+                                <tr>
+
+                                    <td colspan="4">TOTAL</td>
+                                    <td class="text-end"></td>
+                                    <td class="text-end"></td>
+                                    <td class="text-end">{{ format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non) + parseFloat(s_ps_gad)
+                                    + parseFloat(s_ps_non) + parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true)
+                                    }}</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <table v-if="showBudgetTable()" class="table table-hover table-bordered border-dark">
                             <thead>
                                 <tr class="bg-secondary text-white">
                                     <th colspan="3">Particular</th>
@@ -239,14 +441,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!--MOOE-->
                                 <tr v-if="mooe_gad.length > 0 || mooe_non.length > 0">
                                     <th colspan="3">Maintenance, Operating, and Other Expenses</th>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <!--MOOE-GAD-->
                                 <tr v-if="mooe_gad.length > 0">
                                     <td></td>
                                     <th colspan="2">GAD </th>
@@ -259,17 +459,16 @@
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
                                     <td>{{ dat.account_code }}</td>
-                                    <td>{{ format_number_conv(dat.amount, 2, true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
                                 <tr v-if="mooe_gad.length > 0">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2">SUB TOTAL (GAD) </th>
-                                    <th>{{ format_number_conv(s_mooe_gad, 2, true) }}</th>
+                                    <th class="text-end">{{ format_number_conv(s_mooe_gad, 2, true) }}</th>
                                     <td></td>
                                 </tr>
-                                <!--MOOE-NON-GAD-->
                                 <tr v-if="mooe_non.length > 0">
                                     <td></td>
                                     <th colspan="2">NON-GAD </th>
@@ -282,31 +481,28 @@
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
                                     <td>{{ dat.account_code }}</td>
-                                    <td>{{ format_number_conv(dat.amount, 2, true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
                                 <tr v-if="mooe_non.length > 0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2">SUB TOTAL (NON-GAD) </th>
-                                    <th>{{ format_number_conv(s_mooe_non, 2, true) }}</th>
+                                    <th class="text-end">{{ format_number_conv(s_mooe_non, 2, true) }}</th>
                                     <td></td>
                                 </tr>
-                                <!--TOTAL MOOE-->
                                 <tr v-if="mooe_gad.length > 0 || mooe_non.length > 0">
                                     <td></td>
                                     <th colspan="3">SUB TOTAL (MOOE) </th>
-                                    <th>{{ getSum(s_mooe_gad, s_mooe_non) }}</th>
+                                    <th class="text-end">{{ getSum(s_mooe_gad, s_mooe_non) }}</th>
                                     <td></td>
                                 </tr>
-                                <!--CAPITAL OUTLAY-->
                                 <tr v-if="cap_gad.length > 0 || cap_non.length > 0">
                                     <th colspan="3">Capital Outlay</th>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <!--Capital Outlay GAD-->
                                 <tr v-if="cap_gad.length > 0">
                                     <td></td>
                                     <th colspan="2">GAD </th>
@@ -319,17 +515,16 @@
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
                                     <td>{{ dat.account_code }}</td>
-                                    <td>{{ format_number_conv(dat.amount, 2, true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
                                 <tr v-if="cap_gad.length > 0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2">SUB TOTAL (GAD) </th>
-                                    <th>{{ format_number_conv(s_cap_gad, 2, true) }}</th>
+                                    <th class="text-end">{{ format_number_conv(s_cap_gad, 2, true) }}</th>
                                     <td></td>
                                 </tr>
-                                <!--Capital Outlay NON-GAD-->
                                 <tr v-if="cap_non.length > 0">
                                     <td></td>
                                     <th colspan="2">NON-GAD </th>
@@ -342,31 +537,28 @@
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
                                     <td>{{ dat.account_code }}</td>
-                                    <td>{{ format_number_conv(dat.amount, 2, true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
                                 <tr v-if="cap_non.length > 0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2">SUB TOTAL (NON-GAD) </th>
-                                    <th>{{ format_number_conv(s_cap_non, 2, true) }}</th>
+                                    <th class="text-end">{{ format_number_conv(s_cap_non, 2, true) }}</th>
                                     <td></td>
                                 </tr>
-                                <!--TOTAL CAPITAL-->
                                 <tr v-if="cap_gad.length > 0 || cap_non.length > 0">
                                     <td></td>
                                     <th colspan="3">SUB TOTAL (Capital Outlay) </th>
-                                    <th>{{ getSum(s_cap_gad, s_cap_non) }}</th>
+                                    <th class="text-end">{{ getSum(s_cap_gad, s_cap_non) }}</th>
                                     <td></td>
                                 </tr>
-                                <!--Personnel Services-->
                                 <tr v-if="ps_gad.length > 0 || ps_non.length > 0">
                                     <th colspan="3">Personnel Services</th>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <!--Personnel Services GAD-->
                                 <tr v-if="ps_gad.length > 0">
                                     <td></td>
                                     <th colspan="2">GAD </th>
@@ -379,17 +571,16 @@
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
                                     <td>{{ dat.account_code }}</td>
-                                    <td>{{ format_number_conv(dat.amount, 2, true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
                                 <tr v-if="ps_gad.length > 0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2">SUB TOTAL (GAD) </th>
-                                    <th>{{ format_number_conv(s_ps_gad, 2, true) }}</th>
+                                    <th class="text-end">{{ format_number_conv(s_ps_gad, 2, true) }}</th>
                                     <td></td>
                                 </tr>
-                                <!--Personnel Services NON-GAD-->
                                 <tr v-if="ps_non.length > 0">
                                     <td></td>
                                     <th colspan="2">NON-GAD</th>
@@ -402,39 +593,36 @@
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
                                     <td>{{ dat.account_code }}</td>
-                                    <td>{{ format_number_conv(dat.amount, 2, true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
                                 <tr v-if="ps_non.length > 0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2">SUB TOTAL (NON-GAD) </th>
-                                    <th>{{ format_number_conv(s_ps_non, 2, true) }}</th>
+                                    <th class="text-end">{{ format_number_conv(s_ps_non, 2, true) }}</th>
                                     <td></td>
                                 </tr>
-                                <!--TOTAL PERSONNEL SERVICES-->
                                 <tr v-if="ps_gad.length > 0 || ps_non.length > 0">
                                     <td></td>
                                     <th colspan="3">SUB TOTAL (Personnel Services) </th>
-                                    <th>{{ getSum(s_ps_gad, s_ps_non) }}</th>
+                                    <th class="text-end">{{ getSum(s_ps_gad, s_ps_non) }}</th>
                                     <td></td>
                                 </tr>
-
-                                <!--GRAND TOTAL-->
                                 <tr>
                                     <th colspan="4">GRAND TOTAL</th>
-                                    <th>{{ getBudgetTotal() }}</th>
+                                    <th class="text-end">{{ getBudgetTotal() }}</th>
                                     <th></th>
                                 </tr>
                             </tbody>
-                        </table>
-                        <div v-else>
+                        </table> -->
+                        <!-- <div v-else>
                             <span style="color:red; font-weight: bold;">
                                 This Project has no budgetary requirements! <br>
                                 Click
                                 <Link :href="`/budget/${paps.id}`">here</Link> to edit budgetary requirements.
                             </span>
-                        </div>
+                        </div> -->
                         <br>
                     </div>
                     <!--IMPLEMENTING TEAM-->
@@ -641,18 +829,22 @@ export default {
         data: Object,
         imp_amount: Number,
 
-        mooe_gad: Object,
-        mooe_non: Object,
-        cap_gad: Object,
-        cap_non: Object,
-        ps_gad: Object,
-        ps_non: Object,
+        // mooe_gad: Object,
+        // mooe_non: Object,
+        // cap_gad: Object,
+        // cap_non: Object,
+        // ps_gad: Object,
+        // ps_non: Object,
         s_mooe_gad: Number,
         s_mooe_non: Number,
         s_cap_gad: Number,
         s_cap_non: Number,
         s_ps_gad: Number,
         s_ps_non: Number,
+
+        capitalOutlay: Object,
+        maintenanceOperating: Object,
+        personnelServices: Object,
     },
     computed: {},
     mounted() {
@@ -688,9 +880,15 @@ export default {
         },
         showBudgetTable() {
             var sb = false;
-            if (this.mooe_gad.length > 0 || this.mooe_non.length > 0 ||
-                this.cap_gad.length > 0 || this.cap_non.length > 0 ||
-                this.ps_gad.length > 0 || this.ps_non.length > 0
+            // if (this.mooe_gad.length > 0 || this.mooe_non.length > 0 ||
+            //     this.cap_gad.length > 0 || this.cap_non.length > 0 ||
+            //     this.ps_gad.length > 0 || this.ps_non.length > 0
+            // ) {
+            //     sb = true;
+            // }
+            if (this.maintenanceOperating.length > 0 ||
+                this.capitalOutlay.length > 0 ||
+                this.personnelServices.length > 0
             ) {
                 sb = true;
             }

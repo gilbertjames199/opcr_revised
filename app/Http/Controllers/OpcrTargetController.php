@@ -398,7 +398,9 @@ class OpcrTargetController extends Controller
             'opcr_stardard',
             'MFO',
             'divisionOutputs',
-            'success_indicator'
+            'success_indicator',
+            'opcrtarget.opcrList',
+            'opcrtarget.opcrList.opcrTargetBudget'
         ])
             // ->select(
             //     'major_final_outputs.mfo_desc',
@@ -468,11 +470,23 @@ class OpcrTargetController extends Controller
                 $quantity = "";
                 $opcr_id = "";
                 $office_performance_commitment_rating_list_id = "";
+                $allotted = "0.00";
+                $opcr_target_budget_id = "";
+                // dd($targ);
                 if ($targ) {
                     $target_success_indicator = $targ->target_success_indicator;
                     $quantity = $targ->quantity;
                     $opcr_id = $targ->id;
                     $office_performance_commitment_rating_list_id = $targ->office_performance_commitment_rating_list_id;
+                    // dd($targ);
+                    if ($targ->opcrList) {
+                        if (count($targ->opcrList->opcrTargetBudget) > 0) {
+                            $allotted = $targ->opcrList->opcrTargetBudget->where('idpaps', $item->id)->first();
+
+                            $opcr_target_budget_id = $allotted ? $allotted->id : "";
+                            // dd($allotted);
+                        }
+                    }
                 }
                 // if ($counter == 33) {
                 //     // dd($item->is_included);
@@ -494,7 +508,9 @@ class OpcrTargetController extends Controller
                     'opcr_target' => $targ,
                     'opcr_target_binary' => $targ ? ($targ->is_included ? true : false) : false,
                     'office_performance_commitment_rating_list_id' => $opcr_list_id,
-                    'division_outputs' => $item->divisionOutputs
+                    'division_outputs' => $item->divisionOutputs,
+                    'allotted' => $allotted,
+                    'opcr_target_budget_id' => $opcr_target_budget_id
                 ];
             });
         // dd($data);
@@ -796,13 +812,16 @@ class OpcrTargetController extends Controller
         $postfix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '') : '';
         $pgHead = $first_name . ' ' . ($middle_name ? substr($middle_name, 0, 1) . '. ' : '') . $last_name . $suffix_name . $postfix_name;
         // dd($opcr_sem);
+        // OpcrTargetBudget
         $opcr_target = OpcrTarget::with([
             'paps' => function ($query) {
                 $query->orderBy('id', 'asc')
                     ->orderBy('idmfo', 'asc');
             },
             'paps.MFO',
-            'paps.opcr_stardard'
+            'paps.opcr_stardard',
+            'opcrList',
+            'opcrList.opcrTargetBudget'
         ])
             ->where('office_performance_commitment_rating_list_id', $request->idopcr)
             ->where('is_included', '1')
@@ -860,10 +879,14 @@ class OpcrTargetController extends Controller
                 } else {
                     $period = "July to December, " . $year;
                 }
+                $matchingRow = $item->opcrList->opcrTargetBudget->where('idpaps', $item->idpaps)->first();
+
+                // dd($item);
+                // dd($item->opcrList->opcrTargetBudget);
                 return [
                     'mfo' => $mfo_desc,
                     'paps_desc' => $paps_desc,
-
+                    'budget_alloted' => $matchingRow ? $matchingRow->amount : "0.00",
                     //Success indicator
                     'performance_measure' => $success_indicator,
                     'prescribed_period' => $prescribed_period,

@@ -18,4 +18,13 @@ class StrategyProject extends Model
     {
         return $this->belongsTo(Strategy::class, 'strategy_id', 'id');
     }
+
+    public function expected_output()
+    {
+        return $this->hasMany(ExpectedRevisedOutput::class, 'strategy_id', 'strategy_id');
+    }
+    public function expected_outcome()
+    {
+        return $this->hasMany(ExpectedRevisedOutcome::class, 'strategy_id', 'strategy_id');
+    }
 }

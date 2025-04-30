@@ -31,13 +31,15 @@
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
-                    <table class="table table-sm table-bordered table-hover" style="border-color: #000; border-width: 2px;">
+                    <!-- style="border-color: #000; border-width: 2px;" -->
+                     <!-- table-sm  table-bordered -->
+                    <table class="table table-hover" >
                         <thead>
                             <tr class="bg-primary text-white">
                                 <th rowspan="2" style="width: 3%;"></th>
                                 <th rowspan="2" style="width: 10%;">Strategy</th>
                                 <th rowspan="2 text-center" style="width: 10%;">Performance Target/Indicator</th>
-                                <th rowspan="2" style="width: 10%;">Timeline</th>
+                                <th rowspan="2" style="width: 10%;" >Timeline</th>
                                 <th rowspan="2" style="width: 15%;">Expected Output/ Outcome</th>
                                 <th colspan="4" class="text-center" style="width: 20%;">Cost/Budget</th>
                                 <th rowspan="2" style="width: 12%;">GAD Issue</th>
@@ -62,24 +64,31 @@
                                             :checked="Array.isArray(strategy.strategyProject) && strategy.strategyProject.length > 0 && strategy.is_active==='1'"
                                             @change="toggleStrategy(strategy.id, $event.target.checked, index)"
                                         /><br><br>
-                                        <button class="btn btn-primary text-white" @click="setStrategyActivityVisibility(strategy.activity_visible, index)">
+                                        <!-- {{ strategy.activity }} -->
+                                        <!-- {{ strategy.activity.length }}
+                                        {{ strategy.activity_visible }}
+                                        {{ revision_plan.is_strategy_based }} -->
+                                        <!-- strategy.activity && strategy.activity.length > 0 && strategy.activity_visible && revision_plan.is_strategy_based -->
+                                        <!-- <button v-if="revision_plan.is_strategy_based==0" class="btn btn-primary text-white" @click="setStrategyActivityVisibility(strategy.activity_visible, index)">
                                             Activities
-                                        </button><br><br>
+                                        </button><br><br> -->
                                         <!-- <button class="dropdown-item" @click="setVisibility(strategy.finance_visible, index)">
                                             <span v-if="parseFloat(strategy.finance_visible)<1">Set Cost/Budget</span>
                                             <span v-else>Hide Cost/Budget</span>
+
+                                            @click="setVisibility(strategy.finance_visible, index)"
                                         </button> -->
                                     </td>
-                                    <th @click="setVisibility(strategy.finance_visible, index)" style="cursor: pointer;">{{ strategy.description }}
-
+                                    <th  @click="setStrategyActivityVisibility(strategy.activity_visible, index)" style="cursor: pointer;">
+                                        <Link>{{ strategy.description }}</Link>
                                     </th>
                                     <td><textarea class="form-control" type="text"
                                         v-model="strategy.target_indicator" @input="setUnsaved(true)"
                                         @change="updateStrategy(strategy)"
-                                        v-if="strategy.is_active==1"></textarea>
+                                        v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1"></textarea>
                                     </td>
                                     <td>
-                                        <tr v-if="strategy.is_active==1">
+                                        <tr v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1" style="">
                                             <td><b>Date from:</b></td>
                                             <td>
                                                 <input class="form-control"
@@ -90,7 +99,7 @@
                                                     />
                                             </td>
                                         </tr>
-                                        <tr v-if="strategy.is_active==1">
+                                        <tr v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1">
                                             <td><b>Date to:</b></td>
                                             <td>
                                                 <input class="form-control"
@@ -103,25 +112,40 @@
                                             </td>
                                         </tr>
                                     </td>
-                                    <td></td>
-                                    <td>
-                                        <span v-if="strategy.is_active==1">{{ format_number_conv(strategy.ps_total,2,true) }} </span>
+                                    <td v-if="strategy.strategyProject[0] && revision_plan.is_strategy_based==1" >
+                                        <tr v-for="outcome in strategy.strategyProject[0].expected_output">
+                                            <div>{{ outcome.description }}<hr></div>
+                                        </tr>
+                                        <tr v-for="outcome in strategy.strategyProject[0].expected_outcome">
+                                            <div>{{ outcome.description }}<hr></div>
+                                        </tr>
                                     </td>
-                                    <td>
-                                        <span v-if="strategy.is_active==1">{{ format_number_conv(strategy.mooe_total,2,true) }}</span>
+                                    <td v-else>
+                                        <tr v-for="outcome in strategy.expected_output && revision_plan.is_strategy_based==1">
+                                            <div>{{ outcome.description }}<hr></div>
+                                        </tr>
+                                        <tr v-for="outcome in strategy.expected_outcome && revision_plan.is_strategy_based==1">
+                                            <div>{{ outcome.description }}<hr></div>
+                                        </tr>
                                     </td>
-                                    <td>
-                                        <span v-if="strategy.is_active==1">{{ format_number_conv(strategy.co_total,2,true) }}</span>
+                                    <td @click="setVisibility(strategy.finance_visible, index)" style="cursor: pointer;">
+                                        <span v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1">{{ format_number_conv(strategy.ps_total,2,true) }} </span>
                                     </td>
-                                    <td>
-                                        <span v-if="strategy.is_active==1">{{ format_number_conv(strategy.ps_total + strategy.mooe_total + strategy.co_total,2,true) }}</span>
+                                    <td @click="setVisibility(strategy.finance_visible, index)" style="cursor: pointer;">
+                                        <span v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1">{{ format_number_conv(strategy.mooe_total,2,true) }}</span>
+                                    </td>
+                                    <td @click="setVisibility(strategy.finance_visible, index)" style="cursor: pointer;">
+                                        <span v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1">{{ format_number_conv(strategy.co_total,2,true) }}</span>
+                                    </td>
+                                    <td @click="setVisibility(strategy.finance_visible, index)" style="cursor: pointer;">
+                                        <span v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1">{{ format_number_conv(strategy.ps_total + strategy.mooe_total + strategy.co_total,2,true) }}</span>
                                     </td>
                                     <td><textarea class="form-control"
                                         type="text"
                                         v-model="strategy.gad_issue"
                                         @input="setUnsaved(true)"
                                         @change="updateStrategy(strategy)"
-                                        v-if="strategy.is_active==1">
+                                        v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1">
                                         </textarea>
                                     </td>
                                     <td><textarea class="form-control"
@@ -129,14 +153,14 @@
                                         v-model="strategy.ccet_code"
                                         @input="setUnsaved(true)"
                                         @change="updateStrategy(strategy)"
-                                        v-if="strategy.is_active==1"></textarea>
+                                        v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1"></textarea>
                                     </td>
                                     <td><textarea class="form-control"
                                         type="text"
                                         v-model="strategy.responsible"
                                         @input="setUnsaved(true)"
                                         @change="updateStrategy(strategy)"
-                                        v-if="strategy.is_active==1"></textarea>
+                                        v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1"></textarea>
                                     </td>
                                     <td>
                                         <div class="dropdown dropstart">
@@ -149,18 +173,26 @@
                                                 </svg>
                                             </button>
                                             <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                                <li>
+                                                <li v-if="revision_plan.is_strategy_based==1">
                                                     <button class="dropdown-item" @click="setVisibility(strategy.finance_visible, index)">
                                                         <span v-if="parseFloat(strategy.finance_visible)<1">Set Cost/Budget</span>
                                                         <span v-else>Hide Cost/Budget</span>
                                                     </button>
                                                 </li>
-                                                <li>
-                                                    <Link class="dropdown-item" :href="`/expected-outcomes-revised/${strategy.strategy_id}/strategy`">
-                                                        Expected Outcome
+                                                <li v-if="revision_plan.is_strategy_based==1">
+                                                    <Link class="dropdown-item" :href="`/expected-outcomes-revised/${strategy.strategy_id}/strategy`"
+                                                    v-if="strategy.is_active==1">
+                                                        Expected Outcome id
+                                                    </Link>
+                                                    <!-- : {{strategy.id}} -->
+                                                </li>
+                                                <li v-if="revision_plan.is_strategy_based==1">
+                                                    <Link class="dropdown-item" :href="`/expected-outputs-revised/${strategy.strategy_id}/strategy`"
+                                                    v-if="strategy.is_active==1">
+                                                        Expected Outputs id
                                                     </Link>
                                                 </li>
-                                                <li>
+                                                <li v-if="revision_plan.is_strategy_based==0">
                                                     <button class="dropdown-item" @click="setStrategyActivityVisibility(strategy.activity_visible, index)">
                                                         <span v-if="parseFloat(strategy.activity_visible)<1">Activities</span>
                                                         <span v-else>Hide Activities</span>
@@ -173,7 +205,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <template v-if="strategy.finance_visible && strategy.is_active==1">
+                                <template v-if="strategy.finance_visible && strategy.is_active==1 && revision_plan.is_strategy_based==1">
                                     <tr >
                                         <td></td>
                                         <td colspan="13">
@@ -234,7 +266,7 @@
                                     </tr>
 
                                 </template>
-                                <template v-if="strategy.activity && strategy.activity.length > 0 && strategy.activity_visible">
+                                <template v-if="strategy.activity && strategy.activity.length > 0 && strategy.activity_visible && revision_plan.is_strategy_based==0">
                                     <!-- v-if="strategy.is_active === '1' || (strategy.is_active === '0' && show_inactive)" -->
                                     <tr >
                                         <td></td>
@@ -277,7 +309,7 @@
                                                         <td><textarea class="form-control" type="text"
                                                             v-model="activity.target_indicator" @input="setUnsaved(true)"
                                                             @change="updateActivity(activity, activity_index, index)"
-                                                            v-if="activity.is_active==1"></textarea>
+                                                            v-if="activity.is_active==1 "></textarea>
                                                         </td>
                                                         <td>
                                                             <tr v-if="activity.is_active==1">
@@ -305,14 +337,22 @@
                                                                 </td>
                                                             </tr>
                                                         </td>
-                                                        <td></td>
                                                         <td>
+                                                            <tr v-for="outcome in activity.activityProject[0].expected_output">
+                                                                <div>{{ outcome.description }}<hr></div>
+                                                            </tr>
+                                                            <tr v-for="outcome in activity.activityProject[0].expected_outcome">
+                                                                <div>{{ outcome.description }}<hr></div>
+                                                            </tr>
+                                                            <!-- {{ activity.activityProject[0].expected_output }} -->
+                                                        </td>
+                                                        <td @click="setActivityVisibility(activity.finance_visible,index, activity_index)">
                                                             <span v-if="activity.is_active==1">{{ format_number_conv(activity.ps_total,2,true) }} </span>
                                                         </td>
-                                                        <td>
+                                                        <td @click="setActivityVisibility(activity.finance_visible,index, activity_index)">
                                                             <span v-if="activity.is_active==1">{{ format_number_conv(activity.mooe_total,2,true) }}</span>
                                                         </td>
-                                                        <td>
+                                                        <td @click="setActivityVisibility(activity.finance_visible,index, activity_index)">
                                                             <span v-if="activity.is_active==1">{{ format_number_conv(activity.co_total,2,true) }}</span>
                                                         </td>
                                                         <td>
@@ -358,7 +398,18 @@
                                                                         </button>
                                                                     </li>
                                                                     <li>
-                                                                        <a class="dropdown-item" :href="`/activities/${activity.id}`">Activities</a>
+                                                                        <Link class="dropdown-item"
+                                                                        :href="`/expected-outputs-revised/${activity.activity_id}/activity`"
+                                                                        v-if="activity.is_active==1">
+                                                                            Expected Output {{activity.activity_id}}
+                                                                        </Link>
+                                                                    </li>
+                                                                    <li>
+                                                                        <Link class="dropdown-item"
+                                                                        :href="`/expected-outcomes-revised/${activity.activity_id}/activity`"
+                                                                        v-if="activity.is_active==1">
+                                                                            Expected Outcome {{activity.activity_id}}
+                                                                        </Link>
                                                                     </li>
                                                                 </ul>
                                                             </div>
@@ -548,6 +599,7 @@ export default {
             this.form.localData[index].finance_visible = !is_visible;
         },
         setStrategyActivityVisibility(activity_visible, index){
+            // alert("activity_visible: "+activity_visible + " index: "+index)
             var act=activity_visible;
             if(act<1){
                 act=1;
@@ -562,24 +614,26 @@ export default {
         },
         async toggleStrategy(strategyId, status, index) {
 
-            const payload = {
-                id: strategyId,
-                type: "add or remove",
-                idrevplan: this.revision_plan.id
-            };
-            try{
-                if (status) {
-                    this.form.localData[index].is_active='1';
-                    await this.createStrategy(payload);
-                    this.refreshData();
-                } else {
-                    this.form.localData[index].is_active='0';
-                    await this.deleteStrategy(payload);
-                    this.refreshData();
+                const payload = {
+                    id: strategyId,
+                    type: "add or remove",
+                    idrevplan: this.revision_plan.id
+                };
+                try{
+                    if (status) {
+                        this.form.localData[index].is_active='1';
+                        await this.createStrategy(payload);
+                        this.refreshData();
+                    } else {
+                        this.form.localData[index].is_active='0';
+                        await this.deleteStrategy(payload);
+                        this.refreshData();
+                    }
+                }catch(error){
+                    console.log(error)
                 }
-            }catch(error){
 
-            }
+
 
         },
         async updateStrategy(strategy){
@@ -783,10 +837,10 @@ table, th, td {
 }
 
 /* Adjust cell height based on content */
-td {
-    padding: 5px;
-    vertical-align: top;
-}
+/* td { */
+    /* padding: 0px;
+    vertical-align: top; */
+/* } */
 </style>
 
 

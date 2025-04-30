@@ -9,13 +9,12 @@ class UserEmployees extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='user_employees';
-    protected $guarded=['id'];
+    protected $table = 'user_employees';
+    protected $guarded = ['id'];
 
 
-    public function Division(){
-        return $this -> hasOne(Division::class, 'division_code', 'division_code');
+    public function Division()
+    {
+        return $this->hasOne(OfficeDivision::class, 'division_code', 'division_code');
     }
 }
-
-

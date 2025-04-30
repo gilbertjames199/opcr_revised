@@ -40,6 +40,12 @@ class BudgetRequirementController extends Controller
         } else {
             $total = $this->getActivityTotal($idrev);
         }
+        $imp_mooe = $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4');
+        $imp_ps =  $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4');
+        $imp_co = $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+        $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+            $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+            $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
         // dd($total);
         // $end = microtime(true);
         // $difference = $end - $start;
@@ -134,6 +140,9 @@ class BudgetRequirementController extends Controller
             "s_ps_gad" => $s_ps_gad,
             "s_ps_non" => $s_ps_non,
             "implementation_plan" => $total,
+            "imp_mooe" => $imp_mooe,
+            "imp_ps" => $imp_ps,
+            "imp_co" => $imp_co,
             "filters" => $request->only(['search']),
             "GAD_total" => $GAD_total,
             "BUD_total" => $BUD_total,
@@ -161,11 +170,12 @@ class BudgetRequirementController extends Controller
                 'co_q3',
                 'co_q4'
             )
+            ->where('is_active', '1')
             ->get();
 
-        $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
-            $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
-            $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+        // $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+        //     $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+        //     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
         return $total;
     }
     public function getActivityTotal($idrev)
@@ -185,11 +195,12 @@ class BudgetRequirementController extends Controller
                 'co_q3',
                 'co_q4'
             )
+            ->where('is_active', '1')
             ->get();
 
-        $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
-            $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
-            $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+        // $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+        //     $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+        //     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
         return $total;
     }
     public function create(Request $request, $idrev)

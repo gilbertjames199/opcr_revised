@@ -1,7 +1,7 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Edit Target Budget</h3>
+            <h3>Edit Target Budget </h3>
             <!-- {{ pageTitle }} -->
             <!-- <Link :href="`/appropriations/${pap1.id}`">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
@@ -26,11 +26,11 @@
                 <input type="text" class="form-control" v-model="mfo_text" readonly/>
                 <input type="hidden" v-model="form.idmfo" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.idmfo">{{ form.errors.idmfo }}</div>
-                <label>PAPS </label>
+                <label>PAPS {{ form.idpaps }} </label>
                 <select class="form-control" v-model="form.idpaps" @change="setMFOandSuccessIndicator">
                     <option></option>
                     <option v-for="paps in paps_selected" :value="paps.id">
-                        {{ paps.paps_desc }}
+                        {{ paps.paps_desc }} - {{ paps.id }}
                     </option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.idpaps">
@@ -49,16 +49,20 @@
                         track-by="label" @close="loadOOE">
                     </multiselect>
                 </div>
+
                 <div class="fs-6 c-red-500" v-if="form.errors.idprogram">
                     <span v-if="form.idprogram">A budget with the selected PAPS and program has already been saved. Select a different program!</span>
-                    <span v-else>PAPS is required</span>
+                    <span v-else>Program is required</span>
                 </div>
 
 
 
                 <div class="fs-6 c-red-500" v-if="form.errors.GAD">{{ form.errors.GAD }}</div>
                 <label>AMOUNT </label>
-                <input type="text" class="form-control" :value="computed_amount" readonly />
+                <!-- <input type="text" class="form-control" :value="computed_amount" readonly /> -->
+                 <!-- famaount: {{ form.amount }} -->
+                <input type="number" class="form-control" v-model="form.amount"  />
+                <input type="text" class="form-control" :value="computed_amount" hidden/>
                 <div class="fs-6 c-red-500" v-if="form.errors.amount">{{ form.errors.amount }}</div>
 
 
@@ -71,7 +75,11 @@
 
             </form>
         </div>
-
+         <!-- {{ editData }}
+        **********************
+        {{ form }}
+        ********************** -->
+        <!-- {{ paps_selected }} -->
     </div>
 </template>
 <script>
@@ -88,6 +96,7 @@ export default {
         programs: Object,
         ooes: Object,
         opcr_list_id: String,
+        editData: Object,
         // paps: Object,
         // pap1: Object,
         // editData: Object,
@@ -147,10 +156,10 @@ export default {
             if (this.form.FFUNCCOD) {
                 dataPrograms = dataPrograms.filter((program) => program.FFUNCCOD === this.form.FFUNCCOD);
             }
-
+            // + " "+program.recid + " "+program.raohsid
             return dataPrograms.map((program) => ({
                 value: program.recid,
-                label: program.FPROGRAM,
+                label: program.FPROGRAM ,
                 raaotype: program.ftype,
                 FFUNCCOD: program.FFUNCCOD,
                 raohsid: program.raohsid
@@ -198,26 +207,53 @@ export default {
                 this.bar = this.bari
             }
             this.pageTitle = "Edit"
+            this.form.idmfo = this.editData.idmfo
+            this.form.idpaps = Number(this.editData.idpaps)
+            this.ind = this.paps_selected.findIndex(paps => paps.id === this.form.idpaps);
+            console.log(this.ind)
+            console.log(this.form.idpaps);
+            if(this.paps_selected){
+                this.$nextTick(() => {
+                    if (this.form.idpaps) {
+                        console.log(this.paps_selected)
+                        console.log(this.form.idpaps)
+                        this.setMFOandSuccessIndicator();
+                    }
+                });
+            }
 
+            // this.$watch(
+            //     () => this.form.idpaps,
+            //     (newIdpaps) => {
+            //         if (newIdpaps) {
+            //             console.log("form.idpaps is set:", newIdpaps);
+            //             this.setMFOandSuccessIndicator();
+            //         }
+            //     },
+            //     { immediate: true, deep: true }
+            // );
+            this.form.amount = this.editData.amount
+            this.form.id =this.editData.id
             this.form.year = this.editData.year
             this.form.FFUNCCOD = this.editData.FFUNCCOD
             this.form.raaotype = this.editData.raaotype
             this.filterProgram();
             this.form.idprogram = this.editData.idprogram
+            this.form.opcr_list_id=this.editData.opcr_list_id
             //this.loadOOE();
-            this.form.idooe = this.editData.idooe
-            this.form.account_code = this.editData.account_code
-            this.form.past_year = this.editData.past_year
-            this.form.first_sem = this.editData.first_sem
-            this.form.second_sem = this.editData.second_sem
-            this.form.budget_year = this.editData.budget_year
-            this.form.idpaps = this.editData.idpaps
-            this.form.category = this.editData.category
-            this.form.GAD = this.editData.GAD
-            this.form.CCET = this.editData.CCET
-            this.form.id = this.editData.id
-            this.form.object_of_expenditure = this.editData.object_of_expenditure
-            this.searchByAccountCodeForEditMounted();
+            // this.form.idooe = this.editData.idooe
+            // this.form.account_code = this.editData.account_code
+            // this.form.past_year = this.editData.past_year
+            // this.form.first_sem = this.editData.first_sem
+            // this.form.second_sem = this.editData.second_sem
+            // this.form.budget_year = this.editData.budget_year
+            // this.form.idpaps = this.editData.idpaps
+            // this.form.category = this.editData.category
+            // this.form.GAD = this.editData.GAD
+            // this.form.CCET = this.editData.CCET
+            // this.form.id = this.editData.id
+            // this.form.object_of_expenditure = this.editData.object_of_expenditure
+            // this.searchByAccountCodeForEditMounted();
         } else {
             this.pageTitle = "Create "
             // this.form.idpaps = this.pap1.id
@@ -230,7 +266,8 @@ export default {
     methods: {
         submit() {
             if (this.editData !== undefined) {
-                    this.form.patch("/appropriations/", this.form);
+                // alert(this.form.id);
+                this.form.patch("/opcrbudgeting/update/"+this.form.id, this.form);
             } else {
                 // alert("Sample");
                 var url = "/opcrbudgeting/store"
@@ -356,7 +393,6 @@ export default {
                     this.success_indicator_text=this.paps_selected[this.ind].success_indicator.success_indicator;
                     this.form.idsuccessindicator=this.paps_selected[this.ind].success_indicator.id;
                 }
-                //this.success_indicator_text=this.
             }else{
                 this.mfo_text="";
                 this.form.idmfo="";
@@ -366,7 +402,8 @@ export default {
             if(this.ind_opcr>-1){
                 this.form.idtarget = this.opcr_targets[this.ind_opcr].id;
             }
-
+            console.log("index: rtert "+this.ind)
+            console.log("idmfo: dsadasd "+this.form.idmfo)
         },
         calculateTotalAnnual() {
             return this.dt_ooes.reduce((total, item) => {

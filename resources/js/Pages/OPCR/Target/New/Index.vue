@@ -75,7 +75,11 @@
                                 <td>{{ dat.mfo_desc }}</td>
                                 <td v-if="index === 0 || dat.paps_desc !== data[index - 1].paps_desc"
                                     :rowspan="getRowspanPaps(dat.paps_desc, index)" style="vertical-align:middle">
-                                    {{ dat.paps_desc }}
+                                    <!-- {{ dat.paps_desc }}
+                                    {{ dat.allotted }} -->
+                                     <!-- {{ dat.allotted }} -->
+                                    <Link :href="`/opcrbudgeting/edit/${dat.opcr_target_budget_id}`" v-if="dat.allotted!='0.00' && dat.allotted!=undefined">{{ dat.paps_desc }}</Link>
+                                    <span v-else>{{ dat.paps_desc }}</span>
                                 </td>
                                 <td>
                                     <!-- {{ dat.division_outputs }} -->

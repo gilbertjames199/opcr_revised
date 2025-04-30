@@ -17,4 +17,12 @@ class ActivityProject extends Model
     {
         return $this->belongsTo(Activity::class, 'activity_id', 'id');
     }
+    public function expected_output()
+    {
+        return $this->hasMany(ExpectedRevisedOutput::class, 'activity_project_id', 'id');
+    }
+    public function expected_outcome()
+    {
+        return $this->hasMany(ExpectedRevisedOutcome::class, 'activity_project_id', 'id');
+    }
 }

@@ -87,17 +87,37 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 export default {
     props: {
-        data: Object
+        data: Object,
+        filters: Object,
     },
     data() {
         return{
-
+            search: this.$props.filters.search,
         }
     },
     components: {
         Pagination, Filtering,
     },
-
+    watch: {
+        search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/ImplementingTeam",
+                {
+                    search: value,
+                    // EmploymentStatus: this.EmploymentStatus,
+                    // office: this.office_selected,
+                    // division: this.division_selected,
+                    // active_status: this.active_status,
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+            // this.filterData();
+        }, 300),
+    },
     methods:{
 
         showCreate(){
