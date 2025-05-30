@@ -203,7 +203,9 @@
                             </tr>
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">HGDG Checklist</th>
-                                <td colspan="3">GAD {{ paps.checklist.box_number }} {{ paps.checklist.sector }}
+                                <td colspan="3" :class="{
+                                    'text-danger': has_comment('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)
+                                }">GAD {{ paps.checklist.box_number }} {{ paps.checklist.sector }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)">*
                                     </button>
@@ -214,7 +216,9 @@
                                 <th class="bg-secondary text-white" colspan="1">
                                     <Link :href="`/HGDGScore/${paps.id}`" style="color:white">HGDG Score </Link>
                                 </th>
-                                <td colspan="2">{{ paps.hgdg_score }}
+                                <td colspan="2" :class="{
+                                    'text-danger': has_comment('Title','HGDG Score',paps.hgdg_score,'hgdg_score','revision_plans', paps, paps.comments)
+                                }">{{ paps.hgdg_score }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','HGDG Score',paps.hgdg_score,'hgdg_score','revision_plans', paps, paps.comments)">*
                                     </button>
