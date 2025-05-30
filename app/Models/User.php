@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles;
 
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -18,7 +19,7 @@ use Illuminate\Auth\Events\Registered;
 //, MustVerifyEmail
 class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia, HasRoles;
 
     protected $connection = "mysql2";
     protected $table = "systemusers";
@@ -62,11 +63,25 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['password'] = bcrypt($value);
     }
     //,'user_id','permission_id'
-    public function permissions()
+    // public function permissions()
+    // {
+    //     return $this->belongsToMany(Permission::class, 'permission_user')->withPivot('permission_id');
+    // }
+    // public function roles()
+    // {
+    //     return $this->belongsToMany(Role::class, 'roles')->withPivot('role_id');
+    // }
+    public function roles()
     {
-        return $this->belongsToMany(Permission::class, 'permission_user')->withPivot('permission_id');
+        return $this->belongsToMany(Role::class, 'model_has_roles', 'model_id', 'role_id')
+            ->where('model_type', self::class);
     }
 
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'model_has_permissions', 'model_id', 'permission_id')
+            ->where('model_type', self::class);
+    }
     //for email verification
     public function verifyUserEmail($value)
     {

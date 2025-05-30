@@ -16,13 +16,14 @@ use App\Models\User;
 class Permission extends Model
 {
     use HasFactory;
-
+    protected $connection = "mysql";
+    protected $table = "permissions";
     protected $fillable = [
         'permissions',
     ];
     //,'permission_id','user_id'
-    public function users(){
-        return $this->belongsToMany(User::class,'permission_user')->withPivot('permission_id');
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'permission_user')->withPivot('permission_id');
     }
-
 }

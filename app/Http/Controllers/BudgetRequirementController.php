@@ -40,96 +40,87 @@ class BudgetRequirementController extends Controller
         } else {
             $total = $this->getActivityTotal($idrev);
         }
+        // dd($total);
         $imp_mooe = $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4');
         $imp_ps =  $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4');
         $imp_co = $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
-        $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
-            $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
-            $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
-        // dd($total);
-        // $end = microtime(true);
-        // $difference = $end - $start;
-        // dd($difference);
-        // dd($idrev);
+        $imp_fe = $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+
+        $total = $imp_mooe + $imp_ps + $imp_co + $imp_fe;
+
+        // ALL BUDGET REQUIREMENT
+        $all_budget_requirements = $this->model
+            ->where('revision_plan_id', '=', $idrev)
+            ->whereIn('category', ['Maintenance, Operating, and Other Expenses', 'Capital Outlay', 'Personnel Services', 'Financial Expenses'])
+            ->whereIn('category_gad', ['GAD', 'NON-GAD'])
+            ->orderBy('category', 'desc')
+            ->orderBy('particulars')
+            ->get();
 
         //MOOE
-        $mooe_gad = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Maintenance, Operating, and Other Expenses')
-            ->where('category_gad', 'GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $mooe_non = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Maintenance, Operating, and Other Expenses')
-            ->where('category_gad', 'NON-GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $s_mooe_gad = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Maintenance, Operating, and Other Expenses')
-            ->where('category_gad', 'GAD')
-            ->sum('amount');
-        $s_mooe_non = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Maintenance, Operating, and Other Expenses')
-            ->where('category_gad', 'NON-GAD')
-            ->sum('amount');
-        //Capital Outlay
-        $cap_gad = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Capital Outlay')
-            ->where('category_gad', 'GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $cap_non = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Capital Outlay')
-            ->where('category_gad', 'NON-GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $s_cap_gad = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Capital Outlay')
-            ->where('category_gad', 'GAD')
-            ->sum('amount');
-        $s_cap_non = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Capital Outlay')
-            ->where('category_gad', 'NON-GAD')
-            ->sum('amount');
-        //Personnel Services
-        $ps_gad = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Personnel Services')
-            ->where('category_gad', 'GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $ps_non = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Personnel Services')
-            ->where('category_gad', 'NON-GAD')
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
-        $s_ps_gad = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Personnel Services')
-            ->where('category_gad', 'GAD')
-            ->sum('amount');
-        $s_ps_non = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category', 'Personnel Services')
-            ->where('category_gad', 'NON-GAD')
-            ->sum('amount');
-        //TOTAL GAD Amount
-        $GAD_total = $this->model->where('revision_plan_id', '=', $idrev)
-            ->where('category_gad', 'GAD')
-            ->sum('amount');
+        $mooe_gad = $all_budget_requirements->filter(function ($item) {
+            return $item->category === 'Maintenance, Operating, and Other Expenses' && $item->category_gad === 'GAD';
+        });
 
-        $BUD_total = $this->model->where('revision_plan_id', '=', $idrev)
+        $mooe_non = $all_budget_requirements->filter(function ($item) {
+            return $item->category === 'Maintenance, Operating, and Other Expenses' && $item->category_gad === 'NON-GAD';
+        });
+
+        //FINANCIAL EXPENSES
+        $fe_gad = $all_budget_requirements->filter(function ($item) {
+            return $item->category === 'Financial Expenses' && $item->category_gad === 'GAD';
+        });
+
+        $fe_non = $all_budget_requirements->filter(function ($item) {
+            return $item->category === 'Financial Expenses' && $item->category_gad === 'NON-GAD';
+        });
+
+        //Capital Outlay
+        $cap_gad = $all_budget_requirements->filter(function ($item) {
+            return $item->category === 'Capital Outlay' && $item->category_gad === 'GAD';
+        });
+
+        $cap_non = $all_budget_requirements->filter(function ($item) {
+            return $item->category === 'Capital Outlay' && $item->category_gad === 'NON-GAD';
+        });
+
+
+        //Personnel Services
+        $ps_gad = $all_budget_requirements->filter(function ($item) {
+            return $item->category === 'Personnel Services' && $item->category_gad === 'GAD';
+        });
+
+        $ps_non = $all_budget_requirements->filter(function ($item) {
+            return $item->category === 'Personnel Services' && $item->category_gad === 'NON-GAD';
+        });
+
+        //TOTAL GAD Amount
+        $GAD_total = $all_budget_requirements
+            ->filter(fn($item) => $item->category_gad === 'GAD')
             ->sum('amount');
-        //dd($GAD_total);
+        $BUD_total = $all_budget_requirements->sum('amount');
+
+        // SUM
+        $s_mooe_gad = $mooe_gad->sum('amount');
+        $s_mooe_non = $mooe_non->sum('amount');
+
+        $s_cap_gad = $cap_gad->sum('amount');
+        $s_cap_non = $cap_non->sum('amount');
+
+        $s_ps_gad = $ps_gad->sum('amount');
+        $s_ps_non = $ps_non->sum('amount');
+
+        $s_fe_gad = $fe_gad->sum('amount');
+        $s_fe_non = $fe_non->sum('amount');
         return inertia('BudgetRequirement/Index', [
-            "mooe_gad" => $mooe_gad,
-            "mooe_non" => $mooe_non,
-            "cap_gad" => $cap_gad,
-            "cap_non" => $cap_non,
-            "ps_gad" => $ps_gad,
-            "ps_non" => $ps_non,
+            "mooe_gad" => $mooe_gad->values()->all(),
+            "mooe_non" => $mooe_non->values()->all(),
+            "cap_gad" => $cap_gad->values()->all(),
+            "cap_non" => $cap_non->values()->all(),
+            "ps_gad" => $ps_gad->values()->all(),
+            "ps_non" => $ps_non->values()->all(),
+            "fe_gad" => $fe_gad->values()->all(),
+            "fe_non" => $fe_non->values()->all(),
             "idrev" => $idrev,
             "revs" => $revs,
 
@@ -139,10 +130,13 @@ class BudgetRequirementController extends Controller
             "s_cap_non" => $s_cap_non,
             "s_ps_gad" => $s_ps_gad,
             "s_ps_non" => $s_ps_non,
+            "s_fe_gad" => $s_fe_gad,
+            "s_fe_non" => $s_fe_non,
             "implementation_plan" => $total,
             "imp_mooe" => $imp_mooe,
             "imp_ps" => $imp_ps,
             "imp_co" => $imp_co,
+            "imp_fe" => $imp_fe,
             "filters" => $request->only(['search']),
             "GAD_total" => $GAD_total,
             "BUD_total" => $BUD_total,
@@ -168,7 +162,11 @@ class BudgetRequirementController extends Controller
                 'co_q1',
                 'co_q2',
                 'co_q3',
-                'co_q4'
+                'co_q4',
+                'fe_q1',
+                'fe_q2',
+                'fe_q3',
+                'fe_q4'
             )
             ->where('is_active', '1')
             ->get();
@@ -193,7 +191,11 @@ class BudgetRequirementController extends Controller
                 'co_q1',
                 'co_q2',
                 'co_q3',
-                'co_q4'
+                'co_q4',
+                'fe_q1',
+                'fe_q2',
+                'fe_q3',
+                'fe_q4'
             )
             ->where('is_active', '1')
             ->get();

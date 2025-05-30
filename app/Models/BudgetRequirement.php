@@ -9,7 +9,7 @@ class BudgetRequirement extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='budget_requirements';
+    protected $table = 'budget_requirements';
     protected $fillable = [
         'particulars',
         'account_code',
@@ -18,4 +18,10 @@ class BudgetRequirement extends Model
         'category_gad',
         'source'
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');
+        // ->where('table_name', 'revision_plans');
+    }
 }

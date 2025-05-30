@@ -429,7 +429,8 @@ class PAPController extends Controller
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
         $result = clone ($data);
         $mfos = MajorFinalOutput::where('id', '>', '45')->get();
-        if (auth()->user()->recid !== 545) {
+        // dd(auth()->user());
+        if (auth()->user()->department_code !== '04') {
             $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
             $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
         }

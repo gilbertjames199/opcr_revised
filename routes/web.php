@@ -90,6 +90,7 @@ use App\Http\Controllers\IPCRController;
 use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
+use App\Http\Controllers\RevisionPlanCommentController;
 use App\Http\Controllers\SentenceParserController;
 use App\Http\Controllers\StrategyProjectController;
 use App\Http\Controllers\TimeRangeController;
@@ -113,6 +114,11 @@ use Carbon\Carbon;
 
 Auth::routes(['verify' => true]);
 
+Route::middleware(['auth', 'can:manage users'])->group(function () {
+    Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
+    Route::post('/admin/users/{user}/roles', [UserController::class, 'updateRoles']);
+    Route::post('/admin/users/{user}/permissions', [UserController::class, 'updatePermissions']);
+});
 Route::middleware('auth')->group(function () {
     Route::prefix('/')->group(function () {
         Route::get('/', [DashBoardController::class, 'index']);
@@ -412,6 +418,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/general/administration/services/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas']);
         Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
+    });
+    //Revision Plan Comments
+    Route::prefix('/revision-plan-comments')->group(function () {
+        Route::get('/', [RevisionPlanCommentController::class, 'comments']);
+        Route::post('/store', [RevisionPlanCommentController::class, 'storeComment']);
+        Route::post('/action/done', [RevisionPlanCommentController::class, 'actionComment']);
+        Route::get('/{id}/edit', [RevisionPlanCommentController::class, 'editComment']);
+        Route::patch('/{id}', [RevisionPlanCommentController::class, 'updateComment']);
+        Route::delete('/{id}', [RevisionPlanCommentController::class, 'destroyComment']);
     });
     //Strategies and Activities
     Route::prefix('/strategies-and-activities')->group(function () {

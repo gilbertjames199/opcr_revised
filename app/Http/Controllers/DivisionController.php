@@ -21,7 +21,7 @@ class DivisionController extends Controller
     {
         // dd($papsID);
         $PAPS = ProgramAndProject::where('id', $papsID)->first();
-
+        // dd($PAPS);
         $data = $this->model
             ->where('idpaps', $papsID)
             ->orderBy('created_at', 'desc')
