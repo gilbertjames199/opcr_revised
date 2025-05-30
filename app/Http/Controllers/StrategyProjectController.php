@@ -250,6 +250,11 @@ class StrategyProjectController extends Controller
                     $co_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q2 > 0 ? $activity->activityProject[0]->co_q2 : 0) : 0;
                     $co_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q3 > 0 ? $activity->activityProject[0]->co_q3 : 0) : 0;
                     $co_q4 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q4 > 0 ? $activity->activityProject[0]->co_q4 : 0) : 0;
+                    $fe_q1 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q1 > 0 ? $activity->activityProject[0]->fe_q1 : 0) : 0;
+                    $fe_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q2 > 0 ? $activity->activityProject[0]->fe_q2 : 0) : 0;
+                    $fe_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q3 > 0 ? $activity->activityProject[0]->fe_q3 : 0) : 0;
+                    $fe_q4 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q4 > 0 ? $activity->activityProject[0]->fe_q4 : 0) : 0;
+                    $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
                     $ps_total = floatval($ps_q1) + floatval($ps_q2) + floatval($ps_q3) + floatval($ps_q4);
                     $mooe_total = floatval($mooe_q1) + floatval($mooe_q2) + floatval($mooe_q3) + floatval($mooe_q4);
                     $co_total = floatval($co_q1) + floatval($co_q2) + floatval($co_q3) + floatval($co_q4);
@@ -275,6 +280,11 @@ class StrategyProjectController extends Controller
                         "co_q3" => $co_q3,
                         "co_q4" => $co_q4,
                         "co_total" => $co_total,
+                        "fe_q1" => $fe_q1,
+                        "fe_q2" => $fe_q2,
+                        "fe_q3" => $fe_q3,
+                        "fe_q4" => $fe_q4,
+                        "fe_total" => $fe_total,
                         "gad_issue" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->gad_issue : null,
                         "ccet_code" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->ccet_code : null,
                         "responsible" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->responsible : null,
@@ -298,9 +308,14 @@ class StrategyProjectController extends Controller
                 $co_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q2 > 0 ? $item->strategyProject[0]->co_q2 : 0) : 0;
                 $co_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q3 > 0 ? $item->strategyProject[0]->co_q3 : 0) : 0;
                 $co_q4 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q4 > 0 ? $item->strategyProject[0]->co_q4 : 0) : 0;
+                $fe_01 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_01 > 0 ? $item->strategyProject[0]->fe_01 : 0) : 0;
+                $fe_02 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_02 > 0 ? $item->strategyProject[0]->fe_02 : 0) : 0;
+                $fe_03 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_03 > 0 ? $item->strategyProject[0]->fe_03 : 0) : 0;
+                $fe_04 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_04 > 0 ? $item->strategyProject[0]->fe_04 : 0) : 0;
                 $ps_total = floatval($ps_q1) + floatval($ps_q2) + floatval($ps_q3) + floatval($ps_q4);
                 $mooe_total = floatval($mooe_q1) + floatval($mooe_q2) + floatval($mooe_q3) + floatval($mooe_q4);
                 $co_total = floatval($co_q1) + floatval($co_q2) + floatval($co_q3) + floatval($co_q4);
+                $fe_total = floatval($fe_01) + floatval($fe_02) + floatval($fe_03) + floatval($fe_04);
                 // dd($item->strategyProject[0]);
                 // dd($item);
 
@@ -335,6 +350,11 @@ class StrategyProjectController extends Controller
                     "co_q3" => $co_q3,
                     "co_q4" => $co_q4,
                     "co_total" => $co_total,
+                    "fe_01" => $fe_01,
+                    "fe_02" => $fe_02,
+                    "fe_03" => $fe_03,
+                    "fe_04" => $fe_04,
+                    "fe_total" => $fe_total,
                     "gad_issue" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->gad_issue : null,
                     "ccet_code" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->ccet_code : null,
                     "responsible" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->responsible : null,

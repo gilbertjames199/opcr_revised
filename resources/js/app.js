@@ -39,8 +39,16 @@ import VueSelect from 'vue-select';
 // import VTooltip from 'v-tooltip';
 
 //VUE Quill Editor
+import Quill from 'quill'; // Import core Quill
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import QuillBetterTable from 'quill-better-table';
+import 'quill-better-table/dist/quill-better-table.css';
+
+Quill.register({
+    'modules/better-table': QuillBetterTable,
+}, true);
+window.Quill = Quill
 
 //Vue Multiselect 3
 import Multiselect from '@vueform/multiselect';
@@ -444,6 +452,11 @@ createInertiaApp({
                     getPlainTextWithoutTags(htmlString) {
                         // Use a regular expression to remove HTML tags
                         return htmlString.replace(/<[^>]+>/g, '');
+                    },
+                    formatDate(isoDate) {
+                        const date = new Date(isoDate);
+                        const options = { year: 'numeric', month: 'long', day: '2-digit' };
+                        return date.toLocaleDateString('en-US', options);
                     }
                 }
             })

@@ -5,7 +5,7 @@
 
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h4>{{ paps.paps_desc }}</h4>
+            <h4 v-if="paps">{{ paps.paps_desc }}</h4>
 
         </div>
         <div class="peers fxw-nw jc-sb ai-c">

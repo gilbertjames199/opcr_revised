@@ -25,4 +25,9 @@ class ActivityProject extends Model
     {
         return $this->hasMany(ExpectedRevisedOutcome::class, 'activity_project_id', 'id');
     }
+    public function comments()
+    {
+        return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');
+        // ->where('table_name', 'revision_plans');
+    }
 }

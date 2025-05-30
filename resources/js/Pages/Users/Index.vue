@@ -1,9 +1,7 @@
 <template>
-
     <Head>
         <title>Users</title>
     </Head>
-
     <div class="row gap-10 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Users</h3>
@@ -12,7 +10,6 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <!--v-if="can.canInsertUsers" -->
                     <Link class="btn btn-primary btn-sm" href="/users/create">Add User</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
@@ -41,7 +38,6 @@
                             <td>{{ user.FullName }}</td>
                             <td>{{ user.UserName }}</td>
                             <td>{{ user.UserType }}</td>
-                            <!--<td>{{ user.id }}</td>-->
                             <td style="text-align: right">
                                 <div class="dropdown dropstart">
                                     <button class="btn btn-secondary btn-sm action-btn" type="button"
@@ -56,11 +52,6 @@
                                         <li>
                                             <Link class="dropdown-item" :href="`/users/${user.id}/edit`">Edit</Link>
                                         </li>
-                                        <!--<li>v-if="verifyPermissions(user.can.canEditUsers, user.can.canUpdateUserPermissions, user.can.canDeleteUsers)"<Link class="dropdown-item" :href="`/users/${user.id}/edit`">Permissions</Link></li>-->
-                                        <!--
-                                    <li v-if="user.can.canUpdateUserPermissions"><button class="dropdown-item" @click="showModal(user.id, user.name)">Permissions</button></li>
-                                    <li v-if="user.can.canDeleteUsers"><hr class="dropdown-divider action-divider"></li>
-                                    <li v-if="user.can.canDeleteUsers"><Link class="text-danger dropdown-item" @click="deleteUser(user.id)">Delete</Link></li> -->
                                     </ul>
                                 </div>
                             </td>
@@ -69,30 +60,12 @@
                 </table>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <!-- read the explanation in the Paginate.vue component -->
-                        <!-- <pagination :links="users.links" /> -->
                         <pagination :next="users.next_page_url" :prev="users.prev_page_url" />
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <PermissionsModal v-if="displayModal" @close-modal-event="hideModal" >
-            permission array
-            My Value {{ form.my_id }}
-                <span style="font-weight: bold">Name: </span>{{ this.my_name }}
-                <input  v-model="form.my_id" type="hidden" >
-                <multiselect v-model="form.value"
-                            :options="permission_particular"
-                            mode="tags"
-                            :searchable="true"
-                />
-                <br>
-                <button type="button" class="btn btn-primary" style="font-weight: bold; color: white" @click="submitChanges()">SAVE</button>&nbsp;
-                <button type="button" class="btn btn-danger" style="font-weight: bold; color: white" @click="hideModal()">CANCEL</button>
-            <form @submit.prevent="submit()">
 
-            </form>
-        </PermissionsModal> -->
     </div>
 </template>
 
@@ -106,11 +79,9 @@ export default {
     props: {
         users: Object,
         filters: Object,
-        // can: Object,
-        // permissions_all: Object,
     },
     mounted() {
-        // this.getPermissionAll();
+
     },
     data() {
         return {
@@ -154,7 +125,6 @@ export default {
         getPermissionAll() {
             this.permission_particular = [];
             this.permissions_all.forEach(i => {
-                //alert(i.permission);
                 this.permission_particular.push({
                     'id': i.id,
                     'value': i.id,
@@ -163,11 +133,10 @@ export default {
             });
         },
         getPermInd() {
-            //
+
         },
         fetchingUserPermissions(u_id) {
             this.form.my_id = u_id;
-            //alert(u_id);
             axios.post("/users/user-permissions", { id: u_id }).then((response) => {
                 this.form.value = response.data;
             });

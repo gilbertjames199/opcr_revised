@@ -27,4 +27,9 @@ class StrategyProject extends Model
     {
         return $this->hasMany(ExpectedRevisedOutcome::class, 'strategy_id', 'strategy_id');
     }
+    public function comments()
+    {
+        return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');
+        // ->where('table_name', 'revision_plans');
+    }
 }

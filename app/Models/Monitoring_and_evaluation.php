@@ -9,7 +9,7 @@ class Monitoring_and_evaluation extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='monitoring_and_evaluations';
+    protected $table = 'monitoring_and_evaluations';
     protected $fillable = [
         'evaluation_mechanism_tool',
         'opr',
@@ -17,4 +17,10 @@ class Monitoring_and_evaluation extends Model
         'gad',
         'revision_plan_id'
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');
+        // ->where('table_name', 'revision_plans');
+    }
 }

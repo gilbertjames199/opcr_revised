@@ -38,6 +38,8 @@
         "filepond-plugin-image-preview": "^4.6.11",
         "filepond-plugin-image-transform": "^3.8.7",
         "jquery": "^3.6.0",
+        "quill": "^2.0.3",
+        "quill-better-table": "^1.2.10",
         "vue": "^3.2.33",
         "vue-chartjs": "^4.0.7",
         "vue-filepond": "^7.0.2",

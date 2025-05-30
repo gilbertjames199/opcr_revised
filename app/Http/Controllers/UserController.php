@@ -26,7 +26,7 @@ class UserController extends Controller
     {
         // dd(auth()->user()->department_code);
         if (auth()->user()->department_code == '04') {
-            $users = $this->model
+            $users = $this->model->with(['permissions'])
                 ->when($request->search, function ($query, $searchItem) {
                     $query->where('UserName', 'like', '%' . $searchItem . '%')
                         ->orWhere('FullName', 'like', '%' . $searchItem . '%');
@@ -180,7 +180,12 @@ class UserController extends Controller
 
         $permissions = DB::table('permissions')->get();
         $data = $this->model->where('id', $id)->first([
-            'name', 'id', 'email', 'level', 'municipality', 'barangay'
+            'name',
+            'id',
+            'email',
+            'level',
+            'municipality',
+            'barangay'
         ]);
 
         return inertia('Users/Create', [

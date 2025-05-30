@@ -49,7 +49,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.date_end">{{ form.errors.date_end }}</div>
                 <hr style="background-color: black !important; border:1px; height: 1px;">
 
-                <input type="checkbox" v-model="form.is_strategy_based" :true-value="1"
+                <!-- <input type="checkbox" v-model="form.is_strategy_based" :true-value="1"
                     :false-value="0"/>&nbsp;
                 <label>GROUP BY STRATEGY </label>
                 <div class="fs-6 c-red-500"
@@ -58,7 +58,7 @@
                 >
                     {{ form.errors.is_strategy_based }}
                 </div>
-                <br>
+                <br> -->
 
                 INTENDED BENEFICIARIES<br>
                 <div class="peers">
@@ -144,7 +144,8 @@
                 <label for="">RISK MANAGEMENT</label>
                 <!-- <textarea v-model="form.risk_management" style="height:100px;" class="form-control"
                     autocomplete="chrome-off"></textarea> -->
-                <QuillEditor theme="snow" v-model:content="form.risk_management" contentType="html" toolbar="essential" />
+                <QuillEditor theme="snow" v-model:content="form.risk_management" contentType="html" toolbar="essential"
+                />
                 <div class="fs-6 c-red-500" v-if="form.errors.risk_management">{{ form.errors.risk_management }}</div>
 
                 <label for="">Checklist/Box Number</label>
@@ -168,6 +169,8 @@
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
 import Places from "@/Shared/PlacesShared";
+import QuillEditorC from '@/Shared/QuillEditorShared'
+
 //import BootstrapModalNoJquery from './BootstrapModalNoJquery.vue';
 
 export default {
@@ -184,7 +187,8 @@ export default {
             setTimeout(() => {
                 resolve(Places)
             }, 2000)
-        })
+        }),
+        QuillEditorC
 
     },
     data() {
@@ -266,7 +270,7 @@ export default {
 
         } else {
             this.pageTitle = "Create"
-            this.form.is_strategy_based=1
+            this.form.is_strategy_based=0
             //this.form.idpaps=this.idpaps
             if (this.duplicate !== undefined) {
                 this.form.idpaps = this.duplicate[0].idpaps

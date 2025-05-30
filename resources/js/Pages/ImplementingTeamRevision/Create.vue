@@ -19,16 +19,30 @@
                 <input type="hidden" required>
                 <input type="hidden" v-model="form.revision_plan_id" class="form-control" autocomplete="chrome-off">
                 <label for="">ASSIGN PERSON</label>
-                <select type="text" v-model="form.implementing_team_id" class="form-control" autocomplete="positionchrome-off">
+                <multiselect :options="employees_computed" :searchable="true" v-model="form.implementing_team_id" label="label"
+                    track-by="label">
+                </multiselect>
+                <!-- <select type="text" v-model="form.implementing_team_id" class="form-control" autocomplete="positionchrome-off">
                     <option v-for="person in people" :value="person.id">
                         {{ person.name }}
                     </option>
-                </select>
+                </select> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
 
                 <label for="">ROLE IN THE PROJECT</label>
                 <input type="text" v-model="form.role" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.role">{{ form.errors.role }}</div>
+
+                <label for="">COMPETENCY</label>
+                <input type="text" v-model="form.competency" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.competency">{{ form.errors.competency }}</div>
+
+                <!-- <label for="">With GAD training</label> -->
+                <input type="checkbox"
+                v-model="form.with_gad_training"
+                :true-value="1"
+                :false-value="0">&nbsp;With GAD training<br>
+                <div class="fs-6 c-red-500" v-if="form.errors.with_gad_training">{{ form.errors.with_gad_training }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
@@ -44,6 +58,8 @@
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
+import { ModelSelect } from 'vue-search-select';
+
 import Places from "@/Shared/PlacesShared";
     //import BootstrapModalNoJquery from './BootstrapModalNoJquery.vue';
 
@@ -57,7 +73,7 @@ export default {
         },
         components: {
           //BootstrapModalNoJquery,
-
+          ModelSelect,
           Places: () => new Promise((resolve) => {
             setTimeout(() => {
                 resolve(Places)
@@ -69,13 +85,25 @@ export default {
             return {
                 submitted: false,
                 form: useForm({
+                    competency: "",
                     revision_plan_id: this.rev_id,
                     implementing_team_id: "",
                     role: "",
+                    with_gad_training: "0",
                     id: null
                 }),
                 pageTitle: ""
             };
+        },
+        computed: {
+            employees_computed() {
+                let emps = this.people;
+                return emps.map((emp) => ({
+                    value: emp.empl_id,
+                    label: emp.empl_id+' - '+emp.employee_name ,
+
+                }));
+            },
         },
 
         mounted() {
@@ -88,6 +116,9 @@ export default {
                 this.form.implementing_team_id=this.editData.implementing_team_id
                 this.form.role=this.editData.role
                 this.form.id=this.editData.id
+                this.form.with_gad_training = this.editData.with_gad_training
+                this.form.empl_id=this.editData.empl_id
+                this.form.competency =this.editData.competency
             } else {
                 this.pageTitle = "Create"
             }

@@ -73,7 +73,15 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.type">{{ form.errors.type }}</div>
 
 
-
+                <label for="">Sector</label>
+                <select class="form-control form-select" v-model="form.sector">
+                    <option>Economic Services</option>
+                    <option>General Public Services</option>
+                    <option>Health Services</option>
+                    <option>Local Disaster Risk Reduction and Management Fund (LDRRMF)</option>
+                    <option>20% Development Fund</option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.type">{{ form.errors.type }}</div>
                 <label for="">Chief Executive Agenda</label>
                 <select class="form-control form-select" v-model="form.chief_executive_agenda">
                     <option value=""></option>

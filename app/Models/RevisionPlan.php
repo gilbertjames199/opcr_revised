@@ -9,11 +9,17 @@ class RevisionPlan extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='revision_plans';
-    protected $guarded=[];
+    protected $table = 'revision_plans';
+    protected $guarded = [];
 
-    public function checklist(){
-        return $this -> hasOne(HGDG_Checklist::class, 'id', 'checklist_id');
+    public function checklist()
+    {
+        return $this->hasOne(HGDG_Checklist::class, 'id', 'checklist_id');
+    }
+    public function comments()
+    {
+        return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');
+        // ->where('table_name', 'revision_plans');
     }
     // protected $fillable = [
     //     'id',

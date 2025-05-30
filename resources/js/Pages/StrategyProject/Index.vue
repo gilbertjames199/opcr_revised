@@ -41,7 +41,7 @@
                                 <th rowspan="2 text-center" style="width: 10%;">Performance Target/Indicator</th>
                                 <th rowspan="2" style="width: 10%;" >Timeline</th>
                                 <th rowspan="2" style="width: 15%;">Expected Output/ Outcome</th>
-                                <th colspan="4" class="text-center" style="width: 20%;">Cost/Budget</th>
+                                <th colspan="5" class="text-center" style="width: 20%;">Cost/Budget</th>
                                 <th rowspan="2" style="width: 12%;">GAD Issue</th>
                                 <th rowspan="2" style="width: 8%;">CCET</th>
                                 <th rowspan="2" style="width: 10%;">Office Responsible</th>
@@ -50,6 +50,7 @@
                             <tr class="bg-primary text-white">
                                 <th style="width: 5%;">PS</th>
                                 <th style="width: 5%;">MOOE</th>
+                                <th style="width: 5%;">FE</th>
                                 <th style="width: 5%;">Capital Outlay</th>
                                 <th style="width: 5%;">Total</th>
                             </tr>
@@ -138,6 +139,9 @@
                                         <span v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1">{{ format_number_conv(strategy.co_total,2,true) }}</span>
                                     </td>
                                     <td @click="setVisibility(strategy.finance_visible, index)" style="cursor: pointer;">
+                                        <span v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1">{{ format_number_conv(strategy.fe_total,2,true) }}</span>
+                                    </td>
+                                    <td @click="setVisibility(strategy.finance_visible, index)" style="cursor: pointer;">
                                         <span v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1">{{ format_number_conv(strategy.ps_total + strategy.mooe_total + strategy.co_total,2,true) }}</span>
                                     </td>
                                     <td><textarea class="form-control"
@@ -217,6 +221,7 @@
                                                             <th>Quarter/Period&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                                             <th colspan="1">Personnel Services</th>
                                                             <th colspan="1">MOOE&nbsp;</th>
+                                                            <th colspan="1">Financial Expenses</th>
                                                             <th colspan="1">Capital Outlay</th>
                                                         </tr>
                                                         <tr>
@@ -228,6 +233,10 @@
                                                                 @input="setUnsaved(true)"
                                                                 @change="calculateTotalStrategy(index, 'mooe')"
                                                                 class="form-control"/></td>
+                                                            <td><input v-model="strategy.fe_01"
+                                                                @input="setUnsaved(true)"
+                                                                @change="calculateTotalStrategy(index, 'fe')"
+                                                                class="form-control"/></td>
                                                             <td><input v-model="strategy.co_q1"
                                                                 @input="setUnsaved(true)"
                                                                 @change="calculateTotalStrategy(index, 'co')"
@@ -237,24 +246,28 @@
                                                             <th>Q2:&nbsp;&nbsp;</th>
                                                             <td><input v-model="strategy.ps_q2" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'ps')" class="form-control"/></td>
                                                             <td><input v-model="strategy.mooe_q2" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'mooe')" class="form-control"/></td>
+                                                            <td><input v-model="strategy.fe_02" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'fe')" class="form-control"/></td>
                                                             <td><input v-model="strategy.co_q2" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'co')" class="form-control"/></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Q3:&nbsp;&nbsp;</th>
                                                             <td><input v-model="strategy.ps_q3" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'ps')" class="form-control"/></td>
                                                             <td><input v-model="strategy.mooe_q3" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'mooe')" class="form-control"/></td>
+                                                            <td><input v-model="strategy.fe_03" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'fe')" class="form-control"/></td>
                                                             <td><input v-model="strategy.co_q3" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'co')" class="form-control"/></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Q4:&nbsp;&nbsp;</th>
                                                             <td><input v-model="strategy.ps_q4" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'ps')" class="form-control"/></td>
                                                             <td><input v-model="strategy.mooe_q4" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'mooe')" class="form-control"/></td>
+                                                            <td><input v-model="strategy.fe_04" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'fe')" class="form-control"/></td>
                                                             <td><input v-model="strategy.co_q4" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'co')" class="form-control"/></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Total:&nbsp;&nbsp;</th>
                                                             <td>{{ strategy.ps_total }}</td>
                                                             <td>{{ strategy.mooe_total }}</td>
+                                                            <td>{{ strategy.fe_total }}</td>
                                                             <td>{{ strategy.co_total }}</td>
                                                         </tr>
                                                     </table>
@@ -270,7 +283,7 @@
                                     <!-- v-if="strategy.is_active === '1' || (strategy.is_active === '0' && show_inactive)" -->
                                     <tr >
                                         <td></td>
-                                        <td colspan="12">
+                                        <td colspan="13">
                                             <table class="table table-sm table-borderless table-striped table-hover" style="border-color: #000; border-width: 2px;">
                                                 <thead>
                                                     <tr class="bg-secondary text-white">
@@ -279,7 +292,7 @@
                                                         <th rowspan="2 text-center" style="width: 10%;">Performance Target/Indicator</th>
                                                         <th rowspan="2" style="width: 10%;">Timeline</th>
                                                         <th rowspan="2" style="width: 15%;">Expected Output/ Outcome</th>
-                                                        <th colspan="4" class="text-center" style="width: 20%;">Cost/Budget</th>
+                                                        <th colspan="5" class="text-center" style="width: 20%;">Cost/Budget</th>
                                                         <th rowspan="2" style="width: 12%;">GAD Issue</th>
                                                         <th rowspan="2" style="width: 8%;">CCET</th>
                                                         <th rowspan="2" style="width: 10%;">Office Responsible</th>
@@ -288,6 +301,7 @@
                                                     <tr class="bg-secondary text-white">
                                                         <th style="width: 5%;">PS</th>
                                                         <th style="width: 5%;">MOOE</th>
+                                                        <th style="width: 5%;">FE</th>
                                                         <th style="width: 5%;">Capital Outlay</th>
                                                         <th style="width: 5%;">Total</th>
                                                     </tr>
@@ -353,10 +367,13 @@
                                                             <span v-if="activity.is_active==1">{{ format_number_conv(activity.mooe_total,2,true) }}</span>
                                                         </td>
                                                         <td @click="setActivityVisibility(activity.finance_visible,index, activity_index)">
+                                                            <span v-if="activity.is_active==1">{{ format_number_conv(activity.fe_total,2,true) }}</span>
+                                                        </td>
+                                                        <td @click="setActivityVisibility(activity.finance_visible,index, activity_index)">
                                                             <span v-if="activity.is_active==1">{{ format_number_conv(activity.co_total,2,true) }}</span>
                                                         </td>
                                                         <td>
-                                                            <span v-if="activity.is_active==1">{{ format_number_conv(activity.ps_total + activity.mooe_total + activity.co_total,2,true) }}</span>
+                                                            <span v-if="activity.is_active==1">{{ format_number_conv(activity.ps_total + activity.mooe_total + activity.fe_total + activity.co_total,2,true) }}</span>
                                                         </td>
                                                         <td><textarea class="form-control"
                                                             type="text"
@@ -420,7 +437,7 @@
                                                     <template v-if="activity.finance_visible && activity.is_active==1">
                                                         <tr >
                                                             <td></td>
-                                                            <td colspan="13">
+                                                            <td colspan="14">
                                                                 &nbsp;&nbsp;&nbsp;
                                                                 <div class="peers">
                                                                     <div>
@@ -429,6 +446,7 @@
                                                                                 <th>Quarter/Period&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                                                                 <th colspan="1">Personnel Services</th>
                                                                                 <th colspan="1">MOOE&nbsp;</th>
+                                                                                <th colspan="1">FE&nbsp;</th>
                                                                                 <th colspan="1">Capital Outlay</th>
                                                                             </tr>
                                                                             <tr>
@@ -439,6 +457,10 @@
                                                                                 <td><input v-model="activity.mooe_q1"
                                                                                     @input="setUnsaved(true)"
                                                                                     @change="calculateTotalActivity(activity, index, activity_index, 'mooe')"
+                                                                                    class="form-control"/></td>
+                                                                                <td><input v-model="activity.fe_q1"
+                                                                                    @input="setUnsaved(true)"
+                                                                                    @change="calculateTotalActivity(activity, index, activity_index, 'fe')"
                                                                                     class="form-control"/></td>
                                                                                 <td><input v-model="activity.co_q1"
                                                                                     @input="setUnsaved(true)"
@@ -454,6 +476,10 @@
                                                                                 <td><input v-model="activity.mooe_q2"
                                                                                     @input="setUnsaved(true)"
                                                                                     @change="calculateTotalActivity(activity, index, activity_index, 'mooe')"
+                                                                                    class="form-control"/></td>
+                                                                                <td><input v-model="activity.fe_q2"
+                                                                                    @input="setUnsaved(true)"
+                                                                                    @change="calculateTotalActivity(activity, index, activity_index, 'fe')"
                                                                                     class="form-control"/></td>
                                                                                 <td><input v-model="activity.co_q2"
                                                                                     @input="setUnsaved(true)"
@@ -472,6 +498,10 @@
                                                                                     @change="calculateTotalActivity(activity, index, activity_index, 'mooe')"
                                                                                     class="form-control"/>
                                                                                 </td>
+                                                                                <td><input v-model="activity.fe_q3"
+                                                                                    @input="setUnsaved(true)"
+                                                                                    @change="calculateTotalActivity(activity, index, activity_index, 'fe')"
+                                                                                    class="form-control"/></td>
                                                                                 <td><input v-model="activity.co_q3"
                                                                                     @input="setUnsaved(true)"
                                                                                     @change="calculateTotalActivity(activity, index, activity_index, 'co')"
@@ -490,11 +520,22 @@
                                                                                     @change="calculateTotalActivity(activity, index, activity_index, 'mooe')"
                                                                                     class="form-control"/>
                                                                                 </td>
+                                                                                <td><input v-model="activity.fe_q4"
+                                                                                    @input="setUnsaved(true)"
+                                                                                    @change="calculateTotalActivity(activity, index, activity_index, 'fe')"
+                                                                                    class="form-control"/></td>
                                                                                 <td><input v-model="activity.co_q4"
                                                                                     @input="setUnsaved(true)"
                                                                                     @change="calculateTotalActivity(activity, index, activity_index, 'co')"
                                                                                     class="form-control"/>
                                                                                 </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th>Total:&nbsp;&nbsp;</th>
+                                                                                <td style="font-weight: bold">{{ format_number_conv(activity.ps_total,2,true) }}</td>
+                                                                                <td style="font-weight: bold">{{ format_number_conv(activity.mooe_total,2,true) }}</td>
+                                                                                <td style="font-weight: bold">{{ format_number_conv(activity.fe_total,2,true) }}</td>
+                                                                                <td style="font-weight: bold">{{ format_number_conv(activity.co_total,2,true) }}</td>
                                                                             </tr>
                                                                             <!-- <tr>
                                                                                 <th>Total:&nbsp;&nbsp;</th>
@@ -658,6 +699,10 @@ export default {
                     co_q2: strategy.co_q2,
                     co_q3: strategy.co_q3,
                     co_q4: strategy.co_q4,
+                    fe_q1: strategy.fe_q1,
+                    fe_q2: strategy.fe_q2,
+                    fe_q3: strategy.fe_q3,
+                    fe_q4: strategy.fe_q4,
                     gad_issue: strategy.gad_issue,
                     ccet_code: strategy.ccet_code,
                     responsible: strategy.responsible,
@@ -700,6 +745,10 @@ export default {
                     co_q2: activity.co_q2,
                     co_q3: activity.co_q3,
                     co_q4: activity.co_q4,
+                    fe_q1: activity.fe_q1,
+                    fe_q2: activity.fe_q2,
+                    fe_q3: activity.fe_q3,
+                    fe_q4: activity.fe_q4,
                     gad_issue: activity.gad_issue,
                     ccet_code: activity.ccet_code,
                     responsible: activity.responsible,
