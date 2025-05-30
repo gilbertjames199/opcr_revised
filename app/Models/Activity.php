@@ -23,6 +23,6 @@ class Activity extends Model
 
     public function activityProject()
     {
-        return $this->hasMany(activityProject::class, 'activity_id', 'id');
+        return $this->hasMany(ActivityProject::class, 'activity_id', 'id');
     }
 }
