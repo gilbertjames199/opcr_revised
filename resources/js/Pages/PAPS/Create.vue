@@ -81,7 +81,7 @@
                     <option>Local Disaster Risk Reduction and Management Fund (LDRRMF)</option>
                     <option>20% Development Fund</option>
                 </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.type">{{ form.errors.type }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.sector">{{ form.errors.sector }}</div>
                 <label for="">Chief Executive Agenda</label>
                 <select class="form-control form-select" v-model="form.chief_executive_agenda">
                     <option value=""></option>
@@ -185,6 +185,7 @@ export default {
                 FFUNCCOD: "",
                 idmfo: "",
                 MOV: "",
+                sector: "",
                 chief_executive_agenda: "",
                 socio_economic_agenda: "",
                 sust_devt_goal: "",
