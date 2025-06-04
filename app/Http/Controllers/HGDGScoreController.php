@@ -20,13 +20,21 @@ class HGDGScoreController extends Controller
     }
     public function index(Request $request, $idrevplan)
     {
-        $count = $this->model->where('idrevplan', $idrevplan)->count();
+
         $revplan = RevisionPlan::find($idrevplan);
+        $checklist_id = $revplan->checklist_id;
+        // dd($revplan->checklist_id);
+        $count = $this->model->with('question')
+            ->where('idrevplan', $idrevplan)
+            ->whereHas('question', function ($query) use ($revplan, $checklist_id) {
+                $query->where('checklist_id', $checklist_id);
+            })
+            ->count();
         $uid = auth()->user()->recid;
 
         //dd($uid);
         //dd($revplan);
-        $checklist_id = $revplan->checklist_id;
+
         $hgdg_checklist = HGDG_Checklist::find($checklist_id);
         $hgdg_questions = $this->getResults($request, $checklist_id);
         $nr = [];
@@ -55,6 +63,7 @@ class HGDGScoreController extends Controller
         )
             ->join(DB::raw("hgdg_questions"), "hgdg_questions.id", "hgdg_score.question_id")
             ->where("hgdg_score.idrevplan", $idrevplan)
+            ->where("hgdg_questions.checklist_id", $checklist_id)
             ->get()
             ->map(function ($item) use ($idrevplan) {
                 $question = HGDGQuestion::where('id', $item->question_id)->first();
@@ -85,6 +94,7 @@ class HGDGScoreController extends Controller
             "idmfo" => $idmfo,
             "scope" => $scope,
             "FFUNCCOD" => $revplan->FFUNCCOD,
+            "revision_plan" => $revplan,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)

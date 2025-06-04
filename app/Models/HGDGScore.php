@@ -9,7 +9,7 @@ class HGDGScore extends Model
 {
     use HasFactory;
     protected $connection = "mysql";
-    protected $table='hgdg_score';
+    protected $table = 'hgdg_score';
     protected $fillable = [
         'idrevplan',
         'question_id',
@@ -18,4 +18,9 @@ class HGDGScore extends Model
         'result_comment',
         'FFUNCCOD',
     ];
+
+    public function question()
+    {
+        return $this->belongsTo(HGDGQuestion::class, 'question_id');
+    }
 }
