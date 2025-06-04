@@ -1000,7 +1000,11 @@ var _hoisted_89 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 var _hoisted_90 = ["onClick"];
 var _hoisted_91 = ["checked", "onChange"];
 var _hoisted_92 = ["onClick"];
-var _hoisted_93 = ["onUpdate:modelValue", "onChange"];
+
+var _hoisted_93 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
+/* HOISTED */
+);
+
 var _hoisted_94 = {
   key: 0
 };
@@ -1699,28 +1703,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(activity.description), 9
       /* TEXT, PROPS */
-      , _hoisted_92), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [activity.is_active == 1 ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("textarea", {
-        key: 0,
-        "class": "form-control",
-        type: "text",
-        "onUpdate:modelValue": function onUpdateModelValue($event) {
-          return activity.target_indicator = $event;
-        },
-        onInput: _cache[22] || (_cache[22] = function ($event) {
-          return $options.setUnsaved(true);
-        }),
-        onChange: function onChange($event) {
-          return $options.updateActivity(activity, activity_index, index);
-        }
-      }, null, 40
-      /* PROPS, HYDRATE_EVENTS */
-      , _hoisted_93)), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, activity.target_indicator]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [activity.is_active == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_94, [_hoisted_95, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      , _hoisted_92), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <textarea class=\"form-control\" type=\"text\"\n                                                            v-model=\"activity.target_indicator\" @input=\"setUnsaved(true)\"\n                                                            @change=\"updateActivity(activity, activity_index, index)\"\n                                                            v-if=\"activity.is_active==1 \"></textarea> "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(activity.activityProject[0].expected_output, function (outcome) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(outcome.target_indicator), 1
+        /* TEXT */
+        ), _hoisted_93])]);
+      }), 256
+      /* UNKEYED_FRAGMENT */
+      ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [activity.is_active == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_94, [_hoisted_95, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         "class": "form-control",
         type: "date",
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.date_from = $event;
         },
-        onInput: _cache[23] || (_cache[23] = function ($event) {
+        onInput: _cache[22] || (_cache[22] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1734,7 +1729,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.date_to = $event;
         },
-        onInput: _cache[24] || (_cache[24] = function ($event) {
+        onInput: _cache[23] || (_cache[23] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1795,7 +1790,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.gad_issue = $event;
         },
-        onInput: _cache[25] || (_cache[25] = function ($event) {
+        onInput: _cache[24] || (_cache[24] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1810,7 +1805,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.ccet_code = $event;
         },
-        onInput: _cache[26] || (_cache[26] = function ($event) {
+        onInput: _cache[25] || (_cache[25] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1825,7 +1820,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.responsible = $event;
         },
-        onInput: _cache[27] || (_cache[27] = function ($event) {
+        onInput: _cache[26] || (_cache[26] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1874,7 +1869,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.ps_q1 = $event;
         },
-        onInput: _cache[28] || (_cache[28] = function ($event) {
+        onInput: _cache[27] || (_cache[27] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1887,7 +1882,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.mooe_q1 = $event;
         },
-        onInput: _cache[29] || (_cache[29] = function ($event) {
+        onInput: _cache[28] || (_cache[28] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1900,7 +1895,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.fe_q1 = $event;
         },
-        onInput: _cache[30] || (_cache[30] = function ($event) {
+        onInput: _cache[29] || (_cache[29] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1913,7 +1908,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.co_q1 = $event;
         },
-        onInput: _cache[31] || (_cache[31] = function ($event) {
+        onInput: _cache[30] || (_cache[30] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1926,7 +1921,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.ps_q2 = $event;
         },
-        onInput: _cache[32] || (_cache[32] = function ($event) {
+        onInput: _cache[31] || (_cache[31] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1939,7 +1934,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.mooe_q2 = $event;
         },
-        onInput: _cache[33] || (_cache[33] = function ($event) {
+        onInput: _cache[32] || (_cache[32] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1952,7 +1947,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.fe_q2 = $event;
         },
-        onInput: _cache[34] || (_cache[34] = function ($event) {
+        onInput: _cache[33] || (_cache[33] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1965,7 +1960,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.co_q2 = $event;
         },
-        onInput: _cache[35] || (_cache[35] = function ($event) {
+        onInput: _cache[34] || (_cache[34] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1978,7 +1973,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.ps_q3 = $event;
         },
-        onInput: _cache[36] || (_cache[36] = function ($event) {
+        onInput: _cache[35] || (_cache[35] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -1991,7 +1986,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.mooe_q3 = $event;
         },
-        onInput: _cache[37] || (_cache[37] = function ($event) {
+        onInput: _cache[36] || (_cache[36] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -2004,7 +1999,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.fe_q3 = $event;
         },
-        onInput: _cache[38] || (_cache[38] = function ($event) {
+        onInput: _cache[37] || (_cache[37] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -2017,7 +2012,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.co_q3 = $event;
         },
-        onInput: _cache[39] || (_cache[39] = function ($event) {
+        onInput: _cache[38] || (_cache[38] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -2030,7 +2025,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.ps_q4 = $event;
         },
-        onInput: _cache[40] || (_cache[40] = function ($event) {
+        onInput: _cache[39] || (_cache[39] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -2043,7 +2038,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.mooe_q4 = $event;
         },
-        onInput: _cache[41] || (_cache[41] = function ($event) {
+        onInput: _cache[40] || (_cache[40] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -2056,7 +2051,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.fe_q4 = $event;
         },
-        onInput: _cache[42] || (_cache[42] = function ($event) {
+        onInput: _cache[41] || (_cache[41] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {
@@ -2069,7 +2064,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return activity.co_q4 = $event;
         },
-        onInput: _cache[43] || (_cache[43] = function ($event) {
+        onInput: _cache[42] || (_cache[42] = function ($event) {
           return $options.setUnsaved(true);
         }),
         onChange: function onChange($event) {

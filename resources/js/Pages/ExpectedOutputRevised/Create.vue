@@ -45,6 +45,11 @@
                 <input type="number" v-model="form.physical_q4" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.physical_q4">{{ form.errors.physical_q4 }}</div>
                 <input type="hidden" v-model="form.physical_q4" class="form-control" autocomplete="chrome-off">
+
+                <label for="">TARGET INDICATOR</label>
+                <input type="text" v-model="form.target_indicator" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.target_indicator">{{ form.errors.target_indicator }}</div>
+                <input type="hidden" v-model="form.target_indicator" class="form-control" autocomplete="chrome-off">
                 <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">
                     Save changes
                 </button>

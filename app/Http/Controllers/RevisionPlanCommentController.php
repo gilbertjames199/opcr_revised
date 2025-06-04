@@ -69,4 +69,26 @@ class RevisionPlanCommentController extends Controller
         $rev->comment_status = $stat;
         $rev->save();
     }
+    public function updateComment(Request $request, $id)
+    {
+        // dd($request->params['reply']);
+        // dd($id);
+        $request->validate([
+            'params.reply' => 'required',
+        ]);
+        $comment = RevisionPlanComment::find($id);
+        // dd(auth()->user()->UserName);
+
+        // dd($comment);
+        if ($comment) {
+            $uname = trim(auth()->user()->FullName);
+            $reply = $comment->reply;
+            $concat = $reply . ' <b>' . $uname . '</b> replied: <i>' . $request->params['reply'] . '</i><br><br>';
+            $comment->reply = $concat;
+            $comment->save();
+            return back()->with('success', 'Comment updated successfully.');
+        } else {
+            return back()->withErrors(['error' => 'Comment not found.']);
+        }
+    }
 }

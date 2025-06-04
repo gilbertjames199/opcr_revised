@@ -96,12 +96,19 @@ class ExpectedRevisedOutcomeController extends Controller
     }
     public function store(Request $request)
     {
-        $type = $request->type;
+        // if()
+        // dd($request);
+        // dd('/expected-outcomes-revised/' . $request->strategy_project_id . "/" . $request->type);
+        // $type = $request->type;
         $request->validate([
             'description' => 'required',
             'is_strategy_outcome' => 'required'
-
         ]);
+        $id = $request->strategy_project_id;
+        if ($request->is_strategy_outcome == 0) {
+            $id = $request->activity_id;
+        }
+        // dd($id);
         $expected_outcome = new ExpectedRevisedOutcome();
         $expected_outcome->description = $request->description;
         $expected_outcome->strategy_id = $request->strategy_id;
@@ -110,7 +117,7 @@ class ExpectedRevisedOutcomeController extends Controller
         $expected_outcome->activity_project_id = $request->activity_project_id;
         $expected_outcome->is_strategy_outcome = $request->is_strategy_outcome;
         $expected_outcome->save();
-        return redirect('/expected-outcomes-revised/' . $request->strategy_project_id . "/" . $request->type);
+        return redirect('/expected-outcomes-revised/' . $id . "/" . $request->type);
         // if ($type == 'activity') {
         //     $this->storeActivityOutcome($request);
         //     // $data = $compound_data->expected_outcomes;

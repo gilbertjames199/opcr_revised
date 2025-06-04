@@ -46,8 +46,8 @@
                                 <tr>
                                     <td><b>{{ question.question_number }}</b></td>
                                     <td><b>{{ question.question }}</b></td>
-                                    <td><b>{{ question.score }}</b></td>
-                                    <td><b>{{ question.score*2 }}</b></td>
+                                    <td><b>{{ format_number_conv(question.score,2,true) }}</b></td>
+                                    <td><b>{{ format_number_conv(question.score*2,2,true) }}</b></td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -74,8 +74,8 @@
                                     <tr>
                                         <td>&nbsp;&nbsp;&nbsp;{{ subQuestion.question_number }}</td>
                                         <td>{{ subQuestion.question }}</td>
-                                        <td><b>{{ subQuestion.score }}</b></td>
-                                        <td><b>{{ subQuestion.score*2 }}</b></td>
+                                        <td><b>{{ format_number_conv(subQuestion.score,2,true) }}</b></td>
+                                        <td><b>{{ format_number_conv(subQuestion.score*2,2,true) }}</b></td>
                                         <div class="dropdown dropstart" >
                                             <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -103,8 +103,8 @@
                                             <tr>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ subSubQuestion.question_number }}</td>
                                                 <td>{{ subSubQuestion.question }}</td>
-                                                <td><b>{{ subSubQuestion.score }}</b></td>
-                                                <td><b>{{ subSubQuestion.score*2 }}</b></td>
+                                                <td><b>{{ format_number_conv(subSubQuestion.score,2,true) }}</b></td>
+                                                <td><b>{{ format_number_conv(subSubQuestion.score*2,2,true) }}</b></td>
                                                 <div class="dropdown dropstart" >
                                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -132,8 +132,8 @@
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ subSubSubQuestion.question_number }}</td>
                                                         <td>{{ subSubSubQuestion.question }}</td>
-                                                        <td><b>{{ subSubSubQuestion.score }}</b></td>
-                                                        <td><b>{{ subSubSubQuestion.score*2 }}</b></td>
+                                                        <td><b>{{ format_number_conv(subSubSubQuestion.score,2,true) }}</b></td>
+                                                        <td><b>{{ format_number_conv(subSubSubQuestion.score*2,2,true) }}</b></td>
                                                         <div class="dropdown dropstart" >
                                                             <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -161,8 +161,8 @@
                                                             <tr>
                                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ subSubSubQuestion.question_number }}</td>
                                                                 <td>{{ subSubSubSubQuestion.question }}</td>
-                                                                <td><b>{{ subSubSubSubQuestion.score }}</b></td>
-                                                                <td><b>{{ subSubSubSubQuestion.score*2 }}</b></td>
+                                                                <td><b>{{ format_number_conv(subSubSubSubQuestion.score,2,true) }}</b></td>
+                                                                <td><b>{{ format_number_conv(subSubSubSubQuestion.score*2,2,true) }}</b></td>
                                                                 <div class="dropdown dropstart" >
                                                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -201,13 +201,14 @@
                                 <tr>
                                     <td>Total</td>
                                     <td></td>
-                                    <td>{{ sum }}</td>
-                                    <td>{{ sum*2 }}</td>
+                                    <td>{{ format_number_conv(sum,2,true) }}</td>
+                                    <td>{{ format_number_conv(sum*2,2,true) }}</td>
                                     <td></td>
                                 </tr>
                             </template>
                         </tbody>
-                    </table>{{  sum }}
+                    </table>
+                    {{  format_number_conv(sum,2,true) }}
                 </div>
                 <!--{{ auth }}-->
                 <div class="row justify-content-center">

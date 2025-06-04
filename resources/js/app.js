@@ -234,6 +234,66 @@ createInertiaApp({
                         },
                         getFirstFourChars(str) {
                             return str.slice(0, 4);
+                        },
+                        sectors: {
+                            "General Public Services Sector": [
+                                "",
+                                "Executive Services",
+                                "Legislative Services",
+                                "Planning and Development Coordination Services",
+                                "Budgeting Services",
+                                "Treasury Services",
+                                "Accounting Services",
+                                "Administrative Services",
+                                "Civil Registry Services",
+                                "General Services",
+                                "Assessment of Real Property Services",
+                                "Auditing Services | Information Services",
+                                "Legal Services | Prosecution Services",
+                                "Administration of Justice Services",
+                                "Land Registration Services",
+                                "Claim Registration Services",
+                                "Police Services",
+                                "Fire Protection Services",
+                                "Repair and Maintenance of Government Facilities"
+                            ],
+                            "Social Services Sector": [
+                                "",
+                                "Education and Manpower Development",
+                                "Public Education Services",
+                                "Medical Subsidiary Services",
+                                "Manpower Development Services",
+                                "Sports Center, Athletic Field, and Playground Maintenance Service cultural",
+                                "Project Services",
+                                "Cultural/Conference/Convention Center",
+                                "Operation Services",
+                                "Health",
+                                "Health Services Field Projects (Immunization, Inoculation, Blood Donor Services)",
+                                "Day Care Clinic",
+                                "Hospital Services",
+                                "Chest Clinic",
+                                "Housing and Community Development",
+                                "Housing Projects",
+                                "Sanitary Services",
+                                "Street Cleaning",
+                                "Garbage Collection",
+                                "Sewerage and Drainage",
+                                "Street Lighting",
+                                "Community Development Services"
+                            ],
+                            "Economic Services": [
+                                "",
+                                "Agricultural Services",
+                                "Veterinary Services",
+                                "Natural Resources Services",
+                                "Architectural Services",
+                                "Engineering Services",
+                                "Economic Enterprises and Public Operation Services",
+                                "Tourism Services"
+                            ],
+                            "Other Services": [
+                                // "Other Services"
+                            ]
                         }
                     }
                 },
@@ -457,7 +517,8 @@ createInertiaApp({
                         const date = new Date(isoDate);
                         const options = { year: 'numeric', month: 'long', day: '2-digit' };
                         return date.toLocaleDateString('en-US', options);
-                    }
+                    },
+
                 }
             })
             .mount(el)
