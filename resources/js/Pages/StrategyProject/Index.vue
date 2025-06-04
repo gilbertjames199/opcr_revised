@@ -320,10 +320,14 @@
                                                             <!-- {{ activity }} -->
                                                         </td>
                                                         <th @click="setActivityVisibility(activity.finance_visible,index, activity_index)" style="cursor: pointer;">{{ activity.description }}</th>
-                                                        <td><textarea class="form-control" type="text"
+                                                        <td>
+                                                            <!-- <textarea class="form-control" type="text"
                                                             v-model="activity.target_indicator" @input="setUnsaved(true)"
                                                             @change="updateActivity(activity, activity_index, index)"
-                                                            v-if="activity.is_active==1 "></textarea>
+                                                            v-if="activity.is_active==1 "></textarea> -->
+                                                            <tr v-for="outcome in activity.activityProject[0].expected_output">
+                                                                <div>{{ outcome.target_indicator }}<hr></div>
+                                                            </tr>
                                                         </td>
                                                         <td>
                                                             <tr v-if="activity.is_active==1">
@@ -772,7 +776,6 @@ export default {
                 this.unsaved=false
                 alert("Activity is inactive")
             }
-
         },
         async toggleActivity(activityId, status, activity_index, strat_index) {
             const payload = {
@@ -809,6 +812,7 @@ export default {
             }
         },
         async createActivity(payload) {
+            // alert("naabiot");
             try {
                 const response = await axios.post(`/activities-project/r/create`, payload);
                 console.log(response.data);

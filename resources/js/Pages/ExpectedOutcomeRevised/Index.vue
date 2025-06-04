@@ -17,7 +17,7 @@
                 <div class="peer">
                     <!-- {{project[0]}}<br> -->
                      <!-- {{ type }} -->
-                     <!-- <Link class="btn btn-primary btn-sm" :href="`/expected-outcomes-revised/create/${project[0].id}/activity`" v-if="type==='activity'">Add Expected Outcomes</Link> -->
+                     <Link class="btn btn-primary btn-sm" :href="`/expected-outcomes-revised/create/${project[0].id}/activity`" v-if="type==='activity'">Add Expected Outcomes</Link>
                     <Link class="btn btn-primary btn-sm" :href="`/expected-outcomes-revised/create/${project[0].id}/strategy`" v-if="type==='strategy'">Add Expected Outcomes</Link>
                 </div>&nbsp;
                 <div class="peer">

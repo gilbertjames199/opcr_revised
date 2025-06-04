@@ -262,6 +262,8 @@ class StrategyProjectController extends Controller
                     return [
                         "id" => $activity->id,
                         "description" => $activity->description,
+                        "date_from" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_from : null,
+                        "date_to" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_to : null,
                         "target_indicator" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->target_indicator : null,
                         "activity_id" => $act_id,
                         "project_id" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->project_id : null,
@@ -322,6 +324,8 @@ class StrategyProjectController extends Controller
                 return [
                     "id" => $item->id,
                     "description" => $item->description,
+                    "date_from" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->date_from : null,
+                    "date_to" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->date_to : null,
                     "target_indicator" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->target_indicator : null,
                     "strategy_id" => $strat_id,
                     "project_id" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->project_id : null,

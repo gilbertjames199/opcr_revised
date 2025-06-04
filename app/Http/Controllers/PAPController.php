@@ -197,6 +197,7 @@ class PAPController extends Controller
             'type' => 'required',
             'FFUNCCOD' => 'required',
             'idmfo' => 'required',
+            'sector' => 'required'
             // 'chief_executive_agenda' => 'required',
             // 'socio_economic_agenda' => 'required',
             // 'sust_devt_goal' => 'required',
@@ -230,6 +231,10 @@ class PAPController extends Controller
             $paps->sust_devt_goal = $request->sust_devt_goal;
             $paps->executive_legislative_agenda = $request->executive_legislative_agenda;
             $paps->research_agenda = $request->research_agenda;
+            $paps->sector = $request->sector;
+            $paps->subsector = $request->subsector;
+            $paps->popsp = $request->popsp;
+            $paps->focus_area = $request->focus_area;
             $paps->save();
             $msg = "Programs and Projects(PAPS) added";
             $status = "message";
@@ -281,7 +286,11 @@ class PAPController extends Controller
             'socio_economic_agenda',
             'sust_devt_goal',
             'executive_legislative_agenda',
-            'research_agenda'
+            'research_agenda',
+            'sector',
+            'subsector',
+            'popsp',
+            'focus_area'
         ]);
         $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
             ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
@@ -312,7 +321,7 @@ class PAPController extends Controller
     public function update(Request $request, $id)
     {
         $dept_code = auth()->user()->department_code;
-
+        // dd($request);
         $data = $this->model::findOrFail($request->id);
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $paps = new ProgramAndProject();
@@ -327,7 +336,11 @@ class PAPController extends Controller
             'socio_economic_agenda' => $request->socio_economic_agenda,
             'sust_devt_goal' => $request->sust_devt_goal,
             'executive_legislative_agenda' => $request->executive_legislative_agenda,
-            'research_agenda' => $request->research_agenda
+            'research_agenda' => $request->research_agenda,
+            'sector' => $request->sector,
+            'subsector' => $request->subsector,
+            'popsp' => $request->popsp,
+            'focus_area' => $request->focus_area,
         ]);
         return redirect('/paps/direct')
             ->with('info', 'Program and Projects updated');

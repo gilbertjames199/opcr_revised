@@ -1,7 +1,7 @@
 <template>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Programs and Projects goBack</h3>
+            <h3>{{ pageTitle }} Programs and Projects</h3>
             <div v-if="from_mfo == true">
                 <Link @click="goBack">
                 <!-- :href="`/paps/${idmfo}`" -->
@@ -46,7 +46,6 @@
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
                 <label for="">Major Final Outputs </label>
-
                 <select class="form-control form-select" v-model="form.idmfo">
                     <option></option>
                     <option v-for="mfo in mfos_data" :value="mfo.id">
@@ -73,15 +72,36 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.type">{{ form.errors.type }}</div>
 
 
-                <label for="">Sector</label>
-                <select class="form-control form-select" v-model="form.sector">
-                    <option>Economic Services</option>
-                    <option>General Public Services</option>
-                    <option>Health Services</option>
-                    <option>Local Disaster Risk Reduction and Management Fund (LDRRMF)</option>
-                    <option>20% Development Fund</option>
+                <label for="">Sectors</label>
+                <select v-model="form.sector" class="form-control form-select">
+                    <option v-for="(subsectors, sector) in sectors" :key="sector" :value="sector">
+                        {{ sector }}
+                    </option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.sector">{{ form.errors.sector }}</div>
+
+                <!-- {{ sectors }} -->
+                <label for="">Sub-sectors</label>
+                <select v-model="form.subsector" class="form-control form-select">
+                    <option v-for="subsector in sectors[form.sector]" :key="subsector">
+                        {{ subsector }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.subsector">{{ form.errors.subsector }}</div>
+
+                <div v-if="form.sector==='General Public Services Sector'">
+                    <input type="checkbox" v-model="form.popsp" :true-value="1" :false-value="0" />
+                    <label for="popsp">POPSP</label>
+                    <label for="">Focus Area (POPSP)</label>
+                    <select class="form-control form-select" v-model="form.focus_area">
+                        <option>Crime and Disaster</option>
+                        <option>Conflict</option>
+                        <option>Threat to environment and human security</option>
+                        <option>Public Safety</option>
+                    </select>
+                    <div class="fs-6 c-red-500" v-if="form.errors.focus_area">{{ form.errors.focus_area }}</div>
+                </div>
+
                 <label for="">Chief Executive Agenda</label>
                 <select class="form-control form-select" v-model="form.chief_executive_agenda">
                     <option value=""></option>
@@ -146,6 +166,7 @@
         <br />
         <br />
         {{ mfos }} -->
+         {{ editData }}
     </div>
 </template>
 <script>
@@ -191,6 +212,10 @@ export default {
                 sust_devt_goal: "",
                 executive_legislative_agenda: "",
                 research_agenda: "",
+                sector: "",
+                subsector: "",
+                popsp: 0,
+                focus_area: "",
                 id: null
             }),
             year_values: ["2000",
@@ -351,6 +376,10 @@ export default {
             this.form.sust_devt_goal = this.editData.sust_devt_goal
             this.form.executive_legislative_agenda = this.editData.executive_legislative_agenda
             this.form.research_agenda = this.editData.research_agenda
+            this.form.sector = this.editData.sector
+            this.form.subsector = this.editData.subsector
+            this.form.popsp = this.editData.popsp
+            this.form.focus_area = this.editData.focus_area
             this.form.id = this.editData.id
             this.filterMFOs()
         } else {
@@ -384,20 +413,16 @@ export default {
                 }
             }
             this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4);
-            //alert(this.form.target_qty);
             if (this.editData !== undefined) {
-                //alert('from mfo: '+this.from_mfo);
                 if (this.from_mfo == true) {
-                    //alert('paps/update/'+this.form.id);
                     this.form.patch("/paps/update/" + this.form.id, this.form);
                 } else {
-                    //alert('direct paps/'+this.form.id);
                     this.form.patch("/paps/" + this.form.id, this.form);
                 }
 
             } else {
                 this.form.id = null;
-                alert(this.from_mfo);
+                // alert(this.from_mfo);
                 if (this.from_mfo == true) {
                     this.form.post("/paps/save", this.form);
                 } else {

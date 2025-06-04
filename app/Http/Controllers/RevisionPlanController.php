@@ -275,6 +275,7 @@ class RevisionPlanController extends Controller
                     ->where('is_active', '1');
             },
             'strategyProject.expected_output',
+            'strategyProject.expected_output.comments',
             'strategyProject.expected_outcome',
             'strategyProject.comments',
             'strategyProject.comments.user',
@@ -290,6 +291,7 @@ class RevisionPlanController extends Controller
                     ->where('is_active', '1');
             },
             'activity.activityProject.expected_output',
+            'activity.activityProject.expected_output.comments',
             'activity.activityProject.expected_outcome',
             'activity.activityProject.comments',
             'activity.activityProject.comments.user'
@@ -326,6 +328,8 @@ class RevisionPlanController extends Controller
                     // dd($activity->activityProject);
                     return [
                         "id" => $activity->id,
+                        "date_from" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_from : null,
+                        "date_to" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_to : null,
                         "description" => $activity->description,
                         "target_indicator" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->target_indicator : null,
                         "activity_id" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->id : null,
