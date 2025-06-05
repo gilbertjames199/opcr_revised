@@ -1484,7 +1484,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS, HYDRATE_EVENTS */
     , _hoisted_67), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.mooe_q1]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return strategy.fe_01 = $event;
+        return strategy.fe_q1 = $event;
       },
       onInput: _cache[8] || (_cache[8] = function ($event) {
         return $options.setUnsaved(true);
@@ -1495,7 +1495,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "form-control"
     }, null, 40
     /* PROPS, HYDRATE_EVENTS */
-    , _hoisted_68), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.fe_01]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    , _hoisted_68), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.fe_q1]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return strategy.co_q1 = $event;
       },
@@ -1536,7 +1536,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS, HYDRATE_EVENTS */
     , _hoisted_72), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.mooe_q2]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return strategy.fe_02 = $event;
+        return strategy.fe_q2 = $event;
       },
       onInput: _cache[12] || (_cache[12] = function ($event) {
         return $options.setUnsaved(true);
@@ -1547,7 +1547,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "form-control"
     }, null, 40
     /* PROPS, HYDRATE_EVENTS */
-    , _hoisted_73), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.fe_02]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    , _hoisted_73), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.fe_q2]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return strategy.co_q2 = $event;
       },
@@ -1588,7 +1588,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS, HYDRATE_EVENTS */
     , _hoisted_77), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.mooe_q3]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return strategy.fe_03 = $event;
+        return strategy.fe_q3 = $event;
       },
       onInput: _cache[16] || (_cache[16] = function ($event) {
         return $options.setUnsaved(true);
@@ -1599,7 +1599,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "form-control"
     }, null, 40
     /* PROPS, HYDRATE_EVENTS */
-    , _hoisted_78), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.fe_03]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    , _hoisted_78), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.fe_q3]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return strategy.co_q3 = $event;
       },
@@ -1640,7 +1640,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS, HYDRATE_EVENTS */
     , _hoisted_82), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.mooe_q4]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return strategy.fe_04 = $event;
+        return strategy.fe_q4 = $event;
       },
       onInput: _cache[20] || (_cache[20] = function ($event) {
         return $options.setUnsaved(true);
@@ -1651,7 +1651,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "form-control"
     }, null, 40
     /* PROPS, HYDRATE_EVENTS */
-    , _hoisted_83), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.fe_04]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    , _hoisted_83), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, strategy.fe_q4]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return strategy.co_q4 = $event;
       },

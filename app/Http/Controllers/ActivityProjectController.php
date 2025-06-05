@@ -31,6 +31,10 @@ class ActivityProjectController extends Controller
                 $found->co_q2 = $request->co_q2;
                 $found->co_q3 = $request->co_q3;
                 $found->co_q4 = $request->co_q4;
+                $found->fe_q1 = $request->fe_q1;
+                $found->fe_q2 = $request->fe_q2;
+                $found->fe_q3 = $request->fe_q3;
+                $found->fe_q4 = $request->fe_q4;
                 $found->gad_issue = $request->gad_issue;
                 $found->ccet_code = $request->ccet_code;
                 $found->responsible = $request->responsible;

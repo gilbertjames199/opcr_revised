@@ -233,7 +233,7 @@
                                                                 @input="setUnsaved(true)"
                                                                 @change="calculateTotalStrategy(index, 'mooe')"
                                                                 class="form-control"/></td>
-                                                            <td><input v-model="strategy.fe_01"
+                                                            <td><input v-model="strategy.fe_q1"
                                                                 @input="setUnsaved(true)"
                                                                 @change="calculateTotalStrategy(index, 'fe')"
                                                                 class="form-control"/></td>
@@ -246,21 +246,21 @@
                                                             <th>Q2:&nbsp;&nbsp;</th>
                                                             <td><input v-model="strategy.ps_q2" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'ps')" class="form-control"/></td>
                                                             <td><input v-model="strategy.mooe_q2" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'mooe')" class="form-control"/></td>
-                                                            <td><input v-model="strategy.fe_02" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'fe')" class="form-control"/></td>
+                                                            <td><input v-model="strategy.fe_q2" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'fe')" class="form-control"/></td>
                                                             <td><input v-model="strategy.co_q2" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'co')" class="form-control"/></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Q3:&nbsp;&nbsp;</th>
                                                             <td><input v-model="strategy.ps_q3" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'ps')" class="form-control"/></td>
                                                             <td><input v-model="strategy.mooe_q3" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'mooe')" class="form-control"/></td>
-                                                            <td><input v-model="strategy.fe_03" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'fe')" class="form-control"/></td>
+                                                            <td><input v-model="strategy.fe_q3" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'fe')" class="form-control"/></td>
                                                             <td><input v-model="strategy.co_q3" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'co')" class="form-control"/></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Q4:&nbsp;&nbsp;</th>
                                                             <td><input v-model="strategy.ps_q4" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'ps')" class="form-control"/></td>
                                                             <td><input v-model="strategy.mooe_q4" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'mooe')" class="form-control"/></td>
-                                                            <td><input v-model="strategy.fe_04" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'fe')" class="form-control"/></td>
+                                                            <td><input v-model="strategy.fe_q4" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'fe')" class="form-control"/></td>
                                                             <td><input v-model="strategy.co_q4" @input="setUnsaved(true)" @change="calculateTotalStrategy(index, 'co')" class="form-control"/></td>
                                                         </tr>
                                                         <tr>
