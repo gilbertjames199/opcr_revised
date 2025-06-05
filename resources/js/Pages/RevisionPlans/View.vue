@@ -691,7 +691,7 @@
                                         <td class="text-end">{{ format_number_conv(imp_amount,2,true) }}</td>
                                         <td></td>
                                         <td></td>
-                                    </tr>
+                                </tr>
                             </tbody>
                         </table>
                         <!-- {{ implementation }} -->
@@ -1076,7 +1076,8 @@
                                     <td class="text-end"></td>
                                     <td class="text-end"></td>
                                     <td class="text-end">{{ format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non) + parseFloat(s_ps_gad)
-                                    + parseFloat(s_ps_non) + parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true)
+                                    + parseFloat(s_ps_non) + parseFloat(s_mooe_gad) + parseFloat(s_mooe_non) + parseFloat(s_fe_gad) + parseFloat(s_fe_non)
+                                    , 2,true)
                                     }}</td>
                                     <td></td>
                                 </tr>

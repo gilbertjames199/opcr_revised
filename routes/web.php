@@ -799,11 +799,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/store/{idopcr}/{idpaps}', [OpcrTargetController::class, 'storerevised']);
         Route::post('/loopstore/{idopcr}', [OpcrTargetController::class, 'storeloop']);
         Route::post('/store/bulk/then/{idopcr}/{bulk_selected}', [OpcrTargetController::class, 'savePaps']);
-        // Route::get('/{opcr_list_id}/edit', [OpcrTargetController::class, 'edit']);
-        // Route::patch('/', [OpcrTargetController::class, 'update']);
         Route::delete('/{id}', [OpcrTargetController::class, 'destroyrevised']);
-        // // /opcrtarget/" + this.opcr_list_id + "/submit/target/opcr/now
-        // Route::post('/{opcr_list_id}/submit/target/opcr/now', [OpcrTargetController::class, 'submit_opcr_target']);
     });
     //OPCR Budgeting
     Route::prefix('opcrbudgeting')->group(function () {
