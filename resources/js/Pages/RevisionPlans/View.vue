@@ -1348,7 +1348,9 @@
                                     <!-- Employment Status -->
                                     <td :class="{
                                                 'text-danger': has_comment('Team Plan','status',team_member.status,'status','team_plans', team_member, team_member.comments)
-                                            }">{{ team_member.status }}
+                                            }">
+                                            <span v-if="team_member.status==='Regular'">Permanent</span>
+                                            <span v-else>{{ team_member.status }}</span>
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Team Plan','status',team_member.status,'status','team_plans', team_member, team_member.comments)">*
                                         </button>
