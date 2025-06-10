@@ -94,6 +94,7 @@ class TeamPlanController extends Controller
         $team->competency = $request->competency;
         $team->position = $us->position_long_title;
         $team->with_gad_training = $request->with_gad_training;
+        $team->specify_GAD_training = $request->specify_GAD_training ?? null;
         $team->save();
         return redirect('/team/' . $request->revision_plan_id . '/revision/plan/team')
             ->with('message', 'Team member added!');
@@ -134,6 +135,7 @@ class TeamPlanController extends Controller
         $team->competency = $request->competency;
         $team->position = $us->position_long_title;
         $team->with_gad_training = $request->with_gad_training;
+        $team->specify_GAD_training = $request->specify_GAD_training ?? null;
         $team->save();
         return redirect('/team/' . $request->revision_plan_id . '/revision/plan/team')
             ->with('message', 'Team member added!');

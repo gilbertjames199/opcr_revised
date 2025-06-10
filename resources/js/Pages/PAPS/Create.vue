@@ -45,14 +45,33 @@
                     </option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
+                <!-- MFOs -->
                 <label for="">Major Final Outputs </label>
-                <select class="form-control form-select" v-model="form.idmfo">
+                <select class="form-control form-select" v-model="form.idmfo" @change="loadPAPS">
                     <option></option>
                     <option v-for="mfo in mfos_data" :value="mfo.id">
                         {{ mfo.mfo_desc }}
                     </option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.idmfo">{{ form.errors.idmfo }}</div>
+
+                <!-- Program and Projects (PAPS) -->
+                <label for="">Parent Program and Projects (if any -0{{ form.mother_program_id }})</label>
+                <select class="form-control form-select" v-model="form.mother_program_id">
+                    <option></option>
+                    <option v-for="mfo in motherPAPS" :value="mfo.id">
+                        {{ mfo.paps_desc }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.mother_program_id">{{ form.errors.mother_program_id }}</div>
+
+                <input type="checkbox"
+                v-model="form.is_mother_program"
+                :true-value="1"
+                :false-value="0">
+                    &nbsp;Is Mother PAPS
+                <br>
+                <div class="fs-6 c-red-500" v-if="form.errors.with_gad_training">{{ form.errors.with_gad_training }}</div>
 
                 <label for="">Program and Projects (PAPS) Description </label>
                 <input type="text" v-model="form.paps_desc" class="form-control" autocomplete="chrome-off">
@@ -166,7 +185,7 @@
         <br />
         <br />
         {{ mfos }} -->
-         {{ editData }}
+         <!-- {{ editData }} -->
     </div>
 </template>
 <script>
@@ -216,6 +235,8 @@ export default {
                 subsector: "",
                 popsp: 0,
                 focus_area: "",
+                is_mother_program: 0,
+                mother_program_id: null,
                 id: null
             }),
             year_values: ["2000",
@@ -321,6 +342,7 @@ export default {
                 "2100",
             ],
             mfos_data: [],
+            motherPAPS: [],
             pageTitle: ""
         };
     },
@@ -380,8 +402,12 @@ export default {
             this.form.subsector = this.editData.subsector
             this.form.popsp = this.editData.popsp
             this.form.focus_area = this.editData.focus_area
+            this.form.is_mother_program = this.editData.is_mother_program
+
             this.form.id = this.editData.id
             this.filterMFOs()
+            this.loadPAPS();
+            this.form.mother_program_id = this.editData.mother_program_id
         } else {
             this.pageTitle = "Create"
             if (this.idmfo != undefined) {
@@ -440,16 +466,31 @@ export default {
 
         async filterMFOs() {
             this.mfos_data = [];
+            this.motherPAPS = [];
             // await axios.post("/paps/major/final/outputs/filter", { FFUNCCOD: this.form.FFUNCCOD }).then((response) => {
             //     this.mfos_data = response.data.data
             // });
             try {
                 var my_url = "/paps/major/final/outputs/filter/" + this.form.FFUNCCOD;
-                // alert(my_url);
+
                 const response = await axios.get(my_url, { FFUNCCOD: this.form.FFUNCCOD });
                 this.mfos_data = response.data.data;
             } catch (error) {
                 console.error("Error fetching MFOs:", error);
+            }
+        },
+        async loadPAPS() {
+            this.motherPAPS = [];
+            // await axios.post("/paps/mother/paps/filter", { idmfo: this.form.idmfo }).then((response) => {
+            //     this.motherPAPS = response.data.data
+            // });
+            try {
+                var my_url = "/paps/mother/paps/filter/" + this.form.idmfo;
+                // alert(my_url);
+                const response = await axios.get(my_url, { idmfo: this.form.idmfo });
+                this.motherPAPS = response.data.data;
+            } catch (error) {
+                console.error("Error fetching PAPS:", error);
             }
         },
         goBack() {

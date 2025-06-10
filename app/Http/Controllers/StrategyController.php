@@ -98,11 +98,11 @@ class StrategyController extends Controller
         if ($request->idpaps == '0') {
             $ismfo = '1';
             return redirect('/strategies/' . $request->idmfo . '/' . $ismfo . '/strat/mfo')
-                ->with('message', 'Outcome added');
+                ->with('message', 'Strategy added');
         } else {
             $ismfo = '0';
             return redirect('/strategies/' . $request->idpaps . '/' . $ismfo . '/strat/mfo')
-                ->with('message', 'Outcome added');
+                ->with('message', 'Strategy added');
         }
     }
 

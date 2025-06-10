@@ -37,7 +37,14 @@
                     </option>
                 </select>
             </div>
-
+            <div v-if="$page.props.auth.user.department_code === '02'">
+                Filter by Division
+                <select v-model="division_code" class="form-control" @change="filterMFOs()">
+                    <option v-for="div in divisions" :value="div.division_code">
+                        {{ div.division_name1 }}
+                    </option>
+                </select>
+            </div>
             Filter by MFO
             <select v-model="mfosel" class="form-control" @change="filterData()">
                 <option v-for="mfo in mfos_data" :value="mfo.id">
@@ -140,6 +147,7 @@
                 <iframe :src="my_link" style="width:100%; height:500px" />
             </div>
         </Modal>
+        {{ divisions }}
     </div>
 </template>
 <script>
@@ -158,6 +166,7 @@ export default {
         // idoutcome: String,
         // idmfo: String,
         can: Object,
+        divisions: Object,
         mfos: Object
     },
     data() {
@@ -172,6 +181,7 @@ export default {
             func_code: "",
             func_name: "",
             filter_FFUNCTION: "",
+            division_code: ""
         }
     },
     watch: {
@@ -197,20 +207,20 @@ export default {
         this.mfos_data = this.mfos;
     },
     methods: {
-    office_function(){
-        if(this.department_code === '04'){
-            const selectedOffice = this.offices.find(office => office.FFUNCCOD === this.FFUNCCOD);
-            this.func_code = this.FFUNCCOD
-            this.func_name = selectedOffice ? selectedOffice.FFUNCTION : '';
+        office_function(){
+            if(this.department_code === '04'){
+                const selectedOffice = this.offices.find(office => office.FFUNCCOD === this.FFUNCCOD);
+                this.func_code = this.FFUNCCOD
+                this.func_name = selectedOffice ? selectedOffice.FFUNCTION : '';
 
-            //  console.log(this.func_name)
-        } else {
-            this.func_code = this.FFUNCCODE
-            this.func_name = this.office
-        }
-    },
+                //  console.log(this.func_name)
+            } else {
+                this.func_code = this.FFUNCCODE
+                this.func_name = this.office
+            }
+        },
 
-    showModal(ffunccod, ffunction) {
+        showModal(ffunccod, ffunction) {
             // alert("FFUNCCOD: " + ffunccod + "\n "
             //     + " FFUNCTION: " + ffunction + "\n " +
             //     "MOOE: " + MOOE + " \n" +
@@ -234,7 +244,7 @@ export default {
             //alert("show filter");
             this.filter = !this.filter
         },
-          getToRep(ffunccod, ffunction) {
+        getToRep(ffunccod, ffunction) {
             // alert(data[0].FFUNCCOD);
             var linkt = "https://";
             var jasper_ip = this.jasper_ip;
@@ -256,6 +266,22 @@ export default {
             // });
             try {
                 var my_url = "/paps/major/final/outputs/filter/" + this.FFUNCCOD;
+                // alert(my_url);
+                const response = await axios.get(my_url, { FFUNCCOD: this.FFUNCCOD });
+                this.mfos_data = response.data.data;
+            } catch (error) {
+                console.error("Error fetching MFOs:", error);
+            }
+        },
+        async filterMFOsByDivision() {
+            this.office_function();
+
+            this.mfos_data = [];
+            // await axios.post("/paps/major/final/outputs/filter", { FFUNCCOD: this.form.FFUNCCOD }).then((response) => {
+            //     this.mfos_data = response.data.data
+            // });
+            try {
+                var my_url = "/paps/major/final/outputs/filter/" + this.division_code  +"";
                 // alert(my_url);
                 const response = await axios.get(my_url, { FFUNCCOD: this.FFUNCCOD });
                 this.mfos_data = response.data.data;

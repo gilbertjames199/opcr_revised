@@ -49,17 +49,6 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.date_end">{{ form.errors.date_end }}</div>
                 <hr style="background-color: black !important; border:1px; height: 1px;">
 
-                <!-- <input type="checkbox" v-model="form.is_strategy_based" :true-value="1"
-                    :false-value="0"/>&nbsp;
-                <label>GROUP BY STRATEGY </label>
-                <div class="fs-6 c-red-500"
-                    v-if="form.errors.is_strategy_based"
-
-                >
-                    {{ form.errors.is_strategy_based }}
-                </div>
-                <br> -->
-
                 INTENDED BENEFICIARIES<br>
                 <div class="peers">
                     <div class="peer mR-10">
@@ -104,46 +93,31 @@
 
 
                 <label for="">RATIONALE</label>
-                <!-- <div>words remaining: {{ wordsRemaining }} &nbsp;&nbsp; word count: {{ wordCount }}</div> -->
                  <QuillEditor theme="snow" v-model:content="form.rationale" @input="limitWords" contentType="html"
                     toolbar="essential" />
-                <!-- <textarea v-model="form.rationale" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
 
                 <label for="">OBJECTIVES</label>
-                <!-- <textarea v-model="form.objective" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea> -->
                 <QuillEditor theme="snow" v-model:content="form.objective" contentType="html" toolbar="essential" />
                 <div class="fs-6 c-red-500" v-if="form.errors.objective">{{ form.errors.objective }}</div>
 
                 <label for="">BENEFICIARIES</label>
-                <!-- <textarea v-model="form.beneficiaries" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea> -->
                 <QuillEditor theme="snow" v-model:content="form.beneficiaries" contentType="html" toolbar="essential" />
                 <div class="fs-6 c-red-500" v-if="form.errors.beneficiaries">{{ form.errors.beneficiaries }}</div>
 
                 <label for="">IMPLEMENTING TEAM</label>
                 <QuillEditor theme="snow" v-model:content="form.implementing_team" contentType="html" toolbar="essential" />
-                <!-- <textarea v-model="form.implementing_team" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.implementing_team">{{ form.errors.implementing_team }}</div>
 
                 <label for="">PARTNERSHIPS AND SUSTAINABILITY</label>
-                <!-- <textarea v-model="form.partnership" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea> -->
                 <QuillEditor theme="snow" v-model:content="form.partnership" contentType="html" toolbar="essential" />
                 <div class="fs-6 c-red-500" v-if="form.errors.partnership">{{ form.errors.partnership }}</div>
 
                 <label for="">MONITORING AND EVALUATION</label>
-                <!-- <textarea v-model="form.monitoring" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea> -->
                 <QuillEditor theme="snow" v-model:content="form.monitoring" contentType="html" toolbar="essential" />
                 <div class="fs-6 c-red-500" v-if="form.errors.monitoring">{{ form.errors.monitoring }}</div>
 
                 <label for="">RISK MANAGEMENT</label>
-                <!-- <textarea v-model="form.risk_management" style="height:100px;" class="form-control"
-                    autocomplete="chrome-off"></textarea> -->
                 <QuillEditor theme="snow" v-model:content="form.risk_management" contentType="html" toolbar="essential"
                 />
                 <div class="fs-6 c-red-500" v-if="form.errors.risk_management">{{ form.errors.risk_management }}</div>
@@ -164,7 +138,7 @@
             </form>
         </div>
     </div>
-    <!-- {{ editData }} -->
+    <!-- {{ form }} -->
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -217,6 +191,7 @@ export default {
                 monitoring: "",
                 risk_management: "",
                 is_strategy_based: "",
+                aip_code: "",
                 id: null
             }),
             total_intended: 0,
@@ -254,6 +229,7 @@ export default {
             this.form.date_end = this.editData.date_end
             this.form.beneficiary_male = this.editData.beneficiary_male
             this.form.beneficiary_female = this.editData.beneficiary_female
+            this.total_intended = parseFloat(this.form.beneficiary_male)+parseFloat(this.form.beneficiary_female)
             this.form.baseline_male = this.editData.baseline_male
             this.form.baseline_female = this.editData.baseline_female
             this.form.baseline_total = this.editData.baseline_total
@@ -267,6 +243,7 @@ export default {
             this.form.risk_management = this.editData.risk_management
             this.form.is_strategy_based = this.editData.is_strategy_based
             this.form.id = this.editData.id
+            this.form.aip_code = this.editData.aip_code
 
         } else {
             this.pageTitle = "Create"
