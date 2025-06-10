@@ -467,7 +467,7 @@ class PAPController extends Controller
             )
             ->orderBy('program_and_projects.paps_desc', 'ASC')
             ->get();
-        // dd($data);
+        // dd($data->pluck('paps_desc'));
         $access = DB::connection('mysql2')->table('accountaccess')
             ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
             ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
@@ -478,6 +478,8 @@ class PAPController extends Controller
         $mfos = MajorFinalOutput::where('id', '>', '45')->get();
         // dd(auth()->user());
         if (auth()->user()->department_code !== '04') {
+            $accessFFUNCCOD[] = auth()->user()->office;
+            $accessFFUNCCOD = array_unique($accessFFUNCCOD);
             $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
             $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
         }
