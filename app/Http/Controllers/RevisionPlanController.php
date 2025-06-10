@@ -478,7 +478,7 @@ class RevisionPlanController extends Controller
             ->where('revision_plan_id', $id)
             ->get()
             ->map(function ($item) {
-                dd($item);
+                // dd($item);
                 return [
                     "id" => $item->id,
                     "name" => $item->userEmployee ? $item->userEmployee->employee_name : "",
