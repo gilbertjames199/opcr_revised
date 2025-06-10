@@ -31,7 +31,10 @@ class DashBoardController extends Controller
             ],
         ]);
     }
-
+    public function manual()
+    {
+        return inertia('Manual/Index');
+    }
     public function not_found()
     {
         return inertia('NotFound/Index');
