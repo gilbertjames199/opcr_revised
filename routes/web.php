@@ -122,6 +122,7 @@ Route::middleware(['auth', 'can:manage users'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::prefix('/')->group(function () {
         Route::get('/', [DashBoardController::class, 'index']);
+        Route::get('/manual', [DashBoardController::class, 'manual']);
     });
 
 
@@ -515,6 +516,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/activity/implementation')->group(function () {
         Route::get('/{id}', [ImplementationPlanController::class, 'index']);
     });
+
     //hgdg_checklist
     Route::prefix('/HGDGChecklist')->group(function () {
         Route::get('/', [HGDGChecklistController::class, 'index']);
