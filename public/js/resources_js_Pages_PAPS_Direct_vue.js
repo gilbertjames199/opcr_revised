@@ -204,7 +204,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 // });
 
                 _context3.prev = 2;
-                my_url = "/paps/major/final/outputs/filter/" + _this4.division_code + ""; // alert(my_url);
+                my_url = "/paps/major/final/outputs/filter/" + _this4.division_code + "/filter/by/division"; // alert(my_url);
 
                 _context3.next = 6;
                 return axios.get(my_url, {
@@ -694,9 +694,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.divisions), 1
-  /* TEXT */
-  )])], 64
+  , ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ divisions }} ")])], 64
   /* STABLE_FRAGMENT */
   );
 }

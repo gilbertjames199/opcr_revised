@@ -482,6 +482,8 @@ class RevisionPlanController extends Controller
                 return [
                     "id" => $item->id,
                     "name" => $item->userEmployee ? $item->userEmployee->employee_name : "",
+                    "gender" => $item->userEmployee ? $item->userEmployee->gender : "",
+                    "status" => $item->userEmployee ? $item->userEmployee->status : "",
                     "position" => $item->userEmployee ? $item->userEmployee->position_long_title : "",
                     "competency" => $item->competency,
                     "role" => $item->role,
@@ -531,8 +533,17 @@ class RevisionPlanController extends Controller
             $imp_amount = StrategyProject::where('project_id', $id)->where('is_active', '1')
                 ->sum(DB::raw('ps_q1 + ps_q2 + ps_q3 + ps_q4 + mooe_q1 + mooe_q2 + mooe_q3 + mooe_q4 + co_q1 + co_q2 + co_q3 + co_q4 + fe_q1 + fe_q2 + fe_q3 + fe_q4'));
         } else {
-            $imp_amount = ActivityProject::where('project_id', $id)->where('is_active', '1')
-                ->sum(DB::raw('ps_q1 + ps_q2 + ps_q3 + ps_q4 + mooe_q1 + mooe_q2 + mooe_q3 + mooe_q4 + co_q1 + co_q2 + co_q3 + co_q4 + fe_q1 + fe_q2 + fe_q3 + fe_q4'));
+
+            foreach ($implement as $item) {
+                // dd($item);
+                foreach ($item['activity'] as $activity) {
+                    $imp_amount +=
+                        $activity['ps_q1'] + $activity['ps_q2'] + $activity['ps_q3'] + $activity['ps_q4'] +
+                        $activity['mooe_q1'] + $activity['mooe_q2'] + $activity['mooe_q3'] + $activity['mooe_q4'] +
+                        $activity['co_q1'] + $activity['co_q2'] + $activity['co_q3'] + $activity['co_q4'] +
+                        $activity['fe_q1'] + $activity['fe_q2'] + $activity['fe_q3'] + $activity['fe_q4'];
+                }
+            }
         }
         // dd($functions);
         return inertia('RevisionPlans/View', [
