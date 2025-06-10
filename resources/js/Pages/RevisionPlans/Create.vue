@@ -281,9 +281,9 @@ export default {
         submit() {
             //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
             //alert(this.form.target_qty);
-            if (this.act_words > this.maxWords) {
-                alert("Rationale exceeds 200 words limit")
-            } else {
+            // if (this.act_words > this.maxWords) {
+            //     alert("Rationale exceeds 200 words limit")
+            // } else {
                 if (this.editData !== undefined) {
                     //alert('patch');
                     this.form.patch("/revision/", this.form);
@@ -292,7 +292,7 @@ export default {
                     //alert('store');
                     this.form.post("/revision/store", this.form);
                 }
-            }
+            // }
 
         },
         limitWords() {
