@@ -204,7 +204,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 // });
 
                 _context3.prev = 2;
-                my_url = "/paps/major/final/outputs/filter/" + _this4.FFUNCCOD; // alert(my_url);
+                my_url = "/paps/major/final/outputs/filter/" + _this4.division_code + ""; // alert(my_url);
 
                 _context3.next = 6;
                 return axios.get(my_url, {

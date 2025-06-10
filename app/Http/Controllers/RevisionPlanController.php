@@ -539,7 +539,6 @@ class RevisionPlanController extends Controller
             "paps" => $paps,
             "office" => $functions->FFUNCTION,
             "implementation" => $implement,
-
             // "mooe_gad" => $mooe_gad,
             // "mooe_non" => $mooe_non,
             // "cap_gad" => $cap_gad,
