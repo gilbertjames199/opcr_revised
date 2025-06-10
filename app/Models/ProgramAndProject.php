@@ -10,19 +10,20 @@ class ProgramAndProject extends Model
     use HasFactory;
     protected $connection = "mysql";
     protected $table = 'program_and_projects';
-    protected $fillable = [
-        'paps_desc',
-        'FFUNCCOD',
-        'department_code',
-        'idmfo',
-        'MOV',
-        'type',
-        'chief_executive_agenda',
-        'socio_economic_agenda',
-        'sust_devt_goal',
-        'executive_legislative_agenda',
-        'research_agenda'
-    ];
+    protected $guarded = ['id'];
+    // protected $fillable = [
+    //     'paps_desc',
+    //     'FFUNCCOD',
+    //     'department_code',
+    //     'idmfo',
+    //     'MOV',
+    //     'type',
+    //     'chief_executive_agenda',
+    //     'socio_economic_agenda',
+    //     'sust_devt_goal',
+    //     'executive_legislative_agenda',
+    //     'research_agenda',
+    // ];
     public static function rules()
     {
         return [

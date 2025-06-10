@@ -457,7 +457,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS */
     , _hoisted_20), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $data.form.hgdg_scores[index].score]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       hidden: hgdg_score.has_subquestion != '0'
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.setScore($data.form.hgdg_scores[index].score)), 9
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.setScore($data.form.hgdg_scores[index].score), 2, false)), 9
     /* TEXT, PROPS */
     , _hoisted_21)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {

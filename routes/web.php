@@ -401,6 +401,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [PAPController::class, 'destroy']);
         //FILTER MFOS in CREATE
         Route::get('/major/final/outputs/filter/{FFUNCCOD}', [PAPController::class, 'mfos_filter']);
+        //FILTER mother PAPS in CREATE/EDIT
+        Route::get('/mother/paps/filter/{idmfo}', [PAPController::class, 'mother_paps_filter']);
     });
     //Project Profile
     Route::prefix('/projectprofile')->group(function () {

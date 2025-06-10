@@ -51,6 +51,7 @@
                     Save changes
                 </button>
             </form>
+            revid: {{ revid }}
         </div>
 
 
@@ -66,6 +67,9 @@ export default {
         editData: Object,
         sectors: Object,
         functions: Object,
+        revs: String,
+        revid: String,
+        people: String,
     },
     components: {
         //BootstrapModalNoJquery,

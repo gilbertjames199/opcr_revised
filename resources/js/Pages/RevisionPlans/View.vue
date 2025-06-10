@@ -680,7 +680,6 @@
                                             </td>
                                         </tr>
                                     </template>
-
                                 </template>
                                 <tr>
                                         <td colspan="5">TOTAL</td>
@@ -1051,7 +1050,7 @@
                                 </tr>
                                 <!-- CAPITAL OUTLAY*********************************************************** -->
                                 <!-- <tr>
-                                    <td colspan="8"><b>CAPITAL OUTLAY</b></td>
+                                <td colspan="8"><b>CAPITAL OUTLAY</b></td>
                                 </tr>
                                 <tr v-for="cap in capitalOutlay">
                                     <td></td>
@@ -1071,12 +1070,11 @@
                                     <td></td>
                                 </tr> -->
                                 <tr>
-
                                     <td colspan="4">TOTAL</td>
                                     <td class="text-end"></td>
                                     <td class="text-end"></td>
-                                    <td class="text-end">{{ format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non) + parseFloat(s_ps_gad)
-                                    + parseFloat(s_ps_non) + parseFloat(s_mooe_gad) + parseFloat(s_mooe_non) + parseFloat(s_fe_gad) + parseFloat(s_fe_non)
+                                    <td class="text-end">{{ format_number_conv((parseFloat(s_cap_gad) + parseFloat(s_cap_non) + parseFloat(s_ps_gad)
+                                    + parseFloat(s_ps_non) + parseFloat(s_mooe_gad) + parseFloat(s_mooe_non) + parseFloat(s_fe_gad) + parseFloat(s_fe_non))
                                     , 2,true)
                                     }}</td>
                                     <td></td>
@@ -1364,7 +1362,7 @@
                                     <td :class="{
                                                 'text-danger': has_comment('Team Plan','with_gad_training',team_member.with_gad_training,'with_gad_training','team_plans', team_member, team_member.comments)
                                             }">
-                                        {{ team_member.with_gad_training === '1' ? 'Yes' : 'No' }}
+                                        {{ team_member.with_gad_training === '1' ?  team_member.specify_GAD_training  : 'No' }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Team Plan','with_gad_training',team_member.with_gad_training,'with_gad_training','team_plans', team_member, team_member.comments)">*
                                         </button>

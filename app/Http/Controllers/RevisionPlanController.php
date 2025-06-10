@@ -216,6 +216,7 @@ class RevisionPlanController extends Controller
         $rev->final = '0';
         $rev->supplemental = '0';
         $rev->is_strategy_based = $request->is_strategy_based;
+        $rev->aip_code = $request->aip_code;
         $rev->user_id = auth()->user()->recid;
         $rev->save();
         // if($attributes){
@@ -228,7 +229,6 @@ class RevisionPlanController extends Controller
     }
     public function view(Request $request, $id)
     {
-
         //REVISION PLANS
         $paps = RevisionPlan::with(['comments', 'comments.user'])->where('id', $id)->with('checklist')->first();
         // dd($paps);
@@ -257,7 +257,6 @@ class RevisionPlanController extends Controller
                     ->with('func')->first();
             }
         } else if ($idmfo != 0) {
-
             $mfoss = MajorFinalOutput::findOrFail($paps->idmfo);
             if (auth()->user()->department_code == '04') {
                 $functions = FFUNCCOD::where('FFUNCCOD', $mfoss->FFUNCCOD)->first();
@@ -485,7 +484,8 @@ class RevisionPlanController extends Controller
                     "competency" => $item->competency,
                     "role" => $item->role,
                     "with_gad_training" => $item->with_gad_training,
-                    "comments" => $item->comments
+                    "comments" => $item->comments,
+                    "specify_GAD_training" => $item->specify_GAD_training
                 ];
             });
         // dd($team_members);
@@ -629,6 +629,7 @@ class RevisionPlanController extends Controller
             $rev->monitoring = $request->monitoring;
             $rev->risk_management = $request->risk_management;
             // $rev->supplemental = $request->supplemental;
+            $rev->aip_code = $request->aip_code;
             $rev->is_strategy_based = $request->is_strategy_based;
             $rev->is_activity_based = $request->is_activity_based;
             $rev->save();

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Helpers\PaginationHelper;
 use App\Models\AccountAccess;
 use App\Models\ChiefAgenda;
+use App\Models\Division;
 use App\Models\EconomicAgenda;
 use App\Models\ELA;
 use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring;
 use App\Models\OfficeAccountable;
+use App\Models\OfficeDivision;
 use App\Models\Output;
 use App\Models\ProgramAndProject;
 use App\Models\Quality;
@@ -141,9 +143,7 @@ class PAPController extends Controller
             ->where('systemusers.recid', $idn)
             ->get();
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
-
         //$showPerPage=10;
-
         //dd($mfos);
         //dd($mfos);
         //$mfos =PaginationHelper::paginate($result, $showPerPage);
@@ -161,16 +161,35 @@ class PAPController extends Controller
         //             ->with('func')->get();
         $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
             ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
+            ->where(function ($query) {
+                $query->where('ff.FFUNCTION', 'LIKE', '%Office%')
+                    ->orWhere('ff.FFUNCTION', 'LIKE', '%Function%')
+                    ->orWhere('ff.FFUNCTION', 'LIKE', '%Hospital%');
+            })
             ->with('func');
+        // $motherPAPS = ProgramAndProject::with('MFO')
+        //     ->where('idmfo', '>', '45')
+        //     ->orderByRaw(
+        //         DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
+        //                 WHEN program_and_projects.type = 'Project' THEN 1
+        //                 WHEN program_and_projects.type = 'Program' THEN 2
+        //                 WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
+        //                 END")
+        //     );
         if (auth()->user()->recid !== 545) {
             $functions = clone ($functions)->where('iduser', auth()->user()->recid);
             $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
+            // $motherPAPS = clone ($motherPAPS)->whereIn('FFUNCCOD', $accessFFUNCCOD);
         }
         $functions = clone ($functions)
             ->distinct('FFUNCCOD')
+            ->orderBy('FFUNCTION', 'ASC')
             ->get();
         // dd($functions);
         //dd($id);
+        // dd($motherPAPS);
+
+
         return inertia('PAPS/Create', [
             'mfos' => $mfos,
             'chief_agenda' => $chief_executive_agenda,
@@ -179,6 +198,7 @@ class PAPController extends Controller
             'executive_legislative' => $executive_legislative,
             'research' => $research,
             'functions' => $functions,
+            // 'motherPAPS' => $motherPAPS,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -235,6 +255,8 @@ class PAPController extends Controller
             $paps->subsector = $request->subsector;
             $paps->popsp = $request->popsp;
             $paps->focus_area = $request->focus_area;
+            $paps->is_mother_program = $request->is_mother_program ?? '0';
+            $paps->mother_program_id = $request->mother_program_id ?? null;
             $paps->save();
             $msg = "Programs and Projects(PAPS) added";
             $status = "message";
@@ -290,7 +312,9 @@ class PAPController extends Controller
             'sector',
             'subsector',
             'popsp',
-            'focus_area'
+            'focus_area',
+            'is_mother_program',
+            'mother_program_id'
         ]);
         $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
             ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
@@ -341,6 +365,8 @@ class PAPController extends Controller
             'subsector' => $request->subsector,
             'popsp' => $request->popsp,
             'focus_area' => $request->focus_area,
+            'is_mother_program' => $request->is_mother_program,
+            'mother_program_id' => $request->mother_program_id
         ]);
         return redirect('/paps/direct')
             ->with('info', 'Program and Projects updated');
@@ -350,6 +376,7 @@ class PAPController extends Controller
         $dept_code = auth()->user()->department_code;
         $data = $this->model::findOrFail($request->id);
         // dd($request->chief_executive_agenda);
+        // dd($request);
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $data->update([
             'paps_desc' => $request->paps_desc,
@@ -362,7 +389,9 @@ class PAPController extends Controller
             'socio_economic_agenda' => $request->socio_economic_agenda,
             'sust_devt_goal' => $request->sust_devt_goal,
             'executive_legislative_agenda' => $request->executive_legislative_agenda,
-            'research_agenda' => $request->research_agenda
+            'research_agenda' => $request->research_agenda,
+            'is_mother_program' => $request->is_mother_program,
+            'mother_program_id' => $request->mother_program_id
         ]);
         //dd('updated');
         return redirect('/paps/direct')
@@ -412,9 +441,14 @@ class PAPController extends Controller
         $idn = auth()->user()->recid;
         $FFUNCCODE = auth()->user()->office;
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCODE)->first();
+        // dd($office);
         $department_code = $office->department_code;
+        $divisions = OfficeDivision::where('department_code', $department_code)
+            ->orderBy('division_name1', 'ASC')
+            ->get();
+        // dd($divisions->pluck('division_name1'));
         // dd($auth()->user());
-
+        // dd(auth()->user());
         // dd($department_code);
         $data = $this->model->with('MFO')
             ->when($request->search, function ($query, $searchItem) {
@@ -448,6 +482,7 @@ class PAPController extends Controller
             $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
         }
         // dd($accessFFUNCCOD);
+        // dd($mfos);
         $showPerPage = 10;
         $paginatedResult = PaginationHelper::paginate($result, $showPerPage);
         // dd($accessFFUNCCOD);
@@ -459,6 +494,7 @@ class PAPController extends Controller
             "data" => $paginatedResult,
             "mfos" => $mfos,
             "filters" => $request->only(['search']),
+            "divisions" => $divisions,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -471,6 +507,14 @@ class PAPController extends Controller
         // dd($FFUNCCOD);
         $data = MajorFinalOutput::where('FFUNCCOD', $MY_FFUNCCOD)
             ->where('id', '>', '45')
+            ->get();
+        return ['data' => $data];
+    }
+    public function mother_paps_filter(Request $request, $idmfo)
+    {
+        // dd($request->search);
+        // dd($idmfo);
+        $data = ProgramAndProject::where('idmfo', $idmfo)
             ->get();
         return ['data' => $data];
     }
