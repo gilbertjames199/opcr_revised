@@ -151,18 +151,18 @@ __webpack_require__.r(__webpack_exports__);
     submit: function submit() {
       //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
       //alert(this.form.target_qty);
-      if (this.act_words > this.maxWords) {
-        alert("Rationale exceeds 200 words limit");
+      // if (this.act_words > this.maxWords) {
+      //     alert("Rationale exceeds 200 words limit")
+      // } else {
+      if (this.editData !== undefined) {
+        //alert('patch');
+        this.form.patch("/revision/", this.form);
       } else {
-        if (this.editData !== undefined) {
-          //alert('patch');
-          this.form.patch("/revision/", this.form);
-        } else {
-          this.form.id = null; //alert('store');
+        this.form.id = null; //alert('store');
 
-          this.form.post("/revision/store", this.form);
-        }
-      }
+        this.form.post("/revision/store", this.form);
+      } // }
+
     },
     limitWords: function limitWords() {
       var words = this.form.rationale.trim().split(/\s+/);

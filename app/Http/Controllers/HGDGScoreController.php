@@ -67,8 +67,12 @@ class HGDGScoreController extends Controller
             ->get()
             ->map(function ($item) use ($idrevplan) {
                 $question = HGDGQuestion::where('id', $item->question_id)->first();
-                $scory = floatval($item->score);
-                $scoor = floatval($question->score);
+                // $scory = floatval($item->score);
+                // $scoor = floatval($question->score);
+                // $scoor2 = floatval($question->score) * 2;
+                $scory = round(floatval($item->score), 8);
+                $scoor = round(floatval($question->score), 8);
+                $scoor2 = round((floatval($question->score) * 2), 8);
                 return [
                     "id" => $item->id,
                     "idrevplan" => $item->idrevplan,
@@ -78,6 +82,7 @@ class HGDGScoreController extends Controller
                     "has_subquestion" => $question->has_subquestion,
                     "question" => $question->question,
                     "q_score" => $scoor,
+                    "q_score2" => $scoor2,
                     "question_number" => $question->question_number
                 ];
             });

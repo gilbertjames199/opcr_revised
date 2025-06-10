@@ -77,6 +77,7 @@
                                     </th>
                                     <th>
                                         <!--@click="viewScore(hgdg_score.score)"-->
+                                        <!-- {{ form.hgdg_scores[index].q_score }}--{{ form.hgdg_scores[index].score }} -->
                                         <input type="radio"
                                             v-model="form.hgdg_scores[index].score"
                                             :name="form.hgdg_scores[index].id"
@@ -87,12 +88,19 @@
 
                                     </th>
                                     <th>
-                                        <input type="radio"
+                                        <!-- {{ form.hgdg_scores[index].q_score2}} --{{ form.hgdg_scores[index].q_score * 2 }}--{{ form.hgdg_scores[index].score }} -->
+                                        <!-- <input type="radio"
                                             v-model="form.hgdg_scores[index].score"
                                             :name="form.hgdg_scores[index].id"
                                             v-bind:hidden="hgdg_score.has_subquestion!='0'"
-                                            :value="form.hgdg_scores[index].q_score * 2"
+                                            :value="format_number_conv(form.hgdg_scores[index].q_score * 2)"
 
+                                        /> -->
+                                        <input type="radio"
+                                            v-model="form.hgdg_scores[index].score"
+                                            :name="form.hgdg_scores[index].id"
+                                            v-bind:hidden="hgdg_score.has_subquestion != '0'"
+                                            :value="form.hgdg_scores[index].q_score2"
                                         />
                                     </th>
                                     <th><div v-bind:hidden="hgdg_score.has_subquestion!='0'">{{ format_number_conv(setScore(form.hgdg_scores[index].score),2,false) }}</div></th>
@@ -244,6 +252,9 @@ export default {
         },
         viewScore(sc_val){
             alert(sc_val);
+        },
+        roundScore(value) {
+            return parseFloat(value).toFixed(2); // or .toFixed(3), depending on precision you need
         }
     },
 };
