@@ -147,7 +147,7 @@
                 <iframe :src="my_link" style="width:100%; height:500px" />
             </div>
         </Modal>
-        {{ divisions }}
+        <!-- {{ divisions }} -->
     </div>
 </template>
 <script>
@@ -281,7 +281,7 @@ export default {
             //     this.mfos_data = response.data.data
             // });
             try {
-                var my_url = "/paps/major/final/outputs/filter/" + this.division_code  +"";
+                var my_url = "/paps/major/final/outputs/filter/" + this.division_code  +"/filter/by/division";
                 // alert(my_url);
                 const response = await axios.get(my_url, { FFUNCCOD: this.FFUNCCOD });
                 this.mfos_data = response.data.data;

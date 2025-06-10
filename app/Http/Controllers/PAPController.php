@@ -512,6 +512,15 @@ class PAPController extends Controller
             ->get();
         return ['data' => $data];
     }
+    public function mfos_filter_division(Request $request, $division_code)
+    {
+        $MY_FFUNCCOD = $division_code;
+        // dd($FFUNCCOD);
+        $data = MajorFinalOutput::where('FFUNCCOD', $MY_FFUNCCOD)
+            ->where('id', '>', '45')
+            ->get();
+        return ['data' => $data];
+    }
     public function mother_paps_filter(Request $request, $idmfo)
     {
         // dd($request->search);

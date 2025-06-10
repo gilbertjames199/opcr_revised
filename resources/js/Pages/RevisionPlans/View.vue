@@ -1305,15 +1305,18 @@
                         <table table name="tabel" class="table table-hover table-bordered border-dark">
                             <thead>
                                 <tr class="bg-secondary text-white">
+                                    <th>No.</th>
                                     <th>Name</th>
-                                    <th>Position/Designation</th>
-                                    <th>Competency</th>
-                                    <th>Role</th>
-                                    <th>Has GAD-related trainings</th>
+                                    <th>Gender</th>
+                                    <th>Position</th>
+                                    <th>Employment Status</th>
+                                    <!-- <th>Role</th> -->
+                                    <th>GAD-related trainings</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="team_member in team_members">
+                                <tr v-for="(team_member, index) in team_members" :key="index">
+                                    <td>{{ index+1 }}</td>
                                     <!-- Name -->
                                     <td
                                     :class="{
@@ -1326,6 +1329,10 @@
                                             @click="handleClick('Team Plan','Name',team_member.name,'name','team_plans', team_member, team_member.comments)">*
                                         </button>
                                     </td>
+                                    <!-- Gender -->
+                                     <td>
+                                        {{ team_member.gender }}
+                                     </td>
                                     <!-- Position -->
                                     <td :class="{
                                                 'text-danger': has_comment('Team Plan','Position',team_member.position,'position','team_plans', team_member, team_member.comments)
@@ -1349,7 +1356,7 @@
                                             @click="handleClick('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)">*
                                         </button>
                                     </td>
-                                    <td :class="{
+                                    <!-- <td :class="{
                                                 'text-danger': has_comment('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)
                                             }">{{ team_member.role }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
@@ -1358,7 +1365,7 @@
                                         <button v-if="has_comment('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)" class="superscript-btn"
                                             @click="handleClick('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)">*
                                         </button>
-                                    </td>
+                                    </td> -->
                                     <td :class="{
                                                 'text-danger': has_comment('Team Plan','with_gad_training',team_member.with_gad_training,'with_gad_training','team_plans', team_member, team_member.comments)
                                             }">
