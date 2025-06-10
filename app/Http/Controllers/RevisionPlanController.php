@@ -250,22 +250,24 @@ class RevisionPlanController extends Controller
             if (auth()->user()->department_code == '04') {
                 $functions = FFUNCCOD::where('FFUNCCOD', $ppa->FFUNCCOD)->first();
             } else {
-                $functions = AccountAccess::where('iduser', auth()->user()->recid)
-                    ->where('ff.FFUNCCOD', $ppa->FFUNCCOD)
-                    ->select('ff.FFUNCCOD', 'ff.FFUNCTION')
-                    ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
-                    ->with('func')->first();
+                $functions = FFUNCCOD::where('FFUNCCOD', $ppa->FFUNCCOD)->first();
+                // $functions = AccountAccess::where('iduser', auth()->user()->recid)
+                //     ->where('ff.FFUNCCOD', $ppa->FFUNCCOD)
+                //     ->select('ff.FFUNCCOD', 'ff.FFUNCTION')
+                //     ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
+                //     ->with('func')->first();
             }
         } else if ($idmfo != 0) {
             $mfoss = MajorFinalOutput::findOrFail($paps->idmfo);
             if (auth()->user()->department_code == '04') {
                 $functions = FFUNCCOD::where('FFUNCCOD', $mfoss->FFUNCCOD)->first();
             } else {
-                $functions = AccountAccess::where('iduser', auth()->user()->recid)
-                    ->where('ff.FFUNCCOD', $mfoss->FFUNCCOD)
-                    ->select('ff.FFUNCCOD', 'ff.FFUNCTION')
-                    ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
-                    ->with('func')->first();
+                $functions = FFUNCCOD::where('FFUNCCOD', $mfoss->FFUNCCOD)->first();
+                // $functions = AccountAccess::where('iduser', auth()->user()->recid)
+                //     ->where('ff.FFUNCCOD', $mfoss->FFUNCCOD)
+                //     ->select('ff.FFUNCCOD', 'ff.FFUNCTION')
+                //     ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
+                //     ->with('func')->first();
             }
         }
 
@@ -532,6 +534,7 @@ class RevisionPlanController extends Controller
             $imp_amount = ActivityProject::where('project_id', $id)->where('is_active', '1')
                 ->sum(DB::raw('ps_q1 + ps_q2 + ps_q3 + ps_q4 + mooe_q1 + mooe_q2 + mooe_q3 + mooe_q4 + co_q1 + co_q2 + co_q3 + co_q4 + fe_q1 + fe_q2 + fe_q3 + fe_q4'));
         }
+        // dd($functions);
         return inertia('RevisionPlans/View', [
             "paps" => $paps,
             "office" => $functions->FFUNCTION,
