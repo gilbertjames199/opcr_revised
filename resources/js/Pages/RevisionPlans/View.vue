@@ -1345,8 +1345,19 @@
                                             @click="handleClick('Team Plan','Position',team_member.position,'position','team_plans', team_member, team_member.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Competency -->
+                                    <!-- Employment Status -->
                                     <td :class="{
+                                                'text-danger': has_comment('Team Plan','status',team_member.status,'status','team_plans', team_member, team_member.comments)
+                                            }">{{ team_member.status }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Team Plan','status',team_member.status,'status','team_plans', team_member, team_member.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Team Plan','status',team_member.status,'status','team_plans', team_member, team_member.comments)" class="superscript-btn"
+                                            @click="handleClick('Team Plan','status',team_member.status,'status','team_plans', team_member, team_member.comments)">*
+                                        </button>
+                                    </td>
+                                    <!-- Competency -->
+                                    <!-- <td :class="{
                                                 'text-danger': has_comment('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)
                                             }">{{ team_member.competency }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
@@ -1355,7 +1366,7 @@
                                         <button v-if="has_comment('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)" class="superscript-btn"
                                             @click="handleClick('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)">*
                                         </button>
-                                    </td>
+                                    </td> -->
                                     <!-- <td :class="{
                                                 'text-danger': has_comment('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)
                                             }">{{ team_member.role }}
