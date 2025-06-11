@@ -13,6 +13,7 @@ use App\Models\MajorFinalOutput;
 use App\Models\Monitoring_and_evaluation;
 use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
+use App\Models\RevisionPlanComment;
 use App\Models\Risk_manangement;
 use App\Models\Signatory;
 use App\Models\Strategy;
@@ -64,6 +65,11 @@ class RevisionPlanController extends Controller
                 ->where('idpaps', '=', $idpaps)
                 ->get()
                 ->map(function ($item) use ($budget_controller) {
+                    // COUNT THE COMMENTS
+                    $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)->where('table_name', 'revision_plans')->count();
+                    // dd($revision_comment);
+
+                    // BUDGERTARY REQUIREMENTs
                     $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                         ->sum('amount');
 
