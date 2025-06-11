@@ -1071,8 +1071,8 @@
                                 </tr> -->
                                 <tr>
                                     <td colspan="4">TOTAL</td>
-                                    <td class="text-end"></td>
-                                    <td class="text-end"></td>
+                                    <td class="text-end">{{  format_number_conv(tot_gad,2,true) }}</td>
+                                    <td class="text-end">{{ format_number_conv(tot_non,2,true) }}</td>
                                     <td class="text-end">{{ format_number_conv((parseFloat(s_cap_gad) + parseFloat(s_cap_non) + parseFloat(s_ps_gad)
                                     + parseFloat(s_ps_non) + parseFloat(s_mooe_gad) + parseFloat(s_mooe_non) + parseFloat(s_fe_gad) + parseFloat(s_fe_non))
                                     , 2,true)
@@ -1775,6 +1775,8 @@ export default {
             sessionStorage.removeItem('reloaded');
         }
         window.addEventListener('beforeunload', this.handleBeforeUnload);
+        this.tot_gad = parseFloat(this.s_cap_gad) + parseFloat(this.s_mooe_gad) + parseFloat(this.s_ps_gad) + parseFloat(this.s_fe_gad);
+        this.tot_non = parseFloat(this.s_cap_non) + parseFloat(this.s_mooe_non) + parseFloat(this.s_ps_non) + parseFloat(this.s_fe_non);
     },
 
     beforeUnmount() {
@@ -1800,7 +1802,9 @@ export default {
             v_imp_co: 0,
             v_imp_mooe: 0,
             v_imp_ps: 0,
-            has: 0
+            has: 0,
+            tot_gad: 0,
+            tot_non:0,
         }
     },
     watch: {},
