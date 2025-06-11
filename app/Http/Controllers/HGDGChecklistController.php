@@ -19,7 +19,11 @@ class HGDGChecklistController extends Controller
 
     public function index(Request $request)
     {
-
+        // dd(auth()->user()->department_code);
+        if (auth()->user()->department_code != '04') {
+            return redirect('/forbidden')
+                ->with('error', 'You do not have access to this page.');
+        }
         $data = $this->model
             ->orderBy('created_at', 'desc')
             ->paginate(10)
