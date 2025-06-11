@@ -1561,7 +1561,7 @@
                     </div>
                     <!--SIGNATORIES-->
                     <div v-if="paps.type === 'p'">
-                        <table class="table table-borderless">
+                        <table class="table table-borderless no-border-table">
                             <tbody>
                                 <tr>
                                     <td>
@@ -2121,5 +2121,14 @@ table {
 
 .action-btn {
   width: 100%;
+}
+
+.no-border-table td,
+.no-border-table th {
+  border: none !important;
+}
+
+.no-border-table {
+  border-collapse: collapse !important;
 }
 </style>
