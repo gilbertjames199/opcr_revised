@@ -335,7 +335,7 @@
                     </a>
                     <ul class="dropdown-menu">
 
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" v-if="$page.props.auth.user.department_code == '04'">
                             <a class="dropdown-toggle" href="javascript:void(0);">
 
                                 <span class="title">Agenda</span>
@@ -380,13 +380,13 @@
                         </li>
 
                         <!--****************************-->
-                        <li>
+                        <li v-if="$page.props.auth.user.department_code == '04'">
                             <Link class="sidebar-link" href="/HGDGChecklist"
                                 :class="{ 'active': $page.url === '/HGDGChecklist' }">
                             <span class="title">HGDG Checklist</span>
                             </Link>
                         </li>
-                        <li>
+                        <li v-if="$page.props.auth.user.department_code == '04'">
                             <Link class="sidebar-link" href="/Issues" :class="{ 'active': $page.url === '/Issues' }">
 
                             <span class="title">GAD Related Issues</span>
@@ -399,7 +399,7 @@
                             <span class="title">Implementing Team</span>
                             </Link>
                         </li>
-                        <li>
+                        <li >
                             <Link class="sidebar-link" href="/indicators"
                                 :class="{ 'active': $page.url === '/indicators' }">
                             <span class="title">Indicators</span>
