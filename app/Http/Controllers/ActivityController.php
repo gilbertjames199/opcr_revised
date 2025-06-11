@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\ActivityProject;
 use App\Models\ImplementationPlan;
 use App\Models\Strategy;
 use Illuminate\Http\Request;
@@ -120,6 +121,8 @@ class ActivityController extends Controller
             $msg = "Activity deleted";
             $data = $this->model->findOrFail($id);
             $data->delete();
+
+            ActivityProject::where('activity_id', $id)->delete();
         }
         //dd('hahhah '.$msg);
         //dd($request->raao_id);
