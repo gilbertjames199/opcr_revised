@@ -30,7 +30,9 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.person_affected">{{ form.errors.person_affected }}</div>
 
                 <label for="">MANAGEMENT</label>
-                <input type="text" v-model="form.management" class="form-control" autocomplete="chrome-off">
+                <QuillEditor theme="snow" v-model:content="form.management" contentType="html" toolbar="essential"
+                />
+                <!-- <input type="text" v-model="form.management" class="form-control" autocomplete="chrome-off"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.management">{{ form.errorsmanagement }}</div>
 
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">

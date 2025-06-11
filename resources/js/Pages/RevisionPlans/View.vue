@@ -1538,7 +1538,7 @@
                                     <!-- Risk Management -Management -->
                                     <td :class="{
                                         'text-danger': has_comment('Risk Management','Management',risk.management,'management','risk_manangements', risk, risk.comments)
-                                    }">{{ risk.management }}
+                                    }"><div v-html="risk.management"></div>
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Risk Management','Management',risk.management,'management','risk_manangements', risk, risk.comments)">*
                                         </button>
