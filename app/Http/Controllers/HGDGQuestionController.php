@@ -19,6 +19,10 @@ class HGDGQuestionController extends Controller
     }
     public function index(Request $request, $checklist_id)
     {
+        if (auth()->user()->department_code != '04') {
+            return redirect('/forbidden')
+                ->with('error', 'You do not have access to this page.');
+        }
         $hgdg_checklist = HGDG_Checklist::find($checklist_id);
         //dd($hgdg_checklist->box_number);
         $result = $this->getResults($request, $checklist_id);
