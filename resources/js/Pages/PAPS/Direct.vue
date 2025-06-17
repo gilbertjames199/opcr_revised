@@ -96,6 +96,9 @@
                                             <li>
                                                 <Link class="dropdown-item" :href="`/revision/${dat.id}`">PPA Profile</Link>
                                             </li>
+                                            <li>
+                                                <Button class="dropdown-item" @click="showModalSharedPaps(dat)">Share </Button>
+                                            </li>
                                             <li v-if="Number(FFUNCCODE) === 4421">
                                                 <Link class="dropdown-item" :href="`/hospitals/${dat.id}`">Hospital Output</Link>
                                             </li>
@@ -147,6 +150,54 @@
                 <iframe :src="my_link" style="width:100%; height:500px" />
             </div>
         </Modal>
+        <ModalSharedPaps v-if="displayModalSharedPaps" @close-modal-event="hideDisplayModalSharedPaps" :title="`Shared PAPS`">
+
+            <h1>Shared PAPS</h1>
+            <p><b>Title: </b><u>{{ paps_shared.paps_desc }}</u></p>
+            <div>
+                <!-- {{ paps_shared }} -->
+            </div>
+            <br>
+            <div>
+                <form @submit.prevent="submit">
+                        <input type="hidden" v-model="form.idpaps" />
+                        <!-- <input type="hidden" v-model="form.origin_department_code" /> -->
+                        <input type="hidden" v-model="form.origin_pghead" />
+                        <label for="">Destination Department Code -- {{ form.destination_pghead }}</label>
+                        <select v-model="form.destination_department_code" class="form-control"
+                            @change="form.destination_pghead = offices_shared.find(office => office.department_code === form.destination_department_code).empl_id">
+                            <option v-for="shared in offices_shared" :value="shared.department_code">
+                                {{ shared.office }}
+                            </option>
+                        </select>
+                        <!-- <label for="">Destination PG Head</label>
+                        <input type="text" v-model="form.destination_pghead" class="form-control" /> -->
+                        <button type="button" @click="submit" class="btn btn-primary mt-3 text-white">Share PAPS</button>
+                    </form>
+                    <!-- {{ shared_paps }} -->
+                <div>
+                    <br>
+                    <table style="width: 100%;" class="table table-sm table-borderless table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th style="background-color: grey; color: white">Department Name</th>
+                                <th style="background-color: grey; color: white">PG Head</th>
+                                <th style="background-color: grey; color: white">Shared by</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- LENGTH: {{ shared_paps.length }} -->
+                            <tr v-for="shared in shared_paps" :key="shared_paps.length">
+                                <td>{{ shared.destination_department.office }}</td>
+                                <td>{{ shared.destination_pghead.first_name }} {{ shared.destination_pghead.middle_name }} {{ shared.destination_pghead.last_name }}</td>
+                                <td>{{ shared.added_by.FullName }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </ModalSharedPaps>
         <!-- {{ divisions }} -->
     </div>
 </template>
@@ -154,6 +205,9 @@
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
+import ModalSharedPaps from "@/Shared/ModalDynamicTitle";
+import { useForm } from "@inertiajs/inertia-vue3";
+
 export default {
     props: {
         data: Object,
@@ -162,6 +216,8 @@ export default {
         FFUNCCODE: Object,
         department_code: Object,
         office: Object,
+        offices: Object,
+        offices_shared: Object,
         // idinteroutcome: String,
         // idoutcome: String,
         // idmfo: String,
@@ -172,6 +228,9 @@ export default {
     data() {
         return {
             displayModal: false,
+            displayModalSharedPaps: false,
+            shared_paps: [],//pertains to the departments the involved with the Shared PAPS other than the office that owns the PAPS
+            paps_shared: [],//pertains to the PAPS being shared
             search: this.$props.filters.search,
             filter: false,
             ismfo: 0,
@@ -181,7 +240,15 @@ export default {
             func_code: "",
             func_name: "",
             filter_FFUNCTION: "",
-            division_code: ""
+            division_code: "",
+            form: useForm({
+                idpaps: "",
+                origin_department_code: "",
+                origin_pghead: "",
+                destination_department_code: "",
+                destination_pghead: "",
+                user_id: this.$page.props.auth.user.id,
+            })
         }
     },
     watch: {
@@ -198,7 +265,7 @@ export default {
         }, 300),
     },
     components: {
-        Pagination, Filtering, Modal,
+        Pagination, Filtering, Modal, ModalSharedPaps
     },
     mounted() {
         this.office_function()
@@ -303,6 +370,53 @@ export default {
                     replace: true,
                 }
             );
+        },
+        showModalSharedPaps(dat) {
+            this.displayModalSharedPaps = true;
+            this.shared_paps = [];
+            this.paps_shared = dat;
+            this.form.idpaps = dat.id;
+            this.getSharedPAPS(dat.id);
+            this.form.origin_department_code = dat.department_code;
+            this.form.origin_pghead = this.offices_shared.find(office => office.department_code === dat.department_code).empl_id;
+            // alert(this.form.origin_department_code);
+            // console.log("shared_paps: " + this.shared_paps);
+            // console.log("paps_shared: " + this.paps_shared);
+        },
+        hideDisplayModalSharedPaps(){
+            this.displayModalSharedPaps = false;
+            this.shared_paps = [];
+            this.paps_shared = [];
+        },
+        async getSharedPAPS(idpaps) {
+            this.shared_paps = [];
+            // PAPS Shared
+            try {
+                var my_url = "/sharedPAPS/" + idpaps;
+                const response = await axios.get(my_url, { idpaps: idpaps });
+                console.log(response.data)
+                this.shared_paps = response.data;
+                this.shared_paps.splice(0, this.shared_paps.length, ...response.data);
+
+                // this.$set(this, 'shared_paps', response.data);
+
+            } catch (error) {
+                console.error("Error fetching shared PAPS:", error);
+            }
+        },
+        submit() {
+            // alert("submit");
+            // console.log(this.form);
+            this.form.post("/sharedPAPS/create", {
+                onSuccess: () => {
+                    // this.hideDisplayModalSharedPaps();
+                    // this.$inertia.reload();
+                    this.getSharedPAPS(this.form.idpaps);
+                },
+                onError: (errors) => {
+                    console.error("Error sharing PAPS:", errors);
+                }
+            });
         }
     }
 };

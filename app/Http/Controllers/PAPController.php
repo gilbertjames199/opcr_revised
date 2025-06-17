@@ -11,6 +11,7 @@ use App\Models\ELA;
 use App\Models\FFUNCCOD;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring;
+use App\Models\Office;
 use App\Models\OfficeAccountable;
 use App\Models\OfficeDivision;
 use App\Models\Output;
@@ -22,6 +23,7 @@ use App\Models\RatingRemarks;
 use App\Models\ResearchAgenda;
 use App\Models\RevisionPlan;
 use App\Models\SDG;
+use App\Models\SharedProgramAndProject;
 use App\Models\Strategy;
 use App\Models\SuccessIndicator;
 use App\Models\Target;
@@ -132,21 +134,27 @@ class PAPController extends Controller
 
     public function direct_create()
     {
-        //dd("direct create");
-        $idn = auth()->user()->recid;
+        // USERS
+        $us = auth()->user();
+        $idn = $us->recid;
+        $user_FFUNCCOD = $us->office;
+        //MFO
         $mfos1 = MajorFinalOutput::get();
         $mfos = [];
         $mfos = clone ($mfos1);
+
+        // ACCOUNT ACCESS
         $access = DB::connection('mysql2')->table('accountaccess')
             ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
             ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
             ->where('systemusers.recid', $idn)
             ->get();
+        // dd($access);
         $accessFFUNCCOD = $access->pluck('a_ffunccod')->toArray();
-        //$showPerPage=10;
-        //dd($mfos);
-        //dd($mfos);
-        //$mfos =PaginationHelper::paginate($result, $showPerPage);
+        if (empty($accessFFUNCCOD)) {
+            $accessFFUNCCOD[] = $user_FFUNCCOD;
+        }
+
 
         $chief_executive_agenda = ChiefAgenda::get();
         $socio_economic = EconomicAgenda::get();
@@ -159,14 +167,7 @@ class PAPController extends Controller
         //             ->select('ff.FFUNCCOD','ff.FFUNCTION')
         //             ->join(DB::raw('fms.functions ff'),'ff.FFUNCCOD','accountaccess.ffunccod')
         //             ->with('func')->get();
-        $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
-            ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
-            ->where(function ($query) {
-                $query->where('ff.FFUNCTION', 'LIKE', '%Office%')
-                    ->orWhere('ff.FFUNCTION', 'LIKE', '%Function%')
-                    ->orWhere('ff.FFUNCTION', 'LIKE', '%Hospital%');
-            })
-            ->with('func');
+
         // $motherPAPS = ProgramAndProject::with('MFO')
         //     ->where('idmfo', '>', '45')
         //     ->orderByRaw(
@@ -176,6 +177,15 @@ class PAPController extends Controller
         //                 WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
         //                 END")
         //     );
+
+        $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
+            ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
+            ->where(function ($query) {
+                $query->where('ff.FFUNCTION', 'LIKE', '%Office%')
+                    ->orWhere('ff.FFUNCTION', 'LIKE', '%Function%')
+                    ->orWhere('ff.FFUNCTION', 'LIKE', '%Hospital%');
+            })
+            ->with('func');
         if (auth()->user()->recid !== 545) {
             $functions = clone ($functions)->where('iduser', auth()->user()->recid);
             $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
@@ -186,10 +196,6 @@ class PAPController extends Controller
             ->orderBy('FFUNCTION', 'ASC')
             ->get();
         // dd($functions);
-        //dd($id);
-        // dd($motherPAPS);
-
-
         return inertia('PAPS/Create', [
             'mfos' => $mfos,
             'chief_agenda' => $chief_executive_agenda,
@@ -438,6 +444,13 @@ class PAPController extends Controller
         // dd("direct");
         //dd($request->mfosel);
         $offices = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->orderBy('FFUNCTION', 'ASC')->get();
+        $offices_shared = Office::where(function ($query) {
+            $query->where('office', 'LIKE', '%Office%')
+                ->orWhere('office', 'LIKE', '%Hospital%');
+        })
+            ->where('office', '!=', 'No Office')
+            ->orderBy('office', 'ASC')
+            ->get();
         $idn = auth()->user()->recid;
         $FFUNCCODE = auth()->user()->office;
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCODE)->first();
@@ -450,6 +463,18 @@ class PAPController extends Controller
         // dd($auth()->user());
         // dd(auth()->user());
         // dd($department_code);
+        $sharedPAPS = SharedProgramAndProject::where('destination_department_code', $department_code)
+            ->pluck('idpaps'); // Get shared IDs
+        // dd($sharedPAPS);
+        $sharedPAPSData = $this->model->with('MFO')
+            ->when($request->search, function ($query, $searchItem) {
+                $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');
+            })
+            ->when($request->mfosel, function ($query, $searchItem) {
+                $query->where('idmfo', '=', $searchItem);
+            })
+            ->whereIn('id', $sharedPAPS)
+            ->get();
         $data = $this->model->with('MFO')
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');
@@ -458,6 +483,7 @@ class PAPController extends Controller
                 $query->where('idmfo', '=', $searchItem);
             })
             ->where('idmfo', '>', '45')
+            // Include shared PAPS
             ->orderByRaw(
                 DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
                             WHEN program_and_projects.type = 'Project' THEN 1
@@ -467,6 +493,7 @@ class PAPController extends Controller
             )
             ->orderBy('program_and_projects.paps_desc', 'ASC')
             ->get();
+
         // dd($data->pluck('paps_desc'));
         $access = DB::connection('mysql2')->table('accountaccess')
             ->select(DB::raw('TRIM(accountaccess.ffunccod) AS a_ffunccod'))
@@ -481,6 +508,7 @@ class PAPController extends Controller
             $accessFFUNCCOD[] = auth()->user()->office;
             $accessFFUNCCOD = array_unique($accessFFUNCCOD);
             $result = $data->whereIn('FFUNCCOD', $accessFFUNCCOD);
+            $result = $result->merge($sharedPAPSData);
             $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
         }
         // dd($accessFFUNCCOD);
@@ -492,6 +520,7 @@ class PAPController extends Controller
             "FFUNCCODE" => $FFUNCCODE,
             "department_code" => $department_code,
             "offices" => $offices,
+            "offices_shared" => $offices_shared,
             'office' => $office->FFUNCTION,
             "data" => $paginatedResult,
             "mfos" => $mfos,
@@ -502,6 +531,57 @@ class PAPController extends Controller
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
+    }
+    public function getAllPAPS(Request $request, $departmentCode)
+    {
+        // dd($request->search);
+        $mainPAPS = $this->model->with('MFO')
+            ->when($request->search, function ($query, $searchItem) {
+                $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');
+            })
+            ->when($request->mfosel, function ($query, $searchItem) {
+                $query->where('idmfo', '=', $searchItem);
+            })
+            ->where('idmfo', '>', 45)
+            ->orderByRaw(DB::raw("
+        CASE
+            WHEN program_and_projects.type = 'GAS' THEN 0
+            WHEN program_and_projects.type = 'Project' THEN 1
+            WHEN program_and_projects.type = 'Program' THEN 2
+            WHEN program_and_projects.type = 'Activity' THEN 3
+            ELSE 4
+        END
+    "))
+            ->orderBy('program_and_projects.paps_desc', 'ASC')
+            ->get();
+
+        // Shared PAPS (received by department)
+        $sharedPAPS = \App\Models\SharedProgramAndProject::where('destination_department_code', $departmentCode)
+            ->pluck('idpaps'); // Get shared IDs
+
+        $sharedPrograms = $this->model->with('MFO')
+            ->whereIn('id', $sharedPAPS)
+            ->when($request->search, function ($query, $searchItem) {
+                $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');
+            })
+            ->when($request->mfosel, function ($query, $searchItem) {
+                $query->where('idmfo', '=', $searchItem);
+            })
+            ->where('idmfo', '>', 45)
+            ->orderByRaw(DB::raw("
+        CASE
+            WHEN program_and_projects.type = 'GAS' THEN 0
+            WHEN program_and_projects.type = 'Project' THEN 1
+            WHEN program_and_projects.type = 'Program' THEN 2
+            WHEN program_and_projects.type = 'Activity' THEN 3
+            ELSE 4
+        END
+    "))
+            ->orderBy('program_and_projects.paps_desc', 'ASC')
+            ->get();
+
+        // Merge both
+        return $mainPAPS->merge($sharedPrograms);
     }
     public function mfos_filter(Request $request, $FFUNCCOD)
     {

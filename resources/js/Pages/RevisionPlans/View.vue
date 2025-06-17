@@ -451,7 +451,7 @@
                                         </td>
                                     </tr>
                                     <template v-if="dat.activity && paps.is_strategy_based==0">
-                                        <tr v-for="(act, subIndex) in dat.activity" :key="subIndex">
+                                        <tr v-for="(act, subIndex) in dat.activity" :key="subIndex" style="height: 100%">
                                             <!-- DESCRIPTION -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
@@ -542,70 +542,135 @@
 
                                             </td> -->
                                             <!-- MERGED -->
-                                            <td colspan="4" style="width: 32%;padding: 0; border: 1px solid #000;">
-                                                <table class="m-0" style="border-collapse: collapse; width: 100%; table-layout: fixed;">
-                                                    <template v-for="(pair, i) in getPairedOutputs(act.activityProject[0])" :key="i" >
-                                                        <tr >
-                                                            <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;">
-                                                                <span v-if="paps.is_strategy_based==0 && pair.target_indicator">{{ pair.target_indicator }}
-                                                                    <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
-                                                                    <button v-if="can_view_comment()" class="superscript-btn"
-                                                                        @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
-                                                                    </button>
-                                                                    <button v-if="has_comment('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
-                                                                        @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
-                                                                    </button>
-                                                                    <!-- --{{ pair.outcome_description }} -->
-                                                                </span>
-                                                                <br><br>
-                                                            </td>
-                                                            <!-- GAD Issue -->
-                                                            <td v-if="i === 0" class="align-top" :class="{
-                                                                'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
-                                                            }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
-                                                                <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
-                                                                    <button v-if="can_view_comment()" class="superscript-btn"
-                                                                        @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
-                                                                    </button>
-                                                                    <button v-if="has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                        @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
-                                                                    </button>
-                                                                </span>
-                                                             </td>
+                                             <!-- <td>
+                                                <span v-if="getPairedOutputs(act.activityProject[0]) && getPairedOutputs(act.activityProject[0]).length">
+                                                    Dsadasdasdasdasdads
+                                                </span>
+                                                <span v-else>Empty siya</span>
+                                             </td> -->
+                                            <td colspan="4" style="width: 32%; padding: 0; border: 1px solid #000; vertical-align: top;">
+                                                <div style="display: flex; flex-direction: column; height: 100%; min-height: 100%;">
+                                                    <!-- style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;" -->
+                                                    <table class="m-0"
+                                                    style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed; flex: 1 1 auto;"
+                                                    v-if="getPairedOutputs(act.activityProject[0]) && getPairedOutputs(act.activityProject[0]).length">
+                                                        <template v-for="(pair, i) in getPairedOutputs(act.activityProject[0])" :key="i" >
+                                                            <tr style="height: 100%;">
+                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;">
+                                                                    <span v-if="paps.is_strategy_based==0 && pair.target_indicator">{{ pair.target_indicator }}
+                                                                        <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
+                                                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
+                                                                        </button>
+                                                                        <button v-if="has_comment('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
+                                                                        </button>
 
-                                                             <!-- Timeline -->
-                                                            <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" v-if="i === 0" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
-                                                                'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
-                                                                has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
-                                                            }">
-                                                                <span v-if="paps.is_strategy_based==0">
-                                                                    <span v-if="act.date_from">{{ formatMonthYear(act.date_from) }}
+                                                                    </span>
+                                                                    <br><br>
+                                                                </td>
+                                                                <!-- GAD Issue -->
+                                                                <td v-if="i === 0" class="align-top" :class="{
+                                                                    'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
+                                                                }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
+                                                                    <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                            @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
                                                                         </button>
-                                                                        <button v-if="has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                        <button v-if="has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
                                                                         </button>
                                                                     </span>
-                                                                    <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                                    <span v-if="act.date_to">{{ formatMonthYear(act.date_to) }}
+                                                                </td>
+
+                                                                <!-- Timeline -->
+                                                                <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" v-if="i === 0" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
+                                                                    'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
+                                                                    has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
+                                                                }">
+                                                                    <span v-if="paps.is_strategy_based==0">
+                                                                        <span v-if="act.date_from">{{ formatMonthYear(act.date_from) }}
+                                                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                            </button>
+                                                                            <button v-if="has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                            </button>
+                                                                        </span>
+                                                                        <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
+                                                                        <span v-if="act.date_to">{{ formatMonthYear(act.date_to) }}
+                                                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                            </button>
+                                                                            <button v-if="has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                            </button>
+                                                                        </span>
+                                                                    </span>
+                                                                </td>
+                                                                <!-- Expected Outcome -->
+                                                                <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;">
+                                                                    <div><span v-if="pair.quantity>0"> {{ pair.quantity }}</span> {{ pair.output_description }} </div>
+                                                                    <div>{{ pair.outcome_description }}</div>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </table>
+                                                    <table class="m-0" style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;"
+                                                    v-else>
+                                                        <template >
+                                                            <tr >
+                                                                <td >
+
+                                                                </td>
+                                                                <!-- GAD Issue -->
+                                                                <td class="align-top" :class="{
+                                                                    'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
+                                                                }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
+                                                                    <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                            @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
                                                                         </button>
-                                                                        <button v-if="has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                        <button v-if="has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
                                                                         </button>
                                                                     </span>
-                                                                </span>
-                                                            </td>
-                                                            <!-- Expected Outcome -->
-                                                            <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;">
-                                                                <div><span v-if="pair.quantity>0"> {{ pair.quantity }}</span> {{ pair.output_description }} </div>
-                                                                <div>{{ pair.outcome_description }}</div>
-                                                            </td>
-                                                        </tr>
-                                                    </template>
-                                                </table>
+                                                                </td>
+
+                                                                <!-- Timeline -->
+                                                                <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
+                                                                    'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
+                                                                    has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
+                                                                }">
+                                                                    <span v-if="paps.is_strategy_based==0">
+                                                                        <span v-if="act.date_from">{{ formatMonthYear(act.date_from) }}
+                                                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                            </button>
+                                                                            <button v-if="has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                            </button>
+                                                                        </span>
+                                                                        <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
+                                                                        <span v-if="act.date_to">{{ formatMonthYear(act.date_to) }}
+                                                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                            </button>
+                                                                            <button v-if="has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                            </button>
+                                                                        </span>
+                                                                    </span>
+                                                                </td>
+                                                                <!-- Expected Outcome -->
+                                                                <td >
+
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </table>
+                                                </div>
+
                                             </td>
                                             <!-- PERSONNEL SERVICES -->
                                             <td :class="{

@@ -92,6 +92,7 @@ use App\Http\Controllers\OpcrTargetBudgetController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
 use App\Http\Controllers\RevisionPlanCommentController;
 use App\Http\Controllers\SentenceParserController;
+use App\Http\Controllers\SharedProgramAndProjectController;
 use App\Http\Controllers\StrategyProjectController;
 use App\Http\Controllers\TimeRangeController;
 use App\Http\Controllers\UserController;
@@ -406,6 +407,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/major/final/outputs/filter/{division_code}/filter/by/division', [PAPController::class, 'mfos_filter']);
         //FILTER mother PAPS in CREATE/EDIT
         Route::get('/mother/paps/filter/{idmfo}', [PAPController::class, 'mother_paps_filter']);
+    });
+    //Shared Programs and Projects Profile
+    Route::prefix('/sharedPAPS')->group(function () {
+        Route::get('/{idpaps}', [SharedProgramAndProjectController::class, 'getSharedPAPS']);
+        Route::post('/create', [SharedProgramAndProjectController::class, 'create']);
     });
     //Project Profile
     Route::prefix('/projectprofile')->group(function () {
