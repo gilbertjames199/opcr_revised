@@ -22,14 +22,18 @@
                 <input type="hidden" required>
                 <input type="hidden" v-model="form.revision_plan_id" class="form-control" autocomplete="positionchrome-off">
                 <label for="">PROSPECTIVE POSSIBLE RISKS</label>
-                <input type="text" v-model="form.possible_risk" class="form-control" autocomplete="positionchrome-off">
+                <QuillEditor theme="snow" v-model:content="form.possible_risk" contentType="html" toolbar="essential"
+                />
+                <!-- <input type="text" v-model="form.possible_risk" class="form-control" autocomplete="positionchrome-off"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.possible_risk">{{ form.errors.possible_risk }}</div>
 
-                <label for="">PERSONS AFFECTED</label>
-                <input type="text" v-model="form.person_affected" class="form-control" autocomplete="chrome-off">
+                <label for="">PREVENTIVE MEASURES</label>
+                <QuillEditor theme="snow" v-model:content="form.person_affected" contentType="html" toolbar="essential"
+                />
+                <!-- <input type="text" v-model="form.person_affected" class="form-control" autocomplete="chrome-off"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.person_affected">{{ form.errors.person_affected }}</div>
 
-                <label for="">MANAGEMENT</label>
+                <label for="">MECHANISMS TO MONITOR</label>
                 <QuillEditor theme="snow" v-model:content="form.management" contentType="html" toolbar="essential"
                 />
                 <!-- <input type="text" v-model="form.management" class="form-control" autocomplete="chrome-off"> -->

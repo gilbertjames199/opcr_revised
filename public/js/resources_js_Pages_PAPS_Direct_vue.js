@@ -141,6 +141,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.$inertia["delete"]("/paps/" + id + "/");
       }
     },
+    deleteSharedPaps: function deleteSharedPaps(id, dept) {
+      var _this2 = this;
+
+      var text = "\u26A0\uFE0F WARNING!\nAre you sure you want to unshare this PAP with \"".concat(dept, "\"? This action cannot be undone. ").concat(this.form.idpaps);
+
+      if (confirm(text) == true) {
+        // this.$inertia.delete("/sharedPAPS/" + id + "/");
+        // this.getSharedPAPS(this.form.idpaps);
+        this.form["delete"]("/sharedPAPS/" + id + "/", {
+          onSuccess: function onSuccess() {
+            // this.hideDisplayModalSharedPaps();
+            // this.$inertia.reload();
+            _this2.getSharedPAPS(_this2.form.idpaps);
+          },
+          onError: function onError(errors) {
+            console.error("Error deleting PAPS:", errors);
+          }
+        });
+      }
+    },
     showFilter: function showFilter() {
       //alert("show filter");
       this.filter = !this.filter;
@@ -155,16 +175,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return link1;
     },
     clearFilter: function clearFilter() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this2.mfosel = "";
+                _this3.mfosel = "";
 
-                _this2.filterData();
+                _this3.filterData();
 
               case 2:
               case "end":
@@ -175,7 +195,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }))();
     },
     filterMFOs: function filterMFOs() {
-      var _this3 = this;
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var my_url, response;
@@ -183,23 +203,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _this3.office_function();
+                _this4.office_function();
 
-                _this3.mfos_data = []; // await axios.post("/paps/major/final/outputs/filter", { FFUNCCOD: this.form.FFUNCCOD }).then((response) => {
+                _this4.mfos_data = []; // await axios.post("/paps/major/final/outputs/filter", { FFUNCCOD: this.form.FFUNCCOD }).then((response) => {
                 //     this.mfos_data = response.data.data
                 // });
 
                 _context2.prev = 2;
-                my_url = "/paps/major/final/outputs/filter/" + _this3.FFUNCCOD; // alert(my_url);
+                my_url = "/paps/major/final/outputs/filter/" + _this4.FFUNCCOD; // alert(my_url);
 
                 _context2.next = 6;
                 return axios.get(my_url, {
-                  FFUNCCOD: _this3.FFUNCCOD
+                  FFUNCCOD: _this4.FFUNCCOD
                 });
 
               case 6:
                 response = _context2.sent;
-                _this3.mfos_data = response.data.data;
+                _this4.mfos_data = response.data.data;
                 _context2.next = 13;
                 break;
 
@@ -217,7 +237,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }))();
     },
     filterMFOsByDivision: function filterMFOsByDivision() {
-      var _this4 = this;
+      var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         var my_url, response;
@@ -225,23 +245,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _this4.office_function();
+                _this5.office_function();
 
-                _this4.mfos_data = []; // await axios.post("/paps/major/final/outputs/filter", { FFUNCCOD: this.form.FFUNCCOD }).then((response) => {
+                _this5.mfos_data = []; // await axios.post("/paps/major/final/outputs/filter", { FFUNCCOD: this.form.FFUNCCOD }).then((response) => {
                 //     this.mfos_data = response.data.data
                 // });
 
                 _context3.prev = 2;
-                my_url = "/paps/major/final/outputs/filter/" + _this4.division_code + "/filter/by/division"; // alert(my_url);
+                my_url = "/paps/major/final/outputs/filter/" + _this5.division_code + "/filter/by/division"; // alert(my_url);
 
                 _context3.next = 6;
                 return axios.get(my_url, {
-                  FFUNCCOD: _this4.FFUNCCOD
+                  FFUNCCOD: _this5.FFUNCCOD
                 });
 
               case 6:
                 response = _context3.sent;
-                _this4.mfos_data = response.data.data;
+                _this5.mfos_data = response.data.data;
                 _context3.next = 13;
                 break;
 
@@ -259,7 +279,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }))();
     },
     filterData: function filterData() {
-      var _this5 = this;
+      var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
@@ -267,8 +287,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             switch (_context4.prev = _context4.next) {
               case 0:
                 //alert(this.mfosel);
-                _this5.$inertia.get("/paps/direct", {
-                  mfosel: _this5.mfosel
+                _this6.$inertia.get("/paps/direct", {
+                  mfosel: _this6.mfosel
                 }, {
                   preserveScroll: true,
                   preserveState: true,
@@ -302,16 +322,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.paps_shared = [];
     },
     getSharedPAPS: function getSharedPAPS(idpaps) {
-      var _this6 = this;
+      var _this7 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
-        var _this6$shared_paps, my_url, response;
+        var _this7$shared_paps, my_url, response;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _this6.shared_paps = []; // PAPS Shared
+                _this7.shared_paps = []; // PAPS Shared
 
                 _context5.prev = 1;
                 my_url = "/sharedPAPS/" + idpaps;
@@ -323,9 +343,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 5:
                 response = _context5.sent;
                 console.log(response.data);
-                _this6.shared_paps = response.data;
+                _this7.shared_paps = response.data;
 
-                (_this6$shared_paps = _this6.shared_paps).splice.apply(_this6$shared_paps, [0, _this6.shared_paps.length].concat(_toConsumableArray(response.data))); // this.$set(this, 'shared_paps', response.data);
+                (_this7$shared_paps = _this7.shared_paps).splice.apply(_this7$shared_paps, [0, _this7.shared_paps.length].concat(_toConsumableArray(response.data))); // this.$set(this, 'shared_paps', response.data);
 
 
                 _context5.next = 14;
@@ -345,7 +365,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }))();
     },
     submit: function submit() {
-      var _this7 = this;
+      var _this8 = this;
 
       // alert("submit");
       // console.log(this.form);
@@ -353,7 +373,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         onSuccess: function onSuccess() {
           // this.hideDisplayModalSharedPaps();
           // this.$inertia.reload();
-          _this7.getSharedPAPS(_this7.form.idpaps);
+          _this8.getSharedPAPS(_this8.form.idpaps);
         },
         onError: function onError(errors) {
           console.error("Error sharing PAPS:", errors);
@@ -604,7 +624,7 @@ var _hoisted_30 = {
 };
 var _hoisted_31 = ["src"];
 
-var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Shared PAPS", -1
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "Shared PAPS", -1
 /* HOISTED */
 );
 
@@ -620,9 +640,12 @@ var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_36 = {
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-};
+}, "Destination Department Code ", -1
+/* HOISTED */
+);
+
 var _hoisted_37 = ["value"];
 
 var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
@@ -651,10 +674,42 @@ var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
     "background-color": "grey",
     "color": "white"
   }
-}, "Shared by")])], -1
+}, "Shared by"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  style: {
+    "background-color": "grey",
+    "color": "white"
+  }
+}, "Action")])], -1
 /* HOISTED */
 );
 
+var _hoisted_41 = {
+  "class": "dropdown dropstart"
+};
+
+var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "btn btn-secondary btn-sm action-btn",
+  type: "button",
+  id: "dropdownMenuButton1",
+  "data-bs-toggle": "dropdown",
+  "aria-expanded": "false"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "16",
+  height: "16",
+  fill: "currentColor",
+  "class": "bi bi-three-dots",
+  viewBox: "0 0 16 16"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
+})])], -1
+/* HOISTED */
+);
+
+var _hoisted_43 = {
+  "class": "dropdown-menu action-dropdown",
+  "aria-labelledby": "dropdownMenuButton1"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -930,9 +985,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.origin_pghead]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_36, "Destination Department Code -- " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.destination_pghead), 1
-      /* TEXT */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.origin_pghead]]), _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
         "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
           return $data.form.destination_department_code = $event;
         }),
@@ -969,7 +1022,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(shared.added_by.FullName), 1
         /* TEXT */
-        )]);
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [_hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+          "class": "text-danger dropdown-item",
+          onClick: function onClick($event) {
+            return $options.deleteSharedPaps(shared.id, shared.destination_department.office);
+          }
+        }, {
+          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Delete Record ")];
+          }),
+          _: 2
+          /* DYNAMIC */
+
+        }, 1032
+        /* PROPS, DYNAMIC_SLOTS */
+        , ["onClick"])])])])])]);
       }), 128
       /* KEYED_FRAGMENT */
       ))])])])])];

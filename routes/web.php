@@ -412,6 +412,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/sharedPAPS')->group(function () {
         Route::get('/{idpaps}', [SharedProgramAndProjectController::class, 'getSharedPAPS']);
         Route::post('/create', [SharedProgramAndProjectController::class, 'create']);
+        Route::delete('/{id}', [SharedProgramAndProjectController::class, 'destroy']);
     });
     //Project Profile
     Route::prefix('/projectprofile')->group(function () {
