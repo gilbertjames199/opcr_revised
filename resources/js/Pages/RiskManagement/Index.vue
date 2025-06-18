@@ -52,16 +52,16 @@
                         <thead>
                             <tr class="bg-secondary text-white">
                                 <th>Prospective Possible Risk</th>
-                                <th>Person Affected</th>
-                                <th>Management</th>
+                                <th>Preventive Measures</th>
+                                <th>Mechanisms to Monitor</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
 
                             <tr v-for="dat in data.data">
-                                <td>{{ dat.possible_risk }}</td>
-                                <td>{{ dat.person_affected }}</td>
+                                <td><div v-html="dat.possible_risk"></div></td>
+                                <td><div v-html="dat.person_affected"></div></td>
                                 <td><div v-html="dat.management"></div></td>
                                 <td>
                                     <div class="dropdown dropstart" >

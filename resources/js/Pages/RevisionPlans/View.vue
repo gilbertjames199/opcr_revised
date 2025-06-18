@@ -1572,8 +1572,8 @@
                             <thead>
                                 <tr class="bg-secondary text-white">
                                     <th>Prospective Possible Risks</th>
-                                    <th>Person Affected</th>
-                                    <th>Management</th>
+                                    <th>Preventive Measures</th>
+                                    <th>Mechanisms to monitor</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1581,7 +1581,7 @@
                                     <!-- Risk Management -Possible Risks -->
                                     <td :class="{
                                         'text-danger': has_comment('Risk Management','Possible Risks',risk.possible_risk,'possible_risk','risk_manangements', risk, risk.comments)
-                                    }">{{ risk.possible_risk }}
+                                    }"><span v-html="risk.possible_risk"></span>
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Risk Management','Possible Risks',risk.possible_risk,'possible_risk','risk_manangements', risk, risk.comments)">*
                                         </button>
@@ -1592,7 +1592,7 @@
                                     <!-- Risk Management -Person Affected -->
                                     <td :class="{
                                         'text-danger': has_comment('Risk Management','Person Affected',risk.person_affected,'person_affected','risk_manangements', risk, risk.comments)
-                                    }">{{ risk.person_affected }}
+                                    }"><span v-html="risk.person_affected"></span>
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Risk Management','Person Affected',risk.person_affected,'person_affected','risk_manangements', risk, risk.comments)">*
                                         </button>
@@ -1700,7 +1700,11 @@
                 <div><b>Section: </b>{{ comment_section }}</div>
                 <div><b>Subtitle:</b> <span v-html="comment_subtitle"></span></div>
                 <div><b>Data:</b> <span v-html="comment_data"></span></div>
-                <div><b>Column:</b> {{ comment_column }}</div>
+                <div><b>Column:</b> {{ comment_column }}
+                    <span v-if="comment_column=='Person Affected'">Preventive Measures</span>
+                    <span v-else-if="comment_column=='Management'">Mechanisms to monitor</span>
+                    <span v-else>{{ comment_colun }}</span>
+                </div>
                 <div><b>Table:</b> {{ comment_table }}</div>
                 <!-- <div>Reference Object: {{ comment_reference_object }}</div> -->
 

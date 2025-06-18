@@ -152,7 +152,7 @@
         </Modal>
         <ModalSharedPaps v-if="displayModalSharedPaps" @close-modal-event="hideDisplayModalSharedPaps" :title="`Shared PAPS`">
 
-            <h1>Shared PAPS</h1>
+            <h3>Shared PAPS</h3>
             <p><b>Title: </b><u>{{ paps_shared.paps_desc }}</u></p>
             <div>
                 <!-- {{ paps_shared }} -->
@@ -163,7 +163,7 @@
                         <input type="hidden" v-model="form.idpaps" />
                         <!-- <input type="hidden" v-model="form.origin_department_code" /> -->
                         <input type="hidden" v-model="form.origin_pghead" />
-                        <label for="">Destination Department Code -- {{ form.destination_pghead }}</label>
+                        <label for="">Destination Department Code </label>
                         <select v-model="form.destination_department_code" class="form-control"
                             @change="form.destination_pghead = offices_shared.find(office => office.department_code === form.destination_department_code).empl_id">
                             <option v-for="shared in offices_shared" :value="shared.department_code">
@@ -183,6 +183,7 @@
                                 <th style="background-color: grey; color: white">Department Name</th>
                                 <th style="background-color: grey; color: white">PG Head</th>
                                 <th style="background-color: grey; color: white">Shared by</th>
+                                <th style="background-color: grey; color: white">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -191,6 +192,26 @@
                                 <td>{{ shared.destination_department.office }}</td>
                                 <td>{{ shared.destination_pghead.first_name }} {{ shared.destination_pghead.middle_name }} {{ shared.destination_pghead.last_name }}</td>
                                 <td>{{ shared.added_by.FullName }}</td>
+                                <td>
+                                    <div class="dropdown dropstart">
+                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                            </svg>
+                                        </button>
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+
+                                            <li>
+                                                <Link class="text-danger dropdown-item" @click="deleteSharedPaps(shared.id, shared.destination_department.office)">
+                                                    Delete Record
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -305,6 +326,23 @@ export default {
             let text = "WARNING!\nAre you sure you want to delete the PAP?";
             if (confirm(text) == true) {
                 this.$inertia.delete("/paps/" + id + "/");
+            }
+        },
+        deleteSharedPaps(id, dept) {
+            let text = `⚠️ WARNING!\nAre you sure you want to unshare this PAP with "${dept}"? This action cannot be undone. ${this.form.idpaps}`;
+            if (confirm(text) == true) {
+                // this.$inertia.delete("/sharedPAPS/" + id + "/");
+                // this.getSharedPAPS(this.form.idpaps);
+                this.form.delete("/sharedPAPS/" + id + "/", {
+                    onSuccess: () => {
+                        // this.hideDisplayModalSharedPaps();
+                        // this.$inertia.reload();
+                        this.getSharedPAPS(this.form.idpaps);
+                    },
+                    onError: (errors) => {
+                        console.error("Error deleting PAPS:", errors);
+                    }
+                });
             }
         },
         showFilter() {

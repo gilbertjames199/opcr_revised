@@ -52,4 +52,15 @@ class SharedProgramAndProjectController extends Controller
         return redirect()->back()->with('success', 'Shared Program and Project created successfully.');
         // return SharedProgramAndProject::find($id);
     }
+    public function destroy(Request $request, $id)
+    {
+
+        $msg = "Program/Project/Activity Successfully deleted!";
+        $status = "deleted";
+        $data = SharedProgramAndProject::findOrFail($id);
+        $data->delete();
+
+        //dd($request->raao_id);
+        return redirect()->back()->with("success", "PAPS has been unshared successfully.");
+    }
 }
