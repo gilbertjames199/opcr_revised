@@ -2213,4 +2213,17 @@ table {
 .no-border-table {
   border-collapse: collapse !important;
 }
+
+.signatory-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* space between cards */
+}
+
+.signatory-card {
+  flex: 0 0 calc(50% - 0.5rem); /* 2 per row with spacing */
+  border: 0px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+}
 </style>
