@@ -177,19 +177,28 @@ class UserController extends Controller
 
     public function edit(Request $request, $id)
     {
-
+        // dd("edit");
         $permissions = DB::table('permissions')->get();
-        $data = $this->model->where('id', $id)->first([
-            'name',
-            'id',
+        $data = $this->model->where('recid', $id)->first([
+            'FullName',
+            'recid',
             'email',
-            'level',
-            'municipality',
-            'barangay'
+            'UserName',
+            'UserType',
+            'office',
+            'department_code',
+            'UserPassword'
         ]);
-
+        if ($data) {
+            foreach ($data->getAttributes() as $key => $value) {
+                // Remove all whitespace characters
+                $data->$key = is_string($value) ? preg_replace('/\s+/', '', $value) : $value;
+            }
+        }
+        $FFUNCCOD = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->get();
         return inertia('Users/Create', [
             "editData" => $data,
+            "FFUNCCOD" => $FFUNCCOD,
             "permissions" => $permissions,
             "can" => [
                 'createUser' => Auth::user()->can('create', User::class),

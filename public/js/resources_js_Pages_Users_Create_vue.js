@@ -84,9 +84,13 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     if (this.editData !== undefined) {
       this.pageTitle = "Edit";
-      this.form.name = this.editData.name;
+      this.form.FullName = this.editData.FullName;
       this.form.email = this.editData.email;
-      this.form.id = this.editData.id;
+      this.form.UserName = this.editData.UserName;
+      this.form.UserType = this.editData.UserType;
+      this.form.office = this.editData.office; // this.form.FFUNCCOD = this.editData.FFUNCCOD
+
+      this.form.id = this.editData.recid;
     } else {
       this.pageTitle = "Create";
     }
@@ -364,7 +368,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n    <div class=\"col-md-8\">\r\n        <button class=\"btn btn-secondary\" @click=\"showModal\" :disabled=\"submitted\">Permissions</button>\r\n    </div>\r\n    "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\n    <div class=\"col-md-8\">\n        <button class=\"btn btn-secondary\" @click=\"showModal\" :disabled=\"submitted\">Permissions</button>\n    </div>\n    "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
@@ -466,6 +470,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_26)], 32
   /* HYDRATE_EVENTS */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" editData: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.editData), 1
+  /* TEXT */
   )])]);
 }
 
