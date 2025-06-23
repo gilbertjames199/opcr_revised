@@ -1625,7 +1625,15 @@
                         <br><br>
                     </div>
                     <!--SIGNATORIES-->
-                    <div v-if="paps.type === 'p'">
+                    <div class="signatory-grid">
+    <div v-for="(signatory, index) in signatories" :key="index" class="signatory-card">
+      <strong>{{ signatory.acted }} by: </strong><br><br>
+      <span class="text-decoration-underline"><b>{{ signatory.name
+                                            }}</b></span>
+                                            <br>{{ signatory.position }}<br><br><br><br>
+    </div>
+  </div>
+                    <!-- <div v-if="paps.type === 'p'">
                         <table class="table table-borderless no-border-table">
                             <tbody>
                                 <tr>
@@ -1674,7 +1682,7 @@
 
                             </tbody>
                         </table>
-                    </div>
+                    </div> -->
 
 
                 </div>
@@ -1811,6 +1819,7 @@ export default {
         sig_rev: Object,
         sig_prep: Object,
         sig_app: Object,
+        signatories: Object,
         data: Object,
         imp_amount: Number,
 

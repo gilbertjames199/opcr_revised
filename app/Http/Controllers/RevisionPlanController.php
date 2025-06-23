@@ -508,18 +508,24 @@ class RevisionPlanController extends Controller
             ->get();
         //RISK MANAGEEMNT
         $risks = Risk_manangement::with(['comments', 'comments.user'])->where('revision_plan_id', $id)->get();
-
+        $signatories = Signatory::where('revision_plan_id', $id)
+            ->orderByRaw("FIELD(acted, 'Prepared', 'Reviewed', 'Noted', 'Approved')")
+            ->get();
         //PREPARED
-        $sig_prep = Signatory::where('revision_plan_id', $id)
-            ->where('acted', 'Prepared')->first();
+        // $sig_app =[];
+        // $sig_prep = [];
+        // $sig_rev = [];
 
-        //REVIEWED
-        $sig_rev = Signatory::where('revision_plan_id', $id)
-            ->where('acted', 'Reviewed')->first();
+        // $sig_prep = Signatory::where('revision_plan_id', $id)
+        //     ->where('acted', 'Prepared')->first();
 
-        //APPROVED
-        $sig_app =  Signatory::where('revision_plan_id', $id)
-            ->where('acted', 'Approved')->get();
+        // //REVIEWED
+        // $sig_rev = Signatory::where('revision_plan_id', $id)
+        //     ->where('acted', 'Reviewed')->first();
+
+        // //APPROVED
+        // $sig_app =  Signatory::where('revision_plan_id', $id)
+        //     ->where('acted', 'Approved')->get();
         //IMPLEMENTATION PLAN
         $imp_amount = "0.00";
         // dd($paps);
@@ -561,10 +567,10 @@ class RevisionPlanController extends Controller
             "team_members" => $team_members,
             "monitors" => $monitoring,
             "risks" => $risks,
-            "sig_rev" => $sig_rev,
-            "sig_prep" => $sig_prep,
-            "sig_app" => $sig_app,
-
+            // "sig_rev" => $sig_rev,
+            // "sig_prep" => $sig_prep,
+            // "sig_app" => $sig_app,
+            "signatories" => $signatories,
             //BUDGET REVISED
             "capitalOutlay" => $capitalOutlay,
             "maintenanceOperating" => $maintenanceOperating,
