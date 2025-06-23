@@ -446,21 +446,7 @@ class RevisionPlanController extends Controller
             });
         //Budget Revised
 
-        $budgetRequirements = BudgetRequirement::with(['comments', 'comments.user'])
-            ->select(
-                'id',
-                'account_code',
-                DB::raw('MAX(particulars) as particulars'),
-                DB::raw('SUM(CASE WHEN category_gad = "GAD" THEN amount ELSE 0 END) as GAD_amount'),
-                DB::raw('SUM(CASE WHEN category_gad = "NON-GAD" THEN amount ELSE 0 END) as NONGAD_amount'),
-                DB::raw('SUM(amount) as Total'),
-                DB::raw('MAX(source) as Source'),
-                'category'
-            )
-            ->where('revision_plan_id', $id)
-            ->whereIn('category', ['Capital Outlay', 'Financial Expenses', 'Maintenance, Operating, and Other Expenses', 'Personnel Services'])
-            ->groupBy('particulars') // Grouping also by category to categorize data properly
-            ->get();
+        $budgetRequirements = $this->budgetRequirements($id);
         // dd($id);
         // dd($budgetRequirements);
         // dd("jjj");
@@ -591,6 +577,45 @@ class RevisionPlanController extends Controller
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
+    }
+    public function budgetRequirements($id)
+    {
+        $groupByAccountCodeCount = BudgetRequirement::where('revision_plan_id', $id)
+            ->whereIn('category', [
+                'Capital Outlay',
+                'Financial Expenses',
+                'Maintenance, Operating, and Other Expenses',
+                'Personnel Services',
+            ])
+            ->select('account_code')
+            ->groupBy('account_code')
+            ->get()
+            ->count();
+        // Step 2: Use appropriate groupBy field
+        $groupByField = floatval($groupByAccountCodeCount) > 1 ? 'account_code' : 'particulars';
+        $budgetRequirements = BudgetRequirement::with(['comments', 'comments.user'])
+            ->select(
+                DB::raw('MAX(id) as id'),
+                'account_code',
+                DB::raw('MAX(particulars) as particulars'),
+                DB::raw('SUM(CASE WHEN category_gad = "GAD" THEN amount ELSE 0 END) as GAD_amount'),
+                DB::raw('SUM(CASE WHEN category_gad = "NON-GAD" THEN amount ELSE 0 END) as NONGAD_amount'),
+                DB::raw('SUM(amount) as Total'),
+                DB::raw('MAX(source) as Source'),
+                'category'
+            )
+            ->where('revision_plan_id', $id)
+            ->whereIn('category', [
+                'Capital Outlay',
+                'Financial Expenses',
+                'Maintenance, Operating, and Other Expenses',
+                'Personnel Services',
+            ])
+            ->groupBy($groupByField) // group by either account_code or particulars + category
+            ->get();
+        // dd($groupByField);
+        // dd($budgetRequirements);
+        return $budgetRequirements;
     }
     public function edit(Request $request, $id)
     {
