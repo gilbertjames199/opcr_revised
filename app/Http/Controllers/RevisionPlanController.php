@@ -445,6 +445,7 @@ class RevisionPlanController extends Controller
                 ];
             });
         //Budget Revised
+
         $budgetRequirements = BudgetRequirement::with(['comments', 'comments.user'])
             ->select(
                 'id',
@@ -458,9 +459,11 @@ class RevisionPlanController extends Controller
             )
             ->where('revision_plan_id', $id)
             ->whereIn('category', ['Capital Outlay', 'Financial Expenses', 'Maintenance, Operating, and Other Expenses', 'Personnel Services'])
-            ->groupBy('account_code', 'category') // Grouping also by category to categorize data properly
+            ->groupBy('particulars') // Grouping also by category to categorize data properly
             ->get();
-
+        // dd($id);
+        // dd($budgetRequirements);
+        // dd("jjj");
         // Split results into separate variables
         $capitalOutlay = $budgetRequirements->where('category', 'Capital Outlay')->values();
         $maintenanceOperating = $budgetRequirements->where('category', 'Maintenance, Operating, and Other Expenses')->values();
@@ -532,7 +535,6 @@ class RevisionPlanController extends Controller
         $sig_app =  Signatory::where('revision_plan_id', $id)
             ->where('acted', 'Approved')->get();
         //IMPLEMENTATION PLAN
-
         $imp_amount = "0.00";
         // dd($paps);
         if ($paps->is_strategy_based == 1) {

@@ -68,7 +68,7 @@
                     Save changes
                 </button>
             </form>
-
+            editData: {{ editData }}
         </div>
     </div>
 </template>
@@ -113,9 +113,13 @@ export default {
     mounted() {
         if (this.editData !== undefined) {
             this.pageTitle = "Edit"
-            this.form.name = this.editData.name
+            this.form.FullName = this.editData.FullName
             this.form.email = this.editData.email
-            this.form.id = this.editData.id
+            this.form.UserName = this.editData.UserName
+            this.form.UserType = this.editData.UserType
+            this.form.office = this.editData.office
+            // this.form.FFUNCCOD = this.editData.FFUNCCOD
+            this.form.id = this.editData.recid
         } else {
             this.pageTitle = "Create"
         }

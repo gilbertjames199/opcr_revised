@@ -50,7 +50,7 @@
                                     </button>
                                     <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                         <li>
-                                            <Link class="dropdown-item" :href="`/users/${user.id}/edit`">Edit</Link>
+                                            <Link class="dropdown-item" :href="`/users/${user.recid}/edit`">Edit recid;{{ user.recid }}</Link>
                                         </li>
                                     </ul>
                                 </div>
