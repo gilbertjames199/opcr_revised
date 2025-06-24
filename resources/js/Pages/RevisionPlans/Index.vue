@@ -90,7 +90,7 @@
                                             <li><Link class="dropdown-item" :href="`/budget/${dat.id}`">Budget Requirements </Link></li>
                                             <!-- <li><Link class="dropdown-item" :href="`/implementation/${dat.id}`">Implementation Plan</Link></li> -->
                                             <li><Link class="dropdown-item" :href="`/team/${dat.id}/revision/plan/team`">Implementing Team</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/team/${dat.id}/revision/plan/team`">Partnership and Sustainability</Link></li>
+                                            <!-- <li><Link class="dropdown-item" :href="`/team/${dat.id}/revision/plan/team`">Partnership and Sustainability</Link></li> -->
                                             <li><Link class="dropdown-item" :href="`/EvaluationMechanismTool/${dat.id}`">Monitoring and Evaluation</Link></li>
                                             <li><Link class="dropdown-item" :href="`/RiskManagement/${dat.id}`">Risk Management</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Signatories/${dat.id}`">Signatories</Link></li>
