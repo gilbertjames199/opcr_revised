@@ -174,6 +174,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
     }
     public function index(Request $request, $opcr_id, $FFUNCCOD)
     {
+        // dd($request);
         //GET Department Code
         $dept_code = auth()->user()->department_code;
         //Check if the OPCR Form for the OPCR List is empty or not
@@ -181,6 +182,31 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $cnt = $opcr->count();
 
         $list = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+        // dd($list);
+        $opcr_targets = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_id)
+            ->get();
+        // dd($opcr_targets);
+        foreach ($opcr_targets as $target) {
+            $opcr_rating = OfficePerformanceCommitmentRating::where('id_opcr_target', $target->id)
+                ->first();
+            $paps_here = ProgramAndProject::where('id', $target->idpaps)->first();
+            // dd($paps_here);
+            if (!$opcr_rating) {
+                $opcrf = new OfficePerformanceCommitmentRating();
+                $opcrf->id_paps = $target->idpaps;
+                $opcrf->id_opcr_target = $target->id;
+                $opcrf->success_indicator_id = '-';
+                $opcrf->accomplishments = "";
+                $opcrf->rating_q = "3";
+                $opcrf->rating_e = "3";
+                $opcrf->rating_t = "3";
+                $opcrf->remarks = "";
+                $opcrf->opcr_id    = $opcr_id;
+                $opcrf->FFUNCCOD = $list->FFUNCCOD;
+                $opcrf->department_code = $dept_code;
+                $opcrf->save();
+            }
+        }
         $my_year = Carbon::parse($list->date_to)->format('Y');
 
         $revision_plan = RevisionPlan::where('idmfo', '0')
@@ -201,39 +227,79 @@ class OfficePerformanceCommitmentRatingController extends Controller
         } else {
             //dd("empty no ps budget");
         }
-        //$opcr = $this->model->where('FFUNCCOD', $FFUNCCOD)->get();
-        // dd($opcr_id . ' FFUNCCOD:' . $FFUNCCOD);
-        $opcrs = $this->model->select(
-            'office_performance_commitment_ratings.id',
-            'office_performance_commitment_ratings.success_indicator_id',
-            'office_performance_commitment_ratings.accomplishments',
-            'office_performance_commitment_ratings.rating_q',
-            'office_performance_commitment_ratings.rating_e',
-            'office_performance_commitment_ratings.rating_t',
-            'office_performance_commitment_ratings.remarks',
-            'office_performance_commitment_ratings.FFUNCCOD',
-            'office_performance_commitment_ratings.opcr_id',
-            'opcr_targets.target_success_indicator',
-            'SU.success_indicator',
-            'off.office_accountable',
-            'PAPS.paps_desc',
-            'mfo.mfo_desc',
-            'mfo.created_at'
-        )
-            ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
-            ->leftjoin('opcr_targets', 'opcr_targets.id', 'office_performance_commitment_ratings.id_opcr_target')
-            ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'opcr_targets.idpaps')
-            ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
-            ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
-            ->where('mfo.mfo_desc', '<>', '')
-            ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
-            ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
-            ->orderBy('mfo.id', 'asc')
-            ->orderBy('PAPS.id', 'asc')
-            ->groupBy('office_performance_commitment_ratings.id_opcr_target')
-            ->groupBy('opcr_targets.idpaps')
-            ->get();
+
+
+        $opcrs = OpcrTarget::with([
+            'opcr_rating',
+            'opcrList',
+            'paps',
+            'paps.MFO',
+            'paps.opcr_stardard'
+        ])
+            ->whereHas('paps', function ($query) use ($FFUNCCOD) {
+                $query->whereHas('MFO', function ($query) use ($FFUNCCOD) {
+                    $query->where('mfo_desc', '<>', '');
+                });
+            })
+            ->whereHas('opcrList', function ($query) use ($opcr_id, $FFUNCCOD) {
+                $query->where('id', $opcr_id)
+                    ->where('FFUNCCOD', $FFUNCCOD);
+            })
+            ->where('is_included', '1')
+            // ->orderBy('mfo.id', 'asc')
+            ->orderBy('idpaps', 'asc')
+            ->groupBy('office_performance_commitment_rating_list_id')
+            ->groupBy('idpaps')
+            ->get()
+            ->map(function ($item) {
+                $id = $item->opcr_rating ? $item->opcr_rating->id : null;
+                $su = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
+                $accomp = $item->opcr_rating ? $item->opcr_rating->accomplishment : null;
+                $r_q = $item->opcr_rating ? $item->opcr_rating->rating_q : null;
+                $r_e = $item->opcr_rating ? $item->opcr_rating->rating_e : null;
+                $r_t = $item->opcr_rating ? $item->opcr_rating->rating_t : null;
+                $remarks = $item->opcr_rating ? $item->opcr_rating->remarks : null;
+                $FFUNCCOD = $item->opcr_rating ? $item->opcr_rating->FFUNCCOD : null;
+                $opcr_list_id = $item->opcrList ? $item->opcrList->id : null;
+                $office_accountable = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->office_accountable : null) : null;
+                $paps_desc = $item->paps ? $item->paps->paps_desc : null;
+                // dd($item->paps->opcr_standard);
+                $mfo_desc = $item->paps ? ($item->paps->MFO ? $item->paps->MFO->mfo_desc : null) : null;
+                $mfo_created_at = $item->paps ? ($item->paps->MFO ? $item->paps->MFO->created_at : null) : null;
+
+                $performance_measure = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
+                $efficiency1 = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->efficiency1 : null) : null;
+                $timeliness = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->timeliness : null) : null;
+                $prescribed_period = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->prescribed_period : null) : null;;
+
+                if ($efficiency1 === 'No' && $timeliness === 'No') {
+                    $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency";
+                } elseif ($efficiency1 === 'Yes') {
+                    $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency within {$prescribed_period}";
+                } else {
+                    $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
+                }
+                return [
+                    "id" => $id,
+                    "success_indicator_id" => $su,
+                    "accomplishments" => $accomp,
+                    "rating_q" => $r_q,
+                    "rating_e" => $r_e,
+                    "rating_t" => $r_t,
+                    "remarks" => $remarks,
+                    "FFUNCCOD" => $FFUNCCOD,
+                    "opcr_id" => $opcr_list_id,
+                    "success_indicator" => $su,
+                    "target_success_indicator" => $su,
+                    "office_accountable" => $office_accountable,
+                    "paps_desc" => $paps_desc,
+                    "mfo_desc" => $mfo_desc,
+                    "created_at" => $mfo_created_at,
+                ];
+            });
+
         // dd($opcrs);
+
         //********************************************** */
         $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
             ->where('role', 'like', '%Department Head%')
@@ -287,18 +353,17 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //dd($opcr);
         //dd('opcr form');
     }
-    public function create(Request $request)
-    {
-    }
+    public function create(Request $request) {}
     public function store(Request $request)
     {
         $opcrs = $request->opcrs;
         $myObject = json_decode($opcrs);
 
-
+        // dd($myObject);
         foreach ($myObject as $opcr) {
             $dept_code = auth()->user()->department_code;
             $opcry = null;
+            // dd($opcry);
             $opcry = OfficePerformanceCommitmentRating::findOrFail($opcr->id);
             if ($opcry) {
                 $opcry->update([
@@ -320,15 +385,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
         return redirect('/opcr/form/' . $request->opcr_id . '/' . $request->FFUNCCOD)
             ->with('message', 'OPCR Rating Done!');
     }
-    public function edit(Request $request)
-    {
-    }
-    public function update(Request $request)
-    {
-    }
-    public function destroy(Request $request)
-    {
-    }
+    public function edit(Request $request) {}
+    public function update(Request $request) {}
+    public function destroy(Request $request) {}
     public function getMFOs($FFUNCCOD)
     {
         $mfos = MajorFinalOutput::where('FFUNCCOD', $FFUNCCOD)

@@ -25,4 +25,9 @@ class OpcrTarget extends Model
             'id'
         );
     }
+
+    public function opcr_rating()
+    {
+        return $this->hasOne(OfficePerformanceCommitmentRating::class, 'id_opcr_target', 'id');
+    }
 }
