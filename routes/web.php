@@ -431,6 +431,18 @@ Route::middleware('auth')->group(function () {
         Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
     });
+    // Revision Plan Page
+    Route::prefix('/revision_plans')->group(function () {
+        Route::get('/', [RevisionPlanController::class, 'direct']);
+        // Route::get('/create/{id}', [RevisionPlanController::class, 'create']);
+        // Route::post('/store', [RevisionPlanController::class, 'store']);
+        // Route::get('/edit/{id}', [RevisionPlanController::class, 'edit']);
+        // Route::patch('/', [RevisionPlanController::class, 'update']);
+        // Route::get('/view/project/paps/{id}', [RevisionPlanController::class, 'view']);
+        // Route::get('/general/administration/services/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas']);
+        // Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
+        // Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
+    });
     //Revision Plan Comments
     Route::prefix('/revision-plan-comments')->group(function () {
         Route::get('/', [RevisionPlanCommentController::class, 'comments']);

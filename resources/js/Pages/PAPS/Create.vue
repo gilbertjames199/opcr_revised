@@ -169,6 +169,10 @@
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.research_agenda">{{ form.errors.research_agenda }}</div>
 
+                <label for="">AIP Code</label>
+                <input type="text" v-model="form.aip_code" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.aip_code">{{ form.errors.aip_code }}</div>
+
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
                 <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">
@@ -237,6 +241,7 @@ export default {
                 focus_area: "",
                 is_mother_program: 0,
                 mother_program_id: null,
+                aip_code: "",
                 id: null
             }),
             year_values: ["2000",
@@ -403,7 +408,7 @@ export default {
             this.form.popsp = this.editData.popsp
             this.form.focus_area = this.editData.focus_area
             this.form.is_mother_program = this.editData.is_mother_program
-
+            this.form.aip_code =this.editData.aip_code
             this.form.id = this.editData.id
             this.filterMFOs()
             this.loadPAPS();
