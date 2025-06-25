@@ -1010,6 +1010,19 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //
         // dd("Driri");
         // dd($opcr_id);
+
+        // $performance_measure = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
+        // $efficiency1 = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->efficiency1 : null) : null;
+        // $timeliness = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->timeliness : null) : null;
+        // $prescribed_period = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->prescribed_period : null) : null;;
+
+        // if ($efficiency1 === 'No' && $timeliness === 'No') {
+        //     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency";
+        // } elseif ($efficiency1 === 'Yes') {
+        //     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency within {$prescribed_period}";
+        // } else {
+        //     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
+        // }
         $data = $this->model->select(
             'office_performance_commitment_ratings.id',
             'office_performance_commitment_ratings.success_indicator_id',
@@ -1031,10 +1044,15 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'mfo.id AS mfo_idmfo',
             'PAPS.idmfo AS paps_idmfo',
             'opcr_targets.target_success_indicator AS target_success_indicator',
-            'opcr_targets.quantity_unit'
+            'opcr_targets.quantity_unit',
+            'os.performance_measure',
+            'os.efficiency1',
+            'os.timeliness',
+            'os.prescribed_period'
         )
             ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
             ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'office_performance_commitment_ratings.id_paps')
+            ->leftjoin('opcr_standards AS os', 'os.idpaps', 'PAPS.id')
             ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
             ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             // ->join('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
@@ -1047,6 +1065,18 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
             ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now) {
+                $efficiency1 = $item->efficiency1;
+                $performance_measure = $item->performance_measure;
+                $timeliness = $item->timeliness;
+                $prescribed_period = $item->prescribed_period;
+                $paps_desc = $item->paps_desc;
+                if ($efficiency1 === 'No' && $timeliness === 'No') {
+                    $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency";
+                } elseif ($efficiency1 === 'Yes') {
+                    $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency within {$prescribed_period}";
+                } else {
+                    $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
+                }
                 $approver = 'Dorothy Montejo Gonzaga';
                 $pos = 'Governor';
                 if ($FFUNCCOD == '1021') {
@@ -1060,6 +1090,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $var_q = $item->rating_q;
                 $var_e = $item->rating_e;
                 $var_t = $item->rating_t;
+
 
                 $div = 3;
                 // if (floatval($var_q) <= 0) {
@@ -1146,7 +1177,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "approver" => $approver,
                     "position" => $pos,
                     "ave_qet" => $ave_qet,
-                    "target_success_indicator" => $item->target_success_indicator,
+                    "target_success_indicator" => $su,
                     "adjectival" => $adj,
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
