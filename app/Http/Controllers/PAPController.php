@@ -320,7 +320,8 @@ class PAPController extends Controller
             'popsp',
             'focus_area',
             'is_mother_program',
-            'mother_program_id'
+            'mother_program_id',
+            'aip_code'
         ]);
         $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
             ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
@@ -372,7 +373,8 @@ class PAPController extends Controller
             'popsp' => $request->popsp,
             'focus_area' => $request->focus_area,
             'is_mother_program' => $request->is_mother_program,
-            'mother_program_id' => $request->mother_program_id
+            'mother_program_id' => $request->mother_program_id,
+            'aip_code' => $request->aip_code,
         ]);
         return redirect('/paps/direct')
             ->with('info', 'Program and Projects updated');
@@ -381,8 +383,9 @@ class PAPController extends Controller
     {
         $dept_code = auth()->user()->department_code;
         $data = $this->model::findOrFail($request->id);
+
         // dd($request->chief_executive_agenda);
-        // dd($request);
+        // dd($request->aip_code);
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $data->update([
             'paps_desc' => $request->paps_desc,
@@ -396,8 +399,13 @@ class PAPController extends Controller
             'sust_devt_goal' => $request->sust_devt_goal,
             'executive_legislative_agenda' => $request->executive_legislative_agenda,
             'research_agenda' => $request->research_agenda,
+            'sector' => $request->sector,
+            'subsector' => $request->subsector,
+            'popsp' => $request->popsp,
+            'focus_area' => $request->focus_area,
             'is_mother_program' => $request->is_mother_program,
-            'mother_program_id' => $request->mother_program_id
+            'mother_program_id' => $request->mother_program_id,
+            'aip_code' => $request->aip_code,
         ]);
         //dd('updated');
         return redirect('/paps/direct')

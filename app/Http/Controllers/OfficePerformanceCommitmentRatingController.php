@@ -886,7 +886,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
         $mooe = "0.00";
         $ps = "0.00";
-
+        $empl_id = "";
+        $dept_head = "";
+        $suff = "";
+        $post = "";
         //Department Head
         $dept_head = "";
         if ($FFUNCCOD) {
@@ -907,6 +910,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
         }
         //Get OPCR Date
         $opcr_date = "";
+        $dateStart = "";
+        $dateEnd = "";
+        $start = "";
+        $end = "";
         if ($opcr_id) {
             $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
             // dd($opcr_id);
