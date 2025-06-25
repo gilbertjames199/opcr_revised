@@ -1010,7 +1010,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //
         // dd("Driri");
         // dd($opcr_id);
-        return $this->model->select(
+        $data = $this->model->select(
             'office_performance_commitment_ratings.id',
             'office_performance_commitment_ratings.success_indicator_id',
             'office_performance_commitment_ratings.accomplishments',
@@ -1153,6 +1153,40 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     // "paps_idmfo" => $item->paps_idmfo
                 ];
             });
+        // dd(count($data));
+        if ($data->isEmpty()) {
+            $data = collect([[
+                "id" => null,
+                "success_indicator_id" => 0,
+                "accomplishments" => null,
+                "rating_q" => null,
+                "rating_e" => null,
+                "rating_t" => null,
+                "remarks" => null,
+                "FFUNCCOD" => $FFUNCCOD,
+                "idpaps" => null,
+                "opcr_id" => $opcr_id,
+                "success_indicator" => null,
+                "office_accountable" => null,
+                "paps_desc" => " ",
+                "quantity" => null,
+                "mfo_desc" => " ",
+                "created_at" => null,
+                "total" => null,
+                "ave" => null,
+                "dept_head" => null,
+                "opcr_date" => $opcr_date,
+                "mooe" => null,
+                "ps" => null,
+                "date_now" => now()->format('F d, Y'), // or fixed "June 25, 2025"
+                "approver" => "Dorothy Montejo Gonzaga",
+                "position" => "Governor",
+                "ave_qet" => null,
+                "target_success_indicator" => null,
+                "adjectival" => null
+            ]]);
+        }
+        return $data;
         //********************************************** */
 
 
