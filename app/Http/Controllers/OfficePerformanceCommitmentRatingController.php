@@ -1129,6 +1129,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $ave_qet = 0;
                 if ($div > 0) {
                     $ave_qet = $sum / $div;
+                    $ave_qet = number_format(floatval($ave_qet), 2);
                 }
                 $adj = "Outstanding";
                 if ($ave >= 4.51) {
