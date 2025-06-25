@@ -1034,7 +1034,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'office_performance_commitment_ratings.FFUNCCOD',
             'office_performance_commitment_ratings.opcr_id',
             'SU.success_indicator',
-            'off.office_accountable',
+            // 'off.office_accountable',
             'PAPS.paps_desc',
             'mfo.mfo_desc',
             'mfo.created_at',
@@ -1048,7 +1048,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'os.performance_measure',
             'os.efficiency1',
             'os.timeliness',
-            'os.prescribed_period'
+            'os.prescribed_period',
+            'os.office_accountable'
         )
             ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
             ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'office_performance_commitment_ratings.id_paps')
@@ -1070,6 +1071,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $timeliness = $item->timeliness;
                 $prescribed_period = $item->prescribed_period;
                 $paps_desc = $item->paps_desc;
+                $office_accountable = $item->office_accountable;
                 if ($efficiency1 === 'No' && $timeliness === 'No') {
                     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency";
                 } elseif ($efficiency1 === 'Yes') {
@@ -1159,7 +1161,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "idpaps" => $item->idpaps,
                     "opcr_id" => $item->opcr_id,
                     "success_indicator" => $item->success_indicator,
-                    "office_accountable" => $item->office_accountable,
+                    "office_accountable" => $office_accountable,
                     "paps_desc" => $item->paps_desc,
                     "quantity" => $item->quantity . ' ' . $item->quantity_unit,
                     // "quantity_unit" => $item->quantity_unit,
@@ -1179,6 +1181,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "ave_qet" => $ave_qet,
                     "target_success_indicator" => $su,
                     "adjectival" => $adj,
+                    // "office_accountable" => $office_accountable
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
                     // "paps_idmfo" => $item->paps_idmfo
