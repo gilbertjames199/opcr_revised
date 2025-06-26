@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>PPA Profile </h3>
+            <h3>PROGRAMS </h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -41,7 +41,7 @@
                                 <th>Version</th>
                                 <th>Implementing Offices</th>
                                 <th>Planned Amount</th>
-                                <th>View</th>
+                                <th>View Details</th>
                                 <!-- <th>Edit</th> -->
                                 <!-- <th>Actions</th> -->
                             </tr>
@@ -59,16 +59,15 @@
                                 <th>
                                     {{ format_number_conv(dat.budget_sum,2,true) }}
                                 </th>
-                                <td><Link
+                                <td>
+                                    <Link
                                         class="btn btn-primary btn-sm"
                                         :href="`/revision/view/project/paps/${dat.id}`">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                    </svg>
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                        </svg>
                                     </Link>
-
-
                                     <!-- {{ dat }} -->
                                 </td>
                                 <!-- <td><Link
@@ -142,7 +141,19 @@ export default {
     components: {
         Pagination, Filtering,
     },
-
+    watch: {
+        search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/revision_plans",
+                { search: value },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 300),
+    },
     methods:{
 
         showCreate(){
