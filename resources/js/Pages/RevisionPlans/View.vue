@@ -5,7 +5,7 @@
     <div class="row gap-10 masonry pos-r">
         <!--class="peers fxw-nw jc-sb ai-c"-->
         <div class="peers fxw-nw jc-sb ai-c justify-content-end">
-            <Link v-if="paps.scope === 'GAS'" :href="(department_code_user === '04' || department_code_user === department_code_project)
+            <Link v-if="paps.scope === 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
                             ? `/revision/general/administration/services/${paps.FFUNCCOD}/plan`:`/revision_plans`">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -17,7 +17,7 @@
             </Link>
 
             <Link v-if="paps.idmfo == 0 && paps.scope !== 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
-                            ? `/revision/${paps.idpaps}`:`/revision_plans`"> {{ src }}
+                            ? `/revision/${paps.idpaps}`:`/revision_plans`">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -26,7 +26,7 @@
                     d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
             </svg>
             </Link>
-            <Link v-if="paps.idpaps == 0 && paps.scope !== 'GAS'" :href="(department_code_user === '04' || department_code_user === department_code_project)
+            <Link v-if="paps.idpaps == 0 && paps.scope !== 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
                             ? `/mforevision/${paps.idmfo}`:`/revision_plans`">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
