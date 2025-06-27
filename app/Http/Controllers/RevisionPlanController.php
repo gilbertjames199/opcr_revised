@@ -236,6 +236,7 @@ class RevisionPlanController extends Controller
     }
     public function view(Request $request, $id)
     {
+        $src = $request->source;
         //REVISION PLANS
         $paps = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])
             ->where('id', $id)
@@ -583,6 +584,7 @@ class RevisionPlanController extends Controller
             "personnelServices" => $personnelServices,
             "financialExpenses" => $financialExpenses,
             // "data" => $data,
+            "src" => $src,
             "imp_amount" => $imp_amount,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
@@ -1422,14 +1424,22 @@ class RevisionPlanController extends Controller
             'revision_plans.type',
             'revision_plans.is_strategy_based',
             'ff.FFUNCTION',
-            'paps.aip_code'
-        )
+            'paps.aip_code',
+            // DB::raw('sum(budget_requirements.amount)')
+        )->with(['budget'])
             ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
             ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
             ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
+            // ->leftJoin(DB::raw('budget_requirements'), 'budget_requirements.revision_plan_id', '=', 'revision_plans.id')
+            ->whereHas('budget', function ($query) {
+                $query->select(DB::raw('revision_plan_id'))
+                    ->groupBy('revision_plan_id')
+                    ->havingRaw('SUM(amount) > 0');
+            })
             ->where('revision_plans.project_title', 'LIKE', '%' . $request->search . '%')
             ->orderBy('ff.FFUNCTION')
             ->paginate(10); // <- Pagination
+        // dd($data);
         $data->through(function ($item) use ($budget_controller) {
             $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)
                 ->where('table_name', 'revision_plans')
@@ -1462,6 +1472,11 @@ class RevisionPlanController extends Controller
                 'imp_amount' => $imp_amount
             ];
         });
+        // $data->setCollection(
+        //     $data->getCollection()->filter(function ($item) {
+        //         return data_get($item, 'budget_sum') != 0;
+        //     })->values()
+        // );
         // dd($data);
         return inertia('RevisionPlans/Direct', [
             'data' => $data,

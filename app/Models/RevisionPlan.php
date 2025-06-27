@@ -21,7 +21,11 @@ class RevisionPlan extends Model
         return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');
         // ->where('table_name', 'revision_plans');
     }
-
+    public function budget()
+    {
+        return $this->hasMany(BudgetRequirement::class, 'revision_plan_id', 'id');
+        // ->where('table_name', 'revision_plans');
+    }
     public function paps()
     {
         return $this->belongsTo(ProgramAndProject::class, 'idpaps', 'id');
