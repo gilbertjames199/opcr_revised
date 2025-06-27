@@ -56,7 +56,7 @@
                                 </td>
                                 <td>{{ dat.version }}</td>
                                 <td>{{ dat.FFUNCTION }}</td>
-                                <th>
+                                <th class="text-end">
                                     {{ format_number_conv(dat.budget_sum,2,true) }}
                                 </th>
                                 <td>
