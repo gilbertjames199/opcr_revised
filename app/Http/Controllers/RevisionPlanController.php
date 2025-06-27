@@ -21,6 +21,7 @@ use App\Models\StrategyProject;
 use App\Models\Target;
 use App\Models\TeamPlan;
 use Carbon\Carbon;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -1467,5 +1468,80 @@ class RevisionPlanController extends Controller
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
+    }
+    public function api_ppa(Request $request)
+    {
+        // $myid = $request->recid;
+        $dept_id = $request->department_code;
+        // dd($dept_id);
+        // if ($dept_id != '04' && $dept_id != '01') {
+        //     return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
+        // }
+        $FFUNCCOD = FFUNCCOD::where('department_code', $dept_id)->first()->FFUNCCOD;
+
+        // $paps = ProgramAndProject::where('id', $idpaps)->first();
+        $budget_controller = new BudgetRequirementController($this->budget);
+        // dd("revision");
+
+        // dd($request->search);
+        $data = RevisionPlan::select(
+            'revision_plans.id',
+            'revision_plans.project_title',
+            'revision_plans.version',
+            'revision_plans.type',
+            'revision_plans.is_strategy_based',
+            'ff.FFUNCTION',
+            'paps.aip_code'
+        )
+            ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
+            ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
+            ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
+            ->where('revision_plans.project_title', 'LIKE', '%' . $request->search . '%')
+            ->orderBy('ff.FFUNCTION')
+            ->get()
+            ->map(function ($item) use ($budget_controller) {
+                $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)
+                    ->where('table_name', 'revision_plans')
+                    ->count();
+
+                $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                    ->sum('amount');
+
+                $imp_amount = 0.00;
+                if ($item->is_strategy_based == 1) {
+                    $total = $budget_controller->getStratTotal($item->id);
+                } else {
+                    $total = $budget_controller->getActivityTotal($item->id);
+                }
+
+                if ($total) {
+                    $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                        $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                        $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
+                        $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                }
+
+                return [
+                    'FFUNCTION' => trim($item->FFUNCTION),
+                    'id' => $item->id,
+                    'project_title' => $item->project_title,
+                    'type' => $item->type,
+                    'version' => $item->version,
+                    'budget_sum' => $budgetary_requirement,
+                    'imp_amount' => $imp_amount
+                ];
+            });
+        // dd($data);
+        return $data;
+        // return inertia('RevisionPlans/Direct', [
+        //     'data' => $data,
+        //     // "idpaps" => $idpaps,
+        //     // "paps" => $paps,
+        //     "filters" => $request->only(['search']),
+        //     'can' => [
+        //         'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+        //         'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+        //     ],
+        // ]);
     }
 }
