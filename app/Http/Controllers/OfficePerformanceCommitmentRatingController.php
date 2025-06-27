@@ -1055,7 +1055,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'office_performance_commitment_ratings.id_paps')
             ->leftjoin('opcr_standards AS os', 'os.idpaps', 'PAPS.id')
             ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
-            ->leftjoin('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
+            ->join('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
             // ->join('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
             ->leftjoin('opcr_targets', 'opcr_targets.id', 'office_performance_commitment_ratings.id_opcr_target')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
