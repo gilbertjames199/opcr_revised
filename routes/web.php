@@ -1159,6 +1159,10 @@ Route::prefix('division/print')->group(function () {
     Route::get('/PAPS_print', [DivisionController::class, 'PAPS_Division']);
     Route::get('/dpcr', [DivisionController::class, 'DPCR']);
 });
+
+// Route::prefix('api_ppa2')->group(function () {
+//     Route::get('/', [RevisionPlanController::class, 'api_ppa']);
+// });
 // Route::prefix('opcr-accomplishments/print')->group(function () {
 //     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
 // });
