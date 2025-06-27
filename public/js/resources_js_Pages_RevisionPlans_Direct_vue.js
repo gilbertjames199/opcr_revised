@@ -19,6 +19,7 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     data: Object,
     //idstrat: String,
+    dept_id: String,
     idpaps: String,
     filters: Object,
     paps: Object,

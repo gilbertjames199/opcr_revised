@@ -5,7 +5,8 @@
     <div class="row gap-10 masonry pos-r">
         <!--class="peers fxw-nw jc-sb ai-c"-->
         <div class="peers fxw-nw jc-sb ai-c justify-content-end">
-            <Link v-if="paps.scope === 'GAS'" :href="`/revision/general/administration/services/${paps.FFUNCCOD}/plan`">
+            <Link v-if="paps.scope === 'GAS'" :href="(department_code_user === '04' || department_code_user === department_code_project)
+                            ? `/revision/general/administration/services/${paps.FFUNCCOD}/plan`:`/revision_plans`">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -15,7 +16,8 @@
             </svg>
             </Link>
 
-            <Link v-if="paps.idmfo == 0 && paps.scope !== 'GAS'" :href="`/revision/${paps.idpaps}`">
+            <Link v-if="paps.idmfo == 0 && paps.scope !== 'GAS'" :href="(department_code_user === '04' || department_code_user === department_code_project)
+                            ? `/revision/${paps.idpaps}`:`/revision_plans`">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -24,7 +26,8 @@
                     d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
             </svg>
             </Link>
-            <Link v-if="paps.idpaps == 0 && paps.scope !== 'GAS'" :href="`/mforevision/${paps.idmfo}`">
+            <Link v-if="paps.idpaps == 0 && paps.scope !== 'GAS'" :href="(department_code_user === '04' || department_code_user === department_code_project)
+                            ? `/mforevision/${paps.idmfo}`:`/revision_plans`">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -365,7 +368,11 @@
                     <div v-if="implementation">
                         <h3 >
                             <!-- /strategies-and-activities/${dat.id} -->
-                            V. <Link :href="`/strategies-and-activities/${paps.id}`" target="_blank">Implementation Plan</Link>
+                            V.
+                            <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
+                            ? `/strategies-and-activities/${paps.id}`:null" target="_blank">
+                                Implementation Plan
+                            </Link>
                         </h3>
 
                         <table class="table table-hover table-bordered border-dark">
@@ -765,7 +772,10 @@
                     <!-- v-if="b_mooe.length>0 || b_capital.length>0 || b_ps.length>0" -->
                     <div>
                         <h3>
-                            VI. <Link :href="`/budget/${paps.id}`">Estimated Cost/Budgetary Requirements</Link>
+                            VI. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
+                            ? `/budget/${paps.id}`:null">
+                                Estimated Cost/Budgetary Requirements
+                            </Link>
                         </h3>
                         <!-- {{ capitalOutlay }}
                         showBudgetTable: {{ showBudgetTable() }} -->
@@ -1342,7 +1352,8 @@
                     </div>
                     <!--IMPLEMENTING TEAM-->
                     <h3 v-if="team_members.length > 0 || paps.implementing_team !== null">
-                        VII. <Link :href="`/team/${paps.id}/revision/plan/team`">Implementing Team</Link>
+                        VII. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
+                            ? `/team/${paps.id}/revision/plan/team`:null">Implementing Team</Link>
 
                         <button v-if="can_view_comment()" class="superscript-btn"
                             @click="handleClick('Implementing Team','implementing team',paps.implementing_team,'implementing_team','revision_plans', paps, paps.comments)">*
@@ -1480,7 +1491,8 @@
                     <br>
                     <!--MONITORING & EVALUATION-->
                     <h3 v-if="monitors.length > 0 || paps.monitoring !== null">
-                        IX. <Link :href="`/EvaluationMechanismTool/${paps.id}`">Monitoring and Evaluation</Link>
+                        IX. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
+                            ? `/EvaluationMechanismTool/${paps.id}`:null">Monitoring and Evaluation</Link>
                     </h3>
                     <div align="justify" style="white-space: pre-line">
                         <div v-html="paps.monitoring"></div>
@@ -1561,7 +1573,8 @@
                     </div>
                     <!--RISK MANAGEMENT-->
                     <h3 v-if="risks.length > 0 || paps.risk_management !== null">
-                        X. <Link :href="`/RiskManagement/${paps.id}`">Risk Management</Link>
+                        X. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
+                            ? `/RiskManagement/${paps.id}`:null">Risk Management</Link>
                     </h3>
                     <div align="justify" style="white-space: pre-line">
                         <div v-html="paps.risk_management"></div>
@@ -1795,6 +1808,8 @@
         <div class="d-flex justify-content-center">
 
         </div>
+        {{ department_code_project }}
+        {{ department_code_user }}
         <!-- {{ auth.user }} -->
         <!-- {{ auth.user }}
         {{ paps.is_strategy_based }} -->
@@ -1823,6 +1838,8 @@ export default {
         data: Object,
         imp_amount: Number,
 
+        department_code_project: String,
+        department_code_user: String,
         // mooe_gad: Object,
         // mooe_non: Object,
         // cap_gad: Object,

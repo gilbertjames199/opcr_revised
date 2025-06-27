@@ -237,12 +237,14 @@ class RevisionPlanController extends Controller
     public function view(Request $request, $id)
     {
         //REVISION PLANS
-        $paps = RevisionPlan::with(['comments', 'comments.user'])->where('id', $id)->with('checklist')->first();
+        $paps = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])
+            ->where('id', $id)
+            ->first();
         // dd($paps);
         $scope = $paps->scope;
         $idpaps = $paps->idpaps;
         $idmfo = $paps->idmfo;
-
+        $department_code = "";
         //PROGRAMS AND PROJECTS & FUNCTIONS
         $ppa = [];
         $functions = [];
@@ -253,6 +255,7 @@ class RevisionPlanController extends Controller
                 ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
                 ->with('func')->first();
         } else if ($idpaps != 0) {
+            $department_code = optional(optional($paps)->paps)->department_code;
             $ppa = ProgramAndProject::findOrFail($paps->idpaps);
             if (auth()->user()->department_code == '04') {
                 $functions = FFUNCCOD::where('FFUNCCOD', $ppa->FFUNCCOD)->first();
@@ -551,6 +554,8 @@ class RevisionPlanController extends Controller
             "paps" => $paps,
             "office" => $functions->FFUNCTION,
             "implementation" => $implement,
+            "department_code_project" => $department_code,
+            "department_code_user" => auth()->user()->department_code,
             // "mooe_gad" => $mooe_gad,
             // "mooe_non" => $mooe_non,
             // "cap_gad" => $cap_gad,
@@ -1462,6 +1467,7 @@ class RevisionPlanController extends Controller
             'data' => $data,
             // "idpaps" => $idpaps,
             // "paps" => $paps,
+            "dept_id" => $dept_id,
             "filters" => $request->only(['search']),
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),

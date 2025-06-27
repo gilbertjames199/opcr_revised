@@ -128,6 +128,7 @@ export default {
     props: {
         data: Object,
         //idstrat: String,
+        dept_id: String,
         idpaps: String,
         filters: Object,
         paps: Object,
