@@ -16,8 +16,8 @@
             </svg>
             </Link>
 
-            <Link v-if="paps.idmfo == 0 && paps.scope !== 'GAS'" :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/revision/${paps.idpaps}`:`/revision_plans`">
+            <Link v-if="paps.idmfo == 0 && paps.scope !== 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
+                            ? `/revision/${paps.idpaps}`:`/revision_plans`"> {{ src }}
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -1858,6 +1858,8 @@ export default {
         maintenanceOperating: Object,
         personnelServices: Object,
         financialExpenses: Object,
+
+        src: Object
     },
     computed: {},
     mounted() {
