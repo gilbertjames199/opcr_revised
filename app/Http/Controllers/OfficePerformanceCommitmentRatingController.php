@@ -252,9 +252,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->groupBy('idpaps')
             ->get()
             ->map(function ($item) {
+                // dd($item);
                 $id = $item->opcr_rating ? $item->opcr_rating->id : null;
                 $su = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
-                $accomp = $item->opcr_rating ? $item->opcr_rating->accomplishment : null;
+                $accomp = $item->opcr_rating ? $item->opcr_rating->accomplishments : null;
                 $r_q = $item->opcr_rating ? $item->opcr_rating->rating_q : null;
                 $r_e = $item->opcr_rating ? $item->opcr_rating->rating_e : null;
                 $r_t = $item->opcr_rating ? $item->opcr_rating->rating_t : null;
@@ -279,6 +280,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 } else {
                     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
                 }
+                // dd($accomp);
                 return [
                     "id" => $id,
                     "success_indicator_id" => $su,
