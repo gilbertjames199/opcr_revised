@@ -1491,6 +1491,7 @@ class RevisionPlanController extends Controller
             'revision_plans.type',
             'revision_plans.is_strategy_based',
             'ff.FFUNCTION',
+            'ff.department_code',
             'paps.aip_code'
         )
             ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
@@ -1500,35 +1501,36 @@ class RevisionPlanController extends Controller
             ->orderBy('ff.FFUNCTION')
             ->get()
             ->map(function ($item) use ($budget_controller) {
-                $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)
-                    ->where('table_name', 'revision_plans')
-                    ->count();
+                // $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)
+                //     ->where('table_name', 'revision_plans')
+                //     ->count();
 
                 $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                     ->sum('amount');
 
-                $imp_amount = 0.00;
-                if ($item->is_strategy_based == 1) {
-                    $total = $budget_controller->getStratTotal($item->id);
-                } else {
-                    $total = $budget_controller->getActivityTotal($item->id);
-                }
+                // $imp_amount = 0.00;
+                // if ($item->is_strategy_based == 1) {
+                //     $total = $budget_controller->getStratTotal($item->id);
+                // } else {
+                //     $total = $budget_controller->getActivityTotal($item->id);
+                // }
 
-                if ($total) {
-                    $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
-                        $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
-                        $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
-                        $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
-                }
+                // if ($total) {
+                //     $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                //         $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                //         $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
+                //         $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                // }
 
                 return [
+                    'department_code' => $item->department_code,
                     'FFUNCTION' => trim($item->FFUNCTION),
                     'id' => $item->id,
                     'project_title' => $item->project_title,
                     'type' => $item->type,
                     'version' => $item->version,
-                    'budget_sum' => $budgetary_requirement,
-                    'imp_amount' => $imp_amount
+                    'amount' => $budgetary_requirement,
+                    // 'imp_amount' => $imp_amount
                 ];
             });
         // dd($data);
