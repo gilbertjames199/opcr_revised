@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('api_ppa')->group(function () {
     Route::get('/', [RevisionPlanController::class, 'api_ppa']);
+    Route::get('/aip', [RevisionPlanController::class, 'aip_api']);
 });
