@@ -1410,12 +1410,22 @@ class RevisionPlanController extends Controller
         if ($dept_id != '04' && $dept_id != '01') {
             return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
         }
+        $per_page = 10;
+        if ($request->per_page) {
+            $per_page = $request->per_page;
+        }
         $FFUNCCOD = FFUNCCOD::where('department_code', $dept_id)->first()->FFUNCCOD;
-
+        $offices = FFUNCCOD::where(function ($query) {
+            $query->where('FFUNCTION', 'LIKE', '%Office%')
+                ->orWhere('FFUNCTION', 'LIKE', '%Hospital%');
+        })
+            ->orderBy('FFUNCTION', 'ASC')
+            ->get();
+        // dd($offices);
         // $paps = ProgramAndProject::where('id', $idpaps)->first();
         $budget_controller = new BudgetRequirementController($this->budget);
         // dd("revision");
-
+        // dd($request->FFUNCCOD);
         // dd($request->search);
         $data = RevisionPlan::select(
             'revision_plans.id',
@@ -1437,8 +1447,12 @@ class RevisionPlanController extends Controller
                     ->havingRaw('SUM(amount) > 0');
             })
             ->where('revision_plans.project_title', 'LIKE', '%' . $request->search . '%')
+            ->when($request->FFUNCCOD, function ($query) use ($request) {
+                $query->where('ff.FFUNCCOD', $request->FFUNCCOD);
+            })
             ->orderBy('ff.FFUNCTION')
-            ->paginate(10); // <- Pagination
+            ->paginate(10)
+            ->withQueryString(); // <- Pagination
         // dd($data);
         $data->through(function ($item) use ($budget_controller) {
             $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)
@@ -1480,6 +1494,8 @@ class RevisionPlanController extends Controller
         // dd($data);
         return inertia('RevisionPlans/Direct', [
             'data' => $data,
+            'FFUNCCOD' => $FFUNCCOD,
+            'offices' => $offices,
             // "idpaps" => $idpaps,
             // "paps" => $paps,
             "dept_id" => $dept_id,
