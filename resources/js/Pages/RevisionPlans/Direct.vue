@@ -14,7 +14,7 @@
                 </div>
                 <div class="peer">
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`">Add Revision Plan</Link> -->
-                    <!-- <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
 
@@ -29,6 +29,15 @@
             <!-- <h5>Program/Project: <u>{{ paps.paps_desc }}</u></h5> -->
         </div>
         <div class="masonry-sizer col-md-6"></div>
+        <filtering v-if="filter" @closeFilter="filter = false">
+            <label>Office</label>
+            <!-- {{ FFUNCCOD }} -->
+            <select class="form-select" v-model="filter_FFUNCCOD" @change="filterPrograms(search, filter_FFUNCCOD)">
+                <option></option>
+                <option v-for="office in offices" :value="office.FFUNCCOD">{{ office.FFUNCTION }}</option>
+            </select>
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
+        </filtering>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
@@ -127,6 +136,8 @@ import Pagination from "@/Shared/Pagination";
 export default {
     props: {
         data: Object,
+        FFUNCCOD: String,
+        offices: Object,
         //idstrat: String,
         dept_id: String,
         idpaps: String,
@@ -136,6 +147,8 @@ export default {
     },
     data() {
         return{
+            filter_FFUNCCOD: "",
+            filter: false,
             search: this.$props.filters.search,
         }
     },
@@ -144,15 +157,7 @@ export default {
     },
     watch: {
         search: _.debounce(function (value) {
-            this.$inertia.get(
-                "/revision_plans",
-                { search: value },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
+            this.filterPrograms(value, this.filter_FFUNCCOD)
         }, 300),
     },
     methods:{
@@ -215,6 +220,23 @@ export default {
                 status_now=showAmount+"Warning: total amount of implementation plans is greater than the total  amount of budgetary requirement."
             }
             return status_now;
+        },
+        showFilter() {
+            this.filter = !this.filter;
+        },
+        filterPrograms(search, office_code){
+            this.$inertia.get(
+                "/revision_plans",
+                {
+                    search: search,
+                    FFUNCCOD: office_code,
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
         }
     }
 };
