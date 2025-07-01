@@ -1583,4 +1583,12 @@ class RevisionPlanController extends Controller
         //     ],
         // ]);
     }
+    public function aip_api(Request $request)
+    {
+        ActivityProject::with([
+            'expected_output',
+            'expected_outcome',
+        ])
+            ->get();
+    }
 }
