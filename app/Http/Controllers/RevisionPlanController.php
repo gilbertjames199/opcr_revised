@@ -1535,8 +1535,9 @@ class RevisionPlanController extends Controller
         }
 
         $data = $query->orderBy('ff.FFUNCTION')
-            ->get()
-            ->map(function ($item) use ($budget_controller) {
+            ->paginate(10)
+            ->withQueryString()
+            ->through(function ($item) use ($budget_controller) {
 
                 $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                     ->sum('amount');
