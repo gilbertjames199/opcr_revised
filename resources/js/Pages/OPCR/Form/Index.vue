@@ -7,6 +7,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>OFFICE PERFORMANCE COMMITMENT AND RATING FORM </h3>
+
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -26,8 +27,10 @@
                 </Link>
             </div>
         </div>
-
-        <div class="masonry-sizer col-md-6"></div>
+        <!-- {{ opcr_date }} -->
+        <div class="masonry-sizer col-md-6">
+            <h5>PERIOD: <u>{{ opcr_date }}</u></h5>
+        </div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
@@ -130,7 +133,9 @@
                                     <strong>ALICIA M. GRACIADAS</strong>
                                 </td>
                                 <td class="text-center font-weight-bold"><br><br>
-                                    <strong>LEWIS JAKE G. CAIMAN</strong>
+                                    <!-- {{ opcr_date }} -->
+                                    <span v-if="isPA(opcr_date, 'PA 1')"><strong>LEWIS JAKE G. CAIMAN</strong></span>
+                                    <span v-else-if="isPA(opcr_date, 'PA 2')"><strong>IVAN KLEB N. ULGASAN</strong></span>
                                 </td>
                             </tr>
                             <tr>
@@ -488,6 +493,19 @@ export default {
         hideModal() {
             this.displayModal = false;
         },
+        isPA(opcr_date, type) {
+            if (!opcr_date || !type) return false;
+            const year = parseInt(opcr_date.match(/\d{4}/)[0]);
+            const isFirstSem = opcr_date.includes("JANUARY");
+            console.log(opcr_date)
+            console.log("Year: " + year + " isFirstSem: " + isFirstSem + " type: " + type);
+            if (type === "PA 1") {
+                return year < 2025 || (year === 2025 && isFirstSem);
+            } else if (type === "PA 2") {
+                return year > 2025 || (year === 2025 && !isFirstSem);
+            }
+            return false;
+        }
         // adjustTextareaHeight() {
         //     const textarea = this.$refs.textarea;
         //     if (textarea) {
