@@ -33,9 +33,9 @@
                 <input type="text" v-model="form.role" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.role">{{ form.errors.role }}</div>
 
-                <label for="">COMPETENCY</label>
+                <!-- <label for="">COMPETENCY</label>
                 <input type="text" v-model="form.competency" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.competency">{{ form.errors.competency }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.competency">{{ form.errors.competency }}</div> -->
 
                 <!-- <label for="">With GAD training</label> -->
                 <input type="checkbox"
