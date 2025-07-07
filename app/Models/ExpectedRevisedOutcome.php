@@ -12,4 +12,10 @@ class ExpectedRevisedOutcome extends Model
     {
         return $this->belongsTo(ActivityProject::class, 'activity_id', 'id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');
+        // ->where('table_name', 'revision_plans');
+    }
 }

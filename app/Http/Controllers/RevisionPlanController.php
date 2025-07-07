@@ -307,6 +307,7 @@ class RevisionPlanController extends Controller
             'activity.activityProject.expected_output',
             'activity.activityProject.expected_output.comments',
             'activity.activityProject.expected_outcome',
+            'activity.activityProject.expected_outcome.comments',
             'activity.activityProject.comments',
             'activity.activityProject.comments.user'
         ])->whereHas('strategyProject', function ($query) {

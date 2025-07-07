@@ -146,9 +146,16 @@
                                     </button>
                                 </td>
                                 <th colspan="1">Total</th>
-                                <td colspan="1">{{ format_number_conv((paps.beneficiary_male +
-                                    paps.beneficiary_female), 0, true) }}
-
+                                <td colspan="1" :class="{
+                                    'text-danger': has_comment('Title',format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),'beneficiary_total','revision_plans', paps, paps.comments)
+                                }">
+                                {{ format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true) }}
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Title',format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),'beneficiary_total','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Title',format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),'beneficiary_total','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                        @click="handleClick('Title',format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),'beneficiary_total','revision_plans', paps, paps.comments)">*
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -176,7 +183,15 @@
                                     </button>
                                 </td>
                                 <th colspan="1">Total</th>
-                                <td colspan="1">{{ format_number_conv(paps.baseline_male + paps.baseline_female, 0, true) }}
+                                <td colspan="1" :class="{
+                                    'text-danger': has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)
+                                }">{{ format_number_conv(paps.baseline_male + paps.baseline_female, 0, true) }}
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                        @click="handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)">*
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -616,9 +631,34 @@
                                                                     </span>
                                                                 </td>
                                                                 <!-- Expected Outcome -->
-                                                                <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;">
-                                                                    <div><span v-if="pair.quantity>0"> {{ pair.quantity }}</span> {{ pair.output_description }} </div>
-                                                                    <div>{{ pair.outcome_description }}</div>
+                                                                <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;"
+
+                                                                >
+                                                                    <div :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
+                                                                        has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)
+                                                                    }"
+                                                                    ><span v-if="pair.quantity>0"> {{ pair.quantity }}</span> {{ pair.output_description }}
+                                                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
+                                                                            </button>
+                                                                            <button v-if="has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
+                                                                            </button>
+                                                                    </div>
+                                                                    <div :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments) ||
+                                                                        has_comment('Implementation Plan','outcome_description',pair.output_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)
+                                                                    }"
+                                                                    >
+                                                                        {{ pair.outcome_description }}
+                                                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)">*
+                                                                        </button>
+                                                                        <button v-if="has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)">*
+                                                                        </button>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         </template>
@@ -1727,7 +1767,7 @@
                     <span v-else>{{ comment_colun }}</span>
                 </div>
                 <div><b>Table:</b> {{ comment_table }}</div>
-                <!-- <div>Reference Object: {{ comment_reference_object }}</div> -->
+                <!-- <div>Reference Object: {{ comment_reference_object.id }}</div> -->
 
                 <div class="col-9">
                     <table class="table table-hover table-bordered border-dark">
@@ -2057,7 +2097,11 @@ export default {
             if(this.comment_table==='expected_revised_outputs'){
                 table_row_id_l = this.comment_reference_object.id
             }
-            // alert(table_row_id_l)
+
+            if(this.comment_table==='expected_revised_outcomes'){
+                table_row_id_l = this.comment_reference_object.id
+            }
+            //alert(table_row_id_l)
             this.$inertia.post(myurl, {
                 params: {
                     table_row_id: table_row_id_l,
