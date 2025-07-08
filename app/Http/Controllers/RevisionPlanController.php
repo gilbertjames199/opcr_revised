@@ -1566,4 +1566,19 @@ class RevisionPlanController extends Controller
         ])
             ->get();
     }
+    public function print_aip(Request $request)
+    {
+        // dd(" gbcbcvbcvb ");
+        return RevisionPlan::with([
+            'paps',
+            'strategyProject',
+            'strategyProject.strategy',
+            'strategyProject.expected_output',
+            'strategyProject.expected_outcome',
+            'activityProject',
+            'activityProject.expected_output',
+            'activityProject.expected_outcome',
+            'budget'
+        ])->get();
+    }
 }
