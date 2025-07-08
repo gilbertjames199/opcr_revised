@@ -106,7 +106,7 @@ class ExpectedRevisedOutcomeController extends Controller
         ]);
         $id = $request->strategy_project_id;
         if ($request->is_strategy_outcome == 0) {
-            $id = $request->activity_id;
+            $id = $request->activity_project_id;
         }
         // dd($id);
         $expected_outcome = new ExpectedRevisedOutcome();

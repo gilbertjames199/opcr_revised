@@ -291,6 +291,7 @@ class RevisionPlanController extends Controller
             'strategyProject.expected_output',
             'strategyProject.expected_output.comments',
             'strategyProject.expected_outcome',
+            'strategyProject.expected_outcome.comments',
             'strategyProject.comments',
             'strategyProject.comments.user',
             'activity' => function ($query) use ($paps, $id) {
