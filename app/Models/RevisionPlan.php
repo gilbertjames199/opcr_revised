@@ -30,6 +30,14 @@ class RevisionPlan extends Model
     {
         return $this->belongsTo(ProgramAndProject::class, 'idpaps', 'id');
     }
+    public function strategyProject()
+    {
+        return $this->hasMany(StrategyProject::class, 'project_id', 'id');
+    }
+    public function activityProject()
+    {
+        return $this->hasMany(ActivityProject::class, 'project_id', 'id');
+    }
     // protected $fillable = [
     //     'id',
     //     'idpaps',

@@ -291,6 +291,7 @@ class RevisionPlanController extends Controller
             'strategyProject.expected_output',
             'strategyProject.expected_output.comments',
             'strategyProject.expected_outcome',
+            'strategyProject.expected_outcome.comments',
             'strategyProject.comments',
             'strategyProject.comments.user',
             'activity' => function ($query) use ($paps, $id) {
@@ -1564,5 +1565,20 @@ class RevisionPlanController extends Controller
             'expected_outcome',
         ])
             ->get();
+    }
+    public function print_aip(Request $request)
+    {
+        // dd(" gbcbcvbcvb ");
+        return RevisionPlan::with([
+            'paps',
+            'strategyProject',
+            'strategyProject.strategy',
+            'strategyProject.expected_output',
+            'strategyProject.expected_outcome',
+            'activityProject',
+            'activityProject.expected_output',
+            'activityProject.expected_outcome',
+            'budget'
+        ])->get();
     }
 }
