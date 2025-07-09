@@ -1008,7 +1008,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 // true
                 if ($isPA1) {
                     $approver = 'Dorothy Montejo Gonzaga';
-                    $pmt_chair = 'Lewis Jake Caiman';
+                    $pmt_chair = 'Lewis Jake G. Caiman, CPA';
                 }
                 $pos = 'Governor';
                 if ($FFUNCCOD == '1021') {
