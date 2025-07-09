@@ -941,6 +941,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // $ave = number_format($ave_pre, 2);
         $total = number_format($request->total, 2);
         $ave = number_format($request->average, 2);
+        $pmt_chair = "Ivan Kleb N. Ulgasan";
         // dd($total);
         // dd("asasasasas");
         $approver = 'Engr. Raul G. Mabanglo';
@@ -989,7 +990,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->orderBy('PAPS.id', 'asc')
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
-            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1) {
+            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1, $pmt_chair) {
                 $efficiency1 = $item->efficiency1;
                 $performance_measure = $item->performance_measure;
                 $timeliness = $item->timeliness;
@@ -1007,6 +1008,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 // true
                 if ($isPA1) {
                     $approver = 'Dorothy Montejo Gonzaga';
+                    $pmt_chair = 'Lewis Jke Caiman';
                 }
                 $pos = 'Governor';
                 if ($FFUNCCOD == '1021') {
@@ -1118,6 +1120,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "ave_qet" => $ave_qet,
                     "target_success_indicator" => $su,
                     "adjectival" => $adj,
+                    "pmt_chair" => $pmt_chair
                     // "office_accountable" => $office_accountable
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
