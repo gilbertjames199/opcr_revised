@@ -173,6 +173,7 @@ class RevisionPlanController extends Controller
             'baseline_male' => 'required',
             'baseline_female' => 'required',
             'baseline_total' => 'required',
+            'data_source' => 'required',
             'rationale' => 'required',
             'objective' => 'required',
             'beneficiaries' => 'required',
@@ -203,6 +204,7 @@ class RevisionPlanController extends Controller
         $rev->baseline_male = $attributes['baseline_male'];
         $rev->baseline_female = $attributes['baseline_female'];
         $rev->baseline_total = $attributes['baseline_total'];
+        $rev->data_source = $attributes['data_source'];
         $rev->rationale = $attributes['rationale'];
         $rev->objective = $attributes['objective'];
         $rev->beneficiaries = $attributes['beneficiaries'];
@@ -678,6 +680,7 @@ class RevisionPlanController extends Controller
             $rev->baseline_male = $request->baseline_male;
             $rev->baseline_female = $request->baseline_female;
             $rev->baseline_total = $request->baseline_total;
+            $rev->data_source = $request->data_source;
             // $rev->amount = $request->amount;
             // $rev->attributed_amount = $request->attributed_amount;
             $rev->checklist_id = $request->checklist_id;
