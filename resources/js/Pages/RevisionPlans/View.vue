@@ -182,7 +182,18 @@
                                         @click="handleClick('Title',paps.baseline_female,paps.baseline_female,'baseline_female','revision_plans', paps, paps.comments)">*
                                     </button>
                                 </td>
-                                <th colspan="1">Total</th>
+                                <th colspan="1">Data Source</th>
+                                <td colspan="1" :class="{
+                                    'text-danger': has_comment('Title',paps.data_source,paps.data_source,'data_source','revision_plans', paps, paps.comments)
+                                }">{{ paps.data_source }}
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Title',paps.data_source,paps.data_source,'data_source','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Title',paps.data_source,paps.data_source,'data_source','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                        @click="handleClick('Title',paps.data_source,paps.data_source,'data_source','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                </td>
+                                <!-- <th colspan="1">Total</th>
                                 <td colspan="1" :class="{
                                     'text-danger': has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)
                                 }">{{ format_number_conv(paps.baseline_male + paps.baseline_female, 0, true) }}
@@ -192,7 +203,7 @@
                                     <button v-if="has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)" class="superscript-btn"
                                         @click="handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)">*
                                     </button>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Cost of Program</th>
