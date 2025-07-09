@@ -808,11 +808,182 @@
                                 </template>
                                 <tr>
                                         <td colspan="5">TOTAL</td>
-                                        <td>{{ format_number_conv(v_imp_ps,2,true) }}</td>
-                                        <td>{{ format_number_conv(v_imp_mooe,2,true) }}</td>
-                                        <td>{{ format_number_conv(v_imp_fe,2,true) }}</td>
-                                        <td>{{ format_number_conv(v_imp_co,2,true)}}</td>
-                                        <td class="text-end">{{ format_number_conv(imp_amount,2,true) }}</td>
+                                        <!-- PS TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_ps,2,true),
+                                            format_number_conv(v_imp_ps,2,true),
+                                            'imp_ps',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }">{{ format_number_conv(v_imp_ps,2,true) }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                format_number_conv(v_imp_ps,2,true),
+                                                format_number_conv(v_imp_ps,2,true),
+                                                'imp_ps',
+                                                'revision_plans',
+                                                paps,
+                                                paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_ps,2,true),
+                                                    format_number_conv(v_imp_ps,2,true),
+                                                    'imp_ps',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_ps,2,true),
+                                                    format_number_conv(v_imp_ps,2,true),
+                                                    'imp_ps',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- MOOE TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_mooe,2,true),
+                                            format_number_conv(v_imp_mooe,2,true),
+                                            'imp_mooe',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }">{{ format_number_conv(v_imp_mooe,2,true) }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    'imp_mooe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    'imp_mooe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    'imp_mooe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- FE TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_fe,2,true),
+                                            format_number_conv(v_imp_fe,2,true),
+                                            'imp_fe',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }">{{ format_number_conv(v_imp_fe,2,true) }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    'imp_fe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    'imp_fe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    'imp_fe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- CO TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_co,2,true),
+                                            format_number_conv(v_imp_co,2,true),
+                                            'imp_co',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }">{{ format_number_conv(v_imp_co,2,true)}}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    'imp_co',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    'imp_co',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    'imp_co',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <td class="text-end"
+                                            :class="{
+                                                'text-danger': has_comment('Implementation Plan',
+                                                format_number_conv(imp_amount,2,true),
+                                                format_number_conv(imp_amount,2,true),
+                                                'total_imp_amount',
+                                                'revision_plans',
+                                                paps,
+                                                paps.comments)
+                                            }"
+                                        >{{ format_number_conv(imp_amount,2,true) }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(imp_amount,2,true),
+                                                    format_number_conv(imp_amount,2,true),
+                                                    'total_imp_amount',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(imp_amount,2,true),
+                                                    format_number_conv(imp_amount,2,true),
+                                                    'total_imp_amount',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(imp_amount,2,true),
+                                                    format_number_conv(imp_amount,2,true),
+                                                    'total_imp_amount',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
                                         <td></td>
                                         <td></td>
                                 </tr>
