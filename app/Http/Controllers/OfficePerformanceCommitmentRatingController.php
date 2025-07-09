@@ -941,7 +941,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // $ave = number_format($ave_pre, 2);
         $total = number_format($request->total, 2);
         $ave = number_format($request->average, 2);
-        $pmt_chair = "Ivan Kleb N. Ulgasan";
+        $pmt_chair = "Ivan Kleb N. Ulgasan, CESE";
         // dd($total);
         // dd("asasasasas");
         $approver = 'Engr. Raul G. Mabanglo';
