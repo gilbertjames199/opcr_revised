@@ -1003,7 +1003,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 } else {
                     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
                 }
-                $approver = 'Raul G. Mabanglo';
+                $approver = 'Engr. Raul G. Mabanglo';
                 // true
                 if ($isPA1) {
                     $approver = 'Dorothy Montejo Gonzaga';
