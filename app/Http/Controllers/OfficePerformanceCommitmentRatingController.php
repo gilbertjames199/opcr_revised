@@ -943,7 +943,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $ave = number_format($request->average, 2);
         // dd($total);
         // dd("asasasasas");
-        $approver = 'Raul G. Mabanglo';
+        $approver = 'Engr. Raul G. Mabanglo';
         $pos = 'Governor';
         $isPA1 = $this->isPA($opcr_date, 'PA 1');
         $data = $this->model->select(
