@@ -74,6 +74,7 @@ use App\Http\Controllers\AddAccomplishmentController;
 use App\Http\Controllers\AnnualInvestmentPlanController;
 use App\Http\Controllers\AppropriationAmountController;
 use App\Http\Controllers\AppropriationController;
+use App\Http\Controllers\BudgetPrepController;
 use App\Http\Controllers\DivisionOutputController;
 use App\Http\Controllers\ExpectedOutputController;
 use App\Http\Controllers\ExpectedRevisedOutcomeController;
@@ -434,10 +435,12 @@ Route::middleware('auth')->group(function () {
     // Revision Plan Page
     Route::prefix('/revision_plans')->group(function () {
         Route::get('/', [RevisionPlanController::class, 'direct']);
+        Route::get('/budget/{rev_id}', [RevisionPlanController::class, 'get_budget_data']);
         // Route::get('/create/{id}', [RevisionPlanController::class, 'create']);
-        // Route::post('/store', [RevisionPlanController::class, 'store']);
-        // Route::get('/edit/{id}', [RevisionPlanController::class, 'edit']);
-        // Route::patch('/', [RevisionPlanController::class, 'update']);
+        Route::post('/store', [BudgetPrepController::class, 'store']);
+        Route::get('/budget/edit/{id}', [BudgetPrepController::class, 'fetch_data']);
+        Route::patch('/', [BudgetPrepController::class, 'update']);
+        Route::delete('/{id}', [BudgetPrepController::class, 'destroy']);
         // Route::get('/view/project/paps/{id}', [RevisionPlanController::class, 'view']);
         // Route::get('/general/administration/services/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas']);
         // Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
