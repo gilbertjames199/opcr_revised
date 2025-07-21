@@ -281,6 +281,26 @@ class AppropriationBudgetController extends Controller
         $revision_plan_id = $request->revision_plan_id;
         $appropriations = Appropriation::where('revision_plan_id', $revision_plan_id)
             ->get();
+
+        $personnel_services = $appropriations->filter(function ($item) {
+            return $item->category === 'Personnel Services';
+        });
+
+        $mooe = $appropriations->filter(function ($item) {
+            return $item->category === 'Maintenance, Operating, and Other Expenses';
+        });
+
+        $capital_outlay = $appropriations->filter(function ($item) {
+            return $item->category === 'Capital Outlay';
+        });
+
+        $programs = $appropriations->filter(function ($item) {
+            return $item->category === 'Programs';
+        });
+
+        $projects = $appropriations->filter(function ($item) {
+            return $item->category === 'Projects';
+        });
         if (count($appropriations) < 1) {
             $appropriations = [[
                 "id" => null,
@@ -305,6 +325,11 @@ class AppropriationBudgetController extends Controller
                 "created_at" => null,
                 "updated_at" => null,
             ]];
+            $personnel_services = collect($appropriations);
+            $mooe = collect($appropriations);
+            $capital_outlay = collect($appropriations);
+            $programs = collect($appropriations);
+            $projects = collect($appropriations);
         }
         return [
             "department_head" => $department_head,
@@ -319,6 +344,13 @@ class AppropriationBudgetController extends Controller
             "total_budget_year" => $total_budget_year,
             "revision_plan_id" => $revision_plan_id,
             "appropriations" => $appropriations,
+
+            // Add category-specific data
+            "personnel_services" => $personnel_services,
+            "mooe" => $mooe,
+            "capital_outlay" => $capital_outlay,
+            "programs" => $programs,
+            "projects" => $projects,
         ];
     }
 }
