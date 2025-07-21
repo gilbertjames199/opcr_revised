@@ -280,32 +280,90 @@ class AppropriationBudgetController extends Controller
         $total_budget_year = $request->total_budget_year;
         $revision_plan_id = $request->revision_plan_id;
         $appropriations = Appropriation::where('revision_plan_id', $revision_plan_id)
-            ->get();
+            ->get()
+            ->map(function ($item) use ($request) {
+                $department_head = $request->department_head;
+                $budget_officer = $request->budget_officer;
+                $department_code = $request->department_code;
+                $office = $request->office;
+                $local_chief = $request->local_chief;
+                $total_past_year = $request->total_past_year;
+                $total_first_sem = $request->total_first_sem;
+                $total_second_sem = $request->total_second_sem;
+                $total_total = $request->total_total;
+                $total_budget_year = $request->total_budget_year;
+                $revision_plan_id = $request->revision_plan_id;
+                return [
+                    "department_head" => $department_head,
+                    "budget_officer" => $budget_officer,
+                    "department_code" => $department_code,
+                    "office" => $office,
+                    "local_chief" => $local_chief,
+                    "total_past_year" => $total_past_year,
+                    "total_first_sem" => $total_first_sem,
+                    "total_second_sem" => $total_second_sem,
+                    "total_total" => $total_total,
+                    "total_budget_year" => $total_budget_year,
+                    "revision_plan_id" => $revision_plan_id,
+                    "id" => $item->id,
+                    "idooe" => $item->idooe,
+                    // "revision_plan_id" => $item->revision_plan_id,
+                    "year" => $item->year,
+                    "FFUNCCOD" => $item->FFUNCCOD,
+                    "raaotype" => $item->raaotype,
+                    "idprogram" => $item->idprogram,
+                    "AIP_CODE" => $item->AIP_CODE,
+                    "object_of_expenditure" => $item->object_of_expenditure,
+                    "account_code" => $item->account_code,
+                    "past_year" => $item->past_year,
+                    "first_sem" => $item->first_sem,
+                    "second_sem" => $item->second_sem,
+                    "budget_year" => $item->budget_year,
+                    "idpaps" => $item->idpaps,
+                    "category" => $item->category,
+                    "GAD" => $item->GAD,
+                    "CCET" => $item->CCET,
+                    "deleted_at" => $item->deleted_at,
+                    "created_at" => $item->created_at,
+                    "updated_at" => $item->updated_at,
+                ];
+            });
 
-        $personnel_services = $appropriations->filter(function ($item) {
-            return $item->category === 'Personnel Services';
-        });
+        // $personnel_services = $appropriations->filter(function ($item) {
+        //     return $item->category === 'Personnel Services';
+        // });
 
-        $mooe = $appropriations->filter(function ($item) {
-            return $item->category === 'Maintenance, Operating, and Other Expenses';
-        });
+        // $mooe = $appropriations->filter(function ($item) {
+        //     return $item->category === 'Maintenance, Operating, and Other Expenses';
+        // });
 
-        $capital_outlay = $appropriations->filter(function ($item) {
-            return $item->category === 'Capital Outlay';
-        });
+        // $capital_outlay = $appropriations->filter(function ($item) {
+        //     return $item->category === 'Capital Outlay';
+        // });
 
-        $programs = $appropriations->filter(function ($item) {
-            return $item->category === 'Programs';
-        });
+        // $programs = $appropriations->filter(function ($item) {
+        //     return $item->category === 'Programs';
+        // });
 
-        $projects = $appropriations->filter(function ($item) {
-            return $item->category === 'Projects';
-        });
+        // $projects = $appropriations->filter(function ($item) {
+        //     return $item->category === 'Projects';
+        // });
         if (count($appropriations) < 1) {
             $appropriations = [[
+                "department_head" => $department_head,
+                "budget_officer" => $budget_officer,
+                "department_code" => $department_code,
+                "office" => $office,
+                "local_chief" => $local_chief,
+                "total_past_year" => $total_past_year,
+                "total_first_sem" => $total_first_sem,
+                "total_second_sem" => $total_second_sem,
+                "total_total" => $total_total,
+                "total_budget_year" => $total_budget_year,
+                "revision_plan_id" => $revision_plan_id,
                 "id" => null,
                 "idooe" => null,
-                "revision_plan_id" => null,
+                // "revision_plan_id" => null,
                 "year" => null,
                 "FFUNCCOD" => null,
                 "raaotype" => null,
@@ -325,32 +383,33 @@ class AppropriationBudgetController extends Controller
                 "created_at" => null,
                 "updated_at" => null,
             ]];
-            $personnel_services = collect($appropriations);
-            $mooe = collect($appropriations);
-            $capital_outlay = collect($appropriations);
-            $programs = collect($appropriations);
-            $projects = collect($appropriations);
+            // $personnel_services = collect($appropriations);
+            // $mooe = collect($appropriations);
+            // $capital_outlay = collect($appropriations);
+            // $programs = collect($appropriations);
+            // $projects = collect($appropriations);
         }
-        return [
-            "department_head" => $department_head,
-            "budget_officer" => $budget_officer,
-            "department_code" => $department_code,
-            "office" => $office,
-            "local_chief" => $local_chief,
-            "total_past_year" => $total_past_year,
-            "total_first_sem" => $total_first_sem,
-            "total_second_sem" => $total_second_sem,
-            "total_total" => $total_total,
-            "total_budget_year" => $total_budget_year,
-            "revision_plan_id" => $revision_plan_id,
-            "appropriations" => $appropriations,
+        return $appropriations;
+        // return [
+        //     "department_head" => $department_head,
+        //     "budget_officer" => $budget_officer,
+        //     "department_code" => $department_code,
+        //     "office" => $office,
+        //     "local_chief" => $local_chief,
+        //     "total_past_year" => $total_past_year,
+        //     "total_first_sem" => $total_first_sem,
+        //     "total_second_sem" => $total_second_sem,
+        //     "total_total" => $total_total,
+        //     "total_budget_year" => $total_budget_year,
+        //     "revision_plan_id" => $revision_plan_id,
+        //     "appropriations" => $appropriations,
 
-            // Add category-specific data
-            "personnel_services" => $personnel_services,
-            "mooe" => $mooe,
-            "capital_outlay" => $capital_outlay,
-            "programs" => $programs,
-            "projects" => $projects,
-        ];
+        //     // Add category-specific data
+        //     "personnel_services" => $personnel_services,
+        //     "mooe" => $mooe,
+        //     "capital_outlay" => $capital_outlay,
+        //     "programs" => $programs,
+        //     "projects" => $projects,
+        // ];
     }
 }
