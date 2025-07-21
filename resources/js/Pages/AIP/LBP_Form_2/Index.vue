@@ -246,7 +246,7 @@ export default {
                 '&office=' + this.auth.user.office.office +
                 '&department_head=' + " DEPT" +
                 '&budget_officer=EVA JEAN S. LICAYAN' +
-                '&local_chief=DOROTHY M. GONZAGA' +
+                '&local_chief=ENGR. RAUL M. MABANGLO' +
                 '&total_past_year=' + this.totals.past_year +
                 '&total_first_sem=' + this.totals.first_sem +
                 '&total_second_sem=' + this.totals.second_sem +
