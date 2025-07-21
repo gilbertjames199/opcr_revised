@@ -1558,6 +1558,7 @@ class RevisionPlanController extends Controller
             "functions" => $functions,
             "programs" => $programs,
             "totals" => $totals,
+            'pgHead' => $pgHead,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
