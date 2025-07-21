@@ -1430,13 +1430,27 @@ class RevisionPlanController extends Controller
         $ooe_description = $ooes->pluck('FOOEDESC')->toArray();
         $ooe_id = $ooes->pluck('recid')->toArray();
         $ooe_codes = $ooes->pluck('FACTCODE')->toArray();
-        $FFUNCCOD = FFUNCCOD::where('department_code', $dept_id)->first()->FFUNCCOD;
+        $funcc = FFUNCCOD::with('office.pgHead')->where('department_code', $dept_id)->first();
+        $FFUNCCOD = optional($funcc)->FFUNCCOD;
+        $pg_details = optional(optional($funcc)->office)->pgHead;
+        $suffix =  optional($pg_details)->suffix_name;
+        $postfix_name =  optional($pg_details)->postfix_name;
+        $mname = optional($pg_details)->middle_name ? substr(optional($pg_details)->middle_name, 0, 1) . '. ' : null;
+        $pgHead = optional($pg_details)->first_name . ' ' . $mname . optional($pg_details)->last_name;
+        if ($suffix) {
+            $pgHead = $pgHead . ", " . $suffix;
+        }
+        if ($postfix_name) {
+            $pgHead = $pgHead . ", " . $postfix_name;
+        }
+        // dd($pgHead);
         $offices = FFUNCCOD::where(function ($query) {
             $query->where('FFUNCTION', 'LIKE', '%Office%')
                 ->orWhere('FFUNCTION', 'LIKE', '%Hospital%');
         })
             ->orderBy('FFUNCTION', 'ASC')
             ->get();
+
         // dd($offices);
         // $paps = ProgramAndProject::where('id', $idpaps)->first();
         $budget_controller = new BudgetRequirementController($this->budget);
@@ -1544,6 +1558,7 @@ class RevisionPlanController extends Controller
             "functions" => $functions,
             "programs" => $programs,
             "totals" => $totals,
+            'pgHead' => $pgHead,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)

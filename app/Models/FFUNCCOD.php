@@ -9,7 +9,7 @@ class FFUNCCOD extends Model
 {
     use HasFactory;
     protected $connection = "mysql2";
-    protected $table='functions';
+    protected $table = 'functions';
     protected $fillable = [
         'recid',
         'FFUNCCOD',
@@ -17,8 +17,12 @@ class FFUNCCOD extends Model
         'DEPTHEAD',
     ];
 
-    public function acc(){
-        return $this -> hasMany(AccountAccess::class, 'ffunccod', 'FFUNCCOD');
+    public function acc()
+    {
+        return $this->hasMany(AccountAccess::class, 'ffunccod', 'FFUNCCOD');
     }
-
+    public function office()
+    {
+        return $this->hasOne(Office::class, 'department_code', 'department_code');
+    }
 }
