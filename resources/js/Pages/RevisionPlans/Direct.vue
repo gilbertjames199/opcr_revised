@@ -15,6 +15,7 @@
                 </div>
                 <div class="peer">
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`">Add Revision Plan</Link> -->
+                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showPrint()">Print</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -341,6 +342,35 @@
                 <!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
             </form>
         </ModalRightAppropriationCrud>
+        <Printing v-if="print" @closeFilter="print = false">
+            Select Form
+            <select v-model="lbp_version" class="form-control">
+                <option value="0"></option>
+                <option value="2">LBP Form 2</option>
+                <option value="4">LBP Form 4</option>
+            </select>
+            <br>
+            <div v-if="lbp_version > 2">
+                Target Fiscal Year
+                <br>
+                <input v-model="dates" class="form-control" type="number" name="year" min="1900" max="2099" step="1"
+                    oninput="javascript: if (this.value.length > 4) this.value = this.value.slice(0, 4);" />
+                <br>
+                <br>
+            </div>
+
+            <button class="btn btn-primary btn-sm mL-2 text-white"
+                @click="showModal(FFUNCCOD.FFUNCCOD, FFUNCCOD.FFUNCTION, dates)">Print</button>
+            <!-- <button class="btn btn-primary btn-sm mL-2 text-white"
+                @click="showModal(data.data[0].FFUNCCOD, data.data[0].FFUNCTION, dates)">Print</button> -->
+        </Printing>
+        <LBP2Modal v-if="displaylbp2" @close-modal-event="hideLBP2Modal">
+            <div class="d-flex justify-content-center">
+
+                <iframe :src="my_link" style="width:100%; height:500px" />
+            </div>
+        </LBP2Modal>
+
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
@@ -464,10 +494,13 @@ import ModalRightAlignCRUD from "../../Shared/ModalRightAlign.vue";
 import ModalRightAppropriation from "../../Shared/ModalRightAlign.vue";
 import ModalRightAppropriationCrud from "../../Shared/ModalRightAlign.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
+import Printing from "@/Shared/FilterPrint";
+import LBP2Modal from "@/Shared/PrintModal";
 
 import { Button } from "bootstrap";
 export default {
     props: {
+        auth: Object,
         data: Object,
         FFUNCCOD: String,
         offices: Object,
@@ -484,6 +517,7 @@ export default {
         monitors: Object,
         functions: Object,
         programs: Object,
+        totals: Object
     },
     data() {
         return{
@@ -531,8 +565,12 @@ export default {
                 AIP_CODE: "",
                 id: null
             }),
+            dates: "",
             dt_ooes: [],
             crud_type: "create",
+            print: false,
+            lbp_version: "",
+            displaylbp2: false,
         }
     },
     computed: {
@@ -605,7 +643,7 @@ export default {
         this.setCurrentYear()
     },
     components: {
-        Pagination, Filtering, ModalRightAlign, ModalRightAlignCRUD, ModalRightAppropriation, ModalRightAppropriationCrud
+        Pagination, Filtering, ModalRightAlign, ModalRightAlignCRUD, ModalRightAppropriation, ModalRightAppropriationCrud, Printing, LBP2Modal
     },
     watch: {
         search: _.debounce(function (value) {
@@ -906,9 +944,9 @@ export default {
             }, 0);
         },
         setCurrentYear() {
-
             var yr = new Date().getFullYear()
             this.form.year = parseFloat(yr) + 1;
+            this.dates = parseFloat(yr) + 1;
         },
         filterProgram() {
             // this.form.idprogram=null;
@@ -1015,7 +1053,46 @@ export default {
                 // this.budget_data=[];
                 // this.openAppropriationRightModal('budget', this.rev_id, this.project_title, this.total_budget, this.idpaps);
             }
-        }
+        },
+
+        //PRINTING
+        showPrint() {
+            //alert("show filter");
+            this.print = !this.print
+        },
+        showModal(ffunccod, ffunction, dates) {
+            // alert(ffunction,ffunccod);
+            // alert(this.lbp_version);
+            if (this.lbp_version > 2) {
+                this.my_link = this.getToRep(ffunccod, ffunction, dates);
+            } else {
+                this.displaylbp2 = true;
+                this.my_link = this.goToRepPrintLBP2();
+            }
+
+        },
+        goToRepPrintLBP2() {
+            //http://122.53.120.27:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2&standAlone=true&decorate=no&output=pdf';
+            var params = '&department_code=' + this.auth.user.department_code +
+                '&office=' + this.auth.user.office.office +
+                '&department_head=' + " DEPT" +
+                '&budget_officer=EVA JEAN S. LICAYAN' +
+                '&local_chief=DOROTHY M. GONZAGA' +
+                '&total_past_year=' + this.totals.past_year +
+                '&total_first_sem=' + this.totals.first_sem +
+                '&total_second_sem=' + this.totals.second_sem +
+                '&total_total=' + this.totals.total +
+                '&total_budget_year=' + this.totals.budget_year;
+            // alert(params)
+            var link1 = linkt + jasper_ip + jasper_link + params;
+            return link1;
+        },
+        hideLBP2Modal() {
+            this.displaylbp2 = false;
+        },
     }
 };
 </script>
