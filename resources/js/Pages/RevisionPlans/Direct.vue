@@ -164,7 +164,183 @@
                 </button>
             </form>
         </ModalRightAlignCRUD>
+        <ModalRightAppropriation v-if="showModalAppropriation" @closeFilter="showModalAppropriation=false" :title="'Budget Proposed'">
+            <h3>Project Title: <u>{{ project_title }}</u></h3>
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button>
+            <div class="table-responsive">
+                <table class="table table-sm table-borderless table-striped table-hover" v-if="budget_data.length > 0">
+                    <thead>
+                        <tr class="bg-secondary text-white">
+                            <th>Object of Expenditure</th>
+                            <th>Account Code</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr v-for="dat in budget_data">
+                            <td>{{ dat.object_of_expenditure }}</td>
+                            <td>{{ dat.account_code }}</td>
+                            <td class="text-end">{{ format_number_conv(dat.budget_year,2,true) }}</td>
+                            <td >
+                                <Button
+                                    class="btn btn-primary btn-sm text-white"
+                                    @click="editBudgetApprop(dat.id)"
+                                    title="Edit Budget"
+                                    >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                    </svg>
+                                </Button>&nbsp;
+                                <Button
+                                    class="btn btn-danger btn-sm text-white"
+                                    @click="deleteBudgetApprop(dat.id)"
+                                    title="Delete Budget"
+                                    >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                    </svg>
+                                </Button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td><b>TOTAL (Planned Amount)</b></td>
+                            <td class="text-end"><u>{{ format_number_conv(budget_sum,2,true) }}</u></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td><b>TOTAL</b></td>
+                            <td class="text-end"><u>{{ format_number_conv(total_budget,2,true) }}</u></td>
+                            <td></td>
+                        </tr>
 
+                    </tbody>
+
+                </table>
+            </div>
+        </ModalRightAppropriation>
+        <ModalRightAppropriationCrud v-if="showModalAppropriationCrud" @closeFilter="closeCRUDApprop"
+            :title="'Budget Proposed'">showModalAppropriationCrud: {{ showModalAppropriationCrud }}
+            <h3>Project Title: <u>{{ project_title }}</u></h3>
+            <form @submit.prevent="submitBudgetProposal()">
+                <!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+                <input type="hidden" required>
+                <input type="hidden" v-model="form.idpaps" class="form-control" autocomplete="positionchrome-off">
+                <input type="hidden" v-model="form.id" class="form-control" autocomplete="positionchrome-off">
+                <input type="hidden" v-model="form.revision_plan_id" class="form-control" autocomplete="positionchrome-off">
+
+                <div>
+                    revision_plan_id: {{ form.revision_plan_id }}
+                    idpaps: {{ form.idpaps }}
+                </div>
+                <div hidden>
+                    <!-- <label for="">Chart of Accounts *</label>
+                    <div @keyup.enter="addAccount($event)">
+                        <multiselect :options="accounts" :searchable="true" v-model="chart_selected" @select="setCode"
+                            :value="chart_selected" @search-change="typed = $event">
+                        </multiselect>
+                    </div> -->
+
+                    <!-- <label>ACCOUNT CODE </label>
+                    <input type="number" class="form-control" v-model="form.account_code" @change="searchByAccountCode" />
+                    <div class="fs-6 c-red-500" v-if="form.errors.account_code">{{ form.errors.account_code }}</div> -->
+
+                    <label for="">Object of Expenditure</label>
+                    <input type="text" v-model="form.object_of_expenditure" class="form-control"
+                        autocomplete="positionchrome-off">
+                    <div class="fs-6 c-red-500" v-if="form.errors.object_of_expenditure">{{
+                        form.errors.object_of_expenditure }}</div>
+                </div>
+                <!--*****************************-->
+                <label>YEAR</label>
+                <input type="number" class="form-control" v-model="form.year" />
+                <div class="fs-6 c-red-500" v-if="form.errors.year">{{ form.errors.year }}</div>
+
+                <label>OFFICE</label>
+                <!-- {{ form.FFUNCCOD }} -->
+                <select class="form-control" v-model="form.FFUNCCOD">
+                    <option></option>
+                    <option v-for="functione in functions" :value="functione.FFUNCCOD">{{ functione.FFUNCTION }}</option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
+
+                <label>RAAO TYPE</label>
+                <!-- {{ form.raaotype }} -->
+                <select class="form-control" v-model="form.raaotype" ref="raaoSelect" @click="filterProgram">
+                    <option></option>
+                    <option value="1">Personnel Services</option>
+                    <option value="2">Maintenance, Operating, and Other Expenses</option>
+                    <option value="3">Capital Outlay</option>
+                    <option value="4">Programs</option>
+                    <option value="5">Projects</option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
+
+                <label>PROGRAM</label>&nbsp;
+                <!-- <br>{{ form.idprogram }} -->
+                <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
+                <div>
+                    <multiselect :options="formattedPrograms" :searchable="true" v-model="form.idprogram" label="label"
+                        track-by="label" @close="loadOOE">
+                    </multiselect>
+                </div>
+                <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
+                <!--******************************-->
+                <label>Objects of Expenditure</label>&nbsp;
+                idooe: {{ form.idooe }}
+                <div>
+                    <multiselect :options="formattedOOEs" :searchable="true" v-model="form.idooe" label="label"
+                        track-by="label" @close="setOOEValue">
+                    </multiselect>
+                </div>
+                <!-- {{ formattedOOEs }} -->
+
+                <div class="fs-6 c-red-500" v-if="form.errors.GAD">{{ form.errors.GAD }}</div>
+                <label>PAST YEAR </label>
+                <input type="text" class="form-control" v-model="computed_pastyear" readonly />
+                <div class="fs-6 c-red-500" v-if="form.errors.past_year">{{ form.errors.past_year }}</div>
+
+                <label>FIRST SEMESTER (Actual) </label>
+                <input type="text" class="form-control" :value="computed_sem1" readonly />
+                <div class="fs-6 c-red-500" v-if="form.errors.first_sem">{{ form.errors.first_sem }}</div>
+
+                <label>SECOND SEMESTER (Estimate) </label>
+                <input type="text" class="form-control" :value="computed_sem2" readonly />
+                <div class="fs-6 c-red-500" v-if="form.errors.second_sem">{{ form.errors.second_sem }}</div>
+
+                <label>TOTAL </label>
+                <input type="text" class="form-control" :value="getTotal12" readonly />
+
+                <label>BUDGET YEAR PROPOSED </label>
+                <input type="number" class="form-control" v-model="form.budget_year" />
+                <div class="fs-6 c-red-500" v-if="form.errors.budget_year">{{ form.errors.budget_year }} OR the budget year
+                    value is greater than the value recorded at the LBP Form No. 2</div>
+
+                <label>CATEGORY</label>
+                <input type="text" class="form-control" v-model="form.category" />
+                <div class="fs-6 c-red-500" v-if="form.errors.category">{{ form.errors.category }}</div>
+
+                <label>GAD CATEGORY</label>
+                <select class="form-control" v-model="form.GAD">
+                    <option>NON-GAD</option>
+                    <option>GAD</option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.GAD">{{ form.errors.GAD }}</div>
+                <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
+
+
+                <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
+
+                <button type="button" class="btn text-white btn-primary mt-3 text-white" @click="submit()"
+                    :disabled="form.processing">
+                    Save changes
+                </button>
+                <!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+            </form>
+        </ModalRightAppropriationCrud>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
@@ -208,7 +384,16 @@
                                     <!-- {{ dat }} -->
                                 </td>
                                 <td v-if="my_source=='budget'">
-                                    <Button
+                                     <button
+                                        class="btn btn-primary btn-sm text-white"
+                                        @click="openAppropriationRightModal('budget', dat.id, dat.project_title,dat.budget_sum, dat.idpaps)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-richtext" viewBox="0 0 16 16">
+                                            <path d="M7.5 3.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m-.861 1.542 1.33.886 1.854-1.855a.25.25 0 0 1 .289-.047L11 4.75V7a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 7v-.5s1.54-1.274 1.639-1.208M5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
+                                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
+                                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
+                                        </svg>
+                                    </button>
+                                    <!-- <Button
                                         class="btn btn-primary btn-sm text-white"
                                         @click="openRightAlignModal('budget', dat.id, dat.project_title,dat.budget_sum)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-richtext" viewBox="0 0 16 16">
@@ -216,7 +401,7 @@
                                             <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
                                             <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
                                         </svg>
-                                    </Button>
+                                    </Button> -->
                                 </td>
                                 <!-- <td><Link
                                         class="btn btn-primary btn-sm"
@@ -276,6 +461,8 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import ModalRightAlign from "../../Shared/ModalRightAlign.vue";
 import ModalRightAlignCRUD from "../../Shared/ModalRightAlign.vue";
+import ModalRightAppropriation from "../../Shared/ModalRightAlign.vue";
+import ModalRightAppropriationCrud from "../../Shared/ModalRightAlign.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 
 import { Button } from "bootstrap";
@@ -291,11 +478,12 @@ export default {
         //idstrat: String,
         my_source: String,
         dept_id: String,
-        idpaps: String,
+        // idpaps: String,
         filters: Object,
         paps: Object,
         monitors: Object,
-
+        functions: Object,
+        programs: Object,
     },
     data() {
         return{
@@ -304,23 +492,46 @@ export default {
             search: this.$props.filters.search,
             showModalRightAlign: false,
             showModalRightAlignCRUD: false,
+            showModalAppropriation: false,
+            showModalAppropriationCrud: false,
             rev_id: null,
             project_title: "",
             total_budget: 0,
             budget_sum: 0,
+            edit_amount: 0,
             budget_data: [],
             editData: undefined,
+            idpaps: null,
             form: useForm({
-                id: null,
+                // id: null,
+                // idooe: "",
+                // particulars: "",
+                // account_code: "",
+                // amount: "",
+                // category: "",
+                // source: "",
+                // revision_plan_id: "",
+                // category_gad: "",
                 idooe: "",
-                particulars: "",
-                account_code: "",
-                amount: "",
-                category: "",
-                source: "",
+                year: "",
+                FFUNCCOD: "",
+                raaotype: "",
+                idprogram: "",
                 revision_plan_id: "",
-                category_gad: "",
+                object_of_expenditure: "",
+                account_code: "",
+                past_year: 0,
+                first_sem: 0,
+                second_sem: 0,
+                budget_year: "",
+                idpaps: "",
+                category: "",
+                GAD: "",
+                CCET: "",
+                AIP_CODE: "",
+                id: null
             }),
+            dt_ooes: [],
             crud_type: "create",
         }
     },
@@ -332,9 +543,69 @@ export default {
                 code: ooe.FACTCODE,
             }));
         },
+        formattedOOEs() {
+            let dataOoes = this.dt_ooes;
+            return this.dt_ooes.map((dataOoes) => ({
+                value: dataOoes.recid,
+                label: dataOoes.FOOEDESC,
+                FACTCODE: dataOoes.FACTCODE,
+                program_id: dataOoes.idprogram,
+                FFUNCCOD: dataOoes.FFUNCCOD,
+                sem1: dataOoes.sem1,
+                sem2: dataOoes.sem2,
+                past_year: dataOoes.past_year
+            }));
+        },
+        formattedPrograms() {
+            let dataPrograms = this.programs;
+            if (this.form.raaotype) {
+                dataPrograms = dataPrograms.filter((program) => program.ftype === this.form.raaotype);
+            }
+            if (this.form.FFUNCCOD) {
+                dataPrograms = dataPrograms.filter((program) => program.FFUNCCOD === this.form.FFUNCCOD);
+            }
+
+            return dataPrograms.map((program) => ({
+                value: program.recid,
+                label: program.FPROGRAM,
+                raaotype: program.ftype,
+                FFUNCCOD: program.FFUNCCOD,
+                raohsid: program.raohsid
+            }));
+
+        },
+        getTotal12() {
+            var f1 = parseFloat(this.form.first_sem);
+            var f2 = parseFloat(this.form.second_sem);
+            var tot = f1 + f2;
+            var tat = this.format_number_conv(tot, 2, true);
+            return tat;
+        },
+        computed_pastyear() {
+            // var p_year = this.format_number_conv(this.form.past_year,2,true);
+            // if(isNaN(p_year)){
+            //     return "0.00"
+            // }else{
+            //     return this.format_number_conv(this.form.past_year,2,true);
+            // }
+            return this.format_number_conv(this.form.past_year, 2, true);
+        },
+        computed_sem1() {
+            //var s1 = parseFloat(this.form.sem1);
+            return this.format_number_conv(this.form.first_sem, 2, true);
+            //return this.format_number_conv(s1,2,true);
+            //return isNaN(s1) ? '0.00' : s1;
+
+        },
+        computed_sem2() {
+            return this.format_number_conv(this.form.second_sem, 2, true);
+        }
+    },
+    mounted() {
+        this.setCurrentYear()
     },
     components: {
-        Pagination, Filtering, ModalRightAlign, ModalRightAlignCRUD
+        Pagination, Filtering, ModalRightAlign, ModalRightAlignCRUD, ModalRightAppropriation, ModalRightAppropriationCrud
     },
     watch: {
         search: _.debounce(function (value) {
@@ -418,6 +689,7 @@ export default {
                 }
             );
         },
+        // BUDGET PREP
         async openRightAlignModal(source, id, title,sum_budget) {
             // this.$modal.show(ModalRightAlign, {
             //     title: "Budget Details",
@@ -442,6 +714,7 @@ export default {
             this.total_budget = sum_budget;
             this.budget_sum = this.calculateTotalAmount();
         },
+
         add_budget_prep() {
             this.form.revision_plan_id = this.rev_id;
             this.form.idooe = "";
@@ -454,6 +727,8 @@ export default {
             this.showModalRightAlign=false;
             this.showModalRightAlignCRUD = true;
         },
+
+
         setCode() {
             //alert(this.form.particulars);
             var ind = this.ooes.findIndex(ooe => ooe.recid === this.form.idooe);
@@ -466,54 +741,62 @@ export default {
             //alert(this.budget_code+" code: "+ this.codes[ind]);
         },
         submit() {
-            var total_project_budget = this.budget_sum+this.form.amount;
+            var total_project_budget = this.budget_sum+this.form.budget_year;
             if(this.editData!==undefined){
-                total_project_budget = total_project_budget - this.editData.amount;
+                total_project_budget = total_project_budget - this.editData.budget_year;
             }
             if (total_project_budget > this.total_budget) {
                 alert("Total budget for this project is " + this.total_budget + ". You cannot exceed this amount." +total_project_budget);
                 return;
             }
+            // console.log("budget_sum: "+this.budget_sum);
+            // console.log("total_project_budget: "+this.budget_sum);
+            // console.log("this.editData.budget_year: "+this.editData.budget_year);
             if (this.editData !== undefined) {
-                //alert('patch');
-                this.form.patch("/revision_plans/",{
+                // alert('patch');
+                var url =`/appropriation-budget/${this.form.id}`;
+                this.form.patch(url,{
                     onSuccess: () => {
-                        this.showModalRightAlignCRUD = false;
-                        this.showModalRightAlign = true;
-                        this.openRightAlignModal('budget', this.rev_id, this.project_title, this.total_budget);
+                        this.showModalAppropriationCrud = false;
+                        this.showModalAppropriation = true;
+                        this.openAppropriationRightModal('budget', this.rev_id, this.project_title, this.total_budget, this.idpaps);
                         this.editData = undefined; // Reset editData after successful submission
-                        this.form.id = null; // Reset form id after successful submission
-                        this.form.revision_plan_id = this.rev_id; // Ensure revision_plan_id is set
-                        this.form.idooe = "";
-                        this.form.particulars = "";
-                        this.form.account_code = "";
-                        this.form.amount = "";
-                        this.form.category = "";
-                        this.form.source = "";
-                        this.form.category_gad = "";
-                        this.form.processing = false; // Reset processing state
-
+                        // this.form.id = null; // Reset form id after successful submission
+                        // this.form.revision_plan_id = this.rev_id; // Ensure revision_plan_id is set
+                        // this.form.idooe = "";
+                        // this.form.particulars = "";
+                        // this.form.account_code = "";
+                        // this.form.amount = "";
+                        // this.form.category = "";
+                        // this.form.source = "";
+                        // this.form.category_gad = "";
+                        // this.form.processing = false; // Reset processing state
                     },
                     onError: () => {
                         console.log("Error in submitting form");
-                    }
+                    },
+                    // finally: () => {
+                    //     this.isLoading = false; // Reset loading state
+                    //     this.closeCRUDApprop();
+                    // }
                 });
             } else {
                 this.form.id = null;
-                //alert('store');
-                this.form.post("/revision_plans/store",{
+                var url='/appropriation-budget';
+                //alert('store') /revision_plans/store;
+                this.form.post(url,{
                     onSuccess: () => {
-                        this.showModalRightAlignCRUD = false;
-                        this.showModalRightAlign = true;
-                        this.openRightAlignModal('budget', this.rev_id, this.project_title, this.total_budget);
+                        this.showModalAppropriationCrud = false;
+                        this.showModalAppropriation = true;
+                        this.openAppropriationRightModal('budget', this.rev_id, this.project_title, this.total_budget, this.idpaps);
                     },
                     onError: () => {
                         console.log("Error in submitting form");
                     }
                 });
 
-                // this.showModalRightAlignCRUD = false;
-                // this.showModalRightAlign = true;
+                // this.showModalAppropriationCrud = false;
+                // this.showModalAppropriation = true;
                 // this.openRightAlignModal('budget', this.rev_id, this.project_title, this.total_budget);
             }
 
@@ -566,7 +849,9 @@ export default {
         },
         calculateTotalAmount() {
             return this.budget_data.reduce((sum, item) => {
-                return sum + parseFloat(item.amount);
+                // alert("Calculating total amount for item:", item);
+                // alert("Budget year:", item.budget_year);
+                return sum + parseFloat(item.budget_year);
             }, 0);
         },
         closeCRUD(){
@@ -583,6 +868,146 @@ export default {
             this.form.category = "";
             this.form.source = "";
             this.form.category_gad = "";
+        },
+
+        //PROPOSED BUDGET
+        async openAppropriationRightModal(source, id, title,sum_budget,paps_id){
+            this.rev_id = id;
+            this.form.revision_plan_id = id;
+            this.project_title = title;
+            this.total_budget = sum_budget;
+            this.form.idpaps = paps_id;
+            this.idpaps = paps_id;
+
+
+            var url= `/appropriation-budget/get/${id}/budget/appropriations`;
+            await axios.get(url).then((response) => {
+                this.budget_data = response.data;
+            }).finally(() => {
+                this.isLoading = false;
+                this.budget_sum = this.calculateTotalAmount();
+                // alert(this.budget_sum);
+            });
+            this.showModalAppropriation = true;
+
+        },
+        async add_budget_proposal(){
+            this.showModalAppropriationCrud = true;
+            var url= `/appropriation-budget/get/${this.idpaps}/ooes`;
+            await axios.get(url).then((response) => {
+                this.budget_data = response.data;
+            }).finally(() => {
+                this.isLoading = false;
+            });
+        },
+        calculateTotalAmountProposed() {
+            return this.budget_data.reduce((sum, item) => {
+                return sum + parseFloat(item.budget_year);
+            }, 0);
+        },
+        setCurrentYear() {
+
+            var yr = new Date().getFullYear()
+            this.form.year = parseFloat(yr) + 1;
+        },
+        loadOOE() {
+            this.dt_ooes = [];
+            var year1 = parseFloat(this.form.year) - 1;
+            axios.get("/ooes/filtered/ooes", {
+                params: {
+                    idprogram: this.form.idprogram,
+                    FFUNCCOD: this.form.FFUNCCOD,
+                    raaotype: this.form.raaotype,
+                    year: year1
+                }
+            }).then((response) => {
+                this.dt_ooes = response.data;
+            }).catch((error) => {
+                console.error(error);
+            });
+        },
+        setOOEValue() {
+            var prog_sel = this.dt_ooes.filter(ooes => ooes.recid === this.form.idooe);
+            this.form.account_code = prog_sel[0].FACTCODE;
+            console.log(prog_sel[0]);
+            // this.searchByAccountCode();
+            this.form.object_of_expenditure = prog_sel[0].FOOEDESC;
+            this.form.first_sem = this.format_number_conv(prog_sel[0].sem1, 2, false);
+            this.form.second_sem = this.format_number_conv(prog_sel[0].sem2, 2, false);
+            this.form.past_year = this.format_number_conv(prog_sel[0].past_year, 2, false);
+        },
+        async editBudgetApprop(id){
+            this.dt_ooes = [];
+            var url= `/appropriation-budget/${id}/edit`;
+                await axios.get(url).then((response) => {
+                    console.log("response data in edit budget prep");
+                    console.log(response.data);
+                    this.editData = response.data.editData;
+                    this.dt_ooes = response.data.ooes;
+                    this.edit_amount = this.editData.budget_year;
+                    console.log(this.dt_ooes);
+                }).catch((error) => {
+                    console.log("Error in fetching budget data", error);
+                }).finally(() => {
+                    this.form.idooe = this.editData.idooe;
+                    this.form.year = this.editData.year;
+                    this.form.FFUNCCOD = this.editData.FFUNCCOD;
+                    this.form.raaotype = this.editData.raaotype;
+                    this.form.idprogram = this.editData.idprogram;
+                    this.form.revision_plan_id = this.editData.revision_plan_id;
+                    this.form.object_of_expenditure = this.editData.object_of_expenditure;
+                    this.form.account_code = this.editData.account_code;
+                    this.form.past_year = this.editData.past_year;
+                    this.form.first_sem = this.editData.first_sem;
+                    this.form.second_sem = this.editData.second_sem;
+                    this.form.budget_year = this.editData.budget_year;
+                    this.form.idpaps = this.editData.idpaps;
+                    this.form.category = this.editData.category;
+                    this.form.GAD = this.editData.GAD;
+                    this.form.CCET = this.editData.CCET;
+                    this.form.AIP_CODE = this.editData.AIP_CODE;
+                    this.form.id = this.editData.id;
+                    this.showModalAppropriationCrud = true;
+                });
+        },
+        closeCRUDApprop(){
+            this.showModalAppropriationCrud = false;
+            this.showModalAppropriation = true;
+            this.openAppropriationRightModal('budget', this.rev_id, this.project_title, this.total_budget, this.idpaps);
+            this.editData = undefined; // Reset editData after closing the modal
+            this.form.id = null; // Reset form id after closing the modal
+            this.form.revision_plan_id = this.rev_id; // Ensure revision_plan_id is set
+            this.form.idooe = "";
+            // this.form.year = "";
+            this.form.FFUNCCOD = "";
+            this.form.raaotype = "";
+            this.form.idprogram = "";
+            this.form.object_of_expenditure = "";
+            this.form.account_code = "";
+            this.form.past_year = 0;
+            this.form.first_sem = 0;
+            this.form.second_sem = 0;
+            this.form.budget_year = "";
+            // this.form.idpaps = "";
+            this.form.category = "";
+            this.form.GAD = "";
+            this.form.CCET = "";
+            this.form.AIP_CODE = "";
+            this.form.id = null; // Reset form id after closing the modal
+            this.form.processing = false; // Reset processing state
+        },
+        deleteBudgetApprop(id){
+            let text = "WARNING!\nAre you sure you want to delete the budget?"+id;
+            if (confirm(text) == true) {
+                this.$inertia.delete("/appropriation-budget/" + id, {
+                    onSuccess: () => {
+                        this.budget_data = [];
+                        this.openAppropriationRightModal('budget', this.rev_id, this.project_title, this.total_budget, this.idpaps);
+                    },
+                });
+                // this.budget_data=[];
+                // this.openAppropriationRightModal('budget', this.rev_id, this.project_title, this.total_budget, this.idpaps);
+            }
         }
     }
 };
