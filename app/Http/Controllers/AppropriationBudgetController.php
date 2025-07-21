@@ -282,7 +282,29 @@ class AppropriationBudgetController extends Controller
         $appropriations = Appropriation::where('revision_plan_id', $revision_plan_id)
             ->get();
         if (count($appropriations) < 1) {
-            dd($appropriations);
+            $appropriations = [[
+                "id" => null,
+                "idooe" => null,
+                "revision_plan_id" => null,
+                "year" => null,
+                "FFUNCCOD" => null,
+                "raaotype" => null,
+                "idprogram" => null,
+                "AIP_CODE" => null,
+                "object_of_expenditure" => null,
+                "account_code" => null,
+                "past_year" => null,
+                "first_sem" => null,
+                "second_sem" => null,
+                "budget_year" => null,
+                "idpaps" => null,
+                "category" => null,
+                "GAD" => null,
+                "CCET" => null,
+                "deleted_at" => null,
+                "created_at" => null,
+                "updated_at" => null,
+            ]];
         }
         return [
             "department_head" => $department_head,
