@@ -85,7 +85,7 @@ class AppropriationBudgetController extends Controller
         }
         */
         $attributes = $request->validate([
-            'idooe' => 'required',
+            // 'idooe' => 'required',
             'year' => 'required',
             'FFUNCCOD' => 'required',
             'raaotype' => 'required',
@@ -232,7 +232,7 @@ class AppropriationBudgetController extends Controller
     {
         // dd($request->all());
         $attributes = $request->validate([
-            'idooe' => 'required',
+            // 'idooe' => 'required',
             'year' => 'required',
             'FFUNCCOD' => 'required',
             'raaotype' => 'required',
@@ -249,7 +249,24 @@ class AppropriationBudgetController extends Controller
             'AIP_CODE' => 'nullable',
         ]);
         $app = Appropriation::findOrFail($id);
-        $app->update($attributes);
+        $app->idooe    = $request->idooe;
+        $app->year    = $request->year;
+        $app->FFUNCCOD    = $request->FFUNCCOD;
+        $app->raaotype    = $request->raaotype;
+        $app->revision_plan_id = $request->revision_plan_id;
+        $app->idprogram    = $request->idprogram;
+        $app->AIP_CODE    = $request->AIP_CODE;
+        $app->object_of_expenditure = $request->object_of_expenditure;
+        $app->account_code = $request->account_code;
+        $app->past_year = $request->past_year;
+        $app->first_sem = $request->first_sem;
+        $app->second_sem = $request->second_sem;
+        $app->budget_year = $request->budget_year;
+        $app->idpaps = $request->idpaps;
+        $app->category = $request->category;
+        $app->GAD = $request->GAD;
+        $app->save();
+        // $app->update($attributes);
         return redirect()->back()->with('message', 'Budget Prep updated successfully');
     }
     public function destroy(Request $request, $id)
