@@ -322,6 +322,13 @@
 
                 <label>CATEGORY</label>
                 <input type="text" class="form-control" v-model="form.category" />
+                <select class="form-control" v-model="form.raaotype" >
+                    <option></option>
+                    <option value="Personnel Services">Personnel Services</option>
+                    <option value="Maintenance, Operating, and Other Expenses">Maintenance, Operating, and Other Expenses</option>
+                    <option value="Capital Outlay">Capital Outlay</option>
+                    <option value="Financial Expenses">Financial Expenses</option>
+                </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.category">{{ form.errors.category }}</div>
 
                 <label>GAD CATEGORY</label>
@@ -647,8 +654,21 @@ export default {
         Pagination, Filtering, ModalRightAlign, ModalRightAlignCRUD, ModalRightAppropriation, ModalRightAppropriationCrud, Printing, LBP2Modal
     },
     watch: {
+        // search: _.debounce(function (value) {
+        //     this.filterPrograms(value, this.filter_FFUNCCOD)
+        // }, 300),
         search: _.debounce(function (value) {
-            this.filterPrograms(value, this.filter_FFUNCCOD)
+            this.$inertia.get(
+                "/revision_plans",
+                { search: value,
+                    source: this.my_source
+                 },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
         }, 300),
     },
     methods:{
