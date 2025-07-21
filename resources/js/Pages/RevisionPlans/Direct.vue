@@ -910,6 +910,13 @@ export default {
             var yr = new Date().getFullYear()
             this.form.year = parseFloat(yr) + 1;
         },
+        filterProgram() {
+            // this.form.idprogram=null;
+            // this.form.idooe=null;
+            const selectElement = this.$refs.raaoSelect;
+            this.form.category = selectElement.options[selectElement.selectedIndex].text;
+
+        },
         loadOOE() {
             this.dt_ooes = [];
             var year1 = parseFloat(this.form.year) - 1;
