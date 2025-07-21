@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountAccess;
 use App\Models\ActivityProject;
+use App\Models\Appropriation;
 use App\Models\BudgetPrep;
 use App\Models\BudgetRequirement;
 use App\Models\FFUNCCOD;
@@ -1517,6 +1518,16 @@ class RevisionPlanController extends Controller
         $year_p = intval($year_c) - 1;
         $functions = $this->getFunctions($myid);
         $programs = $this->getPrograms($year_c);
+
+        $totals = Appropriation::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
+            ->selectRaw('FORMAT(SUM(appropriations.first_sem), 2, \'en_US\') AS first_sem')
+            ->selectRaw('FORMAT(SUM(appropriations.second_sem), 2, \'en_US\') AS second_sem')
+            ->selectRaw('FORMAT((SUM(appropriations.first_sem) + SUM(appropriations.second_sem)), 2, \'en_US\') AS total')
+            ->selectRaw('FORMAT(SUM(appropriations.budget_year), 2, \'en_US\') AS budget_year')
+            ->join('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
+            ->where('program_and_projects.department_code', auth()->user()->department_code)
+            ->first();
+        // dd($totals);
         return inertia('RevisionPlans/Direct', [
             'data' => $data,
             'FFUNCCOD' => $FFUNCCOD,
@@ -1532,6 +1543,7 @@ class RevisionPlanController extends Controller
             "filters" => $request->only(['search']),
             "functions" => $functions,
             "programs" => $programs,
+            "totals" => $totals,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
