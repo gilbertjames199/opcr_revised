@@ -321,8 +321,8 @@
                     value is greater than the value recorded at the LBP Form No. 2</div>
 
                 <label>CATEGORY</label>
-                <input type="text" class="form-control" v-model="form.category" />
-                <select class="form-control" v-model="form.raaotype" >
+                <!-- <input type="text" class="form-control" v-model="form.category" /> -->
+                <select class="form-control" v-model="form.category" >
                     <option></option>
                     <option value="Personnel Services">Personnel Services</option>
                     <option value="Maintenance, Operating, and Other Expenses">Maintenance, Operating, and Other Expenses</option>
