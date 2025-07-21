@@ -315,7 +315,7 @@ class AppropriationController extends Controller
                     'sem2' => $sem2,
                     'famount' => $item->famount
                 ];
-            });;
+            });
         //dd($data);
         return inertia("Appropriations/Create", [
             "pap1" => $paps,

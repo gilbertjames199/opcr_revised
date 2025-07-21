@@ -1448,6 +1448,7 @@ class RevisionPlanController extends Controller
             'revision_plans.version',
             'revision_plans.type',
             'revision_plans.is_strategy_based',
+            'revision_plans.idpaps',
             'ff.FFUNCTION',
             'paps.aip_code',
             // DB::raw('sum(budget_requirements.amount)')
@@ -1501,7 +1502,8 @@ class RevisionPlanController extends Controller
                 'type' => $item->type,
                 'version' => $item->version,
                 'budget_sum' => $budgetary_requirement,
-                'imp_amount' => $imp_amount
+                'imp_amount' => $imp_amount,
+                'idpaps' => $item->idpaps,
             ];
         });
         // $data->setCollection(
@@ -1510,6 +1512,11 @@ class RevisionPlanController extends Controller
         //     })->values()
         // );
         // dd($data);
+        $year_c = date('Y');
+        $year_n = intval($year_c) + 1;
+        $year_p = intval($year_c) - 1;
+        $functions = $this->getFunctions($myid);
+        $programs = $this->getPrograms($year_c);
         return inertia('RevisionPlans/Direct', [
             'data' => $data,
             'FFUNCCOD' => $FFUNCCOD,
@@ -1523,12 +1530,47 @@ class RevisionPlanController extends Controller
             "my_source" => $source,
             "dept_id" => $dept_id,
             "filters" => $request->only(['search']),
+            "functions" => $functions,
+            "programs" => $programs,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
+    protected function getFunctions($idn)
+    {
+        $functions = DB::connection('mysql2')->table('accountaccess')
+            ->select(DB::raw('TRIM(accountaccess.ffunccod) AS FFUNCCOD'), 'functions.FFUNCTION')
+            ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
+            ->join('functions', 'functions.FFUNCCOD', 'accountaccess.ffunccod')
+            ->where('systemusers.recid', $idn)
+            ->get();
+        return $functions;
+    }
+    public function getPrograms($year_c)
+    {
+        //PROGRAMS
+        // ->join('raaohs', 'raaohs.idprogram','programs.recid')
+        // ->groupBy('programs.recid')
+        $programs = DB::connection('mysql2')->table('programs')
+            ->select(
+                'raaohs.recid AS raohsid',
+                'programs.FPROGRAM',
+                'programs.factcode',
+                'programs.ftype',
+                'raaohs.tyear',
+                'programs.recid',
+                DB::raw('TRIM(raaohs.FFUNCCOD) AS FFUNCCOD')
+            )
+            ->join('raaohs', 'raaohs.idprogram', 'programs.recid')
+            ->where('raaohs.tyear', $year_c)
+            ->OrderBy('programs.FPROGRAM')
+            ->groupBy('raaohs.recid')
+            ->get();
+        return $programs;
+    }
+
     public function budget(Request $request)
     {
         $myid = auth()->user()->recid;
@@ -1701,16 +1743,87 @@ class RevisionPlanController extends Controller
     public function print_aip(Request $request)
     {
         // dd(" gbcbcvbcvb ");
-        return RevisionPlan::with([
-            'paps',
-            'strategyProject',
+        // PPA-Project Profile -expected output-total MOOE, PS,CO, FE
+        // return RevisionPlan::with([
+        //     'paps',
+        //     'strategyProject',
+        //     'strategyProject.strategy',
+        //     'strategyProject.expected_output',
+        //     'strategyProject.expected_outcome',
+        //     'activityProject',
+        //     'activityProject.expected_output',
+        //     'activityProject.expected_outcome',
+        //     'budget'
+        // ])->get();
+        // ->map(function ($item) {
+        //     $item->total_mooe = $item->budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
+        //     $item->total_ps = $item->budget->where('category', 'Personnel Services')->sum('amount');
+        //     $item->total_co = $item->budget->where('category', 'Capital Outlay')->sum('amount');
+        //     $item->total_fe = $item->budget->where('category', 'Financial Expenses')->sum('amount');
+        //     return [
+        //         'program' => optional(optional($item)->paps)->program,
+        //         'expected_output' => optional(optional($item)->strategyProject)->expected_output,
+
+        //     ];
+        // })->toArray();
+        $strategies = [];
+        $plans = RevisionPlan::with([
             'strategyProject.strategy',
             'strategyProject.expected_output',
             'strategyProject.expected_outcome',
-            'activityProject',
             'activityProject.expected_output',
             'activityProject.expected_outcome',
             'budget'
         ])->get();
+
+        foreach ($plans as $plan) {
+            // dd(optional($plan)->strategyProject[0]);
+            $strategy = optional(optional($plan)->strategyProject->first())->strategy;
+
+            if (!$strategy) {
+                continue;
+            }
+
+            $strategyId = $strategy->id;
+
+            // Initialize if not yet in array
+            if (!isset($strategies[$strategyId])) {
+                $strategies[$strategyId] = [
+                    'strategy_desc' => $strategy->strategy_desc,
+                    'activities' => [],
+                ];
+            }
+
+            // For each related activity under this plan
+            if ($plan->activityProject) {
+                $budget = $plan->budget;
+
+                $strategies[$strategyId]['activities'][] = [
+                    'activity_desc' => optional(optional($plan)->activityProject->first())->activity_desc,
+                    'expected_output' => optional($plan->activityProject->first())->expected_output,
+                    'total_mooe' => $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount'),
+                    'total_ps' => $budget->where('category', 'Personnel Services')->sum('amount'),
+                    'total_co' => $budget->where('category', 'Capital Outlay')->sum('amount'),
+                    'total_fe' => $budget->where('category', 'Financial Expenses')->sum('amount'),
+                ];
+            }
+        }
+
+        // Optional: Re-index the array if needed
+        return array_values($strategies);
+        // });
+
+    }
+    protected function strategy_based($id)
+    {
+        return RevisionPlan::where('id', $id)
+            ->where('is_strategy_based', 1)
+            ->get();
+    }
+    protected function activity_based($id)
+    {
+        return RevisionPlan::where('id', $id)
+            ->where('is_strategy_based', 0)
+            ->get();
     }
 }

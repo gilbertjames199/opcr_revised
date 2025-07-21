@@ -304,56 +304,14 @@ export default {
 
     methods: {
         submit() {
-            this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4);
-            var aip_mooe = parseFloat(this.aip.MOOE);
-            var aip_ps = parseFloat(this.aip.PS);
-            var aip_co = parseFloat(this.aip.CO);
-            var app_mooe = parseFloat(this.total_budget_year.total_approp_mooe) + parseFloat(this.form.budget_year);
-            var app_ps = parseFloat(this.total_budget_year.total_ps_approp) + parseFloat(this.form.budget_year);
-            var app_co = parseFloat(this.total_budget_year.total_co_approp) + parseFloat(this.form.budget_year);
-            var addable = true;
-            //var adval=0;
-            var possible_difference = 0;
-            var maxi = parseFloat(0);
-            if (this.form.category == 'Capital Outlay') {
-                if (app_co > aip_co) {
-                    addable = false;
-                    // possible_difference=aip_co - parseFloat(this.total_budget_year.total_co_approp);
-                    maxi = parseFloat(aip_co);
-                }
-            }
-            if (this.form.category == 'Maintenance, Operating, and Other Expenses') {
-                if (app_mooe > aip_mooe) {
-                    maxi = parseFloat(aip_mooe);
-                    addable = false;
-                    // possible_difference=aip_mooe - parseFloat(this.total_budget_year.total_approp_mooe);
-                }
-            }
-            if (this.form.category == 'Personnel Services') {
-                if (app_ps > aip_ps) {
-                    maxi = parseFloat(app_ps);
-                    addable = false;
-                    // possible_difference=aip_ps - parseFloat(this.total_budget_year.total_ps_approp);
-                }
-            }
-
-            if (addable == false) {
-                if (this.editData !== undefined) {
-                    this.form.patch("/appropriations/", this.form);
-                } else {
-                    alert("The maximum allowable value for budget year is only " + maxi + ". ")
-                }
+            if (this.editData !== undefined) {
+                this.form.patch("/appropriations/", this.form);
             } else {
-                if (this.editData !== undefined) {
-                    this.form.patch("/appropriations/", this.form);
-                } else {
-                    // alert("Sample");
-                    var url = "/appropriations/store"
-                    // alert('for store '+url);
-                    this.form.post(url);
-                }
+                // alert("Sample");
+                var url = "/appropriations/store"
+                // alert('for store '+url);
+                this.form.post(url);
             }
-
         },
         addAccount() {
             // if (!this.accounts.includes(this.typed)) this.accounts.push(this.typed);
