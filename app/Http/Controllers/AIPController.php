@@ -226,8 +226,11 @@ class AIPController extends Controller
         $paps = ProgramAndProject::with(['revisionPlan.budget', 'opcr_stardard'])
             ->where('idmfo', $request->idmfo)
             ->get()
+            ->filter(function ($item) {
+                // Only include if it has at least one revision plan
+                return $item->revisionPlan->isNotEmpty();
+            })
             ->map(function ($item) {
-
                 $firstRevisionPlan = $item->revisionPlan->first();
                 $budgets = $firstRevisionPlan ? $firstRevisionPlan->budget : collect();
 
@@ -259,11 +262,12 @@ class AIPController extends Controller
                 } else {
                     $performance_measure = '';
                 }
+
                 return [
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
                     'idmfo' => $item->idmfo,
-                    "Performance_measure" => $performance_measure,
+                    'Performance_measure' => $performance_measure,
                     'Revision_Plan_id' => optional($firstRevisionPlan)->id,
                     'Total_Budget' => $totalBudget,
                     'MOOE' => $mooe,
