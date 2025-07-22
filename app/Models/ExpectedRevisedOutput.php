@@ -14,4 +14,8 @@ class ExpectedRevisedOutput extends Model
         return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');
         // ->where('table_name', 'revision_plans');
     }
+    public function expected_output()
+    {
+        return $this->hasMany(ExpectedRevisedOutput::class, 'activity)d', 'id');
+    }
 }

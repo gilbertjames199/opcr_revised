@@ -25,4 +25,8 @@ class Activity extends Model
     {
         return $this->hasMany(ActivityProject::class, 'activity_id', 'id');
     }
+    public function expected_output()
+    {
+        return $this->hasMany(ExpectedRevisedOutput::class, 'activity_id', 'id');
+    }
 }
