@@ -532,7 +532,7 @@ class AppropriationController extends Controller
             ->where('appropriations.category', $request->category)
             ->where('appropriations.idpaps', $request->idpaps)
             ->when($request->category === 'Capital Outlay', function ($query) {
-                $query->groupBy('appropriations.object_of_expenditure');
+                $query->groupBy('appropriations.account_code');
             })
             ->when($request->category === 'Maintenance, Operating, and Other Expenses', function ($query) {
                 $query->groupBy('appropriations.account_code');
