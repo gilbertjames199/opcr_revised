@@ -223,23 +223,60 @@ class AIPController extends Controller
 
     public function PAPS(Request $request)
     {
-        $paps = ProgramAndProject::select(
-            'program_and_projects.id',
-            'program_and_projects.paps_desc',
-            'program_and_projects.idmfo',
-            'a_i_p_s.AIP_Code',
-            'a_i_p_s.PS',
-            'a_i_p_s.MOOE',
-            'a_i_p_s.CO',
-            'a_i_p_s.date',
-            'success_indicators.success_indicator',
-            'opcr_targets.quantity'
-        )
-            ->leftJoin('a_i_p_s', 'program_and_projects.id', '=', 'a_i_p_s.idpaps')
-            ->leftJoin('success_indicators', 'program_and_projects.id', '=', 'success_indicators.idpaps')
-            ->leftJoin('opcr_targets', 'program_and_projects.id', '=', 'opcr_targets.idpaps')
+        $paps = ProgramAndProject::with(['revisionPlan.budget', 'opcr_stardard'])
             ->where('idmfo', $request->idmfo)
-            ->get();
+            ->get()
+            ->map(function ($item) {
+
+                $firstRevisionPlan = $item->revisionPlan->first();
+                $budgets = $firstRevisionPlan ? $firstRevisionPlan->budget : collect();
+
+                $totalBudget = $budgets->sum(fn($b) => (float) $b->amount);
+
+                $mooe = $budgets
+                    ->filter(fn($b) => str_contains(strtolower($b->category), 'maintenance'))
+                    ->sum(fn($b) => (float) $b->amount);
+
+                $ps = $budgets
+                    ->filter(fn($b) => str_contains(strtolower($b->category), 'personal'))
+                    ->sum(fn($b) => (float) $b->amount);
+
+                $co = $budgets
+                    ->filter(fn($b) => str_contains(strtolower($b->category), 'capital'))
+                    ->sum(fn($b) => (float) $b->amount);
+
+                $opcr = $item->opcr_stardard;
+                if ($opcr) {
+                    $base = trim($opcr->performance_measures . ' ' . $opcr->output);
+
+                    if ($opcr->efficiency1 === 'No' && $opcr->timeliness === 'No') {
+                        $performance_measure = $base . ' with a satisfactory rating for quality/effectiveness and satisfactory in efficiency';
+                    } elseif ($opcr->efficiency1 === 'Yes') {
+                        $performance_measure = $base . ' with a satisfactory rating for quality/effectiveness and satisfactory in efficiency within ' . $opcr->prescribed_period;
+                    } else {
+                        $performance_measure = $base . ' with a satisfactory rating for quality/effectiveness and satisfactory in efficiency on or before ' . $opcr->timeliness;
+                    }
+                } else {
+                    $performance_measure = '';
+                }
+                return [
+                    'id' => $item->id,
+                    'paps_desc' => $item->paps_desc,
+                    'idmfo' => $item->idmfo,
+                    "Performance_measure" => $performance_measure,
+                    'Revision_Plan_id' => optional($firstRevisionPlan)->id,
+                    'Total_Budget' => $totalBudget,
+                    'MOOE' => $mooe,
+                    'PS' => $ps,
+                    'CO' => $co,
+                    'Budgets' => $budgets->map(fn($budget) => [
+                        'id' => $budget->id,
+                        'amount' => $budget->amount,
+                        'category' => $budget->category,
+                    ]),
+                ];
+            });
+
         return $paps;
     }
 }
