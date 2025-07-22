@@ -281,24 +281,43 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
 
                 <label>PROGRAM</label>&nbsp;
-                <!-- <br>{{ form.idprogram }} -->
-                <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
                 <div>
                     <multiselect :options="formattedPrograms" :searchable="true" v-model="form.idprogram" label="label"
                         track-by="label" @close="loadOOE">
                     </multiselect>
                 </div>
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
+                <!-- <br>{{ form.idprogram }} -->
+                <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
                 <!--******************************-->
                 <label>Objects of Expenditure</label>&nbsp;
-                idooe: {{ form.idooe }}
+                <!-- idooe: {{ form.idooe }} -->
+
                 <div>
                     <multiselect :options="formattedOOEs" :searchable="true" v-model="form.idooe" label="label"
+                    :disabled="no_ooe == true"
                         track-by="label" @close="setOOEValue">
                     </multiselect>
                 </div>
                 <!-- {{ formattedOOEs }} -->
+                <div>
+                    <input
+                        type="checkbox"
+                        v-model="no_ooe"
+                        @change="setOOEAndChartCheckBox(no_ooe)"
+                    />
+                    <i>Check this box if the Object of Expenditure you're looking for is missing. </i>
+                </div>
 
+                <label>Account Code</label>&nbsp;{{ form.account_code }}
+                <div>
+                    <!-- selected_pcr_option: {{ selected_pcr_option }} -->
+                    <multiselect ref="Accounts" :options="accounts" :searchable="true" v-model="form.account_code"
+                        label="label" track-by="label" :disabled="no_ooe == false"
+                        @close="selected_ccountcode"
+                    >
+                    </multiselect>
+                </div>
                 <div class="fs-6 c-red-500" v-if="form.errors.GAD">{{ form.errors.GAD }}</div>
                 <label>PAST YEAR </label>
                 <input type="text" class="form-control" v-model="computed_pastyear" readonly />
@@ -515,6 +534,7 @@ export default {
         ooe_description: Array,
         ooe_id: Array,
         ooe_codes: Array,
+        acc: Object,
         //idstrat: String,
         my_source: String,
         dept_id: String,
@@ -543,6 +563,7 @@ export default {
             edit_amount: 0,
             budget_data: [],
             editData: undefined,
+
             idpaps: null,
             form: useForm({
                 // id: null,
@@ -579,6 +600,8 @@ export default {
             print: false,
             lbp_version: "",
             displaylbp2: false,
+
+            no_ooe: false,
         }
     },
     computed: {
@@ -645,7 +668,20 @@ export default {
         },
         computed_sem2() {
             return this.format_number_conv(this.form.second_sem, 2, true);
-        }
+        },
+        accounts() {
+            let accs = this.acc;
+            return accs.map((dat) => ({
+                // value: dat.individual_final_output_id,
+                // "[id: "+ dat.individual_final_output_id+ ", type: " + dat.pcr_type + "]",
+                value: dat.FACTCODE,
+                // "[id: "+ dat.individual_final_output_id+ ", type: " + dat.pcr_type + "]",
+                label: dat.FTITLE ,
+                // pcr_type: dat.pcr_type, // include for easier access later
+                original: dat           // optional: include full object if needed
+            }));
+        },
+
     },
     mounted() {
         this.setCurrentYear()
@@ -1002,6 +1038,12 @@ export default {
             this.form.second_sem = this.format_number_conv(prog_sel[0].sem2, 2, false);
             this.form.past_year = this.format_number_conv(prog_sel[0].past_year, 2, false);
         },
+        setOOEAndChartCheckBox(no_ooe_data){
+            if(no_ooe_data==true){
+                // this.form.account
+                this.form.idooe=false
+            }
+        },
         async editBudgetApprop(id){
             this.dt_ooes = [];
             var url= `/appropriation-budget/${id}/edit`;
@@ -1075,7 +1117,19 @@ export default {
                 // this.openAppropriationRightModal('budget', this.rev_id, this.project_title, this.total_budget, this.idpaps);
             }
         },
+        selected_ccountcode(){
+            var ind='';
+            setTimeout(() => {
 
+                // alert(this.form.account_code);
+                if(this.form.account_code !==null && this.form.account_code !==undefined && this.form.account_code !==''){
+                    ind = this.acc.findIndex(data => String(data.FACTCODE) === String(this.form.account_code));
+                    this.form.object_of_expenditure = this.acc[ind].FTITLE
+                    // alert(ind);
+                }
+            }, 300);
+
+        },
         //PRINTING
         showPrint() {
             //alert("show filter");

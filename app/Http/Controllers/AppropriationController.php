@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\AIP;
 use App\Models\Appropriation;
+use App\Models\BudgetRequirement;
 use App\Models\Category;
 use App\Models\ProgramAndProject;
+use App\Models\RevisionPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -516,45 +518,111 @@ class AppropriationController extends Controller
     public function appropriations(Request $request)
     {
         //dd($request->type);
-        $appropriations = Appropriation::select(
-            'program_and_projects.paps_desc',
-            'program_and_projects.type',
-            'appropriations.account_code',
-            'program_and_projects.department_code'
-        )
-            ->selectRaw('appropriations.object_of_expenditure')
-            ->selectRaw('SUM(appropriations.past_year) AS past_year')
-            ->selectRaw('SUM(appropriations.first_sem) AS first_sem')
-            ->selectRaw('SUM(appropriations.second_sem) AS second_sem')
-            ->selectRaw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total')
-            ->selectRaw('SUM(appropriations.budget_year) AS budget_year')
-            ->leftjoin('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
-            ->where('appropriations.category', $request->category)
-            ->where('appropriations.idpaps', $request->idpaps)
-            ->when($request->category === 'Capital Outlay', function ($query) {
-                $query->groupBy('appropriations.account_code');
-            })
-            ->when($request->category === 'Maintenance, Operating, and Other Expenses', function ($query) {
-                $query->groupBy('appropriations.account_code');
-            })
-            ->when($request->category === 'Personnel Services', function ($query) {
-                $query->groupBy('appropriations.account_code');
-            })
+        // $appropriations = Appropriation::select(
+        //     'program_and_projects.paps_desc',
+        //     'program_and_projects.type',
+        //     'appropriations.account_code',
+        //     'program_and_projects.department_code'
+        // )
+        //     ->selectRaw('appropriations.object_of_expenditure')
+        //     ->selectRaw('SUM(appropriations.past_year) AS past_year')
+        //     ->selectRaw('SUM(appropriations.first_sem) AS first_sem')
+        //     ->selectRaw('SUM(appropriations.second_sem) AS second_sem')
+        //     ->selectRaw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total')
+        //     ->selectRaw('SUM(appropriations.budget_year) AS budget_year')
+        //     ->leftjoin('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
+        //     ->where('appropriations.category', $request->category)
+        //     ->where('appropriations.idpaps', $request->idpaps)
+        //     ->when($request->category === 'Capital Outlay', function ($query) {
+        //         $query->groupBy('appropriations.account_code');
+        //     })
+        //     ->when($request->category === 'Maintenance, Operating, and Other Expenses', function ($query) {
+        //         $query->groupBy('appropriations.account_code');
+        //     })
+        //     ->when($request->category === 'Personnel Services', function ($query) {
+        //         $query->groupBy('appropriations.account_code');
+        //     })
+        //     ->get()
+        //     ->map(function ($item) {
+        //         return [
+        //             "paps_desc" => $item->paps_desc,
+        //             "type" => $item->type,
+        //             "account_code" => $item->account_code,
+        //             "object_of_expenditure" => $item->object_of_expenditure,
+        //             "past_year" => number_format($item->past_year, 2, '.', ','),
+        //             "first_sem" => number_format($item->first_sem, 2, '.', ','),
+        //             "second_sem" => number_format($item->second_sem, 2, '.', ','),
+        //             "total" => number_format($item->total, 2, '.', ','),
+        //             "budget_year" => number_format($item->budget_year, 2, '.', ','),
+        //             "department_code" => number_format($item->department_code, 2, '.', ','),
+        //         ];
+        //     });
+        $rev_pln = RevisionPlan::with('paps')->where('idpaps', $request->idpaps)->orderBy('version', 'DESC')->first();
+
+        $rev_pln_id = $rev_pln ? $rev_pln->id : 0;
+        // dd($request->category);
+        // dd($rev_pln_id);
+        $appropriations = BudgetRequirement::where('revision_plan_id', $rev_pln_id)
+            ->where('category', 'LIKE', '%' . $request->category . '%')
+            ->groupBy('particulars')
             ->get()
-            ->map(function ($item) {
+            ->map(function ($item) use ($request) {
+                $approp = Appropriation::select(
+                    'program_and_projects.paps_desc',
+                    'program_and_projects.type',
+                    'appropriations.account_code',
+                    'program_and_projects.department_code'
+                )
+                    ->selectRaw('appropriations.object_of_expenditure')
+                    ->selectRaw('SUM(appropriations.past_year) AS past_year')
+                    ->selectRaw('SUM(appropriations.first_sem) AS first_sem')
+                    ->selectRaw('SUM(appropriations.second_sem) AS second_sem')
+                    ->selectRaw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total')
+                    ->selectRaw('SUM(appropriations.budget_year) AS budget_year')
+                    ->leftjoin('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
+                    ->where('appropriations.category', $request->category)
+                    ->where('appropriations.idpaps', $request->idpaps)
+                    ->when($request->category === 'Capital Outlay', function ($query) {
+                        $query->groupBy('appropriations.account_code');
+                    })
+                    ->when($request->category === 'Maintenance, Operating, and Other Expenses', function ($query) {
+                        $query->groupBy('appropriations.account_code');
+                    })
+                    ->when($request->category === 'Personnel Services', function ($query) {
+                        $query->groupBy('appropriations.account_code');
+                    })
+                    ->where('account_code', $item->account_code)
+                    ->first();
+                //     dd($approp);
+                //     if ($approp) {
+                //         $approp = [
+                //             "paps_desc" => optional($approp)->paps_desc,
+                //             "type" => optional($approp)->type,
+                //             "account_code" => optional($approp)->account_code,
+                //             "object_of_expenditure" => optional($approp)->object_of_expenditure,
+                //             "past_year" => number_format(optional($approp)->past_year, 2, '.', ','),
+                //             "first_sem" => number_format(optional($approp)->first_sem, 2, '.', ','),
+                //             "second_sem" => number_format(optional($approp)->second_sem, 2, '.', ','),
+                //             "total" => number_format(optional($approp)->total, 2, '.', ','),
+                //             "budget_year" => number_format(optional($approp)->budget_year, 2, '.', ','),
+                //             "department_code" => number_format(optional($approp)->department_code, 2, '.', ','), // probably shouldn't be number_format unless it's a number
+                //         ];
+                // }
+
                 return [
-                    "paps_desc" => $item->paps_desc,
-                    "type" => $item->type,
-                    "account_code" => $item->account_code,
-                    "object_of_expenditure" => $item->object_of_expenditure,
-                    "past_year" => number_format($item->past_year, 2, '.', ','),
-                    "first_sem" => number_format($item->first_sem, 2, '.', ','),
-                    "second_sem" => number_format($item->second_sem, 2, '.', ','),
-                    "total" => number_format($item->total, 2, '.', ','),
-                    "budget_year" => number_format($item->budget_year, 2, '.', ','),
-                    "department_code" => number_format($item->department_code, 2, '.', ','),
+                    "paps_desc" => optional($approp)->paps_desc,
+                    "type" => optional($approp)->type,
+                    "account_code" => optional($approp)->account_code,
+                    "object_of_expenditure" => optional($approp)->object_of_expenditure,
+                    "past_year" => number_format(optional($approp)->past_year, 2, '.', ','),
+                    "first_sem" => number_format(optional($approp)->first_sem, 2, '.', ','),
+                    "second_sem" => number_format(optional($approp)->second_sem, 2, '.', ','),
+                    "total" => number_format(optional($approp)->total, 2, '.', ','),
+                    "budget_year" => number_format(optional($approp)->budget_year, 2, '.', ','),
+                    "department_code" => number_format(optional($approp)->department_code, 2, '.', ','),
                 ];
             });
+
         return $appropriations;
     }
 }
