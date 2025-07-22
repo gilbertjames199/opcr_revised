@@ -91,4 +91,8 @@ class ProgramAndProject extends Model
     {
         return $this->hasMany(DivisionOutput::class, 'idpaps', 'id');
     }
+    public function revisionPlan()
+    {
+        return $this->hasMany(RevisionPlan::class, 'idpaps', 'id');
+    }
 }
