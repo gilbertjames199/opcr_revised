@@ -73,7 +73,9 @@ use App\Http\Controllers\DailyAccomplishmentController;
 use App\Http\Controllers\AddAccomplishmentController;
 use App\Http\Controllers\AnnualInvestmentPlanController;
 use App\Http\Controllers\AppropriationAmountController;
+use App\Http\Controllers\AppropriationBudgetController;
 use App\Http\Controllers\AppropriationController;
+use App\Http\Controllers\BudgetPrepController;
 use App\Http\Controllers\DivisionOutputController;
 use App\Http\Controllers\ExpectedOutputController;
 use App\Http\Controllers\ExpectedRevisedOutcomeController;
@@ -434,10 +436,12 @@ Route::middleware('auth')->group(function () {
     // Revision Plan Page
     Route::prefix('/revision_plans')->group(function () {
         Route::get('/', [RevisionPlanController::class, 'direct']);
+        Route::get('/budget/{rev_id}', [RevisionPlanController::class, 'get_budget_data']);
         // Route::get('/create/{id}', [RevisionPlanController::class, 'create']);
-        // Route::post('/store', [RevisionPlanController::class, 'store']);
-        // Route::get('/edit/{id}', [RevisionPlanController::class, 'edit']);
-        // Route::patch('/', [RevisionPlanController::class, 'update']);
+        Route::post('/store', [BudgetPrepController::class, 'store']);
+        Route::get('/budget/edit/{id}', [BudgetPrepController::class, 'fetch_data']);
+        Route::patch('/', [BudgetPrepController::class, 'update']);
+        Route::delete('/{id}', [BudgetPrepController::class, 'destroy']);
         // Route::get('/view/project/paps/{id}', [RevisionPlanController::class, 'view']);
         // Route::get('/general/administration/services/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas']);
         // Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
@@ -1000,6 +1004,17 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [AppropriationAmountController::class, 'update']);
         Route::delete('/{id}', [AppropriationAmountController::class, 'destroy']);
     });
+
+    Route::prefix('/appropriation-budget')->group(function () {
+        Route::get('/', [AppropriationBudgetController::class, 'index']);
+        Route::get('/get/{idrevplan}/budget/appropriations', [AppropriationBudgetController::class, 'appropriations']);
+        Route::get('/get/{idrevplan}/ooes', [AppropriationBudgetController::class, 'ooes']);
+        // Route::get('/create/{aip_id}', [AppropriationAmountController::class, 'create']);
+        Route::post('/', [AppropriationBudgetController::class, 'store']);
+        Route::get('/{id}/edit', [AppropriationBudgetController::class, 'edit']);
+        Route::patch('/{id}', [AppropriationBudgetController::class, 'update']);
+        Route::delete('/{id}', [AppropriationBudgetController::class, 'destroy']);
+    });
     // Sentence Identifier Tester
     Route::prefix('/sentence')->group(function () {
         Route::get('/', [SentenceParserController::class, 'my_method1']);
@@ -1160,6 +1175,9 @@ Route::prefix('division/print')->group(function () {
     Route::get('/dpcr', [DivisionController::class, 'DPCR']);
 });
 
+Route::prefix('lbp2/print')->group(function () {
+    Route::get('/', [AppropriationBudgetController::class, 'print_lbp2']);
+});
 // Route::prefix('api_ppa2')->group(function () {
 //     Route::get('/', [RevisionPlanController::class, 'api_ppa']);
 // });

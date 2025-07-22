@@ -36,11 +36,11 @@
         </div>
 
         <div class="col-12">
-        <div class="col bgc-white bd p-20">
-            <div class="table-responsive" id="draggableTable" ref="draggableTable">
-                <table class="table table-bordered border-dark table-hover">
-                    <thead class="bgc-grey-800 text-light  text-nowrap">
-                        <tr class="bg-secondary text-white text-center ">
+            <div class="col bgc-white bd p-20">
+                <div class="table-responsive" id="draggableTable" ref="draggableTable">
+                    <table class="table table-bordered border-dark table-hover">
+                        <thead class="bgc-grey-800 text-light  text-nowrap">
+                            <tr class="bg-secondary text-white text-center ">
                                 <th width="5%"><small>MFO</small></th>
                                 <th width="5%">PAPS</th>
                                 <th width="5%">OUTPUT</th>
@@ -93,10 +93,10 @@
                                 </tr>
                             </template>
                         </tbody>
-                        </table>
-                        </div>
-                        </div>
-                        </div>
+                    </table>
+                </div>
+            </div>
+        </div>
 
 
         <!-- <div class="masonry-item w-200">

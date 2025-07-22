@@ -280,10 +280,42 @@ class OfficePerformanceCommitmentRatingListController extends Controller
     public function store(Request $request)
     {
         // dd($request);
+        $approver = "Engr. Raul G. Mabanglo";
+        $approver_position = "Governor";
+        $pmt_secretariat = "Alicia M. Graciadas";
+        $pmt_chair = "Ivan Kleb N. Ulgasan, CESE";
+        if ($request->FFUNCCOD == "1016" || $request->FFUNCCOD == "1021") {
+            $approver = "Dorothy P. Montejo-Gonzaga";
+            $approver_position = "Vice Governor";
+        }
         $dept_code = FFUNCCOD::where('FFUNCCOD', $request->FFUNCCOD)->first()->department_code;
         // $dept_code = auth()->user()->department_code;
+        $office = Office::with('pgHead')->where('department_code', $dept_code)->first();
+        $pg_head = "";
+        if ($office) {
+            if ($office->pgHead) {
+                $hh = $office->pgHead;
+                $firstname = $hh->first_name;
+                $lastname = $hh->last_name;
+                $middle_initial = substr($hh->middle_name, 0, 1);
+                $suffix = $hh->suffix_name ? ', ' . $hh->suffix_name : '';
+                $postfix = $hh->postfix_name ? ', ' . $hh->postfix_name : '';
+                $pg_head = $firstname . ' ' . $middle_initial . '. ' . $lastname . $suffix . $postfix;
+            } else {
+                $pg_head = "";
+            }
+            // dd($pg_head);
+        } else {
+            return redirect('/opcrlist/' . $request->FFUNCCOD)
+                ->with('error', 'No PG Head found for this office.');
+        }
         $request->merge(['department_code' => $dept_code]);
         $request->merge(['type' => 'n']);
+        $request->merge(['approver' => $approver]);
+        $request->merge(['pmt_secretariat' => $pmt_secretariat]);
+        $request->merge(['pmt_chair' => $pmt_chair]);
+        $request->merge(['pg_head' => $pg_head]);
+        $request->merge(['approver_position' => $approver_position]);
         $attributes = $request->validate([
             'semester' => 'required',
             'date_from' => 'required',
@@ -292,7 +324,12 @@ class OfficePerformanceCommitmentRatingListController extends Controller
             'FFUNCCOD' => 'required',
             'department_code' => 'required',
             'allotment' => 'required',
-            'type' => 'required'
+            'type' => 'required',
+            'approver' => 'required',
+            'approver_position' => 'required',
+            'pmt_secretariat' => 'required',
+            'pmt_chair' => 'required',
+            'pg_head' => 'required'
         ]);
         $found = $this->model->where('year', $request->year)
             ->where('semester', $request->semester)
@@ -302,6 +339,25 @@ class OfficePerformanceCommitmentRatingListController extends Controller
         $msg = "OPCR for the year (" . $request->year . ") and semester (" . $request->semester . ") already exists. ";
         if (!$found) {
             $this->model->create($attributes);
+            // $opcrl =new OfficePerformanceCommitmentRatingList();
+            // $opcrl->semester = $request->semester;
+            // $opcrl->date_from = $request->date_from;
+            // $opcrl->date_to = $request->date_to;
+            // $opcrl->year = $request->year;
+            // $opcrl->FFUNCCOD = $request->FFUNCCOD;
+            // $opcrl->department_code = $request->department_code;
+            // $opcrl->approver = $request->approver;
+            // $opcrl->pmt_secretariat = $request->pmt_secretariat;
+            // $opcrl->pmt_chair = $request->pmt_chair;
+            // $opcrl->pg_head = $request->pg_head;
+            // $opcrl->type = $request->type;
+            // $opcrl->target_status = $request->target_status;
+            // $opcrl->rating_status = $request->rating_status;
+            // $opcrl->accomplishment_status = $request->accomplishment_status;
+            // $opcrl->allotment = $request->allotment;
+            // $opcrl->allotment_mooe = $request->allotment_mooe;
+            // $opcrl->allotment_ps = $request->allotment_ps;
+            // $opcrl->allotment_co = $request->allotment_co;
             $msg = "Added new OPCR!";
             $type = 'message';
         }

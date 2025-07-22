@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountAccess;
 use App\Models\ActivityProject;
+use App\Models\Appropriation;
+use App\Models\BudgetPrep;
 use App\Models\BudgetRequirement;
 use App\Models\FFUNCCOD;
 use App\Models\HGDG_Checklist;
@@ -11,6 +13,7 @@ use App\Models\ImplementationPlan;
 use App\Models\Implementing_team;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring_and_evaluation;
+use App\Models\OOE;
 use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
 use App\Models\RevisionPlanComment;
@@ -173,6 +176,7 @@ class RevisionPlanController extends Controller
             'baseline_male' => 'required',
             'baseline_female' => 'required',
             'baseline_total' => 'required',
+            'data_source' => 'required',
             'rationale' => 'required',
             'objective' => 'required',
             'beneficiaries' => 'required',
@@ -203,6 +207,7 @@ class RevisionPlanController extends Controller
         $rev->baseline_male = $attributes['baseline_male'];
         $rev->baseline_female = $attributes['baseline_female'];
         $rev->baseline_total = $attributes['baseline_total'];
+        $rev->data_source = $attributes['data_source'];
         $rev->rationale = $attributes['rationale'];
         $rev->objective = $attributes['objective'];
         $rev->beneficiaries = $attributes['beneficiaries'];
@@ -291,6 +296,7 @@ class RevisionPlanController extends Controller
             'strategyProject.expected_output',
             'strategyProject.expected_output.comments',
             'strategyProject.expected_outcome',
+            'strategyProject.expected_outcome.comments',
             'strategyProject.comments',
             'strategyProject.comments.user',
             'activity' => function ($query) use ($paps, $id) {
@@ -307,6 +313,7 @@ class RevisionPlanController extends Controller
             'activity.activityProject.expected_output',
             'activity.activityProject.expected_output.comments',
             'activity.activityProject.expected_outcome',
+            'activity.activityProject.expected_outcome.comments',
             'activity.activityProject.comments',
             'activity.activityProject.comments.user'
         ])->whereHas('strategyProject', function ($query) {
@@ -676,6 +683,7 @@ class RevisionPlanController extends Controller
             $rev->baseline_male = $request->baseline_male;
             $rev->baseline_female = $request->baseline_female;
             $rev->baseline_total = $request->baseline_total;
+            $rev->data_source = $request->data_source;
             // $rev->amount = $request->amount;
             // $rev->attributed_amount = $request->attributed_amount;
             $rev->checklist_id = $request->checklist_id;
@@ -1406,10 +1414,198 @@ class RevisionPlanController extends Controller
     {
         $myid = auth()->user()->recid;
         $dept_id = auth()->user()->department_code;
+        $source = $request->source;
         // dd($dept_id);
-        if ($dept_id != '04' && $dept_id != '01') {
-            return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
+        if ($source != 'budget') {
+            if ($dept_id != '04' && $dept_id != '01') {
+                return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
+            }
         }
+
+        $per_page = 10;
+        if ($request->per_page) {
+            $per_page = $request->per_page;
+        }
+        $ooes = OOE::all();
+        $ooe_description = $ooes->pluck('FOOEDESC')->toArray();
+        $ooe_id = $ooes->pluck('recid')->toArray();
+        $ooe_codes = $ooes->pluck('FACTCODE')->toArray();
+        $funcc = FFUNCCOD::with('office.pgHead')->where('department_code', $dept_id)->first();
+        $FFUNCCOD = optional($funcc)->FFUNCCOD;
+        $pg_details = optional(optional($funcc)->office)->pgHead;
+        $suffix =  optional($pg_details)->suffix_name;
+        $postfix_name =  optional($pg_details)->postfix_name;
+        $mname = optional($pg_details)->middle_name ? substr(optional($pg_details)->middle_name, 0, 1) . '. ' : null;
+        $pgHead = optional($pg_details)->first_name . ' ' . $mname . optional($pg_details)->last_name;
+        if ($suffix) {
+            $pgHead = $pgHead . ", " . $suffix;
+        }
+        if ($postfix_name) {
+            $pgHead = $pgHead . ", " . $postfix_name;
+        }
+        // dd($pgHead);
+        $offices = FFUNCCOD::where(function ($query) {
+            $query->where('FFUNCTION', 'LIKE', '%Office%')
+                ->orWhere('FFUNCTION', 'LIKE', '%Hospital%');
+        })
+            ->orderBy('FFUNCTION', 'ASC')
+            ->get();
+
+        // dd($offices);
+        // $paps = ProgramAndProject::where('id', $idpaps)->first();
+        $budget_controller = new BudgetRequirementController($this->budget);
+        // dd("revision");
+        // dd($request->FFUNCCOD);
+        // dd($request->search);
+        $data = RevisionPlan::select(
+            'revision_plans.id',
+            'revision_plans.project_title',
+            'revision_plans.version',
+            'revision_plans.type',
+            'revision_plans.is_strategy_based',
+            'revision_plans.idpaps',
+            'ff.FFUNCTION',
+            'paps.aip_code',
+            // DB::raw('sum(budget_requirements.amount)')
+        )->with(['budget'])
+            ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
+            ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
+            ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
+            // ->leftJoin(DB::raw('budget_requirements'), 'budget_requirements.revision_plan_id', '=', 'revision_plans.id')
+            ->whereHas('budget', function ($query) {
+                $query->select(DB::raw('revision_plan_id'))
+                    ->groupBy('revision_plan_id')
+                    ->havingRaw('SUM(amount) > 0');
+            })
+            ->where('revision_plans.project_title', 'LIKE', '%' . $request->search . '%')
+            ->when($request->FFUNCCOD, function ($query) use ($request) {
+                $query->where('ff.FFUNCCOD', $request->FFUNCCOD);
+            })
+            ->when($source == 'budget', function ($query) use ($dept_id) {
+                $query->where('paps.department_code', $dept_id);
+            })
+            ->orderBy('ff.FFUNCTION')
+            ->paginate(10)
+            ->withQueryString(); // <- Pagination
+        // dd($data);
+        $data->through(function ($item) use ($budget_controller) {
+            $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)
+                ->where('table_name', 'revision_plans')
+                ->count();
+
+            $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                ->sum('amount');
+
+            $imp_amount = 0.00;
+            if ($item->is_strategy_based == 1) {
+                $total = $budget_controller->getStratTotal($item->id);
+            } else {
+                $total = $budget_controller->getActivityTotal($item->id);
+            }
+
+            if ($total) {
+                $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                    $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                    $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
+                    $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+            }
+
+            return [
+                'FFUNCTION' => $item->FFUNCTION,
+                'id' => $item->id,
+                'project_title' => $item->project_title,
+                'type' => $item->type,
+                'version' => $item->version,
+                'budget_sum' => $budgetary_requirement,
+                'imp_amount' => $imp_amount,
+                'idpaps' => $item->idpaps,
+            ];
+        });
+        // $data->setCollection(
+        //     $data->getCollection()->filter(function ($item) {
+        //         return data_get($item, 'budget_sum') != 0;
+        //     })->values()
+        // );
+        // dd($data);
+        $year_c = date('Y');
+        $year_n = intval($year_c) + 1;
+        $year_p = intval($year_c) - 1;
+        $functions = $this->getFunctions($myid);
+        $programs = $this->getPrograms($year_c);
+
+        $totals = Appropriation::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
+            ->selectRaw('FORMAT(SUM(appropriations.first_sem), 2, \'en_US\') AS first_sem')
+            ->selectRaw('FORMAT(SUM(appropriations.second_sem), 2, \'en_US\') AS second_sem')
+            ->selectRaw('FORMAT((SUM(appropriations.first_sem) + SUM(appropriations.second_sem)), 2, \'en_US\') AS total')
+            ->selectRaw('FORMAT(SUM(appropriations.budget_year), 2, \'en_US\') AS budget_year')
+            ->join('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
+            ->where('program_and_projects.department_code', auth()->user()->department_code)
+            ->first();
+        // dd($totals);
+        return inertia('RevisionPlans/Direct', [
+            'data' => $data,
+            'FFUNCCOD' => $FFUNCCOD,
+            'offices' => $offices,
+            // "idpaps" => $idpaps,
+            // "paps" => $paps,
+            "ooes" => $ooes,
+            "ooe_description" => $ooe_description,
+            "ooe_codes" => $ooe_codes,
+            "ooe_id" => $ooe_id,
+            "my_source" => $source,
+            "dept_id" => $dept_id,
+            "filters" => $request->only(['search']),
+            "functions" => $functions,
+            "programs" => $programs,
+            "totals" => $totals,
+            'pgHead' => $pgHead,
+            'can' => [
+                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+            ],
+        ]);
+    }
+    protected function getFunctions($idn)
+    {
+        $functions = DB::connection('mysql2')->table('accountaccess')
+            ->select(DB::raw('TRIM(accountaccess.ffunccod) AS FFUNCCOD'), 'functions.FFUNCTION')
+            ->join('systemusers', 'systemusers.recid', '=', 'accountaccess.iduser')
+            ->join('functions', 'functions.FFUNCCOD', 'accountaccess.ffunccod')
+            ->where('systemusers.recid', $idn)
+            ->get();
+        return $functions;
+    }
+    public function getPrograms($year_c)
+    {
+        //PROGRAMS
+        // ->join('raaohs', 'raaohs.idprogram','programs.recid')
+        // ->groupBy('programs.recid')
+        $programs = DB::connection('mysql2')->table('programs')
+            ->select(
+                'raaohs.recid AS raohsid',
+                'programs.FPROGRAM',
+                'programs.factcode',
+                'programs.ftype',
+                'raaohs.tyear',
+                'programs.recid',
+                DB::raw('TRIM(raaohs.FFUNCCOD) AS FFUNCCOD')
+            )
+            ->join('raaohs', 'raaohs.idprogram', 'programs.recid')
+            ->where('raaohs.tyear', $year_c)
+            ->OrderBy('programs.FPROGRAM')
+            ->groupBy('raaohs.recid')
+            ->get();
+        return $programs;
+    }
+
+    public function budget(Request $request)
+    {
+        $myid = auth()->user()->recid;
+        $dept_id = auth()->user()->department_code;
+        // dd($dept_id);
+        // if ($dept_id != '04' && $dept_id != '01') {
+        //     return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
+        // }
         $per_page = 10;
         if ($request->per_page) {
             $per_page = $request->per_page;
@@ -1441,6 +1637,7 @@ class RevisionPlanController extends Controller
             ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
             ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
             // ->leftJoin(DB::raw('budget_requirements'), 'budget_requirements.revision_plan_id', '=', 'revision_plans.id')
+            ->where('paps.department_code', $dept_id)
             ->whereHas('budget', function ($query) {
                 $query->select(DB::raw('revision_plan_id'))
                     ->groupBy('revision_plan_id')
@@ -1498,6 +1695,7 @@ class RevisionPlanController extends Controller
             'offices' => $offices,
             // "idpaps" => $idpaps,
             // "paps" => $paps,
+            "my_source" => 'budget',
             "dept_id" => $dept_id,
             "filters" => $request->only(['search']),
             'can' => [
@@ -1505,6 +1703,11 @@ class RevisionPlanController extends Controller
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
+    }
+    public function get_budget_data(Request $request, $rev_id)
+    {
+        // dd($rev_id);
+        return BudgetPrep::where('revision_plan_id', $rev_id)->get();
     }
     public function api_ppa(Request $request)
     {
@@ -1525,15 +1728,19 @@ class RevisionPlanController extends Controller
             ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
             ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
             ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
-            ->where('revision_plans.project_title', 'LIKE', '%' . $request->search . '%');
+            ->when($request->search, function ($query) use ($request) {
+                $query->where('revision_plans.project_title', 'LIKE', '%' . $request->search . '%');
+            });
+
 
         if ($dept_id) {
             $query->where('ff.department_code', $dept_id);
         }
 
         $data = $query->orderBy('ff.FFUNCTION')
-            ->get()
-            ->map(function ($item) use ($budget_controller) {
+            ->paginate(10)
+            ->withQueryString()
+            ->through(function ($item) use ($budget_controller) {
 
                 $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                     ->sum('amount');
@@ -1558,6 +1765,92 @@ class RevisionPlanController extends Controller
             'expected_output',
             'expected_outcome',
         ])
+            ->get();
+    }
+    public function print_aip(Request $request)
+    {
+        // dd(" gbcbcvbcvb ");
+        // PPA-Project Profile -expected output-total MOOE, PS,CO, FE
+        // return RevisionPlan::with([
+        //     'paps',
+        //     'strategyProject',
+        //     'strategyProject.strategy',
+        //     'strategyProject.expected_output',
+        //     'strategyProject.expected_outcome',
+        //     'activityProject',
+        //     'activityProject.expected_output',
+        //     'activityProject.expected_outcome',
+        //     'budget'
+        // ])->get();
+        // ->map(function ($item) {
+        //     $item->total_mooe = $item->budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
+        //     $item->total_ps = $item->budget->where('category', 'Personnel Services')->sum('amount');
+        //     $item->total_co = $item->budget->where('category', 'Capital Outlay')->sum('amount');
+        //     $item->total_fe = $item->budget->where('category', 'Financial Expenses')->sum('amount');
+        //     return [
+        //         'program' => optional(optional($item)->paps)->program,
+        //         'expected_output' => optional(optional($item)->strategyProject)->expected_output,
+
+        //     ];
+        // })->toArray();
+        $strategies = [];
+        $plans = RevisionPlan::with([
+            'strategyProject.strategy',
+            'strategyProject.expected_output',
+            'strategyProject.expected_outcome',
+            'activityProject.expected_output',
+            'activityProject.expected_outcome',
+            'budget'
+        ])->get();
+
+        foreach ($plans as $plan) {
+            // dd(optional($plan)->strategyProject[0]);
+            $strategy = optional(optional($plan)->strategyProject->first())->strategy;
+
+            if (!$strategy) {
+                continue;
+            }
+
+            $strategyId = $strategy->id;
+
+            // Initialize if not yet in array
+            if (!isset($strategies[$strategyId])) {
+                $strategies[$strategyId] = [
+                    'strategy_desc' => $strategy->strategy_desc,
+                    'activities' => [],
+                ];
+            }
+
+            // For each related activity under this plan
+            if ($plan->activityProject) {
+                $budget = $plan->budget;
+
+                $strategies[$strategyId]['activities'][] = [
+                    'activity_desc' => optional(optional($plan)->activityProject->first())->activity_desc,
+                    'expected_output' => optional($plan->activityProject->first())->expected_output,
+                    'total_mooe' => $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount'),
+                    'total_ps' => $budget->where('category', 'Personnel Services')->sum('amount'),
+                    'total_co' => $budget->where('category', 'Capital Outlay')->sum('amount'),
+                    'total_fe' => $budget->where('category', 'Financial Expenses')->sum('amount'),
+                ];
+            }
+        }
+
+        // Optional: Re-index the array if needed
+        return array_values($strategies);
+        // });
+
+    }
+    protected function strategy_based($id)
+    {
+        return RevisionPlan::where('id', $id)
+            ->where('is_strategy_based', 1)
+            ->get();
+    }
+    protected function activity_based($id)
+    {
+        return RevisionPlan::where('id', $id)
+            ->where('is_strategy_based', 0)
             ->get();
     }
 }

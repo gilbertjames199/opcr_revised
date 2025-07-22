@@ -89,6 +89,17 @@
                      </div>
                 </div>
 
+                DATA SOURCE<br>
+                <div class="peers">
+
+                     <div class="peer mR-10">
+
+                        <input type="text" v-model="form.data_source" class="form-control" autocomplete="chrome-off" >
+                        <div class="fs-6 c-red-500" v-if="form.errors.data_source">{{ form.errors.data_source }}</div>
+
+                     </div>
+                </div>
+
                 <hr style="background-color: black !important; border:1px; height: 1px;">
 
 
@@ -182,6 +193,7 @@ export default {
                 baseline_male: 0,
                 baseline_female: 0,
                 baseline_total: 0,
+                data_source: "",
                 rationale: "",
                 objective: "",
                 beneficiaries: "",
@@ -233,6 +245,7 @@ export default {
             this.form.baseline_male = this.editData.baseline_male
             this.form.baseline_female = this.editData.baseline_female
             this.form.baseline_total = this.editData.baseline_total
+            this.form.data_source = this.editData.data_source
             this.form.rationale = this.editData.rationale
             this.form.objective = this.editData.objective
             this.form.checklist_id = this.editData.checklist_id
@@ -261,6 +274,7 @@ export default {
                 this.form.baseline_male = this.duplicate[0].baseline_male
                 this.form.baseline_female = this.duplicate[0].baseline_female
                 this.form.baseline_total = this.duplicate[0].baseline_total
+                this.form.data_source = this.duplicate[0].data_source
                 this.form.rationale = this.duplicate[0].rationale
                 this.form.objective = this.duplicate[0].objective
                 this.form.checklist_id = this.duplicate[0].checklist_id

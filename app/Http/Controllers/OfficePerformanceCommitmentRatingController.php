@@ -941,90 +941,12 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // $ave = number_format($ave_pre, 2);
         $total = number_format($request->total, 2);
         $ave = number_format($request->average, 2);
+        $pmt_chair = "Ivan Kleb N. Ulgasan, CESE";
         // dd($total);
-        //DISTINCT SUCCESS INDICATOR
-        // $distinctSuccessIndicators = OfficePerformanceCommitmentRating::select('success_indicator_id')
-        //     ->where('opcr_id', $opcr_id)
-        //     ->where('FFUNCCOD', $FFUNCCOD)
-        //     ->distinct()
-        //     ->pluck('success_indicator_id');
-
-        // $result = $this->model->select(
-        //     'office_performance_commitment_ratings.id',
-        //     'office_performance_commitment_ratings.success_indicator_id',
-        //     'office_performance_commitment_ratings.accomplishments',
-        //     'office_performance_commitment_ratings.rating_q',
-        //     'office_performance_commitment_ratings.rating_e',
-        //     'office_performance_commitment_ratings.rating_t',
-        //     'office_performance_commitment_ratings.remarks',
-        //     'office_performance_commitment_ratings.FFUNCCOD',
-        //     'office_performance_commitment_ratings.opcr_id',
-        //     'SU.success_indicator',
-        //     'off.office_accountable',
-        //     'PAPS.paps_desc',
-        //     'mfo.mfo_desc',
-        //     'mfo.created_at',
-        //     'opcr_targets.quantity',
-        //     'PAPS.id AS idpaps'
-        // )
-        //     ->join('success_indicators AS SU', function ($join) {
-        //         $join->on('SU.id', '=', 'office_performance_commitment_ratings.success_indicator_id');
-        //     })
-        //     ->join('program_and_projects AS PAPS', 'PAPS.id', 'SU.idpaps')
-        //     ->join('office_accountables AS off', 'off.idpaps', 'PAPS.id')
-        //     ->join('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
-        //     ->join('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
-        //     ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
-        //     ->whereIn('office_performance_commitment_ratings.success_indicator_id', $distinctSuccessIndicators)
-        //     ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
-        //     ->orderBy('mfo.mfo_desc', 'asc')
-        //     ->get()
-        //     ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now) {
-        //         return [
-        //             "id" => $item->id,
-        //             "success_indicator_id" => $item->success_indicator_id,
-        //             "accomplishments" => $item->accomplishments,
-        //             "rating_q" => $item->rating_q,
-        //             "rating_e" => $item->rating_e,
-        //             "rating_t" => $item->rating_t,
-        //             "remarks" => $item->remarks,
-        //             "FFUNCCOD" => $item->FFUNCCOD,
-        //             "idpaps" => $item->idpaps,
-        //             "opcr_id" => $item->opcr_id,
-        //             "success_indicator" => $item->success_indicator,
-        //             "office_accountable" => $item->office_accountable,
-        //             "paps_desc" => $item->paps_desc,
-        //             "quantity" => $item->quantity,
-        //             "mfo_desc" => $item->mfo_desc,
-        //             "created_at" => $item->created_at,
-        //             "total" => $total,
-        //             "ave" => $ave,
-        //             "dept_head" => $dept_head,
-        //             "opcr_date" => $opcr_date,
-        //             "opcr_id" => $opcr_id,
-        //             "mooe" => $mooe,
-        //             "ps" => $ps,
-        //             "FFUNCCOD" => $FFUNCCOD,
-        //             "date_now" => $date_now,
-        //         ];
-        //     });
-        // return $result;
-        //
-        // dd("Driri");
-        // dd($opcr_id);
-
-        // $performance_measure = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
-        // $efficiency1 = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->efficiency1 : null) : null;
-        // $timeliness = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->timeliness : null) : null;
-        // $prescribed_period = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->prescribed_period : null) : null;;
-
-        // if ($efficiency1 === 'No' && $timeliness === 'No') {
-        //     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency";
-        // } elseif ($efficiency1 === 'Yes') {
-        //     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency within {$prescribed_period}";
-        // } else {
-        //     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
-        // }
+        // dd("asasasasas");
+        $approver = 'Engr. Raul G. Mabanglo';
+        $pos = 'Governor';
+        $isPA1 = $this->isPA($opcr_date, 'PA 1');
         $data = $this->model->select(
             'office_performance_commitment_ratings.id',
             'office_performance_commitment_ratings.success_indicator_id',
@@ -1068,7 +990,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->orderBy('PAPS.id', 'asc')
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
-            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now) {
+            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1, $pmt_chair) {
                 $efficiency1 = $item->efficiency1;
                 $performance_measure = $item->performance_measure;
                 $timeliness = $item->timeliness;
@@ -1082,16 +1004,29 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 } else {
                     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
                 }
-                $approver = 'Dorothy Montejo Gonzaga';
+                $approver = 'Engr. Raul G. Mabanglo';
+                // true
+                if ($isPA1) {
+                    $approver = 'Dorothy Montejo Gonzaga';
+                    $pmt_chair = 'Lewis Jake G. Caiman, CPA';
+                }
                 $pos = 'Governor';
                 if ($FFUNCCOD == '1021') {
-                    $approver = 'Jayvee Tyron L. Uy';
+                    $approver = 'Dorothy Montejo Gonzaga';
                     $pos = 'Vice Governor';
+                    if ($isPA1) {
+                        $approver = 'Jayvee Tyron L. Uy';
+                    }
                 }
                 if ($FFUNCCOD == '1016') {
-                    $approver = 'Jayvee Tyron L. Uy';
+                    $approver = 'Dorothy Montejo Gonzaga';
                     $pos = 'Vice Governor';
+                    if ($isPA1) {
+                        $approver = 'Jayvee Tyron L. Uy';
+                    }
                 }
+
+                // dd($isPA1);
                 $var_q = $item->rating_q;
                 $var_e = $item->rating_e;
                 $var_t = $item->rating_t;
@@ -1185,6 +1120,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "ave_qet" => $ave_qet,
                     "target_success_indicator" => $su,
                     "adjectival" => $adj,
+                    "pmt_chair" => $pmt_chair
                     // "office_accountable" => $office_accountable
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
@@ -1229,7 +1165,29 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
 
     }
+    public function isPA($opcr_date, $type)
+    {
+        if (!$opcr_date || !$type) {
+            return false;
+        }
 
+        preg_match('/\d{4}/', $opcr_date, $matches);
+        $year = isset($matches[0]) ? (int)$matches[0] : null;
+
+        if (!$year) {
+            return false;
+        }
+
+        $isFirstSem = str_contains($opcr_date, 'JANUARY');
+
+        if ($type === 'PA 1') {
+            return $year < 2025 || ($year === 2025 && $isFirstSem);
+        } elseif ($type === 'PA 2') {
+            return $year > 2025 || ($year === 2025 && !$isFirstSem);
+        }
+
+        return false;
+    }
     //UPDATE CURRENT
     public function update_current(Request $request)
     {

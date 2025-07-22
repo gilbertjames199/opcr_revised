@@ -4,37 +4,67 @@
     </Head>
     <div class="row gap-10 masonry pos-r">
         <!--class="peers fxw-nw jc-sb ai-c"-->
-        <div class="peers fxw-nw jc-sb ai-c justify-content-end">
+        <div class="peers fxw-nw jc-sb ai-c justify-content-end" v-if="src !== 'budget'">
             <Link v-if="paps.scope === 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
                             ? `/revision/general/administration/services/${paps.FFUNCCOD}/plan`:`/revision_plans`">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
-                viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
-                <path fill-rule="evenodd"
-                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
-            </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
             </Link>
 
             <Link v-if="paps.idmfo == 0 && paps.scope !== 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
                             ? `/revision/${paps.idpaps}`:`/revision_plans`">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
-                viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
-                <path fill-rule="evenodd"
-                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
-            </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
             </Link>
             <Link v-if="paps.idpaps == 0 && paps.scope !== 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
                             ? `/mforevision/${paps.idmfo}`:`/revision_plans`">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
-                viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
-                <path fill-rule="evenodd"
-                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
-            </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
+            </Link>
+        </div>
+        <div class="peers fxw-nw jc-sb ai-c justify-content-end" v-if="src==='budget'">
+            <Link v-if="paps.scope === 'GAS'" :href="`/revision_plans?source=budget`">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
+            </Link>
+
+            <Link v-if="paps.idmfo == 0 && paps.scope !== 'GAS'" :href="`/revision_plans?source=budget`">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
+            </Link>
+            <Link v-if="paps.idpaps == 0 && paps.scope !== 'GAS'" :href="`/revision_plans?source=budget`">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
             </Link>
         </div>
         <div class="d-flex justify-content-center">
@@ -146,9 +176,16 @@
                                     </button>
                                 </td>
                                 <th colspan="1">Total</th>
-                                <td colspan="1">{{ format_number_conv((paps.beneficiary_male +
-                                    paps.beneficiary_female), 0, true) }}
-
+                                <td colspan="1" :class="{
+                                    'text-danger': has_comment('Title',format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),'beneficiary_total','revision_plans', paps, paps.comments)
+                                }">
+                                {{ format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true) }}
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Title',format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),'beneficiary_total','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Title',format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),'beneficiary_total','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                        @click="handleClick('Title',format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),'beneficiary_total','revision_plans', paps, paps.comments)">*
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -175,9 +212,28 @@
                                         @click="handleClick('Title',paps.baseline_female,paps.baseline_female,'baseline_female','revision_plans', paps, paps.comments)">*
                                     </button>
                                 </td>
-                                <th colspan="1">Total</th>
-                                <td colspan="1">{{ format_number_conv(paps.baseline_male + paps.baseline_female, 0, true) }}
+                                <th colspan="1">Data Source</th>
+                                <td colspan="1" :class="{
+                                    'text-danger': has_comment('Title',paps.data_source,paps.data_source,'data_source','revision_plans', paps, paps.comments)
+                                }">{{ paps.data_source }}
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Title',paps.data_source,paps.data_source,'data_source','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Title',paps.data_source,paps.data_source,'data_source','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                        @click="handleClick('Title',paps.data_source,paps.data_source,'data_source','revision_plans', paps, paps.comments)">*
+                                    </button>
                                 </td>
+                                <!-- <th colspan="1">Total</th>
+                                <td colspan="1" :class="{
+                                    'text-danger': has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)
+                                }">{{ format_number_conv(paps.baseline_male + paps.baseline_female, 0, true) }}
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                        @click="handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                </td> -->
                             </tr>
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Cost of Program</th>
@@ -615,10 +671,37 @@
                                                                         </span>
                                                                     </span>
                                                                 </td>
-                                                                <!-- Expected Outcome -->
-                                                                <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;">
-                                                                    <div><span v-if="pair.quantity>0"> {{ pair.quantity }}</span> {{ pair.output_description }} </div>
-                                                                    <div>{{ pair.outcome_description }}</div>
+                                                                <!-- Expected Outputs/Outcomes -->
+                                                                <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;"
+
+                                                                >
+                                                                    <!-- OUTPUTS*********************************************************************** -->
+                                                                    <div :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
+                                                                        has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)
+                                                                    }"
+                                                                    ><span v-if="pair.quantity>0"> {{ pair.quantity }}</span> {{ pair.output_description }}
+                                                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
+                                                                            </button>
+                                                                            <button v-if="has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
+                                                                            </button>
+                                                                    </div>
+                                                                    <!-- OUTCOMES*********************************************************************** -->
+                                                                    <div :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments) ||
+                                                                        has_comment('Implementation Plan','outcome_description',pair.output_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)
+                                                                    }" v-if="pair.outcome_description"
+                                                                    >
+                                                                        {{ pair.outcome_description }}
+                                                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)">*
+                                                                        </button>
+                                                                        <button v-if="has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)">*
+                                                                        </button>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         </template>
@@ -755,11 +838,182 @@
                                 </template>
                                 <tr>
                                         <td colspan="5">TOTAL</td>
-                                        <td>{{ format_number_conv(v_imp_ps,2,true) }}</td>
-                                        <td>{{ format_number_conv(v_imp_mooe,2,true) }}</td>
-                                        <td>{{ format_number_conv(v_imp_fe,2,true) }}</td>
-                                        <td>{{ format_number_conv(v_imp_co,2,true)}}</td>
-                                        <td class="text-end">{{ format_number_conv(imp_amount,2,true) }}</td>
+                                        <!-- PS TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_ps,2,true),
+                                            format_number_conv(v_imp_ps,2,true),
+                                            'imp_ps',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }">{{ format_number_conv(v_imp_ps,2,true) }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                format_number_conv(v_imp_ps,2,true),
+                                                format_number_conv(v_imp_ps,2,true),
+                                                'imp_ps',
+                                                'revision_plans',
+                                                paps,
+                                                paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_ps,2,true),
+                                                    format_number_conv(v_imp_ps,2,true),
+                                                    'imp_ps',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_ps,2,true),
+                                                    format_number_conv(v_imp_ps,2,true),
+                                                    'imp_ps',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- MOOE TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_mooe,2,true),
+                                            format_number_conv(v_imp_mooe,2,true),
+                                            'imp_mooe',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }">{{ format_number_conv(v_imp_mooe,2,true) }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    'imp_mooe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    'imp_mooe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    'imp_mooe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- FE TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_fe,2,true),
+                                            format_number_conv(v_imp_fe,2,true),
+                                            'imp_fe',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }">{{ format_number_conv(v_imp_fe,2,true) }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    'imp_fe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    'imp_fe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    'imp_fe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- CO TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_co,2,true),
+                                            format_number_conv(v_imp_co,2,true),
+                                            'imp_co',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }">{{ format_number_conv(v_imp_co,2,true)}}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    'imp_co',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    'imp_co',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    'imp_co',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <td class="text-end"
+                                            :class="{
+                                                'text-danger': has_comment('Implementation Plan',
+                                                format_number_conv(imp_amount,2,true),
+                                                format_number_conv(imp_amount,2,true),
+                                                'total_imp_amount',
+                                                'revision_plans',
+                                                paps,
+                                                paps.comments)
+                                            }"
+                                        >{{ format_number_conv(imp_amount,2,true) }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(imp_amount,2,true),
+                                                    format_number_conv(imp_amount,2,true),
+                                                    'total_imp_amount',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(imp_amount,2,true),
+                                                    format_number_conv(imp_amount,2,true),
+                                                    'total_imp_amount',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(imp_amount,2,true),
+                                                    format_number_conv(imp_amount,2,true),
+                                                    'total_imp_amount',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
                                         <td></td>
                                         <td></td>
                                 </tr>
@@ -872,10 +1126,49 @@
                                 </tr>
                                 <tr v-if="(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0">
                                     <td></td>
-                                    <td colspan="3">SUB-TOTAL (MOOE)</td>
-                                    <td class="text-end">{{ format_number_conv(s_mooe_gad,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(s_mooe_non,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true) }}</td>
+                                    <td colspan="3">
+                                        SUB-TOTAL (MOOE)
+                                    </td>
+                                    <!-- MOOE GAD ******************************************************************************************************************-->
+                                    <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements', format_number_conv(s_mooe_gad,2,true), format_number_conv(s_mooe_gad,2,true), 'budgetary_mooe_gad', 'revision_plans', paps, paps.comments)
+                                    }">
+                                        {{ format_number_conv(s_mooe_gad,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',format_number_conv(s_mooe_gad,2,true),format_number_conv(s_mooe_gad,2,true),'budgetary_mooe_gad','revision_plans', paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',format_number_conv(s_mooe_gad,2,true),format_number_conv(s_mooe_gad,2,true),'budgetary_mooe_gad','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',format_number_conv(s_mooe_gad,2,true),format_number_conv(s_mooe_gad,2,true),'budgetary_mooe_gad','revision_plans', paps, paps.comments)">*
+                                        </button>
+                                    </td>
+                                    <!-- MOOE NON-GAD ******************************************************************************************************************-->
+                                    <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)
+                                    }">
+                                        {{ format_number_conv(s_mooe_non,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)">*
+                                        </button>
+                                    </td>
+                                    <!-- MOOE TOTAL ****************************************************************************************************************** -->
+                                    <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements', format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true), format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true),
+                                        'budgetary_mooe_total', 'revision_plans', paps, paps.comments)
+                                    }">
+                                        {{ format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements', format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true), format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true),
+                                        'budgetary_mooe_total', 'revision_plans', paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements', format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true), format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true),
+                                        'budgetary_mooe_total', 'revision_plans', paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements', format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true), format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true),
+                                        'budgetary_mooe_total', 'revision_plans', paps, paps.comments)">*
+                                        </button>
+                                    </td>
                                     <td></td>
                                 </tr>
                                 <!-- PERSONNEL SERVICES ****************************************************** -->
@@ -955,9 +1248,88 @@
                                 <tr v-if="(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0">
                                     <td></td>
                                     <td colspan="3">SUB-TOTAL (PS)</td>
-                                    <td class="text-end">{{ format_number_conv(s_ps_gad,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(s_ps_non,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true) }}</td>
+                                    <!-- PS GAD ******************************************************************************************************************-->
+                                    <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements',
+                                        format_number_conv(s_ps_gad,2,true),
+                                        format_number_conv(s_ps_gad,2,true),
+                                        'budgetary_ps_gad', 'revision_plans',
+                                        paps, paps.comments)
+                                    }">{{ format_number_conv(s_ps_gad,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            format_number_conv(s_ps_gad,2,true),
+                                            format_number_conv(s_ps_gad,2,true),
+                                            'budgetary_ps_gad', 'revision_plans',
+                                        paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            format_number_conv(s_ps_gad,2,true),
+                                            format_number_conv(s_ps_gad,2,true),
+                                            'budgetary_ps_gad', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            format_number_conv(s_ps_gad,2,true),
+                                            format_number_conv(s_ps_gad,2,true),
+                                            'budgetary_ps_gad', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
+                                    <!-- PS NON-GAD ******************************************************************************************************************-->
+                                    <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements',
+                                        format_number_conv(s_ps_non,2,true),
+                                        format_number_conv(s_ps_non,2,true),
+                                        'budgetary_ps_non', 'revision_plans',
+                                        paps, paps.comments)
+                                    }">{{ format_number_conv(s_ps_non,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            format_number_conv(s_ps_non,2,true),
+                                            format_number_conv(s_ps_non,2,true),
+                                            'budgetary_ps_non', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            format_number_conv(s_ps_non,2,true),
+                                            format_number_conv(s_ps_non,2,true),
+                                            'budgetary_ps_non', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            format_number_conv(s_ps_non,2,true),
+                                            format_number_conv(s_ps_non,2,true),
+                                            'budgetary_ps_non', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
+                                    <!-- PS TOTAL ****************************************************************************************************************** -->
+                                    <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements',
+                                        format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),
+                                        format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),
+                                        'budgetary_ps_total', 'revision_plans',
+                                        paps, paps.comments)
+                                    }"
+                                    >{{ format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),
+                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),
+                                            'budgetary_ps_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),
+                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),
+                                            'budgetary_ps_total', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),
+                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),
+                                            'budgetary_ps_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
                                     <td></td>
                                 </tr>
                                 <!-- FINANCIAL EXPENSES ****************************************************** -->
@@ -1037,9 +1409,88 @@
                                 <tr v-if="(parseFloat(s_fe_gad) + parseFloat(s_fe_non))>0">
                                     <td></td>
                                     <td colspan="3">SUB-TOTAL (Financial Expenses)</td>
-                                    <td class="text-end">{{ format_number_conv(s_fe_gad,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(s_fe_non,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true) }}</td>
+                                    <!-- FE GAD ******************************************************************************************************************-->
+                                    <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements',
+                                        format_number_conv(s_fe_gad,2,true),
+                                        format_number_conv(s_fe_gad,2,true),
+                                        'budgetary_fe_gad', 'revision_plans',
+                                        paps, paps.comments)
+                                    }">
+                                        {{ format_number_conv(s_fe_gad,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            format_number_conv(s_fe_gad,2,true),
+                                            format_number_conv(s_fe_gad,2,true),
+                                            'budgetary_fe_gad', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            format_number_conv(s_fe_gad,2,true),
+                                            format_number_conv(s_fe_gad,2,true),
+                                            'budgetary_fe_gad', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            format_number_conv(s_fe_gad,2,true),
+                                            format_number_conv(s_fe_gad,2,true),
+                                            'budgetary_fe_gad', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
+                                    <!-- FE NON-GAD ******************************************************************************************************************-->
+                                    <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements',
+                                        format_number_conv(s_fe_non,2,true),
+                                        format_number_conv(s_fe_non,2,true),
+                                        'budgetary_fe_non', 'revision_plans',
+                                        paps, paps.comments)
+                                    }">{{ format_number_conv(s_fe_non,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            format_number_conv(s_fe_non,2,true),
+                                            format_number_conv(s_fe_non,2,true),
+                                            'budgetary_fe_non', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            format_number_conv(s_fe_non,2,true),
+                                            format_number_conv(s_fe_non,2,true),
+                                            'budgetary_fe_non', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            format_number_conv(s_fe_non,2,true),
+                                            format_number_conv(s_fe_non,2,true),
+                                            'budgetary_fe_non', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
+                                    <!-- FE TOTAL ******************************************************************************************************************-->
+                                    <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements',
+                                            'TOTAL FINANCIAL EXPENSES',
+                                            format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true),
+                                            'budgetary_fe_totl', 'revision_plans',
+                                            paps, paps.comments)
+                                        }">{{ format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'TOTAL FINANCIAL EXPENSES',
+                                            format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true),
+                                            'budgetary_fe_totl', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            'TOTAL FINANCIAL EXPENSES',
+                                            format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true),
+                                            'budgetary_fe_totl', 'revision_plans',
+                                        paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'TOTAL FINANCIAL EXPENSES',
+                                            format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true),
+                                            'budgetary_fe_totl', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
                                     <td></td>
                                 </tr>
                                 <!-- CAPITAL OUTLAY*********************************************************** -->
@@ -1118,9 +1569,87 @@
                                 <tr v-if="(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0">
                                     <td></td>
                                     <td colspan="3">SUB-TOTAL (Capital Outlay)</td>
-                                    <td class="text-end">{{ format_number_conv(s_cap_gad,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(s_cap_non,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true) }}</td>
+                                    <!-- CAPITAL OUTLAY GAD ******************************************************************************************************************-->
+                                    <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements',
+                                        'Capital Outlay GAD -Total',
+                                        format_number_conv(s_cap_gad,2,true),
+                                        'budgetary_cap_gad', 'revision_plans',
+                                        paps, paps.comments)
+                                    }">{{ format_number_conv(s_cap_gad,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'Capital Outlay GAD -Total',
+                                            format_number_conv(s_cap_gad,2,true),
+                                            'budgetary_cap_gad', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            'Capital Outlay GAD -Total',
+                                            format_number_conv(s_cap_gad,2,true),
+                                            'budgetary_cap_gad', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'Capital Outlay GAD -Total',
+                                            format_number_conv(s_cap_gad,2,true),
+                                            'budgetary_cap_gad', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
+                                    <!-- CAPITAL OUTLAY NON-GAD ******************************************************************************************************************-->
+                                     <td class="text-end" :class="{
+                                        'text-danger': has_comment('Budgetary Requirements',
+                                        'Capital Outlay Non-GAD -Total',
+                                        format_number_conv(s_cap_non,2,true),
+                                        'budgetary_cap_non', 'revision_plans',
+                                        paps, paps.comments)
+                                    }">{{ format_number_conv(s_cap_non,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'Capital Outlay Non-GAD -Total',
+                                            format_number_conv(s_cap_non,2,true),
+                                            'budgetary_cap_non', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            'Capital Outlay Non-GAD -Total',
+                                            format_number_conv(s_cap_non,2,true),
+                                            'budgetary_cap_non', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'Capital Outlay Non-GAD -Total',
+                                            format_number_conv(s_cap_non,2,true),
+                                            'budgetary_cap_non', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
+                                     <!-- CAPITAL OUTLAY TOTAL ******************************************************************************************************************-->
+                                    <td class="text-end" :class="{
+                                            'text-danger': has_comment('Budgetary Requirements',
+                                            'Capital Outlay -Total',
+                                            format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true),
+                                            'budgetary_cap_total', 'revision_plans',
+                                            paps, paps.comments)
+                                        }">{{ format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'Capital Outlay -Total',
+                                            format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true),
+                                            'budgetary_cap_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            'Capital Outlay -Total',
+                                            format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true),
+                                            'budgetary_cap_total', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'Capital Outlay -Total',
+                                            format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true),
+                                            'budgetary_cap_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
                                     <td></td>
                                 </tr>
                                 <!-- CAPITAL OUTLAY*********************************************************** -->
@@ -1146,12 +1675,96 @@
                                 </tr> -->
                                 <tr>
                                     <td colspan="4">TOTAL</td>
-                                    <td class="text-end">{{  format_number_conv(tot_gad,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(tot_non,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv((parseFloat(s_cap_gad) + parseFloat(s_cap_non) + parseFloat(s_ps_gad)
+                                    <!-- GAD TOTAL *********************************************************** -->
+                                    <td class="text-end"
+                                        :class="{
+                                            'text-danger': has_comment('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)
+                                        }"
+                                    >{{  format_number_conv(tot_gad,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
+                                    <!-- NON-GAD TOTAL *********************************************************** -->
+                                    <td class="text-end"
+                                        :class="{
+                                            'text-danger': has_comment('Budgetary Requirements',
+                                            'Non-GAD Grand Total',
+                                            format_number_conv(tot_non,2,true),
+                                            'non_total', 'revision_plans',
+                                            paps, paps.comments)
+                                        }"
+                                    >{{ format_number_conv(tot_non,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'Non-GAD Grand Total',
+                                            format_number_conv(tot_non,2,true),
+                                            'non_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            'Non-GAD Grand Total',
+                                            format_number_conv(tot_non,2,true),
+                                            'non_total', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'Non-GAD Grand Total',
+                                            format_number_conv(tot_non,2,true),
+                                            'non_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
+                                    <!-- GRAND TOTAL *********************************************************** -->
+                                    <td class="text-end"
+                                        :class="{
+                                            'text-danger': has_comment('Budgetary Requirements',
+                                            'Overall Grand Total',
+                                            format_number_conv(grand_total,2,true),
+                                            'grand_total', 'revision_plans',
+                                            paps, paps.comments)
+                                        }"
+                                    >{{ format_number_conv((parseFloat(s_cap_gad) + parseFloat(s_cap_non) + parseFloat(s_ps_gad)
                                     + parseFloat(s_ps_non) + parseFloat(s_mooe_gad) + parseFloat(s_mooe_non) + parseFloat(s_fe_gad) + parseFloat(s_fe_non))
                                     , 2,true)
-                                    }}</td>
+                                    }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'Overall Grand Total',
+                                            format_number_conv(grand_total,2,true),
+                                            'grand_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            'Overall Grand Total',
+                                            format_number_conv(grand_total,2,true),
+                                            'grand_total', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'Overall Grand Total',
+                                            format_number_conv(grand_total,2,true),
+                                            'grand_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                    </td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -1639,13 +2252,13 @@
                     </div>
                     <!--SIGNATORIES-->
                     <div class="signatory-grid">
-    <div v-for="(signatory, index) in signatories" :key="index" class="signatory-card">
-      <strong>{{ signatory.acted }} by: </strong><br><br>
-      <span class="text-decoration-underline"><b>{{ signatory.name
-                                            }}</b></span>
-                                            <br>{{ signatory.position }}<br><br><br><br>
-    </div>
-  </div>
+                        <div v-for="(signatory, index) in signatories" :key="index" class="signatory-card">
+                        <strong>{{ signatory.acted }} by: </strong><br><br>
+                        <span class="text-decoration-underline"><b>{{ signatory.name
+                                                                }}</b></span>
+                                                                <br>{{ signatory.position }}<br><br><br><br>
+                        </div>
+                    </div>
                     <!-- <div v-if="paps.type === 'p'">
                         <table class="table table-borderless no-border-table">
                             <tbody>
@@ -1727,7 +2340,7 @@
                     <span v-else>{{ comment_colun }}</span>
                 </div>
                 <div><b>Table:</b> {{ comment_table }}</div>
-                <!-- <div>Reference Object: {{ comment_reference_object }}</div> -->
+                <!-- <div>Reference Object: {{ comment_reference_object.id }}</div> -->
 
                 <div class="col-9">
                     <table class="table table-hover table-bordered border-dark">
@@ -1808,8 +2421,8 @@
         <div class="d-flex justify-content-center">
 
         </div>
-        {{ department_code_project }}
-        {{ department_code_user }}
+        <!-- {{ department_code_project }}
+        {{ department_code_user }} -->
         <!-- {{ auth.user }} -->
         <!-- {{ auth.user }}
         {{ paps.is_strategy_based }} -->
@@ -1862,23 +2475,7 @@ export default {
         src: Object
     },
     computed: {},
-    mounted() {
-        this.isOne();
-        this.calculateTotals(this.paps.is_strategy_based);
-        if (!sessionStorage.getItem('reloaded')) {
-            sessionStorage.setItem('reloaded', 'true');
-            window.location.reload();
-        } else {
-            sessionStorage.removeItem('reloaded');
-        }
-        window.addEventListener('beforeunload', this.handleBeforeUnload);
-        this.tot_gad = parseFloat(this.s_cap_gad) + parseFloat(this.s_mooe_gad) + parseFloat(this.s_ps_gad) + parseFloat(this.s_fe_gad);
-        this.tot_non = parseFloat(this.s_cap_non) + parseFloat(this.s_mooe_non) + parseFloat(this.s_ps_non) + parseFloat(this.s_fe_non);
-    },
 
-    beforeUnmount() {
-        window.removeEventListener('beforeunload', this.handleBeforeUnload);
-    },
     data() {
         return {
             unsaved: false,
@@ -1902,7 +2499,26 @@ export default {
             has: 0,
             tot_gad: 0,
             tot_non:0,
+            grand_total: 0
         }
+    },
+    mounted() {
+        this.isOne();
+        this.calculateTotals(this.paps.is_strategy_based);
+        if (!sessionStorage.getItem('reloaded')) {
+            sessionStorage.setItem('reloaded', 'true');
+            window.location.reload();
+        } else {
+            sessionStorage.removeItem('reloaded');
+        }
+        window.addEventListener('beforeunload', this.handleBeforeUnload);
+        this.tot_gad = parseFloat(this.s_cap_gad) + parseFloat(this.s_mooe_gad) + parseFloat(this.s_ps_gad) + parseFloat(this.s_fe_gad);
+        this.tot_non = parseFloat(this.s_cap_non) + parseFloat(this.s_mooe_non) + parseFloat(this.s_ps_non) + parseFloat(this.s_fe_non);
+        this.grand_total = this.tot_gad + this.tot_non;
+    },
+
+    beforeUnmount() {
+        window.removeEventListener('beforeunload', this.handleBeforeUnload);
     },
     watch: {},
     methods: {
@@ -2057,7 +2673,11 @@ export default {
             if(this.comment_table==='expected_revised_outputs'){
                 table_row_id_l = this.comment_reference_object.id
             }
-            // alert(table_row_id_l)
+
+            if(this.comment_table==='expected_revised_outcomes'){
+                table_row_id_l = this.comment_reference_object.id
+            }
+            //alert(table_row_id_l)
             this.$inertia.post(myurl, {
                 params: {
                     table_row_id: table_row_id_l,
@@ -2073,6 +2693,15 @@ export default {
             }, 1000); // 1000 milliseconds = 1 second
         },
         submitAction(type, comment_id, index){
+            let actionText = {
+                delete: "delete this comment",
+                reset: "reset the status of this comment to unresolved",
+                resolve: "mark this comment as resolved"
+            };
+
+            if (!confirm(`Are you sure you want to ${actionText[type]}?`)) {
+                return; // User cancelled
+            }
             var myurl = "/revision-plan-comments/action/done";
             this.$inertia.post(myurl, {
                 params: {

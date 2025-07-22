@@ -53,7 +53,7 @@
                             <tr class="bg-secondary text-white">
                                 <th>Name</th>
                                 <th>Position</th>
-                                <th>Competency</th>
+                                <!-- <th>Competency</th> -->
                                 <th>Role</th>
                                 <th>Action</th>
                             </tr>
@@ -63,7 +63,7 @@
                             <tr v-for="dat in data">
                                 <td>{{ dat.name }}</td>
                                 <td>{{ dat.position }}</td>
-                                <td>{{ dat.competency }}</td>
+                                <!-- <td>{{ dat.competency }}</td> -->
                                 <td>{{ dat.role }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >

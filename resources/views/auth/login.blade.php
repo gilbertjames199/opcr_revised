@@ -15,12 +15,12 @@
     </div>
     <div class="peers ai-s fxw-nw h-100vh">
         <div class="d-n@sm- peer peer-greed h-100 pos-r bgr-n bgpX-c bgpY-c bgsz-cv"
-            style='background-image:url("images/bg.jpg"); background-size:100% 100%'>
+            style='background-image:url("images/Davao_De_Oro_Flag.jpg"); background-size:100% 100%'>
             <div class="row mt-3 ms-3" style="color: rgb(52, 52, 52); display: block;">
                 <div class="col-md-6">
-                    <h1 class="strokeme display-5" style="font-weight: bold; color: #0b4497; font-size: 50px;">
+                    {{-- <h1 class="strokeme display-5" style="font-weight: bold; color: #0b4497; font-size: 50px;">
                         PROGRAMS AND PROJECTS
-                    </h1>
+                    </h1> --}}
                 </div>
             </div>
             <!--class="pos-a centerXY"-->
@@ -34,6 +34,8 @@
                 <div class="row text-center pos-a centerXY">
                     <div>
                         <!--<img class="mw-50" src="images/logo.png" alt="">-->
+                        <h1 class="text-center" style="font-size: 50px; color:#f0d338"><b>PROGRAMS AND PROJECTS
+                            </b></h1>
                         &nbsp;&nbsp;<img src="{{ asset('images/logo.png') }}" alt="" class="img-fluid"
                             style="width:250px; height:250px">
                     </div>
@@ -41,7 +43,7 @@
             </div>
         </div>
         <div class="col-12 col-md-4 peer pX-40 pY-80 h-100 scrollable pos-r"
-            style="min-width:320px; background-color: #0b4497 ; color: white; !important">
+            style="min-width:320px; background-image: linear-gradient(to bottom, #9d7720 0%, #f0d338 30%, #9d7720 100%); color: white; !important">
             <div class="row text-center" id="mobile-logo">
                 <div class="col-offset-5 mb-1">
                     <img class="img-fluid" src="images/logo.png" alt="">
