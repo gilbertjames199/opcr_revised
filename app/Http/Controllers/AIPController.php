@@ -223,10 +223,45 @@ class AIPController extends Controller
 
     public function PAPS(Request $request)
     {
-        $paps = ProgramAndProject::with(['revisionPlan.budget', 'opcr_stardard'])
+        $paps = ProgramAndProject::with([
+            'revisionPlan.budget',
+            'opcr_stardard',
+            'strategies.activity.expected_output'
+        ])
             ->where('idmfo', $request->idmfo)
             ->get()
             ->map(function ($item) {
+                // dd($expected_Output);
+
+                $outputs = [];
+
+                foreach ($item->strategies as $strategy) {
+                    foreach ($strategy->activity as $activity) {
+                        foreach ($activity->expected_output as $output) {
+                            $outputs[] = $output;
+                        }
+                    }
+                }
+
+
+                $exp_output = collect($outputs)->map(function ($output) {
+                    // Parse and default to 0 if null
+                    $q1 = (float) ($output->physical_q1 ?? 0);
+                    $q2 = (float) ($output->physical_q2 ?? 0);
+                    $q3 = (float) ($output->physical_q3 ?? 0);
+                    $q4 = (float) ($output->physical_q4 ?? 0);
+
+                    return [
+                        'description'     => $output->description,
+                        'physical_q1'     => $output->physical_q1,
+                        'physical_q2'     => $output->physical_q2,
+                        'physical_q3'     => $output->physical_q3,
+                        'physical_q4'     => $output->physical_q4,
+                        'total_quantity'  => $q1 + $q2 + $q3 + $q4, // ✅ sum here
+                    ];
+                });
+                // dd($exp_output);
+
                 $firstRevisionPlan = $item->revisionPlan->first();
                 $budgets = $firstRevisionPlan ? $firstRevisionPlan->budget : collect();
 
@@ -274,6 +309,7 @@ class AIPController extends Controller
                         'amount' => $budget->amount,
                         'category' => $budget->category,
                     ]),
+                    'Expected_Outputs' => $exp_output,
                 ];
             })
             ->filter(fn($item) => $item['Revision_Plan_id'] !== null) // << This filters out those without Revision Plan
