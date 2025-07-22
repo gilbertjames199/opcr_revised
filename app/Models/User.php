@@ -19,7 +19,7 @@ use Illuminate\Auth\Events\Registered;
 //, MustVerifyEmail
 class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
 
     protected $connection = "mysql2";
     protected $table = "systemusers";
