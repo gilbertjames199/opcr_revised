@@ -1541,7 +1541,9 @@ class RevisionPlanController extends Controller
             ->join('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
             ->where('program_and_projects.department_code', auth()->user()->department_code)
             ->first();
+        $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($totals);
+        // dd($acc);
         return inertia('RevisionPlans/Direct', [
             'data' => $data,
             'FFUNCCOD' => $FFUNCCOD,
@@ -1559,6 +1561,7 @@ class RevisionPlanController extends Controller
             "programs" => $programs,
             "totals" => $totals,
             'pgHead' => $pgHead,
+            "acc" => $acc,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
