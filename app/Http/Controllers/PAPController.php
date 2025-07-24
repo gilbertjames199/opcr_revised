@@ -490,7 +490,13 @@ class PAPController extends Controller
             ->when($request->mfosel, function ($query, $searchItem) {
                 $query->where('idmfo', '=', $searchItem);
             })
-            ->where('idmfo', '>', '45')
+            ->where(function($query){
+                $query->where('idmfo', '>', '45')
+                    ->orWhere(function($query){
+                        $query->where('idmfo','0')
+                            ->where('type','GAS');
+                    });
+            })
             // Include shared PAPS
             ->orderByRaw(
                 DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
