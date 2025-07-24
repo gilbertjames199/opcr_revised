@@ -23,7 +23,17 @@
                 </div>
 
                 <label for="">PROGRAMS AND PROJECTS</label>
-                <input type="text" v-model="paps[0].paps_desc" class="form-control" />
+                <div v-if="paps[0]" >
+                    <input type="text" v-model="paps[0].paps_desc" class="form-control" />
+                </div>
+                <div v-if="editData===undefined"> 
+                    <select v-model="form.idpaps" class="form-control"
+                        @change="updateProjectTitle">
+                        <option v-for="pap in paps_all" :value="pap.id">
+                            {{ pap.paps_desc }}
+                        </option>
+                    </select>
+                </div>
 
                 <label for="">PROJECT TITLE</label>
                 <input type="text" v-model="form.project_title" class="form-control" autocomplete="chrome-off">
@@ -149,7 +159,8 @@
             </form>
         </div>
     </div>
-    <!-- {{ form }} -->
+    <!-- {{this.source }}cxzsdfsdfdsfsdfsf
+    {{ form }} -->
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -164,6 +175,8 @@ export default {
         paps: Object,
         duplicate: Object,
         idpaps: Number,
+        paps_all: Object,
+        source: String,
         hgdgs: Object
     },
     components: {
@@ -183,7 +196,7 @@ export default {
             act_words: 0,
             form: useForm({
                 idpaps: "",
-                project_title: this.paps[0].paps_desc,
+                project_title:"",
                 project_location: "",
                 list_of_lgu_covered: "",
                 date_start: "",
@@ -204,6 +217,7 @@ export default {
                 risk_management: "",
                 is_strategy_based: "",
                 aip_code: "",
+                source: "",
                 id: null
             }),
             total_intended: 0,
@@ -230,6 +244,9 @@ export default {
     },
     mounted() {
         this.form.idpaps = this.idpaps;
+        if(this.source!==undefined){
+            this.form.source =this.source
+        }
         //this.form.idinteroutcome=this.idinteroutcome
         if (this.editData !== undefined) {
             this.pageTitle = "Edit"
@@ -285,6 +302,7 @@ export default {
                 this.form.risk_management = this.duplicate[0].risk_management
                 this.is_strategy_based = this.duplicate[0].is_strategy_based
             } else {
+                // this.form.project_title = this.paps[0].paps_desc
                 //alert('undefined si idpaps!');
             }
         }
@@ -329,6 +347,13 @@ export default {
             var female =parseFloat(this.form.beneficiary_female);
             var tot = male + female;
             this.total_intended =tot
+        },
+        updateProjectTitle() {
+
+            var selectedPap = this.paps_all.find(pap => String(pap.id) === String(this.form.idpaps));
+            // alert("fsdfsdf")
+            console.log(this.form.idpaps)
+            this.form.project_title = selectedPap ? selectedPap.paps_desc : '';
         }
     },
 };
