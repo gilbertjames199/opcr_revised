@@ -209,7 +209,7 @@ class RevisionPlanController extends Controller
         // dd(auth()->user()->department_code);
         if (isset($paps)) {
             $paps_all = ProgramAndProject::with('MFO')
-                ->where(function($query){
+                ->where(function($query)use ($dept_code){
                     $query->whereHas('MFO', function ($query) use ($dept_code) {
                         $query->where('department_code', $dept_code);
                     })
