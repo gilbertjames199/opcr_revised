@@ -209,9 +209,13 @@ class RevisionPlanController extends Controller
         // dd(auth()->user()->department_code);
         if (isset($paps)) {
             $paps_all = ProgramAndProject::with('MFO')
-                ->whereHas('MFO', function ($query) use ($dept_code) {
-                    $query->where('department_code', $dept_code);
+                ->where(function($query){
+                    $query->whereHas('MFO', function ($query) use ($dept_code) {
+                        $query->where('department_code', $dept_code);
+                    })
+                    ->orWhere('department_code',$dept_code);
                 })
+                
                 ->get();
             // dd("wala si paps");
             // $all_paps = Progr
