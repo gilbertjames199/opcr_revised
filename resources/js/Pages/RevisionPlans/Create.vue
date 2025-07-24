@@ -292,15 +292,16 @@ export default {
     },
 
     methods: {
-        submit() {
-            //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
+        //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
             //alert(this.form.target_qty);
             // if (this.act_words > this.maxWords) {
             //     alert("Rationale exceeds 200 words limit")
             // } else {
+        submit() {
+
                 if (this.editData !== undefined) {
                     //alert('patch');
-                    this.form.patch("/revisio/n/", this.form);
+                    this.form.patch("/revision/update", this.form);
                 } else {
                     this.form.id = null;
                     //alert('store');
