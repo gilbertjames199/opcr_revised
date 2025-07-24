@@ -300,7 +300,7 @@ export default {
             // } else {
                 if (this.editData !== undefined) {
                     //alert('patch');
-                    this.form.patch("/revision/", this.form);
+                    this.form.patch("/revisio/n/", this.form);
                 } else {
                     this.form.id = null;
                     //alert('store');
