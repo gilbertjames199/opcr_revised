@@ -433,6 +433,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
     });
+    Route::prefix('/revisio/n')->group(function () {
+        Route::patch('/', [RevisionPlanController::class, 'update']);
+    });
     // Revision Plan Page
     Route::prefix('/revision_plans')->group(function () {
         Route::get('/', [RevisionPlanController::class, 'direct']);
