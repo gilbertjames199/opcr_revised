@@ -456,10 +456,13 @@ class AppropriationController extends Controller
     public function paps_types(Request $request)
     {
         $department_code = $request->department_code;
+        // dd($department_code);
         $paps_types = ProgramAndProject::selectRaw('DISTINCT(program_and_projects.type)')
             // ->join('appropriations', 'appropriations.idpaps', 'program_and_projects.id')
+            ->where('department_code', $department_code)
             ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
             ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
+            ->whereNotNull('budget_requirements.id')
             ->orderByRaw(
                 DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
                             WHEN program_and_projects.type = 'Project' THEN 1
@@ -467,6 +470,7 @@ class AppropriationController extends Controller
                             WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
                             END")
             )
+            // ->groupBy()
             ->get()
             ->map(function ($item) use ($department_code) {
                 return [
