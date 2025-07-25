@@ -1649,31 +1649,52 @@ class RevisionPlanController extends Controller
         $year_p = intval($year_c) - 1;
         $functions = $this->getFunctions($myid);
         $programs = $this->getPrograms($year_c);
-
+        // $budget_total =BudgetRequirement::join('revision_plans', 'revision_plans.id', 'budget_requirements.revision_plan_id')
+        //     ->join('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
         // $totals = Appropriation::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
         //     ->selectRaw('FORMAT(SUM(appropriations.first_sem), 2, \'en_US\') AS first_sem')
         //     ->selectRaw('FORMAT(SUM(appropriations.second_sem), 2, \'en_US\') AS second_sem')
         //     ->selectRaw('FORMAT((SUM(appropriations.first_sem) + SUM(appropriations.second_sem)), 2, \'en_US\') AS total')
-        //     ->selectRaw('FORMAT(SUM(budget_requirements.amount), 2, \'en_US\') AS budget_year')
+        //     ->selectRaw('FORMAT(SUM(appropriations.budget_year), 2, \'en_US\') AS budget_year')
         //     ->join('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
-        //     ->join('budget_requirements', 'program_and_projects.id', 'budget_requirements.idpaps')
         //     ->where('program_and_projects.department_code', auth()->user()->department_code)
         //     ->first();
-
-        $totals = BudgetRequirement::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
-            ->selectRaw('FORMAT(SUM(appropriations.first_sem), 2, \'en_US\') AS first_sem')
-            ->selectRaw('FORMAT(SUM(appropriations.second_sem), 2, \'en_US\') AS second_sem')
-            ->selectRaw('FORMAT((SUM(appropriations.first_sem) + SUM(appropriations.second_sem)), 2, \'en_US\') AS total')
-            ->selectRaw('FORMAT(SUM(budget_requirements.amount), 2, \'en_US\') AS budget_year')
-            ->leftjoin('revision_plans', 'revision_plans.id', 'budget_requirements.revision_plan_id')
-            ->leftjoin('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
-            ->join('appropriations', 'program_and_projects.id', 'appropriations.idpaps')
+        $latestRevisionPlanIds = DB::table('revision_plans as rp1')
+            ->select('rp1.id')
+            ->whereRaw('NOT EXISTS (
+            SELECT 1 FROM revision_plans rp2
+            WHERE rp2.idpaps = rp1.idpaps AND rp2.version > rp1.version
+        )');
+        $totals = BudgetRequirement::selectRaw("FORMAT(IFNULL(SUM(appropriations.past_year), 0), 2, 'en_US') AS past_year")
+            ->selectRaw("FORMAT(IFNULL(SUM(appropriations.first_sem), 0), 2, 'en_US') AS first_sem")
+            ->selectRaw("FORMAT(IFNULL(SUM(appropriations.second_sem), 0), 2, 'en_US') AS second_sem")
+            ->selectRaw("FORMAT(IFNULL(SUM(appropriations.first_sem + appropriations.second_sem), 0), 2, 'en_US') AS total")
+            ->selectRaw("FORMAT(IFNULL(SUM(budget_requirements.amount), 0), 2, 'en_US') AS budget_year")
+            ->join('revision_plans', 'revision_plans.id', 'budget_requirements.revision_plan_id')
+            ->join('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
+            ->leftJoin('appropriations', 'program_and_projects.id', 'appropriations.idpaps')
             ->where('program_and_projects.department_code', auth()->user()->department_code)
+            ->whereIn('revision_plans.id', $latestRevisionPlanIds)
             ->when($request->year, function ($query) use ($request) {
-                $query->where('revision_plans', $request->year);
+                $query->where('revision_plans.year', $request->year);
             })
-            ->groupBy('revision_plans.id');
-        // dd($totals);
+            ->groupBy('program_and_projects.department_code')
+            ->first();
+        // $totals = BudgetRequirement::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
+        //     ->selectRaw('FORMAT(SUM(appropriations.first_sem), 2, \'en_US\') AS first_sem')
+        //     ->selectRaw('FORMAT(SUM(appropriations.second_sem), 2, \'en_US\') AS second_sem')
+        //     ->selectRaw('FORMAT((SUM(appropriations.first_sem) + SUM(appropriations.second_sem)), 2, \'en_US\') AS total')
+        //     ->selectRaw('FORMAT(SUM(budget_requirements.amount), 2, \'en_US\') AS budget_year')
+        //     ->join('revision_plans', 'revision_plans.id', 'budget_requirements.revision_plan_id')
+        //     ->join('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
+        //     ->leftjoin('appropriations', 'program_and_projects.id', 'appropriations.idpaps')
+        //     ->where('program_and_projects.department_code', auth()->user()->department_code)
+        //     ->when($request->year, function ($query) use ($request) {
+        //         $query->where('revision_plans', $request->year);
+        //     })
+        //     ->groupBy('program_and_projects.department_code')
+        //     ->first();
+        dd($totals);
         $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($totals);
         // dd($acc);
