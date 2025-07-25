@@ -456,7 +456,7 @@ class AppropriationController extends Controller
     public function paps_types(Request $request)
     {
         $department_code = $request->department_code;
-        $paps_types = ProgramAndProject::selectRaw('DISTINCT(type)')
+        $paps_types = ProgramAndProject::selectRaw('DISTINCT(program_and_projects.type)')
             // ->join('appropriations', 'appropriations.idpaps', 'program_and_projects.id')
             ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
             ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
