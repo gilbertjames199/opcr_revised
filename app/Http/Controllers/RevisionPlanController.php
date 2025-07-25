@@ -1694,7 +1694,7 @@ class RevisionPlanController extends Controller
         //     })
         //     ->groupBy('program_and_projects.department_code')
         //     ->first();
-        dd($totals);
+        // dd($totals);
         $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($totals);
         // dd($acc);
