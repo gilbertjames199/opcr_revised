@@ -631,7 +631,7 @@ class AppropriationController extends Controller
                     "paps_desc" => optional($paps)->paps_desc,
                     "type" => optional($approp)->type,
                     "account_code" => optional($item)->account_code,
-                    "object_of_expenditure" => is_null($ooe_a) ? $ooe_b : '',
+                    "object_of_expenditure" => is_null($ooe_a) ? $ooe_b : $ooe_a,
                     "past_year" => number_format(optional($approp)->past_year, 2, '.', ','),
                     "first_sem" => number_format(optional($approp)->first_sem, 2, '.', ','),
                     "second_sem" => number_format(optional($approp)->second_sem, 2, '.', ','),
