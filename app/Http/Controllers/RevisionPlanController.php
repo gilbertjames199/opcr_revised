@@ -209,13 +209,13 @@ class RevisionPlanController extends Controller
         // dd(auth()->user()->department_code);
         if (isset($paps)) {
             $paps_all = ProgramAndProject::with('MFO')
-                ->where(function($query)use ($dept_code){
+                ->where(function ($query) use ($dept_code) {
                     $query->whereHas('MFO', function ($query) use ($dept_code) {
                         $query->where('department_code', $dept_code);
                     })
-                    ->orWhere('department_code',$dept_code);
+                        ->orWhere('department_code', $dept_code);
                 })
-                
+
                 ->get();
             // dd("wala si paps");
             // $all_paps = Progr
@@ -246,7 +246,7 @@ class RevisionPlanController extends Controller
                 "hgdgs" => $hgdg,
                 "paps" => $paps,
                 "paps_all" => $paps_all,
-                "source"=>$request->source,
+                "source" => $request->source,
                 "can" => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                     'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -284,11 +284,11 @@ class RevisionPlanController extends Controller
             // 'risk_management'=>'required'
         ]);
         // REDIRECT URL
-        $red_url ='';
-        if($request->source=='direct'){
-            $red_url ='/revision/0?' . $request->source;
-        }else{
-            $red_url ='/revision/' . $request->idpaps;
+        $red_url = '';
+        if ($request->source == 'direct') {
+            $red_url = '/revision/0?' . $request->source;
+        } else {
+            $red_url = '/revision/' . $request->idpaps;
         }
         // dd($red_url);
         $version = RevisionPlan::where('idpaps', '=', $request->idpaps)->max('version');
@@ -348,7 +348,7 @@ class RevisionPlanController extends Controller
         //     return redirect('/revision/' . $request->idpaps)
         //     ->with('message', 'Revision Plan added');
         // }
-        
+
     }
     public function view(Request $request, $id)
     {
@@ -767,7 +767,7 @@ class RevisionPlanController extends Controller
             "hgdgs" => $hgdg,
             "paps" => $paps,
             "editData" => $data,
-            "source"=>$request->source,
+            "source" => $request->source,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -777,9 +777,9 @@ class RevisionPlanController extends Controller
     public function update(Request $request)
     {
         // dd($request);
-        if($request->source=='direct'){
+        if ($request->source == 'direct') {
             $red_url = '/revision/0?source=direct';
-        }else{
+        } else {
             $red_url = '/revision/' . $request->idpaps;
         }
         $rev = RevisionPlan::where('id', $request->id)->first();
@@ -1650,14 +1650,30 @@ class RevisionPlanController extends Controller
         $functions = $this->getFunctions($myid);
         $programs = $this->getPrograms($year_c);
 
-        $totals = Appropriation::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
+        // $totals = Appropriation::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
+        //     ->selectRaw('FORMAT(SUM(appropriations.first_sem), 2, \'en_US\') AS first_sem')
+        //     ->selectRaw('FORMAT(SUM(appropriations.second_sem), 2, \'en_US\') AS second_sem')
+        //     ->selectRaw('FORMAT((SUM(appropriations.first_sem) + SUM(appropriations.second_sem)), 2, \'en_US\') AS total')
+        //     ->selectRaw('FORMAT(SUM(budget_requirements.amount), 2, \'en_US\') AS budget_year')
+        //     ->join('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
+        //     ->join('budget_requirements', 'program_and_projects.id', 'budget_requirements.idpaps')
+        //     ->where('program_and_projects.department_code', auth()->user()->department_code)
+        //     ->first();
+
+        $totals = BudgetRequirement::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
             ->selectRaw('FORMAT(SUM(appropriations.first_sem), 2, \'en_US\') AS first_sem')
             ->selectRaw('FORMAT(SUM(appropriations.second_sem), 2, \'en_US\') AS second_sem')
             ->selectRaw('FORMAT((SUM(appropriations.first_sem) + SUM(appropriations.second_sem)), 2, \'en_US\') AS total')
-            ->selectRaw('FORMAT(SUM(appropriations.budget_year), 2, \'en_US\') AS budget_year')
-            ->join('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
+            ->selectRaw('FORMAT(SUM(budget_requirements.amount), 2, \'en_US\') AS budget_year')
+            ->leftjoin('revision_plans', 'revision_plans.id', 'budget_requirements.revision_plan_id')
+            ->leftjoin('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
+            ->join('appropriations', 'program_and_projects.id', 'appropriations.idpaps')
             ->where('program_and_projects.department_code', auth()->user()->department_code)
-            ->first();
+            ->when($request->year, function ($query) use ($request) {
+                $query->where('revision_plans', $request->year);
+            })
+            ->groupBy('revision_plans.id');
+        // dd($totals);
         $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($totals);
         // dd($acc);
@@ -1713,7 +1729,7 @@ class RevisionPlanController extends Controller
             ->join('raaohs', 'raaohs.idprogram', 'programs.recid')
             ->where('raaohs.tyear', $year_c)
             ->OrderBy('programs.FPROGRAM')
-            ->groupBy('raaohs.recid')
+            ->groupBy('raaohs.idprogram')
             ->get();
         return $programs;
     }
