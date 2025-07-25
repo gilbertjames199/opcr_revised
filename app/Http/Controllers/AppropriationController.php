@@ -479,10 +479,15 @@ class AppropriationController extends Controller
     public function paps(Request $request)
     {
         //
-        $paps = ProgramAndProject::select('program_and_projects.id', 'program_and_projects.paps_desc', DB::raw('MAX(appropriations.id) AS column_name'))
+        // dd($request->paps_type);
+        $paps = ProgramAndProject::select(
+            'program_and_projects.id',
+            'program_and_projects.paps_desc'
+            // , DB::raw('MAX(revision_plans.id) AS column_name')
+        )
             // ->join('appropriations', 'appropriations.idpaps', '=', 'program_and_projects.id')
             ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
-            ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
+            // ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
             ->where('program_and_projects.type', '=', $request->paps_type)
             ->where('program_and_projects.department_code', '=', $request->department_code)
             ->groupBy('program_and_projects.id', 'program_and_projects.paps_desc')
