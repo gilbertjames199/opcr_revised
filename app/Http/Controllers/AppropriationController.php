@@ -457,7 +457,9 @@ class AppropriationController extends Controller
     {
         $department_code = $request->department_code;
         $paps_types = ProgramAndProject::selectRaw('DISTINCT(type)')
-            ->join('appropriations', 'appropriations.idpaps', 'program_and_projects.id')
+            // ->join('appropriations', 'appropriations.idpaps', 'program_and_projects.id')
+            ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
+            ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
             ->orderByRaw(
                 DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
                             WHEN program_and_projects.type = 'Project' THEN 1
@@ -562,13 +564,15 @@ class AppropriationController extends Controller
         $rev_pln_id = $rev_pln ? $rev_pln->id : 0;
         // dd($request->category);
         // dd($rev_pln_id);
-        $appropriations = BudgetRequirement::select('id', 'account_code')
+        $appropriations = BudgetRequirement::select('id', 'account_code', 'particulars')
             ->selectRaw('SUM(amount) AS amount')
             ->where('revision_plan_id', $rev_pln_id)
             ->where('category', 'LIKE', '%' . $request->category . '%')
             ->groupBy('particulars')
             ->get()
             ->map(function ($item) use ($request) {
+                // dd(ProgramAndProject::where('id', $request->idpaps)->get());
+                $paps = ProgramAndProject::where('id', $request->idpaps)->first();
                 $approp = Appropriation::select(
                     'program_and_projects.paps_desc',
                     'program_and_projects.type',
@@ -595,7 +599,7 @@ class AppropriationController extends Controller
                     })
                     ->where('account_code', $item->account_code)
                     ->first();
-                //     dd($approp);
+                // dd($approp);
                 //     if ($approp) {
                 //         $approp = [
                 //             "paps_desc" => optional($approp)->paps_desc,
@@ -610,18 +614,20 @@ class AppropriationController extends Controller
                 //             "department_code" => number_format(optional($approp)->department_code, 2, '.', ','), // probably shouldn't be number_format unless it's a number
                 //         ];
                 // }
-
+                // dd(optional($approp)->object_of_expenditure);
+                $ooe_a = optional($approp)->object_of_expenditure;
+                $ooe_b = optional($item)->particulars;
                 return [
-                    "paps_desc" => optional($approp)->paps_desc,
+                    "paps_desc" => optional($paps)->paps_desc,
                     "type" => optional($approp)->type,
-                    "account_code" => optional($approp)->account_code,
-                    "object_of_expenditure" => optional($approp)->object_of_expenditure,
+                    "account_code" => optional($item)->account_code,
+                    "object_of_expenditure" => is_null($ooe_a) ? $ooe_b : '',
                     "past_year" => number_format(optional($approp)->past_year, 2, '.', ','),
                     "first_sem" => number_format(optional($approp)->first_sem, 2, '.', ','),
                     "second_sem" => number_format(optional($approp)->second_sem, 2, '.', ','),
                     "total" => number_format(optional($approp)->total, 2, '.', ','),
                     "budget_year" => number_format(optional($item)->amount, 2, '.', ','),
-                    "department_code" => number_format(optional($approp)->department_code, 2, '.', ','),
+                    "department_code" => optional($paps)->department_code,
                 ];
             });
 
