@@ -500,7 +500,7 @@ class AppropriationController extends Controller
     {
         $categories = Category::select('categories.category')
             // ->where('appropriations.idpaps', $request->idpaps)
-            ->where('budget_requirements.idpaps', $request->idpaps)
+            ->where('revision_plans.idpaps', $request->idpaps)
             // ->join('appropriations', 'appropriations.category', 'categories.category')
             ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
             ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
