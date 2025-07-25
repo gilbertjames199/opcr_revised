@@ -558,7 +558,7 @@ class AppropriationController extends Controller
         //         ];
         //     });
         $rev_pln = RevisionPlan::with('paps')->where('idpaps', $request->idpaps)->orderBy('version', 'DESC')->first();
-
+        // dd($rev_pln);
         $rev_pln_id = $rev_pln ? $rev_pln->id : 0;
         // dd($request->category);
         // dd($rev_pln_id);
@@ -618,7 +618,7 @@ class AppropriationController extends Controller
                     "first_sem" => number_format(optional($approp)->first_sem, 2, '.', ','),
                     "second_sem" => number_format(optional($approp)->second_sem, 2, '.', ','),
                     "total" => number_format(optional($approp)->total, 2, '.', ','),
-                    "budget_year" => number_format(optional($approp)->budget_year, 2, '.', ','),
+                    "budget_year" => number_format(optional($item)->amount, 2, '.', ','),
                     "department_code" => number_format(optional($approp)->department_code, 2, '.', ','),
                 ];
             });

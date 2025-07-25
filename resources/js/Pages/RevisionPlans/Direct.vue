@@ -209,13 +209,11 @@
                             <td colspan="2"></td>
                             <td><b>TOTAL (Planned Amount)</b></td>
                             <td class="text-end"><u>{{ format_number_conv(budget_sum,2,true) }}</u></td>
-                            <td></td>
                         </tr>
                         <tr>
                             <td colspan="2"></td>
                             <td><b>TOTAL</b></td>
                             <td class="text-end"><u>{{ format_number_conv(total_budget,2,true) }}</u></td>
-                            <td></td>
                         </tr>
 
                     </tbody>
