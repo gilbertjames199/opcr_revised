@@ -562,7 +562,7 @@ class AppropriationController extends Controller
         $rev_pln_id = $rev_pln ? $rev_pln->id : 0;
         // dd($request->category);
         // dd($rev_pln_id);
-        $appropriations = BudgetRequirement::select('id')
+        $appropriations = BudgetRequirement::select('id', 'account_code')
             ->selectRaw('SUM(amount) AS amount')
             ->where('revision_plan_id', $rev_pln_id)
             ->where('category', 'LIKE', '%' . $request->category . '%')
