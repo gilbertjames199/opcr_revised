@@ -480,7 +480,9 @@ class AppropriationController extends Controller
     {
         //
         $paps = ProgramAndProject::select('program_and_projects.id', 'program_and_projects.paps_desc', DB::raw('MAX(appropriations.id) AS column_name'))
-            ->join('appropriations', 'appropriations.idpaps', '=', 'program_and_projects.id')
+            // ->join('appropriations', 'appropriations.idpaps', '=', 'program_and_projects.id')
+            ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
+            ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
             ->where('program_and_projects.type', '=', $request->paps_type)
             ->where('program_and_projects.department_code', '=', $request->department_code)
             ->groupBy('program_and_projects.id', 'program_and_projects.paps_desc')
@@ -497,8 +499,11 @@ class AppropriationController extends Controller
     public function paps_categories(Request $request)
     {
         $categories = Category::select('categories.category')
-            ->where('appropriations.idpaps', $request->idpaps)
-            ->join('appropriations', 'appropriations.category', 'categories.category')
+            // ->where('appropriations.idpaps', $request->idpaps)
+            ->where('budget_requirements.idpaps', $request->idpaps)
+            // ->join('appropriations', 'appropriations.category', 'categories.category')
+            ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
+            ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
             ->groupBy('categories.category')
             ->orderByRaw(
                 DB::raw("CASE WHEN categories.category = 'Personnel Services' THEN 0
