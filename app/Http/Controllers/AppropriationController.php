@@ -484,25 +484,59 @@ class AppropriationController extends Controller
     {
         //
         // dd($request->paps_type);
-        $paps = ProgramAndProject::select(
-            'program_and_projects.id',
-            'program_and_projects.paps_desc'
-            // , DB::raw('MAX(revision_plans.id) AS column_name')
-        )
-            // ->join('appropriations', 'appropriations.idpaps', '=', 'program_and_projects.id')
-            ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
-            // ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
-            ->where('program_and_projects.type', '=', $request->paps_type)
-            ->where('program_and_projects.department_code', '=', $request->department_code)
-            ->groupBy('program_and_projects.id', 'program_and_projects.paps_desc')
+        $latestRevisions = DB::table('revision_plans')
+            ->select(DB::raw('MAX(id) as latest_id'), 'idpaps')
+            ->groupBy('idpaps');
+
+        $paps = ProgramAndProject::select('program_and_projects.id', 'program_and_projects.paps_desc')
+            ->joinSub($latestRevisions, 'latest_rev', function ($join) {
+                $join->on('program_and_projects.id', '=', 'latest_rev.idpaps');
+            })
+            ->join('revision_plans', 'revision_plans.id', '=', 'latest_rev.latest_id')
+            ->join('budget_requirements', 'budget_requirements.revision_plan_id', '=', 'revision_plans.id')
+            ->where('program_and_projects.department_code', 13)
+            ->distinct()
             ->get()
             ->map(function ($item) use ($request) {
+                // dd($item);
                 return [
                     "idpaps" => $item->id,
                     "paps_desc" => $item->paps_desc,
-                    "type" => $request->paps_type
+                    // "type" => $request->paps_type,
+                    // "particulars" => $item->particulars,
+                    // "category" => $item->category,
+                    // "idrevplan" => $item->rev_id
                 ];
             });
+        // $paps = ProgramAndProject::select(
+        //     'program_and_projects.id',
+        //     'program_and_projects.paps_desc',
+        //     'budget_requirements.particulars',
+        //     'budget_requirements.category',
+        //     // 'revision_plans.id'
+        //     DB::raw('MAX(revision_plans.id) AS rev_id')
+        //     // , DB::raw('MAX(revision_plans.id) AS column_name')
+        // )
+        //     // ->join('appropriations', 'appropriations.idpaps', '=', 'program_and_projects.id')
+        //     ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
+        //     ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
+        //     ->where('program_and_projects.type', '=', $request->paps_type)
+        //     ->where('program_and_projects.department_code', '=', $request->department_code)
+        //     ->groupBy('program_and_projects.id', 'program_and_projects.paps_desc')
+        //     // ->distinct()
+        //     ->orderBy('program_and_projects.id')
+        //     ->get()
+        //     ->map(function ($item) use ($request) {
+        //         // dd($item);
+        //         return [
+        //             "idpaps" => $item->id,
+        //             "paps_desc" => $item->paps_desc,
+        //             "type" => $request->paps_type,
+        //             "particulars" => $item->particulars,
+        //             "category" => $item->category,
+        //             "idrevplan" => $item->rev_id
+        //         ];
+        //     });
         return $paps;
     }
     public function paps_categories(Request $request)
@@ -575,9 +609,11 @@ class AppropriationController extends Controller
         //     });
         $rev_pln = RevisionPlan::with('paps')->where('idpaps', $request->idpaps)->orderBy('version', 'DESC')->first();
         // dd($rev_pln);
+
         $rev_pln_id = $rev_pln ? $rev_pln->id : 0;
         // dd($request->category);
         // dd($rev_pln_id);
+        // dd(BudgetRequirement::where('revision_plan_id', $rev_pln_id)->get());
         $appropriations = BudgetRequirement::select('id', 'account_code', 'particulars')
             ->selectRaw('SUM(amount) AS amount')
             ->where('revision_plan_id', $rev_pln_id)
@@ -644,7 +680,7 @@ class AppropriationController extends Controller
                     "department_code" => optional($paps)->department_code,
                 ];
             });
-
+        // dd($appropriations);
         return $appropriations;
     }
 }
