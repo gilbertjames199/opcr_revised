@@ -457,20 +457,27 @@ class AppropriationController extends Controller
     {
         $department_code = $request->department_code;
         // dd($department_code);
-        $paps_types = ProgramAndProject::selectRaw('DISTINCT(program_and_projects.type)')
-            // ->join('appropriations', 'appropriations.idpaps', 'program_and_projects.id')
-            ->where('department_code', $department_code)
-            ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
-            ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
-            ->whereNotNull('budget_requirements.id')
+        $latestRevisions = DB::table('revision_plans as rp1')
+            ->select('rp1.id', 'rp1.idpaps')
+            ->join(DB::raw('(SELECT idpaps, MAX(id) as max_id FROM revision_plans GROUP BY idpaps) as rp2'), function ($join) {
+                $join->on('rp1.id', '=', 'rp2.max_id');
+            });
+        $paps_types = ProgramAndProject::select('program_and_projects.type')
+            ->distinct()
+            ->joinSub($latestRevisions, 'latest_rp', function ($join) {
+                $join->on('latest_rp.idpaps', '=', 'program_and_projects.id');
+            })
+            ->join('budget_requirements', 'budget_requirements.revision_plan_id', '=', 'latest_rp.id')
+            ->where('program_and_projects.department_code', $department_code)
             ->orderByRaw(
-                DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
-                            WHEN program_and_projects.type = 'Project' THEN 1
-                            WHEN program_and_projects.type = 'Program' THEN 2
-                            WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
-                            END")
+                DB::raw("CASE
+                    WHEN program_and_projects.type = 'GAS' THEN 0
+                    WHEN program_and_projects.type = 'Project' THEN 1
+                    WHEN program_and_projects.type = 'Program' THEN 2
+                    WHEN program_and_projects.type = 'Activity' THEN 3
+                    ELSE 4
+                 END")
             )
-            // ->groupBy()
             ->get()
             ->map(function ($item) use ($department_code) {
                 return [
@@ -478,6 +485,29 @@ class AppropriationController extends Controller
                     'department_code' => $department_code
                 ];
             });
+        // $paps_types = ProgramAndProject::selectRaw('DISTINCT(program_and_projects.type)')
+        //     // ->join('appropriations', 'appropriations.idpaps', 'program_and_projects.id')
+        //     ->with(['revisionPlan', 'revisionPlan.budget'])
+        //     ->where('department_code', $department_code)
+        //     ->where
+        //     // ->join('revision_plans', 'revision_plans.idpaps', 'program_and_projects.id')
+        //     // ->join('budget_requirements', 'budget_requirements.revision_plan_id', 'revision_plans.id')
+        //     ->whereNotNull('budget_requirements.id')
+        //     ->orderByRaw(
+        //         DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
+        //                     WHEN program_and_projects.type = 'Project' THEN 1
+        //                     WHEN program_and_projects.type = 'Program' THEN 2
+        //                     WHEN program_and_projects.type = 'Activity' THEN 3 ELSE 4
+        //                     END")
+        //     )
+        //     // ->groupBy()
+        //     ->get()
+        //     ->map(function ($item) use ($department_code) {
+        //         return [
+        //             'paps_type' => $item->type,
+        //             'department_code' => $department_code
+        //         ];
+        //     });
         return $paps_types;
     }
     public function paps(Request $request)

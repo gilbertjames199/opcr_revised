@@ -168,6 +168,7 @@
         <ModalRightAppropriation v-if="showModalAppropriation" @closeFilter="showModalAppropriation=false" :title="'Budget Proposed'">
             <h3>Project Title: <u>{{ project_title }}</u></h3>
             <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button>
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button>
             <div class="table-responsive">
                 <table class="table table-sm table-borderless table-striped table-hover" v-if="budget_data.length > 0">
                     <thead>
