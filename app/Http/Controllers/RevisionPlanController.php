@@ -68,7 +68,7 @@ class RevisionPlanController extends Controller
             )
                 ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
                 ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
-                ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
+                ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'paps.FFUNCCOD')
                 // ->Join(DB::raw('fms.accountaccess acc'), 'acc.ffunccod', '=', 'ff.FFUNCCOD')
                 // ->where('acc.iduser', '=', $myid)
                 ->where('paps.department_code', '=', $dept_id)
@@ -103,7 +103,11 @@ class RevisionPlanController extends Controller
                             $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
                     }
                     // dd($total);
-                    // dd($imp_amount);
+                    // dd($item);
+                    // dd($item->project_title);
+                    // if ($item->id == 201) {
+                    //     dd($item);
+                    // }
                     return [
                         'FFUNCTION' => $item->FFUNCTION,
                         'id' => $item->id,
