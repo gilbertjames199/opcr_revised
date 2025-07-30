@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MajorFinalOutput extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $connection = "mysql";
     protected $table = 'major_final_outputs';
     protected $fillable = [
@@ -33,7 +34,6 @@ class MajorFinalOutput extends Model
     public static function rules()
     {
         return [
-
             'mfo_desc' => 'required',
             'id_org_outcome' => 'required|numeric',
             'id_sec_outcome' => 'required|numeric',

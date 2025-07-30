@@ -57,6 +57,7 @@ class RevisionPlanController extends Controller
         if ($paps_type === "GAS") {
             return redirect('/revision/general/administration/services/' . $FFUNCCOD . '/plan');
         } else if ($idpaps == "0") {
+            // dd($request);
             $data = RevisionPlan::select(
                 'revision_plans.id',
                 'revision_plans.project_title',
@@ -70,7 +71,7 @@ class RevisionPlanController extends Controller
                 ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
                 // ->Join(DB::raw('fms.accountaccess acc'), 'acc.ffunccod', '=', 'ff.FFUNCCOD')
                 // ->where('acc.iduser', '=', $myid)
-                ->where('mfo.department_code', '=', $dept_id)
+                ->where('paps.department_code', '=', $dept_id)
                 ->get()
                 ->map(function ($item) use ($budget_controller) {
                     // COUNT THE COMMENTS

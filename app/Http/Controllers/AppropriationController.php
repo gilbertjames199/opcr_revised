@@ -571,6 +571,7 @@ class AppropriationController extends Controller
     }
     public function paps_categories(Request $request)
     {
+        // dd($request);
         $categories = Category::select('categories.category')
             // ->where('appropriations.idpaps', $request->idpaps)
             ->where('revision_plans.idpaps', $request->idpaps)

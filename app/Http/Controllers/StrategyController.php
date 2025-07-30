@@ -183,7 +183,7 @@ class StrategyController extends Controller
             }
             $status = "error";
         } else {
-            $msg = "GAD Issue successfully deleted!";
+            $msg = "Strategy successfully deleted!";
             $status = "message";
 
             $data = $this->model->findOrFail($id);
