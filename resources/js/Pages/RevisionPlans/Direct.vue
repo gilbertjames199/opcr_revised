@@ -385,7 +385,7 @@
             </div>
 
             <button class="btn btn-primary btn-sm mL-2 text-white"
-                @click="showModal(FFUNCCOD.FFUNCCOD, FFUNCCOD.FFUNCTION, dates)">Print</button>
+                @click="showModal(FFUNCCOD2.FFUNCCOD, FFUNCCOD2.FFUNCTION, dates)">Print</button>
             <!-- <button class="btn btn-primary btn-sm mL-2 text-white"
                 @click="showModal(data.data[0].FFUNCCOD, data.data[0].FFUNCTION, dates)">Print</button> -->
         </Printing>
@@ -528,6 +528,7 @@ export default {
         auth: Object,
         data: Object,
         FFUNCCOD: String,
+        FFUNCCOD2: Object,
         offices: Object,
         ooes: Object,
         ooe_description: Array,
@@ -1138,12 +1139,23 @@ export default {
             // alert(ffunction,ffunccod);
             // alert(this.lbp_version);
             if (this.lbp_version > 2) {
+                this.displaylbp2 = true;
                 this.my_link = this.getToRep(ffunccod, ffunction, dates);
+                console.log(ffunccod+" - "+ffunction+" - "+dates)
             } else {
                 this.displaylbp2 = true;
                 this.my_link = this.goToRepPrintLBP2();
             }
 
+        },
+        getToRep(ffunccod, ffunction, dates) {
+            // alert(data[0].FFUNCCOD);
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FBudget%2FLBP_Form_4&reportUnit=%2Freports%2FBudget%2FLBP_Form_4%2FLBPFORM4&standAlone=true&decorate=no&output=pdf';
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&Date=' + dates;
+            var link1 = linkt + jasper_ip + jasper_link + params;
+            return link1;
         },
         goToRepPrintLBP2() {
             //http://122.53.120.27:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2

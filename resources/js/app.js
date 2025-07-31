@@ -299,6 +299,9 @@ createInertiaApp({
                     }
                 },
                 methods: {
+                    goBack() {
+                        window.history.back();  // or this.$router.go(-1)
+                    },
                     cleanVariable(event) {
                         this.variable = event.target.value.replace(/[^0-9]/g, "");
                     },
