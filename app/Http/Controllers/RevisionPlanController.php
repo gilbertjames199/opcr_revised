@@ -1698,9 +1698,12 @@ class RevisionPlanController extends Controller
         $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($totals);
         // dd($acc);
+        $dept_code = auth()->user()->department_code;
+        $functions2 = FFUNCCOD::where('department_code', $dept_code)->first();
         return inertia('RevisionPlans/Direct', [
             'data' => $data,
             'FFUNCCOD' => $FFUNCCOD,
+            'FFUNCCOD2' => $functions2,
             'offices' => $offices,
             // "idpaps" => $idpaps,
             // "paps" => $paps,
