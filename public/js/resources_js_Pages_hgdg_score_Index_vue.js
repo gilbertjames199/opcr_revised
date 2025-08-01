@@ -95,6 +95,19 @@ __webpack_require__.r(__webpack_exports__);
         replace: true
       });
     },
+    submit2: function submit2(id, score) {
+      // alert(score+" "+ id)
+      // let jsonString = JSON.stringify(this.form.hgdg_scores);
+      //alert("submit"+jsonString);
+      //this.form.get("/HGDGScore/store/hgdg", jsonString);
+      this.$inertia.post("/HGDGScore/store/{" + id + "}/{" + score + "}", {// scores: jsonString,
+        // idrevplan: this.idrevplan
+      }, {
+        preserveScroll: true,
+        preserveState: true,
+        replace: true
+      });
+    },
     getIndex: function getIndex(index) {
       var parentIndexes = [];
       var parent = this.questions[index];
@@ -253,14 +266,14 @@ var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_16 = ["onUpdate:modelValue", "name", "hidden"];
-var _hoisted_17 = ["onUpdate:modelValue", "name", "hidden", "value"];
+var _hoisted_16 = ["onUpdate:modelValue", "name", "hidden", "onChange"];
+var _hoisted_17 = ["onUpdate:modelValue", "name", "hidden", "value", "onChange"];
 
 var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_19 = ["onUpdate:modelValue", "name", "hidden", "value"];
+var _hoisted_19 = ["onUpdate:modelValue", "name", "hidden", "value", "onChange"];
 var _hoisted_20 = ["hidden"];
 var _hoisted_21 = ["onUpdate:modelValue"];
 
@@ -270,15 +283,7 @@ var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_23 = {
-  "class": "row justify-content-center"
-};
-var _hoisted_24 = {
-  "class": "col-md-12"
-};
-var _hoisted_25 = ["disabled"];
-
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -286,7 +291,7 @@ var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -372,9 +377,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       },
       name: $data.form.hgdg_scores[index].id,
       hidden: hgdg_score.has_subquestion != '0',
-      value: 0
-    }, null, 8
-    /* PROPS */
+      value: 0,
+      onChange: function onChange($event) {
+        return $options.submit2($data.form.hgdg_scores[index].id, $data.form.hgdg_scores[index].score);
+      }
+    }, null, 40
+    /* PROPS, HYDRATE_EVENTS */
     , _hoisted_16), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $data.form.hgdg_scores[index].score]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("@click=\"viewScore(hgdg_score.score)\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ form.hgdg_scores[index].q_score }}--{{ form.hgdg_scores[index].score }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       type: "radio",
       "onUpdate:modelValue": function onUpdateModelValue($event) {
@@ -382,9 +390,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       },
       name: $data.form.hgdg_scores[index].id,
       hidden: hgdg_score.has_subquestion != '0',
-      value: $data.form.hgdg_scores[index].q_score
-    }, null, 8
-    /* PROPS */
+      value: $data.form.hgdg_scores[index].q_score,
+      onChange: function onChange($event) {
+        return $options.submit2($data.form.hgdg_scores[index].id, $data.form.hgdg_scores[index].score);
+      }
+    }, null, 40
+    /* PROPS, HYDRATE_EVENTS */
     , _hoisted_17), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $data.form.hgdg_scores[index].score]]), _hoisted_18]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ form.hgdg_scores[index].q_score2}} --{{ form.hgdg_scores[index].q_score * 2 }}--{{ form.hgdg_scores[index].score }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"radio\"\n                                            v-model=\"form.hgdg_scores[index].score\"\n                                            :name=\"form.hgdg_scores[index].id\"\n                                            v-bind:hidden=\"hgdg_score.has_subquestion!='0'\"\n                                            :value=\"format_number_conv(form.hgdg_scores[index].q_score * 2)\"\n\n                                        /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       type: "radio",
       "onUpdate:modelValue": function onUpdateModelValue($event) {
@@ -392,9 +403,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       },
       name: $data.form.hgdg_scores[index].id,
       hidden: hgdg_score.has_subquestion != '0',
-      value: $data.form.hgdg_scores[index].q_score2
-    }, null, 8
-    /* PROPS */
+      value: $data.form.hgdg_scores[index].q_score2,
+      onChange: function onChange($event) {
+        return $options.submit2($data.form.hgdg_scores[index].id, $data.form.hgdg_scores[index].score);
+      }
+    }, null, 40
+    /* PROPS, HYDRATE_EVENTS */
     , _hoisted_19), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $data.form.hgdg_scores[index].score]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       hidden: hgdg_score.has_subquestion != '0'
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.setScore($data.form.hgdg_scores[index].score), 2, false)), 9
@@ -410,16 +424,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* UNKEYED_FRAGMENT */
   )), _hoisted_22])])], 32
   /* HYDRATE_EVENTS */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    type: "button",
-    "class": "btn btn-primary mt-3 text-white",
-    onClick: _cache[6] || (_cache[6] = function ($event) {
-      return $options.submit();
-    }),
-    disabled: $data.form.processing
-  }, " Save changes ", 8
-  /* PROPS */
-  , _hoisted_25)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("{{ auth }}"), _hoisted_26, _hoisted_27])])])], 64
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"row justify-content-center\">\n                    <div class=\"col-md-12\">\n                        <button type=\"button\"\n                                class=\"btn btn-primary mt-3 text-white\"\n                                @click=\"submit()\" :disabled=\"form.processing\">\n                            Save changes\n                        </button>\n                    </div>\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("{{ auth }}"), _hoisted_23, _hoisted_24])])])], 64
   /* STABLE_FRAGMENT */
   );
 }

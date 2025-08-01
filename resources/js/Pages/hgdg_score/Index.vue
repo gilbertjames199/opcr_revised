@@ -79,6 +79,7 @@
                                             :name="form.hgdg_scores[index].id"
                                             v-bind:hidden="hgdg_score.has_subquestion!='0'"
                                             :value="0"
+                                            @change="submit2(form.hgdg_scores[index].id,form.hgdg_scores[index].score)"
                                         />
                                     </th>
                                     <th>
@@ -89,7 +90,7 @@
                                             :name="form.hgdg_scores[index].id"
                                             v-bind:hidden="hgdg_score.has_subquestion!='0'"
                                             :value="form.hgdg_scores[index].q_score"
-
+                                            @change="submit2(form.hgdg_scores[index].id,form.hgdg_scores[index].score)"
                                         /><br>
 
                                     </th>
@@ -107,6 +108,7 @@
                                             :name="form.hgdg_scores[index].id"
                                             v-bind:hidden="hgdg_score.has_subquestion != '0'"
                                             :value="form.hgdg_scores[index].q_score2"
+                                            @change="submit2(form.hgdg_scores[index].id,form.hgdg_scores[index].score)"
                                         />
                                     </th>
                                     <th><div v-bind:hidden="hgdg_score.has_subquestion!='0'">{{ format_number_conv(setScore(form.hgdg_scores[index].score),2,false) }}</div></th>
@@ -119,7 +121,7 @@
                         </table>
                     </form>
                 </div>
-                <div class="row justify-content-center">
+                <!-- <div class="row justify-content-center">
                     <div class="col-md-12">
                         <button type="button"
                                 class="btn btn-primary mt-3 text-white"
@@ -127,7 +129,7 @@
                             Save changes
                         </button>
                     </div>
-                </div>
+                </div> -->
 
                 <!--{{ auth }}-->
                 <div class="row justify-content-center">
@@ -227,6 +229,24 @@ export default {
                 {
                     scores: jsonString,
                     idrevplan: this.idrevplan
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            )
+        },
+        submit2(id, score){
+            // alert(score+" "+ id)
+            // let jsonString = JSON.stringify(this.form.hgdg_scores);
+            //alert("submit"+jsonString);
+            //this.form.get("/HGDGScore/store/hgdg", jsonString);
+            this.$inertia.post(
+                "/HGDGScore/store/{"+id+"}/{"+score+"}",
+                {
+                    // scores: jsonString,
+                    // idrevplan: this.idrevplan
                 },
                 {
                     preserveScroll: true,

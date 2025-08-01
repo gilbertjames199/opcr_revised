@@ -167,7 +167,7 @@
         </ModalRightAlignCRUD>
         <ModalRightAppropriation v-if="showModalAppropriation" @closeFilter="showModalAppropriation=false" :title="'Budget Proposed'">
             <h3>Project Title: <u>{{ project_title }}</u></h3>
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button>
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button>&nbsp;
             <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button>
             <div class="table-responsive">
                 <table class="table table-sm table-borderless table-striped table-hover" v-if="budget_data.length > 0">
@@ -184,15 +184,15 @@
                             <td>{{ dat.object_of_expenditure }}</td>
                             <td>{{ dat.account_code }}</td>
                             <td class="text-end">{{ format_number_conv(dat.budget_year,2,true) }}</td>
-                            <td >
+                            <td>
                                 <Button
                                     class="btn btn-primary btn-sm text-white"
                                     @click="editBudgetApprop(dat.id)"
                                     title="Edit Budget"
                                     >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                     </svg>
                                 </Button>&nbsp;
                                 <Button
@@ -216,9 +216,7 @@
                             <td><b>TOTAL</b></td>
                             <td class="text-end"><u>{{ format_number_conv(total_budget,2,true) }}</u></td>
                         </tr>
-
                     </tbody>
-
                 </table>
             </div>
         </ModalRightAppropriation>
@@ -319,15 +317,15 @@
                 </div>
                 <div class="fs-6 c-red-500" v-if="form.errors.GAD">{{ form.errors.GAD }}</div>
                 <label>PAST YEAR </label>
-                <input type="text" class="form-control" v-model="computed_pastyear" readonly />
+                <input type="text" class="form-control" v-model="computed_pastyear" :disabled="no_ooe == false" />
                 <div class="fs-6 c-red-500" v-if="form.errors.past_year">{{ form.errors.past_year }}</div>
 
                 <label>FIRST SEMESTER (Actual) </label>
-                <input type="text" class="form-control" :value="computed_sem1" readonly />
+                <input type="text" class="form-control" :value="computed_sem1" :disabled="no_ooe == false" />
                 <div class="fs-6 c-red-500" v-if="form.errors.first_sem">{{ form.errors.first_sem }}</div>
 
                 <label>SECOND SEMESTER (Estimate) </label>
-                <input type="text" class="form-control" :value="computed_sem2" readonly />
+                <input type="text" class="form-control" :value="computed_sem2" :disabled="no_ooe == false" />
                 <div class="fs-6 c-red-500" v-if="form.errors.second_sem">{{ form.errors.second_sem }}</div>
 
                 <label>TOTAL </label>
