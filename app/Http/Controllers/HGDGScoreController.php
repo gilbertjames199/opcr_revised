@@ -267,4 +267,19 @@ class HGDGScoreController extends Controller
             ->get();
         return $questions;
     }
+
+    public function store_one(Request $request, $id, $score)
+    {
+        $clean = trim($id, '{}"'); // removes {, }, and " if present
+        $value = (int) $clean;
+        $cleanscore = trim($score, '{}"');
+        $score_value = (float) $cleanscore;
+        // dd($value, $id);
+        $h_score = HGDGScore::find($value);
+        // dd($h_score);
+        // dd($h_score, $cleanscore, $score, $score_value);
+        $h_score->score = $score_value;
+        $h_score->save();
+        return redirect()->back();
+    }
 }

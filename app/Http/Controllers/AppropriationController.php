@@ -645,20 +645,21 @@ class AppropriationController extends Controller
         // dd($request->category);
         // dd($rev_pln_id);
         // dd(BudgetRequirement::where('revision_plan_id', $rev_pln_id)->get());
+        $paps = ProgramAndProject::where('id', $request->idpaps)->first();
         $appropriations = BudgetRequirement::select('id', 'account_code', 'particulars')
             ->selectRaw('SUM(amount) AS amount')
             ->where('revision_plan_id', $rev_pln_id)
             ->where('category', 'LIKE', '%' . $request->category . '%')
             ->groupBy('particulars')
             ->get()
-            ->map(function ($item) use ($request) {
+            ->map(function ($item) use ($request, $paps) {
                 // dd(ProgramAndProject::where('id', $request->idpaps)->get());
-                $paps = ProgramAndProject::where('id', $request->idpaps)->first();
-                $approp = Appropriation::select(
-                    'program_and_projects.paps_desc',
-                    'program_and_projects.type',
-                    'appropriations.account_code',
-                    'program_and_projects.department_code'
+
+                /*dd(Appropriation::select(
+                    'appropriations.account_code'
+                    // 'appropriations.past_year',
+                    // 'appropriations.first_sem',
+                    // 'appropriations.second_sem',
                 )
                     ->selectRaw('appropriations.object_of_expenditure')
                     ->selectRaw('SUM(appropriations.past_year) AS past_year')
@@ -666,20 +667,57 @@ class AppropriationController extends Controller
                     ->selectRaw('SUM(appropriations.second_sem) AS second_sem')
                     ->selectRaw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total')
                     ->selectRaw('SUM(appropriations.budget_year) AS budget_year')
-                    ->leftjoin('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
+                    ->where('appropriations.category', $request->category)
+                    ->where('account_code', $item->account_code)
+                    ->where('appropriations.idpaps', $request->idpaps)
+                    ->get());*/
+                // 'program_and_projects.paps_desc',
+                // 'program_and_projects.type',
+                // 'program_and_projects.department_code',
+                // 'appropriations.past_year',
+                // 'appropriations.first_sem',
+                // 'appropriations.second_sem',
+                $approp = Appropriation::select(
+                    'appropriations.account_code',
+                    DB::raw('SUM(appropriations.past_year) AS past_year'),
+                    DB::raw('SUM(appropriations.first_sem) AS first_sem'),
+                    DB::raw('SUM(appropriations.second_sem) AS second_sem'),
+                    DB::raw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total'),
+                    DB::raw('SUM(appropriations.budget_year) AS budget_year')
+                )
+                    // ->selectRaw('appropriations.object_of_expenditure')
+                    // ->selectRaw('SUM(appropriations.past_year) AS past_year')
+                    // ->selectRaw('SUM(appropriations.first_sem) AS first_sem')
+                    // ->selectRaw('SUM(appropriations.second_sem) AS second_sem')
+                    // ->selectRaw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total')
+                    // ->selectRaw('SUM(appropriations.budget_year) AS budget_year')
+                    // ->leftjoin('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
                     ->where('appropriations.category', $request->category)
                     ->where('appropriations.idpaps', $request->idpaps)
-                    ->when($request->category === 'Capital Outlay', function ($query) {
-                        $query->groupBy('appropriations.account_code');
-                    })
-                    ->when($request->category === 'Maintenance, Operating, and Other Expenses', function ($query) {
-                        $query->groupBy('appropriations.account_code');
-                    })
-                    ->when($request->category === 'Personnel Services', function ($query) {
-                        $query->groupBy('appropriations.account_code');
-                    })
+                    // ->when($request->category === 'Capital Outlay', function ($query) {
+                    //     $query->groupBy('appropriations.account_code');
+                    // })
+                    // ->when($request->category === 'Maintenance, Operating, and Other Expenses', function ($query) {
+                    //     $query->groupBy('appropriations.account_code');
+                    // })
+                    // ->when($request->category === 'Personnel Services', function ($query) {
+                    //     $query->groupBy('appropriations.account_code');
+                    // })
                     ->where('account_code', $item->account_code)
                     ->first();
+                // $approp = Appropriation::select(
+                //     'category',
+                //     'idpaps',
+                //     'account_code',
+                //     'object_of_expenditure',
+                //     DB::raw('SUM(past_year) as total_past_year'),
+                //     DB::raw('SUM(first_sem) as total_first_sem'),
+                //     DB::raw('SUM(second_sem) as total_second_sem')
+                // )
+                //     ->where('appropriations.category', $request->category) // ← Replace $idpaps with your actual value
+                //     ->where('appropriations.idpaps', $request->idpaps) // ← Replace $account_code
+                //     ->groupBy('category', 'idpaps', 'account_code')
+                //     ->first();
                 // dd($approp);
                 //     if ($approp) {
                 //         $approp = [
