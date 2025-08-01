@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3 v-if="my_source=='budget'">Budget Prep </h3>
+            <h3 v-if="my_source=='budget'">Budget Proposal </h3>
             <h3 v-if="my_source=='direct'">Programs</h3>
             <div class="peers">
                 <div class="peer mR-10">
@@ -168,7 +168,7 @@
         <ModalRightAppropriation v-if="showModalAppropriation" @closeFilter="showModalAppropriation=false" :title="'Budget Proposed'">
             <h3>Project Title: <u>{{ project_title }}</u></h3>
             <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button>&nbsp;
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button>
+            <!-- <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button> -->
             <div class="table-responsive">
                 <table class="table table-sm table-borderless table-striped table-hover" v-if="budget_data.length > 0">
                     <thead>
@@ -207,15 +207,19 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2"></td>
-                            <td><b>TOTAL (Planned Amount)</b></td>
+                            <td colspan="1"></td>
+                            <td><b>TOTAL (Proposed Budget)</b></td>
                             <td class="text-end"><u>{{ format_number_conv(budget_sum,2,true) }}</u></td>
+                            <td></td>
                         </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                            <td><b>TOTAL</b></td>
+                         <tr>
+                            <td colspan="1"></td>
+                            <td><b>TOTAL (Planned Amount)</b></td>
                             <td class="text-end"><u>{{ format_number_conv(total_budget,2,true) }}</u></td>
+                            <td></td>
                         </tr>
+
+
                     </tbody>
                 </table>
             </div>

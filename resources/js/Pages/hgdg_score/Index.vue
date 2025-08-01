@@ -112,7 +112,14 @@
                                         />
                                     </th>
                                     <th><div v-bind:hidden="hgdg_score.has_subquestion!='0'">{{ format_number_conv(setScore(form.hgdg_scores[index].score),2,false) }}</div></th>
-                                    <th><textarea v-model="form.hgdg_scores[index].result_comment"></textarea></th>
+                                    <th>
+                                        <textarea v-model="form.hgdg_scores[index].result_comment"
+                                            @change="submit3(form.hgdg_scores[index].id,form.hgdg_scores[index].result_comment)"
+                                        >
+
+                                        </textarea>
+
+                                    </th>
                                 </tr>
                                 <tr colspan="7" >
 
@@ -131,7 +138,10 @@
                     </div>
                 </div> -->
 
-                <!--{{ auth }}-->
+                <div>
+                    <b>TOTAL:&nbsp;</b>
+                    <u>{{ total_score }}</u>
+                </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <!--<pagination :next="users.next_page_url" :prev="users.prev_page_url" />-->
@@ -174,6 +184,9 @@ export default {
     },
     mounted(){
         this.form.hgdg_scores=this.questions
+        setTimeout(() => {
+            this.total_score = this.getTotalScore();
+        }, 1000);
     },
     data() {
         return {
@@ -194,6 +207,7 @@ export default {
             search: null,
             confirm: false,
             filter: false,
+            total_score: 0,
             results: []
         };
     },
@@ -254,6 +268,30 @@ export default {
                     replace: true,
                 }
             )
+            this.total_score=this.getTotalScore()
+        },
+        submit3(id, comment){
+            // alert(comment)
+            // console.log(comment)
+            this.$inertia.post(
+                "/HGDGScore/commentstore",
+                {
+                    // scores: jsonString,
+                    id: id,
+                    comment: comment
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            )
+        },
+        getTotalScore() {
+            var tot= this.questions.reduce((total, q) => {
+                return total + parseFloat(q.score || 0);
+            }, 0);
+            return this.format_number_conv(tot,2,true);
         },
         getIndex(index) {
             let parentIndexes = [];

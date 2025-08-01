@@ -282,4 +282,16 @@ class HGDGScoreController extends Controller
         $h_score->save();
         return redirect()->back();
     }
+
+    public function store_comment(Request $request)
+    {
+        // dd($request->comment);
+        $id = $request->id;
+        $comment = $request->comment;
+        $hg_score = HGDGScore::where("id", $id)->first();
+        $hg_score->result_comment = $comment;
+        $hg_score->save();
+        return redirect()->back();
+        // dd($comment, $id);
+    }
 }
