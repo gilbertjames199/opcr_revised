@@ -39,7 +39,12 @@ __webpack_require__.r(__webpack_exports__);
     revision_plan: Object
   },
   mounted: function mounted() {
+    var _this = this;
+
     this.form.hgdg_scores = this.questions;
+    setTimeout(function () {
+      _this.total_score = _this.getTotalScore();
+    }, 1000);
   },
   data: function data() {
     return {
@@ -60,6 +65,7 @@ __webpack_require__.r(__webpack_exports__);
       search: null,
       confirm: false,
       filter: false,
+      total_score: 0,
       results: []
     };
   },
@@ -107,6 +113,26 @@ __webpack_require__.r(__webpack_exports__);
         preserveState: true,
         replace: true
       });
+      this.total_score = this.getTotalScore();
+    },
+    submit3: function submit3(id, comment) {
+      // alert(comment)
+      // console.log(comment)
+      this.$inertia.post("/HGDGScore/commentstore", {
+        // scores: jsonString,
+        id: id,
+        comment: comment
+      }, {
+        preserveScroll: true,
+        preserveState: true,
+        replace: true
+      });
+    },
+    getTotalScore: function getTotalScore() {
+      var tot = this.questions.reduce(function (total, q) {
+        return total + parseFloat(q.score || 0);
+      }, 0);
+      return this.format_number_conv(tot, 2, true);
     },
     getIndex: function getIndex(index) {
       var parentIndexes = [];
@@ -275,7 +301,7 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 var _hoisted_19 = ["onUpdate:modelValue", "name", "hidden", "value", "onChange"];
 var _hoisted_20 = ["hidden"];
-var _hoisted_21 = ["onUpdate:modelValue"];
+var _hoisted_21 = ["onUpdate:modelValue", "onChange"];
 
 var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
   colspan: "7"
@@ -283,7 +309,11 @@ var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "TOTAL: ", -1
+/* HOISTED */
+);
+
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -291,7 +321,7 @@ var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
@@ -416,15 +446,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_20)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return $data.form.hgdg_scores[index].result_comment = $event;
+      },
+      onChange: function onChange($event) {
+        return $options.submit3($data.form.hgdg_scores[index].id, $data.form.hgdg_scores[index].result_comment);
       }
-    }, null, 8
-    /* PROPS */
+    }, "\n\n                                        ", 40
+    /* PROPS, HYDRATE_EVENTS */
     , _hoisted_21), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.hgdg_scores[index].result_comment]])])]);
   }), 256
   /* UNKEYED_FRAGMENT */
   )), _hoisted_22])])], 32
   /* HYDRATE_EVENTS */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"row justify-content-center\">\n                    <div class=\"col-md-12\">\n                        <button type=\"button\"\n                                class=\"btn btn-primary mt-3 text-white\"\n                                @click=\"submit()\" :disabled=\"form.processing\">\n                            Save changes\n                        </button>\n                    </div>\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("{{ auth }}"), _hoisted_23, _hoisted_24])])])], 64
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"row justify-content-center\">\n                    <div class=\"col-md-12\">\n                        <button type=\"button\"\n                                class=\"btn btn-primary mt-3 text-white\"\n                                @click=\"submit()\" :disabled=\"form.processing\">\n                            Save changes\n                        </button>\n                    </div>\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("u", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.total_score), 1
+  /* TEXT */
+  )]), _hoisted_24, _hoisted_25])])])], 64
   /* STABLE_FRAGMENT */
   );
 }
