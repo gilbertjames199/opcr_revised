@@ -585,7 +585,8 @@ class AppropriationController extends Controller
             ->orderByRaw(
                 DB::raw("CASE WHEN categories.category = 'Personnel Services' THEN 0
                             WHEN categories.category = 'Maintenance, Operating, and Other Expenses' THEN 1
-                            WHEN categories.category = 'Capital Outlay' THEN 2 ELSE 3
+                            WHEN categories.category = 'Financial Expenses' THEN 2
+                            WHEN categories.category = 'Capital Outlay' THEN 3 ELSE 4
                             END")
             )
             ->get()
