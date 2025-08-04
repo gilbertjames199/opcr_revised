@@ -579,8 +579,8 @@ class AppropriationController extends Controller
             // ->join('appropriations', 'appropriations.category', 'categories.category')
             ->join('budget_requirements', 'budget_requirements.category', 'categories.category')
             ->join('revision_plans', 'revision_plans.id', 'budget_requirements.revision_plan_id')
-            ->join('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
-            ->where('program_and_projects.type', $request->type)
+            // ->join('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
+            // ->where('program_and_projects.type', $request->type)
             ->groupBy('categories.category')
             ->orderByRaw(
                 DB::raw("CASE WHEN categories.category = 'Personnel Services' THEN 0
