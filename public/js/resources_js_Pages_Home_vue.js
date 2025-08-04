@@ -44,7 +44,7 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
     "font-weight": "bold",
     "font-family": "verdana"
   }
-}, "Programs and Projects", -1
+}, "Planning and Budgeting System", -1
 /* HOISTED */
 );
 
@@ -56,7 +56,7 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "masonry-item w-100"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "row gap-20"
-})])], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img src=\"{{ asset('images/logo.png') }}\" alt=\"\" class=\"img-fluid\"\n                            style=\"width:250px; height:250px\"> "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img src=\"images/CapitolBuilding.jpg\" alt=\"\" class=\"img-fluid\"\n                style=\"width:200px; height:50px\"> ")])])], -1
 /* HOISTED */
 );
 
