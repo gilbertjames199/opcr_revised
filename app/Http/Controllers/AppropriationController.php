@@ -525,6 +525,7 @@ class AppropriationController extends Controller
             ->join('revision_plans', 'revision_plans.id', '=', 'latest_rev.latest_id')
             ->join('budget_requirements', 'budget_requirements.revision_plan_id', '=', 'revision_plans.id')
             ->where('program_and_projects.department_code', $request->department_code)
+            ->where('program_and_projects.type', $request->paps_type)
             ->distinct()
             ->get()
             ->map(function ($item) use ($request) {

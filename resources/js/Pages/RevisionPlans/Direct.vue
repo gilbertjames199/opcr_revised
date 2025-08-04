@@ -208,13 +208,13 @@
                         </tr>
                         <tr>
                             <td colspan="1"></td>
-                            <td><b>TOTAL (Proposed Budget)</b></td>
+                            <td><b>TOTAL (Budget Amount)</b></td>
                             <td class="text-end"><u>{{ format_number_conv(budget_sum,2,true) }}</u></td>
                             <td></td>
                         </tr>
                          <tr>
                             <td colspan="1"></td>
-                            <td><b>TOTAL (Planned Amount)</b></td>
+                            <td><b>TOTAL (IPP Amount)</b></td>
                             <td class="text-end"><u>{{ format_number_conv(total_budget,2,true) }}</u></td>
                             <td></td>
                         </tr>
