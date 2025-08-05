@@ -24,12 +24,16 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
                 <div>
-                    <label for="">CHART OF ACCOUNTS <!--chart selected{{ chart_selected }}--></label>
+                    <label for="">CHART OF ACCOUNTS <!--chart selected{{ chart_selected }} :value="chart_selected" --></label>
+                    <!-- {{ form.account_code }}
                     <div @keyup.enter="addAccount($event)">
-                        <multiselect :options="accounts" :searchable="true" v-model="chart_selected" @select="setCode"
-                            :value="chart_selected" @search-change="typed = $event">
+                        <multiselect :options="accounts_computed" :searchable="true" v-model="form.account_code" @select="setCode"
+                            @search-change="typed = $event">
                         </multiselect>
-                    </div>
+                    </div> -->
+                    <multiselect :options="accounts_computed" :searchable="true" v-model="form.account_code" label="label"
+                    track-by="label" @select="setCode">
+                    </multiselect>
                     <!--<div class="fs-6 c-red-500" v-if="form.errors.particulars">{{ form.errors.particulars }}</div>-->
 
                 </div>
@@ -87,7 +91,7 @@
             </form>
         </div>
         <!-- {{  form }} -->
-
+        {{ accounts_raw }}
     </div>
 </template>
 <script>
@@ -106,7 +110,8 @@ export default {
         idrev: Number,
         accounts: Object,
         codes: Object,
-        budgets: Object
+        budgets: Object,
+        accounts_raw: Object
     },
     components: {
         ModelSelect,
@@ -119,7 +124,14 @@ export default {
     computed: {
         filteredAccounts() {
             return this.accounts.filter(account => account.FTITLE.toLowerCase().includes(this.searchTerm.toLowerCase()))
-        }
+        },
+        accounts_computed() {
+            let accs = this.accounts_raw;
+            return accs.map((acc) => ({
+                value: acc.FACTCODE,
+                label: acc.FACTCODE+' - '+acc.FTITLE
+            }));
+        },
     },
     data() {
         return {
@@ -219,10 +231,14 @@ export default {
         },
         setCode() {
             //alert(this.form.particulars);
-            var ind = this.accounts.indexOf(this.chart_selected);
-            this.form.account_code = this.codes[ind];
+            // alert(this.form.account_code);
+            var ind = this.codes.indexOf(this.form.account_code);
+            // this.form.account_code = this.codes[ind];
+
             this.budget_code = this.budgets.indexOf(this.form.account_code.toString());
-            this.form.particulars = this.chart_selected
+            // this.form.particulars = this.chart_selected
+            console.log("index of account code: " + ind);
+            this.form.particulars = this.accounts[ind];
             //alert(this.budget_code+" code: "+ this.codes[ind]);
         },
         searchByAccountCode() {

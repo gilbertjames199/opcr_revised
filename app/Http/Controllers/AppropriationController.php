@@ -779,4 +779,200 @@ class AppropriationController extends Controller
 
         return $appropriations;
     }
+    public function app(Request $request, $department_code)
+    {
+        $department_head = $request->department_head;
+        $budget_officer = $request->budget_officer;
+        $department_code = $request->department_code;
+        $office = $request->office;
+        $local_chief = $request->local_chief;
+        $paps_types = $this->paps_types2($request);
+        // dd("diri");
+
+
+        // dd($paps_types);
+        return [
+            'department_code' => $department_code,
+            'office' => $office,
+            'department_head' => $department_head,
+            'budget_officer' => $budget_officer,
+            'local_chief' => $local_chief,
+            'total_past_year' => $request->total_past_year,
+            'total_first_sem' => $request->total_first_sem,
+            'total_second_sem' => $request->total_second_sem,
+            'total_total' => $request->total_total,
+            'total_budget_year' => $request->total_budget_year,
+            "data" => $paps_types
+        ];
+    }
+    public function paps_types2(Request $request)
+    {
+        $department_code = $request->department_code;
+        $paps_id = ProgramAndProject::select('id')
+            ->where('department_code', $department_code)
+            ->pluck('id');
+        $latestRevisions = DB::table('revision_plans as rp1')
+            ->select('rp1.id', 'rp1.idpaps')
+            ->whereIn('rp1.idpaps', $paps_id)
+            ->join(DB::raw('(SELECT idpaps, MAX(id) as max_id FROM revision_plans GROUP BY idpaps) as rp2'), function ($join) {
+                $join->on('rp1.id', '=', 'rp2.max_id');
+            });
+        $paps_types = ProgramAndProject::select('program_and_projects.type')
+            ->distinct()
+            ->joinSub($latestRevisions, 'latest_rp', function ($join) {
+                $join->on('latest_rp.idpaps', '=', 'program_and_projects.id');
+            })
+            ->join('budget_requirements', 'budget_requirements.revision_plan_id', '=', 'latest_rp.id')
+            ->where('program_and_projects.department_code', $department_code)
+            ->orderByRaw(
+                DB::raw("CASE
+                    WHEN program_and_projects.type = 'GAS' THEN 0
+                    WHEN program_and_projects.type = 'Project' THEN 1
+                    WHEN program_and_projects.type = 'Program' THEN 2
+                    WHEN program_and_projects.type = 'Activity' THEN 3
+                    ELSE 4
+                 END")
+            )
+            ->get()
+            ->map(function ($item) use ($department_code, $request) {
+                return [
+                    'paps_type' => $item->type,
+                    'department_code' => $department_code,
+                    'paps' => $this->paps2($request, $item->type)
+                ];
+            });
+
+        if (count($paps_types) < 1) {
+            $paps_types = collect([
+                [
+                    'paps_type' => '',
+                    'department_code' => $department_code,
+                    'paps' => []
+                ],
+            ]);
+        }
+
+        return $paps_types;
+    }
+    public function paps2(Request $request, $paps_type)
+    {
+        //
+        // dd($request->paps_type);
+        $department_code = $request->department_code;
+        // dd($department_code);
+        $paps_id = ProgramAndProject::select('id')
+            ->where('department_code', $department_code)
+            ->pluck('id');
+        $latestRevisions = DB::table('revision_plans')
+            ->select(DB::raw('MAX(id) as latest_id'), 'idpaps')
+            ->whereIn('idpaps', $paps_id)
+            ->groupBy('idpaps');
+
+        $paps = ProgramAndProject::select('program_and_projects.id', 'program_and_projects.paps_desc')
+            ->joinSub($latestRevisions, 'latest_rev', function ($join) {
+                $join->on('program_and_projects.id', '=', 'latest_rev.idpaps');
+            })
+            ->join('revision_plans', 'revision_plans.id', '=', 'latest_rev.latest_id')
+            ->join('budget_requirements', 'budget_requirements.revision_plan_id', '=', 'revision_plans.id')
+            ->where('program_and_projects.department_code', $request->department_code)
+            ->where('program_and_projects.type', $paps_type)
+            ->distinct()
+            ->get()
+            ->map(function ($item) use ($request, $paps_type) {
+                // dd($item);
+                return [
+                    "idpaps" => $item->id,
+                    "paps_desc" => $item->paps_desc,
+                    "type" => $paps_type,
+                    "categories" => $this->paps_categories2($request, $item->id, $paps_type),
+
+                    // "particulars" => $item->particulars,
+                    // "category" => $item->category,
+                    // "idrevplan" => $item->rev_id
+                ];
+            });
+
+        return $paps;
+    }
+    public function paps_categories2(Request $request, $idpaps, $paps_type)
+    {
+        // dd($request);
+        $categories = Category::select('categories.category')
+            // ->where('appropriations.idpaps', $request->idpaps)
+            ->where('revision_plans.idpaps', $idpaps)
+            // ->join('appropriations', 'appropriations.category', 'categories.category')
+            ->join('budget_requirements', 'budget_requirements.category', 'categories.category')
+            ->join('revision_plans', 'revision_plans.id', 'budget_requirements.revision_plan_id')
+            // ->join('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
+            // ->where('program_and_projects.type', $request->type)
+            ->groupBy('categories.category')
+            ->orderByRaw(
+                DB::raw("CASE WHEN categories.category = 'Personnel Services' THEN 0
+                            WHEN categories.category = 'Maintenance, Operating, and Other Expenses' THEN 1
+                            WHEN categories.category = 'Financial Expenses' THEN 2
+                            WHEN categories.category = 'Capital Outlay' THEN 3 ELSE 4
+                            END")
+            )
+            ->get()
+            ->map(function ($item) use ($request, $idpaps, $paps_type) {
+                //$categ = Str::upper($item->category);
+                return [
+                    "category" => $item->category,
+                    "type" => $paps_type,
+                    "idpaps" => $idpaps,
+                    "appropriations" => $this->appropriations2($request, $idpaps, $item->category)
+                ];
+            });
+        return $categories;
+    }
+
+    public function appropriations2(Request $request, $idpaps, $category)
+    {
+
+        $rev_pln = RevisionPlan::with('paps')->where('idpaps', $idpaps)->orderBy('version', 'DESC')->first();
+
+
+        $rev_pln_id = $rev_pln ? $rev_pln->id : 0;
+
+        $paps = ProgramAndProject::where('id', $idpaps)->first();
+        $appropriations = BudgetRequirement::select('id', 'account_code', 'particulars')
+            ->selectRaw('SUM(amount) AS amount')
+            ->where('revision_plan_id', $rev_pln_id)
+            ->where('category', 'LIKE', '%' . $category . '%')
+            ->groupBy('particulars')
+            ->get()
+            ->map(function ($item) use ($category, $paps, $idpaps) {
+
+                $approp = Appropriation::select(
+                    'appropriations.account_code',
+                    DB::raw('SUM(appropriations.past_year) AS past_year'),
+                    DB::raw('SUM(appropriations.first_sem) AS first_sem'),
+                    DB::raw('SUM(appropriations.second_sem) AS second_sem'),
+                    DB::raw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total'),
+                    DB::raw('SUM(appropriations.budget_year) AS budget_year')
+                )
+
+                    ->where('appropriations.category', $category)
+                    ->where('appropriations.idpaps', $idpaps)
+                    ->where('account_code', $item->account_code)
+                    ->first();
+
+                $ooe_a = optional($approp)->object_of_expenditure;
+                $ooe_b = optional($item)->particulars;
+                return [
+                    "paps_desc" => optional($paps)->paps_desc,
+                    "type" => optional($approp)->type,
+                    "account_code" => optional($item)->account_code,
+                    "object_of_expenditure" => is_null($ooe_a) ? $ooe_b : $ooe_a,
+                    "past_year" => number_format(optional($approp)->past_year, 2, '.', ','),
+                    "first_sem" => number_format(optional($approp)->first_sem, 2, '.', ','),
+                    "second_sem" => number_format(optional($approp)->second_sem, 2, '.', ','),
+                    "total" => number_format(optional($approp)->total, 2, '.', ','),
+                    "budget_year" => number_format(optional($item)->amount, 2, '.', ','),
+                    "department_code" => optional($paps)->department_code,
+                ];
+            });
+
+        return $appropriations;
+    }
 }

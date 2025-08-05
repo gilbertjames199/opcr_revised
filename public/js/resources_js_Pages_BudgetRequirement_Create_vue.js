@@ -27,7 +27,8 @@ __webpack_require__.r(__webpack_exports__);
     idrev: Number,
     accounts: Object,
     codes: Object,
-    budgets: Object
+    budgets: Object,
+    accounts_raw: Object
   },
   components: {
     ModelSelect: vue_search_select__WEBPACK_IMPORTED_MODULE_2__.ModelSelect,
@@ -45,6 +46,15 @@ __webpack_require__.r(__webpack_exports__);
 
       return this.accounts.filter(function (account) {
         return account.FTITLE.toLowerCase().includes(_this.searchTerm.toLowerCase());
+      });
+    },
+    accounts_computed: function accounts_computed() {
+      var accs = this.accounts_raw;
+      return accs.map(function (acc) {
+        return {
+          value: acc.FACTCODE,
+          label: acc.FACTCODE + ' - ' + acc.FTITLE
+        };
       });
     }
   },
@@ -134,10 +144,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     setCode: function setCode() {
       //alert(this.form.particulars);
-      var ind = this.accounts.indexOf(this.chart_selected);
-      this.form.account_code = this.codes[ind];
-      this.budget_code = this.budgets.indexOf(this.form.account_code.toString());
-      this.form.particulars = this.chart_selected; //alert(this.budget_code+" code: "+ this.codes[ind]);
+      // alert(this.form.account_code);
+      var ind = this.codes.indexOf(this.form.account_code); // this.form.account_code = this.codes[ind];
+
+      this.budget_code = this.budgets.indexOf(this.form.account_code.toString()); // this.form.particulars = this.chart_selected
+
+      console.log("index of account code: " + ind);
+      this.form.particulars = this.accounts[ind]; //alert(this.budget_code+" code: "+ this.codes[ind]);
     },
     searchByAccountCode: function searchByAccountCode() {
       var ind = this.codes.indexOf(this.form.account_code.toString());
@@ -269,7 +282,7 @@ var _hoisted_8 = {
 
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("CHART OF ACCOUNTS "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("chart selected{{ chart_selected }}")], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("CHART OF ACCOUNTS "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("chart selected{{ chart_selected }} :value=\"chart_selected\" ")], -1
 /* HOISTED */
 );
 
@@ -372,7 +385,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
   }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -386,30 +399,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.id]]), $data.form.errors.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.idooe), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    onKeyup: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function ($event) {
-      return $options.addAccount($event);
-    }, ["enter"]))
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_multiselect, {
-    options: $props.accounts,
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ form.account_code }}\n                    <div @keyup.enter=\"addAccount($event)\">\n                        <multiselect :options=\"accounts_computed\" :searchable=\"true\" v-model=\"form.account_code\" @select=\"setCode\"\n                            @search-change=\"typed = $event\">\n                        </multiselect>\n                    </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_multiselect, {
+    options: $options.accounts_computed,
     searchable: true,
-    modelValue: $data.chart_selected,
+    modelValue: $data.form.account_code,
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-      return $data.chart_selected = $event;
+      return $data.form.account_code = $event;
     }),
-    onSelect: $options.setCode,
-    value: $data.chart_selected,
-    onSearchChange: _cache[2] || (_cache[2] = function ($event) {
-      return $data.typed = $event;
-    })
+    label: "label",
+    "track-by": "label",
+    onSelect: $options.setCode
   }, null, 8
   /* PROPS */
-  , ["options", "modelValue", "onSelect", "value"])], 32
-  /* HYDRATE_EVENTS */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<div class=\"fs-6 c-red-500\" v-if=\"form.errors.particulars\">{{ form.errors.particulars }}</div>")]), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  , ["options", "modelValue", "onSelect"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<div class=\"fs-6 c-red-500\" v-if=\"form.errors.particulars\">{{ form.errors.particulars }}</div>")]), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.form.particulars = $event;
     })
   }, null, 512
@@ -419,10 +424,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("{{ budget_code }} budgets: budget_code:  {{ budgets }} form.account_code: {{ form.account_code }}"), _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "number",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.form.account_code = $event;
     }),
-    onInput: _cache[6] || (_cache[6] = function () {
+    onInput: _cache[4] || (_cache[4] = function () {
       return $options.searchByAccountCode && $options.searchByAccountCode.apply($options, arguments);
     })
   }, null, 544
@@ -432,7 +437,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "number",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.form.amount = $event;
     })
   }, null, 512
@@ -441,7 +446,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
-    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
       return $data.form.category = $event;
     })
   }, _hoisted_21, 512
@@ -451,7 +456,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(""), _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $data.form.source = $event;
     })
   }, null, 512
@@ -460,7 +465,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("style=\"visibility: hidden\""), _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
-    "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
       return $data.form.category_gad = $event;
     })
   }, _hoisted_28, 512
@@ -469,7 +474,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<input type=\"text\" v-model=\"searchTerm\" @input=\"filteredAccounts\" placeholder=\"Search\">\n                <select class=\"form-control\" v-model=\"form.particulars\" >\n                    <option v-for=\"account in filteredAccounts\" :value=\"account.FTITLE\">\n                        {{  account.FTITLE }}\n                    </option>\n                </select>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<model-select :options=\"accounts\" v-model=\"form.particulars\" placeholder=\"item-item\">\n                    <options v-for=\"account in filteredAccounts\">\n                        {{ account.FTITLE }}\n                    </options>\n                </model-select>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("{{ accounts[0].FTITLE }}<input type=\"text\" v-model=\"form.project_title\" class=\"form-control\" autocomplete=\"chrome-off\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "hidden",
-    "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
+    "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
       return $data.form.id = $event;
     }),
     "class": "form-control",
@@ -479,7 +484,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary mt-3 text-white",
-    onClick: _cache[12] || (_cache[12] = function ($event) {
+    onClick: _cache[10] || (_cache[10] = function ($event) {
       return $options.submit();
     }),
     disabled: $data.form.processing
@@ -487,7 +492,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_30)], 32
   /* HYDRATE_EVENTS */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{  form }} ")]);
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{  form }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.accounts_raw), 1
+  /* TEXT */
+  )]);
 }
 
 /***/ }),
