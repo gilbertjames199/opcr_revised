@@ -457,11 +457,16 @@ class AppropriationController extends Controller
     {
         $department_code = $request->department_code;
         // dd($department_code);
+        $paps_id = ProgramAndProject::select('id')
+            ->where('department_code', $department_code)
+            ->pluck('id');
         $latestRevisions = DB::table('revision_plans as rp1')
             ->select('rp1.id', 'rp1.idpaps')
+            ->whereIn('rp1.idpaps', $paps_id)
             ->join(DB::raw('(SELECT idpaps, MAX(id) as max_id FROM revision_plans GROUP BY idpaps) as rp2'), function ($join) {
                 $join->on('rp1.id', '=', 'rp2.max_id');
             });
+        // dd($latestRevisions->get()->pluck('id'));
         $paps_types = ProgramAndProject::select('program_and_projects.type')
             ->distinct()
             ->joinSub($latestRevisions, 'latest_rp', function ($join) {
@@ -485,6 +490,16 @@ class AppropriationController extends Controller
                     'department_code' => $department_code
                 ];
             });
+
+        // dd(count($paps_types));
+        if (count($paps_types) < 1) {
+            $paps_types = collect([
+                [
+                    'paps_type' => '',
+                    'department_code' => $department_code
+                ],
+            ]);
+        }
         // $paps_types = ProgramAndProject::selectRaw('DISTINCT(program_and_projects.type)')
         //     // ->join('appropriations', 'appropriations.idpaps', 'program_and_projects.id')
         //     ->with(['revisionPlan', 'revisionPlan.budget'])
@@ -514,8 +529,14 @@ class AppropriationController extends Controller
     {
         //
         // dd($request->paps_type);
+        $department_code = $request->department_code;
+        // dd($department_code);
+        $paps_id = ProgramAndProject::select('id')
+            ->where('department_code', $department_code)
+            ->pluck('id');
         $latestRevisions = DB::table('revision_plans')
             ->select(DB::raw('MAX(id) as latest_id'), 'idpaps')
+            ->whereIn('idpaps', $paps_id)
             ->groupBy('idpaps');
 
         $paps = ProgramAndProject::select('program_and_projects.id', 'program_and_projects.paps_desc')
@@ -539,6 +560,7 @@ class AppropriationController extends Controller
                     // "idrevplan" => $item->rev_id
                 ];
             });
+        // dd($paps);
         // $paps = ProgramAndProject::select(
         //     'program_and_projects.id',
         //     'program_and_projects.paps_desc',
@@ -754,6 +776,7 @@ class AppropriationController extends Controller
                 ];
             });
         // dd($appropriations);
+
         return $appropriations;
     }
 }
