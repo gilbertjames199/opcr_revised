@@ -1164,7 +1164,9 @@ Route::prefix('print/appropriations')->group(function () {
     Route::get('/paps/categories/list', [AppropriationController::class, 'paps_categories']);
     Route::get('/paps/appropriations/print/all', [AppropriationController::class, 'appropriations']);
 });
-
+Route::prefix('print_all_single_API')->group(function () {
+    Route::get('/{department_code}', [AppropriationController::class, 'app']);
+});
 Route::prefix('opcr-accomplishments/print')->group(function () {
     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
 });
@@ -1181,6 +1183,10 @@ Route::prefix('division/print')->group(function () {
 });
 
 Route::prefix('lbp2/print')->group(function () {
+    Route::get('/', [AppropriationBudgetController::class, 'print_lbp2']);
+});
+
+Route::prefix('lbp_by_ppa2')->group(function () {
     Route::get('/', [AppropriationBudgetController::class, 'print_lbp2']);
 });
 // Route::prefix('api_ppa2')->group(function () {
