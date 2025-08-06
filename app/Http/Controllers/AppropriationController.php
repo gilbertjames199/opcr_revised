@@ -1158,7 +1158,7 @@ class AppropriationController extends Controller
                     "second_sem_total" => $second_sem_total,
                     "total_total" => $total_total,
                     "budget_year_total" => $budget_year_total,
-                    "appropriations" => $this->appropriations2($request, $idpaps, $item->category, $year)
+                    // "appropriations" => $this->appropriations2($request, $idpaps, $item->category, $year)
                 ];
             });
         return $categories;
@@ -1212,5 +1212,66 @@ class AppropriationController extends Controller
             );
         }
         return $paps;
+    }
+
+    public function appropriations3(Request $request)
+    {
+        $idpaps = $request->idpaps;
+        $category = $request->category;
+        $year = $request->year;
+        $paps_type = $request->paps_type;
+        $rev_pln = RevisionPlan::with('paps')->where('idpaps', $idpaps)
+            ->whereYear('date_start', $year)
+            ->orderBy('version', 'DESC')
+            ->first();
+
+        // $rev_pln_query = RevisionPlan::with('paps')->where('idpaps', $idpaps)
+        //     ->whereYear('date_start', $year)
+        //     ->orderBy('version', 'DESC');
+        // dd($idpaps, $category, $year);
+        // dd($rev_pln_query->toSql(), $rev_pln_query->getBindings());
+        $rev_pln_id = $rev_pln ? $rev_pln->id : 0;
+
+        // dd($paps_type);
+        $paps = ProgramAndProject::where('id', $idpaps)->first();
+        $appropriations = BudgetRequirement::select('id', 'account_code', 'particulars')
+            ->selectRaw('SUM(amount) AS amount')
+            ->where('revision_plan_id', $rev_pln_id)
+            ->where('category', 'LIKE', '%' . $category . '%')
+            ->groupBy('particulars')
+            ->get()
+            ->map(function ($item) use ($category, $paps, $idpaps, $paps_type) {
+
+                $approp = Appropriation::select(
+                    'appropriations.account_code',
+                    DB::raw('SUM(appropriations.past_year) AS past_year'),
+                    DB::raw('SUM(appropriations.first_sem) AS first_sem'),
+                    DB::raw('SUM(appropriations.second_sem) AS second_sem'),
+                    DB::raw('(SUM(appropriations.first_sem) + SUM(appropriations.second_sem)) AS total'),
+                    DB::raw('SUM(appropriations.budget_year) AS budget_year')
+                )
+
+                    ->where('appropriations.category', $category)
+                    ->where('appropriations.idpaps', $idpaps)
+                    ->where('account_code', $item->account_code)
+                    ->first();
+
+                $ooe_a = optional($approp)->object_of_expenditure;
+                $ooe_b = optional($item)->particulars;
+                return [
+                    "paps_desc" => optional($paps)->paps_desc,
+                    "type" => $paps_type,
+                    "account_code" => optional($item)->account_code,
+                    "object_of_expenditure" => is_null($ooe_a) ? $ooe_b : $ooe_a,
+                    "past_year" => number_format(optional($approp)->past_year, 2, '.', ','),
+                    "first_sem" => number_format(optional($approp)->first_sem, 2, '.', ','),
+                    "second_sem" => number_format(optional($approp)->second_sem, 2, '.', ','),
+                    "total" => number_format(optional($approp)->total, 2, '.', ','),
+                    "budget_year" => number_format(optional($item)->amount, 2, '.', ','),
+                    "department_code" => optional($paps)->department_code,
+                ];
+            });
+
+        return $appropriations;
     }
 }
