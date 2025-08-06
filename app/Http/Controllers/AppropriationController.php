@@ -1202,14 +1202,14 @@ class AppropriationController extends Controller
                 ];
             });
         if (count($paps) < 1) {
-            $paps = collect([
+            $paps = collect(
                 [
                     "idpaps" => '',
                     "paps_desc" => '',
                     "type" => '',
                     "categories" => []
                 ],
-            ]);
+            );
         }
         return $paps;
     }
