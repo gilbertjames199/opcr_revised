@@ -1166,6 +1166,8 @@ Route::prefix('print/appropriations')->group(function () {
 });
 Route::prefix('print_all_single_API')->group(function () {
     Route::get('/', [AppropriationController::class, 'app']);
+    // PAPS
+    Route::get('/paps', [AppropriationController::class, 'paps3']);
     // Categories
     Route::get('/categories', [AppropriationController::class, 'paps_categories3']);
 });
