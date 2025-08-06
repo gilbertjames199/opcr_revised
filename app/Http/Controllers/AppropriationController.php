@@ -816,6 +816,7 @@ class AppropriationController extends Controller
     public function paps_types2(Request $request)
     {
         $department_code = $request->department_code;
+        // dd($department_code);
         $paps_id = ProgramAndProject::select('id')
             ->where('department_code', $department_code)
             ->pluck('id');
@@ -893,7 +894,6 @@ class AppropriationController extends Controller
                     "paps_desc" => $item->paps_desc,
                     "type" => $paps_type,
                     "categories" => $this->paps_categories2($request, $item->id, $paps_type),
-
                     // "particulars" => $item->particulars,
                     // "category" => $item->category,
                     // "idrevplan" => $item->rev_id
@@ -905,7 +905,8 @@ class AppropriationController extends Controller
     public function paps_categories2(Request $request, $idpaps, $paps_type)
     {
         // dd($request);
-        $categories = Category::select('categories.category')
+        $year = $request->year;
+        $categories = Category::select('categories.category', 'revision_plans.aip_code')
             // ->where('appropriations.idpaps', $request->idpaps)
             ->where('revision_plans.idpaps', $idpaps)
             // ->join('appropriations', 'appropriations.category', 'categories.category')
@@ -922,24 +923,62 @@ class AppropriationController extends Controller
                             END")
             )
             ->get()
-            ->map(function ($item) use ($request, $idpaps, $paps_type) {
+            ->map(function ($item) use ($request, $idpaps, $paps_type, $year) {
                 //$categ = Str::upper($item->category);
+                $aip_code = $item->aip_code;
+                if ($item->category === 'Personnel Services') {
+                    $aip_code .= '-001';
+                } elseif ($item->category === 'Maintenance, Operating, and Other Expenses') {
+                    $aip_code .= '-002';
+                } elseif ($item->category === 'Financial Expenses') {
+                    $aip_code .= '-003';
+                } elseif ($item->category === 'Capital Outlay') {
+                    $aip_code .= '-004';
+                }
+                $approp_total = $this->appropriations_total($request, $idpaps, $item->category, $year);
+                // dd($approp_total->budget_year);
+                // dd(number_format($approp_total['budget_year'], 2, '.', ','));
+                $past_year_total = 0;
+                $first_sem_total = 0;
+                $second_sem_total = 0;
+                $total_total = 0;
+                $budget_year_total = 0;
+                if ($approp_total) {
+                    $past_year_total = isset($approp_total['past_year']) ? $approp_total['past_year'] : '0.00';
+                    $first_sem_total = isset($approp_total['first_sem']) ? $approp_total['first_sem'] : '0.00';
+                    $second_sem_total = isset($approp_total['second_sem']) ? $approp_total['second_sem'] : '0.00';
+                    $total_total = isset($approp_total['total']) ? $approp_total['total'] : '0.00';
+                    $budget_year_total = isset($approp_total['budget_year']) ? $approp_total['budget_year'] : '0.00';
+                }
                 return [
                     "category" => $item->category,
+                    "aip_code" => $aip_code,
                     "type" => $paps_type,
                     "idpaps" => $idpaps,
-                    "appropriations" => $this->appropriations2($request, $idpaps, $item->category)
+                    "past_year_total" => $past_year_total,
+                    "first_sem_total" => $first_sem_total,
+                    "second_sem_total" => $second_sem_total,
+                    "total_total" => $total_total,
+                    "budget_year_total" => $budget_year_total,
+                    "appropriations" => $this->appropriations2($request, $idpaps, $item->category, $year)
                 ];
             });
         return $categories;
     }
 
-    public function appropriations2(Request $request, $idpaps, $category)
+    public function appropriations2(Request $request, $idpaps, $category, $year)
     {
 
-        $rev_pln = RevisionPlan::with('paps')->where('idpaps', $idpaps)->orderBy('version', 'DESC')->first();
+        $rev_pln = RevisionPlan::with('paps')->where('idpaps', $idpaps)
+            ->whereYear('date_start', $year)
+            ->orderBy('version', 'DESC')
+            ->first();
 
+        // $rev_pln_query = RevisionPlan::with('paps')->where('idpaps', $idpaps)
+        //     ->whereYear('date_start', $year)
+        //     ->orderBy('version', 'DESC');
 
+        // dd($rev_pln_query->toSql(), $rev_pln_query->getBindings());
         $rev_pln_id = $rev_pln ? $rev_pln->id : 0;
 
         $paps = ProgramAndProject::where('id', $idpaps)->first();
@@ -982,5 +1021,66 @@ class AppropriationController extends Controller
             });
 
         return $appropriations;
+    }
+
+    public function appropriations_total(Request $request, $idpaps, $category, $year)
+    {
+        $rev_pln = RevisionPlan::with('paps')
+            ->where('idpaps', $idpaps)
+            ->whereYear('date_start', $year)
+            ->orderBy('version', 'DESC')
+            ->first();
+
+        $rev_pln_id = $rev_pln ? $rev_pln->id : 0;
+
+        $paps = ProgramAndProject::where('id', $idpaps)->first();
+
+        $appropriations = BudgetRequirement::select('id', 'account_code', 'particulars')
+            ->selectRaw('SUM(amount) AS amount')
+            ->where('revision_plan_id', $rev_pln_id)
+            ->where('category', 'LIKE', '%' . $category . '%')
+            ->groupBy('particulars')
+            ->get();
+        // dd($appropriations);
+        // Initialize total accumulators
+        $totals = [
+            'past_year' => 0,
+            'first_sem' => 0,
+            'second_sem' => 0,
+            'total' => 0,
+            'budget_year' => 0,
+        ];
+
+        foreach ($appropriations as $item) {
+            $approp = Appropriation::select(
+                DB::raw('SUM(past_year) AS past_year'),
+                DB::raw('SUM(first_sem) AS first_sem'),
+                DB::raw('SUM(second_sem) AS second_sem'),
+                DB::raw('SUM(budget_year) AS budget_year')
+            )
+                ->where('category', $category)
+                ->where('idpaps', $idpaps)
+                ->where('account_code', $item->account_code)
+                ->first();
+            // dd($totals['budget_year'] . ' ' . (float)$item->amount);
+            $totals['past_year'] += (float) optional($approp)->past_year;
+            $totals['first_sem'] += (float) optional($approp)->first_sem;
+            $totals['second_sem'] += (float) optional($approp)->second_sem;
+            $totals['budget_year'] += (float) $item->amount;
+        }
+
+        $totals['total'] = $totals['first_sem'] + $totals['second_sem'];
+
+        // Format as requested
+        return [
+            "paps_desc" => optional($paps)->paps_desc,
+            "department_code" => optional($paps)->department_code,
+            "category" => $category,
+            "past_year" => number_format($totals['past_year'], 2, '.', ','),
+            "first_sem" => number_format($totals['first_sem'], 2, '.', ','),
+            "second_sem" => number_format($totals['second_sem'], 2, '.', ','),
+            "total" => number_format($totals['total'], 2, '.', ','),
+            "budget_year" => number_format($totals['budget_year'], 2, '.', ','),
+        ];
     }
 }
