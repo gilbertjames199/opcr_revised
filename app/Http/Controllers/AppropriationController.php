@@ -793,6 +793,7 @@ class AppropriationController extends Controller
         $office = $request->office;
         $local_chief = $request->local_chief;
         $paps_types = $this->paps_types2($request);
+        $year = $request->year;
         // dd("diri");
 
 
@@ -808,7 +809,8 @@ class AppropriationController extends Controller
             'total_second_sem' => $request->total_second_sem,
             'total_total' => $request->total_total,
             'total_budget_year' => $request->total_budget_year,
-            "data" => $paps_types
+            "data" => $paps_types,
+            "year" => $year
         ];
     }
     public function paps_types2(Request $request)
