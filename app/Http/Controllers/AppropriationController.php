@@ -439,7 +439,7 @@ class AppropriationController extends Controller
         $department_code = $request->department_code;
         $office = $request->office;
         $local_chief = $request->local_chief;
-
+        $year = $request->year;
         return [
             'department_code' => $department_code,
             'office' => $office,
@@ -451,12 +451,14 @@ class AppropriationController extends Controller
             'total_second_sem' => $request->total_second_sem,
             'total_total' => $request->total_total,
             'total_budget_year' => $request->total_budget_year,
+            'year' => $year
         ];
     }
     public function paps_types(Request $request)
     {
         $department_code = $request->department_code;
         // dd($department_code);
+        $year = $request->year;
         $paps_id = ProgramAndProject::select('id')
             ->where('department_code', $department_code)
             ->pluck('id');
@@ -484,10 +486,11 @@ class AppropriationController extends Controller
                  END")
             )
             ->get()
-            ->map(function ($item) use ($department_code) {
+            ->map(function ($item) use ($department_code, $year) {
                 return [
                     'paps_type' => $item->type,
-                    'department_code' => $department_code
+                    'department_code' => $department_code,
+                    'year' => $year
                 ];
             });
 
@@ -496,7 +499,8 @@ class AppropriationController extends Controller
             $paps_types = collect([
                 [
                     'paps_type' => '',
-                    'department_code' => $department_code
+                    'department_code' => $department_code,
+                    'year' => $year
                 ],
             ]);
         }
@@ -554,6 +558,7 @@ class AppropriationController extends Controller
                 return [
                     "idpaps" => $item->id,
                     "paps_desc" => $item->paps_desc,
+                    'year' => $request->year
                     // "type" => $request->paps_type,
                     // "particulars" => $item->particulars,
                     // "category" => $item->category,
@@ -617,7 +622,8 @@ class AppropriationController extends Controller
                 return [
                     "category" => $item->category,
                     "type" => $request->type,
-                    "idpaps" => $request->idpaps
+                    "idpaps" => $request->idpaps,
+                    'year' => $request->year
                 ];
             });
         return $categories;
@@ -779,7 +785,7 @@ class AppropriationController extends Controller
 
         return $appropriations;
     }
-    public function app(Request $request, $department_code)
+    public function app(Request $request)
     {
         $department_head = $request->department_head;
         $budget_officer = $request->budget_officer;

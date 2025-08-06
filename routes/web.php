@@ -1165,7 +1165,7 @@ Route::prefix('print/appropriations')->group(function () {
     Route::get('/paps/appropriations/print/all', [AppropriationController::class, 'appropriations']);
 });
 Route::prefix('print_all_single_API')->group(function () {
-    Route::get('/{department_code}', [AppropriationController::class, 'app']);
+    Route::get('/', [AppropriationController::class, 'app']);
 });
 Route::prefix('opcr-accomplishments/print')->group(function () {
     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
