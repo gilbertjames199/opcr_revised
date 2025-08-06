@@ -899,7 +899,16 @@ class AppropriationController extends Controller
                     // "idrevplan" => $item->rev_id
                 ];
             });
-
+        if (count($paps) < 1) {
+            $paps = collect([
+                [
+                    "idpaps" => '',
+                    "paps_desc" => '',
+                    "type" => '',
+                    "categories" => []
+                ],
+            ]);
+        }
         return $paps;
     }
     public function paps_categories2(Request $request, $idpaps, $paps_type)
@@ -1082,5 +1091,72 @@ class AppropriationController extends Controller
             "total" => number_format($totals['total'], 2, '.', ','),
             "budget_year" => number_format($totals['budget_year'], 2, '.', ','),
         ];
+    }
+
+
+    public function paps_categories3(Request $request)
+    {
+        // dd($request);
+        $year = $request->year;
+        $idpaps = $request->idpaps;
+        $paps_type = $request->paps_type;
+        $categories = Category::select('categories.category', 'revision_plans.aip_code')
+            // ->where('appropriations.idpaps', $request->idpaps)
+            ->where('revision_plans.idpaps', $idpaps)
+            // ->join('appropriations', 'appropriations.category', 'categories.category')
+            ->join('budget_requirements', 'budget_requirements.category', 'categories.category')
+            ->join('revision_plans', 'revision_plans.id', 'budget_requirements.revision_plan_id')
+            // ->join('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
+            // ->where('program_and_projects.type', $request->type)
+            ->groupBy('categories.category')
+            ->orderByRaw(
+                DB::raw("CASE WHEN categories.category = 'Personnel Services' THEN 0
+                            WHEN categories.category = 'Maintenance, Operating, and Other Expenses' THEN 1
+                            WHEN categories.category = 'Financial Expenses' THEN 2
+                            WHEN categories.category = 'Capital Outlay' THEN 3 ELSE 4
+                            END")
+            )
+            ->get()
+            ->map(function ($item) use ($request, $idpaps, $paps_type, $year) {
+                //$categ = Str::upper($item->category);
+                $aip_code = $item->aip_code;
+                if ($item->category === 'Personnel Services') {
+                    $aip_code .= '-001';
+                } elseif ($item->category === 'Maintenance, Operating, and Other Expenses') {
+                    $aip_code .= '-002';
+                } elseif ($item->category === 'Financial Expenses') {
+                    $aip_code .= '-003';
+                } elseif ($item->category === 'Capital Outlay') {
+                    $aip_code .= '-004';
+                }
+                $approp_total = $this->appropriations_total($request, $idpaps, $item->category, $year);
+                // dd($approp_total->budget_year);
+                // dd(number_format($approp_total['budget_year'], 2, '.', ','));
+                $past_year_total = 0;
+                $first_sem_total = 0;
+                $second_sem_total = 0;
+                $total_total = 0;
+                $budget_year_total = 0;
+                if ($approp_total) {
+                    $past_year_total = isset($approp_total['past_year']) ? $approp_total['past_year'] : '0.00';
+                    $first_sem_total = isset($approp_total['first_sem']) ? $approp_total['first_sem'] : '0.00';
+                    $second_sem_total = isset($approp_total['second_sem']) ? $approp_total['second_sem'] : '0.00';
+                    $total_total = isset($approp_total['total']) ? $approp_total['total'] : '0.00';
+                    $budget_year_total = isset($approp_total['budget_year']) ? $approp_total['budget_year'] : '0.00';
+                }
+                return [
+                    "category" => $item->category,
+                    "aip_code" => $aip_code,
+                    "type" => $paps_type,
+                    "idpaps" => $idpaps,
+                    "past_year_total" => $past_year_total,
+                    "first_sem_total" => $first_sem_total,
+                    "second_sem_total" => $second_sem_total,
+                    "total_total" => $total_total,
+                    "budget_year_total" => $budget_year_total,
+                    "appropriations" => $this->appropriations2($request, $idpaps, $item->category, $year)
+                ];
+            });
+        return $categories;
     }
 }
