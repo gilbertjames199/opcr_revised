@@ -1220,6 +1220,7 @@ class AppropriationController extends Controller
         $category = $request->category;
         $year = $request->year;
         $paps_type = $request->paps_type;
+
         $rev_pln = RevisionPlan::with('paps')->where('idpaps', $idpaps)
             ->whereYear('date_start', $year)
             ->orderBy('version', 'DESC')
