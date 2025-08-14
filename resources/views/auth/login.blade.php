@@ -50,13 +50,11 @@
                     <img class="img-fluid" src="images/logo.png" alt="">
                     <h3>WELCOME</h3>
                 </div>
-
             </div>
             <div class="hide_for_mobile">
                 <h4 class="fw-300 mB-10 font-weight-bold" style="font-weight: bold !important; font-color: white">
                     WELCOME
                 </h4>
-
             </div>
             @if (count($errors) > 0)
                 <div class="alert alert-danger" style="margin-bottom: unset; padding: .3rem;">
