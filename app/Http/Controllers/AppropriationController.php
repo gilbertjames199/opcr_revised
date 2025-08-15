@@ -809,7 +809,7 @@ class AppropriationController extends Controller
             'total_second_sem' => $request->total_second_sem,
             'total_total' => $request->total_total,
             'total_budget_year' => $request->total_budget_year,
-            "data" => $paps_types,
+            // "data" => $paps_types,
             "year" => $year
         ];
     }
