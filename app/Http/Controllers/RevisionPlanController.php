@@ -1631,7 +1631,7 @@ class RevisionPlanController extends Controller
                     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
                     $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
             }
-
+            // dd($item->FFUNCTION);
             return [
                 'FFUNCTION' => $item->FFUNCTION,
                 'id' => $item->id,
