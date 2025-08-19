@@ -809,7 +809,7 @@ class AppropriationController extends Controller
             'total_second_sem' => $request->total_second_sem,
             'total_total' => $request->total_total,
             'total_budget_year' => $request->total_budget_year,
-            // "data" => $paps_types,
+            "data" => $paps_types,
             "year" => $year
         ];
     }
@@ -847,7 +847,7 @@ class AppropriationController extends Controller
                 return [
                     'paps_type' => $item->type,
                     'department_code' => $department_code,
-                    'paps' => $this->paps2($request, $item->type)
+                    // 'paps' => $this->paps2($request, $item->type)
                 ];
             });
 
@@ -856,7 +856,7 @@ class AppropriationController extends Controller
                 [
                     'paps_type' => '',
                     'department_code' => $department_code,
-                    'paps' => []
+                    // 'paps' => []
                 ],
             ]);
         }
