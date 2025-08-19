@@ -206,6 +206,7 @@ createInertiaApp({
                             // var gl = "122.54.19.171:8080/";
                             // var nw = "122.53.120.27:8080/"
                             var nw_nov = "paps.dvodeoro.ph/";
+                            // var nw_nov = "paps.davaodeoro.gov.ph/";
                             return nw_nov;
                         },
                         office_aip: {
@@ -298,6 +299,9 @@ createInertiaApp({
                     }
                 },
                 methods: {
+                    goBack() {
+                        window.history.back();  // or this.$router.go(-1)
+                    },
                     cleanVariable(event) {
                         this.variable = event.target.value.replace(/[^0-9]/g, "");
                     },

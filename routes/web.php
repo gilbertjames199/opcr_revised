@@ -427,11 +427,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/create/{id}', [RevisionPlanController::class, 'create']);
         Route::post('/store', [RevisionPlanController::class, 'store']);
         Route::get('/edit/{id}', [RevisionPlanController::class, 'edit']);
-        Route::patch('/', [RevisionPlanController::class, 'update']);
+        Route::patch('/update', [RevisionPlanController::class, 'update']);
         Route::get('/view/project/paps/{id}', [RevisionPlanController::class, 'view']);
         Route::get('/general/administration/services/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas']);
         Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
+    });
+    Route::prefix('/revisio/n')->group(function () {
+        Route::patch('/', [RevisionPlanController::class, 'update']);
     });
     // Revision Plan Page
     Route::prefix('/revision_plans')->group(function () {
@@ -555,6 +558,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/HGDGScore')->group(function () {
         Route::get('/{idrevplan}', [HGDGScoreController::class, 'index']);
         Route::get('/store/hgdg', [HGDGScoreController::class, 'store']);
+        Route::post('/store/{id}/{score}', [HGDGScoreController::class, 'store_one']);
+        Route::post('/commentstore', [HGDGScoreController::class, 'store_comment']);
     });
 
     //hgdg_questions
@@ -1159,7 +1164,15 @@ Route::prefix('print/appropriations')->group(function () {
     Route::get('/paps/categories/list', [AppropriationController::class, 'paps_categories']);
     Route::get('/paps/appropriations/print/all', [AppropriationController::class, 'appropriations']);
 });
-
+Route::prefix('print_all_single_API')->group(function () {
+    Route::get('/', [AppropriationController::class, 'app']);
+    // PAPS
+    Route::get('/paps', [AppropriationController::class, 'paps3']);
+    // Categories
+    Route::get('/categories', [AppropriationController::class, 'paps_categories3']);
+    // Appropriations
+    Route::get('/paps/appropriations', [AppropriationController::class, 'appropriations3']);
+});
 Route::prefix('opcr-accomplishments/print')->group(function () {
     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
 });
@@ -1176,6 +1189,10 @@ Route::prefix('division/print')->group(function () {
 });
 
 Route::prefix('lbp2/print')->group(function () {
+    Route::get('/', [AppropriationBudgetController::class, 'print_lbp2']);
+});
+
+Route::prefix('lbp_by_ppa2')->group(function () {
     Route::get('/', [AppropriationBudgetController::class, 'print_lbp2']);
 });
 // Route::prefix('api_ppa2')->group(function () {

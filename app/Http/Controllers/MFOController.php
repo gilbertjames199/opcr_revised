@@ -206,20 +206,20 @@ class MFOController extends Controller
 
     public function destroy(Request $request, $id, $idinteroutcome)
     {
-        $count_rev = RevisionPlan::where('idmfo', $id)->count();
-        $count_paps = ProgramAndProject::where('idmfo', $id)->count();
-        $count_strat = Strategy::where('idmfo', $id)->count();
-        $msg = "";
-        $status = "";
-        if ($count_rev > 0 || $count_paps > 0 || $count_strat > 0) {
-            $msg = "Unable to delete! \nThe MFO is associated with revision plans(" . $count_rev . "), programs and programs (" . $count_paps . "), and strategies (" . $count_strat . "). \nYou have to delete them first!";
-            $status = "error";
-        } else {
-            $msg = "MFO Successfully deleted!";
-            $status = "deleted";
-            $data = $this->model->findOrFail($id);
-            $data->delete();
-        }
+        // $count_rev = RevisionPlan::where('idmfo', $id)->count();
+        // $count_paps = ProgramAndProject::where('idmfo', $id)->count();
+        // $count_strat = Strategy::where('idmfo', $id)->count();
+        // $msg = "";
+        // $status = "";
+        // if ($count_rev > 0 || $count_paps > 0 || $count_strat > 0) {
+        //     $msg = "Unable to delete! \nThe MFO is associated with revision plans(" . $count_rev . "), programs and programs (" . $count_paps . "), and strategies (" . $count_strat . "). \nYou have to delete them first!";
+        //     $status = "error";
+        // } else {
+        $msg = "MFO Successfully deleted!";
+        $status = "deleted";
+        $data = $this->model->findOrFail($id);
+        $data->delete();
+        // }
         //dd($request->raao_id);
         return redirect('/mfos/direct')->with($status, $msg);
     }

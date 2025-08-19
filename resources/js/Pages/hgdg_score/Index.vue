@@ -17,7 +17,13 @@
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
                 <!-- {{ revision_plan }} -->
-                <Link v-if="idmfo=='0' && scope!='GAS'" :href="`/revision/${revision_plan.idpaps}`">
+                <a @click.prevent="goBack" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                    </svg>
+                </a>
+                <!-- <Link v-if="idmfo=='0' && scope!='GAS'" :href="`/revision/${revision_plan.idpaps}`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                         <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
@@ -34,7 +40,7 @@
                         <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                         <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
                     </svg>
-                </Link>
+                </Link> -->
             </div>
         </div>
 
@@ -73,6 +79,7 @@
                                             :name="form.hgdg_scores[index].id"
                                             v-bind:hidden="hgdg_score.has_subquestion!='0'"
                                             :value="0"
+                                            @change="submit2(form.hgdg_scores[index].id,form.hgdg_scores[index].score)"
                                         />
                                     </th>
                                     <th>
@@ -83,7 +90,7 @@
                                             :name="form.hgdg_scores[index].id"
                                             v-bind:hidden="hgdg_score.has_subquestion!='0'"
                                             :value="form.hgdg_scores[index].q_score"
-
+                                            @change="submit2(form.hgdg_scores[index].id,form.hgdg_scores[index].score)"
                                         /><br>
 
                                     </th>
@@ -101,10 +108,18 @@
                                             :name="form.hgdg_scores[index].id"
                                             v-bind:hidden="hgdg_score.has_subquestion != '0'"
                                             :value="form.hgdg_scores[index].q_score2"
+                                            @change="submit2(form.hgdg_scores[index].id,form.hgdg_scores[index].score)"
                                         />
                                     </th>
                                     <th><div v-bind:hidden="hgdg_score.has_subquestion!='0'">{{ format_number_conv(setScore(form.hgdg_scores[index].score),2,false) }}</div></th>
-                                    <th><textarea v-model="form.hgdg_scores[index].result_comment"></textarea></th>
+                                    <th>
+                                        <textarea v-model="form.hgdg_scores[index].result_comment"
+                                            @change="submit3(form.hgdg_scores[index].id,form.hgdg_scores[index].result_comment)"
+                                        >
+
+                                        </textarea>
+
+                                    </th>
                                 </tr>
                                 <tr colspan="7" >
 
@@ -113,7 +128,7 @@
                         </table>
                     </form>
                 </div>
-                <div class="row justify-content-center">
+                <!-- <div class="row justify-content-center">
                     <div class="col-md-12">
                         <button type="button"
                                 class="btn btn-primary mt-3 text-white"
@@ -121,9 +136,12 @@
                             Save changes
                         </button>
                     </div>
-                </div>
+                </div> -->
 
-                <!--{{ auth }}-->
+                <div>
+                    <b>TOTAL:&nbsp;</b>
+                    <u>{{ total_score }}</u>
+                </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <!--<pagination :next="users.next_page_url" :prev="users.prev_page_url" />-->
@@ -166,6 +184,9 @@ export default {
     },
     mounted(){
         this.form.hgdg_scores=this.questions
+        setTimeout(() => {
+            this.total_score = this.getTotalScore();
+        }, 1000);
     },
     data() {
         return {
@@ -186,6 +207,7 @@ export default {
             search: null,
             confirm: false,
             filter: false,
+            total_score: 0,
             results: []
         };
     },
@@ -228,6 +250,48 @@ export default {
                     replace: true,
                 }
             )
+        },
+        submit2(id, score){
+            // alert(score+" "+ id)
+            // let jsonString = JSON.stringify(this.form.hgdg_scores);
+            //alert("submit"+jsonString);
+            //this.form.get("/HGDGScore/store/hgdg", jsonString);
+            this.$inertia.post(
+                "/HGDGScore/store/{"+id+"}/{"+score+"}",
+                {
+                    // scores: jsonString,
+                    // idrevplan: this.idrevplan
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            )
+            this.total_score=this.getTotalScore()
+        },
+        submit3(id, comment){
+            // alert(comment)
+            // console.log(comment)
+            this.$inertia.post(
+                "/HGDGScore/commentstore",
+                {
+                    // scores: jsonString,
+                    id: id,
+                    comment: comment
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            )
+        },
+        getTotalScore() {
+            var tot= this.questions.reduce((total, q) => {
+                return total + parseFloat(q.score || 0);
+            }, 0);
+            return this.format_number_conv(tot,2,true);
         },
         getIndex(index) {
             let parentIndexes = [];

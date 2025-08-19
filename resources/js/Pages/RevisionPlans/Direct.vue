@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3 v-if="my_source=='budget'">Budget Prep </h3>
+            <h3 v-if="my_source=='budget'">Budget Proposal </h3>
             <h3 v-if="my_source=='direct'">Programs</h3>
             <div class="peers">
                 <div class="peer mR-10">
@@ -167,7 +167,8 @@
         </ModalRightAlignCRUD>
         <ModalRightAppropriation v-if="showModalAppropriation" @closeFilter="showModalAppropriation=false" :title="'Budget Proposed'">
             <h3>Project Title: <u>{{ project_title }}</u></h3>
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button>
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button>&nbsp;
+            <!-- <button class="btn btn-sm btn-primary mT-5 text-white" @click="add_budget_proposal">Add Budget</button> -->
             <div class="table-responsive">
                 <table class="table table-sm table-borderless table-striped table-hover" v-if="budget_data.length > 0">
                     <thead>
@@ -183,15 +184,15 @@
                             <td>{{ dat.object_of_expenditure }}</td>
                             <td>{{ dat.account_code }}</td>
                             <td class="text-end">{{ format_number_conv(dat.budget_year,2,true) }}</td>
-                            <td >
+                            <td>
                                 <Button
                                     class="btn btn-primary btn-sm text-white"
                                     @click="editBudgetApprop(dat.id)"
                                     title="Edit Budget"
                                     >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                     </svg>
                                 </Button>&nbsp;
                                 <Button
@@ -206,20 +207,20 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2"></td>
-                            <td><b>TOTAL (Planned Amount)</b></td>
+                            <td colspan="1"></td>
+                            <td><b>TOTAL (Budget Amount)</b></td>
                             <td class="text-end"><u>{{ format_number_conv(budget_sum,2,true) }}</u></td>
                             <td></td>
                         </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                            <td><b>TOTAL</b></td>
+                         <tr>
+                            <td colspan="1"></td>
+                            <td><b>TOTAL (IPP Amount)</b></td>
                             <td class="text-end"><u>{{ format_number_conv(total_budget,2,true) }}</u></td>
                             <td></td>
                         </tr>
 
-                    </tbody>
 
+                    </tbody>
                 </table>
             </div>
         </ModalRightAppropriation>
@@ -281,35 +282,54 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
 
                 <label>PROGRAM</label>&nbsp;
-                <!-- <br>{{ form.idprogram }} -->
-                <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
                 <div>
                     <multiselect :options="formattedPrograms" :searchable="true" v-model="form.idprogram" label="label"
                         track-by="label" @close="loadOOE">
                     </multiselect>
                 </div>
                 <div class="fs-6 c-red-500" v-if="form.errors.raaotype">{{ form.errors.raaotype }}</div>
+                <!-- <br>{{ form.idprogram }} -->
+                <!-- {{ form }} @keyup.enter="searchPrograms($event)"-->
                 <!--******************************-->
                 <label>Objects of Expenditure</label>&nbsp;
-                idooe: {{ form.idooe }}
+                <!-- idooe: {{ form.idooe }} -->
+
                 <div>
                     <multiselect :options="formattedOOEs" :searchable="true" v-model="form.idooe" label="label"
+                    :disabled="no_ooe == true"
                         track-by="label" @close="setOOEValue">
                     </multiselect>
                 </div>
                 <!-- {{ formattedOOEs }} -->
+                <div>
+                    <input
+                        type="checkbox"
+                        v-model="no_ooe"
+                        @change="setOOEAndChartCheckBox(no_ooe)"
+                    />
+                    <i>Check this box if the Object of Expenditure you're looking for is missing. </i>
+                </div>
 
+                <label>Account Code</label>&nbsp;{{ form.account_code }}
+                <div>
+                    <!-- selected_pcr_option: {{ selected_pcr_option }} -->
+                    <multiselect ref="Accounts" :options="accounts" :searchable="true" v-model="form.account_code"
+                        label="label" track-by="label" :disabled="no_ooe == false"
+                        @close="selected_ccountcode"
+                    >
+                    </multiselect>
+                </div>
                 <div class="fs-6 c-red-500" v-if="form.errors.GAD">{{ form.errors.GAD }}</div>
                 <label>PAST YEAR </label>
-                <input type="text" class="form-control" v-model="computed_pastyear" readonly />
+                <input type="text" class="form-control" v-model="computed_pastyear" :disabled="no_ooe == false" />
                 <div class="fs-6 c-red-500" v-if="form.errors.past_year">{{ form.errors.past_year }}</div>
 
                 <label>FIRST SEMESTER (Actual) </label>
-                <input type="text" class="form-control" :value="computed_sem1" readonly />
+                <input type="text" class="form-control" :value="computed_sem1" :disabled="no_ooe == false" />
                 <div class="fs-6 c-red-500" v-if="form.errors.first_sem">{{ form.errors.first_sem }}</div>
 
                 <label>SECOND SEMESTER (Estimate) </label>
-                <input type="text" class="form-control" :value="computed_sem2" readonly />
+                <input type="text" class="form-control" :value="computed_sem2" :disabled="no_ooe == false" />
                 <div class="fs-6 c-red-500" v-if="form.errors.second_sem">{{ form.errors.second_sem }}</div>
 
                 <label>TOTAL </label>
@@ -367,7 +387,7 @@
             </div>
 
             <button class="btn btn-primary btn-sm mL-2 text-white"
-                @click="showModal(FFUNCCOD.FFUNCCOD, FFUNCCOD.FFUNCTION, dates)">Print</button>
+                @click="showModal(FFUNCCOD2.FFUNCCOD, FFUNCCOD2.FFUNCTION, dates)">Print</button>
             <!-- <button class="btn btn-primary btn-sm mL-2 text-white"
                 @click="showModal(data.data[0].FFUNCCOD, data.data[0].FFUNCTION, dates)">Print</button> -->
         </Printing>
@@ -510,11 +530,13 @@ export default {
         auth: Object,
         data: Object,
         FFUNCCOD: String,
+        FFUNCCOD2: Object,
         offices: Object,
         ooes: Object,
         ooe_description: Array,
         ooe_id: Array,
         ooe_codes: Array,
+        acc: Object,
         //idstrat: String,
         my_source: String,
         dept_id: String,
@@ -543,6 +565,7 @@ export default {
             edit_amount: 0,
             budget_data: [],
             editData: undefined,
+
             idpaps: null,
             form: useForm({
                 // id: null,
@@ -579,6 +602,8 @@ export default {
             print: false,
             lbp_version: "",
             displaylbp2: false,
+
+            no_ooe: false,
         }
     },
     computed: {
@@ -645,7 +670,20 @@ export default {
         },
         computed_sem2() {
             return this.format_number_conv(this.form.second_sem, 2, true);
-        }
+        },
+        accounts() {
+            let accs = this.acc;
+            return accs.map((dat) => ({
+                // value: dat.individual_final_output_id,
+                // "[id: "+ dat.individual_final_output_id+ ", type: " + dat.pcr_type + "]",
+                value: dat.FACTCODE,
+                // "[id: "+ dat.individual_final_output_id+ ", type: " + dat.pcr_type + "]",
+                label: dat.FTITLE ,
+                // pcr_type: dat.pcr_type, // include for easier access later
+                original: dat           // optional: include full object if needed
+            }));
+        },
+
     },
     mounted() {
         this.setCurrentYear()
@@ -1002,6 +1040,12 @@ export default {
             this.form.second_sem = this.format_number_conv(prog_sel[0].sem2, 2, false);
             this.form.past_year = this.format_number_conv(prog_sel[0].past_year, 2, false);
         },
+        setOOEAndChartCheckBox(no_ooe_data){
+            if(no_ooe_data==true){
+                // this.form.account
+                this.form.idooe=false
+            }
+        },
         async editBudgetApprop(id){
             this.dt_ooes = [];
             var url= `/appropriation-budget/${id}/edit`;
@@ -1075,7 +1119,19 @@ export default {
                 // this.openAppropriationRightModal('budget', this.rev_id, this.project_title, this.total_budget, this.idpaps);
             }
         },
+        selected_ccountcode(){
+            var ind='';
+            setTimeout(() => {
 
+                // alert(this.form.account_code);
+                if(this.form.account_code !==null && this.form.account_code !==undefined && this.form.account_code !==''){
+                    ind = this.acc.findIndex(data => String(data.FACTCODE) === String(this.form.account_code));
+                    this.form.object_of_expenditure = this.acc[ind].FTITLE
+                    // alert(ind);
+                }
+            }, 300);
+
+        },
         //PRINTING
         showPrint() {
             //alert("show filter");
@@ -1085,12 +1141,23 @@ export default {
             // alert(ffunction,ffunccod);
             // alert(this.lbp_version);
             if (this.lbp_version > 2) {
+                this.displaylbp2 = true;
                 this.my_link = this.getToRep(ffunccod, ffunction, dates);
+                console.log(ffunccod+" - "+ffunction+" - "+dates)
             } else {
                 this.displaylbp2 = true;
                 this.my_link = this.goToRepPrintLBP2();
             }
 
+        },
+        getToRep(ffunccod, ffunction, dates) {
+            // alert(data[0].FFUNCCOD);
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FBudget%2FLBP_Form_4&reportUnit=%2Freports%2FBudget%2FLBP_Form_4%2FLBPFORM4&standAlone=true&decorate=no&output=pdf';
+            var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&Date=' + dates;
+            var link1 = linkt + jasper_ip + jasper_link + params;
+            return link1;
         },
         goToRepPrintLBP2() {
             //http://122.53.120.27:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FLBP_Form2%2FAppropMAIN&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FLBP_Form2

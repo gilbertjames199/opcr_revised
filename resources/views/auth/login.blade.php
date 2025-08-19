@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-    <title>Sign In - OPCR</title>
+    <title>Sign In - PBS</title>
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" />
 </head>
@@ -34,8 +34,9 @@
                 <div class="row text-center pos-a centerXY">
                     <div>
                         <!--<img class="mw-50" src="images/logo.png" alt="">-->
-                        <h1 class="text-center" style="font-size: 50px; color:#f0d338"><b>PROGRAMS AND PROJECTS
-                            </b></h1>
+                        <h1 class="text-center" style="font-size: 50px; color:#f0d338"><b>PLANNING AND
+                                BUDGETING SYSTEM</b></h1>
+                        </b></h1>
                         &nbsp;&nbsp;<img src="{{ asset('images/logo.png') }}" alt="" class="img-fluid"
                             style="width:250px; height:250px">
                     </div>
@@ -49,13 +50,11 @@
                     <img class="img-fluid" src="images/logo.png" alt="">
                     <h3>WELCOME</h3>
                 </div>
-
             </div>
             <div class="hide_for_mobile">
                 <h4 class="fw-300 mB-10 font-weight-bold" style="font-weight: bold !important; font-color: white">
                     WELCOME
                 </h4>
-
             </div>
             @if (count($errors) > 0)
                 <div class="alert alert-danger" style="margin-bottom: unset; padding: .3rem;">

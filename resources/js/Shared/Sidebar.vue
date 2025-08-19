@@ -14,7 +14,7 @@
                                 </div>
                                 <div class="peer peer-greed">
                                     <h5 class="lh-1 mB-0 logo-text" style="color: #ffdc78; font-size: x-large !important;">
-                                        OPMS
+                                        PBS
                                     </h5>
                                 </div>
                             </div>
@@ -153,7 +153,28 @@
                     <span class="title">OPCR</span>
                     </Link>
                 </li>
-
+                <li class="nav-item">
+                    <Link class="sidebar-link" href="/revision/0?source=direct" :class="{ 'active': $page.url === '/revision/0?source=direct' }">
+                    <span></span>
+                    <span class="icon-holder">
+                        <!--OPCRStandard<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
+                            </svg>-->
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-border-style" viewBox="0 0 16 16">
+                            <path
+                                d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z" />
+                        </svg> -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 2h12v20H4z"/>
+                            <path d="M6 6h8"/>
+                            <path d="M6 10h8"/>
+                            <circle cx="8" cy="16" r="2"/>
+                        </svg>
+                    </span>
+                    <span class="title">IPP</span>
+                    </Link>
+                </li>
                 <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/IPCR/direct" :class="{ 'active': $page.url === '/IPCR/direct' }">
                     <span></span>
@@ -179,7 +200,7 @@
                                 <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
                             </svg> -->
                 <!-- ********************LBP Form -->
-                <li>
+                <!-- <li>
                     <Link class="sidebar-link" href="/AIP/direct" :class="{ 'active': $page.url === '/AIP/direct' }">
                     <span></span>
                     <span class="icon-holder">
@@ -193,9 +214,8 @@
                     </span>
                     <span class="title">LBP Form</span>
                     </Link>
-
-
-                    <!-- <Link class="sidebar-link" href="/AIP/direct" :class="{ 'active': $page.url === '/AIP/direct' }">
+                </li> -->
+                <!-- <Link class="sidebar-link" href="/AIP/direct" :class="{ 'active': $page.url === '/AIP/direct' }">
                     <span></span>
                     <span class="icon-holder">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -207,9 +227,8 @@
                         </svg>
                     </span>
                     <span class="title">LBP Form</span>
-                    </Link> -->
-                </li>
-                <li>
+                </Link> -->
+                <!-- <li>
                     <Link class="sidebar-link" href="/annual-investment-plans" :class="{ 'active': $page.url === '/annual-investment-plans' }">
                         <span></span>
                         <span class="icon-holder">
@@ -223,7 +242,7 @@
                         </span>
                         <span class="title">Annual Investment Plan</span>
                     </Link>
-                </li>
+                </li> -->
                 <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/DailyAccomplishment/direct" :class="{'active': $page.url === '/DailyAccomplishment/direct'}">
                         <span></span>
@@ -239,7 +258,7 @@
                     </Link>
                 </li> -->
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/AddAccomplishment/"
                         :class="{ 'active': $page.url === '/AddAccomplishment/' }">
                     <span></span>
@@ -249,13 +268,13 @@
                             <path
                                 d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z" />
                         </svg>
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
                                 <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z"/>
-                            </svg> -->
+                            </svg>
                     </span>
                     <span class="title">Accomplishment Report</span>
                     </Link>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/revision_plans?source=direct"
                         :class="{ 'active': $page.url === '/revision_plans' }"
@@ -287,7 +306,7 @@
                                 <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z"/>
                             </svg> -->
                     </span>
-                    <span class="title">Budget Prep</span>
+                    <span class="title">Budget Proposal</span>
                     </Link>
                 </li>
                 <!-- <li class="nav-item">

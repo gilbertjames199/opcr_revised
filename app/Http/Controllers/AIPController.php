@@ -293,7 +293,7 @@ class AIPController extends Controller
                 });
                 // dd($exp_output);
 
-                $firstRevisionPlan = $item->revisionPlan->first();
+                $firstRevisionPlan = $item->revisionPlan->last();
                 $budgets = $firstRevisionPlan ? $firstRevisionPlan->budget : collect();
 
                 $totalBudget = $budgets->sum(fn($b) => (float) $b->amount);

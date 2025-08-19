@@ -220,6 +220,7 @@ class BudgetRequirementController extends Controller
             "accounts" => $accounts,
             "budgets" => $budgets,
             "codes" => $code,
+            "accounts_raw" => $acc,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -289,6 +290,7 @@ class BudgetRequirementController extends Controller
             "budgets" => $budgets,
             "codes" => $code,
             "editData" => $editData,
+            "accounts_raw" => $acc,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)

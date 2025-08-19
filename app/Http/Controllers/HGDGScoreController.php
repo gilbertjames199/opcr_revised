@@ -267,4 +267,47 @@ class HGDGScoreController extends Controller
             ->get();
         return $questions;
     }
+
+    public function getHgdgScoreSum($idrevplan)
+    {
+        $totalScore = DB::table('hgdg_score')
+            ->where('idrevplan', $idrevplan)
+            ->sum('score');
+
+        return $totalScore;
+    }
+    public function store_one(Request $request, $id, $score)
+    {
+        $clean = trim($id, '{}"'); // removes {, }, and " if present
+        $value = (int) $clean;
+        $cleanscore = trim($score, '{}"');
+        $score_value = (float) $cleanscore;
+        // dd($value, $id);
+        $h_score = HGDGScore::find($value);
+        $idrevplan = $h_score->idrevplan;
+        // dd($h_score);
+        // dd($h_score, $cleanscore, $score, $score_value);
+        $h_score->score = $score_value;
+        $h_score->save();
+
+        $HScore = $this->getHgdgScoreSum($idrevplan);
+        $HPercent = $HScore / 20;
+        $rev_plan = RevisionPlan::findOrFail($idrevplan);
+        $rev_plan->hgdg_score = $HScore;
+        $rev_plan->hgdg_percent = $HPercent;
+        $rev_plan->save();
+        return redirect()->back();
+    }
+
+    public function store_comment(Request $request)
+    {
+        // dd($request->comment);
+        $id = $request->id;
+        $comment = $request->comment;
+        $hg_score = HGDGScore::where("id", $id)->first();
+        $hg_score->result_comment = $comment;
+        $hg_score->save();
+        return redirect()->back();
+        // dd($comment, $id);
+    }
 }

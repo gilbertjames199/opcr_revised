@@ -43,7 +43,7 @@ class PAPController extends Controller
     }
     public function index(Request $request, $id)
     {
-        //dd("not direct");
+        // dd("not direct");
         $data = ProgramAndProject::where('idmfo', $id)
             ->with('MFO')
             ->when($request->search, function ($query, $searchItem) {
@@ -436,7 +436,10 @@ class PAPController extends Controller
             $count_quality > 0 || $count_qual_rem > 0 || $count_time > 0 || $count_time_rem > 0 ||
             $count_mon > 0
         ) {
-            $msg = "Unable to delete!";
+            $msg = "Unable to delete! Project Profile (" . $count_rev . "), Strategies (" . $count_strat . "), Success Indictors (" . $count_success . "),
+            Targets (" . $count_targets . "), Outputs(" . $count_output . "), Office Accountable(" . $count_off . "), Rating remarks (." . $count_rating_rem . "),
+            Rating (" . $count_rating . "), Quality(" . $count_quality . "), QualityRemarks(" . $count_qual_rem . "), Timeliness(" . $count_time . "), TimelinessRemarks(" .
+                $count_time_rem . ")";
             $status = "error";
         } else {
             $msg = "Program/Project/Activity Successfully deleted!";
@@ -445,7 +448,8 @@ class PAPController extends Controller
             $data->delete();
         }
         //dd($request->raao_id);
-        return redirect('/paps/direct')->with($status, $msg);
+        // return redirect('/paps/direct')->with($status, $msg);
+        return redirect()->back()->with($status, $msg);
     }
     public function direct(Request $request)
     {
@@ -490,7 +494,13 @@ class PAPController extends Controller
             ->when($request->mfosel, function ($query, $searchItem) {
                 $query->where('idmfo', '=', $searchItem);
             })
-            ->where('idmfo', '>', '45')
+            ->where(function ($query) {
+                $query->where('idmfo', '>', '45')
+                    ->orWhere(function ($query) {
+                        $query->where('idmfo', '0')
+                            ->where('type', 'GAS');
+                    });
+            })
             // Include shared PAPS
             ->orderByRaw(
                 DB::raw("CASE WHEN program_and_projects.type = 'GAS' THEN 0
@@ -552,14 +562,14 @@ class PAPController extends Controller
             })
             ->where('idmfo', '>', 45)
             ->orderByRaw(DB::raw("
-        CASE
-            WHEN program_and_projects.type = 'GAS' THEN 0
-            WHEN program_and_projects.type = 'Project' THEN 1
-            WHEN program_and_projects.type = 'Program' THEN 2
-            WHEN program_and_projects.type = 'Activity' THEN 3
-            ELSE 4
-        END
-    "))
+                CASE
+                    WHEN program_and_projects.type = 'GAS' THEN 0
+                    WHEN program_and_projects.type = 'Project' THEN 1
+                    WHEN program_and_projects.type = 'Program' THEN 2
+                    WHEN program_and_projects.type = 'Activity' THEN 3
+                    ELSE 4
+                END
+            "))
             ->orderBy('program_and_projects.paps_desc', 'ASC')
             ->get();
 
@@ -577,14 +587,14 @@ class PAPController extends Controller
             })
             ->where('idmfo', '>', 45)
             ->orderByRaw(DB::raw("
-        CASE
-            WHEN program_and_projects.type = 'GAS' THEN 0
-            WHEN program_and_projects.type = 'Project' THEN 1
-            WHEN program_and_projects.type = 'Program' THEN 2
-            WHEN program_and_projects.type = 'Activity' THEN 3
-            ELSE 4
-        END
-    "))
+                CASE
+                    WHEN program_and_projects.type = 'GAS' THEN 0
+                    WHEN program_and_projects.type = 'Project' THEN 1
+                    WHEN program_and_projects.type = 'Program' THEN 2
+                    WHEN program_and_projects.type = 'Activity' THEN 3
+                    ELSE 4
+                END
+            "))
             ->orderBy('program_and_projects.paps_desc', 'ASC')
             ->get();
 
