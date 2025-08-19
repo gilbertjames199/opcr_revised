@@ -789,7 +789,7 @@ class AppropriationController extends Controller
     {
         $department_head = $request->department_head;
         $budget_officer = $request->budget_officer;
-        $department_code = $request->department_code;
+        $department_code = trim($request->department_code);
         $office = $request->office;
         $local_chief = $request->local_chief;
         $paps_types = $this->paps_types2($request);
