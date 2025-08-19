@@ -213,10 +213,41 @@ class AIPController extends Controller
         $functions = $request->FUNCTION;
         $date = $request->Date;
 
-        $mfos = MajorFinalOutput::select(DB::raw('"' . $functions . '" as `FUNCTION`'), "mfo_desc", "id")
+        $mfos = MajorFinalOutput::with([
+            'paps.revisionPlan.budget',
+        ])
+            ->select(
+                DB::raw('"' . $functions . '" as `FUNCTION`'),
+                "mfo_desc",
+                "id"
+            )
             ->selectRaw("'$date' as `Date`")
             ->where('FFUNCCOD', $request->id)
-            ->get();
+            ->get()
+            ->map(function ($mfo) {
+                // keep only paps that have at least one expected_output
+                $mfo->paps = $mfo->paps->filter(function ($pap) {
+                    $hasOutputs = false;
+
+                    foreach ($pap->strategies as $strategy) {
+                        foreach ($strategy->activity as $activity) {
+                            if ($activity->expected_output->isNotEmpty()) {
+                                $hasOutputs = true;
+                                break 2; // exit both loops
+                            }
+                        }
+                    }
+
+                    return $hasOutputs;
+                })->values(); // reindex array
+
+                return $mfo;
+            })
+            ->filter(function ($mfo) {
+                // Only keep MFOs that still have paps with outputs
+                return $mfo->paps->isNotEmpty();
+            })
+            ->values();
 
         return $mfos;
     }
