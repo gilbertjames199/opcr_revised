@@ -1953,8 +1953,8 @@ class RevisionPlanController extends Controller
                     ->sum('amount');
 
                 return [
-                    'department_code' => $item->department_code,
-                    'FFUNCTION' => trim($item->FFUNCTION),
+                    'department_code' => optional(optional($item->paps)->office)->department_code,
+                    'FFUNCTION' => trim(optional(optional($item->paps)->office)->FFUNCTION),
                     'id' => $item->id,
                     'project_title' => $item->project_title,
                     'type' => $item->type,
