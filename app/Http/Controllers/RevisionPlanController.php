@@ -1897,34 +1897,58 @@ class RevisionPlanController extends Controller
         $dept_id = $request->department_code;
 
         $budget_controller = new BudgetRequirementController($this->budget);
-
-        $query = RevisionPlan::select(
-            'revision_plans.id',
-            'revision_plans.project_title',
-            'revision_plans.version',
-            'revision_plans.type',
-            'revision_plans.is_strategy_based',
-            'ff.FFUNCTION',
-            'ff.department_code',
-            'paps.aip_code'
-        )
-            ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
-            ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
-            ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
+        // select(
+        //     'revision_plans.id',
+        //     'revision_plans.project_title',
+        //     'revision_plans.version',
+        //     'revision_plans.type',
+        //     'revision_plans.is_strategy_based',
+        //     'ff.FFUNCTION',
+        //     'ff.department_code',
+        //     'paps.aip_code'
+        // )
+        // ->
+        // dd("dsdsdsdsd");
+        $query = RevisionPlan::with(['paps','paps.office'])
+            // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
+            // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
+            // ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
             ->when($request->search, function ($query) use ($request) {
-                $query->where('revision_plans.project_title', 'LIKE', '%' . $request->search . '%');
+                $query->where('project_title', 'LIKE', '%' . $request->search . '%');
+            })
+            ->whereHas('paps', function($query)use($dept_id){
+                $query->where('department_code', $dept_id);
             });
 
 
-        if ($dept_id) {
-            $query->where('ff.department_code', $dept_id);
-        }
 
-        $data = $query->orderBy('ff.FFUNCTION')
-            ->paginate(10)
-            ->withQueryString()
-            ->through(function ($item) use ($budget_controller) {
+        // if ($dept_id) {
+        //     $query->whereHas('paps', function($query1)use($dept_id){
+        //         // $query->where('department_code', $dept_id);
+        //         $query1->whereHas('office', function($query2)use($dept_id){
+        //             $query2->where('department_code', $dept_id);
+        //         });
+        //     });
+        // }
 
+        // $query = RevisionPlan::with(['paps', 'paps.office', 'paps.MFO', 'paps.MFO.function'])
+        //         ->when($request->search, function ($query) use ($request) {
+        //             $query->where('project_title', 'LIKE', '%' . $request->search . '%');
+        //         });
+
+        // if ($dept_id) {
+        //     $query->whereHas('paps', function ($query1) use ($dept_id) {
+        //         $query1->whereHas('MFO', function ($query2) use ($dept_id) {
+        //             $query2->whereHas('function', function ($query3) use ($dept_id) {
+        //                 $query3->where('department_code', $dept_id);
+        //             });
+        //         });
+        //     });
+        // }
+
+        $data = $query
+            ->get()
+            ->map(function ($item) use ($budget_controller, $request) {
                 $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                     ->sum('amount');
 
@@ -1936,6 +1960,7 @@ class RevisionPlanController extends Controller
                     'type' => $item->type,
                     'version' => $item->version,
                     'amount' => $budgetary_requirement,
+                    'strategies'=>$this->get_strategies($request, $item->id)
                 ];
             });
 
@@ -1952,30 +1977,6 @@ class RevisionPlanController extends Controller
     }
     public function print_aip(Request $request)
     {
-        // dd(" gbcbcvbcvb ");
-        // PPA-Project Profile -expected output-total MOOE, PS,CO, FE
-        // return RevisionPlan::with([
-        //     'paps',
-        //     'strategyProject',
-        //     'strategyProject.strategy',
-        //     'strategyProject.expected_output',
-        //     'strategyProject.expected_outcome',
-        //     'activityProject',
-        //     'activityProject.expected_output',
-        //     'activityProject.expected_outcome',
-        //     'budget'
-        // ])->get();
-        // ->map(function ($item) {
-        //     $item->total_mooe = $item->budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
-        //     $item->total_ps = $item->budget->where('category', 'Personnel Services')->sum('amount');
-        //     $item->total_co = $item->budget->where('category', 'Capital Outlay')->sum('amount');
-        //     $item->total_fe = $item->budget->where('category', 'Financial Expenses')->sum('amount');
-        //     return [
-        //         'program' => optional(optional($item)->paps)->program,
-        //         'expected_output' => optional(optional($item)->strategyProject)->expected_output,
-
-        //     ];
-        // })->toArray();
         $strategies = [];
         $plans = RevisionPlan::with([
             'strategyProject.strategy',
@@ -1989,7 +1990,7 @@ class RevisionPlanController extends Controller
         foreach ($plans as $plan) {
             // dd(optional($plan)->strategyProject[0]);
             $strategy = optional(optional($plan)->strategyProject->first())->strategy;
-
+            // dd($strategy);
             if (!$strategy) {
                 continue;
             }
@@ -1999,17 +2000,75 @@ class RevisionPlanController extends Controller
             // Initialize if not yet in array
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
-                    'strategy_desc' => $strategy->strategy_desc,
+                    'strategy_desc' => $strategy->description,
                     'activities' => [],
                 ];
+                // dd($strategy);
             }
 
             // For each related activity under this plan
             if ($plan->activityProject) {
                 $budget = $plan->budget;
-
+                // dd( optional($plan)->activityProject->first());
+                $activity = optional(optional($plan)->activityProject->first())->activity;
+                // dd($activity);
                 $strategies[$strategyId]['activities'][] = [
-                    'activity_desc' => optional(optional($plan)->activityProject->first())->activity_desc,
+                    'activity_desc' => optional($activity)->description,
+                    'expected_output' => optional($plan->activityProject->first())->expected_output,
+                    'total_mooe' => $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount'),
+                    'total_ps' => $budget->where('category', 'Personnel Services')->sum('amount'),
+                    'total_co' => $budget->where('category', 'Capital Outlay')->sum('amount'),
+                    'total_fe' => $budget->where('category', 'Financial Expenses')->sum('amount'),
+                ];
+            }
+        }
+
+        // Optional: Re-index the array if needed
+        return array_values($strategies);
+        // });
+
+    }
+    public function get_strategies(Request $request, $idrevplan)
+    {
+        $strategies = [];
+        $plans = RevisionPlan::with([
+            'strategyProject.strategy',
+            'strategyProject.expected_output',
+            'strategyProject.expected_outcome',
+            'activityProject.expected_output',
+            'activityProject.expected_outcome',
+            'budget'
+        ])
+        ->where('id', $idrevplan)
+        ->get();
+
+        foreach ($plans as $plan) {
+            // dd(optional($plan)->strategyProject[0]);
+            $strategy = optional(optional($plan)->strategyProject->first())->strategy;
+            // dd($strategy);
+            if (!$strategy) {
+                continue;
+            }
+
+            $strategyId = $strategy->id;
+
+            // Initialize if not yet in array
+            if (!isset($strategies[$strategyId])) {
+                $strategies[$strategyId] = [
+                    'strategy_desc' => $strategy->description,
+                    'activities' => [],
+                ];
+                // dd($strategy);
+            }
+
+            // For each related activity under this plan
+            if ($plan->activityProject) {
+                $budget = $plan->budget;
+                // dd( optional($plan)->activityProject->first());
+                $activity = optional(optional($plan)->activityProject->first())->activity;
+                // dd($activity);
+                $strategies[$strategyId]['activities'][] = [
+                    'activity_desc' => optional($activity)->description,
                     'expected_output' => optional($plan->activityProject->first())->expected_output,
                     'total_mooe' => $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount'),
                     'total_ps' => $budget->where('category', 'Personnel Services')->sum('amount'),
