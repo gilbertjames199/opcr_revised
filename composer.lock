@@ -784,6 +784,18 @@
         },
         {
             "name": "guzzlehttp/guzzle",
+<<<<<<< HEAD
+            "version": "7.9.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "7b2f29fe81dc4da0ca0ea7d42107a0845946ea77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/7b2f29fe81dc4da0ca0ea7d42107a0845946ea77",
+                "reference": "7b2f29fe81dc4da0ca0ea7d42107a0845946ea77",
+=======
             "version": "7.10.0",
             "source": {
                 "type": "git",
@@ -794,6 +806,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/guzzle/guzzle/zipball/b51ac707cfa420b7bfd4e4d5e510ba8008e822b4",
                 "reference": "b51ac707cfa420b7bfd4e4d5e510ba8008e822b4",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
                 "shasum": ""
             },
             "require": {
@@ -890,7 +903,11 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
+<<<<<<< HEAD
+                "source": "https://github.com/guzzle/guzzle/tree/7.9.3"
+=======
                 "source": "https://github.com/guzzle/guzzle/tree/7.10.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -906,6 +923,22 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2025-03-27T13:37:11+00:00"
+        },
+        {
+            "name": "guzzlehttp/promises",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/promises.git",
+                "reference": "7c69f28996b0a6920945dd20b3857e499d9ca96c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/7c69f28996b0a6920945dd20b3857e499d9ca96c",
+                "reference": "7c69f28996b0a6920945dd20b3857e499d9ca96c",
+=======
             "time": "2025-08-23T22:36:01+00:00"
         },
         {
@@ -920,6 +953,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/guzzle/promises/zipball/481557b130ef3790cf82b713667b43030dc9c957",
                 "reference": "481557b130ef3790cf82b713667b43030dc9c957",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
                 "shasum": ""
             },
             "require": {
@@ -973,7 +1007,11 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
+<<<<<<< HEAD
+                "source": "https://github.com/guzzle/promises/tree/2.2.0"
+=======
                 "source": "https://github.com/guzzle/promises/tree/2.3.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -989,6 +1027,22 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2025-03-27T13:27:01+00:00"
+        },
+        {
+            "name": "guzzlehttp/psr7",
+            "version": "2.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/psr7.git",
+                "reference": "c2270caaabe631b3b44c85f99e5a04bbb8060d16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/c2270caaabe631b3b44c85f99e5a04bbb8060d16",
+                "reference": "c2270caaabe631b3b44c85f99e5a04bbb8060d16",
+=======
             "time": "2025-08-22T14:34:08+00:00"
         },
         {
@@ -1003,6 +1057,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/guzzle/psr7/zipball/21dc724a0583619cd1652f673303492272778051",
                 "reference": "21dc724a0583619cd1652f673303492272778051",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
                 "shasum": ""
             },
             "require": {
@@ -1089,7 +1144,11 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
+<<<<<<< HEAD
+                "source": "https://github.com/guzzle/psr7/tree/2.7.1"
+=======
                 "source": "https://github.com/guzzle/psr7/tree/2.8.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -1105,7 +1164,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2025-03-27T12:30:47+00:00"
+=======
             "time": "2025-08-23T21:21:41+00:00"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
         },
         {
             "name": "inertiajs/inertia-laravel",
@@ -1764,6 +1827,18 @@
         },
         {
             "name": "league/commonmark",
+<<<<<<< HEAD
+            "version": "2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/commonmark.git",
+                "reference": "6fbb36d44824ed4091adbcf4c7d4a3923cdb3405"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/6fbb36d44824ed4091adbcf4c7d4a3923cdb3405",
+                "reference": "6fbb36d44824ed4091adbcf4c7d4a3923cdb3405",
+=======
             "version": "2.7.1",
             "source": {
                 "type": "git",
@@ -1774,6 +1849,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/10732241927d3971d28e7ea7b5712721fa2296ca",
                 "reference": "10732241927d3971d28e7ea7b5712721fa2296ca",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
                 "shasum": ""
             },
             "require": {
@@ -1867,7 +1943,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2025-05-05T12:20:28+00:00"
+=======
             "time": "2025-07-20T12:47:49+00:00"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
         },
         {
             "name": "league/config",
@@ -4830,7 +4910,11 @@
         },
         {
             "name": "symfony/polyfill-ctype",
+<<<<<<< HEAD
+            "version": "v1.32.0",
+=======
             "version": "v1.33.0",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -4889,7 +4973,11 @@
                 "portable"
             ],
             "support": {
+<<<<<<< HEAD
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.32.0"
+=======
                 "source": "https://github.com/symfony/polyfill-ctype/tree/v1.33.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -4913,7 +5001,11 @@
         },
         {
             "name": "symfony/polyfill-iconv",
+<<<<<<< HEAD
+            "version": "v1.32.0",
+=======
             "version": "v1.33.0",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-iconv.git",
@@ -4973,7 +5065,11 @@
                 "shim"
             ],
             "support": {
+<<<<<<< HEAD
+                "source": "https://github.com/symfony/polyfill-iconv/tree/v1.32.0"
+=======
                 "source": "https://github.com/symfony/polyfill-iconv/tree/v1.33.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -4997,7 +5093,11 @@
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
+<<<<<<< HEAD
+            "version": "v1.32.0",
+=======
             "version": "v1.33.0",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-grapheme.git",
@@ -5055,7 +5155,11 @@
                 "shim"
             ],
             "support": {
+<<<<<<< HEAD
+                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.32.0"
+=======
                 "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.33.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -5079,7 +5183,11 @@
         },
         {
             "name": "symfony/polyfill-intl-idn",
+<<<<<<< HEAD
+            "version": "v1.32.0",
+=======
             "version": "v1.33.0",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-idn.git",
@@ -5142,7 +5250,11 @@
                 "shim"
             ],
             "support": {
+<<<<<<< HEAD
+                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.32.0"
+=======
                 "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.33.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -5166,7 +5278,11 @@
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
+<<<<<<< HEAD
+            "version": "v1.32.0",
+=======
             "version": "v1.33.0",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
@@ -5227,7 +5343,11 @@
                 "shim"
             ],
             "support": {
+<<<<<<< HEAD
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.32.0"
+=======
                 "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.33.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -5251,7 +5371,11 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
+<<<<<<< HEAD
+            "version": "v1.32.0",
+=======
             "version": "v1.33.0",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
@@ -5312,7 +5436,11 @@
                 "shim"
             ],
             "support": {
+<<<<<<< HEAD
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.32.0"
+=======
                 "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.33.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -5336,7 +5464,11 @@
         },
         {
             "name": "symfony/polyfill-php73",
+<<<<<<< HEAD
+            "version": "v1.32.0",
+=======
             "version": "v1.33.0",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php73.git",
@@ -5392,7 +5524,11 @@
                 "shim"
             ],
             "support": {
+<<<<<<< HEAD
+                "source": "https://github.com/symfony/polyfill-php73/tree/v1.32.0"
+=======
                 "source": "https://github.com/symfony/polyfill-php73/tree/v1.33.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -5416,7 +5552,11 @@
         },
         {
             "name": "symfony/polyfill-php80",
+<<<<<<< HEAD
+            "version": "v1.32.0",
+=======
             "version": "v1.33.0",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
@@ -5476,7 +5616,11 @@
                 "shim"
             ],
             "support": {
+<<<<<<< HEAD
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.32.0"
+=======
                 "source": "https://github.com/symfony/polyfill-php80/tree/v1.33.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -5500,7 +5644,11 @@
         },
         {
             "name": "symfony/polyfill-php81",
+<<<<<<< HEAD
+            "version": "v1.32.0",
+=======
             "version": "v1.33.0",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php81.git",
@@ -5556,7 +5704,11 @@
                 "shim"
             ],
             "support": {
+<<<<<<< HEAD
+                "source": "https://github.com/symfony/polyfill-php81/tree/v1.32.0"
+=======
                 "source": "https://github.com/symfony/polyfill-php81/tree/v1.33.0"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -7032,6 +7184,18 @@
         },
         {
             "name": "myclabs/deep-copy",
+<<<<<<< HEAD
+            "version": "1.13.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/DeepCopy.git",
+                "reference": "1720ddd719e16cf0db4eb1c6eca108031636d46c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/1720ddd719e16cf0db4eb1c6eca108031636d46c",
+                "reference": "1720ddd719e16cf0db4eb1c6eca108031636d46c",
+=======
             "version": "1.13.4",
             "source": {
                 "type": "git",
@@ -7042,6 +7206,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/07d290f0c47959fd5eed98c95ee5602db07e0b6a",
                 "reference": "07d290f0c47959fd5eed98c95ee5602db07e0b6a",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
                 "shasum": ""
             },
             "require": {
@@ -7080,7 +7245,11 @@
             ],
             "support": {
                 "issues": "https://github.com/myclabs/DeepCopy/issues",
+<<<<<<< HEAD
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.13.1"
+=======
                 "source": "https://github.com/myclabs/DeepCopy/tree/1.13.4"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -7088,7 +7257,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2025-04-29T12:36:36+00:00"
+=======
             "time": "2025-08-01T08:46:24+00:00"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
         },
         {
             "name": "nunomaduro/collision",
@@ -7616,6 +7789,18 @@
         },
         {
             "name": "phpunit/phpunit",
+<<<<<<< HEAD
+            "version": "9.6.23",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "43d2cb18d0675c38bd44982a5d1d88f6d53d8d95"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/43d2cb18d0675c38bd44982a5d1d88f6d53d8d95",
+                "reference": "43d2cb18d0675c38bd44982a5d1d88f6d53d8d95",
+=======
             "version": "9.6.25",
             "source": {
                 "type": "git",
@@ -7626,6 +7811,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/049c011e01be805202d8eebedef49f769a8ec7b7",
                 "reference": "049c011e01be805202d8eebedef49f769a8ec7b7",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
                 "shasum": ""
             },
             "require": {
@@ -7636,7 +7822,11 @@
                 "ext-mbstring": "*",
                 "ext-xml": "*",
                 "ext-xmlwriter": "*",
+<<<<<<< HEAD
+                "myclabs/deep-copy": "^1.13.1",
+=======
                 "myclabs/deep-copy": "^1.13.4",
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=7.3",
@@ -7699,7 +7889,11 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
+<<<<<<< HEAD
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.23"
+=======
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.25"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
             },
             "funding": [
                 {
@@ -7723,7 +7917,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2025-05-02T06:40:34+00:00"
+=======
             "time": "2025-08-20T14:38:31+00:00"
+>>>>>>> 3f3cf2037832f044ce8c4b2eb897e0670fe96563
         },
         {
             "name": "sebastian/cli-parser",
