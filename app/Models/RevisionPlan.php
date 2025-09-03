@@ -38,6 +38,7 @@ class RevisionPlan extends Model
     {
         return $this->hasMany(ActivityProject::class, 'project_id', 'id');
     }
+
     // protected $fillable = [
     //     'id',
     //     'idpaps',

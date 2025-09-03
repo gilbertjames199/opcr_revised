@@ -267,7 +267,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_11)], 32
   /* HYDRATE_EVENTS */
-  )]), _hoisted_12, _hoisted_13, _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ form }}\n        <br>********************************<br>\n        {{ project[0] }} ")]);
+  )]), _hoisted_12, _hoisted_13, _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ form }}\r\n        <br>********************************<br>\r\n        {{ project[0] }} ")]);
 }
 
 /***/ }),
