@@ -354,7 +354,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // dd($opcrs);
         // dd('targ ave: ' . $ave);
         //********************************************* */
-        return inertia('OPCR/Form/Index', [
+        $component = $this->isBeforeSecondSem2025($list) ? 'OPCR/Form/Index': 'OPCR/Form/Index2';
+
+        return inertia($component, [
             'total' => $total,
             'ave' => $ave,
             'dept_head' => $dept_head,
@@ -372,9 +374,14 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //dd($opcr);
         //dd('opcr form');
     }
+    private function isBeforeSecondSem2025($list): bool
+    {
+        return $list->year < 2025 || ($list->year == 2025 && $list->semester == "First Semester");
+    }
     public function create(Request $request) {}
     public function store(Request $request)
     {
+        // dd($request);
         $opcrs = $request->opcrs;
         $myObject = json_decode($opcrs);
 
@@ -391,6 +398,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     'rating_q' => $opcr->rating_q,
                     'rating_e' => $opcr->rating_e,
                     'rating_t' => $opcr->rating_t,
+                    'q1'=>$opcr->q1,
+                    'q2'=>$opcr->q2,
+                    'q3'=>$opcr->q3,
+                    'e1'=>$opcr->e1,
+                    'e2'=>$opcr->e2,
+                    'e3'=>$opcr->e3,
+                    't1'=>$opcr->t1,
                     'remarks' => $opcr->remarks,
                     'department_code' => $dept_code
                 ]);
@@ -401,8 +415,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // return redirect('/opcrlist/' . $request->FFUNCCOD)
         //     ->with('message', 'OPCR Rating Done!');
         // dd($request);
-        return redirect('/opcr/form/' . $request->opcr_id . '/' . $request->FFUNCCOD)
-            ->with('message', 'OPCR Rating Done!');
+        // return redirect('/opcr/form/' . $request->opcr_id . '/' . $request->FFUNCCOD)
+        //     ->with('message', 'OPCR Rating Done!');
+        return redirect()->back()->with('message', 'OPCR Rating Done!');
     }
     public function edit(Request $request) {}
     public function update(Request $request) {}

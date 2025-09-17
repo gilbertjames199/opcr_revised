@@ -89,6 +89,7 @@ use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
 use App\Http\Controllers\IPCRController;
+use App\Http\Controllers\MeansOfVerificationController;
 use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
@@ -802,6 +803,12 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [OfficePerformanceCommitmentRatingController::class, 'update']);
         Route::delete('/{id}', [OfficePerformanceCommitmentRatingController::class, 'destroy']);
         Route::get('/print/o/p/c/r', [OfficePerformanceCommitmentRatingController::class, 'print']);
+    });
+    // MOV API
+    Route::prefix('/movs')->group(function () {
+        Route::get('',[MeansOfVerificationController::class,'index']);
+        Route::get('/get/mov/{opcr_id}',[MeansOfVerificationController::class,'get_mov']);
+        Route::post('/save/{opcr_id}/opcr_list_id',[MeansOfVerificationController::class,'store']);
     });
     //OPCR List
     Route::prefix('opcrlist')->group(function () {
