@@ -1,4 +1,7 @@
 <?php
+
+use Illuminate\Support\Facades\DB;
+
     function splitName($name)
     {
         $name = trim($name);
@@ -15,6 +18,10 @@
         }else{
             return "";
         }
+    }
+
+    function getDB2Name(){
+        return DB::connection('mysql2')->getDatabaseName();
     }
 
 

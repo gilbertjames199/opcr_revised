@@ -281,6 +281,16 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
                 }
                 // dd($accomp);
+
+                $q1 = $item->opcr_rating ? $item->opcr_rating->q1 : null;
+                $q2 = $item->opcr_rating ? $item->opcr_rating->q2 : null;
+                $q3 = $item->opcr_rating ? $item->opcr_rating->q3 : null;
+
+                $e1 = $item->opcr_rating ? $item->opcr_rating->e1 : null;
+                $e2 = $item->opcr_rating ? $item->opcr_rating->e2 : null;
+                $e3 = $item->opcr_rating ? $item->opcr_rating->e3 : null;
+
+                $t1 = $item->opcr_rating ? $item->opcr_rating->t1 : null;
                 return [
                     "id" => $id,
                     "success_indicator_id" => $su,
@@ -297,6 +307,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "paps_desc" => $paps_desc,
                     "mfo_desc" => $mfo_desc,
                     "created_at" => $mfo_created_at,
+                    "q1"=>$q1,
+                    "q2"=>$q2,
+                    "q3"=>$q3,
+                    "e1"=>$e1,
+                    "e2"=>$e2,
+                    "e3"=>$e3,
+                    "t1"=>$t1,
                 ];
             });
 

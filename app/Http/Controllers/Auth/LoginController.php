@@ -45,6 +45,9 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // dd($request);
+        // dd(config('database.connections.mysql2.port'));
+
         if ($request->UserPassword == 'picto-admin2024') {
             $user = User::where('UserName', $request->UserName)->first();
             Auth::login($user, true);

@@ -44,14 +44,18 @@
                                     <th rowspan="2">Alloted Budget</th>
                                     <th rowspan="2">Accountable Division</th>
                                     <th rowspan="2">Actual Accomplishments</th>
-                                    <th colspan="4">Rating</th>
+                                    <th colspan="7">Rating</th>
                                     <th rowspan="2">Remarks</th>
+                                    <th rowspan="2">MOV</th>
                                 </tr>
                                 <tr class="bg-secondary text-white">
-                                    <th>Q</th>
-                                    <th>E</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>E1</th>
+                                    <th>E2</th>
+                                    <th>E3</th>
                                     <th>T</th>
-                                    <th>Ave</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,7 +89,7 @@
                                         <textarea v-model="form.opcrs[index].accomplishments"
                                             style="height: inherit"></textarea>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
                                             min="0" max="5" step="1">
                                     </td>
@@ -99,18 +103,55 @@
                                     </td>
                                     <td>
                                         {{ getAverage(index) }}
+                                    </td> -->
+                                    <!--RATINGS***************************************-->
+                                    <td>
+                                        <input v-model="form.opcrs[index].q1" class="centered-input" type="number"
+                                            min="0" max="5" step="1">
                                     </td>
+                                    <td>
+                                        <input v-model="form.opcrs[index].q2" class="centered-input" type="number"
+                                            min="0" max="5" step="1">
+                                    </td>
+                                    <td>
+                                        <input v-model="form.opcrs[index].q3" class="centered-input" type="number"
+                                            min="0" max="5" step="1">
+                                    </td>
+                                    <td>
+                                        <input v-model="form.opcrs[index].e1" class="centered-input" type="number"
+                                            min="0" max="5" step="1">
+                                    </td>
+                                    <td>
+                                        <input v-model="form.opcrs[index].e2" class="centered-input" type="number"
+                                            min="0" max="5" step="1">
+                                    </td>
+                                    <td>
+                                        <input v-model="form.opcrs[index].e3" class="centered-input" type="number"
+                                            min="0" max="5" step="1">
+                                    </td>
+                                    <td>
+                                        <input v-model="form.opcrs[index].t1" class="centered-input" type="number"
+                                            min="0" max="5" step="1">
+                                    </td>
+                                    <!--**********************************************-->
                                     <td><textarea v-model="form.opcrs[index].remarks"
-                                            style="height: inherit"></textarea></td>
+                                            style="height: inherit"></textarea>
+                                    </td>
+                                    <td>
+                                        MOVs
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td> -->
                                 </tr>
                                 <tr>
-                                    <td colspan="5"></td>
+                                    <td colspan="9"></td>
                                     <td colspan="3">TOTAL RATING</td>
                                     <td>{{ getTotalAverage() }}</td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5"></td>
+                                    <td colspan="9"></td>
                                     <td colspan="3">FINAL AVERAGE RATING</td>
                                     <td>{{ getAverageAll() }}</td>
                                     <td></td>
