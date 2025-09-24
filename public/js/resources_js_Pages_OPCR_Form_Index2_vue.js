@@ -1544,7 +1544,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: function onClick($event) {
             return $options.previewFile(file);
           },
-          "class": "p-1 rounded hover:bg-blue-100 border-0",
+          "class": "p-1 rounded bg-transparent hover:bg-blue-100 border-0",
           title: "Preview here"
         }, _hoisted_80, 8
         /* PROPS */
@@ -1559,7 +1559,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: function onClick($event) {
             return $options.deleteFile(file.id);
           },
-          "class": "p-1 rounded-full hover:bg-red-100 border-0",
+          "class": "p-1 rounded-full bg-transparent hover:bg-red-100 border-0",
           "data-toggle": "tooltip",
           title: "Delete"
         }, _hoisted_86, 8
