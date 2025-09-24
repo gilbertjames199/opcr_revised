@@ -244,9 +244,9 @@
                 </div>
             </div>
         </Modal>
-        <ModalMOV v-if="displayModalMOV" @close-modal-event="hideModalMOV">
+        <ModalMOV v-if="displayModalMOV" @close-modal-event="hideModalMOV" title="Means of Verification">
 
-            <h1>Means of Verification </h1>
+            <!-- <h1>Means of Verification </h1> -->
              <div class="peers mb-12">
                 <div class="col-md-6">
                     <input
@@ -493,7 +493,7 @@
         <!-- Fullscreen Modal -->
 
     </div>
-
+    disk: {{ disk }}
 </template>
 <script>
 // FilterModal
@@ -502,7 +502,7 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
 import SideModal from "@/Shared/PrintModal";
-import ModalMOV from "@/Shared/PrintModal";
+import ModalMOV from "@/Shared/ModalDynamicTitle";
 
 
 export default {
@@ -1063,7 +1063,7 @@ export default {
                 if(this.disk==='public'){
                     return window.location.origin + "/storage/" + file.filepath;
                 }else{
-                    return `/images/${file.filepath}`;
+                    return `http://122.53.120.18:8067/images/${file.filepath}`;
                 }
 
             }
