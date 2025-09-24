@@ -1012,7 +1012,8 @@ export default {
                 }
 
                 if (this.isPreviewable(file.file_type)) {
-                    this.displaySideModal = true
+                    // this.displaySideModal = true
+                    window.open(this.view_link, '_blank');
                     this.file_extension = file.file_type
                     this.view_link = "http://122.53.120.18:8067/images/"+file.filepath
                     // window.open(file.file_url, '_blank')
