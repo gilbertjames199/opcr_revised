@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MeansOfVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class MeansOfVerificationController extends Controller
@@ -195,17 +196,30 @@ class MeansOfVerificationController extends Controller
             return response()->download($fullPath, $filename);
             // dd($file, $id, $disk, "public");
         }else{
-            $$remoteUrl = "http://122.53.120.18:8067/images/{$file_path}";
+            try {
+                $remoteUrl = "http://122.53.120.18:8067/images/{$file_path}";
 
-            $response = Http::get($remoteUrl);
+                $response = Http::timeout(15)->get($remoteUrl);
 
-            if ($response->failed()) {
-                abort(404, 'File not found on remote server');
+                if ($response->failed()) {
+                    Log::error("Remote file fetch failed", [
+                        'url' => $remoteUrl,
+                        'status' => $response->status(),
+                        'body' => $response->body(),
+                    ]);
+                    abort(404, 'File not found on remote server');
+                }
+
+                return response($response->body(), 200)
+                    ->header('Content-Type', $response->header('Content-Type') ?? 'application/octet-stream')
+                    ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+            } catch (\Throwable $e) {
+                Log::error("Error downloading remote file", [
+                    'message' => $e->getMessage(),
+                    'trace'   => $e->getTraceAsString(),
+                ]);
+                abort(500, 'Internal server error while fetching file');
             }
-
-            return response($response->body(), 200)
-                ->header('Content-Type', $response->header('Content-Type') ?? 'application/octet-stream')
-                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
         }
 
 
