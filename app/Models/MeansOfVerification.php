@@ -9,4 +9,5 @@ class MeansOfVerification extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+     protected $table = 'means_of_verifications';
 }

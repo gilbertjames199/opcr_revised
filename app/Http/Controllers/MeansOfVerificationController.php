@@ -143,4 +143,30 @@ class MeansOfVerificationController extends Controller
 
         return response()->json(['message' => 'Files uploaded successfully.'], 200);
     }
+    public function destroyMultiple(Request $request)
+    {
+        // dd($request->file_ids, auth()->user()->recid);
+        $disk = app()->environment('production') ? 'custom_uploads' : 'public';
+        $request->validate([
+            'file_ids' => 'required|array',
+            // 'file_ids.*' => 'integer|exists:means_of_verifications,id',
+        ]);
+
+        $files = MeansOfVerification::whereIn('id', $request->file_ids)
+            ->where('user_id', auth()->user()->recid)
+            ->get();
+
+        foreach ($files as $file) {
+            // Delete file from storage
+            Storage::disk($disk)->delete($file->filepath);
+
+            // Delete DB record
+            $file->delete();
+        }
+
+        // return response()->json(['message' => 'Files deleted successfully.']);
+        return response()->json(['message' => 'Files deleted successfully.'], 200);
+
+        // return redirect('/file-upload')->with('success', 'Files deleted successfully.');
+    }
 }
