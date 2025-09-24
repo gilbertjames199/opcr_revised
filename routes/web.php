@@ -808,7 +808,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/movs')->group(function () {
         Route::get('',[MeansOfVerificationController::class,'index']);
         Route::get('/get/mov/{opcr_id}',[MeansOfVerificationController::class,'get_mov']);
-        Route::post('/save/{opcr_id}/opcr_list_id',[MeansOfVerificationController::class,'store']);
+        Route::post('/save/{opcr_id}/{opcr_list_id}',[MeansOfVerificationController::class,'store']);
     });
     //OPCR List
     Route::prefix('opcrlist')->group(function () {

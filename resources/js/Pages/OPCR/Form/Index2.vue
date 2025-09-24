@@ -245,34 +245,273 @@
             </div>
         </Modal>
         <Modal v-if="displayModalMOV" @close-modal-event="hideModalMOV">
-            <h1>Means of Verification {{ opcr_id }}</h1>
-            <form @submit.prevent="uploadFiles" enctype="multipart/form-data" class="mb-6">
+            <div class="row gap-20 masonry pos-r">
+                <div class="masonry-item w-100">
+                    <div class="peer">
+              <button
+                  @click="deleteFiles"
+                  class="btn btn-danger btn-sm mL-2 text-white"
+                  :disabled="!file_ids.length"
+                >
+                  Delete Selected
+                </button>
+            </div>
+                </div>
+            </div>
+            <h1>Means of Verification {{ opcr_rating_id }} -- {{ opcr_id }}</h1>
+            <!-- enctype="multipart/form-data"  -->
+             <div class="peers mb-12">
+                <div class="col-md-6">
 
-                <input
-                type="file"
-                multiple
-                @change="handleFiles"
-                ref="fileInput"
-                />
-                <div>
-                <!-- @click="uploadFiles"  -->
-                <button type="submit" class="btn btn-primary text-white">Upload</button>
-                <button type="button" @click="cancelFiles" class="btn btn-danger text-white">Cancel </button>
+                    <input
+                    type="file"
+                    multiple
+                    @change="handleFiles"
+                    ref="fileInput"
+                    />
+                    <div>
+                    <!-- @click="uploadFiles"  -->
+                    <button type="button" @click="uploadFiles" class="btn btn-primary text-white">Upload</button>
+                    <button type="button" @click="cancelFiles" class="btn btn-danger text-white">Cancel </button>
+                    </div>
+                    <p>
+                        <div v-if="files.length>0">
+                            <table >
+                                <thead>
+                                    <th></th>
+                                    <th>File Name</th>
+                                    <th>File Type</th>
+                                </thead>
+                                <tr v-for="(file, index) in files" :key="index">
+                                    <td>
+                                        <!-- {{ file }} -->
+                                    <!-- {{ getPreUploadFileIcon(file.name.split('.').pop()) }} -->
+                                    <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
+                                    </td>
+                                    <td>{{ file.name }}&nbsp;</td>
+                                    <td>{{ file.name.split('.').pop() }}&nbsp;</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </p>
+                </div>
+            <div class="col-md-6">
+                <table name="tabel" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                        <th>
+                            <input
+                            type="checkbox"
+                            :checked="allSelected"
+                            @change="toggleSelectAll($event)"
+                            />
+                        </th>
+                        <th></th>
+                        <th>File Name</th>
+                        <th>File Size</th>
+                        <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="file in movs" :key="file.id">
+                        <td>
+                            <input
+                            type="checkbox"
+                            :value="file.id"
+                            @change="toggleFileSelection(file.id, $event)"
+                            v-model="file_ids"
+                            />
+                        </td>
+                        <!-- <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> -->
+                        <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
+                        </td>
+                        <td>{{ file.filename }} </td>
+                        <td>{{ format_number((file.file_size/1024),2,true) }} KB </td>
+                        <td>
+                            <!-- <button @click="previewFile(file)" class="btn btn-primary text-white">Preview</button>&nbsp; -->
+                            <!-- /files/proxy-download -->
+                            <!-- target="_blank" rel="noopener noreferrer" -->
+                            <!-- <a :href="`http://122.53.120.18:8067/images/${file.filename}`" class="btn btn-success">Download</a>&nbsp; -->
+                            <!-- http://122.53.120.18:8067/images/{{file.filename}} - /file-upload/download/ -->
+                            <!-- <p> http://192.168.80.89:8073//file-upload/download/{{file.id}}</p> -->
+                            <button
+                            @click="previewFile(file)"
+                            class="p-1 rounded hover:bg-blue-100"
+                            title="Preview"
+                            >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                fill="blue"
+                                class="bi bi-eye-fill"
+                                viewBox="0 0 16 16"
+                            >
+                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                            </svg>
+                            </button>&nbsp;
+
+                            <a
+                            :href="`/file-upload/download/${file.id}`"
+                            download
+                            class="inline-flex items-center"
+                            title="Download"
+                            >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                fill="green"
+                                class="bi bi-cloud-arrow-down-fill"
+                                viewBox="0 0 16 16"
+                            >
+                                <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
+                            </svg>
+                            </a>&nbsp;
+
+                            <!-- <a
+                            :href="`/file-upload/download/${file.id}`"
+                            class="btn btn-success"
+                            download
+                            >
+                            Download
+                            </a>&nbsp; -->
+                            <!-- <button
+                            @click="deleteFile(file.id)"
+                            class="btn btn-danger text-white">
+                            Delete
+                            </button> -->
+                            <button
+                            @click="deleteFile(file.id)"
+                            class="p-1 rounded-full hover:bg-red-100 focus:outline-none"
+                            data-toggle="tooltip"
+                            title="Delete"
+                            >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                fill="red"
+                                class="bi bi-trash-fill"
+                                viewBox="0 0 16 16"
+                            >
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                            </svg>
+                            </button>
+
+                            <!-- <button
+                            @click="deleteFile(file.id)"
+                            class="p-1 rounded hover:bg-red-100"
+                            title="Delete"
+                            >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                fill="red"
+                                class="bi bi-trash-fill"
+                                viewBox="0 0 16 16"
+                            >
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                            </svg>
+                            </button> -->
+
+                        </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+             </div>
+
+
+        </Modal>
+        <!-- @closeFilter="displaySideModal = false" -->
+        <SideModal v-if="displaySideModal"  @close-modal-event="displaySideModal = false" style="z-index: 9999;  ">
+            <h2 class="text-lg font-semibold">Preview SideModal</h2>
+            <!-- file_extension: {{ file_extension }} -- {{ view_link }} -- {{ disk }} -->
+            <div v-if="disk==='public'">
+                <!-- <iframe v-if="file_extension === 'pdf'"
+                    :src="`/storage/${current_filepath}`"
+                    width="100%"
+                    height="500px">
+                </iframe> -->
+                <div v-if="file_extension === 'pdf'">
+                    <iframe
+                        :src="view_link"
+                        width="100%"
+                        height="500px">
+                    </iframe>
+                </div>
+                <!-- .toLowerCase() -->
+                <div v-else-if="imageTypes.includes(file_extension)">
+                    Image siya
+                    <img
+                        :src="view_link"
+                        alt="preview"
+                        class="max-w-full max-h-[500px] cursor-pointer"
+                        @click="openModal"
+                    />
+                </div>
+                <div v-else>
+                    <iframe
+                        :src="`https://docs.google.com/gview?url=${encodeURIComponent(view_link)}&embedded=true`"
+                        width="100%"
+                        height="600">
+                    </iframe>
+                </div>
+            </div>
+            <div v-else>
+                <div v-if="file_extension === 'pdf'">
+                    <iframe
+                        :src="view_link"
+                        width="100%"
+                        height="500px">
+                    </iframe>
+                </div>
+                <div v-else-if="imageTypes.includes(file_extension.toLowerCase())">
+                    Image siya
+                    <img
+                        :src="view_link"
+                        alt="preview"
+                        class="max-w-full max-h-[500px] cursor-pointer"
+                        @click="openModal"
+                    />
+                </div>
+                <div v-else>
+                    <iframe
+                        :src="`https://docs.google.com/gview?url=${encodeURIComponent(view_link)}&embedded=true`"
+                        width="100%"
+                        height="600">
+                    </iframe>
                 </div>
 
-            </form>
-            <p>
-                movs: {{ movs }}
-            </p>
-        </Modal>
+
+            </div>
+
+            <!-- <br>
+            <iframe :src="`/storage/${current_filepath}`"></iframe>
+            <br>
+            <a :href="`/storage/${current_filepath}`" target="_blank">
+                Open File
+            </a> -->
+        </SideModal>
+        <!--IMAGE MODAL ************************************************************-->
+        <!-- Fullscreen Modal -->
+
     </div>
+
 </template>
 <script>
+// FilterModal
 import { useForm } from "@inertiajs/inertia-vue3";
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
+import SideModal from "@/Shared/PrintModal";
 import ModalMOV from "@/Shared/PrintModal";
+
 
 export default {
     props: {
@@ -285,29 +524,36 @@ export default {
         total: String,
         dept_head: String,
         opcrs: Object,
+        fileBaseUrl: String,
+        disk: String
     },
     data() {
         return {
+            imageTypes: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'],
             total_ave: 0,
             total_comp: 0,
             displayModal: false,
             displayModalMOV: false,
-            opcr_id: null,
+            displaySideModal: false,
+            showImageModal: false,
+            opcr_rating_id: null,
             movs: [],
             // total_divisor: 0,
             form: useForm({
                 opcrs: [],
-                file: null,
-                files: [],
-                file_ids: [],
-            })
+
+            }),
+            file: null,
+            files: [],
+            file_ids: [],
+            current_filepath: null,
         }
     },
     computed: {
 
     },
     components: {
-        Pagination, Filtering, Modal, ModalMOV
+        Pagination, Filtering, Modal, ModalMOV, SideModal,
     },
     // beforeMount() {
     //     this.form.opcrs = this.opcrs
@@ -555,7 +801,7 @@ export default {
         },
         async showModalMOV(id){
             // alert(id)
-            this.opcr_id=id;
+            this.opcr_rating_id=id;
             let url = '/movs/get/mov/' + id;
             // let url = '/monthly-details/monthly/accomplishments/object/' + empl_id + '/' + sem + '/' + e_year + '/' + idsemestral + '/' + my_month;
             // alert(empl_id);
@@ -565,6 +811,57 @@ export default {
                 this.isLoading = false;
             });
             this.displayModalMOV=true
+        },
+        // async uploadFiles(){
+        //     const payload = {
+        //         file: this.file,
+        //         files: this.files,
+        //         // skills: ["Vue", "Laravel", "MySQL"]
+        //     }
+
+        //     await axios.post('/movs/save/'+this.opcr_rating_id+'/'+this.opcr_id, payload)
+        // },
+        async uploadFiles() {
+            let formData = new FormData();
+
+            // Single file (optional)
+            if (this.file) {
+                formData.append("file", this.file);
+            }
+
+            // Multiple files
+            if (this.files && this.files.length > 0) {
+                // this.files.forEach((f, i) => {
+                //     formData.append("files[]", f); // use files[] so Laravel can treat it as an array
+                // });
+                this.files.forEach((f) => {
+                    formData.append("files[]", f);
+                });
+            }
+
+            await axios.post(
+                `/movs/save/${this.opcr_rating_id}/${this.opcr_id}`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+            )
+            .then(response => {
+                console.log("Upload success:", response.data);
+                this.showModalMOV(this.opcr_rating_id);
+            })
+            .catch(error => {
+                console.error("Upload error:", error.response?.data || error);
+            });
+        },
+        handleFiles(event) {
+            // this.form.files = Array.from(event.target.files); // Store selected files
+            const filesArray = Array.from(event.target.files);
+            console.log(filesArray); // check if files are here
+            this.files = Array.from(event.target.files);
+            console.log(this.files); // check if files are here
         },
         viewlink() {
             var tot = this.getTotalAverage();
@@ -592,15 +889,15 @@ export default {
             if (!opcr_date || !type) return false;
             const year = parseInt(opcr_date.match(/\d{4}/)[0]);
             const isFirstSem = opcr_date.includes("JANUARY");
-            console.log(opcr_date)
-            console.log("Year: " + year + " isFirstSem: " + isFirstSem + " type: " + type);
+            // console.log(opcr_date)
+            // console.log("Year: " + year + " isFirstSem: " + isFirstSem + " type: " + type);
             if (type === "PA 1") {
                 return year < 2025 || (year === 2025 && isFirstSem);
             } else if (type === "PA 2") {
                 return year > 2025 || (year === 2025 && !isFirstSem);
             }
             return false;
-        }
+        },
         // adjustTextareaHeight() {
         //     const textarea = this.$refs.textarea;
         //     if (textarea) {
@@ -608,6 +905,181 @@ export default {
         //         textarea.style.height = rowHeight + 'px';
         //     }
         // }
+        // DELETE MULTIPLE
+        toggleFileSelection(fileId, event) {
+            if (event.target.checked) {
+                if (!this.file_ids.includes(fileId)) {
+                    this.file_ids.push(fileId);
+                }
+            } else {
+                this.file_ids = this.file_ids.filter(id => id !== fileId);
+            }
+        },
+        deleteFile(id) {
+            if (confirm('Are you sure you want to delete this file?')) {
+                // axios.delete(`/file-upload/${id}`)
+                // .then(() => {
+                //   files = files.filter(file => file.id !== id) // manually remove from UI
+                // })
+                // .catch(() => {
+                //   alert('Error deleting file')
+                // })
+                this.$inertia.delete(`/file-upload/${id}`, {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                    console.log('File deleted successfully')
+                    },
+                    onError: () => {
+                    console.error('Error deleting file')
+                    }
+                })
+            }
+        },
+        async deleteFiles() {
+            if (!this.file_ids.length) {
+                alert("No files selected for deletion");
+                return;
+            }
+
+            if (!confirm("Are you sure you want to delete selected files?")) {
+                return;
+            }
+
+            try {
+                await axios.delete("/file-upload/delete-multiple/many", {
+                    data: { file_ids: this.file_ids }
+                });
+
+                // Remove deleted files from table without reloading
+                this.movs.data = this.movs.data.filter(
+                    file => !this.file_ids.includes(file.id)
+                );
+
+                // Clear selected IDs
+                this.file_ids = [];
+
+                alert("Files deleted successfully");
+
+                window.location.reload();
+            } catch (error) {
+                console.error(error);
+                alert("Failed to delete files");
+            }
+        },
+        // FOIR PREVIEWS
+        isPreviewable(filename) {
+            // const ext = filename.split('.').pop().toLowerCase()
+            const ext = filename
+            // 'jpg', 'jpeg', 'png', 'gif',
+            return ['pdf','doc', 'docx', 'dot', 'dotx', 'dotm','xls', 'xlsx', 'xlsm',
+            'xlsb', 'xlt', 'xltx', 'xltm', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp',
+            'mp3', 'mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'
+            ].includes(ext)
+        },
+        previewFile(file) {
+            const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];
+            // alert("previewFile " + this.disk + " "+file.file_type)
+            // console.log(this.fileBaseUrl)
+            this.current_filepath = file.filepath
+            if(this.disk==='public'){
+                // alert("PUBLIC")
+                this.view_link = window.location.origin + "/storage/" + file.filepath;
+                if (imageTypes.includes(file.file_type?.toLowerCase()) || multimediaTypes.includes(file.file_type?.toLowerCase())) {
+                    // Directly open images in a new tab
+                    // this.openImageModal()
+                    this.displaySideModal = true
+                    // window.open(this.view_link, '_blank');
+                    //
+                    return;
+                }
+
+                if (this.isPreviewable(file.file_type)) {
+                    this.displaySideModal = true
+                    this.file_extension = file.file_type
+                    // this.view_link = "http://122.53.120.18:8067/images/"+file.filepath
+                    // window.open(file.file_url, '_blank')
+                } else {
+                    alert('This file type cannot be previewed.')
+                }
+
+            }else{
+
+                if (imageTypes.includes(file.file_type?.toLowerCase()) || multimediaTypes.includes(file.file_type?.toLowerCase())) {
+                    // Directly open images in a new tab
+                    window.open(`http://122.53.120.18:8067/images/${file.filepath}`, '_blank');
+                    return;
+                }
+
+                if (this.isPreviewable(file.file_type)) {
+                    this.displaySideModal = true
+                    this.file_extension = file.file_type
+                    this.view_link = "http://122.53.120.18:8067/images/"+file.filepath
+                    // window.open(file.file_url, '_blank')
+                } else {
+                    alert('This file type cannot be previewed.')
+                }
+            }
+
+        },
+        // TOGGLE SELECT
+        toggleSelectAll(event) {
+            if (event.target.checked) {
+                // Add all file IDs
+                this.file_ids = this.movs.map(file => file.id);
+            } else {
+                // Remove all file IDs
+                this.file_ids = [];
+            }
+        },
+        //ICON
+        getFileIcon(file) {
+            if (!file?.file_type) {
+                return '/images/icons/file.png'; // default if missing type
+            }
+
+            const type = file.file_type.toLowerCase();
+            const excelTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xlt', 'xltx', 'xltm'];
+            const wordTypes = ['doc', 'docx', 'dot', 'dotx', 'dotm'];
+            const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const pptTypes = ['ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'];
+            const multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];
+
+            if (excelTypes.includes(type)) {
+                return '/images/icons/excel.png';
+            }
+            else if (type === 'pdf') {
+                return '/images/icons/pdf.png';
+            }
+            else if (wordTypes.includes(type)) {
+                return '/images/icons/word.png';
+            }
+            else if (pptTypes.includes(type)) {
+                return '/images/icons/ppt.png';
+            }
+            else if (multimediaTypes.includes(type)) {
+                return '/images/icons/video.png';
+            }
+            else if (imageTypes.includes(type)) {
+                if(this.disk==='public'){
+                    return window.location.origin + "/storage/" + file.filepath;
+                }else{
+                    return `/images/${file.filepath}`;
+                }
+
+            }
+            else {
+                return '/images/icons/file.png'; // default icon
+            }
+        },
+        //IMAGE MODAL
+        openImageModal() {
+            alert("open image modal")
+            this.showImageModal = true;
+        },
+        closeImageModal() {
+            this.showImageModal = false;
+        }
     }
 };
 </script>

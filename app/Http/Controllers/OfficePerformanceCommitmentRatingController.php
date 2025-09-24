@@ -317,8 +317,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 ];
             });
 
-        // dd($opcrs);
-
         //********************************************** */
         $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
             ->where('role', 'like', '%Department Head%')
@@ -355,7 +353,11 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // dd('targ ave: ' . $ave);
         //********************************************* */
         $component = $this->isBeforeSecondSem2025($list) ? 'OPCR/Form/Index': 'OPCR/Form/Index2';
-
+        $baseUrl = app()->environment('production')
+            ? 'http://122.53.120.18:8067/images/'
+            : asset('storage/');
+        $disk = app()->environment('production') ? 'custom_uploads' : 'public';
+            // dd($baseUrl);
         return inertia($component, [
             'total' => $total,
             'ave' => $ave,
@@ -366,6 +368,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'ps' => $ps,
             'opcrs' => $opcrs,
             "FFUNCCOD" => $FFUNCCOD,
+            'fileBaseUrl' => $baseUrl,
+            'disk'=>$disk,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)

@@ -16,34 +16,131 @@ class MeansOfVerificationController extends Controller
     public function get_mov(Request $request, $opcr_id){
         return $this->mov->where('opcr_id', $opcr_id)->get();
     }
-    public function store(Request $request, $opcr_id, $opcr_list_id){
-        $subfolder = auth()->user()->username;
-        $opcr_id = $request->opcr_id;
-        Storage::disk('custom_uploads')->makeDirectory($subfolder);
+    // public function store(Request $request, $opcr_id, $opcr_list_id){
+    //     // dd($opcr_list_id);
+    //     $subfolder = auth()->user()->username;
+    //     // dd($request);
+    //     // $opcr_id = $request->opcr_id;
+    //     Storage::disk('custom_uploads')->makeDirectory($subfolder);
+    //     $request->validate([
+    //         'files.*' => 'required|file|max:51200', // 50MB max
+    //     ]);
+
+    //     $totalSize = MeansOfVerification::where('user_id', auth()->id())->sum('file_size'); // in bytes
+    //     $maxSize = 1024 * 1024 * 1024;
+    //     if ($totalSize >= $maxSize) {
+    //         return redirect()->back()->withErrors(['error' => 'You have reached the 1 GB storage limit.']);
+    //     }
+    //     $file = $request->file('file');
+    //     $filename = time() . '_' . $file->getClientOriginalName();
+    //     // $path = $file->storeAs('', $filename, 'custom_files'); // See disk config below
+    //     $path = $file->storeAs($subfolder, $filename, 'custom_uploads');
+
+    //     MeansOfVerification::create([
+    //         'user_id' => auth()->user()->id,
+    //         'filename' => $file->getClientOriginalName(),
+    //         'filepath' => $subfolder . '/' . $filename,
+    //         'file_type'  => $file->getClientOriginalExtension(), // Save extension
+    //         'file_size'  => $file->getSize(), // in bytes
+    //         'opcr_id' => $opcr_id,
+    //         'opcr_list_id'=> $opcr_list_id
+    //     ]);
+
+    //     return redirect()->back()->with('success', 'File uploaded successfully.');
+    // }
+    public function store_original(Request $request, $opcr_id, $opcr_list_id)
+    {
+        // dd(auth()->user());
+        $subfolder = 'opcr_movs/'.auth()->user()->UserName;
+        $level = auth()->user()->level;
+        $municipality = auth()->user()->municipality;
+        $barangay = auth()->user()->barangay;
+
+        // Create user-specific folder if it doesn't exist local
+        // Storage::disk('custom_uploads')->makeDirectory($subfolder);
+        $disk = app()->environment('production') ? 'custom_uploads' : 'local';
+        // dd($disk);
+        Storage::disk($disk)->makeDirectory($subfolder);
+
+        // Validate that "files" is an array and each file is valid
         $request->validate([
-            'file' => 'required|file|max:51200', // 50MB max
+            'files'   => 'required|array',
+            'files.*' => 'file|max:51200', // 50MB max per file
         ]);
 
-        $totalSize = MeansOfVerification::where('user_id', auth()->id())->sum('file_size'); // in bytes
-        $maxSize = 1024 * 1024 * 1024;
+        // Check total storage used by the user
+        $totalSize = MeansOfVerification::where('user_id', auth()->id())->sum('file_size');
+        $maxSize = 1024 * 1024 * 1024; // 1 GB in bytes
         if ($totalSize >= $maxSize) {
             return redirect()->back()->withErrors(['error' => 'You have reached the 1 GB storage limit.']);
         }
-        $file = $request->file('file');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        // $path = $file->storeAs('', $filename, 'custom_files'); // See disk config below
-        $path = $file->storeAs($subfolder, $filename, 'custom_uploads');
+        // dd(auth()->user()->recid);
+        foreach ($request->file('files') as $file) {
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs($subfolder, $filename, 'custom_uploads');
 
-        MeansOfVerification::create([
-            'user_id' => auth()->user()->id,
-            'filename' => $file->getClientOriginalName(),
-            'filepath' => $subfolder . '/' . $filename,
-            'file_type'  => $file->getClientOriginalExtension(), // Save extension
-            'file_size'  => $file->getSize(), // in bytes
-            'opcr_id' => $request->opcr_id,
-            'opcr_list_id'=> $request->opcr_list_id
+            MeansOfVerification::create([
+                'user_id' => auth()->user()->recid,
+                'filename' => $file->getClientOriginalName(),
+                'filepath' => $subfolder . '/' . $filename,
+                'file_type'  => $file->getClientOriginalExtension(), // Save extension
+                'file_size'  => $file->getSize(), // in bytes
+                'opcr_id' => $opcr_id,
+                'opcr_list_id'=> $opcr_list_id
+            ]);
+        }
+
+        // return redirect()->back()->with('success', 'Files uploaded successfully.');
+        // return redirect('/file-upload')->with('success', 'Files deleted successfully.');
+        return response()->json(['message' => 'Files uploaded successfully.'], 200);
+    }
+    public function store(Request $request, $opcr_id, $opcr_list_id)
+    {
+        $disk = app()->environment('production') ? 'custom_uploads' : 'public';
+
+        // Build safe subfolder path
+        $username = trim(auth()->user()->UserName);
+
+
+        $subfolder = 'opcr_movs/' . $username;
+        // dd($subfolder);
+        $level = auth()->user()->level;
+        $municipality = auth()->user()->municipality;
+        $barangay = auth()->user()->barangay;
+
+        // Ensure user-specific folder exists
+        Storage::disk($disk)->makeDirectory($subfolder);
+
+        // Validate uploaded files
+        $request->validate([
+            'files'   => 'required|array',
+            'files.*' => 'file|max:51200', // 50MB max per file
         ]);
 
-        return redirect()->back()->with('success', 'File uploaded successfully.');
+        // Check total storage used by the user
+        $totalSize = MeansOfVerification::where('user_id', auth()->id())->sum('file_size');
+        $maxSize   = 1024 * 1024 * 1024; // 1 GB in bytes
+        if ($totalSize >= $maxSize) {
+            return redirect()->back()->withErrors(['error' => 'You have reached the 1 GB storage limit.']);
+        }
+
+        foreach ($request->file('files') as $file) {
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            // Save file on the correct disk
+            $path = $file->storeAs($subfolder, $filename, $disk);
+
+            MeansOfVerification::create([
+                'user_id'      => auth()->user()->recid,
+                'filename'     => $file->getClientOriginalName(),
+                'filepath'     => $subfolder . '/' . $filename,
+                'file_type'    => $file->getClientOriginalExtension(),
+                'file_size'    => $file->getSize(),
+                'opcr_id'      => $opcr_id,
+                'opcr_list_id' => $opcr_list_id
+            ]);
+        }
+
+        return response()->json(['message' => 'Files uploaded successfully.'], 200);
     }
 }

@@ -23,6 +23,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+// FilterModal
+
 
 
 
@@ -38,23 +40,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     ave: String,
     total: String,
     dept_head: String,
-    opcrs: Object
+    opcrs: Object,
+    fileBaseUrl: String,
+    disk: String
   },
   data: function data() {
     return {
+      imageTypes: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'],
       total_ave: 0,
       total_comp: 0,
       displayModal: false,
       displayModalMOV: false,
-      opcr_id: null,
+      displaySideModal: false,
+      showImageModal: false,
+      opcr_rating_id: null,
       movs: [],
       // total_divisor: 0,
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.useForm)({
-        opcrs: [],
-        file: null,
-        files: [],
-        file_ids: []
-      })
+        opcrs: []
+      }),
+      file: null,
+      files: [],
+      file_ids: [],
+      current_filepath: null
     };
   },
   computed: {},
@@ -62,7 +70,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_3__["default"],
     Filtering: _Shared_Filter__WEBPACK_IMPORTED_MODULE_2__["default"],
     Modal: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_4__["default"],
-    ModalMOV: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_4__["default"]
+    ModalMOV: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_4__["default"],
+    SideModal: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   // beforeMount() {
   //     this.form.opcrs = this.opcrs
@@ -338,7 +347,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 // alert(id)
-                _this.opcr_id = id;
+                _this.opcr_rating_id = id;
                 url = '/movs/get/mov/' + id; // let url = '/monthly-details/monthly/accomplishments/object/' + empl_id + '/' + sem + '/' + e_year + '/' + idsemestral + '/' + my_month;
                 // alert(empl_id);
 
@@ -359,6 +368,70 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    // async uploadFiles(){
+    //     const payload = {
+    //         file: this.file,
+    //         files: this.files,
+    //         // skills: ["Vue", "Laravel", "MySQL"]
+    //     }
+    //     await axios.post('/movs/save/'+this.opcr_rating_id+'/'+this.opcr_id, payload)
+    // },
+    uploadFiles: function uploadFiles() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var formData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                formData = new FormData(); // Single file (optional)
+
+                if (_this2.file) {
+                  formData.append("file", _this2.file);
+                } // Multiple files
+
+
+                if (_this2.files && _this2.files.length > 0) {
+                  // this.files.forEach((f, i) => {
+                  //     formData.append("files[]", f); // use files[] so Laravel can treat it as an array
+                  // });
+                  _this2.files.forEach(function (f) {
+                    formData.append("files[]", f);
+                  });
+                }
+
+                _context2.next = 5;
+                return axios.post("/movs/save/".concat(_this2.opcr_rating_id, "/").concat(_this2.opcr_id), formData, {
+                  headers: {
+                    "Content-Type": "multipart/form-data"
+                  }
+                }).then(function (response) {
+                  console.log("Upload success:", response.data);
+
+                  _this2.showModalMOV(_this2.opcr_rating_id);
+                })["catch"](function (error) {
+                  var _error$response;
+
+                  console.error("Upload error:", ((_error$response = error.response) === null || _error$response === void 0 ? void 0 : _error$response.data) || error);
+                });
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    handleFiles: function handleFiles(event) {
+      // this.form.files = Array.from(event.target.files); // Store selected files
+      var filesArray = Array.from(event.target.files);
+      console.log(filesArray); // check if files are here
+
+      this.files = Array.from(event.target.files);
+      console.log(this.files); // check if files are here
     },
     viewlink: function viewlink() {
       var tot = this.getTotalAverage();
@@ -384,9 +457,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     isPA: function isPA(opcr_date, type) {
       if (!opcr_date || !type) return false;
       var year = parseInt(opcr_date.match(/\d{4}/)[0]);
-      var isFirstSem = opcr_date.includes("JANUARY");
-      console.log(opcr_date);
-      console.log("Year: " + year + " isFirstSem: " + isFirstSem + " type: " + type);
+      var isFirstSem = opcr_date.includes("JANUARY"); // console.log(opcr_date)
+      // console.log("Year: " + year + " isFirstSem: " + isFirstSem + " type: " + type);
 
       if (type === "PA 1") {
         return year < 2025 || year === 2025 && isFirstSem;
@@ -395,14 +467,212 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return false;
-    } // adjustTextareaHeight() {
+    },
+    // adjustTextareaHeight() {
     //     const textarea = this.$refs.textarea;
     //     if (textarea) {
     //         const rowHeight = textarea.parentNode.offsetHeight; // Height of the table row
     //         textarea.style.height = rowHeight + 'px';
     //     }
     // }
+    // DELETE MULTIPLE
+    toggleFileSelection: function toggleFileSelection(fileId, event) {
+      if (event.target.checked) {
+        if (!this.file_ids.includes(fileId)) {
+          this.file_ids.push(fileId);
+        }
+      } else {
+        this.file_ids = this.file_ids.filter(function (id) {
+          return id !== fileId;
+        });
+      }
+    },
+    deleteFile: function deleteFile(id) {
+      if (confirm('Are you sure you want to delete this file?')) {
+        // axios.delete(`/file-upload/${id}`)
+        // .then(() => {
+        //   files = files.filter(file => file.id !== id) // manually remove from UI
+        // })
+        // .catch(() => {
+        //   alert('Error deleting file')
+        // })
+        this.$inertia["delete"]("/file-upload/".concat(id), {
+          preserveScroll: true,
+          onSuccess: function onSuccess() {
+            console.log('File deleted successfully');
+          },
+          onError: function onError() {
+            console.error('Error deleting file');
+          }
+        });
+      }
+    },
+    deleteFiles: function deleteFiles() {
+      var _this3 = this;
 
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (_this3.file_ids.length) {
+                  _context3.next = 3;
+                  break;
+                }
+
+                alert("No files selected for deletion");
+                return _context3.abrupt("return");
+
+              case 3:
+                if (confirm("Are you sure you want to delete selected files?")) {
+                  _context3.next = 5;
+                  break;
+                }
+
+                return _context3.abrupt("return");
+
+              case 5:
+                _context3.prev = 5;
+                _context3.next = 8;
+                return axios["delete"]("/file-upload/delete-multiple/many", {
+                  data: {
+                    file_ids: _this3.file_ids
+                  }
+                });
+
+              case 8:
+                // Remove deleted files from table without reloading
+                _this3.movs.data = _this3.movs.data.filter(function (file) {
+                  return !_this3.file_ids.includes(file.id);
+                }); // Clear selected IDs
+
+                _this3.file_ids = [];
+                alert("Files deleted successfully");
+                window.location.reload();
+                _context3.next = 18;
+                break;
+
+              case 14:
+                _context3.prev = 14;
+                _context3.t0 = _context3["catch"](5);
+                console.error(_context3.t0);
+                alert("Failed to delete files");
+
+              case 18:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[5, 14]]);
+      }))();
+    },
+    // FOIR PREVIEWS
+    isPreviewable: function isPreviewable(filename) {
+      // const ext = filename.split('.').pop().toLowerCase()
+      var ext = filename; // 'jpg', 'jpeg', 'png', 'gif',
+
+      return ['pdf', 'doc', 'docx', 'dot', 'dotx', 'dotm', 'xls', 'xlsx', 'xlsm', 'xlsb', 'xlt', 'xltx', 'xltm', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'mp3', 'mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'].includes(ext);
+    },
+    previewFile: function previewFile(file) {
+      var imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+      var multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3']; // alert("previewFile " + this.disk + " "+file.file_type)
+      // console.log(this.fileBaseUrl)
+
+      this.current_filepath = file.filepath;
+
+      if (this.disk === 'public') {
+        var _file$file_type, _file$file_type2;
+
+        // alert("PUBLIC")
+        this.view_link = window.location.origin + "/storage/" + file.filepath;
+
+        if (imageTypes.includes((_file$file_type = file.file_type) === null || _file$file_type === void 0 ? void 0 : _file$file_type.toLowerCase()) || multimediaTypes.includes((_file$file_type2 = file.file_type) === null || _file$file_type2 === void 0 ? void 0 : _file$file_type2.toLowerCase())) {
+          // Directly open images in a new tab
+          // this.openImageModal()
+          this.displaySideModal = true; // window.open(this.view_link, '_blank');
+          //
+
+          return;
+        }
+
+        if (this.isPreviewable(file.file_type)) {
+          this.displaySideModal = true;
+          this.file_extension = file.file_type; // this.view_link = "http://122.53.120.18:8067/images/"+file.filepath
+          // window.open(file.file_url, '_blank')
+        } else {
+          alert('This file type cannot be previewed.');
+        }
+      } else {
+        var _file$file_type3, _file$file_type4;
+
+        if (imageTypes.includes((_file$file_type3 = file.file_type) === null || _file$file_type3 === void 0 ? void 0 : _file$file_type3.toLowerCase()) || multimediaTypes.includes((_file$file_type4 = file.file_type) === null || _file$file_type4 === void 0 ? void 0 : _file$file_type4.toLowerCase())) {
+          // Directly open images in a new tab
+          window.open("http://122.53.120.18:8067/images/".concat(file.filepath), '_blank');
+          return;
+        }
+
+        if (this.isPreviewable(file.file_type)) {
+          this.displaySideModal = true;
+          this.file_extension = file.file_type;
+          this.view_link = "http://122.53.120.18:8067/images/" + file.filepath; // window.open(file.file_url, '_blank')
+        } else {
+          alert('This file type cannot be previewed.');
+        }
+      }
+    },
+    // TOGGLE SELECT
+    toggleSelectAll: function toggleSelectAll(event) {
+      if (event.target.checked) {
+        // Add all file IDs
+        this.file_ids = this.movs.map(function (file) {
+          return file.id;
+        });
+      } else {
+        // Remove all file IDs
+        this.file_ids = [];
+      }
+    },
+    //ICON
+    getFileIcon: function getFileIcon(file) {
+      if (!(file !== null && file !== void 0 && file.file_type)) {
+        return '/images/icons/file.png'; // default if missing type
+      }
+
+      var type = file.file_type.toLowerCase();
+      var excelTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xlt', 'xltx', 'xltm'];
+      var wordTypes = ['doc', 'docx', 'dot', 'dotx', 'dotm'];
+      var imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+      var pptTypes = ['ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'];
+      var multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];
+
+      if (excelTypes.includes(type)) {
+        return '/images/icons/excel.png';
+      } else if (type === 'pdf') {
+        return '/images/icons/pdf.png';
+      } else if (wordTypes.includes(type)) {
+        return '/images/icons/word.png';
+      } else if (pptTypes.includes(type)) {
+        return '/images/icons/ppt.png';
+      } else if (multimediaTypes.includes(type)) {
+        return '/images/icons/video.png';
+      } else if (imageTypes.includes(type)) {
+        if (this.disk === 'public') {
+          return window.location.origin + "/storage/" + file.filepath;
+        } else {
+          return "/images/".concat(file.filepath);
+        }
+      } else {
+        return '/images/icons/file.png'; // default icon
+      }
+    },
+    //IMAGE MODAL
+    openImageModal: function openImageModal() {
+      alert("open image modal");
+      this.showImageModal = true;
+    },
+    closeImageModal: function closeImageModal() {
+      this.showImageModal = false;
+    }
   }
 });
 
@@ -760,19 +1030,150 @@ var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_63 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  type: "submit",
-  "class": "btn btn-primary text-white"
-}, "Upload", -1
+var _hoisted_63 = {
+  "class": "row gap-20 masonry pos-r"
+};
+var _hoisted_64 = {
+  "class": "masonry-item w-100"
+};
+var _hoisted_65 = {
+  "class": "peer"
+};
+var _hoisted_66 = ["disabled"];
+var _hoisted_67 = {
+  "class": "peers mb-12"
+};
+var _hoisted_68 = {
+  "class": "col-md-6"
+};
+var _hoisted_69 = {
+  key: 0
+};
+
+var _hoisted_70 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "File Name"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "File Type")], -1
 /* HOISTED */
 );
 
+var _hoisted_71 = ["src"];
+var _hoisted_72 = {
+  "class": "col-md-6"
+};
+var _hoisted_73 = {
+  name: "tabel",
+  "class": "table table-hover table-striped"
+};
+var _hoisted_74 = ["checked"];
+
+var _hoisted_75 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_76 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "File Name", -1
+/* HOISTED */
+);
+
+var _hoisted_77 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "File Size", -1
+/* HOISTED */
+);
+
+var _hoisted_78 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Actions", -1
+/* HOISTED */
+);
+
+var _hoisted_79 = ["value", "onChange"];
+var _hoisted_80 = ["src"];
+var _hoisted_81 = ["onClick"];
+
+var _hoisted_82 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "20",
+  height: "20",
+  fill: "blue",
+  "class": "bi bi-eye-fill",
+  viewBox: "0 0 16 16"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_83 = [_hoisted_82];
+var _hoisted_84 = ["href"];
+
+var _hoisted_85 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "20",
+  height: "20",
+  fill: "green",
+  "class": "bi bi-cloud-arrow-down-fill",
+  viewBox: "0 0 16 16"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_86 = [_hoisted_85];
+var _hoisted_87 = ["onClick"];
+
+var _hoisted_88 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "20",
+  height: "20",
+  fill: "red",
+  "class": "bi bi-trash-fill",
+  viewBox: "0 0 16 16"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_89 = [_hoisted_88];
+
+var _hoisted_90 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
+  "class": "text-lg font-semibold"
+}, "Preview SideModal", -1
+/* HOISTED */
+);
+
+var _hoisted_91 = {
+  key: 0
+};
+var _hoisted_92 = {
+  key: 0
+};
+var _hoisted_93 = ["src"];
+var _hoisted_94 = ["src"];
+var _hoisted_95 = {
+  key: 2
+};
+var _hoisted_96 = ["src"];
+var _hoisted_97 = {
+  key: 1
+};
+var _hoisted_98 = {
+  key: 0
+};
+var _hoisted_99 = ["src"];
+var _hoisted_100 = {
+  key: 1
+};
+var _hoisted_101 = ["src"];
+var _hoisted_102 = {
+  key: 2
+};
+var _hoisted_103 = ["src"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
   var _component_Modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal");
+
+  var _component_SideModal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SideModal");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Head, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -991,41 +1392,189 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onCloseModalEvent: $options.hideModalMOV
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Means of Verification " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_id), 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_63, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_65, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        onClick: _cache[4] || (_cache[4] = function () {
+          return $options.deleteFiles && $options.deleteFiles.apply($options, arguments);
+        }),
+        "class": "btn btn-danger btn-sm mL-2 text-white",
+        disabled: !$data.file_ids.length
+      }, " Delete Selected ", 8
+      /* PROPS */
+      , _hoisted_66)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Means of Verification " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_rating_id) + " -- " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.opcr_id), 1
       /* TEXT */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-        onSubmit: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-          return _ctx.uploadFiles && _ctx.uploadFiles.apply(_ctx, arguments);
-        }, ["prevent"])),
-        enctype: "multipart/form-data",
-        "class": "mb-6"
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" enctype=\"multipart/form-data\"  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_67, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_68, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         type: "file",
         multiple: "",
-        onChange: _cache[4] || (_cache[4] = function () {
-          return _ctx.handleFiles && _ctx.handleFiles.apply(_ctx, arguments);
+        onChange: _cache[5] || (_cache[5] = function () {
+          return $options.handleFiles && $options.handleFiles.apply($options, arguments);
         }),
         ref: "fileInput"
       }, null, 544
       /* HYDRATE_EVENTS, NEED_PATCH */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" @click=\"uploadFiles\"  "), _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" @click=\"uploadFiles\"  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         type: "button",
-        onClick: _cache[5] || (_cache[5] = function () {
+        onClick: _cache[6] || (_cache[6] = function () {
+          return $options.uploadFiles && $options.uploadFiles.apply($options, arguments);
+        }),
+        "class": "btn btn-primary text-white"
+      }, "Upload"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        type: "button",
+        onClick: _cache[7] || (_cache[7] = function () {
           return _ctx.cancelFiles && _ctx.cancelFiles.apply(_ctx, arguments);
         }),
         "class": "btn btn-danger text-white"
-      }, "Cancel ")])], 32
-      /* HYDRATE_EVENTS */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, " movs: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.movs), 1
-      /* TEXT */
-      )];
+      }, "Cancel ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [$data.files.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_69, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [_hoisted_70, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.files, function (file, index) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+          key: index
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ file }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ getPreUploadFileIcon(file.name.split('.').pop()) }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+          src: _ctx.getPreUploadFileIcon(file.name.split('.').pop()),
+          alt: "file preview",
+          style: {
+            "width": "30px",
+            "height": "30px",
+            "object-fit": "cover"
+          }
+        }, null, 8
+        /* PROPS */
+        , _hoisted_71)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(file.name) + " ", 1
+        /* TEXT */
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(file.name.split('.').pop()) + " ", 1
+        /* TEXT */
+        )]);
+      }), 128
+      /* KEYED_FRAGMENT */
+      ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_72, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_73, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "checkbox",
+        checked: _ctx.allSelected,
+        onChange: _cache[8] || (_cache[8] = function ($event) {
+          return $options.toggleSelectAll($event);
+        })
+      }, null, 40
+      /* PROPS, HYDRATE_EVENTS */
+      , _hoisted_74)]), _hoisted_75, _hoisted_76, _hoisted_77, _hoisted_78])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.movs, function (file) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+          key: file.id
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+          type: "checkbox",
+          value: file.id,
+          onChange: function onChange($event) {
+            return $options.toggleFileSelection(file.id, $event);
+          },
+          "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+            return $data.file_ids = $event;
+          })
+        }, null, 40
+        /* PROPS, HYDRATE_EVENTS */
+        , _hoisted_79), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.file_ids]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+          src: $options.getFileIcon(file),
+          alt: "file preview",
+          style: {
+            "width": "30px",
+            "height": "30px",
+            "object-fit": "cover"
+          }
+        }, null, 8
+        /* PROPS */
+        , _hoisted_80)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(file.filename), 1
+        /* TEXT */
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number(file.file_size / 1024, 2, true)) + " KB ", 1
+        /* TEXT */
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button @click=\"previewFile(file)\" class=\"btn btn-primary text-white\">Preview</button>&nbsp; "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /files/proxy-download "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" target=\"_blank\" rel=\"noopener noreferrer\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a :href=\"`http://122.53.120.18:8067/images/${file.filename}`\" class=\"btn btn-success\">Download</a>&nbsp; "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" http://122.53.120.18:8067/images/{{file.filename}} - /file-upload/download/ "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p> http://192.168.80.89:8073//file-upload/download/{{file.id}}</p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+          onClick: function onClick($event) {
+            return $options.previewFile(file);
+          },
+          "class": "p-1 rounded hover:bg-blue-100",
+          title: "Preview"
+        }, _hoisted_83, 8
+        /* PROPS */
+        , _hoisted_81), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+          href: "/file-upload/download/".concat(file.id),
+          download: "",
+          "class": "inline-flex items-center",
+          title: "Download"
+        }, _hoisted_86, 8
+        /* PROPS */
+        , _hoisted_84), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a\n                            :href=\"`/file-upload/download/${file.id}`\"\n                            class=\"btn btn-success\"\n                            download\n                            >\n                            Download\n                            </a>&nbsp; "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\n                            @click=\"deleteFile(file.id)\"\n                            class=\"btn btn-danger text-white\">\n                            Delete\n                            </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+          onClick: function onClick($event) {
+            return $options.deleteFile(file.id);
+          },
+          "class": "p-1 rounded-full hover:bg-red-100 focus:outline-none",
+          "data-toggle": "tooltip",
+          title: "Delete"
+        }, _hoisted_89, 8
+        /* PROPS */
+        , _hoisted_87), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\n                            @click=\"deleteFile(file.id)\"\n                            class=\"p-1 rounded hover:bg-red-100\"\n                            title=\"Delete\"\n                            >\n                            <svg\n                                xmlns=\"http://www.w3.org/2000/svg\"\n                                width=\"20\"\n                                height=\"20\"\n                                fill=\"red\"\n                                class=\"bi bi-trash-fill\"\n                                viewBox=\"0 0 16 16\"\n                            >\n                                <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\n                            </svg>\n                            </button> ")])]);
+      }), 128
+      /* KEYED_FRAGMENT */
+      ))])])])])];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 64
+  , ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" @closeFilter=\"displaySideModal = false\" "), $data.displaySideModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_SideModal, {
+    key: 2,
+    onCloseModalEvent: _cache[12] || (_cache[12] = function ($event) {
+      return $data.displaySideModal = false;
+    }),
+    style: {
+      "z-index": "9999"
+    }
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_90, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" file_extension: {{ file_extension }} -- {{ view_link }} -- {{ disk }} "), $props.disk === 'public' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_91, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <iframe v-if=\"file_extension === 'pdf'\"\n                    :src=\"`/storage/${current_filepath}`\"\n                    width=\"100%\"\n                    height=\"500px\">\n                </iframe> "), _ctx.file_extension === 'pdf' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_92, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+        src: _ctx.view_link,
+        width: "100%",
+        height: "500px"
+      }, "\n                    ", 8
+      /* PROPS */
+      , _hoisted_93)])) : $data.imageTypes.includes(_ctx.file_extension) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+        key: 1
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" .toLowerCase() "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Image siya "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+        src: _ctx.view_link,
+        alt: "preview",
+        "class": "max-w-full max-h-[500px] cursor-pointer",
+        onClick: _cache[10] || (_cache[10] = function () {
+          return _ctx.openModal && _ctx.openModal.apply(_ctx, arguments);
+        })
+      }, null, 8
+      /* PROPS */
+      , _hoisted_94)])], 2112
+      /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
+      )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_95, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+        src: "https://docs.google.com/gview?url=".concat(encodeURIComponent(_ctx.view_link), "&embedded=true"),
+        width: "100%",
+        height: "600"
+      }, "\n                    ", 8
+      /* PROPS */
+      , _hoisted_96)]))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_97, [_ctx.file_extension === 'pdf' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_98, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+        src: _ctx.view_link,
+        width: "100%",
+        height: "500px"
+      }, "\n                    ", 8
+      /* PROPS */
+      , _hoisted_99)])) : $data.imageTypes.includes(_ctx.file_extension.toLowerCase()) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_100, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Image siya "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+        src: _ctx.view_link,
+        alt: "preview",
+        "class": "max-w-full max-h-[500px] cursor-pointer",
+        onClick: _cache[11] || (_cache[11] = function () {
+          return _ctx.openModal && _ctx.openModal.apply(_ctx, arguments);
+        })
+      }, null, 8
+      /* PROPS */
+      , _hoisted_101)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_102, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+        src: "https://docs.google.com/gview?url=".concat(encodeURIComponent(_ctx.view_link), "&embedded=true"),
+        width: "100%",
+        height: "600"
+      }, "\n                    ", 8
+      /* PROPS */
+      , _hoisted_103)]))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <br>\n            <iframe :src=\"`/storage/${current_filepath}`\"></iframe>\n            <br>\n            <a :href=\"`/storage/${current_filepath}`\" target=\"_blank\">\n                Open File\n            </a> ")];
+    }),
+    _: 1
+    /* STABLE */
+
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("IMAGE MODAL ************************************************************"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Fullscreen Modal ")])], 64
   /* STABLE_FRAGMENT */
   );
 }
