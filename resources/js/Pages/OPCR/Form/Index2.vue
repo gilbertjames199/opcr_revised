@@ -328,8 +328,8 @@
                                 <!-- <p> http://192.168.80.89:8073//file-upload/download/{{file.id}}</p> -->
                                 <button
                                 @click="previewFile(file)"
-                                class="p-1 rounded hover:bg-blue-100"
-                                title="Preview"
+                                class="p-1 rounded hover:bg-blue-100 border-0"
+                                title="Preview here"
                                 >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -376,7 +376,7 @@
                                 </button> -->
                                 <button
                                 @click="deleteFile(file.id)"
-                                class="p-1 rounded-full hover:bg-red-100 focus:outline-none"
+                                class="p-1 rounded-full hover:bg-red-100 border-0"
                                 data-toggle="tooltip"
                                 title="Delete"
                                 >
