@@ -183,7 +183,7 @@ class MeansOfVerificationController extends Controller
         //     abort(404);
         // }
 
-        $disk = app()->environment('production') ? 'custom_uploads' : 'public';
+        $disk = app()->environment('local') ? 'public' : 'custom_uploads';
 
         if($disk=="public"){
             $fullPath = storage_path("app/public/{$file_path}");
