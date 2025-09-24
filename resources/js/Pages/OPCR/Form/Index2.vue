@@ -1063,7 +1063,8 @@ export default {
                 if(this.disk==='public'){
                     return window.location.origin + "/storage/" + file.filepath;
                 }else{
-                    return `http://122.53.120.18:8067/images/${file.filepath}`;
+                    // return `http://122.53.120.18:8067/images/${file.filepath}`;
+                    return '/images/icons/file.png';
                 }
 
             }
