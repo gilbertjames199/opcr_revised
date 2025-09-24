@@ -1064,7 +1064,7 @@ export default {
                     return window.location.origin + "/storage/" + file.filepath;
                 }else{
                     // return `http://122.53.120.18:8067/images/${file.filepath}`;
-                    return '/images/icons/file.png';
+                    return `/images/icons/images.png`;
                 }
 
             }
