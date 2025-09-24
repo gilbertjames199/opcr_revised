@@ -810,6 +810,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/get/mov/{opcr_id}',[MeansOfVerificationController::class,'get_mov']);
         Route::post('/save/{opcr_id}/{opcr_list_id}',[MeansOfVerificationController::class,'store']);
         Route::delete('/delete-multiple/many', [MeansOfVerificationController::class, 'destroyMultiple']);
+        Route::get('/download/{id}', [MeansOfVerificationController::class, 'download1']);
         // file-upload/delete-multiple/many
     });
     //OPCR List

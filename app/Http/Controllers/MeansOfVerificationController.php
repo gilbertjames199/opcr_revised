@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MeansOfVerification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class MeansOfVerificationController extends Controller
@@ -168,5 +169,59 @@ class MeansOfVerificationController extends Controller
         return response()->json(['message' => 'Files deleted successfully.'], 200);
 
         // return redirect('/file-upload')->with('success', 'Files deleted successfully.');
+    }
+
+    public function download1($id)
+    {
+        $file = MeansOfVerification::findOrFail($id);
+        $filename = $file->filename;
+        $file_path = $file->filepath;
+        // dd($filename);
+        // $filePath = "http://122.53.120.18:8067/images/{$file_path}";
+        // // dd($filePath);
+        // if (!file_exists($filePath)) {
+        //     abort(404);
+        // }
+
+        $disk = app()->environment('production') ? 'custom_uploads' : 'public';
+
+        if($disk=="public"){
+            $fullPath = storage_path("app/public/{$file_path}");
+
+            if (!file_exists($fullPath)) {
+                abort(404, 'File not found in local storage');
+            }
+
+            return response()->download($fullPath, $filename);
+            // dd($file, $id, $disk, "public");
+        }else{
+            $$remoteUrl = "http://122.53.120.18:8067/images/{$file_path}";
+
+            $response = Http::get($remoteUrl);
+
+            if ($response->failed()) {
+                abort(404, 'File not found on remote server');
+            }
+
+            return response($response->body(), 200)
+                ->header('Content-Type', $response->header('Content-Type') ?? 'application/octet-stream')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        }
+
+
+        // $response = Http::get($remoteUrl);
+
+        // if ($response->failed()) {
+        //     // abort(404, 'File not found on remote server');
+        //     dd("File not found on remote server");
+        // }
+
+        // // return response()->download($filePath, $filename, [
+        // //     'Content-Type' => mime_content_type($filePath),
+        // //     'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        // // ]);
+        // return response($response->body(), 200)
+        //     ->header('Content-Type', $response->header('Content-Type') ?? 'application/octet-stream')
+        //     ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 }
