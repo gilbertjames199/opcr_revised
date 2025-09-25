@@ -260,7 +260,9 @@
                         <button type="button" @click="cancelFiles" class="btn btn-danger text-white">Cancel </button>
                     </div>
                     <p>
+
                         <div v-if="files.length>0">
+                            <h3>Selected Files (Pending Upload)</h3>
                             <table >
                                 <thead>
                                     <th></th>
@@ -281,13 +283,17 @@
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <button
-                    @click="deleteFiles"
-                    class="btn btn-danger btn-sm mL-2 text-white"
-                    :disabled="!file_ids.length"
-                    >
-                    Delete Selected
-                    </button>
+                    <div class="peers">
+                        <h5>Files Uploaded</h5>&nbsp;
+                        <button
+                            @click="deleteFiles"
+                            class="btn btn-danger btn-sm mL-2 text-white"
+                            :disabled="!file_ids.length"
+                            >
+                            Delete Selected
+                        </button>
+                    </div>
+
                     <table name="tabel" class="table table-hover table-striped">
                         <thead>
                             <tr>
@@ -295,6 +301,7 @@
                                 <input
                                 type="checkbox"
                                 :checked="allSelected"
+                                v-model="allSelected"
                                 @change="toggleSelectAll($event)"
                                 />
                             </th>
@@ -329,7 +336,7 @@
                                 <button
                                     @click="previewFile(file)"
                                     class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
-                                    title="Preview here"
+                                    title="Preview"
                                     >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -494,7 +501,7 @@
         <!-- Fullscreen Modal -->
 
     </div>
-    disk: {{ disk }}
+    <!-- disk: {{ disk }} -->
 </template>
 <script>
 // FilterModal
@@ -541,6 +548,7 @@ export default {
             files: [],
             file_ids: [],
             current_filepath: null,
+            allSelected: false,
         }
     },
     computed: {
@@ -816,6 +824,14 @@ export default {
         //     await axios.post('/movs/save/'+this.opcr_rating_id+'/'+this.opcr_id, payload)
         // },
         async uploadFiles() {
+            if (this.files && this.files.length < 1) {
+                alert("No file chosen.")
+                return
+            }
+            if (!confirm("Are you sure you want to upload selected files?")) {
+                return;
+            }
+
             let formData = new FormData();
 
             // Single file (optional)
@@ -847,9 +863,16 @@ export default {
                 this.showModalMOV(this.opcr_rating_id);
                 this.files=[]
             })
+            .finally(response=> {
+                this.cancelFiles();
+            })
             .catch(error => {
                 console.error("Upload error:", error.response?.data || error);
             });
+        },
+        cancelFiles() {
+            this.files = [];                  // Clear the files array
+            this.$refs.fileInput.value = null;    // Reset the file input visually
         },
         handleFiles(event) {
             // this.form.files = Array.from(event.target.files); // Store selected files
@@ -944,6 +967,9 @@ export default {
                 }).then(response => {
                     console.log("Files deleted successfully", response.data);
                     this.showModalMOV(this.opcr_rating_id);
+                }).finally(response=>{
+                    this.file_ids = [];
+                    this.allSelected=false;
                 })
                 .catch(error => {
                     console.error("Failed to delete files", error.response?.data || error);
@@ -955,7 +981,6 @@ export default {
                 // );
 
                 // Clear selected IDs
-                this.file_ids = [];
 
                 // alert("Files deleted successfully");
                 // this.showModalMOV(this.opcr_rating_id)
@@ -987,8 +1012,8 @@ export default {
                 if (imageTypes.includes(file.file_type?.toLowerCase()) || multimediaTypes.includes(file.file_type?.toLowerCase())) {
                     // Directly open images in a new tab
                     // this.openImageModal()
-                    this.displaySideModal = true
-                    // window.open(this.view_link, '_blank');
+                    // this.displaySideModal = true
+                    window.open(this.view_link, '_blank');
                     //
                     return;
                 }
