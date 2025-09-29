@@ -10,7 +10,7 @@ class OpcrTarget extends Model
     use HasFactory;
     protected $connection = "mysql";
     protected $table = 'opcr_targets';
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function paps()
     {
@@ -29,5 +29,10 @@ class OpcrTarget extends Model
     public function opcr_rating()
     {
         return $this->hasOne(OfficePerformanceCommitmentRating::class, 'id_opcr_target', 'id');
+    }
+
+    public function opcr_rating2()
+    {
+        return $this->hasMany(OfficePerformanceCommitmentRating::class, 'id_paps', 'idpaps');
     }
 }

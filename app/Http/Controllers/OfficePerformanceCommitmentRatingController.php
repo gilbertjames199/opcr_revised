@@ -334,9 +334,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
         $start = $dateStart->format('F');
         $end = $dateEnd->format('F Y');
+        $rating_status = $my_opcr->rating_status;
         $opcr_date = $start . " to " . $end;
         $opcr_date = Str::upper($opcr_date);
-        //dd($opcr_date);
+        // dd($opcr_date);
         //$date_now = Carbon::now()->format('F d, Y');
 
         $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
@@ -370,6 +371,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             "FFUNCCOD" => $FFUNCCOD,
             'fileBaseUrl' => $baseUrl,
             'disk'=>$disk,
+            "rating_status"=> $rating_status,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -915,6 +917,29 @@ class OfficePerformanceCommitmentRatingController extends Controller
         ]);
     }
 
+    //SUBMIT/RECALL OPCR RATINGS
+    public function submit_recall(Request $request, $opcr_id){
+        $opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+        $curr_stat  = $request->input('data.curr_stat');
+        $staged_for = $request->input('data.staged_for');
+        if($opcr){
+            // dd($opcr, $request->data['curr_stat']);
+            $opcr->rating_status = $staged_for;
+            $opcr->save();
+            // Prepare message
+            if ($curr_stat == -1) {
+                $message = "OPCR submitted";
+            } elseif ($curr_stat == 0 && $staged_for == -1) {
+                $message = "OPCR submission recalled successfully";
+            } else {
+                $message = "Rating status updated";
+            }
+            return redirect()->back()->with('message', $message);
+        }else{
+            return redirect()->back()->with('error','OPCR Not found!!!');
+        }
+        // dd($opcr_id);
+    }
     //PRINT ACCOMPLISHMENTS
     public function print_accomplishment(Request $request)
     {

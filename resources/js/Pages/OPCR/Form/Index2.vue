@@ -4,7 +4,7 @@
         <title>OPCR</title>
     </Head>
 
-    <div class="row gap-20 masonry pos-r">
+    <div class="row gap-10 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>OFFICE PERFORMANCE COMMITMENT AND RATING FORM </h3>
 
@@ -31,13 +31,14 @@
         <div class="masonry-sizer col-md-6">
             <h5>PERIOD: <u>{{ opcr_date }}</u></h5>
         </div>
-        <div class="masonry-item w-100">
-            <div class="row gap-20"></div>
+        <div class="col-12">
+            <!-- <div class="row gap-20"></div> -->
             <div class="bgc-white p-20 bd">
-                <div class="table-responsive">
-                    <form @submit.prevent="submit()">
+                <!-- style="overflow-x: auto; display: block; align-items-center width: 100%; -webkit-overflow-scrolling: touch;" -->
+                <form @submit.prevent="submit()">
+                    <div class="table-responsive">
                         <table class="table table-hover table-bordered border-dark">
-                            <thead class="text-center align-items-center">
+                            <thead class="text-center ">
                                 <tr class="bg-secondary text-white">
                                     <th rowspan="2">Major Final Output</th>
                                     <th rowspan="2">Success Indicators (Targets + Measures)</th>
@@ -158,9 +159,10 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </form>
 
-                </div>
+
+                    </div>
+                </form>
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered border-dark">
                         <tbody>
@@ -200,7 +202,20 @@
                         <button type="button" class="btn btn-success mt-3 text-white" @click="showModal()"
                             :disabled="form.processing">
                             Print
-                        </button>
+                        </button>&nbsp;
+                        <span v-if="rating_status_dt==-1 || rating_status_dt==-2">
+                            <button type="button" class="btn btn-primary mt-3 text-white" @click="submitRecallRating(-1,0,'Successfully submitted OPCR', 'Are you sure you want to submit this OPCR')"
+                            :disabled="form.processing" >
+                                Submit
+                            </button>&nbsp;
+                        </span>
+                        <span v-if="rating_status_dt==0">
+                            <button type="button" class="btn btn-secondary mt-3 text-white" @click="submitRecallRating(0,-1, 'Successfully recalled OPCR submission', 'Are you sure you want to recall the submission of this OPCR')"
+                                :disabled="form.processing" >
+                                Recall
+                            </button>&nbsp;
+                        </span>
+
                         <!-- <pagination :next="data.next_page_url" :prev="data.prev_page_url" /> -->
                     </div>
                 </div>
@@ -245,10 +260,9 @@
             </div>
         </Modal>
         <ModalMOV v-if="displayModalMOV" @close-modal-event="hideModalMOV" title="Means of Verification">
-
             <!-- <h1>Means of Verification </h1> -->
              <div class="peers mb-12">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <input
                     type="file"
                     multiple
@@ -271,9 +285,7 @@
                                 </thead>
                                 <tr v-for="(file, index) in files" :key="index">
                                     <td>
-                                        <!-- {{ file }} -->
-                                    <!-- {{ getPreUploadFileIcon(file.name.split('.').pop()) }} -->
-                                    <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
+                                        <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
                                     </td>
                                     <td>{{ file.name }}&nbsp;</td>
                                     <td>{{ file.name.split('.').pop() }}&nbsp;</td>
@@ -282,7 +294,7 @@
                         </div>
                     </p>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <div class="peers">
                         <h5>Files Uploaded</h5>&nbsp;
                         <button
@@ -293,7 +305,12 @@
                             Delete Selected
                         </button>
                     </div>
-
+                    <!-- <button @click="previewFile(file)" class="btn btn-primary text-white">Preview</button>&nbsp; -->
+                    <!-- /files/proxy-download -->
+                    <!-- target="_blank" rel="noopener noreferrer" -->
+                    <!-- <a :href="`http://122.53.120.18:8067/images/${file.filename}`" class="btn btn-success">Download</a>&nbsp; -->
+                    <!-- http://122.53.120.18:8067/images/{{file.filename}} - /file-upload/download/ -->
+                    <!-- <p> http://192.168.80.89:8073//file-upload/download/{{file.id}}</p> -->
                     <table name="tabel" class="table table-hover table-striped">
                         <thead>
                             <tr>
@@ -313,112 +330,103 @@
                         </thead>
                         <tbody>
                             <tr v-for="file in movs" :key="file.id">
-                            <td>
-                                <input
-                                type="checkbox"
-                                :value="file.id"
-                                @change="toggleFileSelection(file.id, $event)"
-                                v-model="file_ids"
-                                />
-                            </td>
-                            <!-- <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> -->
-                            <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
-                            </td>
-                            <td>{{ file.filename }} </td>
-                            <td>{{ format_number((file.file_size/1024),2,true) }} KB </td>
-                            <td>
-                                <!-- <button @click="previewFile(file)" class="btn btn-primary text-white">Preview</button>&nbsp; -->
-                                <!-- /files/proxy-download -->
-                                <!-- target="_blank" rel="noopener noreferrer" -->
-                                <!-- <a :href="`http://122.53.120.18:8067/images/${file.filename}`" class="btn btn-success">Download</a>&nbsp; -->
-                                <!-- http://122.53.120.18:8067/images/{{file.filename}} - /file-upload/download/ -->
-                                <!-- <p> http://192.168.80.89:8073//file-upload/download/{{file.id}}</p> -->
-                                <button
-                                    @click="previewFile(file)"
-                                    class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
-                                    title="Preview"
+                                <td>
+                                    <input
+                                    type="checkbox"
+                                    :value="file.id"
+                                    @change="toggleFileSelection(file.id, $event)"
+                                    v-model="file_ids"
+                                    />
+                                </td>
+                                <!-- <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> -->
+                                <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
+                                </td>
+                                <td>{{ file.filename }} </td>
+                                <td>{{ format_number((file.file_size/1024),2,true) }} KB </td>
+                                <td>
+                                    <button
+                                        @click="previewFile(file)"
+                                        class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
+                                        title="Preview"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="20"
+                                            height="20"
+                                            fill="blue"
+                                            class="bi bi-eye-fill"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                        </svg>
+                                    </button>&nbsp;
+                                    <!-- download -->
+                                    <a
+                                        :href="`/movs/download/${file.id}`"
+
+                                        class="inline-flex items-center"
+                                        title="Download"
+                                        target="_blank"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="20"
+                                            height="20"
+                                            fill="green"
+                                            class="bi bi-cloud-arrow-down-fill"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
+                                        </svg>
+                                    </a>&nbsp;
+
+                                    <button
+                                        @click="deleteFile(file.id)"
+                                        class="p-1 rounded-full bg-transparent hover:bg-red-100 border-0"
+                                        data-toggle="tooltip"
+                                        title="Delete"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="20"
+                                            height="20"
+                                            fill="red"
+                                            class="bi bi-trash-fill"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                        </svg>
+                                    </button>
+                                    <!-- <a
+                                    :href="`/file-upload/download/${file.id}`"
+                                    class="btn btn-success"
+                                    download
+                                    >
+                                    Download
+                                    </a>&nbsp; -->
+                                    <!-- <button
+                                    @click="deleteFile(file.id)"
+                                    class="btn btn-danger text-white">
+                                    Delete
+                                    </button> -->
+                                    <!-- <button
+                                    @click="deleteFile(file.id)"
+                                    class="p-1 rounded hover:bg-red-100"
+                                    title="Delete"
                                     >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="20"
                                         height="20"
-                                        fill="blue"
-                                        class="bi bi-eye-fill"
+                                        fill="red"
+                                        class="bi bi-trash-fill"
                                         viewBox="0 0 16 16"
                                     >
-                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
                                     </svg>
-                                </button>&nbsp;
-                                <!-- download -->
-                                <a
-                                    :href="`/movs/download/${file.id}`"
-
-                                    class="inline-flex items-center"
-                                    title="Download"
-                                    target="_blank"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        fill="green"
-                                        class="bi bi-cloud-arrow-down-fill"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
-                                    </svg>
-                                </a>&nbsp;
-
-                                <!-- <a
-                                :href="`/file-upload/download/${file.id}`"
-                                class="btn btn-success"
-                                download
-                                >
-                                Download
-                                </a>&nbsp; -->
-                                <!-- <button
-                                @click="deleteFile(file.id)"
-                                class="btn btn-danger text-white">
-                                Delete
-                                </button> -->
-                                <button
-                                @click="deleteFile(file.id)"
-                                class="p-1 rounded-full bg-transparent hover:bg-red-100 border-0"
-                                data-toggle="tooltip"
-                                title="Delete"
-                                >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    fill="red"
-                                    class="bi bi-trash-fill"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                </svg>
-                                </button>
-
-                                <!-- <button
-                                @click="deleteFile(file.id)"
-                                class="p-1 rounded hover:bg-red-100"
-                                title="Delete"
-                                >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    fill="red"
-                                    class="bi bi-trash-fill"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                </svg>
-                                </button> -->
-
-                            </td>
-
+                                    </button> -->
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -501,16 +509,17 @@
         <!-- Fullscreen Modal -->
 
     </div>
+    <!-- opcr_id: {{ opcr_id }} -->
     <!-- disk: {{ disk }} -->
 </template>
 <script>
-// FilterModal
+// FilterModal ModalDynamicTitle2
 import { useForm } from "@inertiajs/inertia-vue3";
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
 import SideModal from "@/Shared/PrintModal";
-import ModalMOV from "@/Shared/ModalDynamicTitle";
+import ModalMOV from "@/Shared/ModalDynamicTitle2";
 
 
 export default {
@@ -525,6 +534,7 @@ export default {
         dept_head: String,
         opcrs: Object,
         fileBaseUrl: String,
+        rating_status: Number,
         disk: String
     },
     data() {
@@ -549,6 +559,7 @@ export default {
             file_ids: [],
             current_filepath: null,
             allSelected: false,
+            rating_status_dt: null,
         }
     },
     computed: {
@@ -568,6 +579,7 @@ export default {
     // },
     mounted() {
         //this.adjustTextareaHeight();
+        this.rating_status_dt = this.rating_status
         this.form.opcrs = this.opcrs
         if (localStorage.getItem('reloaded')) {
             // The page was just reloaded. Clear the value from local storage
@@ -1106,6 +1118,27 @@ export default {
         },
         closeImageModal() {
             this.showImageModal = false;
+        },
+        //SUBMIT
+        async submitRecallRating(curr_stat, staged_for, staged_status, question){
+            // var staged_for = parseFloat(curr_stat)+1;
+            if (!confirm(question)) {
+                return;
+            }
+            await axios.post("/opcr/form/"+this.opcr_id+"/submit", {
+                    data: { curr_stat: curr_stat, staged_for:  staged_for}
+            }).then(response => {
+                // console.log("Files deleted successfully", response.data);
+                // this.showModalMOV(this.opcr_rating_id);
+            }).finally(response=>{
+                // this.file_ids = [];
+                // this.allSelected=false;
+                this.rating_status_dt=staged_for
+                alert(staged_status)
+            })
+            .catch(error => {
+                console.error("Failed to submit OPCR Rating Form",  error);
+            });
         }
     }
 };
@@ -1126,4 +1159,15 @@ export default {
     position: top;
     top: 240px;
 }
+
+/* force horizontal overflow for testing */
+    /* table {
+      min-width: 800px;
+    }
+    .table-responsive {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    } */
 </style>

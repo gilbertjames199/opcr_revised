@@ -13,9 +13,13 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                        <!--<p>Modal body text goes here.</p>
+                        <multiselect v-model="value" :options="options" mode="tags"/>-->
                         <slot></slot>
                         </div>
                         <div class="modal-footer" style="background-color:#090137">
+                        <!--<button type="button" class="btn btn-primary" @click="saveChanges">Save changes</button>
+                        <button type="button" class="btn btn-secondary" @click="closeModal">Close</button>-->
                         </div>
                     </div>
                 </div>
@@ -33,7 +37,13 @@
       },
       data(){
           return{
+              //my_id: this.props.userId,
               value: null,
+            //   options: [
+            //       'Batman',
+            //       'Robin',
+            //       'Joker',
+            //       ],
           }
       },
       mounted(){

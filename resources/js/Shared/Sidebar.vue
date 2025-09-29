@@ -504,23 +504,41 @@
                 </li>
 
                 <hr>
-                <li class="nav-item">
-                    <Link class="sidebar-link" href="/review-approve/targets/"
-                        :class="{ 'active': $page.url === '/review-approve/' }">
-                    <span></span>
-                    <span class="icon-holder">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-calendar-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z" />
-                        </svg>
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
-                                <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z"/>
-                            </svg> -->
-                    </span>
-                    <span class="title">Review/Approve</span>
-                    </Link>
+                <!-- department_code: {{ $page.props.auth.user.department_code }} -->
+                <li class="nav-item dropdown" v-if="$page.props.auth.user.department_code == '04' || $page.props.auth.user.department_code == '02'">
+                    <a class="dropdown-toggle" href="javascript:void(0);">
+                        <span class="icon-holder">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
+                                <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>
+                            </svg>
+                        </span>
+                        <span class="title">Review/Approve</span>
+                        <span class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <Link class="sidebar-link" href="/review-approve/targets/"
+                                :class="{ 'active': $page.url === '/review-approve/targets/' }">
+                            <span class="title">Targets</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="sidebar-link" href="/review-approve/ratings/"
+                                :class="{ 'active': $page.url === '/review-approve/ratings/' }">
+                            <span class="title">Rating</span>
+                            </Link>
+                        </li>
+
+                    </ul>
                 </li>
+
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/manual"
                         :class="{ 'active': $page.url === '/review-approve/' }">
