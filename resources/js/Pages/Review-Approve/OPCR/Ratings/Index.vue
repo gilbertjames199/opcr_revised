@@ -105,8 +105,7 @@
                 <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current.office.FFUNCTION }}</u></div>
                 <div><b>SEMESTER:&nbsp;</b><u>{{ opcr_current.semester }}</u></div>
                 <div><b>PERIOD COVERED:&nbsp;</b><u>{{ opcr_current.opcr_date }}</u></div>
-                <div><b>STATUS:&nbsp;</b><u>{{ getStatus(opcr_current.target_status) }}</u></div>
-                <!-- <div>{{ opcr_current.target_status }}</div> -->
+                <div><b>STATUS:&nbsp;</b><u>{{ getStatus(opcr_current.rating_status) }}</u></div>
             </div>
             <div class="d-flex justify-content-center">
                 <!-- <iframe :src="my_link" style="width:100%; height:500px" /> -->
@@ -297,38 +296,14 @@ export default {
 
     methods: {
 
-        showCreate() {
-            this.$inertia.get(
-                "/targets/create",
-                {
-                    raao_id: this.raao_id
-                },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        },
+
         deleteSectoral(id) {
             let text = "WARNING!\nAre you sure you want to delete the Societal Goals?" + id;
             if (confirm(text) == true) {
                 this.$inertia.delete("/Societal/" + id);
             }
         },
-        getAccomplishment(tar_id) {
-            this.$inertia.get(
-                "/accomplishments",
-                {
-                    idtarget: tar_id
-                },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        },
+
         getPercent(accomp, targqty) {
             var accSum = 0;
             accomp.forEach(myFunction);
@@ -382,8 +357,7 @@ export default {
             // var opcr_list_id_here = this.opcr_current.id;
             var url = '/review-approve/ratings/' + this.opcr_current.id + '/review';
             this.form.opcr_list_id = this.opcr_current.id;
-            let text = "WARNING!\nAre you sure you want to review the OPCR Target?";
-            // alert("/ipcrtargets/" + ipcr_id + "/"+ this.id+"/delete")
+            let text = "WARNING!\nAre you sure you want to review the OPCR?";
             if (confirm(text) == true) {
                 this.form.get(url, this.form);
             }
@@ -391,15 +365,10 @@ export default {
             this.clearForm();
         },
         approveSubmit() {
-            //  Route:: prefix('review-approve') -> group(function () {
-            //     Route:: prefix('/targets') -> group(function () {
-            //         Route:: get('/', [TargetAccomplishmentReviewApproveController:: class, 'index_target']);
-            //         Route:: get('/{opcr_list_id}/review', [TargetAccomplishmentReviewApproveController:: class, 'reviewOPCRTarget']);
-            //         Route:: get('/{opcr_list_id}/approve/opcr'
-            // alert('review-approve')
+
             var url = '/review-approve/ratings/approve/' + this.opcr_current.id + '/opcr';
             this.form.opcr_list_id = this.opcr_current.id;
-            let text = "WARNING!\nAre you sure you want to approve the IPCR Target?";
+            let text = "WARNING!\nAre you sure you want to approve the IPCR?";
             // alert(url)
             if (confirm(text) == true) {
                 this.form.post(url, this.form);
@@ -408,7 +377,6 @@ export default {
             this.clearForm();
         },
         returnSubmit() {
-            ///{opcr_list_id}/view/opcr/target/submission
             // /return/remarks / { opcr_list_id } / opcr
             var url = '/review-approve/ratings/return/remarks/' + this.opcr_current.id + '/opcr';
             this.form.opcr_list_id = this.opcr_current.id;
