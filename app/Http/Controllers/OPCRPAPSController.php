@@ -41,8 +41,9 @@ class OPCRPAPSController extends Controller
     {
 
         //dd("not direct");
+        $db2 = getDB2Name();
         $functions = $this->function
-            ->select('ff.FFUNCCOD', 'FFUNCTION')
+            ->select("{$db2}.FFUNCCOD", 'FFUNCTION')
             ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
             ->where('iduser', auth()->user()->recid)
             ->get()
@@ -86,6 +87,8 @@ class OPCRPAPSController extends Controller
         // dd(auth()->user()->department_code);
         if (auth()->user()->department_code != '04') {
         }
+        $db2 = getDB2Name();
+        // dd($db2);
         $functions = $this->function
             ->select('ff.FFUNCCOD', 'FFUNCTION')
             ->distinct('FFUNCTION');
@@ -113,7 +116,7 @@ class OPCRPAPSController extends Controller
         $mfos = MajorFinalOutput::all();
         if ($dept_code != '04') {
             $functions = clone ($functions)
-                ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
+                ->Join(DB::raw("{$db2}.functions ff"), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
                 ->where('iduser', auth()->user()->recid)
                 ->get()
                 ->map(function ($item) {
@@ -166,7 +169,7 @@ class OPCRPAPSController extends Controller
             $mfos = $mfos->whereIn('FFUNCCOD', $accessFFUNCCOD);
         } else {
             $functions = clone ($functions)
-                ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
+                ->Join(DB::raw("{$db2}.functions ff"), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod')
                 ->get()
                 ->map(function ($item) {
                     $my_year = now()->year;

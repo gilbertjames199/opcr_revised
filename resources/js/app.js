@@ -522,6 +522,41 @@ createInertiaApp({
                         const options = { year: 'numeric', month: 'long', day: '2-digit' };
                         return date.toLocaleDateString('en-US', options);
                     },
+                    getPreUploadFileIcon(file_type) {
+                        // if (!file?.file_type) {
+                        //   return '/images/icons/file.png'; // default if missing type
+                        // }
+
+                        const type = file_type.toLowerCase();
+
+                        const excelTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xlt', 'xltx', 'xltm'];
+                        const wordTypes = ['doc', 'docx', 'dot', 'dotx', 'dotm'];
+                        const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+                        const pptTypes = ['ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'];
+                        const multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];
+
+                        if (excelTypes.includes(type)) {
+                            return '/images/icons/excel.png';
+                        }
+                        else if (type === 'pdf') {
+                            return '/images/icons/pdf.png';
+                        }
+                        else if (wordTypes.includes(type)) {
+                            return '/images/icons/word.png';
+                        }
+                        else if (pptTypes.includes(type)) {
+                            return '/images/icons/ppt.png';
+                        }
+                        else if (multimediaTypes.includes(type)) {
+                            return '/images/icons/video.png';
+                        }
+                        else if (imageTypes.includes(type)) {
+                            return `/images/icons/images.png`;
+                        }
+                        else {
+                            return '/images/icons/file.png'; // default icon
+                        }
+                    },
 
                 }
             })

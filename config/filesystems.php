@@ -53,6 +53,14 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'custom_uploads' => [
+            'driver' => 'local',
+            // \\\\192.168.80.130\\images
+            'root' => '/mnt/images', // Local network path (UNC path)
+            'url' => 'http://122.53.120.18:8067/images', // Public access URL
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*

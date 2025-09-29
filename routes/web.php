@@ -89,6 +89,7 @@ use App\Http\Controllers\IndividualFinalOutputController;
 use App\Http\Controllers\ObjectOfExpenditureController;
 use App\Http\Controllers\SubMfoController;
 use App\Http\Controllers\IPCRController;
+use App\Http\Controllers\MeansOfVerificationController;
 use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
@@ -798,10 +799,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/{opcr_id}/{FFUNCCOD}', [OfficePerformanceCommitmentRatingController::class, 'index']);
         Route::get('/create/{FFUNCCOD}', [OfficePerformanceCommitmentRatingController::class, 'create']);
         Route::post('/store', [OfficePerformanceCommitmentRatingController::class, 'store']);
+        Route::post('/{opcr_id}/submit', [OfficePerformanceCommitmentRatingController::class, 'submit_recall']);
         Route::get('/{id}/edit', [OfficePerformanceCommitmentRatingController::class, 'edit']);
         Route::patch('/{id}', [OfficePerformanceCommitmentRatingController::class, 'update']);
         Route::delete('/{id}', [OfficePerformanceCommitmentRatingController::class, 'destroy']);
         Route::get('/print/o/p/c/r', [OfficePerformanceCommitmentRatingController::class, 'print']);
+    });
+    // MOV API
+    Route::prefix('/movs')->group(function () {
+        Route::get('',[MeansOfVerificationController::class,'index']);
+        Route::get('/get/mov/{opcr_id}',[MeansOfVerificationController::class,'get_mov']);
+        Route::post('/save/{opcr_id}/{opcr_list_id}',[MeansOfVerificationController::class,'store']);
+        Route::delete('/delete-multiple/many', [MeansOfVerificationController::class, 'destroyMultiple']);
+        Route::get('/download/{id}', [MeansOfVerificationController::class, 'download1']);
+        // file-upload/delete-multiple/many
     });
     //OPCR List
     Route::prefix('opcrlist')->group(function () {
@@ -861,6 +872,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/approve/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'approveOPCRTarget']);
             Route::post('/return/remarks/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'returnOpcrTarget']);
             Route::get('/{opcr_list_id}/view/opcr/target/submission', [TargetAccomplishmentReviewApproveController::class, 'viewTarget']);
+        });
+        Route::prefix('/ratings')->group(function () {
+            Route::get('/', [TargetAccomplishmentReviewApproveController::class, 'index_rating']);
+            Route::get('/{opcr_list_id}/review', [TargetAccomplishmentReviewApproveController::class, 'reviewOPCRRating']);
+            Route::post('/approve/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'approveOPCRRating']);
+            Route::post('/return/remarks/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'returnOpcrRating']);
+            Route::post('/submit/opcr/{column}/{opcr_rating_id}/{item_score}', [TargetAccomplishmentReviewApproveController::class, 'update_rating_score']);
+            Route::get('/{opcr_list_id}/view/opcr/rating/submission', [TargetAccomplishmentReviewApproveController::class, 'viewRating']);
         });
         // approveOPCRTarget
         // reviewOPCRAccomplishment
