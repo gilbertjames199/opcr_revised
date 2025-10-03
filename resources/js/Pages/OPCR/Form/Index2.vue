@@ -209,6 +209,7 @@
                                 Submit
                             </button>&nbsp;
                         </span>
+                        <!-- rating_status_dt{{ rating_status_dt }} -->
                         <span v-if="rating_status_dt==0">
                             <button type="button" class="btn btn-secondary mt-3 text-white" @click="submitRecallRating(0,-1, 'Successfully recalled OPCR submission', 'Are you sure you want to recall the submission of this OPCR')"
                                 :disabled="form.processing" >
@@ -263,14 +264,25 @@
             <!-- <h1>Means of Verification </h1> -->
              <div class="peers mb-12">
                 <div class="col-md-5">
+                    <!-- Warnings -->
+                     <div v-if="show_warnings">
+                        <div v-if="!isWithinLimit()" class="text-danger mt-2">
+                        ❌ Total file size must not exceed 10 MB.
+                        </div>
+                        <div v-if="!isWithinCount()" class="text-danger mt-2">
+                        ❌ You can only upload a maximum of 2 files.
+                        </div>
+                    </div>
+
                     <input
-                    type="file"
-                    multiple
-                    @change="handleFiles"
-                    ref="fileInput"
+                        type="file"
+                        multiple
+                        @change="handleFiles"
+                        ref="fileInput"
+                        :disabled="!(isWithinLimit() && isWithinCount())"
                     />
                     <div>
-                        <button type="button" @click="uploadFiles" class="btn btn-primary text-white">Upload</button>
+                        <button type="button" @click="uploadFiles" class="btn btn-primary text-white" :disabled="!(isWithinLimit() && isWithinCount())">Upload</button>
                         <button type="button" @click="cancelFiles" class="btn btn-danger text-white">Cancel </button>
                     </div>
                     <p>
@@ -282,6 +294,7 @@
                                     <th></th>
                                     <th>File Name</th>
                                     <th>File Type</th>
+                                    <th>File Size</th>
                                 </thead>
                                 <tr v-for="(file, index) in files" :key="index">
                                     <td>
@@ -289,6 +302,7 @@
                                     </td>
                                     <td>{{ file.name }}&nbsp;</td>
                                     <td>{{ file.name.split('.').pop() }}&nbsp;</td>
+                                    <td>{{ formatFileSize(file.size) }}&nbsp;</td>
                                 </tr>
                             </table>
                         </div>
@@ -339,8 +353,7 @@
                                     />
                                 </td>
                                 <!-- <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> -->
-                                <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
-                                </td>
+                                <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/></td>
                                 <td>{{ file.filename }} </td>
                                 <td>{{ format_number((file.file_size/1024),2,true) }} KB </td>
                                 <td>
@@ -560,6 +573,7 @@ export default {
             current_filepath: null,
             allSelected: false,
             rating_status_dt: null,
+            show_warnings: false
         }
     },
     computed: {
@@ -598,6 +612,31 @@ export default {
         window.removeEventListener("keydown", this.handleKeydown);
     },
     methods: {
+        //Format File Size
+        formatFileSize(size) {
+            if (size < 1024) return size + ' B';
+            else if (size < 1024 * 1024) return (size / 1024).toFixed(2) + ' KB';
+            else return (size / (1024 * 1024)).toFixed(2) + ' MB';
+        },
+        isWithinCount() {
+            return (this.files.length + this.movs.length) <= 2;
+        },
+        isWithinLimit() {
+            const maxSize = 10 * 1024 * 1024; // 10 MB in bytes
+
+            // Sum size of selected files
+            const newFilesSize = this.files.reduce((sum, f) => parseFloat(sum) + parseFloat(f.size), 0);
+
+            // Sum size of already uploaded movs
+            const existingFilesSize = this.movs.reduce((sum, f) => parseFloat(sum) + parseFloat(f.file_size), 0);
+
+            const totalSize = parseFloat(newFilesSize) + parseFloat(existingFilesSize);
+            console.log("newFilesSize: "+newFilesSize);
+            console.log("existingFilesSize: "+existingFilesSize);
+            console.log("totalSize: "+totalSize);
+            console.log("maxSize: "+maxSize);
+            return totalSize <= maxSize;
+        },
         halfSem(amount) {
             var ret = parseFloat(amount) / 2;
             return this.format_number_conv(ret, 2, true);
@@ -843,7 +882,7 @@ export default {
             if (!confirm("Are you sure you want to upload selected files?")) {
                 return;
             }
-
+            this.show_warnings=true;
             let formData = new FormData();
 
             // Single file (optional)
@@ -883,6 +922,7 @@ export default {
             });
         },
         cancelFiles() {
+            // this.show_warnings=false;
             this.files = [];                  // Clear the files array
             this.$refs.fileInput.value = null;    // Reset the file input visually
         },

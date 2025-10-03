@@ -320,8 +320,10 @@ class TargetAccomplishmentReviewApproveController extends Controller
     {
         $update_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)
             ->update(['rating_status' => 2]);
-        return redirect('/opcrtarget/' . $opcr_list_id)
+            return redirect()->back()
             ->with('info', 'Office performance rating approved!');
+        // return redirect('/opcrtarget/' . $opcr_list_id)
+        //     ->with('info', 'Office performance rating approved!');
     }
     public function returnOpcrRating(Request $request, $opcr_list_id)
     {
@@ -341,6 +343,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
         $opcr_rem->status = "return";
         $opcr_rem->remarks = $request->remarks;
         $opcr_rem->save();
+
         return redirect('/review-approve/ratings')
             ->with('error', 'Office performance target returned!');
     }
@@ -362,6 +365,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
     }
     public function index_rating(Request $request){
         // dd("rating");
+        // dd(auth()->user());
         if (auth()->user()->department_code == '04') {
             $data = $this->revapp
                 ->where('rating_status', '>', -1)
@@ -419,10 +423,12 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ];
             });
             // dd($data);
+
             return inertia('Review-Approve/OPCR/Ratings/Index', [
-                'data' => $data
+                'data' => $data,
+                'mode_1'=>'Review'
             ]);
-        } else if (auth()->user()->department_code == '02') {
+        } else if (auth()->user()->department_code == '02' && auth()->user()->recid == '795') {
             $data = $this->revapp
                 ->where('rating_status', '>', 0)
                 ->where('rating_status', '<', 2)
@@ -480,7 +486,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
             });
             // dd($data);
             return inertia('Review-Approve/OPCR/Ratings/Index', [
-                'data' => $data
+                'data' => $data,
+                'mode_1'=>'Approve'
             ]);
         }else {
             return redirect('/forbidden')
@@ -490,7 +497,10 @@ class TargetAccomplishmentReviewApproveController extends Controller
     public function update_rating_score(Request $request, $column, $opcr_rating_id, $item_score){
         // dd($column, $opcr_rating_id, $item_score);
         $rating = OfficePerformanceCommitmentRating::find($opcr_rating_id);
-
+        // dd($item_score, $column, $opcr_rating_id, $rating);
+        if($item_score=="rating is null"){
+            $item_score="";
+        }
         if ($rating) {
             // Update dynamic column
             $rating->{$column} = $item_score;
@@ -513,12 +523,13 @@ class TargetAccomplishmentReviewApproveController extends Controller
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
 
         $data = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)
-                ->with(['opcr_rating','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard'])
+                ->with(['opcr_rating','opcr_rating.movs','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard'])
                 ->get()
                 ->map(function($item)use($opcr_list_id){
                     // dd($item->paps);
                     // dd($item->opcr_rating2, $opcr_list_id);
                     $rating = null;
+                    $movs = [];
                     $q1 = "";
                     $q2 = "";
                     $q3 = "";
@@ -527,6 +538,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     $e3 = "";
                     $t1 = "";
                     $rid = "";
+                    $show_mov = false;
                     if (!empty($item->opcr_rating2)) {
                         //
                         $rating = collect($item->opcr_rating2)->where('opcr_id', $opcr_list_id)->first();
@@ -540,6 +552,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         $t1 = optional($rating)->t1;
                         $rid = optional($rating)->id;
                         // dd($rating);
+                        $movs = optional($item->opcr_rating)->movs;
+                        $show_mov=false;
                     }
 
                     return [
@@ -558,6 +572,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "e2"=>$e2,
                         "e3"=>$e3,
                         "t1"=>$t1,
+                        "remarks" => optional($item->opcr_rating)->remarks,
                         "q1_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->quality1,
                         "q2_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->quality2,
                         "q3_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->quality3,
@@ -565,6 +580,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "e2_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->efficiency2,
                         "e3_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->efficiency3,
                         "t1_standard"=> optional(optional(optional($item)->paps)->opcr_stardard)->timeliness,
+                        "movs"=>$movs,
+                        "mov_is_visible"=>$show_mov
                         // 'standard'=>optional(optional($item)->paps)->opcr_stardard
                     ];
                 });

@@ -359,6 +359,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             : asset('storage/');
         $disk = app()->environment('production') ? 'custom_uploads' : 'public';
             // dd($baseUrl);
+        // dd($rating_status);
         return inertia($component, [
             'total' => $total,
             'ave' => $ave,

@@ -1,7 +1,7 @@
 <template>
     <div class="permissions-modal">
         <div class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-xl">
+            <div class="modal-dialog custom-modal">
                 <div class="d-flex justify-content-center">
                     <div class="modal-content" style="width: 100% !important; height: 40% !important; ">
                         <div class="modal-header" style="background-color:#030014">
@@ -67,6 +67,10 @@
   </script>
 
   <style scoped>
+  .custom-modal {
+  max-width: 80% !important; /* width of modal */
+  width: 80% !important;
+}
     /* Override default value of 'none' */
     .modal {
       display: block;

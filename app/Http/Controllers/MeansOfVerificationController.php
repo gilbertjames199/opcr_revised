@@ -116,12 +116,17 @@ class MeansOfVerificationController extends Controller
         // Validate uploaded files
         $request->validate([
             'files'   => 'required|array',
-            'files.*' => 'file|max:51200', // 50MB max per file
+            'files.*' => 'file|max:10240', // 50MB max per file
         ]);
 
         // Check total storage used by the user
-        $totalSize = MeansOfVerification::where('user_id', auth()->id())->sum('file_size');
-        $maxSize   = 1024 * 1024 * 1024; // 1 GB in bytes
+        $totalSize = MeansOfVerification::where('user_id', auth()->user()->recid)->sum('file_size');
+        $count = MeansOfVerification::where('user_id', auth()->user()->recid)->count();
+        $maxSize   = 1024 * 1024 * 10; // 1 GB in bytes
+        // dd($count, $maxSize, auth()->user()->recid, auth()->id());
+        if(intval($count)>2){
+            return redirect()->back()->withErrors(['error' => 'You have reached the 2 files limit.']);
+        }
         if ($totalSize >= $maxSize) {
             return redirect()->back()->withErrors(['error' => 'You have reached the 1 GB storage limit.']);
         }

@@ -21,4 +21,9 @@ class OfficePerformanceCommitmentRating extends Model
     {
         return $this->belongsTo(ProgramAndProject::class, 'id_paps', 'id');
     }
+
+    public function movs()
+    {
+        return $this->hasMany(MeansOfVerification::class, 'opcr_id', 'id');
+    }
 }

@@ -99,7 +99,7 @@
 
             </div>
         </div>
-        <Modal v-if="displayModal" @close-modal-event="hideModal" title="REVIEW/APPROVE">
+        <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`">
             <!-- {{ opcr_current }} -->
             <div>
                 <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current.office.FFUNCTION }}</u></div>
@@ -111,11 +111,13 @@
                 <!-- <iframe :src="my_link" style="width:100%; height:500px" /> -->
                 <!-- {{ opcr_data }} -->
                 <table class="table table-sm table-borderless table-striped table-hover">
-                    <thead>
+                    <thead class="sticky-header">
                         <tr class="bg-secondary text-white">
-                            <th rowspan="2">MFO</th>
-                            <th rowspan="2">PAPS</th>
-                            <th colspan="8" rowspan="1">Rating</th>
+                            <th rowspan="2" >MFO</th>
+                            <th rowspan="2" >PAPS</th>
+                            <th colspan="8" rowspan="1" style="text-align: center" >Rating</th>
+                            <th rowspan="2" >Remarks</th>
+                            <th rowspan="2" >MOVs</th>
                         </tr>
                         <tr class="bg-secondary text-white">
                             <th>Q1</th>
@@ -129,105 +131,192 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(dat, index) in opcr_data" :key="index">
-                            <td>{{ dat.mfo_desc }}</td>
-                            <td>{{ dat.paps_desc }}
+                        <template v-for="(dat, index) in opcr_data" :key="index">
+                            <tr >
+                                <td>{{ dat.mfo_desc }}</td>
+                                <td>
+                                    {{ dat.paps_desc }}
 
-                            </td>
-                            <!-- <td>{{ dat.success_indicator }}</td>
-                            <td>{{ dat.target_success_indicator }}</td>
-                            <td>{{ dat.quantity }}</td>
-                            @change="saveRating()"
-                            -->
-                            <td>
-                                <select v-model="opcr_data[index].q1" type="number" style="width: 2.5em; text-align: center;"
-                                    @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select v-model="opcr_data[index].q2" type="number" style="width: 2.5em; text-align: center;"
-                                    @change="saveRating(opcr_data[index].q2, opcr_data[index].opcr_rating_id, 'q2')"
-                                >
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select v-model="opcr_data[index].q3" type="number" style="width: 2.5em; text-align: center;"
-                                    @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3')"
-                                >
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </td>
-                            <td>
-                                <!--  -->
-                                <select v-model="opcr_data[index].e1" type="number" style="width: 2.5em; text-align: center;"
-                                    @change="saveRating(opcr_data[index].e1, opcr_data[index].opcr_rating_id, 'e1')"
-                                    :disabled="dat.e1_standard === 'No'"
-                                    :style="dat.e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
-                                >
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select v-model="opcr_data[index].e2" type="number" style="width: 2.5em; text-align: center;"
-                                    @change="saveRating(opcr_data[index].e2, opcr_data[index].opcr_rating_id, 'e2')"
-                                    :disabled="dat.e2_standard === 'No'"
-                                    :style="dat.e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
-                                >
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select v-model="opcr_data[index].e3" type="number" style="width: 2.5em; text-align: center;"
-                                    @change="saveRating(opcr_data[index].e3, opcr_data[index].opcr_rating_id, 'e3')"
-                                    :disabled="dat.e3_standard === 'No'"
-                                    :style="dat.e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
-                                >
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select v-model="opcr_data[index].t1" type="number" style="width: 2.5em; text-align: center;"
-                                    @change="saveRating(opcr_data[index].t1, opcr_data[index].opcr_rating_id, 't1')"
-                                    :disabled="dat.t1_standard !== 'Yes'"
-                                    :style="dat.t1_standard !== 'Yes' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
-                                >
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </td>
-                        </tr>
+                                </td>
+                                <!-- <td>{{ dat.success_indicator }}</td>
+                                <td>{{ dat.target_success_indicator }}</td>
+                                <td>{{ dat.quantity }}</td>
+                                @change="saveRating()"
+                                -->
+                                <td>
+                                    <!-- width: 2.5em;  -->
+                                    <select v-model="opcr_data[index].q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                        @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                    <div v-if="submit_attempt==true && !dat.q1" style="color: red; font-weight: bold">
+                                        Rating for this field is required to proceed with submission.
+                                    </div>
+                                </td>
+                                <td>
+                                    <!-- {{  dat }} -->
+                                    <!-- width: 2.5em;  -->
+                                    <select v-model="opcr_data[index].q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                        @change="saveRating(opcr_data[index].q2, opcr_data[index].opcr_rating_id, 'q2')"
+                                    >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                    <div v-if="submit_attempt==true && !dat.q2" style="color: red; font-weight: bold">
+                                        Rating for this field is required to proceed with submission.
+                                    </div>
+                                </td>
+                                <td>
+                                    <!-- width: 2.5em;  -->
+                                    <select v-model="opcr_data[index].q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                        @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3')"
+                                    >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                    <div v-if="submit_attempt==true && !dat.q3" style="color: red; font-weight: bold">
+                                        Rating for this field is required to proceed with submission.
+                                    </div>
+                                </td>
+                                <td>
+                                    <!--  width: 2.5em; -->
+                                    <select v-model="opcr_data[index].e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                        @change="saveRating(opcr_data[index].e1, opcr_data[index].opcr_rating_id, 'e1')"
+                                        :disabled="dat.e1_standard === 'No'"
+                                        :style="dat.e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
+                                    >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                    <div v-if="submit_attempt==true && dat.e1_standard === 'Yes' && !dat.e1" style="color: red; font-weight: bold">
+                                        Rating for this field is required to proceed with submission.
+                                    </div>
+                                </td>
+                                <td>
+                                    <!-- width: 2.5em;  -->
+                                    <select v-model="opcr_data[index].e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                        @change="saveRating(opcr_data[index].e2, opcr_data[index].opcr_rating_id, 'e2')"
+                                        :disabled="dat.e2_standard === 'No'"
+                                        :style="dat.e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
+                                    >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                    <div v-if="submit_attempt==true && dat.e2_standard === 'Yes' && !dat.e2" style="color: red; font-weight: bold">
+                                        Rating for this field is required to proceed with submission.
+                                    </div>
+                                </td>
+                                <td>
+                                    <!-- style="width: 2.5em; text-align: center;"   -->
+                                    <select v-model="opcr_data[index].e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
+                                        @change="saveRating(opcr_data[index].e3, opcr_data[index].opcr_rating_id, 'e3')"
+                                        :disabled="dat.e3_standard === 'No'"
+                                        :style="dat.e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
+                                    >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                    <div v-if="submit_attempt==true && dat.e3_standard === 'Yes' && !dat.e3" style="color: red; font-weight: bold">
+                                        Rating for this field is required to proceed with submission.
+                                    </div>
+                                </td>
+                                <td>
+                                    <select v-model="opcr_data[index].t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                        @change="saveRating(opcr_data[index].t1, opcr_data[index].opcr_rating_id, 't1')"
+                                        :disabled="dat.t1_standard !== 'Yes'"
+                                        :style="dat.t1_standard !== 'Yes' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
+                                    >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                    <div v-if="submit_attempt==true && dat.t1_standard === 'Yes' && !dat.t1" style="color: red; font-weight: bold">
+                                        Rating for this field is required to proceed with submission.
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <textarea class="form-control"
+                                        v-model="opcr_data[index].remarks"
+                                        @input="autoResize($event)"
+                                        @change="saveRating(opcr_data[index].remarks, opcr_data[index].opcr_rating_id,'remarks')"
+                                        ref="remarksTextarea"
+                                    />
+                                </td>
+                                <td>
+                                    <button
+                                        @click="updateMOVisVisible(opcr_data[index].mov_is_visible, index)"
+                                        class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
+                                        title="View MOVs"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="20"
+                                            height="20"
+                                            fill="blue"
+                                            class="bi bi-eye-fill"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr v-if="opcr_data[index].mov_is_visible">
+                                <tr v-for="file in dat.movs">
+                                    <td>
+                                        <img :src="getPreUploadFileIcon(file.filename.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
+
+                                    </td>
+                                    <td>{{ file.filename }}</td>
+                                    <td><a
+                                        :href="`/movs/download/${file.id}`"
+
+                                        class="inline-flex items-center"
+                                        title="Download"
+                                        target="_blank"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="20"
+                                            height="20"
+                                            fill="green"
+                                            class="bi bi-cloud-arrow-down-fill"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
+                                        </svg>
+                                    </a>&nbsp;</td>
+                                </tr>
+                            </tr>
+                        </template>
+
                     </tbody>
                 </table>
             </div>
+            <!-- {{ opcr_data }} -->
             <div class="d-flex justify-content-center">
                 <label>REMARKS: </label>&nbsp;&nbsp;&nbsp;
                 <input class="form-control" v-model="form.remarks" type="text" /><br />
@@ -243,7 +332,8 @@
                 <button @click="returnSubmit()" class="btn btn-danger text-white">Return</button>
             </div>
         </Modal>
-        <!-- <Modal2 v-if="displayModal2" @close-modal-event="hideModal">
+        <!--
+        <Modal2 v-if="displayModal2" @close-modal-event="hideModal">
             <button @click="backTo()" class="btn btn-light">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
@@ -261,19 +351,21 @@
             <button @click="hideModal()" class="btn btn-danger text-white">Cancel</button>
         </Modal2> -->
         <!-- {{ auth }}
-        {{ auth.user.office.department_code }} -->
+        {{ auth.user.office.department_code }}
+        -->
     </div>
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
-import Modal from "@/Shared/ModalDynamicTitle";
+import Modal from "@/Shared/ModalDynamicTitle2";
 import Modal2 from "@/Shared/PrintModal";
 export default {
     props: {
         auth: Object,
-        data: Object
+        data: Object,
+        mode_1: String
     },
     data() {
         return {
@@ -287,23 +379,50 @@ export default {
             form: useForm({
                 remarks: "",
                 opcr_list_id: "",
-            })
+            }),
+            can_submit: false,
+            submit_attempt: false,
         }
+    },
+    mounted() {
+        // auto-resize all rendered textareas on initial load
+        this.$nextTick(() => {
+            this.$refs.remarksTextarea.forEach((ta) => {
+            ta.style.height = "auto";
+            ta.style.height = ta.scrollHeight + "px";
+            });
+        });
+    },
+    updated() {
+        // auto-resize whenever data changes after updates
+        this.$nextTick(() => {
+            if (this.$refs.remarksTextarea) {
+            this.$refs.remarksTextarea.forEach((ta) => {
+                ta.style.height = "auto";
+                ta.style.height = ta.scrollHeight + "px";
+            });
+            }
+        });
     },
     components: {
         Pagination, Filtering, Modal, Modal2
     },
 
     methods: {
-
-
+        updateMOVisVisible(mov_is_visible, index){
+            this.opcr_data[index].mov_is_visible = !mov_is_visible
+        },
+        formatFileSize(size) {
+            if (size < 1024) return size + ' B';
+            else if (size < 1024 * 1024) return (size / 1024).toFixed(2) + ' KB';
+            else return (size / (1024 * 1024)).toFixed(2) + ' MB';
+        },
         deleteSectoral(id) {
             let text = "WARNING!\nAre you sure you want to delete the Societal Goals?" + id;
             if (confirm(text) == true) {
                 this.$inertia.delete("/Societal/" + id);
             }
         },
-
         getPercent(accomp, targqty) {
             var accSum = 0;
             accomp.forEach(myFunction);
@@ -334,6 +453,7 @@ export default {
         hideModal() {
             this.displayModal = false;
             this.displayModal2 = false;
+            this.submit_attempt =false;
         },
         showModal2(md) {
             this.hideModal();
@@ -355,14 +475,23 @@ export default {
         },
         reviewSubmit() {
             // var opcr_list_id_here = this.opcr_current.id;
-            var url = '/review-approve/ratings/' + this.opcr_current.id + '/review';
-            this.form.opcr_list_id = this.opcr_current.id;
-            let text = "WARNING!\nAre you sure you want to review the OPCR?";
-            if (confirm(text) == true) {
-                this.form.get(url, this.form);
+            this.submit_attempt=true;
+            var cansub = this.canSubmit();
+            if(cansub){
+                // alert(cansub+ " true")
+                var url = '/review-approve/ratings/' + this.opcr_current.id + '/review';
+                this.form.opcr_list_id = this.opcr_current.id;
+                let text = "WARNING!\nAre you sure you want to review the OPCR?";
+                if (confirm(text) == true) {
+                    this.form.get(url, this.form);
+                }
+                this.hideModal();
+                this.clearForm();
+            }else{
+                // alert(cansub+ " false")
+                alert("⚠️ Review blocked: Some required items have not been scored. Please complete all scores before proceeding.")
             }
-            this.hideModal();
-            this.clearForm();
+
         },
         approveSubmit() {
 
@@ -397,6 +526,9 @@ export default {
             // alert("rating: "+ rating + " \n"+"opcr_rating_id: "+opcr_rating_id)
             // review-approve/ratings/sub/mit/opcr/{opcr_rating_id}/{item_score}
             // @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')"
+            if(!rating){
+                rating="rating is null";
+            }
             var url = "/review-approve/ratings/submit/opcr/"+column+"/"+opcr_rating_id+"/"+rating;
             axios.post(url).then(response=>{
 
@@ -405,11 +537,57 @@ export default {
             }).catch(error=>{
 
             });
-        }
+        },
+        canSubmit() {
+        // loop through each row in opcr_data
+            for (let row of this.opcr_data) {
+                // define the mappings of score fields to their standards
+                const checks = [
+                    { score: row.q1, standard: 'Yes'},
+                    { score: row.q2, standard: 'Yes'},
+                    { score: row.q3, standard: 'Yes'},
+                    { score: row.e1, standard: row.e1_standard },
+                    { score: row.e2, standard: row.e2_standard },
+                    { score: row.e3, standard: row.e3_standard },
+                    { score: row.t1, standard: row.t1_standard }
+                ];
+                console.log(checks);
+
+                for (let { score, standard } of checks) {
+                    if (standard === "Yes") {
+                        // check if score is not null/empty and between 1–5
+                        if (
+                            score === null ||
+                            score === "" ||
+                            isNaN(score) ||
+                            Number(score) < 1 ||
+                            Number(score) > 5
+                        ) {
+                            // alert("null ang score "+score)
+                            return false;
+                        }
+                    }else{
+                        // alert("No")
+                    }
+                }
+            }
+            return true;
+        },
+        autoResize(event) {
+            const textarea = event.target;
+            textarea.style.height = "auto"; // reset first to recalc
+            textarea.style.height = textarea.scrollHeight + "px"; // fit content
+        },
     }
 };
 </script>
-<style>
+<style scoped>
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: white; /* Important so header isn’t transparent */
+  z-index: 2;        /* Keeps header above body rows */
+}
 .row-centered {
     text-align: center;
 }
