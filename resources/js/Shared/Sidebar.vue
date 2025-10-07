@@ -15,7 +15,7 @@
                                 <div class="peer peer-greed">
                                     <h5 class="lh-1 mB-0 logo-text">
                                          <span style="color: #FFD700; font-size:medium;">
-                                        PBS
+                                        Planning and Budgeting System
                                         </span>
                                     </h5>
                                 </div>
