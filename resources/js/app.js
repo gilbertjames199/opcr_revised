@@ -205,8 +205,8 @@ createInertiaApp({
                             // var lo = "192.168.6.23:8080/";
                             // var gl = "122.54.19.171:8080/";
                             // var nw = "122.53.120.27:8080/"
-                            var nw_nov = "paps.dvodeoro.ph/";
-                            // var nw_nov = "paps.davaodeoro.gov.ph/";
+                            // var nw_nov = "paps.dvodeoro.ph/";
+                            var nw_nov = "paps.davaodeoro.gov.ph/";
                             return nw_nov;
                         },
                         office_aip: {
