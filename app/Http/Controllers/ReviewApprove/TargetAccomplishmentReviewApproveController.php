@@ -523,9 +523,11 @@ class TargetAccomplishmentReviewApproveController extends Controller
     }
     public function viewRating(Request $request, $opcr_list_id)
     {
-        $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
 
-        $data = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)
+        // dd($request->type);
+        $data=[];
+        if($request->type=='Review'){
+            $data = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)
                 ->with(['opcr_rating','opcr_rating.movs','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard'])
                 ->get()
                 ->map(function($item)use($opcr_list_id){
@@ -600,6 +602,124 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         // 'standard'=>optional(optional($item)->paps)->opcr_stardard
                     ];
                 });
+        }else{
+            $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
+            $opcr_id=$opcr_list_id;
+            $FFUNCCOD=$opcr_list->FFUNCCOD;
+            $data = OpcrTarget::with([
+                'opcr_rating',
+                'opcrList',
+                'paps',
+                'paps.MFO',
+                'paps.opcr_stardard'
+            ])
+                ->whereHas('paps', function ($query) use ($FFUNCCOD) {
+                    $query->whereHas('MFO', function ($query) use ($FFUNCCOD) {
+                        $query->where('mfo_desc', '<>', '');
+                    });
+                })
+                ->whereHas('opcrList', function ($query) use ($opcr_id, $FFUNCCOD) {
+                    $query->where('id', $opcr_id)
+                        ->where('FFUNCCOD', $FFUNCCOD);
+                })
+                ->where('is_included', '1')
+                // ->orderBy('mfo.id', 'asc')
+                ->orderBy('idpaps', 'asc')
+                ->groupBy('office_performance_commitment_rating_list_id')
+                ->groupBy('idpaps')
+                ->get()
+                ->map(function ($item) {
+                    // dd($item);
+                    $id = $item->opcr_rating ? $item->opcr_rating->id : null;
+                    $su = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
+                    $accomp = $item->opcr_rating ? $item->opcr_rating->accomplishments : null;
+                    $r_q = $item->opcr_rating ? $item->opcr_rating->rating_q : null;
+                    $r_e = $item->opcr_rating ? $item->opcr_rating->rating_e : null;
+                    $r_t = $item->opcr_rating ? $item->opcr_rating->rating_t : null;
+                    $remarks = $item->opcr_rating ? $item->opcr_rating->remarks : null;
+                    $FFUNCCOD = $item->opcr_rating ? $item->opcr_rating->FFUNCCOD : null;
+                    $opcr_list_id = $item->opcrList ? $item->opcrList->id : null;
+                    $office_accountable = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->office_accountable : null) : null;
+                    $paps_desc = $item->paps ? $item->paps->paps_desc : null;
+                    // dd($item->paps->opcr_standard);
+                    $mfo_desc = $item->paps ? ($item->paps->MFO ? $item->paps->MFO->mfo_desc : null) : null;
+                    $mfo_created_at = $item->paps ? ($item->paps->MFO ? $item->paps->MFO->created_at : null) : null;
+
+                    $performance_measure = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
+                    $efficiency1 = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->efficiency1 : null) : null;
+                    $timeliness = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->timeliness : null) : null;
+                    $prescribed_period = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->prescribed_period : null) : null;;
+
+                    if ($efficiency1 === 'No' && $timeliness === 'No') {
+                        $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency";
+                    } elseif ($efficiency1 === 'Yes') {
+                        $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency within {$prescribed_period}";
+                    } else {
+                        $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
+                    }
+                    // dd($accomp);
+
+                    $q1 = $item->opcr_rating ? $item->opcr_rating->q1 : null;
+                    $q2 = $item->opcr_rating ? $item->opcr_rating->q2 : null;
+                    $q3 = $item->opcr_rating ? $item->opcr_rating->q3 : null;
+
+                    $e1 = $item->opcr_rating ? $item->opcr_rating->e1 : null;
+                    $e2 = $item->opcr_rating ? $item->opcr_rating->e2 : null;
+                    $e3 = $item->opcr_rating ? $item->opcr_rating->e3 : null;
+
+                    $t1 = $item->opcr_rating ? $item->opcr_rating->t1 : null;
+
+
+                    // Collect only non-null values for each rating group
+                    // Quality
+                    $qValues = array_filter([
+                        $item->opcr_rating ? ($item->opcr_rating->q1 ?? 0) : 0,
+                        $item->opcr_rating ? ($item->opcr_rating->q2 ?? 0) : 0,
+                        $item->opcr_rating ? ($item->opcr_rating->q3 ?? 0) : 0,
+                    ], function ($v) {
+                        return $v != 0; // skip zeros
+                    });
+                    $r_q = count($qValues) > 0 ? round(array_sum($qValues) / count($qValues), 2) : 0;
+
+                    $eValues = array_filter([
+                        $item->opcr_rating ? ($item->opcr_rating->e1 ?? 0) : 0,
+                        $item->opcr_rating ? ($item->opcr_rating->e2 ?? 0) : 0,
+                        $item->opcr_rating ? ($item->opcr_rating->e3 ?? 0) : 0,
+                    ], function ($v) {
+                        return $v != 0;
+                    });
+                    $r_e = count($eValues) > 0 ? round(array_sum($eValues) / count($eValues), 2) : 0;
+
+                    $t1 = $item->opcr_rating ? ($item->opcr_rating->t1 ?? 0) : 0;
+                    $r_t = $t1 != 0 ? round($t1, 2) : 0;
+
+                    return [
+                        "id" => $id,
+                        "success_indicator_id" => $su,
+                        "accomplishments" => $accomp,
+                        "rating_q" => $r_q,
+                        "rating_e" => $r_e,
+                        "rating_t" => $r_t,
+                        "remarks" => $remarks,
+                        "FFUNCCOD" => $FFUNCCOD,
+                        "opcr_id" => $opcr_list_id,
+                        "success_indicator" => $su,
+                        "target_success_indicator" => $su,
+                        "office_accountable" => $office_accountable,
+                        "paps_desc" => $paps_desc,
+                        "mfo_desc" => $mfo_desc,
+                        "created_at" => $mfo_created_at,
+                        "q1" => $q1 ?? 0,
+                        "q2" => $q2 ?? 0,
+                        "q3" => $q3 ?? 0,
+                        "e1" => $e1 ?? 0,
+                        "e2" => $e2 ?? 0,
+                        "e3" => $e3 ?? 0,
+                        "t1" => $t1 ?? 0,
+                    ];
+                });
+        }
+
         return $data;
     }
 }

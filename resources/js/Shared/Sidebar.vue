@@ -13,8 +13,10 @@
                                     </div>
                                 </div>
                                 <div class="peer peer-greed">
-                                    <h5 class="lh-1 mB-0 logo-text" style="color: #ffdc78; font-size: x-large !important;">
+                                    <h5 class="lh-1 mB-0 logo-text">
+                                         <span style="color: #FFD700; font-size:medium;">
                                         PBS
+                                        </span>
                                     </h5>
                                 </div>
                             </div>

@@ -608,7 +608,7 @@ export default {
             console.log("maxSize: "+maxSize);
             return totalSize <= maxSize;
         },
-            computeAverage(opcr) {
+        computeAverage(opcr) {
             // extract the values
             const values = [opcr.rating_q, opcr.rating_e, opcr.rating_t];
 
@@ -719,17 +719,17 @@ export default {
 
 
             // compute averages for all rows
-    const rowAverages = this.form.opcrs.map(opcr => this.computeRowAverage(opcr));
+            const rowAverages = this.form.opcrs.map(opcr => this.computeRowAverage(opcr));
 
-    // filter out rows that are 0
-    const validAverages = rowAverages.filter(avg => avg > 0);
+            // filter out rows that are 0
+            const validAverages = rowAverages.filter(avg => avg > 0);
 
-    if (validAverages.length === 0) {
-      return 0; // or '' if you want blank
-    }
+            if (validAverages.length === 0) {
+            return 0; // or '' if you want blank
+            }
 
-    const total = validAverages.reduce((a, b) => a + b, 0);
-    return (total / validAverages.length).toFixed(2); // keep 2 decimals
+            const total = validAverages.reduce((a, b) => a + b, 0);
+            return (total / validAverages.length).toFixed(2); // keep 2 decimals
 
 
             // var total_div = 0;
