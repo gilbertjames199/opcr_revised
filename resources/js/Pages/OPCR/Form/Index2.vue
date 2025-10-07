@@ -45,18 +45,15 @@
                                     <th rowspan="2">Alloted Budget</th>
                                     <th rowspan="2">Accountable Division</th>
                                     <th rowspan="2">Actual Accomplishments</th>
-                                    <th colspan="7">Rating</th>
+                                    <th colspan="4">Rating</th>
                                     <th rowspan="2">Remarks</th>
                                     <th rowspan="2">MOV</th>
                                 </tr>
                                 <tr class="bg-secondary text-white">
-                                    <th>Q1</th>
-                                    <th>Q2</th>
-                                    <th>Q3</th>
-                                    <th>E1</th>
-                                    <th>E2</th>
-                                    <th>E3</th>
-                                    <th>T</th>
+                                    <th>Quality</th>
+                                    <th>Efficiency</th>
+                                    <th>Timeliness</th>
+                                    <th>Average</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -90,50 +87,26 @@
                                         <textarea v-model="form.opcrs[index].accomplishments"
                                             style="height: inherit"></textarea>
                                     </td>
-                                    <!-- <td>
+
+                                    <!--RATINGS***************************************-->
+                                    <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
+                                            min="0" max="5" step="1" disabled>
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_e" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
+                                            min="0" max="5" step="1" disabled>
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_t" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
+                                            min="0" max="5" step="1" disabled>
                                     </td>
                                     <td>
-                                        {{ getAverage(index) }}
-                                    </td> -->
-                                    <!--RATINGS***************************************-->
-                                    <td>
-                                        <input v-model="form.opcrs[index].q1" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
+                                    <input :value="computeAverage(form.opcrs[index])" class="centered-input" type="number"
+                                       min="0" max="5" step="1" disabled
+                                    >
                                     </td>
-                                    <td>
-                                        <input v-model="form.opcrs[index].q2" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
-                                    </td>
-                                    <td>
-                                        <input v-model="form.opcrs[index].q3" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
-                                    </td>
-                                    <td>
-                                        <input v-model="form.opcrs[index].e1" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
-                                    </td>
-                                    <td>
-                                        <input v-model="form.opcrs[index].e2" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
-                                    </td>
-                                    <td>
-                                        <input v-model="form.opcrs[index].e3" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
-                                    </td>
-                                    <td>
-                                        <input v-model="form.opcrs[index].t1" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
-                                    </td>
+
                                     <!--**********************************************-->
                                     <td><textarea v-model="form.opcrs[index].remarks"
                                             style="height: inherit"></textarea>
@@ -141,18 +114,16 @@
                                     <td>
                                         <button type="button" class="btn btn-primary text-white" @click="showModalMOV(form.opcrs[index].id)">Upload MOVs</button>
                                     </td>
-                                    <!-- <td></td>
-                                    <td></td>
-                                    <td></td> -->
+
                                 </tr>
                                 <tr>
-                                    <td colspan="9"></td>
+                                    <td colspan="6"></td>
                                     <td colspan="3">TOTAL RATING</td>
                                     <td>{{ getTotalAverage() }}</td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="9"></td>
+                                    <td colspan="6"></td>
                                     <td colspan="3">FINAL AVERAGE RATING</td>
                                     <td>{{ getAverageAll() }}</td>
                                     <td></td>
@@ -637,6 +608,21 @@ export default {
             console.log("maxSize: "+maxSize);
             return totalSize <= maxSize;
         },
+            computeAverage(opcr) {
+            // extract the values
+            const values = [opcr.rating_q, opcr.rating_e, opcr.rating_t];
+
+            // filter out zero or null
+            const validValues = values.filter(v => v > 0);
+
+            if (validValues.length === 0) {
+            return 0; // or '' if you want it blank
+            }
+
+            // compute average
+            const sum = validValues.reduce((a, b) => a + b, 0);
+            return (sum / validValues.length).toFixed(2); // keep 2 decimals
+        },
         halfSem(amount) {
             var ret = parseFloat(amount) / 2;
             return this.format_number_conv(ret, 2, true);
@@ -718,40 +704,67 @@ export default {
             return this.format_number_conv(total, 2, true);
 
         },
-        getAverageAll() {
-            var total_div = 0;
-            var total = 0;
-            for (let i = 0; i < this.form.opcrs.length; i++) {
-                var rat_e = this.form.opcrs[i].rating_e;
-                var rat_q = this.form.opcrs[i].rating_q;
-                var rat_t = this.form.opcrs[i].rating_t;
-                var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
-                var div = 0;
-                if (parseFloat(rat_e) >= 1) {
-                    div = div + 1;
-                }
-                if (parseFloat(rat_q) >= 1) {
-                    div = div + 1;
-                }
-                if (parseFloat(rat_t) >= 1) {
-                    div = div + 1;
-                }
-                if (div == 0) {
-                    div = 1;
-                }
-                if (avee > 0) {
-                    total_div = total_div + 1;
-                }
-                // total_div = total_div + div;
-                total = total + (avee / div);
-            }
-            // this.total_divisor = this.form.opcrs.length;
-            //this.total_comp
+        computeRowAverage(opcr) {
+            const values = [opcr.rating_q, opcr.rating_e, opcr.rating_t];
+            const validValues = values.filter(v => v > 0);
 
-            var aver = parseFloat(total) / total_div
-            //(parseFloat(this.form.opcrs.length));
-            this.total_ave = aver;
-            return this.format_number_conv(aver, 2, true)
+            if (validValues.length === 0) {
+            return 0;
+            }
+
+            const sum = validValues.reduce((a, b) => a + b, 0);
+            return sum / validValues.length;
+        },
+        getAverageAll() {
+
+
+            // compute averages for all rows
+    const rowAverages = this.form.opcrs.map(opcr => this.computeRowAverage(opcr));
+
+    // filter out rows that are 0
+    const validAverages = rowAverages.filter(avg => avg > 0);
+
+    if (validAverages.length === 0) {
+      return 0; // or '' if you want blank
+    }
+
+    const total = validAverages.reduce((a, b) => a + b, 0);
+    return (total / validAverages.length).toFixed(2); // keep 2 decimals
+
+
+            // var total_div = 0;
+            // var total = 0;
+            // for (let i = 0; i < this.form.opcrs.length; i++) {
+            //     var rat_e = this.form.opcrs[i].rating_e;
+            //     var rat_q = this.form.opcrs[i].rating_q;
+            //     var rat_t = this.form.opcrs[i].rating_t;
+            //     var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+            //     var div = 0;
+            //     if (parseFloat(rat_e) >= 1) {
+            //         div = div + 1;
+            //     }
+            //     if (parseFloat(rat_q) >= 1) {
+            //         div = div + 1;
+            //     }
+            //     if (parseFloat(rat_t) >= 1) {
+            //         div = div + 1;
+            //     }
+            //     if (div == 0) {
+            //         div = 1;
+            //     }
+            //     if (avee > 0) {
+            //         total_div = total_div + 1;
+            //     }
+            //     // total_div = total_div + div;
+            //     total = total + (avee / div);
+            // }
+            // // this.total_divisor = this.form.opcrs.length;
+            // //this.total_comp
+
+            // var aver = parseFloat(total) / total_div
+            // //(parseFloat(this.form.opcrs.length));
+            // this.total_ave = aver;
+            // return this.format_number_conv(aver, 2, true)
         },
         numberInput(value) {
             if (value < 0) {
@@ -1043,15 +1056,7 @@ export default {
             }
         },
         // FOIR PREVIEWS
-        isPreviewable(filename) {
-            // const ext = filename.split('.').pop().toLowerCase()
-            const ext = filename
-            // 'jpg', 'jpeg', 'png', 'gif',
-            return ['pdf','doc', 'docx', 'dot', 'dotx', 'dotm','xls', 'xlsx', 'xlsm',
-            'xlsb', 'xlt', 'xltx', 'xltm', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp',
-            'mp3', 'mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'
-            ].includes(ext)
-        },
+
         previewFile(file) {
             const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
             const multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];

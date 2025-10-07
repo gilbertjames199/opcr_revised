@@ -190,6 +190,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $opcr_rating = OfficePerformanceCommitmentRating::where('id_opcr_target', $target->id)
                 ->first();
             $paps_here = ProgramAndProject::where('id', $target->idpaps)->first();
+
+
+
+
             // dd($paps_here);
             if (!$opcr_rating) {
                 $opcrf = new OfficePerformanceCommitmentRating();
@@ -207,6 +211,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $opcrf->save();
             }
         }
+
+
         $my_year = Carbon::parse($list->date_to)->format('Y');
 
         $revision_plan = RevisionPlan::where('idmfo', '0')
@@ -291,6 +297,31 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $e3 = $item->opcr_rating ? $item->opcr_rating->e3 : null;
 
                 $t1 = $item->opcr_rating ? $item->opcr_rating->t1 : null;
+
+
+                // Collect only non-null values for each rating group
+                // Quality
+                $qValues = array_filter([
+                    $item->opcr_rating ? ($item->opcr_rating->q1 ?? 0) : 0,
+                    $item->opcr_rating ? ($item->opcr_rating->q2 ?? 0) : 0,
+                    $item->opcr_rating ? ($item->opcr_rating->q3 ?? 0) : 0,
+                ], function ($v) {
+                    return $v != 0; // skip zeros
+                });
+                $r_q = count($qValues) > 0 ? round(array_sum($qValues) / count($qValues), 2) : 0;
+
+                $eValues = array_filter([
+                    $item->opcr_rating ? ($item->opcr_rating->e1 ?? 0) : 0,
+                    $item->opcr_rating ? ($item->opcr_rating->e2 ?? 0) : 0,
+                    $item->opcr_rating ? ($item->opcr_rating->e3 ?? 0) : 0,
+                ], function ($v) {
+                    return $v != 0;
+                });
+                $r_e = count($eValues) > 0 ? round(array_sum($eValues) / count($eValues), 2) : 0;
+
+                $t1 = $item->opcr_rating ? ($item->opcr_rating->t1 ?? 0) : 0;
+                $r_t = $t1 != 0 ? round($t1, 2) : 0;
+
                 return [
                     "id" => $id,
                     "success_indicator_id" => $su,
@@ -307,13 +338,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "paps_desc" => $paps_desc,
                     "mfo_desc" => $mfo_desc,
                     "created_at" => $mfo_created_at,
-                    "q1"=>$q1,
-                    "q2"=>$q2,
-                    "q3"=>$q3,
-                    "e1"=>$e1,
-                    "e2"=>$e2,
-                    "e3"=>$e3,
-                    "t1"=>$t1,
+                    "q1" => $q1 ?? 0,
+                    "q2" => $q2 ?? 0,
+                    "q3" => $q3 ?? 0,
+                    "e1" => $e1 ?? 0,
+                    "e2" => $e2 ?? 0,
+                    "e3" => $e3 ?? 0,
+                    "t1" => $t1 ?? 0,
                 ];
             });
 
@@ -353,13 +384,14 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // dd($opcrs);
         // dd('targ ave: ' . $ave);
         //********************************************* */
-        $component = $this->isBeforeSecondSem2025($list) ? 'OPCR/Form/Index': 'OPCR/Form/Index2';
+        $component = $this->isBeforeSecondSem2025($list) ? 'OPCR/Form/Index' : 'OPCR/Form/Index2';
         $baseUrl = app()->environment('production')
             ? 'http://122.53.120.18:8067/images/'
             : asset('storage/');
         $disk = app()->environment('production') ? 'custom_uploads' : 'public';
             // dd($baseUrl);
         // dd($rating_status);
+        // dd($baseUrl);
         return inertia($component, [
             'total' => $total,
             'ave' => $ave,
@@ -371,8 +403,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'opcrs' => $opcrs,
             "FFUNCCOD" => $FFUNCCOD,
             'fileBaseUrl' => $baseUrl,
-            'disk'=>$disk,
-            "rating_status"=> $rating_status,
+            'disk' => $disk,
+            "rating_status" => $rating_status,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -405,13 +437,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     'rating_q' => $opcr->rating_q,
                     'rating_e' => $opcr->rating_e,
                     'rating_t' => $opcr->rating_t,
-                    'q1'=>$opcr->q1,
-                    'q2'=>$opcr->q2,
-                    'q3'=>$opcr->q3,
-                    'e1'=>$opcr->e1,
-                    'e2'=>$opcr->e2,
-                    'e3'=>$opcr->e3,
-                    't1'=>$opcr->t1,
+                    'q1' => $opcr->q1,
+                    'q2' => $opcr->q2,
+                    'q3' => $opcr->q3,
+                    'e1' => $opcr->e1,
+                    'e2' => $opcr->e2,
+                    'e3' => $opcr->e3,
+                    't1' => $opcr->t1,
                     'remarks' => $opcr->remarks,
                     'department_code' => $dept_code
                 ]);
@@ -919,11 +951,12 @@ class OfficePerformanceCommitmentRatingController extends Controller
     }
 
     //SUBMIT/RECALL OPCR RATINGS
-    public function submit_recall(Request $request, $opcr_id){
+    public function submit_recall(Request $request, $opcr_id)
+    {
         $opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
         $curr_stat  = $request->input('data.curr_stat');
         $staged_for = $request->input('data.staged_for');
-        if($opcr){
+        if ($opcr) {
             // dd($opcr, $request->data['curr_stat']);
             $opcr->rating_status = $staged_for;
             $opcr->save();
@@ -936,8 +969,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $message = "Rating status updated";
             }
             return redirect()->back()->with('message', $message);
-        }else{
-            return redirect()->back()->with('error','OPCR Not found!!!');
+        } else {
+            return redirect()->back()->with('error', 'OPCR Not found!!!');
         }
         // dd($opcr_id);
     }

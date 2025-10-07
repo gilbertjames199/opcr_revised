@@ -1372,7 +1372,21 @@ window.Quill = quill__WEBPACK_IMPORTED_MODULE_16__["default"]; //Vue Multiselect
 
 
 var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_8___default()((filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_9___default()), (filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_10___default()), (filepond_plugin_file_validate_size__WEBPACK_IMPORTED_MODULE_11___default()), (filepond_plugin_image_crop__WEBPACK_IMPORTED_MODULE_12___default()), (filepond_plugin_image_transform__WEBPACK_IMPORTED_MODULE_13___default())); //.use(yearPicker)
-// .use(VTooltip)
+
+var setFavicon = function setFavicon(iconUrl) {
+  var link = document.querySelector("link[rel~='icon']");
+
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = "icon";
+    document.head.appendChild(link);
+  }
+
+  link.href = iconUrl;
+}; // ✅ Set your favicon
+
+
+setFavicon('/images/OPCR_ICON.png'); // .use(VTooltip)
 
 (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.createInertiaApp)({
   resolve: function () {
@@ -1432,8 +1446,8 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_8___default()((filepond_plu
             // var lo = "192.168.6.23:8080/";
             // var gl = "122.54.19.171:8080/";
             // var nw = "122.53.120.27:8080/"
-            var nw_nov = "paps.dvodeoro.ph/"; // var nw_nov = "paps.davaodeoro.gov.ph/";
-
+            // var nw_nov = "paps.dvodeoro.ph/";
+            var nw_nov = "paps.davaodeoro.gov.ph/";
             return nw_nov;
           },
 
@@ -1470,6 +1484,12 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_8___default()((filepond_plu
             "Economic Services": ["", "Agricultural Services", "Veterinary Services", "Natural Resources Services", "Architectural Services", "Engineering Services", "Economic Enterprises and Public Operation Services", "Tourism Services"],
             "Other Services": [// "Other Services"
             ]
+          },
+          isPreviewable: function isPreviewable(filename) {
+            // const ext = filename.split('.').pop().toLowerCase()
+            var ext = filename; // 'jpg', 'jpeg', 'png', 'gif',
+
+            return ['pdf', 'doc', 'docx', 'dot', 'dotx', 'dotm', 'xls', 'xlsx', 'xlsm', 'xlsb', 'xlt', 'xltx', 'xltm', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'mp3', 'mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'].includes(ext);
           }
         };
       },

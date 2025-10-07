@@ -120,14 +120,16 @@ class MeansOfVerificationController extends Controller
         ]);
 
         // Check total storage used by the user
-        $totalSize = MeansOfVerification::where('user_id', auth()->user()->recid)->sum('file_size');
-        $count = MeansOfVerification::where('user_id', auth()->user()->recid)->count();
+        $totalSize = MeansOfVerification::where('opcr_id', $opcr_id)->sum('file_size');
+        $count = MeansOfVerification::where('opcr_id', $opcr_id)->count();
         $maxSize   = 1024 * 1024 * 10; // 1 GB in bytes
         // dd($count, $maxSize, auth()->user()->recid, auth()->id());
-        if(intval($count)>2){
+        if(intval($count)>=2){
+            // dd("greater than 2", $totalSize, $count, $opcr_id);
             return redirect()->back()->withErrors(['error' => 'You have reached the 2 files limit.']);
         }
         if ($totalSize >= $maxSize) {
+            // dd("You have reached the 1 GB storage limit.");
             return redirect()->back()->withErrors(['error' => 'You have reached the 1 GB storage limit.']);
         }
 

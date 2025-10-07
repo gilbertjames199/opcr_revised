@@ -366,6 +366,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
     public function index_rating(Request $request){
         // dd("rating");
         // dd(auth()->user());
+        $disk = app()->environment('production') ? 'custom_uploads' : 'public';
         if (auth()->user()->department_code == '04') {
             $data = $this->revapp
                 ->where('rating_status', '>', -1)
@@ -426,7 +427,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
 
             return inertia('Review-Approve/OPCR/Ratings/Index', [
                 'data' => $data,
-                'mode_1'=>'Review'
+                'mode_1'=>'Review',
+                'disk'=>$disk
             ]);
         } else if (auth()->user()->department_code == '02' && auth()->user()->recid == '795') {
             $data = $this->revapp
@@ -487,7 +489,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
             // dd($data);
             return inertia('Review-Approve/OPCR/Ratings/Index', [
                 'data' => $data,
-                'mode_1'=>'Approve'
+                'mode_1'=>'Approve',
+                'disk'=>$disk
             ]);
         }else {
             return redirect('/forbidden')
@@ -539,6 +542,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     $t1 = "";
                     $rid = "";
                     $show_mov = false;
+                    $count_movs=0;
                     if (!empty($item->opcr_rating2)) {
                         //
                         $rating = collect($item->opcr_rating2)->where('opcr_id', $opcr_list_id)->first();
@@ -553,7 +557,17 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         $rid = optional($rating)->id;
                         // dd($rating);
                         $movs = optional($item->opcr_rating)->movs;
-                        $show_mov=false;
+                        // $show_mov = !empty($movs);
+                        $movs = optional($item->opcr_rating)->movs;
+
+                        if ($movs instanceof Collection) {
+                            $show_mov = $movs->isNotEmpty();   // correct for Eloquent collections
+                            $count_movs = $movs->count();
+                        } else {
+                            // covers arrays, strings, nulls, etc.
+                            $show_mov = !empty($movs);
+                            $count_movs = $show_mov ? 1 : 0;
+                        }
                     }
 
                     return [
@@ -581,7 +595,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "e3_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->efficiency3,
                         "t1_standard"=> optional(optional(optional($item)->paps)->opcr_stardard)->timeliness,
                         "movs"=>$movs,
-                        "mov_is_visible"=>$show_mov
+                        "mov_is_visible"=>$show_mov,
+                        "count_movs"=>$count_movs
                         // 'standard'=>optional(optional($item)->paps)->opcr_stardard
                     ];
                 });
