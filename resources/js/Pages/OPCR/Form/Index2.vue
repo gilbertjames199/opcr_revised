@@ -180,6 +180,7 @@
                                 Submit
                             </button>&nbsp;
                         </span>
+                        <!-- rating_status_dt{{ rating_status_dt }} -->
                         <span v-if="rating_status_dt==0">
                             <button type="button" class="btn btn-secondary mt-3 text-white" @click="submitRecallRating(0,-1, 'Successfully recalled OPCR submission', 'Are you sure you want to recall the submission of this OPCR')"
                                 :disabled="form.processing" >
@@ -234,14 +235,25 @@
             <!-- <h1>Means of Verification </h1> -->
              <div class="peers mb-12">
                 <div class="col-md-5">
+                    <!-- Warnings -->
+                     <div v-if="show_warnings">
+                        <div v-if="!isWithinLimit()" class="text-danger mt-2">
+                        ❌ Total file size must not exceed 10 MB.
+                        </div>
+                        <div v-if="!isWithinCount()" class="text-danger mt-2">
+                        ❌ You can only upload a maximum of 2 files.
+                        </div>
+                    </div>
+
                     <input
-                    type="file"
-                    multiple
-                    @change="handleFiles"
-                    ref="fileInput"
+                        type="file"
+                        multiple
+                        @change="handleFiles"
+                        ref="fileInput"
+                        :disabled="!(isWithinLimit() && isWithinCount())"
                     />
                     <div>
-                        <button type="button" @click="uploadFiles" class="btn btn-primary text-white">Upload</button>
+                        <button type="button" @click="uploadFiles" class="btn btn-primary text-white" :disabled="!(isWithinLimit() && isWithinCount())">Upload</button>
                         <button type="button" @click="cancelFiles" class="btn btn-danger text-white">Cancel </button>
                     </div>
                     <p>
@@ -253,6 +265,7 @@
                                     <th></th>
                                     <th>File Name</th>
                                     <th>File Type</th>
+                                    <th>File Size</th>
                                 </thead>
                                 <tr v-for="(file, index) in files" :key="index">
                                     <td>
@@ -260,6 +273,7 @@
                                     </td>
                                     <td>{{ file.name }}&nbsp;</td>
                                     <td>{{ file.name.split('.').pop() }}&nbsp;</td>
+                                    <td>{{ formatFileSize(file.size) }}&nbsp;</td>
                                 </tr>
                             </table>
                         </div>
@@ -310,8 +324,7 @@
                                     />
                                 </td>
                                 <!-- <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> -->
-                                <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
-                                </td>
+                                <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/></td>
                                 <td>{{ file.filename }} </td>
                                 <td>{{ format_number((file.file_size/1024),2,true) }} KB </td>
                                 <td>
@@ -531,6 +544,7 @@ export default {
             current_filepath: null,
             allSelected: false,
             rating_status_dt: null,
+            show_warnings: false
         }
     },
     computed: {
@@ -569,21 +583,46 @@ export default {
         window.removeEventListener("keydown", this.handleKeydown);
     },
     methods: {
-     computeAverage(opcr) {
-    // extract the values
-    const values = [opcr.rating_q, opcr.rating_e, opcr.rating_t];
+        //Format File Size
+        formatFileSize(size) {
+            if (size < 1024) return size + ' B';
+            else if (size < 1024 * 1024) return (size / 1024).toFixed(2) + ' KB';
+            else return (size / (1024 * 1024)).toFixed(2) + ' MB';
+        },
+        isWithinCount() {
+            return (this.files.length + this.movs.length) <= 2;
+        },
+        isWithinLimit() {
+            const maxSize = 10 * 1024 * 1024; // 10 MB in bytes
 
-    // filter out zero or null
-    const validValues = values.filter(v => v > 0);
+            // Sum size of selected files
+            const newFilesSize = this.files.reduce((sum, f) => parseFloat(sum) + parseFloat(f.size), 0);
 
-    if (validValues.length === 0) {
-      return 0; // or '' if you want it blank
-    }
+            // Sum size of already uploaded movs
+            const existingFilesSize = this.movs.reduce((sum, f) => parseFloat(sum) + parseFloat(f.file_size), 0);
 
-    // compute average
-    const sum = validValues.reduce((a, b) => a + b, 0);
-    return (sum / validValues.length).toFixed(2); // keep 2 decimals
-  },
+            const totalSize = parseFloat(newFilesSize) + parseFloat(existingFilesSize);
+            console.log("newFilesSize: "+newFilesSize);
+            console.log("existingFilesSize: "+existingFilesSize);
+            console.log("totalSize: "+totalSize);
+            console.log("maxSize: "+maxSize);
+            return totalSize <= maxSize;
+        },
+        computeAverage(opcr) {
+            // extract the values
+            const values = [opcr.rating_q, opcr.rating_e, opcr.rating_t];
+
+            // filter out zero or null
+            const validValues = values.filter(v => v > 0);
+
+            if (validValues.length === 0) {
+            return 0; // or '' if you want it blank
+            }
+
+            // compute average
+            const sum = validValues.reduce((a, b) => a + b, 0);
+            return (sum / validValues.length).toFixed(2); // keep 2 decimals
+        },
         halfSem(amount) {
             var ret = parseFloat(amount) / 2;
             return this.format_number_conv(ret, 2, true);
@@ -680,17 +719,17 @@ export default {
 
 
             // compute averages for all rows
-    const rowAverages = this.form.opcrs.map(opcr => this.computeRowAverage(opcr));
+            const rowAverages = this.form.opcrs.map(opcr => this.computeRowAverage(opcr));
 
-    // filter out rows that are 0
-    const validAverages = rowAverages.filter(avg => avg > 0);
+            // filter out rows that are 0
+            const validAverages = rowAverages.filter(avg => avg > 0);
 
-    if (validAverages.length === 0) {
-      return 0; // or '' if you want blank
-    }
+            if (validAverages.length === 0) {
+            return 0; // or '' if you want blank
+            }
 
-    const total = validAverages.reduce((a, b) => a + b, 0);
-    return (total / validAverages.length).toFixed(2); // keep 2 decimals
+            const total = validAverages.reduce((a, b) => a + b, 0);
+            return (total / validAverages.length).toFixed(2); // keep 2 decimals
 
 
             // var total_div = 0;
@@ -856,7 +895,7 @@ export default {
             if (!confirm("Are you sure you want to upload selected files?")) {
                 return;
             }
-
+            this.show_warnings=true;
             let formData = new FormData();
 
             // Single file (optional)
@@ -896,6 +935,7 @@ export default {
             });
         },
         cancelFiles() {
+            // this.show_warnings=false;
             this.files = [];                  // Clear the files array
             this.$refs.fileInput.value = null;    // Reset the file input visually
         },
@@ -1016,15 +1056,7 @@ export default {
             }
         },
         // FOIR PREVIEWS
-        isPreviewable(filename) {
-            // const ext = filename.split('.').pop().toLowerCase()
-            const ext = filename
-            // 'jpg', 'jpeg', 'png', 'gif',
-            return ['pdf','doc', 'docx', 'dot', 'dotx', 'dotm','xls', 'xlsx', 'xlsm',
-            'xlsb', 'xlt', 'xltx', 'xltm', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp',
-            'mp3', 'mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'
-            ].includes(ext)
-        },
+
         previewFile(file) {
             const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
             const multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];

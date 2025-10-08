@@ -389,6 +389,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ? 'http://122.53.120.18:8067/images/'
             : asset('storage/');
         $disk = app()->environment('production') ? 'custom_uploads' : 'public';
+            // dd($baseUrl);
+        // dd($rating_status);
         // dd($baseUrl);
         return inertia($component, [
             'total' => $total,
