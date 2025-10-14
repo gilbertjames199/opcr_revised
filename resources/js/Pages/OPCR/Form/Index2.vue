@@ -30,6 +30,7 @@
         <!-- {{ opcr_date }} -->
         <div class="masonry-sizer col-md-6">
             <h5>PERIOD: <u>{{ opcr_date }}</u></h5>
+            <h5>STATUS: <u>{{ getStatus(list.rating_status) }}</u></h5>
         </div>
         <div class="col-12">
             <!-- <div class="row gap-20"></div> -->
@@ -519,7 +520,8 @@ export default {
         opcrs: Object,
         fileBaseUrl: String,
         rating_status: Number,
-        disk: String
+        disk: String,
+        list: Object
     },
     data() {
         return {
