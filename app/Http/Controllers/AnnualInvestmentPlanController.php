@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\AIP;
 use App\Models\AnnualInvestmentPlan;
 use App\Models\AppropriationAmount;
+use App\Models\BudgetRequirement;
 use App\Models\ExpectedOutput;
 use App\Models\FFUNCCOD;
+use App\Models\Office;
 use App\Models\Program;
 use App\Models\ProgramAndProject;
 use App\Models\RAAOD;
 use App\Models\RAAOHS;
+use App\Models\RevisionPlan;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -583,6 +587,94 @@ class AnnualInvestmentPlanController extends Controller
                     "FRAAODESC" => $item->raaohs ? $item->raaohs->FRAODESC : "",
                     "FRAAODESC" => $item->raaohs ? $item->raaohs->FRAODESC : "",
                     "year" => ($item->fdate !== '0000-00-00') ? date('Y', strtotime($item->fdate)) : null
+                ];
+            });
+    }
+
+    public function print_OPCR(Request $request)
+    {
+        // dd("print");
+        // dd(auth()->user());
+        // dd($request->department_code);
+        $office = Office::where('department_code', $request->department_code)->first();
+        $year = $request->year;
+        // dd($office);
+        $dept_code = $request->department_code;
+        return  RevisionPlan::with([
+            'paps',
+            'budget',
+            'checklist',
+            'comments',
+            'strategyProject',
+            'strategyProject.strategy',
+            'activityProject',
+            'activityProject.activity',
+            'activityProject.expected_output',
+            'activityProject.expected_outcome',
+        ])
+            ->whereHas('paps', function ($query) use ($dept_code) {
+                $query->where('department_code', $dept_code);
+            })
+            ->where(function ($query) use ($year) {
+                if ($year) {
+                    $query->whereYear('date_start', $year)
+                        ->whereYear('date_end', $year);
+                }
+            })
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($item) use ($office, $year) {
+                $office_short = $office ? $office->short_name : "";
+                // dd($item);
+                $totals = BudgetRequirement::select('category', 'source', DB::raw('SUM(amount) as total'))
+                    ->where('revision_plan_id', $item->id)
+                    ->groupBy('category', 'source')
+                    ->get()
+                    ->groupBy('category');
+                // ->pluck('total', 'category');
+                // $mooe = $totals['Maintenance, Operating, and Other Expenses']->sum('total') ?? 0;
+                $co   = optional($totals->get('Capital Outlay'))->sum('total') ?? 0;
+                $mooe = optional($totals->get('Maintenance, Operating, and Other Expenses'))->sum('total') ?? 0;
+                $ps   = optional($totals->get('Personal Services'))->sum('total') ?? 0;
+                $fe   = optional($totals->get('Financial Expenses'))->sum('total') ?? 0;
+                // $fe   = $totals['Financial Expenses'] ? $totals['Financial Expenses']->sum('total') : 0;
+                // $ps   = $totals['Personnel Services'] ? $totals['Personnel Services']->sum('total') : 0;
+                $ps = 0;
+                // dd($totals['Maintenance, Operating, and Other Expenses']);
+                return [
+                    "aip_code" => $item->aip_code,
+                    "paps_title" => $item->project_title,
+                    "implementing_office" => $office_short,
+                    "year" => $year,
+                    "mooe" => $mooe,
+                    "co" => $co,
+                    "fe" => $fe,
+                    "ps" => $ps,
+                    "start_date" => Carbon::parse($item->date_start)->format('F Y'),
+                    "end_date" => Carbon::parse($item->date_end)->format('F Y'),
+                    // "funding_source" => $totals->source,
+                    "strategy_projects" => $item->strategyProject->map(function ($strategyProject) use ($item) {
+                        return [
+                            "strategy" => $strategyProject->strategy ? $strategyProject->strategy->description : "",
+                            "activities" => $item->activityProject->map(function ($activityProject) {
+                                return [
+                                    "activity" => $activityProject->activity ? $activityProject->activity->description : "",
+                                    "expected_outputs" => $activityProject->expected_output->map(function ($expected_output) {
+                                        return [
+                                            "output" => $expected_output->description,
+                                            "count" => (floatval($expected_output->physical_q1) + floatval($expected_output->physical_q2) + floatval($expected_output->physical_q3) + floatval($expected_output->physical_q4)),
+                                        ];
+                                    }),
+                                    "expected_outcomes" => $activityProject->expected_outcome->map(function ($expected_outcome) {
+                                        return [
+                                            "outcome" => $expected_outcome->description,
+                                            // "count" => (floatval($expected_outcome->physical_q1) + floatval($expected_outcome->physical_q2) + floatval($expected_outcome->physical_q3) + floatval($expected_outcome->physical_q4)),
+                                        ];
+                                    }),
+                                ];
+                            }),
+                        ];
+                    }),
                 ];
             });
     }

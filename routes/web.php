@@ -1195,6 +1195,10 @@ Route::prefix('lbp2/print')->group(function () {
 Route::prefix('lbp_by_ppa2')->group(function () {
     Route::get('/', [AppropriationBudgetController::class, 'print_lbp2']);
 });
+
+Route::prefix('aip')->group(function () {
+    Route::get('/printing', [AnnualInvestmentPlanController::class, 'print_OPCR']);
+});
 // Route::prefix('api_ppa2')->group(function () {
 //     Route::get('/', [RevisionPlanController::class, 'api_ppa']);
 // });
