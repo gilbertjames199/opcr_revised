@@ -1997,7 +1997,12 @@ class RevisionPlanController extends Controller
 
             $strategyId = $strategy->id;
             $budget = $plan->budget;
-
+            // dd($budget[0]);
+            $source ="";
+            if(count($budget)>0){
+                $source = $budget[0]->source;
+            }
+            // dd($source);
             // 🔹 Collect all expected outputs from all activity projects
             // $expected_outputs = collect($plan->activityProject)
             //     ->pluck('expected_output')
@@ -2025,6 +2030,7 @@ class RevisionPlanController extends Controller
                 // Found at least one with a ccet_code
                 $ccetCode = $activityWithCcet->ccet_code;
             }
+            // dd($plan);
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $plan->project_title,
@@ -2038,6 +2044,9 @@ class RevisionPlanController extends Controller
                     'ccet_code_mitigation'=>null,
                     'ccet_code_adaptation'=>null,
                     'aip_code'=>$plan->aip_code,
+                    'source'=>$source
+                    // 'date_from'=>
+                    // 'date_end'=>
                     // 'activities' => [],
                 ];
             } else {
