@@ -2035,7 +2035,9 @@ class RevisionPlanController extends Controller
                     'total_co' => $budget->where('category', 'Capital Outlay')->sum('amount'),
                     'total_fe' => $budget->where('category', 'Financial Expenses')->sum('amount'),
                     'ccet_code'=>$ccetCode,
-                    // 'ccet_code'
+                    'ccet_code_mitigation'=>null,
+                    'ccet_code_adaptation'=>null,
+                    'aip_code'=>$plan->aip_code,
                     // 'activities' => [],
                 ];
             } else {
