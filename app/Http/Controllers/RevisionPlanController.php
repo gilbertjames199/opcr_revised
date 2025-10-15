@@ -1985,7 +1985,8 @@ class RevisionPlanController extends Controller
             'activityProject.expected_outcome',
             'budget',
             'paps',
-            'paps.office'
+            'paps.office',
+            'paps.office.office'
         ])->get();
 
         foreach ($plans as $plan) {
@@ -2031,10 +2032,14 @@ class RevisionPlanController extends Controller
                 $ccetCode = $activityWithCcet->ccet_code;
             }
             // dd($plan);
+            // dd($plan->paps->office->office);
+
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $plan->project_title,
-                    'implementing_office' => optional(optional(optional($plan)->paps)->office)->FFUNCTION,
+                    'implementing_office' => optional(optional(optional($plan)->paps)->office)->office?
+                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name:
+                        optional(optional(optional($plan)->paps)->office)->FFUNCTION,
                     'expected_output' => $expected_outputs,
                     'total_mooe' => $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount'),
                     'total_ps' => $budget->where('category', 'Personnel Services')->sum('amount'),
