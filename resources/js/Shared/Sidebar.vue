@@ -459,13 +459,13 @@
                             <span class="title">GAD Related Issues</span>
                             </Link>
                         </li>
-                        <li>
+                        <!-- <li>
                             <Link class="sidebar-link" href="/ImplementingTeam"
                                 :class="{ 'active': $page.url === '/ImplementingTeam' }">
 
-                            <span class="title">Implementing Team</span>
+                                <span class="title">Implementing Team</span>
                             </Link>
-                        </li>
+                        </li> -->
                         <li >
                             <Link class="sidebar-link" href="/indicators"
                                 :class="{ 'active': $page.url === '/indicators' }">
