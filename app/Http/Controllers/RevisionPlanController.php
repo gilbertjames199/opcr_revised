@@ -2004,14 +2004,27 @@ class RevisionPlanController extends Controller
             //     ->filter()
             //     ->flatten(1)
             //     ->values();
+            // dd($plan->activityProject);
             $expected_outputs = collect($plan->activityProject)
-        ->pluck('expected_output')
-        ->filter()
-        ->flatten(1)
-        ->map(fn($output) => ['description' => $output->description ?? ''])
-        ->filter(fn($item) => !empty($item['description']))
-        ->values();
-
+                ->pluck('expected_output')
+                ->filter()
+                ->flatten(1)
+                ->map(fn($output) => [
+                    // dd($output),
+                    // 'ccet_code'=>optional(optional($plan)->activityProject),
+                    'target_budget_year'=> (($output->physical_q1?floatval($output->physical_q1):0)+($output->physical_q2?floatval($output->physical_q2):0)
+                    + ($output->physical_q3?floatval($output->physical_q3):0)+($output->physical_q4?floatval($output->physical_q4):0)),
+                    'description' => $output->description ?? ''])
+                ->filter(fn($item) => !empty($item['description']))
+                ->values();
+            // dd($);
+            // return $plan->activityProject;
+            $ccetCode = null;
+            $activityWithCcet = collect($plan->activityProject)->firstWhere('ccet_code', '!=', null);
+            if ($activityWithCcet) {
+                // Found at least one with a ccet_code
+                $ccetCode = $activityWithCcet->ccet_code;
+            }
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $plan->project_title,
@@ -2021,6 +2034,8 @@ class RevisionPlanController extends Controller
                     'total_ps' => $budget->where('category', 'Personnel Services')->sum('amount'),
                     'total_co' => $budget->where('category', 'Capital Outlay')->sum('amount'),
                     'total_fe' => $budget->where('category', 'Financial Expenses')->sum('amount'),
+                    'ccet_code'=>$ccetCode,
+                    // 'ccet_code'
                     // 'activities' => [],
                 ];
             } else {
