@@ -28,6 +28,7 @@ use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class RevisionPlanController extends Controller
 {
@@ -2025,14 +2026,40 @@ class RevisionPlanController extends Controller
                 ->values();
             // dd($);
             // return $plan->activityProject;
+            $total_mooe = $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
+            $total_ps = $budget->where('category', 'Personnel Services')->sum('amount');
+            $total_co = $budget->where('category', 'Capital Outlay')->sum('amount');
+            $total_fe = $budget->where('category', 'Financial Expenses')->sum('amount');
+
+            $total_all = $total_mooe + $total_ps + $total_co + $total_fe;
+            $ccet_code_adaptation=0;
+            $ccet_code_mitigation=0;
+
+
             $ccetCode = null;
             $activityWithCcet = collect($plan->activityProject)->firstWhere('ccet_code', '!=', null);
+
+
             if ($activityWithCcet) {
                 // Found at least one with a ccet_code
                 $ccetCode = $activityWithCcet->ccet_code;
+                // dd($plan, $ccetCode);
+                if($ccetCode){
+                    if (Str::startsWith($ccetCode, 'A')) {
+                        $ccet_code_adaptation = $total_all;
+                        $ccet_code_mitigation = 0;
+                    } elseif (Str::startsWith($ccetCode, 'M')) {
+                        $ccet_code_adaptation = 0;
+                        $ccet_code_mitigation = $total_all;
+                    } else {
+                        $ccet_code_adaptation = 0;
+                        $ccet_code_mitigation = 0;
+                    }
+                }
             }
             // dd($plan);
             // dd($plan->paps->office->office);
+
 
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
@@ -2041,13 +2068,13 @@ class RevisionPlanController extends Controller
                         optional(optional(optional(optional($plan)->paps)->office)->office)->short_name:
                         optional(optional(optional($plan)->paps)->office)->FFUNCTION,
                     'expected_output' => $expected_outputs,
-                    'total_mooe' => $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount'),
-                    'total_ps' => $budget->where('category', 'Personnel Services')->sum('amount'),
-                    'total_co' => $budget->where('category', 'Capital Outlay')->sum('amount'),
-                    'total_fe' => $budget->where('category', 'Financial Expenses')->sum('amount'),
+                    'total_mooe' => $total_mooe,
+                    'total_ps' => $total_ps,
+                    'total_co' => $total_co,
+                    'total_fe' => $total_fe,
                     'ccet_code'=>$ccetCode,
-                    'ccet_code_mitigation'=>null,
-                    'ccet_code_adaptation'=>null,
+                    'ccet_code_mitigation'=>$ccet_code_mitigation,
+                    'ccet_code_adaptation'=>$ccet_code_adaptation ,
                     'aip_code'=>$plan->aip_code,
                     'source'=>$source
                     // 'date_from'=>
