@@ -289,7 +289,7 @@
                         </svg>
 
                     </span>
-                    <span class="title">Individual Project Profile</span>
+                    <span class="title">IPP (All Offices)</span>
                     </Link>
                 </li>
                 <li class="nav-item">
