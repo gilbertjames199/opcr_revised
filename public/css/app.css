@@ -81547,24 +81547,28 @@ table.dataTable.no-footer {
   padding: 75px 20px 20px !important;
 }
 
+.bgc-grey-100 {
+  background-color: #fcf7e1 !important;
+}
+
 .dropdown-menu-c {
   width: 200px !important;
 }
 
 .sidebar-menu {
   --tw-bg-opacity: 1;
-  background: linear-gradient(to top, #02031e, #3a0370);
+  background: linear-gradient(to bottom, #452b02, #764a03 60%, #edca25);
 }
 
 .sidebar-menu .title,
 .sidebar-menu .icon-holder {
   --tw-text-opacity: 1;
-  color: rgba(178, 183, 255, var(--tw-text-opacity));
+  color: #FFD700;
 }
 
 hr {
   color: #FFFFFF !important;
-  background-color: #FFFFFF !important;
+  background-color: #FFD700 !important;
   height: 1px;
   border: none;
 }
@@ -81587,11 +81591,11 @@ hr {
 }
 
 .sidebar-menu .title:hover {
-  color: #fff !important;
+  color: #FFD700 !important;
 }
 
 .sidebar-menu .active .title {
-  color: #FFF !important;
+  color: #FFD700 !important;
   font-weight: 500 !important;
 }
 
@@ -81602,14 +81606,14 @@ hr {
 
 .sidebar-logo {
   --tw-bg-opacity: 1;
-  background-color: #090137;
+  background-color: #4d3102;
   font-weight: bold !important;
-  font-family: Arial Black !important;
+  font-family: Arial #FFD700 !important;
   font-style: italic;
 }
 
 .arrow {
-  color: #fff;
+  color: #FFD700;
 }
 
 .select2-container .select2-selection--single {
@@ -81656,11 +81660,11 @@ hr {
 }
 
 .sidebar-link :hover {
-  color: #fff !important;
+  color: #FFD700 !important;
 }
 
 .sidebar-link :active {
-  color: #fff !important;
+  color: #FFD700 !important;
 }
 
 .tab {

@@ -38,4 +38,7 @@ class PaginationHelper
             'items', 'total', 'perPage', 'currentPage', 'options'
         ));
     }
+
+    //
+
 }

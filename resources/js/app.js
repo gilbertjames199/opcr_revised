@@ -64,7 +64,18 @@ const FilePond = vueFilePond(
     FilePondPluginImageTransform
 );
 //.use(yearPicker)
+const setFavicon = (iconUrl) => {
+  let link = document.querySelector("link[rel~='icon']")
+  if (!link) {
+    link = document.createElement("link")
+    link.rel = "icon"
+    document.head.appendChild(link)
+  }
+  link.href = iconUrl
+}
 
+// ✅ Set your favicon
+setFavicon('/images/OPCR_ICON.png')
 // .use(VTooltip)
 createInertiaApp({
     resolve: async name => {
@@ -205,8 +216,8 @@ createInertiaApp({
                             // var lo = "192.168.6.23:8080/";
                             // var gl = "122.54.19.171:8080/";
                             // var nw = "122.53.120.27:8080/"
-                            var nw_nov = "paps.dvodeoro.ph/";
-                            // var nw_nov = "paps.davaodeoro.gov.ph/";
+                            // var nw_nov = "paps.dvodeoro.ph/";
+                            var nw_nov = "paps.davaodeoro.gov.ph/";
                             return nw_nov;
                         },
                         office_aip: {
@@ -295,7 +306,16 @@ createInertiaApp({
                             "Other Services": [
                                 // "Other Services"
                             ]
-                        }
+                        },
+                        isPreviewable(filename) {
+                            // const ext = filename.split('.').pop().toLowerCase()
+                            const ext = filename
+                            // 'jpg', 'jpeg', 'png', 'gif',
+                            return ['pdf','doc', 'docx', 'dot', 'dotx', 'dotm','xls', 'xlsx', 'xlsm',
+                            'xlsb', 'xlt', 'xltx', 'xltm', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp',
+                            'mp3', 'mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'
+                            ].includes(ext)
+                        },
                     }
                 },
                 methods: {
@@ -521,6 +541,41 @@ createInertiaApp({
                         const date = new Date(isoDate);
                         const options = { year: 'numeric', month: 'long', day: '2-digit' };
                         return date.toLocaleDateString('en-US', options);
+                    },
+                    getPreUploadFileIcon(file_type) {
+                        // if (!file?.file_type) {
+                        //   return '/images/icons/file.png'; // default if missing type
+                        // }
+
+                        const type = file_type.toLowerCase();
+
+                        const excelTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xlt', 'xltx', 'xltm'];
+                        const wordTypes = ['doc', 'docx', 'dot', 'dotx', 'dotm'];
+                        const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+                        const pptTypes = ['ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'];
+                        const multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];
+
+                        if (excelTypes.includes(type)) {
+                            return '/images/icons/excel.png';
+                        }
+                        else if (type === 'pdf') {
+                            return '/images/icons/pdf.png';
+                        }
+                        else if (wordTypes.includes(type)) {
+                            return '/images/icons/word.png';
+                        }
+                        else if (pptTypes.includes(type)) {
+                            return '/images/icons/ppt.png';
+                        }
+                        else if (multimediaTypes.includes(type)) {
+                            return '/images/icons/video.png';
+                        }
+                        else if (imageTypes.includes(type)) {
+                            return `/images/icons/images.png`;
+                        }
+                        else {
+                            return '/images/icons/file.png'; // default icon
+                        }
                     },
 
                 }

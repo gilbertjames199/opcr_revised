@@ -30,10 +30,11 @@ class LogFrameController extends Controller
         //dd(auth()->user()->recid);
         // $accounts = $this->model->where('iduser',auth()->user()->recid)
         //             ->with('func')->get();
-
+        $afmsDb = getDB2Name();
+        // dd($afmsDb);
         $functions = $this->model
             ->select('ff.FFUNCCOD', 'FFUNCTION', 'department_code')
-            ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod');
+            ->join(DB::raw("{$afmsDb}.functions ff"), 'ff.FFUNCCOD', '=', 'accountaccess.ffunccod');
 
 
         if (auth()->user()->recid !== 545) {
