@@ -300,7 +300,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     filterPrograms: function filterPrograms(search, office_code) {
       this.$inertia.get("/revision_plans", {
         search: search,
-        FFUNCCOD: office_code
+        FFUNCCOD: office_code,
+        source: this.my_source
       }, {
         preserveScroll: true,
         preserveState: true,

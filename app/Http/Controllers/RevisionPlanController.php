@@ -1595,18 +1595,18 @@ class RevisionPlanController extends Controller
         // dd($request->FFUNCCOD);
         // dd($request->search);
         $data = RevisionPlan::
-        // select(
-        //     'revision_plans.id',
-        //     'revision_plans.project_title',
-        //     'revision_plans.version',
-        //     'revision_plans.type',
-        //     'revision_plans.is_strategy_based',
-        //     'revision_plans.idpaps',
-        //     'ff.FFUNCTION',
-        //     'paps.aip_code',
-        //     // DB::raw('sum(budget_requirements.amount)')
-        // )->
-        with(['budget','paps','paps.office'])
+            // select(
+            //     'revision_plans.id',
+            //     'revision_plans.project_title',
+            //     'revision_plans.version',
+            //     'revision_plans.type',
+            //     'revision_plans.is_strategy_based',
+            //     'revision_plans.idpaps',
+            //     'ff.FFUNCTION',
+            //     'paps.aip_code',
+            //     // DB::raw('sum(budget_requirements.amount)')
+            // )->
+            with(['budget','paps','paps.office'])
             // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
             // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
             // ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
@@ -1615,6 +1615,11 @@ class RevisionPlanController extends Controller
                 $query->select(DB::raw('revision_plan_id'))
                     ->groupBy('revision_plan_id')
                     ->havingRaw('SUM(amount) > 0');
+            })
+            ->when($request->FFUNCCOD, function($query)use($request){
+                $query->whereHas('paps', function($query_inner)use($request){
+                    $query_inner->where('FFUNCCOD', $request->FFUNCCOD);
+                });
             })
             ->where('project_title', 'LIKE', '%' . $request->search . '%')
             ->whereHas('paps',function($query)use($request, $source, $dept_id){
