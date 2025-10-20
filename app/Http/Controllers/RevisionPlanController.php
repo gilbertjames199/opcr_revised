@@ -2065,7 +2065,7 @@ class RevisionPlanController extends Controller
             // dd($plan);
             // dd($plan->paps->office->office);
 
-            if (mb_strlen($source, 'UTF-8') < 20) {
+            if (mb_strlen($source, 'UTF-8') < 25) {
 
                 $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
                 $source = implode("\n", $chars);
