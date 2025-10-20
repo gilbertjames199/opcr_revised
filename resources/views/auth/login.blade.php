@@ -7,6 +7,7 @@
     <title>Sign In - PBS</title>
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="{{ asset('images/OPCR_ICON.png') }}">
 </head>
 
 <body class="app">

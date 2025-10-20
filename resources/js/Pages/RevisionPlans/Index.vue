@@ -15,6 +15,7 @@
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`" v-if="source==undefined">Add Revision Plan</Link>
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Revision Plan -</Link>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
@@ -128,12 +129,18 @@
 
             </div>
         </div>
-
+        <AIPModal v-if="showAIPModal" @close-modal-event="hideAIPModal">
+            <div class="d-flex justify-content-center">
+                <!-- {{ aip_printLink }} -->
+                <iframe :src="aip_printLink" style="width:100%; height:500px" />
+            </div>
+        </AIPModal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import AIPModal from "@/Shared/PrintModal";
 export default {
     props: {
         data: Object,
@@ -147,10 +154,12 @@ export default {
     data() {
         return{
             search: this.$props.filters.search,
+            showAIPModal: false,
+            aip_printLink: "",
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, AIPModal
     },
 
     methods:{
@@ -213,6 +222,16 @@ export default {
                 status_now=showAmount+"Warning: total amount of implementation plans is greater than the total  amount of budgetary requirement."
             }
             return status_now;
+        },
+        showAIPModalMethod(){
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link ='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no&output=pdf';
+            this.aip_printLink = linkt+jasper_ip+jasper_link;
+            this.showAIPModal=true;
+        },
+        hideAIPModal(){
+            this.showAIPModal=false;
         }
     }
 };

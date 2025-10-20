@@ -190,10 +190,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $opcr_rating = OfficePerformanceCommitmentRating::where('id_opcr_target', $target->id)
                 ->first();
             $paps_here = ProgramAndProject::where('id', $target->idpaps)->first();
-
-
-
-
             // dd($paps_here);
             if (!$opcr_rating) {
                 $opcrf = new OfficePerformanceCommitmentRating();
@@ -405,6 +401,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'fileBaseUrl' => $baseUrl,
             'disk' => $disk,
             "rating_status" => $rating_status,
+            'list'=>$list,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)

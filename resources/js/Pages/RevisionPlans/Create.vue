@@ -26,7 +26,7 @@
                 <div v-if="paps[0]" >
                     <input type="text" v-model="paps[0].paps_desc" class="form-control" />
                 </div>
-                <div v-if="editData===undefined"> 
+                <div v-if="editData===undefined">
                     <select v-model="form.idpaps" class="form-control"
                         @change="updateProjectTitle">
                         <option v-for="pap in paps_all" :value="pap.id">
@@ -38,6 +38,10 @@
                 <label for="">PROJECT TITLE</label>
                 <input type="text" v-model="form.project_title" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.project_title">{{ form.errors.project_title }}</div>
+
+                <label for="">AIP Code</label>
+                <input type="text" v-model="form.aip_code" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.aip_code">{{ form.errors.aip_code }}</div>
 
                 <label for="">PROJECT LOCATION</label>
                 <input type="text" v-model="form.project_location" class="form-control" autocomplete="chrome-off">
@@ -161,6 +165,7 @@
     </div>
     <!-- {{this.source }}cxzsdfsdfdsfsdfsf
     {{ form }} -->
+     {{ paps[0].aip_code }}
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -279,6 +284,7 @@ export default {
             this.pageTitle = "Create"
             this.form.is_strategy_based=0
             //this.form.idpaps=this.idpaps
+            this.form.aip_code=this.paps[0].aip_code
             if (this.duplicate !== undefined) {
                 this.form.idpaps = this.duplicate[0].idpaps
                 this.form.project_title = this.duplicate[0].project_title
@@ -311,10 +317,10 @@ export default {
 
     methods: {
         //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
-            //alert(this.form.target_qty);
-            // if (this.act_words > this.maxWords) {
-            //     alert("Rationale exceeds 200 words limit")
-            // } else {
+        //alert(this.form.target_qty);
+        // if (this.act_words > this.maxWords) {
+        //     alert("Rationale exceeds 200 words limit")
+        // } else {
         submit() {
 
                 if (this.editData !== undefined) {
