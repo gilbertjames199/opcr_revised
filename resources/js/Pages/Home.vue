@@ -32,7 +32,7 @@
       <div class="col-md-4">
         <div class="card analytics-card">
           <div class="card-body text-center">
-            <h5 class="card-title">Total Budgets</h5>
+            <h5 class="card-title">Total Budget</h5>
             <h2 class="card-value">{{ totalBudgets }}</h2>
           </div>
         </div>
@@ -42,7 +42,7 @@
       <div class="col-md-4">
         <div class="card analytics-card">
           <div class="card-body text-center">
-            <h5 class="card-title">Total GAD Budgets</h5>
+            <h5 class="card-title">Total GAD Budget</h5>
             <h2 class="card-value">{{ totalGadBudgets }}</h2>
           </div>
         </div>
