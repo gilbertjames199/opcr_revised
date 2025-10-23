@@ -16,7 +16,12 @@
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`" v-if="source==undefined">Add Revision Plan</Link>
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Revision Plan</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
+                    <input
+                        type="checkbox"
+                        v-model="checked"
+                        @change="updateValue"
+                    />&nbsp;No Climate Change Expenditure
                 </div>
             </div>
 
@@ -156,6 +161,8 @@ export default {
             search: this.$props.filters.search,
             showAIPModal: false,
             aip_printLink: "",
+            ccet: 'no',       // This is the main variable bound by v-model
+            checked: false    // Internal boolean to control the checkbox
         }
     },
     components: {
@@ -227,11 +234,15 @@ export default {
             var linkt = "https://";
             var jasper_ip = this.jasper_ip;
             var jasper_link ='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no&output=pdf';
-            this.aip_printLink = linkt+jasper_ip+jasper_link;
+            var params ='&ccet='+this.ccet
+            this.aip_printLink = linkt+jasper_ip+jasper_link+params;
             this.showAIPModal=true;
         },
         hideAIPModal(){
             this.showAIPModal=false;
+        },
+        updateValue() {
+            this.ccet = this.checked ? 'yes' : 'no'
         }
     }
 };

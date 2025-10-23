@@ -18,6 +18,13 @@
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showPrint()">Print</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>
+                    <!-- <input
+                        type="checkbox"
+                        v-model="checked"
+                        @change="updateValue"
+                    />
+                        <p>ccet = {{ ccet }}</p> -->
+
                 </div>
             </div>
 
@@ -612,6 +619,9 @@ export default {
             displaylbp2: false,
 
             no_ooe: false,
+
+            ccet: 'no',       // This is the main variable bound by v-model
+            checked: false
         }
     },
     computed: {
@@ -1199,6 +1209,9 @@ export default {
         },
         hideAIPModal(){
             this.showAIPModal=false;
+        },
+        updateValue() {
+            this.ccet = this.checked ? 'yes' : 'no'
         }
     }
 };

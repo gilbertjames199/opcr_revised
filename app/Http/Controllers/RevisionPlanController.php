@@ -2092,7 +2092,7 @@ class RevisionPlanController extends Controller
                     'ccet_code_mitigation'=>$ccet_code_mitigation,
                     'ccet_code_adaptation'=>$ccet_code_adaptation ,
                     'aip_code'=>$plan->aip_code,
-                    'source'=>$source,
+                    'source'=>$source."\n",
                     'ccet'=>$ccet
                     // $this->set_source($source)
                     // 'date_from'=>
