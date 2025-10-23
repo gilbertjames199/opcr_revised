@@ -1983,6 +1983,7 @@ class RevisionPlanController extends Controller
     }
     public function print_aip(Request $request){
         $strategies = [];
+        $ccet = $request->ccet;
         $plans = RevisionPlan::with([
             'strategyProject.strategy',
             'strategyProject.expected_output',
@@ -2064,17 +2065,21 @@ class RevisionPlanController extends Controller
             }
             // dd($plan);
             // dd($plan->paps->office->office);
-
+            // $source=$this->set_source($source);
             if (mb_strlen($source, 'UTF-8') < 25) {
 
                 $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
                 $source = implode("\n", $chars);
                 // dd($source, $plan);
             }
+            $paps_title = $plan->project_title;
+            $paps_desc = optional($plan->paps)->MOV=="-"?"":optional($plan->paps)->MOV;
+            $paps_title_desc = $paps_title . "\n\n" . $paps_desc;
+            // dd($plan->paps);
 
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
-                    'project_title' => $plan->project_title,
+                    'project_title' => $paps_title_desc,
                     'implementing_office' => optional(optional(optional($plan)->paps)->office)->office?
                         optional(optional(optional(optional($plan)->paps)->office)->office)->short_name:
                         optional(optional(optional($plan)->paps)->office)->FFUNCTION,
@@ -2087,7 +2092,9 @@ class RevisionPlanController extends Controller
                     'ccet_code_mitigation'=>$ccet_code_mitigation,
                     'ccet_code_adaptation'=>$ccet_code_adaptation ,
                     'aip_code'=>$plan->aip_code,
-                    'source'=>$source
+                    'source'=>$source,
+                    'ccet'=>$ccet
+                    // $this->set_source($source)
                     // 'date_from'=>
                     // 'date_end'=>
                     // 'activities' => [],
@@ -2117,6 +2124,38 @@ class RevisionPlanController extends Controller
         }
 
         return array_values($strategies);
+    }
+    protected function set_source($source){
+        $source = trim($source ?? ''); // make sure it's a string
+
+        // Normalize the case for easier matching
+        $normalized = strtoupper($source);
+
+        // 1️⃣ General Fund
+        if (str_contains($normalized, 'GENERAL FUND') || $normalized === 'GF') {
+            $source = 'General Fund';
+        }
+        // 2️⃣ LDRRMF (and variants)
+        elseif (
+            str_contains($normalized, 'LDRRMF') ||
+            str_contains($normalized, 'DISASTER') ||
+            str_contains($normalized, 'RISK REDUCTION')
+        ) {
+            $source = 'LDRRMF';
+        }
+        // 3️⃣ DF (and variants)
+        elseif (
+            str_contains($normalized, 'DEVELOPMENT FUND') ||
+            str_contains($normalized, '20% DF') ||
+            $normalized === 'DF'
+        ) {
+            $source = 'DF';
+        }
+        // 4️⃣ Everything else
+        else {
+            $source = 'Other Sources';
+        }
+        return $source;
     }
     public function print_aip2(Request $request)
     {
