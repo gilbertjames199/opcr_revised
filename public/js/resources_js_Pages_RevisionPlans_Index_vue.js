@@ -444,12 +444,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[2] || (_cache[2] = function ($event) {
       return $options.showAIPModalMethod();
     })
-  }, "AIP"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, "AIP"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[3] || (_cache[3] = function () {
+      return $options.exportUsers && $options.exportUsers.apply($options, arguments);
+    }),
+    "class": "btn btn-primary btn-sm mL-2 text-white"
+  }, "Export AIP to Excel"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "checkbox",
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.checked = $event;
     }),
-    onChange: _cache[4] || (_cache[4] = function () {
+    onChange: _cache[5] || (_cache[5] = function () {
       return $options.updateValue && $options.updateValue.apply($options, arguments);
     })
   }, null, 544
@@ -623,11 +628,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 8
       /* PROPS */
       , _hoisted_29)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-        onClick: _cache[5] || (_cache[5] = function () {
+        onClick: _cache[6] || (_cache[6] = function () {
           return $options.exportUsers && $options.exportUsers.apply($options, arguments);
         }),
         "class": "btn btn-primary text-white"
-      }, " Export Users to Excel ")];
+      }, " Export to Excel ")];
     }),
     _: 1
     /* STABLE */
