@@ -138,10 +138,11 @@
             <div class="d-flex justify-content-center">
                 <!-- {{ aip_printLink }} -->
                 <iframe :src="aip_printLink" style="width:100%; height:500px" />
-                <button @click="exportUsers" class="btn btn-primary">
+
+            </div>
+            <button @click="exportUsers" class="btn btn-primary text-white">
                     Export Users to Excel
                 </button>
-            </div>
         </AIPModal>
     </div>
 </template>

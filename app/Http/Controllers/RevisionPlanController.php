@@ -2502,7 +2502,77 @@ class RevisionPlanController extends Controller
         $headerStyle = (new StyleBuilder())->build();
 
         // Header row
+        // Header row (reordered)
         $headerRow = WriterEntityFactory::createRowFromArray([
+            'AIP REFERENCE CODE',
+            'PROGRAM/PROJECT/ACTIVITY TITLE',
+            'IMPLEMENTING OFFICE/DEPARTMENT',
+            'EXPECTED OUTPUTS',
+            'FUNDING SOURCE',
+            'MOOE',
+            'PS',
+            'CO',
+            'FE',
+            'Climate Change Adaptation',
+            'Climate Change Mitigation',
+            'Climate Change Topology Code',
+        ], $headerStyle);
+        $writer->addRow($headerRow);
+
+        // ✅ Data rows (flattened expected outputs)
+        foreach ($strategies as $item) {
+            $expectedOutputs = collect($item['expected_output']);
+
+            if ($expectedOutputs->isEmpty()) {
+                // If there are no expected outputs, just print one row
+                $row = WriterEntityFactory::createRowFromArray([
+                    $item['aip_code'],
+                    $item['project_title'],
+                    $item['implementing_office'],
+                    '',
+                    $item['source'],
+                    $item['total_mooe'],
+                    $item['total_ps'],
+                    $item['total_co'],
+                    $item['total_fe'],
+                    $item['ccet_code_adaptation'],
+                    $item['ccet_code_mitigation'],
+                    $item['ccet_code'],
+                ]);
+                $writer->addRow($row);
+                continue;
+            }
+
+            $first = true;
+            foreach ($expectedOutputs as $output) {
+                if ($first) {
+                    $row = WriterEntityFactory::createRowFromArray([
+                        $item['aip_code'],
+                        $item['project_title'],
+                        $item['implementing_office'],
+                        $output['description'] ?? '',
+                        $item['source'],
+                        $item['total_mooe'],
+                        $item['total_ps'],
+                        $item['total_co'],
+                        $item['total_fe'],
+                        $item['ccet_code_adaptation'],
+                        $item['ccet_code_mitigation'],
+                        $item['ccet_code'],
+                    ]);
+                    $first = false;
+                } else {
+                    // Subsequent expected outputs → only Expected Output column filled
+                    $row = WriterEntityFactory::createRowFromArray([
+                        '', '', '', $output['description'] ?? '', '', '', '', '', '', '', '', ''
+                    ]);
+                }
+                $writer->addRow($row);
+            }
+        }
+
+        $writer->close();
+        /*$headerRow = WriterEntityFactory::createRowFromArray([
             'Project Title',
             'Implementing Office',
             'Expected Output',
@@ -2571,7 +2641,7 @@ class RevisionPlanController extends Controller
         }
 
         $writer->close();
-
+    */
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
     protected function set_source($source){

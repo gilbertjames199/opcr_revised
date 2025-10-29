@@ -622,12 +622,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, null, 8
       /* PROPS */
-      , _hoisted_29), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      , _hoisted_29)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         onClick: _cache[5] || (_cache[5] = function () {
           return $options.exportUsers && $options.exportUsers.apply($options, arguments);
         }),
-        "class": "btn btn-primary"
-      }, " Export Users to Excel ")])];
+        "class": "btn btn-primary text-white"
+      }, " Export Users to Excel ")];
     }),
     _: 1
     /* STABLE */
