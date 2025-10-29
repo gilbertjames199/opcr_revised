@@ -23,6 +23,9 @@ use App\Models\Strategy;
 use App\Models\StrategyProject;
 use App\Models\Target;
 use App\Models\TeamPlan;
+use App\Models\User;
+use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
@@ -219,6 +222,45 @@ class RevisionPlanController extends Controller
                 ],
             ]);
         }
+    }
+    public function exportAIP()
+    {
+        // Create a temporary file path
+        $filePath = storage_path('app/public/users.xlsx');
+
+        // Create writer
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToFile($filePath);
+
+        // (Optional) Create header style
+        $headerStyle = (new StyleBuilder())
+            // ->setBold()
+            ->build();
+
+        // Write header
+        $headerRow = WriterEntityFactory::createRowFromArray(
+            ['ID', 'Name', 'Email'],
+            $headerStyle
+        );
+        $writer->addRow($headerRow);
+
+        // Write data rows
+        $users = User::all(['recid', 'UserName', 'email']);
+        // dd($users);
+        foreach ($users as $user) {
+            $row = WriterEntityFactory::createRowFromArray([
+                $user->recid,
+                $user->UserName,
+                $user->email,
+                // $user->created_at,
+            ]);
+            $writer->addRow($row);
+        }
+
+        $writer->close();
+
+        // Return file as download response
+        return response()->download($filePath)->deleteFileAfterSend(true);
     }
     public function create(Request $request, $id)
     {
@@ -2005,33 +2047,20 @@ class RevisionPlanController extends Controller
 
             $strategyId = $strategy->id;
             $budget = $plan->budget;
-            // dd($budget[0]);
             $source ="";
             if(count($budget)>0){
                 $source = $budget[0]->source;
             }
-            // dd($source);
-            // 🔹 Collect all expected outputs from all activity projects
-            // $expected_outputs = collect($plan->activityProject)
-            //     ->pluck('expected_output')
-            //     ->filter()
-            //     ->flatten(1)
-            //     ->values();
-            // dd($plan->activityProject);
             $expected_outputs = collect($plan->activityProject)
                 ->pluck('expected_output')
                 ->filter()
                 ->flatten(1)
                 ->map(fn($output) => [
-                    // dd($output),
-                    // 'ccet_code'=>optional(optional($plan)->activityProject),
                     'target_budget_year'=> (($output->physical_q1?floatval($output->physical_q1):0)+($output->physical_q2?floatval($output->physical_q2):0)
                     + ($output->physical_q3?floatval($output->physical_q3):0)+($output->physical_q4?floatval($output->physical_q4):0)),
                     'description' => $output->description ?? ''])
                 ->filter(fn($item) => !empty($item['description']))
                 ->values();
-            // dd($);
-            // return $plan->activityProject;
             $total_mooe = $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
             $total_ps = $budget->where('category', 'Personnel Services')->sum('amount');
             $total_co = $budget->where('category', 'Capital Outlay')->sum('amount');
@@ -2049,7 +2078,6 @@ class RevisionPlanController extends Controller
             if ($activityWithCcet) {
                 // Found at least one with a ccet_code
                 $ccetCode = $activityWithCcet->ccet_code;
-                // dd($plan, $ccetCode);
                 if($ccetCode){
                     if (Str::startsWith($ccetCode, 'A')) {
                         $ccet_code_adaptation = $total_all;
@@ -2063,19 +2091,15 @@ class RevisionPlanController extends Controller
                     }
                 }
             }
-            // dd($plan);
-            // dd($plan->paps->office->office);
             $source=$this->set_source($source);
             if (mb_strlen($source, 'UTF-8') < 25) {
 
                 $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
                 $source = implode("\n", $chars);
-                // dd($source, $plan);
             }
             $paps_title = $plan->project_title;
             $paps_desc = optional($plan->paps)->MOV=="-"?"":optional($plan->paps)->MOV;
             $paps_title_desc = $paps_title . "\n\n" . $paps_desc;
-            // dd($plan->paps);
 
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
@@ -2094,10 +2118,6 @@ class RevisionPlanController extends Controller
                     'aip_code'=>$plan->aip_code,
                     'source'=>$source."\n",
                     'ccet'=>$ccet
-                    // $this->set_source($source)
-                    // 'date_from'=>
-                    // 'date_end'=>
-                    // 'activities' => [],
                 ];
             } else {
                 // If the same strategy appears again, merge expected outputs
@@ -2106,16 +2126,6 @@ class RevisionPlanController extends Controller
                     ->unique('id') // remove duplicates if outputs have IDs
                     ->values();
             }
-
-            // 🔹 Add activities (optional)
-            // foreach ($plan->activityProject as $activityProject) {
-            //     $activity = optional($activityProject->activity)->description;
-            //     if ($activity) {
-            //         $strategies[$strategyId]['activities'][] = [
-            //             'activity_desc' => $activity,
-            //         ];
-            //     }
-            // }
         }
 
         // Optional: convert expected_output collections back to arrays
@@ -2124,6 +2134,445 @@ class RevisionPlanController extends Controller
         }
 
         return array_values($strategies);
+    }
+    public function exportStrategiesOrig(Request $request)
+    {
+        // 👇 Copy your logic exactly as-is
+        $strategies = [];
+        $ccet = $request->ccet;
+
+        $plans = RevisionPlan::with([
+            'strategyProject.strategy',
+            'strategyProject.expected_output',
+            'strategyProject.expected_outcome',
+            'activityProject.expected_output',
+            'activityProject.expected_outcome',
+            'budget',
+            'paps',
+            'paps.office',
+            'paps.office.office'
+        ])->get();
+
+        foreach ($plans as $plan) {
+            $strategy = optional(optional($plan)->strategyProject->first())->strategy;
+            if (!$strategy) continue;
+
+            $strategyId = $strategy->id;
+            $budget = $plan->budget;
+            $source = count($budget) > 0 ? $budget[0]->source : '';
+
+            $expected_outputs = collect($plan->activityProject)
+                ->pluck('expected_output')
+                ->filter()
+                ->flatten(1)
+                ->map(fn($output) => [
+                    'target_budget_year' => (
+                        ($output->physical_q1 ? floatval($output->physical_q1) : 0) +
+                        ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
+                        ($output->physical_q3 ? floatval($output->physical_q3) : 0) +
+                        ($output->physical_q4 ? floatval($output->physical_q4) : 0)
+                    ),
+                    'description' => $output->description ?? ''
+                ])
+                ->filter(fn($item) => !empty($item['description']))
+                ->values();
+
+            $total_mooe = $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
+            $total_ps   = $budget->where('category', 'Personnel Services')->sum('amount');
+            $total_co   = $budget->where('category', 'Capital Outlay')->sum('amount');
+            $total_fe   = $budget->where('category', 'Financial Expenses')->sum('amount');
+            $total_all  = $total_mooe + $total_ps + $total_co + $total_fe;
+
+            $ccet_code_adaptation = 0;
+            $ccet_code_mitigation = 0;
+            $ccetCode = null;
+
+            $activityWithCcet = collect($plan->activityProject)->firstWhere('ccet_code', '!=', null);
+
+            if ($activityWithCcet) {
+                $ccetCode = $activityWithCcet->ccet_code;
+                if ($ccetCode) {
+                    if (Str::startsWith($ccetCode, 'A')) {
+                        $ccet_code_adaptation = $total_all;
+                    } elseif (Str::startsWith($ccetCode, 'M')) {
+                        $ccet_code_mitigation = $total_all;
+                    }
+                }
+            }
+
+            if (mb_strlen($source, 'UTF-8') < 25) {
+                $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
+                $source = implode("\n", $chars);
+            }
+
+            $paps_title = $plan->project_title;
+            $paps_desc  = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
+            $paps_title_desc = $paps_title . "\n\n" . $paps_desc;
+
+            if (!isset($strategies[$strategyId])) {
+                $strategies[$strategyId] = [
+                    'project_title' => $paps_title_desc,
+                    'implementing_office' => optional(optional(optional($plan)->paps)->office)->office
+                        ? optional(optional(optional(optional($plan)->paps)->office)->office)->short_name
+                        : optional(optional(optional($plan)->paps)->office)->FFUNCTION,
+                    'expected_output' => $expected_outputs,
+                    'total_mooe' => $total_mooe,
+                    'total_ps' => $total_ps,
+                    'total_co' => $total_co,
+                    'total_fe' => $total_fe,
+                    'ccet_code' => $ccetCode,
+                    'ccet_code_mitigation' => $ccet_code_mitigation,
+                    'ccet_code_adaptation' => $ccet_code_adaptation,
+                    'aip_code' => $plan->aip_code,
+                    'source' => $source . "\n",
+                    'ccet' => $ccet
+                ];
+            } else {
+                $strategies[$strategyId]['expected_output'] = $strategies[$strategyId]['expected_output']
+                    ->merge($expected_outputs)
+                    ->unique('id')
+                    ->values();
+            }
+        }
+
+        foreach ($strategies as &$strategy) {
+            $strategy['expected_output'] = $strategy['expected_output']->toArray();
+        }
+
+        $strategies = array_values($strategies);
+
+        // ✅ Generate Excel file using Box/Spout
+        $filePath = storage_path('app/public/strategies.xlsx');
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToFile($filePath);
+
+        // Header style
+        $headerStyle = (new StyleBuilder())->build();
+
+        // Header row
+        $headerRow = WriterEntityFactory::createRowFromArray([
+            'Project Title',
+            'Implementing Office',
+            'Expected Outputs',
+            'Total MOOE',
+            'Total PS',
+            'Total CO',
+            'Total FE',
+            'CCET Code',
+            'Adaptation',
+            'Mitigation',
+            'AIP Code',
+            'Source'
+        ], $headerStyle);
+        $writer->addRow($headerRow);
+
+        // Data rows
+        foreach ($strategies as $item) {
+            $expectedOutputs = collect($item['expected_output'])
+                ->pluck('description')
+                ->implode(", ");
+
+            $row = WriterEntityFactory::createRowFromArray([
+                $item['project_title'],
+                $item['implementing_office'],
+                $expectedOutputs,
+                $item['total_mooe'],
+                $item['total_ps'],
+                $item['total_co'],
+                $item['total_fe'],
+                $item['ccet_code'],
+                $item['ccet_code_adaptation'],
+                $item['ccet_code_mitigation'],
+                $item['aip_code'],
+                $item['source']
+            ]);
+
+            $writer->addRow($row);
+        }
+
+        $writer->close();
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function exportStrategies1(Request $request)
+    {
+        // 🔹 Example query — adjust table & column names to match your schema
+        $strategies = DB::table('program_and_projects as p')
+            ->leftJoin('expected_outputs as eo', 'p.id', '=', 'eo.project_id')
+            ->leftJoin('revision_plans as rp', 'p.id', '=', 'rp.idpaps')
+            ->select(
+                'p.id',
+                'p.project_title',
+                'p.implementing_office',
+                'p.total_mooe',
+                'p.total_ps',
+                'p.total_co',
+                'p.total_fe',
+                'p.ccet_code',
+                'rp.adaptation as ccet_code_adaptation',
+                'rp.mitigation as ccet_code_mitigation',
+                'p.aip_code',
+                'p.source',
+                'eo.description as expected_output'
+            )
+            ->orderBy('p.id')
+            ->get()
+            ->groupBy('id'); // group outputs under each project
+
+        // ✅ Create Excel file with BoxSpout
+        $filePath = storage_path('app/public/strategies.xlsx');
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToFile($filePath);
+
+        // 🔹 Header style
+        $headerStyle = (new StyleBuilder())->build();
+
+        // 🔹 Header row
+        $headerRow = WriterEntityFactory::createRowFromArray([
+            'Project Title',
+            'Implementing Office',
+            'Expected Output',
+            'Total MOOE',
+            'Total PS',
+            'Total CO',
+            'Total FE',
+            'CCET Code',
+            'Adaptation',
+            'Mitigation',
+            'AIP Code',
+            'Source'
+        ], $headerStyle);
+        $writer->addRow($headerRow);
+
+        // 🔹 Loop through grouped data
+        foreach ($strategies as $projectId => $rows) {
+            $first = $rows->first();
+            $expectedOutputs = $rows->pluck('expected_output')->filter()->values();
+
+            if ($expectedOutputs->isEmpty()) {
+                $expectedOutputs = collect(['']);
+            }
+
+            foreach ($expectedOutputs as $index => $output) {
+                if ($index === 0) {
+                    $rowData = [
+                        $first->project_title,
+                        $first->implementing_office,
+                        $output,
+                        $first->total_mooe,
+                        $first->total_ps,
+                        $first->total_co,
+                        $first->total_fe,
+                        $first->ccet_code,
+                        $first->ccet_code_adaptation,
+                        $first->ccet_code_mitigation,
+                        $first->aip_code,
+                        $first->source
+                    ];
+                } else {
+                    // blank other columns for additional expected outputs
+                    $rowData = [
+                        '', '', $output, '', '', '', '', '', '', '', '', ''
+                    ];
+                }
+
+                $writer->addRow(WriterEntityFactory::createRowFromArray($rowData));
+            }
+        }
+
+        $writer->close();
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+
+
+    public function exportStrategies(Request $request)
+    {
+        $strategies = [];
+        $ccet = $request->ccet;
+
+        $plans = RevisionPlan::with([
+            'strategyProject.strategy',
+            'strategyProject.expected_output',
+            'strategyProject.expected_outcome',
+            'activityProject.expected_output',
+            'activityProject.expected_outcome',
+            'budget',
+            'paps',
+            'paps.office',
+            'paps.office.office'
+        ])->get();
+
+        foreach ($plans as $plan) {
+            $strategy = optional(optional($plan)->strategyProject->first())->strategy;
+            if (!$strategy) continue;
+
+            $strategyId = $strategy->id;
+            $budget = $plan->budget;
+            $source = count($budget) > 0 ? $budget[0]->source : '';
+
+            $expected_outputs = collect($plan->activityProject)
+                ->pluck('expected_output')
+                ->filter()
+                ->flatten(1)
+                ->map(fn($output) => [
+                    'target_budget_year' => (
+                        ($output->physical_q1 ? floatval($output->physical_q1) : 0) +
+                        ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
+                        ($output->physical_q3 ? floatval($output->physical_q3) : 0) +
+                        ($output->physical_q4 ? floatval($output->physical_q4) : 0)
+                    ),
+                    'description' => $output->description ?? ''
+                ])
+                ->filter(fn($item) => !empty($item['description']))
+                ->values();
+
+            $total_mooe = $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
+            $total_ps   = $budget->where('category', 'Personnel Services')->sum('amount');
+            $total_co   = $budget->where('category', 'Capital Outlay')->sum('amount');
+            $total_fe   = $budget->where('category', 'Financial Expenses')->sum('amount');
+            $total_all  = $total_mooe + $total_ps + $total_co + $total_fe;
+
+            $ccet_code_adaptation = 0;
+            $ccet_code_mitigation = 0;
+            $ccetCode = null;
+
+            $activityWithCcet = collect($plan->activityProject)->firstWhere('ccet_code', '!=', null);
+
+            if ($activityWithCcet) {
+                $ccetCode = $activityWithCcet->ccet_code;
+                if ($ccetCode) {
+                    if (Str::startsWith($ccetCode, 'A')) {
+                        $ccet_code_adaptation = $total_all;
+                    } elseif (Str::startsWith($ccetCode, 'M')) {
+                        $ccet_code_mitigation = $total_all;
+                    }
+                }
+            }
+
+            if (mb_strlen($source, 'UTF-8') < 25) {
+                $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
+                $source = implode("\n", $chars);
+            }
+
+            $paps_title = $plan->project_title;
+            $paps_desc  = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
+            $paps_title_desc = $paps_title . "\n\n" . $paps_desc;
+
+            if (!isset($strategies[$strategyId])) {
+                $strategies[$strategyId] = [
+                    'project_title' => $paps_title_desc,
+                    'implementing_office' => optional(optional(optional($plan)->paps)->office)->office
+                        ? optional(optional(optional(optional($plan)->paps)->office)->office)->short_name
+                        : optional(optional(optional($plan)->paps)->office)->FFUNCTION,
+                    'expected_output' => $expected_outputs,
+                    'total_mooe' => $total_mooe,
+                    'total_ps' => $total_ps,
+                    'total_co' => $total_co,
+                    'total_fe' => $total_fe,
+                    'ccet_code' => $ccetCode,
+                    'ccet_code_mitigation' => $ccet_code_mitigation,
+                    'ccet_code_adaptation' => $ccet_code_adaptation,
+                    'aip_code' => $plan->aip_code,
+                    'source' => $source . "\n",
+                    'ccet' => $ccet
+                ];
+            } else {
+                $strategies[$strategyId]['expected_output'] = $strategies[$strategyId]['expected_output']
+                    ->merge($expected_outputs)
+                    ->unique('description')
+                    ->values();
+            }
+        }
+
+        foreach ($strategies as &$strategy) {
+            $strategy['expected_output'] = $strategy['expected_output']->toArray();
+        }
+
+        $strategies = array_values($strategies);
+
+        // ✅ Generate Excel file using Box/Spout
+        $filePath = storage_path('app/public/strategies.xlsx');
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToFile($filePath);
+
+        // Header style
+        $headerStyle = (new StyleBuilder())->build();
+
+        // Header row
+        $headerRow = WriterEntityFactory::createRowFromArray([
+            'Project Title',
+            'Implementing Office',
+            'Expected Output',
+            'Total MOOE',
+            'Total PS',
+            'Total CO',
+            'Total FE',
+            'CCET Code',
+            'Adaptation',
+            'Mitigation',
+            'AIP Code',
+            'Source'
+        ], $headerStyle);
+        $writer->addRow($headerRow);
+
+        // ✅ Data rows (flattened expected outputs)
+        foreach ($strategies as $item) {
+            $expectedOutputs = collect($item['expected_output']);
+
+            if ($expectedOutputs->isEmpty()) {
+                // If there are no expected outputs, just print one row
+                $row = WriterEntityFactory::createRowFromArray([
+                    $item['project_title'],
+                    $item['implementing_office'],
+                    '',
+                    $item['total_mooe'],
+                    $item['total_ps'],
+                    $item['total_co'],
+                    $item['total_fe'],
+                    $item['ccet_code'],
+                    $item['ccet_code_adaptation'],
+                    $item['ccet_code_mitigation'],
+                    $item['aip_code'],
+                    $item['source']
+                ]);
+                $writer->addRow($row);
+                continue;
+            }
+
+            $first = true;
+            foreach ($expectedOutputs as $output) {
+                if ($first) {
+                    $row = WriterEntityFactory::createRowFromArray([
+                        $item['project_title'],
+                        $item['implementing_office'],
+                        $output['description'] ?? '',
+                        $item['total_mooe'],
+                        $item['total_ps'],
+                        $item['total_co'],
+                        $item['total_fe'],
+                        $item['ccet_code'],
+                        $item['ccet_code_adaptation'],
+                        $item['ccet_code_mitigation'],
+                        $item['aip_code'],
+                        $item['source']
+                    ]);
+                    $first = false;
+                } else {
+                    // Subsequent expected outputs → only this column filled
+                    $row = WriterEntityFactory::createRowFromArray([
+                        '', '', $output['description'] ?? '', '', '', '', '', '', '', '', '', ''
+                    ]);
+                }
+                $writer->addRow($row);
+            }
+        }
+
+        $writer->close();
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
     }
     protected function set_source($source){
         $source = trim($source ?? ''); // make sure it's a string

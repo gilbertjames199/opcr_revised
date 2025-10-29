@@ -138,6 +138,9 @@
             <div class="d-flex justify-content-center">
                 <!-- {{ aip_printLink }} -->
                 <iframe :src="aip_printLink" style="width:100%; height:500px" />
+                <button @click="exportUsers" class="btn btn-primary">
+                    Export Users to Excel
+                </button>
             </div>
         </AIPModal>
     </div>
@@ -170,7 +173,6 @@ export default {
     },
 
     methods:{
-
         showCreate(){
             this.$inertia.get(
                 "/targets/create",
@@ -243,6 +245,11 @@ export default {
         },
         updateValue() {
             this.ccet = this.checked ? 'yes' : 'no'
+        },
+        exportUsers() {
+            // This opens the Laravel route in a new tab and triggers download
+            // window.open(route('export.users'), '_blank');
+            window.open('/revision/export/aip', '_blank');
         }
     }
 };

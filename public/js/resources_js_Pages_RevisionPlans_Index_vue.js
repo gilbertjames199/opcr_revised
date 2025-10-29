@@ -112,6 +112,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     updateValue: function updateValue() {
       this.ccet = this.checked ? 'yes' : 'no';
+    },
+    exportUsers: function exportUsers() {
+      // This opens the Laravel route in a new tab and triggers download
+      // window.open(route('export.users'), '_blank');
+      window.open('/revision/export/aip', '_blank');
     }
   }
 });
@@ -429,17 +434,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  })), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary btn-sm mL-2 text-white",
     onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.showAIPModalMethod();
-    })
-  }, "AIP"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary btn-sm mL-2 text-white",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
       return _ctx.showFilter();
     })
-  }, "Filter"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, "Filter"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary btn-sm mL-2 text-white",
+    onClick: _cache[2] || (_cache[2] = function ($event) {
+      return $options.showAIPModalMethod();
+    })
+  }, "AIP"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "checkbox",
     "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.checked = $event;
@@ -617,7 +622,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, null, 8
       /* PROPS */
-      , _hoisted_29)])];
+      , _hoisted_29), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        onClick: _cache[5] || (_cache[5] = function () {
+          return $options.exportUsers && $options.exportUsers.apply($options, arguments);
+        }),
+        "class": "btn btn-primary"
+      }, " Export Users to Excel ")])];
     }),
     _: 1
     /* STABLE */
