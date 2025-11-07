@@ -2101,7 +2101,7 @@ class RevisionPlanController extends Controller
             }
             $paps_title = $plan->project_title;
             $paps_desc = optional($plan->paps)->MOV=="-"?"":optional($plan->paps)->MOV;
-            $paps_title_desc = $paps_title . "\n\n<i>" . $paps_desc."</i>";
+            $paps_title_desc = "<b>". $paps_title . "</b>\n\n<i>" . $paps_desc."</i>";
 
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
