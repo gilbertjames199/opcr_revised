@@ -22,7 +22,7 @@
                         type="checkbox"
                         v-model="checked"
                         @change="updateValue"
-                    />&nbsp;
+                    />&nbsp;ccet
                 </div>
             </div>
 
