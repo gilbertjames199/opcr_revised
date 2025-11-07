@@ -179,7 +179,9 @@ export default {
     components: {
         Pagination, Filtering, AIPModal
     },
-
+    mounted(){
+        this.updateValue(); // Initialize ccet based on the initial state of checked
+    },
     methods:{
         showCreate(){
             this.$inertia.get(
@@ -256,7 +258,7 @@ export default {
             this.showAIPModal=false;
         },
         updateValue() {
-            this.ccet = this.checked ? 'yes' : 'no'
+            this.ccet = this.checked ? '1' : '0'
         },
         exportUsers() {
             // This opens the Laravel route in a new tab and triggers download
