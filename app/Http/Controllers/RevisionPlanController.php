@@ -74,14 +74,14 @@ class RevisionPlanController extends Controller
             //     'ff.FFUNCTION'
             // )
             // ->
-            $data = RevisionPlan::with(['paps','paps.office'])
+            $data = RevisionPlan::with(['paps', 'paps.office'])
                 // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
                 // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
                 // ->leftJoin(DB::raw('afms.functions ff'), 'ff.FFUNCCOD', '=', 'paps.FFUNCCOD')
                 // ->Join(DB::raw('fms.accountaccess acc'), 'acc.ffunccod', '=', 'ff.FFUNCCOD')
                 // ->where('acc.iduser', '=', $myid)
                 // ->where('paps.department_code', '=', $dept_id)
-                ->whereHas('paps', function($query)use($dept_id){
+                ->whereHas('paps', function ($query) use ($dept_id) {
                     $query->where('department_code', $dept_id);
                 })
                 ->get()
@@ -123,8 +123,8 @@ class RevisionPlanController extends Controller
                     // }
                     return [
                         // 'FFUNCTION' => $item->FFUNCTION,
-                        'FFUNCTION'=>optional(optional(optional($item)->paps)->office)->FFUNCTION,
-                        'idpaps'=>$item->idpaps,
+                        'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
+                        'idpaps' => $item->idpaps,
                         'id' => $item->id,
                         'project_title' => $item->project_title,
                         'type' => $item->type,
@@ -150,18 +150,18 @@ class RevisionPlanController extends Controller
             ]);
         } else {
             // dd(RevisionPlan::where('idpaps', $idpaps)->get());
-            $data = RevisionPlan::with(['paps','paps.office'])
-            // select(
-            //     'revision_plans.id',
-            //     'revision_plans.project_title',
-            //     'revision_plans.version',
-            //     'revision_plans.type',
-            //     'revision_plans.is_strategy_based',
-            //     'ff.FFUNCTION'
-            // )
-            //     ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
-            //     ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
-            //     ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
+            $data = RevisionPlan::with(['paps', 'paps.office'])
+                // select(
+                //     'revision_plans.id',
+                //     'revision_plans.project_title',
+                //     'revision_plans.version',
+                //     'revision_plans.type',
+                //     'revision_plans.is_strategy_based',
+                //     'ff.FFUNCTION'
+                // )
+                //     ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
+                //     ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
+                //     ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
                 // ->Join(DB::raw('fms.accountaccess acc'), 'acc.ffunccod', '=', 'ff.FFUNCCOD')
                 // ->where('acc.iduser', '=', $myid)
                 ->where('idpaps', '=', $idpaps)
@@ -199,7 +199,7 @@ class RevisionPlanController extends Controller
                     // dd($imp_amount);
                     return [
                         // 'FFUNCTION' => $item->FFUNCTION,
-                        'FFUNCTION'=>optional(optional(optional($item)->paps)->office)->FFUNCTION,
+                        'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
                         'id' => $item->id,
                         'project_title' => $item->project_title,
                         'type' => $item->type,
@@ -1648,7 +1648,7 @@ class RevisionPlanController extends Controller
             //     'paps.aip_code',
             //     // DB::raw('sum(budget_requirements.amount)')
             // )->
-            with(['budget','paps','paps.office'])
+            with(['budget', 'paps', 'paps.office'])
             // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
             // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
             // ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
@@ -1658,13 +1658,13 @@ class RevisionPlanController extends Controller
                     ->groupBy('revision_plan_id')
                     ->havingRaw('SUM(amount) > 0');
             })
-            ->when($request->FFUNCCOD, function($query)use($request){
-                $query->whereHas('paps', function($query_inner)use($request){
+            ->when($request->FFUNCCOD, function ($query) use ($request) {
+                $query->whereHas('paps', function ($query_inner) use ($request) {
                     $query_inner->where('FFUNCCOD', $request->FFUNCCOD);
                 });
             })
             ->where('project_title', 'LIKE', '%' . $request->search . '%')
-            ->whereHas('paps',function($query)use($request, $source, $dept_id){
+            ->whereHas('paps', function ($query) use ($request, $source, $dept_id) {
                 $query->when($source == 'budget', function ($query) use ($dept_id) {
                     $query->where('department_code', $dept_id);
                 });
@@ -1957,14 +1957,14 @@ class RevisionPlanController extends Controller
         // )
         // ->
         // dd("dsdsdsdsd");
-        $query = RevisionPlan::with(['paps','paps.office'])
+        $query = RevisionPlan::with(['paps', 'paps.office'])
             // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
             // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
             // ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
             ->when($request->search, function ($query) use ($request) {
                 $query->where('project_title', 'LIKE', '%' . $request->search . '%');
             })
-            ->whereHas('paps', function($query)use($dept_id){
+            ->whereHas('paps', function ($query) use ($dept_id) {
                 $query->where('department_code', $dept_id);
             });
 
@@ -2008,7 +2008,7 @@ class RevisionPlanController extends Controller
                     'type' => $item->type,
                     'version' => $item->version,
                     'amount' => $budgetary_requirement,
-                    'strategies'=>$this->get_strategies($request, $item->id)
+                    'strategies' => $this->get_strategies($request, $item->id)
                 ];
             });
 
@@ -2023,10 +2023,13 @@ class RevisionPlanController extends Controller
         ])
             ->get();
     }
-    public function print_aip(Request $request){
+    public function print_aip(Request $request)
+    {
         $strategies = [];
-        $ccet="0";
-        if($request->ccet){$ccet = $request->ccet;}
+        $ccet = "0";
+        if ($request->ccet) {
+            $ccet = $request->ccet;
+        }
         // ? "1":"0";
         $plans = RevisionPlan::with([
             'strategyProject.strategy',
@@ -2049,8 +2052,8 @@ class RevisionPlanController extends Controller
 
             $strategyId = $strategy->id;
             $budget = $plan->budget;
-            $source ="";
-            if(count($budget)>0){
+            $source = "";
+            if (count($budget) > 0) {
                 $source = $budget[0]->source;
             }
             $expected_outputs = collect($plan->activityProject)
@@ -2058,9 +2061,10 @@ class RevisionPlanController extends Controller
                 ->filter()
                 ->flatten(1)
                 ->map(fn($output) => [
-                    'target_budget_year'=> (($output->physical_q1?floatval($output->physical_q1):0)+($output->physical_q2?floatval($output->physical_q2):0)
-                    + ($output->physical_q3?floatval($output->physical_q3):0)+($output->physical_q4?floatval($output->physical_q4):0)),
-                    'description' => $output->description ?? ''])
+                    'target_budget_year' => (($output->physical_q1 ? floatval($output->physical_q1) : 0) + ($output->physical_q2 ? floatval($output->physical_q2) : 0)
+                        + ($output->physical_q3 ? floatval($output->physical_q3) : 0) + ($output->physical_q4 ? floatval($output->physical_q4) : 0)),
+                    'description' => $output->description ?? ''
+                ])
                 ->filter(fn($item) => !empty($item['description']))
                 ->values();
             $total_mooe = $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
@@ -2069,8 +2073,8 @@ class RevisionPlanController extends Controller
             $total_fe = $budget->where('category', 'Financial Expenses')->sum('amount');
 
             $total_all = $total_mooe + $total_ps + $total_co + $total_fe;
-            $ccet_code_adaptation=0;
-            $ccet_code_mitigation=0;
+            $ccet_code_adaptation = 0;
+            $ccet_code_mitigation = 0;
 
 
             $ccetCode = null;
@@ -2080,7 +2084,7 @@ class RevisionPlanController extends Controller
             if ($activityWithCcet) {
                 // Found at least one with a ccet_code
                 $ccetCode = $activityWithCcet->ccet_code;
-                if($ccetCode){
+                if ($ccetCode) {
                     if (Str::startsWith($ccetCode, 'A')) {
                         $ccet_code_adaptation = $total_all;
                         $ccet_code_mitigation = 0;
@@ -2093,34 +2097,33 @@ class RevisionPlanController extends Controller
                     }
                 }
             }
-            $source=$this->set_source($source);
+            $source = $this->set_source($source);
             if (mb_strlen($source, 'UTF-8') < 25) {
 
                 $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
                 $source = implode("\n", $chars);
             }
             $paps_title = $plan->project_title;
-            $paps_desc = optional($plan->paps)->MOV=="-"?"":optional($plan->paps)->MOV;
-            $paps_title_desc = "<font size='16'><b>" . $paps_title . "</b></font>\n\n<i>" . $paps_desc . "</i>";
-
+            $paps_desc = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
+            $paps_title_desc = "<b>" . $paps_title . "</b>\n\n<i>" . $paps_desc . "</i>";
 
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
-                    'implementing_office' => optional(optional(optional($plan)->paps)->office)->office?
-                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name:
+                    'implementing_office' => optional(optional(optional($plan)->paps)->office)->office ?
+                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
                         optional(optional(optional($plan)->paps)->office)->FFUNCTION,
                     'expected_output' => $expected_outputs,
                     'total_mooe' => $total_mooe,
                     'total_ps' => $total_ps,
                     'total_co' => $total_co,
                     'total_fe' => $total_fe,
-                    'ccet_code'=>$ccetCode,
-                    'ccet_code_mitigation'=>$ccet_code_mitigation,
-                    'ccet_code_adaptation'=>$ccet_code_adaptation ,
-                    'aip_code'=>$plan->aip_code,
-                    'source'=>$source."\n",
-                    'ccet'=>$ccet
+                    'ccet_code' => $ccetCode,
+                    'ccet_code_mitigation' => $ccet_code_mitigation,
+                    'ccet_code_adaptation' => $ccet_code_adaptation,
+                    'aip_code' => $plan->aip_code,
+                    'source' => $source . "\n",
+                    'ccet' => $ccet
                 ];
             } else {
                 // If the same strategy appears again, merge expected outputs
@@ -2376,7 +2379,18 @@ class RevisionPlanController extends Controller
                 } else {
                     // blank other columns for additional expected outputs
                     $rowData = [
-                        '', '', $output, '', '', '', '', '', '', '', '', ''
+                        '',
+                        '',
+                        $output,
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        ''
                     ];
                 }
 
@@ -2567,7 +2581,18 @@ class RevisionPlanController extends Controller
                 } else {
                     // Subsequent expected outputs → only Expected Output column filled
                     $row = WriterEntityFactory::createRowFromArray([
-                        '', '', '', $output['description'] ?? '', '', '', '', '', '', '', '', ''
+                        '',
+                        '',
+                        '',
+                        $output['description'] ?? '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        ''
                     ]);
                 }
                 $writer->addRow($row);
@@ -2647,7 +2672,8 @@ class RevisionPlanController extends Controller
     */
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-    protected function set_source($source){
+    protected function set_source($source)
+    {
         $source = trim($source ?? ''); // make sure it's a string
 
         // Normalize the case for easier matching
@@ -2708,8 +2734,8 @@ class RevisionPlanController extends Controller
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     // 'strategy_desc' => $strategy->description,
-                    'project_title'=>$plan->project_title,
-                    'implementing_office'=>optional(optional(optional(optional($plan))->paps)->office)->FFUNCTION,
+                    'project_title' => $plan->project_title,
+                    'implementing_office' => optional(optional(optional(optional($plan))->paps)->office)->FFUNCTION,
                     'activities' => [],
                 ];
                 // dd($strategy);
@@ -2748,8 +2774,8 @@ class RevisionPlanController extends Controller
             'activityProject.expected_outcome',
             'budget'
         ])
-        ->where('id', $idrevplan)
-        ->get();
+            ->where('id', $idrevplan)
+            ->get();
 
         foreach ($plans as $plan) {
             // dd(optional($plan)->strategyProject[0]);
