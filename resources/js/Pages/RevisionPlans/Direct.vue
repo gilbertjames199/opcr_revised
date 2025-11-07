@@ -18,6 +18,13 @@
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showPrint()">Print</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>
+                    <!-- <input
+                        type="checkbox"
+                        v-model="checked"
+                        @change="updateValue"
+                    />
+                        <p>ccet = {{ ccet }}</p> -->
+
                 </div>
             </div>
 
@@ -403,6 +410,8 @@
                 <!-- {{ aip_printLink }} -->
                 <iframe :src="aip_printLink" style="width:100%; height:500px" />
             </div>
+            <br>
+            <button class="btn btn-primary btn-sm mL-2 text-white" @click="exportAIP()">Export to Excel</button>
         </AIPModal>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -612,6 +621,9 @@ export default {
             displaylbp2: false,
 
             no_ooe: false,
+
+            ccet: 'no',       // This is the main variable bound by v-model
+            checked: false
         }
     },
     computed: {
@@ -1199,6 +1211,19 @@ export default {
         },
         hideAIPModal(){
             this.showAIPModal=false;
+        },
+        updateValue() {
+            this.ccet = this.checked ? 'yes' : 'no'
+        },
+        exportAIP() {
+            // This opens the Laravel route in a new tab and triggers download
+            // window.open(route('export.users'), '_blank');
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var short_link='jasperserver/rest_v2/reports/reports/OPCR_AIP/AIP_Print.xlsx?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no'
+            var link_final = linkt+jasper_ip+short_link;
+            // '/revision/export/aip'
+            window.open(link_final, '_blank');
         }
     }
 };

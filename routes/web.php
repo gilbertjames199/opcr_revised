@@ -433,6 +433,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/general/administration/services/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas']);
         Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
+        Route::get('/export/aip', [RevisionPlanController::class, 'exportStrategies'])->name('export.aip');
     });
     Route::prefix('/revisio/n')->group(function () {
         Route::patch('/', [RevisionPlanController::class, 'update']);

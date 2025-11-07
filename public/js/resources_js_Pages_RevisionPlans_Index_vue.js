@@ -31,13 +31,21 @@ __webpack_require__.r(__webpack_exports__);
     return {
       search: this.$props.filters.search,
       showAIPModal: false,
-      aip_printLink: ""
+      aip_printLink: "",
+      ccet: 'no',
+      // This is the main variable bound by v-model
+      checked: false,
+      // Internal boolean to control the checkbox
+      aip_printLink_excel: ""
     };
   },
   components: {
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_1__["default"],
     Filtering: _Shared_Filter__WEBPACK_IMPORTED_MODULE_0__["default"],
     AIPModal: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  mounted: function mounted() {
+    this.updateValue(); // Initialize ccet based on the initial state of checked
   },
   methods: {
     showCreate: function showCreate() {
@@ -99,11 +107,29 @@ __webpack_require__.r(__webpack_exports__);
       var linkt = "https://";
       var jasper_ip = this.jasper_ip;
       var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no&output=pdf';
-      this.aip_printLink = linkt + jasper_ip + jasper_link;
+      var params = '&ccet=' + this.ccet; // console.log(params);
+
+      this.aip_printLink = linkt + jasper_ip + jasper_link + params; // this.aip_printLink_excel = this.aip_printLink.replace('&output=pdf', '&output=csv');
+      // this.aip_printLink_excel =linkt+jasper_ip+'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no&output=xlsx&ccet='+this.ccet;
+
       this.showAIPModal = true;
     },
     hideAIPModal: function hideAIPModal() {
       this.showAIPModal = false;
+    },
+    updateValue: function updateValue() {
+      this.ccet = this.checked ? '1' : '0';
+    },
+    exportUsers: function exportUsers() {
+      // This opens the Laravel route in a new tab and triggers download
+      // window.open(route('export.users'), '_blank');
+      var linkt = "https://";
+      var jasper_ip = this.jasper_ip;
+      var short_link = 'jasperserver/rest_v2/reports/reports/OPCR_AIP/AIP_Print.xlsx?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no';
+      var params = '&ccet=' + this.ccet;
+      var link_final = linkt + jasper_ip + short_link + params; // '/revision/export/aip'
+
+      window.open(link_final, '_blank');
     }
   }
 });
@@ -421,17 +447,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  })), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary btn-sm mL-2 text-white",
     onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.showAIPModalMethod();
-    })
-  }, "AIP"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary btn-sm mL-2 text-white",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
       return _ctx.showFilter();
     })
-  }, "Filter")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, "Filter"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[2] || (_cache[2] = function () {
+      return $options.exportUsers && $options.exportUsers.apply($options, arguments);
+    }),
+    "class": "btn btn-primary btn-sm mL-2 text-white"
+  }, "Export AIP to Excel"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary btn-sm mL-2 text-white",
+    onClick: _cache[3] || (_cache[3] = function ($event) {
+      return $options.showAIPModalMethod();
+    })
+  }, "AIP"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+      return $data.checked = $event;
+    }),
+    onChange: _cache[5] || (_cache[5] = function () {
+      return $options.updateValue && $options.updateValue.apply($options, arguments);
+    })
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checked]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  No Climate Change Expenditure (Please Click the box if your LGU does not have any climate change expenditure) ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/paps/direct"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -599,7 +640,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, null, 8
       /* PROPS */
-      , _hoisted_29)])];
+      , _hoisted_29)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link :href=\"aip_printLink_excel\" class=\"btn btn-primary text-white\">\n                    Export to Excel\n                </Link> {{ aip_printLink_excel }}\n                <br>\n                {{ aip_printLink }}<br>\n            <button @click=\"exportUsers\" class=\"btn btn-primary text-white\">\n                    Export to Excel\n                </button> ")];
     }),
     _: 1
     /* STABLE */
