@@ -22,7 +22,7 @@
                         type="checkbox"
                         v-model="checked"
                         @change="updateValue"
-                    />&nbsp;No Climate Change Expenditure
+                    />&nbsp;
                 </div>
             </div>
 

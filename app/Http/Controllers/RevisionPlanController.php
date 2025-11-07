@@ -2025,7 +2025,7 @@ class RevisionPlanController extends Controller
     }
     public function print_aip(Request $request){
         $strategies = [];
-        $ccet = $request->ccet;
+        $ccet = $request->ccet? "1":"0";
         $plans = RevisionPlan::with([
             'strategyProject.strategy',
             'strategyProject.expected_output',
