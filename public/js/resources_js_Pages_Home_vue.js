@@ -127,7 +127,7 @@ var _hoisted_15 = {
 var _hoisted_16 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
     "class": "card-title"
-  }, "Total Budgets", -1
+  }, "Total Budget", -1
   /* HOISTED */
   );
 });
@@ -148,7 +148,7 @@ var _hoisted_20 = {
 var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
     "class": "card-title"
-  }, "Total GAD Budgets", -1
+  }, "Total GAD Budget", -1
   /* HOISTED */
   );
 });

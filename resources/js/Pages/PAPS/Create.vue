@@ -78,7 +78,8 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.paps_desc">{{ form.errors.paps_desc }}</div>
 
                 <label for="">Description</label>
-                <textarea rows="4" v-model="form.MOV" maxlength="200" class="form-control" autocomplete="chrome-off" />
+                <!-- maxlength="200"  -->
+                <textarea rows="4" v-model="form.MOV" class="form-control" autocomplete="chrome-off" />
                 <div class="fs-6 c-red-500" v-if="form.errors.MOV">{{ form.errors.MOV }}</div>
 
                 <label for="">Type</label>

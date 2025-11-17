@@ -577,6 +577,16 @@ createInertiaApp({
                             return '/images/icons/file.png'; // default icon
                         }
                     },
+                    getStatus(number_status){
+                        const status = parseFloat(number_status);
+
+                        if (status === -1) return 'Saved';
+                        if (status === 0) return 'Submitted';
+                        if (status === 1) return 'Reviewed';
+                        if (status === 2) return 'Approved';
+
+                        return 'unknown';
+                    }
 
                 }
             })

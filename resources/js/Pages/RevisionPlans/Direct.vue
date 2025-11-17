@@ -15,8 +15,16 @@
                 </div>
                 <div class="peer">
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`">Add Revision Plan</Link> -->
-                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showPrint()">Print</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showPrint()">Print</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>
+                    <!-- <input
+                        type="checkbox"
+                        v-model="checked"
+                        @change="updateValue"
+                    />
+                        <p>ccet = {{ ccet }}</p> -->
+
                 </div>
             </div>
 
@@ -397,7 +405,14 @@
                 <iframe :src="my_link" style="width:100%; height:500px" />
             </div>
         </LBP2Modal>
-
+        <AIPModal v-if="showAIPModal" @close-modal-event="hideAIPModal">
+            <div class="d-flex justify-content-center">
+                <!-- {{ aip_printLink }} -->
+                <iframe :src="aip_printLink" style="width:100%; height:500px" />
+            </div>
+            <br>
+            <button class="btn btn-primary btn-sm mL-2 text-white" @click="exportAIP()">Export to Excel</button>
+        </AIPModal>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
@@ -523,7 +538,7 @@ import ModalRightAppropriationCrud from "../../Shared/ModalRightAlign.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import Printing from "@/Shared/FilterPrint";
 import LBP2Modal from "@/Shared/PrintModal";
-
+import AIPModal from "@/Shared/PrintModal";
 import { Button } from "bootstrap";
 export default {
     props: {
@@ -558,6 +573,8 @@ export default {
             showModalRightAlignCRUD: false,
             showModalAppropriation: false,
             showModalAppropriationCrud: false,
+            showAIPModal: false,
+            aip_printLink: "",
             rev_id: null,
             project_title: "",
             total_budget: 0,
@@ -604,6 +621,9 @@ export default {
             displaylbp2: false,
 
             no_ooe: false,
+
+            ccet: 'no',       // This is the main variable bound by v-model
+            checked: false
         }
     },
     computed: {
@@ -689,7 +709,7 @@ export default {
         this.setCurrentYear()
     },
     components: {
-        Pagination, Filtering, ModalRightAlign, ModalRightAlignCRUD, ModalRightAppropriation, ModalRightAppropriationCrud, Printing, LBP2Modal
+        Pagination, Filtering, ModalRightAlign, ModalRightAlignCRUD, ModalRightAppropriation, ModalRightAppropriationCrud, Printing, LBP2Modal, AIPModal
     },
     watch: {
         // search: _.debounce(function (value) {
@@ -778,6 +798,7 @@ export default {
                 {
                     search: search,
                     FFUNCCOD: office_code,
+                    source: this.my_source
                 },
                 {
                     preserveScroll: true,
@@ -1181,6 +1202,29 @@ export default {
         hideLBP2Modal() {
             this.displaylbp2 = false;
         },
+        showAIPModalMethod(){
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link ='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no&output=pdf';
+            this.aip_printLink = linkt+jasper_ip+jasper_link;
+            this.showAIPModal=true;
+        },
+        hideAIPModal(){
+            this.showAIPModal=false;
+        },
+        updateValue() {
+            this.ccet = this.checked ? 'yes' : 'no'
+        },
+        exportAIP() {
+            // This opens the Laravel route in a new tab and triggers download
+            // window.open(route('export.users'), '_blank');
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var short_link='jasperserver/rest_v2/reports/reports/OPCR_AIP/AIP_Print.xlsx?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no'
+            var link_final = linkt+jasper_ip+short_link;
+            // '/revision/export/aip'
+            window.open(link_final, '_blank');
+        }
     }
 };
 </script>
