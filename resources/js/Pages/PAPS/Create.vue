@@ -64,7 +64,15 @@
                     </option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.mother_program_id">{{ form.errors.mother_program_id }}</div>
-
+                <!-- POPSP Agency -->
+                <label for="">Agency (For POPSP Programs Only)</label>
+                <select class="form-control form-select" v-model="form.agency_name">
+                    <option></option>
+                    <option v-for="popsp in popsp_agencies" :value="popsp.id">
+                        {{ popsp.agency_name }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.mother_program_id">{{ form.errors.mother_program_id }}</div>
                 <input type="checkbox"
                 v-model="form.is_mother_program"
                 :true-value="1"
@@ -207,7 +215,8 @@ export default {
         executive_legislative: Object,
         research: Object,
         idmfo: String,
-        functions: Object
+        functions: Object,
+        popsp_agencies: Object
     },
     components: {
         Places: () => new Promise((resolve) => {
@@ -242,6 +251,7 @@ export default {
                 is_mother_program: 0,
                 mother_program_id: null,
                 aip_code: "",
+                agency_name: "",
                 id: null
             }),
             year_values: ["2000",
@@ -409,6 +419,7 @@ export default {
             this.form.focus_area = this.editData.focus_area
             this.form.is_mother_program = this.editData.is_mother_program
             this.form.aip_code =this.editData.aip_code
+            this.form.agency_name = this.editData.agency_name
             this.form.id = this.editData.id
             this.filterMFOs()
             this.loadPAPS();

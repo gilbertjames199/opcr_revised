@@ -116,7 +116,7 @@ class PAPController extends Controller
         $functions = clone ($functions)
             ->distinct('FFUNCCOD')
             ->get();
-
+        $popsp_agencies =PopspAgency::where('department_code',auth()->user()->department_code)->get();
         return inertia('PAPS/Create', [
             'mfos' => $mfos,
             'chief_agenda' => $chief_executive_agenda,
@@ -127,6 +127,7 @@ class PAPController extends Controller
             'idmfo' => $id,
             'functions' => $functions,
             'years' => $year_object,
+            'popsp_agencies' => $popsp_agencies,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -197,6 +198,9 @@ class PAPController extends Controller
             ->distinct('FFUNCCOD')
             ->orderBy('FFUNCTION', 'ASC')
             ->get();
+
+        $popsp_agencies =PopspAgency::where('department_code',auth()->user()->department_code)->get();
+        // dd($pops_agencies);
         // dd($functions);
         return inertia('PAPS/Create', [
             'mfos' => $mfos,
@@ -206,6 +210,7 @@ class PAPController extends Controller
             'executive_legislative' => $executive_legislative,
             'research' => $research,
             'functions' => $functions,
+            'popsp_agencies' => $popsp_agencies,
             // 'motherPAPS' => $motherPAPS,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
@@ -323,8 +328,10 @@ class PAPController extends Controller
             'focus_area',
             'is_mother_program',
             'mother_program_id',
-            'aip_code'
+            'aip_code',
+            'agency_name'
         ]);
+        // dd($data);
         $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
             ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
             ->with('func');
@@ -334,6 +341,8 @@ class PAPController extends Controller
         $functions = clone ($functions)
             ->distinct('FFUNCCOD')
             ->get();
+        $popsp_agencies =PopspAgency::where('department_code',auth()->user()->department_code)->get();
+        // dd($pops_agencies);
         return inertia('PAPS/Create', [
             "editData" => $data,
             "mfos" => $mfos,
@@ -345,6 +354,7 @@ class PAPController extends Controller
             "idmfo" => $idmfo,
             "functions" => $functions,
             'years' => $year_object,
+            'popsp_agencies' => $popsp_agencies,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -377,6 +387,7 @@ class PAPController extends Controller
             'is_mother_program' => $request->is_mother_program,
             'mother_program_id' => $request->mother_program_id,
             'aip_code' => $request->aip_code,
+            'agency_name' => $request->agency_name,
         ]);
         return redirect('/paps/direct')
             ->with('info', 'Program and Projects updated');
