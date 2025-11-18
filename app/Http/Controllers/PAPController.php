@@ -44,6 +44,7 @@ class PAPController extends Controller
     public function index(Request $request, $id)
     {
         // dd("not direct");
+        // dd(auth()->user());
         $data = ProgramAndProject::where('idmfo', $id)
             ->with('MFO')
             ->when($request->search, function ($query, $searchItem) {
@@ -455,6 +456,7 @@ class PAPController extends Controller
     {
         // dd("direct");
         //dd($request->mfosel);
+        // dd(auth()->user());
         $offices = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->orderBy('FFUNCTION', 'ASC')->get();
         $offices_shared = Office::where(function ($query) {
             $query->where('office', 'LIKE', '%Office%')
@@ -493,6 +495,10 @@ class PAPController extends Controller
             })
             ->when($request->mfosel, function ($query, $searchItem) {
                 $query->where('idmfo', '=', $searchItem);
+            })
+            ->when(auth()->user()->popsp_agency, function($query){
+                // dd(auth()->user()->popsp_agency);
+                $query->where('agency_name', auth()->user()->popsp_agency);
             })
             ->where(function ($query) {
                 $query->where('idmfo', '>', '45')

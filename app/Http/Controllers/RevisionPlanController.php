@@ -47,7 +47,9 @@ class RevisionPlanController extends Controller
     public function index(Request $request, $idpaps)
     {
         // dd($idpaps);
-
+        // if(auth()->user()->popsp_agency){
+        //     return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
+        // }
         $myid = auth()->user()->recid;
         $dept_id = auth()->user()->department_code;
         $FFUNCCOD = FFUNCCOD::where('department_code', $dept_id)->first()->FFUNCCOD;
@@ -83,6 +85,10 @@ class RevisionPlanController extends Controller
                 // ->where('paps.department_code', '=', $dept_id)
                 ->whereHas('paps', function ($query) use ($dept_id) {
                     $query->where('department_code', $dept_id);
+                })
+                ->when(auth()->user()->popsp_agency, function($query){
+
+                    $query->where('agency_name', auth()->user()->popsp_agency);
                 })
                 ->get()
                 ->map(function ($item) use ($budget_controller) {
@@ -1595,6 +1601,9 @@ class RevisionPlanController extends Controller
         $dept_id = auth()->user()->department_code;
         $source = $request->source;
         // dd($dept_id);
+        if(auth()->user()->popsp_agency){
+            return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
+        }
         if ($source != 'budget') {
             if ($dept_id != '04' && $dept_id != '01') {
                 return redirect('/forbidden')->with('error', 'You are not allowed to access this page');

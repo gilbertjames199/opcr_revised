@@ -31,9 +31,11 @@
 
                 <label for="">ACTED</label>
                 <select v-model="form.acted" class="form-control" autocomplete="chrome-off">
+
                     <option>Prepared</option>
                     <option>Reviewed</option>
                     <option>Noted</option>
+                    <option>Recommending Approval</option>
                     <option>Approved</option>
                 </select>
                 <!-- <input type="text" v-model="form.gad" class="form-control" autocomplete="chrome-off"> -->
