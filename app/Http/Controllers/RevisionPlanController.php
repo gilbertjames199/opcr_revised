@@ -87,7 +87,8 @@ class RevisionPlanController extends Controller
                 // ->where('acc.iduser', '=', $myid)
                 // ->where('paps.department_code', '=', $dept_id)
                 ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
-                    $query->where('department_code', $dept_id)->orWhere('department_code', $popsp_agency->department_code_actual);
+                    $query->where('department_code', $dept_id);
+                        // ->orWhere('department_code', optional($popsp_agency)->department_code_actual);
                 })
                 ->when(auth()->user()->popsp_agency, function($query)use ($dept_id, $popsp_agency){
                     // dd("may agency", $popsp_agency);
@@ -143,7 +144,7 @@ class RevisionPlanController extends Controller
                         // 'paps'=>$item->paps
                     ];
                 });
-            // dd($data);
+            // dd(auth()->user());
 
 
             // dd($data);
