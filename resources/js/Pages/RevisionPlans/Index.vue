@@ -22,7 +22,7 @@
                         type="checkbox"
                         v-model="checked"
                         @change="updateValue"
-                    />&nbsp;ccet
+                    />&nbsp; No Climate Change Expenditure (Please Click the box if your LGU does not have any climate change expenditure)
                 </div>
             </div>
 
@@ -141,14 +141,14 @@
                 <iframe :src="aip_printLink" style="width:100%; height:500px" />
 
             </div>
-            <Link :href="aip_printLink_excel" class="btn btn-primary text-white">
+            <!-- <Link :href="aip_printLink_excel" class="btn btn-primary text-white">
                     Export to Excel
                 </Link> {{ aip_printLink_excel }}
                 <br>
                 {{ aip_printLink }}<br>
             <button @click="exportUsers" class="btn btn-primary text-white">
                     Export to Excel
-                </button>
+                </button> -->
         </AIPModal>
     </div>
 </template>
