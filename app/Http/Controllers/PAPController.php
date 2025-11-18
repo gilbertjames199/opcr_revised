@@ -15,6 +15,7 @@ use App\Models\Office;
 use App\Models\OfficeAccountable;
 use App\Models\OfficeDivision;
 use App\Models\Output;
+use App\Models\PopspAgency;
 use App\Models\ProgramAndProject;
 use App\Models\Quality;
 use App\Models\QualityRemarks;
@@ -457,6 +458,8 @@ class PAPController extends Controller
         // dd("direct");
         //dd($request->mfosel);
         // dd(auth()->user());
+        $popsp_related_agency = PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
+        // dd($popsp_related_agency);
         $offices = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->orderBy('FFUNCTION', 'ASC')->get();
         $offices_shared = Office::where(function ($query) {
             $query->where('office', 'LIKE', '%Office%')
@@ -465,6 +468,7 @@ class PAPController extends Controller
             ->where('office', '!=', 'No Office')
             ->orderBy('office', 'ASC')
             ->get();
+        // dd($offices);
         $idn = auth()->user()->recid;
         $FFUNCCODE = auth()->user()->office;
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCODE)->first();
@@ -478,6 +482,15 @@ class PAPController extends Controller
         // dd(auth()->user());
         // dd($department_code);
         $sharedPAPS = SharedProgramAndProject::where('destination_department_code', $department_code)
+            ->when(auth()->user()->popsp_agency, function ($query) use ($popsp_related_agency) {
+                $query->where(function($query) use ($popsp_related_agency) {
+                    $query->where('destination_department_code', $popsp_related_agency->department_code)
+                        ->Where('origin_department_code', $popsp_related_agency->department_code_actual);
+                        // dd($popsp_related_agency);
+                });
+                // $query->wjere
+                // $query->orWhere('origin_department_code', $popsp_related_agency->agency_code);
+            })->get()
             ->pluck('idpaps'); // Get shared IDs
         // dd($sharedPAPS);
         $sharedPAPSData = $this->model->with('MFO')

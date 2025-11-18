@@ -14,6 +14,7 @@ use App\Models\Implementing_team;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring_and_evaluation;
 use App\Models\OOE;
+use App\Models\PopspAgency;
 use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
 use App\Models\RevisionPlanComment;
@@ -76,6 +77,8 @@ class RevisionPlanController extends Controller
             //     'ff.FFUNCTION'
             // )
             // ->
+            // dd( auth()->user()->popsp_agency);
+            $popsp_agency =PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
             $data = RevisionPlan::with(['paps', 'paps.office'])
                 // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
                 // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
@@ -83,12 +86,12 @@ class RevisionPlanController extends Controller
                 // ->Join(DB::raw('fms.accountaccess acc'), 'acc.ffunccod', '=', 'ff.FFUNCCOD')
                 // ->where('acc.iduser', '=', $myid)
                 // ->where('paps.department_code', '=', $dept_id)
-                ->whereHas('paps', function ($query) use ($dept_id) {
-                    $query->where('department_code', $dept_id);
+                ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
+                    $query->where('department_code', $dept_id)->orWhere('department_code', $popsp_agency->department_code_actual);
                 })
-                ->when(auth()->user()->popsp_agency, function($query){
-
-                    $query->where('agency_name', auth()->user()->popsp_agency);
+                ->when(auth()->user()->popsp_agency, function($query)use ($dept_id, $popsp_agency){
+                    // dd("may agency", $popsp_agency);
+                    $query->where('agency_name', $popsp_agency->agency_code);
                 })
                 ->get()
                 ->map(function ($item) use ($budget_controller) {
@@ -140,6 +143,7 @@ class RevisionPlanController extends Controller
                         // 'paps'=>$item->paps
                     ];
                 });
+            // dd($data);
 
 
             // dd($data);
