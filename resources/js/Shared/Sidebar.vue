@@ -535,6 +535,12 @@
                             <span class="title">Rating</span>
                             </Link>
                         </li>
+                        <li>
+                            <Link class="sidebar-link" href="/review-approve/ipp/"
+                                :class="{ 'active': $page.url === '/review-approve/ipp/' }">
+                            <span class="title">Project Profile</span>
+                            </Link>
+                        </li>
 
                     </ul>
                 </li>

@@ -342,7 +342,7 @@ class PAPController extends Controller
             ->distinct('FFUNCCOD')
             ->get();
         $popsp_agencies =PopspAgency::all();
-        // dd($popsp_agencies);
+        // dd($pops_agencies);
         return inertia('PAPS/Create', [
             "editData" => $data,
             "mfos" => $mfos,

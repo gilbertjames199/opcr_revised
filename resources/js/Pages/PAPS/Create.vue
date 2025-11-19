@@ -68,11 +68,11 @@
                 <label for="">Agency (For POPSP Programs Only)</label>
                 <select class="form-control form-select" v-model="form.agency_name">
                     <option></option>
-                    <option v-for="popsp in popsp_agencies" :value="popsp.id">
+                    <option v-for="popsp in popsp_agencies" :value="popsp.agency_code">
                         {{ popsp.agency_name }}
                     </option>
                 </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.mother_program_id">{{ form.errors.mother_program_id }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.agency_name">{{ form.errors.agency_name }}</div>
                 <input type="checkbox"
                 v-model="form.is_mother_program"
                 :true-value="1"

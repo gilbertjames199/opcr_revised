@@ -141,6 +141,7 @@ class RevisionPlanController extends Controller
                         'version' => $item->version,
                         'budget_sum' => $budgetary_requirement,
                         'imp_amount' => $imp_amount,
+                        'status' => $item->status
                         // 'paps'=>$item->paps
                     ];
                 });
@@ -216,7 +217,8 @@ class RevisionPlanController extends Controller
                         'type' => $item->type,
                         'version' => $item->version,
                         'budget_sum' => $budgetary_requirement,
-                        'imp_amount' => $imp_amount
+                        'imp_amount' => $imp_amount,
+                        'status' => $item->status
                     ];
                 });
 
@@ -298,6 +300,7 @@ class RevisionPlanController extends Controller
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
         // dd($max_id);
         $duplicate = RevisionPlan::where('id', $max_id)->get();
+        $popsp_agencies =PopspAgency::all();
         // dd($paps_all);
         if ($count > 0) {
 
@@ -305,7 +308,7 @@ class RevisionPlanController extends Controller
                 "idpaps" => $id,
                 "hgdgs" => $hgdg,
                 "paps" => $paps,
-
+                "popsp_agencies" => $popsp_agencies,
                 "duplicate" => $duplicate,
                 "can" => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
@@ -320,6 +323,7 @@ class RevisionPlanController extends Controller
                 "paps" => $paps,
                 "paps_all" => $paps_all,
                 "source" => $request->source,
+                "popsp_agencies" => $popsp_agencies,
                 "can" => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                     'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -833,19 +837,54 @@ class RevisionPlanController extends Controller
         // dd($paps);
         // dd($idpaps);
         $hgdg = HGDG_Checklist::get();
+        $popsp_agencies =PopspAgency::all();
+        $source =$request->source;
         // $count = RevisionPlan::where('idpaps', $id)->count();
         // $max_id = RevisionPlan::where('idpaps', $id)->max('id');
-        return inertia('RevisionPlans/Create', [
-            "idpaps" => $idpaps,
-            "hgdgs" => $hgdg,
-            "paps" => $paps,
-            "editData" => $data,
-            "source" => $request->source,
-            "can" => [
-                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
-            ],
-        ]);
+        if($source=='direct'){
+            $dept_code = auth()->user()->department_code;
+            if (isset($paps)) {
+                $paps_all = ProgramAndProject::with('MFO')
+                    ->where(function ($query) use ($dept_code) {
+                        $query->whereHas('MFO', function ($query) use ($dept_code) {
+                            $query->where('department_code', $dept_code);
+                        })
+                            ->orWhere('department_code', $dept_code);
+                    })
+
+                    ->get();
+                // dd("wala si paps");
+                // $all_paps = Progr
+            }
+            return inertia('RevisionPlans/Create', [
+                "idpaps" => $idpaps,
+                "hgdgs" => $hgdg,
+                "paps" => $paps,
+                "paps_all" => $paps_all,
+                "editData" => $data,
+                "source" => $request->source,
+                "popsp_agencies" => $popsp_agencies,
+                "can" => [
+                    'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                    'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                ],
+            ]);
+        }else{
+            return inertia('RevisionPlans/Create', [
+                "idpaps" => $idpaps,
+                "hgdgs" => $hgdg,
+                "paps" => $paps,
+
+                "editData" => $data,
+                "source" => $request->source,
+                "popsp_agencies" => $popsp_agencies,
+                "can" => [
+                    'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                    'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                ],
+            ]);
+        }
+
     }
     public function update(Request $request)
     {
