@@ -9,6 +9,7 @@
         <div class="peers fxw-nw jc-sb ai-c">
             <h3 v-if="my_source=='budget'">Budget Proposal </h3>
             <h3 v-if="my_source=='direct'">Programs</h3>
+            <h3 v-if="my_source=='rev_app'">Review/Approve Project Profile</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -502,7 +503,7 @@
                                         padding: '4px 10px',
                                         border: 'none',
                                         borderRadius: '4px',
-                                        backgroundColor: 'orange',
+                                        backgroundColor: 'red',
                                         color: 'white',
                                         cursor: 'pointer',
                                         fontWeight: 'bold'
