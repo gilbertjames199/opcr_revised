@@ -34,8 +34,9 @@ class User extends Authenticatable implements HasMedia
         'department_code',
         'office',
         'is_active',
+        'popsp_agency'
     ];
-
+    public $timestamps = false;
     protected $hidden = [
         'password',
         'remember_token',

@@ -24,16 +24,16 @@
                 </div>
 
                 <label for="">PROGRAMS AND PROJECTS</label>
-                <select v-model="form.idpaps" class="form-select"
-                        @change="updateProjectTitle">
-                        <option v-for="pap in paps_all" :value="pap.id">
-                            {{ pap.paps_desc }}
-                        </option>
-                    </select>
-                <div v-if="paps[0]" >
+                <select v-model="form.idpaps" class="form-select" :disabled="editData !== undefined"
+                    @change="updateProjectTitle">
+                    <option v-for="pap in paps_all" :value="pap.id">
+                        {{ pap.paps_desc }}
+                    </option>
+                </select>
+                <!-- <div v-if="paps[0]" >
                     <label for="">PROGRAMS AND PROJECTS -Description</label>
                     <input type="text" v-model="paps[0].paps_desc" class="form-control" />
-                </div>
+                </div> -->
                 <!-- paps_all : {{ paps_all }} -->
                 <div v-if="editData===undefined && paps_all!==undefined">
                     <!-- <select v-model="form.idpaps" class="form-control"

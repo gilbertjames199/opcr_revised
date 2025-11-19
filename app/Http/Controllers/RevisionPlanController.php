@@ -51,6 +51,7 @@ class RevisionPlanController extends Controller
         // if(auth()->user()->popsp_agency){
         //     return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
         // }
+        // dd($request->source);
         $myid = auth()->user()->recid;
         $dept_id = auth()->user()->department_code;
         $FFUNCCOD = FFUNCCOD::where('department_code', $dept_id)->first()->FFUNCCOD;
@@ -1711,6 +1712,11 @@ class RevisionPlanController extends Controller
                     ->groupBy('revision_plan_id')
                     ->havingRaw('SUM(amount) > 0');
             })
+
+                ->when($request->source == 'rev_app', function ($query) {
+                    // dd("rev app ang source");
+                    $query->where('status', '>=', '0');
+                })
             ->when($request->FFUNCCOD, function ($query) use ($request) {
                 $query->whereHas('paps', function ($query_inner) use ($request) {
                     $query_inner->where('FFUNCCOD', $request->FFUNCCOD);
@@ -1765,6 +1771,7 @@ class RevisionPlanController extends Controller
                 'budget_sum' => $budgetary_requirement,
                 'imp_amount' => $imp_amount,
                 'idpaps' => $item->idpaps,
+                'status' => $item->status,
             ];
         });
         // $data->setCollection(

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FFUNCCOD;
 use App\Models\User;
 use App\Models\Permission;
+use App\Models\PopspAgency;
 use App\Models\TemporaryFile;
 
 use Carbon\Carbon;
@@ -31,6 +32,7 @@ class UserController extends Controller
                     $query->where('UserName', 'like', '%' . $searchItem . '%')
                         ->orWhere('FullName', 'like', '%' . $searchItem . '%');
                 })
+                ->orderBy('recid', 'desc')
                 ->paginate(10);
             return inertia('Users/Index', [
                 "filters" => $request->only(['search']),
@@ -125,10 +127,12 @@ class UserController extends Controller
         // $permissions = DB::table('permissions')->get();
         $FFUNCCOD = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->get();
         // dd($FFUNCCOD);
+        $popsp_agency =PopspAgency::all();
         $offices = DB::connection('mysql2')->table('offices')->get();
         return inertia('Users/Create', [
             "FFUNCCOD" => $FFUNCCOD,
             "offices" => $offices,
+            "popsp_agency" => $popsp_agency,
         ]);
     }
 
@@ -161,6 +165,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'department_code' => $department_code,
                 'office' => $request->office,
+                'popsp_agency' => $request->popsp_agency,
                 'is_active' => '1'
             ]);
         $us = $this->model->where('UserName', $request->UserName)->first()->recid;
@@ -187,19 +192,37 @@ class UserController extends Controller
             'UserType',
             'office',
             'department_code',
-            'UserPassword'
+            'UserPassword',
+            'popsp_agency',
         ]);
         if ($data) {
             foreach ($data->getAttributes() as $key => $value) {
-                // Remove all whitespace characters
-                $data->$key = is_string($value) ? preg_replace('/\s+/', '', $value) : $value;
+
+                // Skip recid
+                if ($key === 'recid') {
+                    continue;
+                }
+
+                // Clean only string fields
+                if (is_string($value)) {
+                    // Remove excessive spaces inside & trim ends
+                    $data->$key = preg_replace('/\s+/', ' ', trim($value));
+                }
             }
         }
+        // if ($data) {
+        //     foreach ($data->getAttributes() as $key => $value) {
+        //         // Remove all whitespace characters
+        //         $data->$key = is_string($value) ? preg_replace('/\s+/', '', $value) : $value;
+        //     }
+        // }
+        $popsp_agency =PopspAgency::all();
         $FFUNCCOD = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->get();
         return inertia('Users/Create', [
             "editData" => $data,
             "FFUNCCOD" => $FFUNCCOD,
             "permissions" => $permissions,
+            "popsp_agency" => $popsp_agency,
             "can" => [
                 'createUser' => Auth::user()->can('create', User::class),
                 'editUser' => Auth::user()->can('edit', User::class),
@@ -210,12 +233,22 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        $data = $this->model->findOrFail($request->id);
+        // $data = $this->model->findOrFail($request->id);
+        // dd($request);
+        $data = $this->model->where('recid', $request->id)->first();
         $data->update([
             'name' => $request->name,
             'email' => $request->email,
+            'FullName' => $request->FullName,
+            'UserName' => $request->UserName,
+            // 'UserPassword' => $password,
+            'UserType' => $request->UserType,
+            'email' => $request->email,
+            // 'department_code' => $department_code,
+            'office' => $request->office,
+            'popsp_agency' => $request->popsp_agency,
         ]);
-        return redirect('/users')->with('message', 'Successfully updated data of ' . $request->name . '!');
+        return redirect('/users')->with('message', 'Successfully updated data of ' . $request->FullName . '!');
     }
 
     public function destroy(Request $request)

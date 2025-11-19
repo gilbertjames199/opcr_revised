@@ -35,8 +35,10 @@
                     <option>Prepared</option>
                     <option>Reviewed</option>
                     <option>Noted</option>
-                    <option>Recommending Approval</option>
                     <option>Approved</option>
+                    <option>Recommending Approval</option>
+                    <option>As to AIP Inclusion</option>
+                    <option>As to AIP Appropriation</option>
                 </select>
                 <!-- <input type="text" v-model="form.gad" class="form-control" autocomplete="chrome-off"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.acted">{{ form.errors.acted }}</div>
