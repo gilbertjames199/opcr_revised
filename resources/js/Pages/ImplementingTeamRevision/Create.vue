@@ -14,12 +14,13 @@
             <button class="btn btn-secondary" @click="showModal" :disabled="submitted">Permissions</button>
         </div> -->
         <!-- {{ revid }} -->
+          <!-- {{ form }} -->
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
                 <input type="hidden" v-model="form.revision_plan_id" class="form-control" autocomplete="chrome-off">
                 <label for="">ASSIGN PERSON</label>
-                <multiselect :options="employees_computed" :searchable="true" v-model="form.implementing_team_id" label="label"
+                <multiselect :options="employees_computed" :searchable="true" @change="updateEmployee" v-model="form.implementing_team_id" label="label"
                     track-by="label">
                 </multiselect>
                 <!-- <select type="text" v-model="form.implementing_team_id" class="form-control" autocomplete="positionchrome-off">
@@ -27,7 +28,21 @@
                         {{ person.name }}
                     </option>
                 </select> -->
+                <div class="fs-6 c-red-500" v-if="form.errors.implementing_team_id">{{ form.errors.implementing_team_id }}</div>
+
+                <label for="">NAME</label>
+                <input type="text" v-model="form.name" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
+
+
+                <label for="">GENDER</label>
+                <select class="form-select" v-model="form.gender" autocomplete="chrome-off">
+                    <options>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </options>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.gender">{{ form.errors.gender }}</div>
 
                 <label for="">ROLE IN THE PROJECT</label>
                 <input type="text" v-model="form.role" class="form-control" autocomplete="chrome-off">
@@ -52,13 +67,18 @@
                 </span>
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
+
+                <label for="">POSITION</label>
+                <input type="text" v-model="form.position" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.position">{{ form.errors.position }}</div>
+
                 <button type="button" class="btn btn-primary text-white mt-3" @click="submit()" :disabled="form.processing">
                     Save changes
                 </button>
             </form>
         </div>
 
-
+        <!-- {{ form }} -->
     </div>
 
 </template>
@@ -97,6 +117,9 @@ export default {
                     role: "",
                     with_gad_training: "0",
                     specify_GAD_training: "",
+                    name: "",
+                    gender: "",
+                    position: "",
                     id: null
                 }),
                 clicked_submit: false,
@@ -128,6 +151,9 @@ export default {
                 this.form.specify_GAD_training = this.editData.specify_GAD_training
                 this.form.empl_id=this.editData.empl_id
                 this.form.competency =this.editData.competency
+                this.form.gender = this.editData.gender
+                this.form.name = this.editData.name
+                this.form.position = this.editData.position
             } else {
                 this.pageTitle = "Create"
             }
@@ -144,6 +170,15 @@ export default {
                     this.form.post("/team", this.form);
                 }
             },
+            updateEmployee(){
+                var selectedEmp = this.people.find(peop => String(peop.empl_id) === String(this.form.implementing_team_id));
+                // alert("fsdfsdf")
+                console.log(this.form.implementing_team_id)
+                console.log(selectedEmp)
+                this.form.name = selectedEmp ? selectedEmp.employee_name : '';
+                this.form.gender = selectedEmp ? selectedEmp.gender : '';
+                this.form.position = selectedEmp ? selectedEmp.position_long_title : '';
+            }
         },
     };
     </script>
