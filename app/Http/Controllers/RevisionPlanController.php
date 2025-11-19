@@ -298,6 +298,7 @@ class RevisionPlanController extends Controller
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
         // dd($max_id);
         $duplicate = RevisionPlan::where('id', $max_id)->get();
+        $popsp_agencies =PopspAgency::all();
         // dd($paps_all);
         if ($count > 0) {
 
@@ -305,7 +306,7 @@ class RevisionPlanController extends Controller
                 "idpaps" => $id,
                 "hgdgs" => $hgdg,
                 "paps" => $paps,
-
+                "popsp_agencies" => $popsp_agencies,
                 "duplicate" => $duplicate,
                 "can" => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
@@ -320,6 +321,7 @@ class RevisionPlanController extends Controller
                 "paps" => $paps,
                 "paps_all" => $paps_all,
                 "source" => $request->source,
+                "popsp_agencies" => $popsp_agencies,
                 "can" => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                     'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)

@@ -12,7 +12,8 @@
             </svg>
             </Link>
         </div>
-        <!-- {{ form }} -->
+        <!-- {{ form }}
+        {{ selPaps }} -->
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
@@ -26,7 +27,8 @@
                 <div v-if="paps[0]" >
                     <input type="text" v-model="paps[0].paps_desc" class="form-control" />
                 </div>
-                <div v-if="editData===undefined">
+                <!-- paps_all : {{ paps_all }} -->
+                <div v-if="editData===undefined && paps_all!==undefined">
                     <select v-model="form.idpaps" class="form-control"
                         @change="updateProjectTitle">
                         <option v-for="pap in paps_all" :value="pap.id">
@@ -34,6 +36,16 @@
                         </option>
                     </select>
                 </div>
+                <!-- {{ popsp_agencies }} -->
+
+                <label for="">Agency (For POPSP Programs Only)</label>
+                <select class="form-control form-select" v-model="form.agency_name" disabled>
+                    <option></option>
+                    <option v-for="popsp in popsp_agencies" :value="popsp.agency_code">
+                        {{ popsp.agency_name }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.agency_name">{{ form.errors.agency_name }}</div>
 
                 <label for="">PROJECT TITLE</label>
                 <input type="text" v-model="form.project_title" class="form-control" autocomplete="chrome-off">
@@ -165,7 +177,7 @@
     </div>
     <!-- {{this.source }}cxzsdfsdfdsfsdfsf
     {{ form }} -->
-     {{ paps[0].aip_code }}
+     <!-- {{ paps[0].aip_code }} -->
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -182,7 +194,8 @@ export default {
         idpaps: Number,
         paps_all: Object,
         source: String,
-        hgdgs: Object
+        hgdgs: Object,
+        popsp_agencies: Object
     },
     components: {
 
@@ -222,8 +235,10 @@ export default {
                 risk_management: "",
                 is_strategy_based: "",
                 aip_code: "",
+                agency_name: "",
                 source: "",
-                id: null
+                id: null,
+                selPaps: ""
             }),
             total_intended: 0,
             pageTitle: ""
@@ -284,7 +299,11 @@ export default {
             this.pageTitle = "Create"
             this.form.is_strategy_based=0
             //this.form.idpaps=this.idpaps
-            this.form.aip_code=this.paps[0].aip_code
+            //this.form.aip_code=this.paps[0].aip_code
+            if(this.paps[0]!==undefined){
+                this.form.aip_code=this.paps[0].aip_code
+                this.form.agency_name =this.paps[0].agency_name
+            }
             if (this.duplicate !== undefined) {
                 this.form.idpaps = this.duplicate[0].idpaps
                 this.form.project_title = this.duplicate[0].project_title
@@ -360,6 +379,9 @@ export default {
             // alert("fsdfsdf")
             console.log(this.form.idpaps)
             this.form.project_title = selectedPap ? selectedPap.paps_desc : '';
+            this.form.aip_code = selectedPap ? selectedPap.aip_code : '';
+            this.form.agency_name = selectedPap ? selectedPap.agency_name : '';
+            this.selPaps = selectedPap
         }
     },
 };

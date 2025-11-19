@@ -341,7 +341,7 @@ class PAPController extends Controller
         $functions = clone ($functions)
             ->distinct('FFUNCCOD')
             ->get();
-        $popsp_agencies =PopspAgency::where('department_code',auth()->user()->department_code)->get();
+        $popsp_agencies =PopspAgency::all();
         // dd($pops_agencies);
         return inertia('PAPS/Create', [
             "editData" => $data,
