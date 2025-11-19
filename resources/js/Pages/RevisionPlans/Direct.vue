@@ -426,7 +426,9 @@
                                 <th>Implementing Offices</th>
                                 <th>Planned Amount</th>
                                 <th>View IPP</th>
-                                <th v-if="my_source=='budget'">Budget Details</th>
+                                <th v-if="my_source=='rev_app'">Review/Approve</th>
+                                <th v-if="my_source=='rev_app'">Return</th>
+                                <th v-if="my_source=='budget'">Budget Details </th>
                                 <!-- <th>Edit</th> -->
                                 <!-- <th>Actions</th> -->
                             </tr>
@@ -454,6 +456,60 @@
                                         </svg>
                                     </Link>
                                     <!-- {{ dat }} -->
+                                </td>
+                                <td v-if="my_source=='rev_app'">
+                                    <!-- Review -->
+                                    <button
+                                        v-if="dat.status == '0'"
+                                        @click="statusAction(dat, 1)"
+                                        :style="{
+                                        padding: '4px 10px',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        backgroundColor: 'blue',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold',
+                                        marginRight: '4px'
+                                        }"
+                                    >
+                                        Review
+                                    </button>
+
+                                    <!-- Approve -->
+                                    <button
+                                        v-if="dat.status == '1'"
+                                        @click="statusAction(dat, 2)"
+                                        :style="{
+                                        padding: '4px 10px',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        backgroundColor: 'darkgreen',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold',
+                                        marginRight: '4px'
+                                        }"
+                                    >
+                                        Approve
+                                    </button>
+                                </td>
+                                <td v-if="my_source=='rev_app'">
+                                    <button
+                                        v-if="['0','1','2'].includes(dat.status)"
+                                        @click="statusAction(dat, -2)"
+                                        :style="{
+                                        padding: '4px 10px',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        backgroundColor: 'orange',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold'
+                                        }"
+                                    >
+                                        Return
+                                    </button>
                                 </td>
                                 <td v-if="my_source=='budget'">
                                      <button
@@ -523,7 +579,7 @@
 
             </div>
         </div>
-        <!-- {{ my_source }} -->
+        {{ my_source }}
     </div>
     <!-- {{ ooe_description }}
     {{ ooe_id }} -->

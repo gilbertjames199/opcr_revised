@@ -121,7 +121,7 @@
                     <label for="popsp">POPSP</label>
                     <label for="">Focus Area (POPSP)</label>
                     <select class="form-control form-select" v-model="form.focus_area">
-                        <option>Crime and Disaster</option>
+                        <option>Crime and Disorder</option>
                         <option>Conflict</option>
                         <option>Threat to environment and human security</option>
                         <option>Public Safety</option>

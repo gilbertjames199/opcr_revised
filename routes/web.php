@@ -439,6 +439,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('/status/revision')->group(function () {
         Route::post('/update/{id}/{type}/{new_status}', [ProjectProfileTrackingController::class, 'status_update']);
+        Route::get('/review/approve', [ProjectProfileTrackingController::class, 'review_approve_index']);
     });
     Route::prefix('/revisio/n')->group(function () {
         Route::patch('/', [RevisionPlanController::class, 'update']);
