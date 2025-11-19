@@ -199,7 +199,7 @@ class PAPController extends Controller
             ->orderBy('FFUNCTION', 'ASC')
             ->get();
 
-        $popsp_agencies =PopspAgency::where('department_code',auth()->user()->department_code)->get();
+        $popsp_agencies =PopspAgency::all();
         // dd($pops_agencies);
         // dd($functions);
         return inertia('PAPS/Create', [
@@ -341,8 +341,8 @@ class PAPController extends Controller
         $functions = clone ($functions)
             ->distinct('FFUNCCOD')
             ->get();
-        $popsp_agencies =PopspAgency::where('department_code',auth()->user()->department_code)->get();
-        // dd($pops_agencies);
+        $popsp_agencies =PopspAgency::all();
+        // dd($popsp_agencies);
         return inertia('PAPS/Create', [
             "editData" => $data,
             "mfos" => $mfos,
