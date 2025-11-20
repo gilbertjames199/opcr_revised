@@ -143,6 +143,7 @@ Route::middleware('auth')->group(function () {
     //FOrbidden
     Route::prefix('/forbidden')->group(function () {
         Route::get('/', [ForbiddenController::class, 'index']);
+        Route::get('/parameterized/{message}', [ForbiddenController::class, 'forbidden_parameterized']);
     });
     //Users
     Route::prefix('/users')->group(function () {

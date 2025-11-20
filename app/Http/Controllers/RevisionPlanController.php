@@ -434,7 +434,7 @@ class RevisionPlanController extends Controller
         // dd(config('database.connections.mysql.database'));
         $src = $request->source;
 
-        if (auth()->user()->department_code != '04') {
+        if (auth()->user()->department_code != '04' && $src == 'rev_app') {
             return redirect('/forbidden')
                 ->with('error', 'You do not have access to this page.');
         }
