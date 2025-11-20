@@ -430,7 +430,14 @@ class RevisionPlanController extends Controller
     }
     public function view(Request $request, $id)
     {
+        // dd(env('DB_DATABASE'));
+        // dd(config('database.connections.mysql.database'));
         $src = $request->source;
+
+        if (auth()->user()->department_code != '04') {
+            return redirect('/forbidden')
+                ->with('error', 'You do not have access to this page.');
+        }
         //REVISION PLANS
         $paps = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])
             ->where('id', $id)
@@ -747,7 +754,11 @@ class RevisionPlanController extends Controller
             }
         }
         // dd($functions);
+        $all_comments = $this->getAllRevisionPlanComments($id);
+        // ->sortByDesc('created_at')
+        // dd($all_comments->pluck('created_at'));
         return inertia('RevisionPlans/View', [
+            "all_comments" => $all_comments,
             "paps" => $paps,
             "office" => $functions->FFUNCTION,
             "implementation" => $implement,
@@ -788,6 +799,108 @@ class RevisionPlanController extends Controller
             ],
         ]);
     }
+    function getAllRevisionPlanComments(int $revisionPlanId)
+    {
+        // 1️⃣ Comments directly on revision_plans
+        $revisionPlanComments = RevisionPlanComment::where('table_name', 'revision_plans')
+            ->where('table_row_id', $revisionPlanId);
+
+        // 2️⃣ activity_projects comments
+        $activityProjectIds = DB::table('activity_projects')
+            ->where('project_id', $revisionPlanId)
+            ->pluck('id');
+
+        $activityComments = RevisionPlanComment::where('table_name', 'activity_projects')
+            ->whereIn('table_row_id', $activityProjectIds);
+
+        // 3️⃣ expected_revised_outcomes / outputs linked to activity_projects
+        $outcomeIds = DB::table('expected_revised_outcomes')
+            ->whereIn('activity_project_id', $activityProjectIds)
+            ->pluck('id');
+
+        $outputIds = DB::table('expected_revised_outputs')
+            ->whereIn('activity_project_id', $activityProjectIds)
+            ->pluck('id');
+
+        $activityOutcomeComments = RevisionPlanComment::where('table_name', 'expected_revised_outcomes')
+            ->whereIn('table_row_id', $outcomeIds);
+
+        $activityOutputComments = RevisionPlanComment::where('table_name', 'expected_revised_outputs')
+            ->whereIn('table_row_id', $outputIds);
+
+        // 4️⃣ strategy_projects comments
+        $strategyProjectIds = DB::table('strategy_projects')
+            ->where('project_id', $revisionPlanId)
+            ->pluck('id');
+
+        $strategyComments = RevisionPlanComment::where('table_name', 'strategy_projects')
+            ->whereIn('table_row_id', $strategyProjectIds);
+
+        // strategy outcomes / outputs
+        $strategyOutcomeIds = DB::table('expected_revised_outcomes')
+            ->whereIn('strategy_project_id', $strategyProjectIds)
+            ->pluck('id');
+
+        $strategyOutputIds = DB::table('expected_revised_outputs')
+            ->whereIn('strategy_project_id', $strategyProjectIds)
+            ->pluck('id');
+
+        $strategyOutcomeComments = RevisionPlanComment::where('table_name', 'expected_revised_outcomes')
+            ->whereIn('table_row_id', $strategyOutcomeIds);
+
+        $strategyOutputComments = RevisionPlanComment::where('table_name', 'expected_revised_outputs')
+            ->whereIn('table_row_id', $strategyOutputIds);
+
+        // 5️⃣ budget_requirements
+        $budgetIds = DB::table('budget_requirements')
+            ->where('revision_plan_id', $revisionPlanId)
+            ->pluck('id');
+
+        $budgetComments = RevisionPlanComment::where('table_name', 'budget_requirements')
+            ->whereIn('table_row_id', $budgetIds);
+
+        // 6️⃣ monitoring_and_evaluations
+        $monitoringIds = DB::table('monitoring_and_evaluations')
+            ->where('revision_plan_id', $revisionPlanId)
+            ->pluck('id');
+
+        $monitoringComments = RevisionPlanComment::where('table_name', 'monitoring_and_evaluations')
+            ->whereIn('table_row_id', $monitoringIds);
+
+        // 7️⃣ risk_manangements
+        $riskIds = DB::table('risk_manangements')
+            ->where('revision_plan_id', $revisionPlanId)
+            ->pluck('id');
+
+        $riskComments = RevisionPlanComment::where('table_name', 'risk_manangements')
+            ->whereIn('table_row_id', $riskIds);
+
+        // 8️⃣ team_plans
+        $teamIds = DB::table('team_plans')
+            ->where('revision_plan_id', $revisionPlanId)
+            ->pluck('id');
+
+        $teamComments = RevisionPlanComment::where('table_name', 'team_plans')
+            ->whereIn('table_row_id', $teamIds);
+
+        // 9️⃣ Merge all queries using union
+        $allComments = $revisionPlanComments
+            ->unionAll($activityComments)
+            ->unionAll($activityOutcomeComments)
+            ->unionAll($activityOutputComments)
+            ->unionAll($strategyComments)
+            ->unionAll($strategyOutcomeComments)
+            ->unionAll($strategyOutputComments)
+            ->unionAll($budgetComments)
+            ->unionAll($monitoringComments)
+            ->unionAll($riskComments)
+            ->unionAll($teamComments)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return $allComments;
+    }
+
     public function budgetRequirements($id)
     {
         $groupByAccountCodeCount = BudgetRequirement::where('revision_plan_id', $id)
