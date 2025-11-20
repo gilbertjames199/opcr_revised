@@ -597,6 +597,8 @@ import Printing from "@/Shared/FilterPrint";
 import LBP2Modal from "@/Shared/PrintModal";
 import AIPModal from "@/Shared/PrintModal";
 import { Button } from "bootstrap";
+import { Inertia } from '@inertiajs/inertia'
+
 export default {
     props: {
         auth: Object,
@@ -680,7 +682,10 @@ export default {
             no_ooe: false,
 
             ccet: 'no',       // This is the main variable bound by v-model
-            checked: false
+            checked: false,
+
+            formAction: '',
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
     },
     computed: {
@@ -1281,6 +1286,56 @@ export default {
             var link_final = linkt+jasper_ip+short_link;
             // '/revision/export/aip'
             window.open(link_final, '_blank');
+        },
+
+        // statusAction(revision_plan, newStatus) {
+        //     const actions = {
+        //         0: "Submit",
+        //         1: "Review",
+        //         2: "Approve",
+        //         "-2": "Return"
+        //     };
+
+        //     const actionLabel = actions[newStatus];
+        //     const typeLabel = revision_plan.type === 'p' ? 'project profile' : 'project design';
+
+        //     // Build confirmation message
+        //     const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+
+        //     if (!confirm(confirmMessage)) return;
+
+        //     axios.post(`/status/revision/update/${revision_plan.id}/${actionLabel}/${newStatus}`)
+        //         .then(response => {
+        //             // revision_plan.status = String(newStatus);
+        //             window.location.href = response.request.responseURL;
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //         });
+        // }
+       statusAction(revision_plan, newStatus) {
+            const actions = {
+                0: "Submit",
+                "-1": "Recall",
+                1: "Review",
+                2: "Approve",
+                "-2": "Return"
+            };
+
+            const actionLabel = actions[newStatus];
+            const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+
+            const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+            const actionlabelcomplete = actionLabel + ' ' + typeLabel;
+            if (!confirm(confirmMessage)) return;
+
+            Inertia.post(
+                `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
+                {},
+                {
+                    preserveScroll: true
+                }
+            );
         }
     }
 };

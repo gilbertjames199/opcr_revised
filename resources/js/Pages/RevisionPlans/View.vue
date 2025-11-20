@@ -99,7 +99,7 @@
             </h4>
         </div>
 
-        <div class="col-12">
+        <div class="col-9">
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
                     <!--MAIN TABLE-->
@@ -2328,6 +2328,11 @@
 
 
                 </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div div class="bgc-white p-20 bd">
+                <h4>COMMENTS</h4>
             </div>
         </div>
         <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">

@@ -20,11 +20,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_FilterPrint__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Shared/FilterPrint */ "./resources/js/Shared/FilterPrint.vue");
 /* harmony import */ var _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Shared/PrintModal */ "./resources/js/Shared/PrintModal.vue");
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -118,7 +120,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       no_ooe: false,
       ccet: 'no',
       // This is the main variable bound by v-model
-      checked: false
+      checked: false,
+      formAction: '',
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     };
   },
   computed: {
@@ -826,6 +830,44 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var link_final = linkt + jasper_ip + short_link; // '/revision/export/aip'
 
       window.open(link_final, '_blank');
+    },
+    // statusAction(revision_plan, newStatus) {
+    //     const actions = {
+    //         0: "Submit",
+    //         1: "Review",
+    //         2: "Approve",
+    //         "-2": "Return"
+    //     };
+    //     const actionLabel = actions[newStatus];
+    //     const typeLabel = revision_plan.type === 'p' ? 'project profile' : 'project design';
+    //     // Build confirmation message
+    //     const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+    //     if (!confirm(confirmMessage)) return;
+    //     axios.post(`/status/revision/update/${revision_plan.id}/${actionLabel}/${newStatus}`)
+    //         .then(response => {
+    //             // revision_plan.status = String(newStatus);
+    //             window.location.href = response.request.responseURL;
+    //         })
+    //         .catch(error => {
+    //             console.error(error);
+    //         });
+    // }
+    statusAction: function statusAction(revision_plan, newStatus) {
+      var actions = {
+        0: "Submit",
+        "-1": "Recall",
+        1: "Review",
+        2: "Approve",
+        "-2": "Return"
+      };
+      var actionLabel = actions[newStatus];
+      var typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+      var confirmMessage = "Are you sure you want to ".concat(actionLabel, " the ").concat(typeLabel, " entitled \"").concat(revision_plan.project_title, "\"?");
+      var actionlabelcomplete = actionLabel + ' ' + typeLabel;
+      if (!confirm(confirmMessage)) return;
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_8__.Inertia.post("/status/revision/update/".concat(revision_plan.id, "/").concat(actionlabelcomplete, "/").concat(newStatus), {}, {
+        preserveScroll: true
+      });
     }
   }
 });
@@ -2373,7 +2415,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["href"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dat }} ")]), $props.my_source == 'rev_app' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_152, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Review "), dat.status == '0' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
       onClick: function onClick($event) {
-        return _ctx.statusAction(dat, 1);
+        return $options.statusAction(dat, 1);
       },
       style: {
         padding: '4px 10px',
@@ -2390,7 +2432,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_153)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Approve "), dat.status == '1' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       onClick: function onClick($event) {
-        return _ctx.statusAction(dat, 2);
+        return $options.statusAction(dat, 2);
       },
       style: {
         padding: '4px 10px',
@@ -2407,7 +2449,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_154)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.my_source == 'rev_app' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_155, [['0', '1', '2'].includes(dat.status) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
       onClick: function onClick($event) {
-        return _ctx.statusAction(dat, -2);
+        return $options.statusAction(dat, -2);
       },
       style: {
         padding: '4px 10px',

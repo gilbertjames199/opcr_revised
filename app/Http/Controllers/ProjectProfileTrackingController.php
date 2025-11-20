@@ -59,8 +59,31 @@ class ProjectProfileTrackingController extends Controller
             'revision_plan_id' => $revplan->id,
             'remarks' => $request->remarks,
         ]);
-        $action = ($new_status == 0) ? 'Submitted' : (($new_status == -1) ? 'Recalled' : 'Updated');
-        return redirect()->back()->with('message', 'Revision Plan status '.$action.' successfully.');
+        // MESSAGE
+        $actionWords = [
+            0  => "Submitted",
+            1  => "Reviewed",
+            2  => "Approved",
+            -2 => "Returned"
+        ];
+
+        $actionText = $actionWords[$new_status] ?? "Updated";
+        // if($new_status == 0 || $new_status == -1){
+        //     return redirect()->back()->with('message', "Revision Plan status {$actionText} successfully.");
+        // }else{
+        //     // dd('here');
+        //     return redirect('/revision_plans?source=rev_app')
+        //         ->with('message','Project Profile '.$actionText.' successfully.');
+        // }
+        // Submit (0) OR Recall (-1) → go back to same page
+        if ($new_status == 0 || $new_status == -1) {
+            return redirect()->back()
+                ->with('message', "Revision Plan status {$actionText} successfully.");
+        }
+
+        // Review (1), Approve (2), Return (-2) → go to revision list
+        return redirect('/revision_plans?source=rev_app')
+            ->with('message', "Project Profile {$actionText} successfully.");
     }
 
     public function index_ipp()

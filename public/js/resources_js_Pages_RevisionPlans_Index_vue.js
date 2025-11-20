@@ -14,6 +14,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Filter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Shared/Filter */ "./resources/js/Shared/Filter.vue");
 /* harmony import */ var _Shared_Pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Shared/Pagination */ "./resources/js/Shared/Pagination.vue");
 /* harmony import */ var _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Shared/PrintModal */ "./resources/js/Shared/PrintModal.vue");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
 
 
 
@@ -132,31 +134,44 @@ __webpack_require__.r(__webpack_exports__);
 
       window.open(link_final, '_blank');
     },
-    submitItem: function submitItem(revision_plan, type) {
-      var projectTypeLabel = '';
-
-      if (revision_plan.type === 'p') {
-        projectTypeLabel = type === 0 ? 'Submit Project Profile' : 'Recall Project Profile';
-      } else if (revision_plan.type === 'd') {
-        projectTypeLabel = type === 0 ? 'Submit Project Design' : 'Recall Project Design';
-      } // Build confirmation message
-
-
-      var confirmMessage = "Are you sure you want to ".concat(type === 0 ? 'Submit' : 'Recall', " the project ").concat(revision_plan.type === 'p' ? 'profile' : 'design', " entitled \"").concat(revision_plan.project_title, "\"?"); // Ask user for confirmation
-
-      if (!confirm(confirmMessage)) {
-        return; // Stop if user clicks "Cancel"
-      }
-
-      var id = revision_plan.id;
-      var new_status = type; // 0 or -1
-
-      axios.post("/status/revision/update/".concat(id, "/").concat(projectTypeLabel, "/").concat(new_status)).then(function (response) {
-        // Update local status
-        revision_plan.status = String(new_status);
-        console.log("".concat(projectTypeLabel, " successful"));
-      })["catch"](function (error) {
-        console.error("".concat(projectTypeLabel, " failed:"), error);
+    submitItem: function submitItem(revision_plan, newStatus) {
+      // let projectTypeLabel = '';
+      // if (revision_plan.type === 'p') {
+      //     projectTypeLabel = type === 0 ? 'Submit Project Profile' : 'Recall Project Profile';
+      // } else if (revision_plan.type === 'd') {
+      //     projectTypeLabel = type === 0 ? 'Submit Project Design' : 'Recall Project Design';
+      // }
+      // // Build confirmation message
+      // const confirmMessage = `Are you sure you want to ${type === 0 ? 'Submit' : 'Recall'} the project ${revision_plan.type === 'p' ? 'profile' : 'design'} entitled "${revision_plan.project_title}"?`;
+      // // Ask user for confirmation
+      // if (!confirm(confirmMessage)) {
+      //     return; // Stop if user clicks "Cancel"
+      // }
+      // const id = revision_plan.id;
+      // const new_status = type; // 0 or -1
+      // axios.post(`/status/revision/update/${id}/${projectTypeLabel}/${new_status}`)
+      //     .then(response => {
+      //         // Update local status
+      //         revision_plan.status = String(new_status);
+      //         console.log(`${projectTypeLabel} successful`);
+      //     })
+      //     .catch(error => {
+      //         console.error(`${projectTypeLabel} failed:`, error);
+      //     });
+      var actions = {
+        0: "Submit",
+        "-1": "Recall",
+        1: "Review",
+        2: "Approve",
+        "-2": "Return"
+      };
+      var actionLabel = actions[newStatus];
+      var typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+      var confirmMessage = "Are you sure you want to ".concat(actionLabel, " the ").concat(typeLabel, " entitled \"").concat(revision_plan.project_title, "\"?");
+      var actionlabelcomplete = actionLabel + ' ' + typeLabel;
+      if (!confirm(confirmMessage)) return;
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__.Inertia.post("/status/revision/update/".concat(revision_plan.id, "/").concat(actionlabelcomplete, "/").concat(newStatus), {}, {
+        preserveScroll: true
       });
     }
   }

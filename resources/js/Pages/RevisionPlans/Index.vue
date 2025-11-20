@@ -221,6 +221,8 @@
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import AIPModal from "@/Shared/PrintModal";
+import { Inertia } from '@inertiajs/inertia'
+
 export default {
     props: {
         data: Object,
@@ -337,33 +339,55 @@ export default {
             // '/revision/export/aip'
             window.open(link_final, '_blank');
         },
-        submitItem(revision_plan, type){
-            let projectTypeLabel = '';
-            if (revision_plan.type === 'p') {
-                projectTypeLabel = type === 0 ? 'Submit Project Profile' : 'Recall Project Profile';
-            } else if (revision_plan.type === 'd') {
-                projectTypeLabel = type === 0 ? 'Submit Project Design' : 'Recall Project Design';
-            }
+        submitItem(revision_plan, newStatus){
+            // let projectTypeLabel = '';
+            // if (revision_plan.type === 'p') {
+            //     projectTypeLabel = type === 0 ? 'Submit Project Profile' : 'Recall Project Profile';
+            // } else if (revision_plan.type === 'd') {
+            //     projectTypeLabel = type === 0 ? 'Submit Project Design' : 'Recall Project Design';
+            // }
 
-            // Build confirmation message
-            const confirmMessage = `Are you sure you want to ${type === 0 ? 'Submit' : 'Recall'} the project ${revision_plan.type === 'p' ? 'profile' : 'design'} entitled "${revision_plan.project_title}"?`;
+            // // Build confirmation message
+            // const confirmMessage = `Are you sure you want to ${type === 0 ? 'Submit' : 'Recall'} the project ${revision_plan.type === 'p' ? 'profile' : 'design'} entitled "${revision_plan.project_title}"?`;
 
-            // Ask user for confirmation
-            if (!confirm(confirmMessage)) {
-                return; // Stop if user clicks "Cancel"
-            }
-            const id = revision_plan.id;
-            const new_status = type; // 0 or -1
+            // // Ask user for confirmation
+            // if (!confirm(confirmMessage)) {
+            //     return; // Stop if user clicks "Cancel"
+            // }
+            // const id = revision_plan.id;
+            // const new_status = type; // 0 or -1
 
-            axios.post(`/status/revision/update/${id}/${projectTypeLabel}/${new_status}`)
-                .then(response => {
-                    // Update local status
-                    revision_plan.status = String(new_status);
-                    console.log(`${projectTypeLabel} successful`);
-                })
-                .catch(error => {
-                    console.error(`${projectTypeLabel} failed:`, error);
-                });
+            // axios.post(`/status/revision/update/${id}/${projectTypeLabel}/${new_status}`)
+            //     .then(response => {
+            //         // Update local status
+            //         revision_plan.status = String(new_status);
+            //         console.log(`${projectTypeLabel} successful`);
+            //     })
+            //     .catch(error => {
+            //         console.error(`${projectTypeLabel} failed:`, error);
+            //     });
+            const actions = {
+                0: "Submit",
+                "-1": "Recall",
+                1: "Review",
+                2: "Approve",
+                "-2": "Return"
+            };
+
+            const actionLabel = actions[newStatus];
+            const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+
+            const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+            const actionlabelcomplete = actionLabel + ' ' + typeLabel;
+            if (!confirm(confirmMessage)) return;
+
+            Inertia.post(
+                `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
+                {},
+                {
+                    preserveScroll: true
+                }
+            );
         }
     }
 };
