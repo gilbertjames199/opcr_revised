@@ -375,12 +375,12 @@
                                     'text-danger': has_comment('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)
                                     }">IV.
                                     <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                                    ? `/revision/edit/${paps.id}`:null"
-                                    :class="{
-                                        'text-danger': has_comment('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)
-                                    }"
-                                    target="_blank">
-                                        Target Beneficiaries
+                                        ? `/revision/edit/${paps.id}`:null"
+                                        :class="{
+                                            'text-danger': has_comment('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)
+                                        }"
+                                        target="_blank">
+                                            Target Beneficiaries
                                     </Link>
                                 <button v-if="can_view_comment()" class="superscript-btn"
                                     @click="handleClick('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)">*
@@ -1739,6 +1739,7 @@
                                             'gad_total', 'revision_plans',
                                             paps, paps.comments)
                                         }"
+                                        :id="paps.id + '_revision_plans_gad_total'"
                                     >{{  format_number_conv(tot_gad,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements',
@@ -1768,6 +1769,7 @@
                                             'non_total', 'revision_plans',
                                             paps, paps.comments)
                                         }"
+                                        :id="paps.id + '_revision_plans_non_total'"
                                     >{{ format_number_conv(tot_non,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements',
@@ -1797,6 +1799,7 @@
                                             'grand_total', 'revision_plans',
                                             paps, paps.comments)
                                         }"
+                                        :id="paps.id + '_revision_plans_grand_total'"
                                     >{{ format_number_conv((parseFloat(s_cap_gad) + parseFloat(s_cap_non) + parseFloat(s_ps_gad)
                                     + parseFloat(s_ps_non) + parseFloat(s_mooe_gad) + parseFloat(s_mooe_non) + parseFloat(s_fe_gad) + parseFloat(s_fe_non))
                                     , 2,true)
@@ -2018,10 +2021,15 @@
                         </div> -->
                         <br>
                     </div>
-                    <!--IMPLEMENTING TEAM-->
-                    <h3 v-if="team_members.length > 0 || paps.implementing_team !== null">
+                    <!--IMPLEMENTING TEAM v-if="team_members.length > 0 || paps.implementing_team !== null"-->
+                    <h3 >
                         VII. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/team/${paps.id}/revision/plan/team`:null">Implementing Team</Link>
+                            ? `/team/${paps.id}/revision/plan/team`:null"
+                        :class="{
+                            'text-danger': has_comment('Implementing Team','implementing team',paps.rationale,'implementing_team','revision_plans', paps, paps.comments)
+                        }"
+                        :id="paps.id + '_revision_plans_implementing_team'"
+                        >Implementing Team</Link>
 
                         <button v-if="can_view_comment()" class="superscript-btn"
                             @click="handleClick('Implementing Team','implementing team',paps.implementing_team,'implementing_team','revision_plans', paps, paps.comments)">*
@@ -2419,6 +2427,7 @@
                                         )
 
                                 )"
+                                :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
                             >
                                 {{ comment.comment }}
                                 <!-- ({{ comment.table_name }}) -column_name:<b>{{ comment.column_name }}</b> -->
@@ -3100,5 +3109,27 @@ table {
 @keyframes highlightFlash {
     0% { background-color: yellow; }
     100% { background-color: transparent; }
+}
+
+.comment-approved {
+    color: darkgreen;
+    padding: 3px 6px;
+    border-radius: 4px;
+    transition: color .2s;
+}
+
+.comment-approved:hover {
+    color: #00AEEF; /* sky blue */
+}
+
+.comment-rejected {
+    color: red;
+    padding: 3px 6px;
+    border-radius: 4px;
+    transition: color .2s;
+}
+
+.comment-rejected:hover {
+    color: #CC7722; /* golden ochre */
 }
 </style>
