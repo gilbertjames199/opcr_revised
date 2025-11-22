@@ -48,6 +48,16 @@
                     </option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.FFUNCCOD">{{ form.errors.FFUNCCOD }}</div>
+
+                <label for="">Agency (For POPSP Programs Only)</label>
+                <select class="form-control form-select" v-model="form.popsp_agency" >
+                    <option></option>
+                    <option v-for="popsp in popsp_agency" :value="popsp.agency_code">
+                        {{ popsp.agency_name }}
+                    </option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.agency_name">{{ form.errors.agency_name }}</div>
+
                 <label for="">Email</label>
                 <input type="email" v-model="form.email" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.email">{{ form.errors.email }}</div>
@@ -68,7 +78,9 @@
                     Save changes
                 </button>
             </form>
-            editData: {{ editData }}
+            <!-- editData: {{ editData }} -->
+            <!-- popsp_agency: {{ popsp_agency }} -->
+
         </div>
     </div>
 </template>
@@ -82,6 +94,7 @@ export default {
         permissions: Object,
         offices: Object,
         FFUNCCOD: Object,
+        popsp_agency: Object
     },
     components: {
         BootstrapModalNoJquery,
@@ -100,6 +113,7 @@ export default {
                 UserType: "",
                 email: "",
                 office: "",
+                popsp_agency: "",
                 // password: "",
                 // name: "",
                 // email: "",
@@ -118,6 +132,7 @@ export default {
             this.form.UserName = this.editData.UserName
             this.form.UserType = this.editData.UserType
             this.form.office = this.editData.office
+            this.form.popsp_agency = this.editData.popsp_agency
             // this.form.FFUNCCOD = this.editData.FFUNCCOD
             this.form.id = this.editData.recid
         } else {

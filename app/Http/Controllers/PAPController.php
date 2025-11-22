@@ -15,6 +15,7 @@ use App\Models\Office;
 use App\Models\OfficeAccountable;
 use App\Models\OfficeDivision;
 use App\Models\Output;
+use App\Models\PopspAgency;
 use App\Models\ProgramAndProject;
 use App\Models\Quality;
 use App\Models\QualityRemarks;
@@ -44,6 +45,7 @@ class PAPController extends Controller
     public function index(Request $request, $id)
     {
         // dd("not direct");
+        // dd(auth()->user());
         $data = ProgramAndProject::where('idmfo', $id)
             ->with('MFO')
             ->when($request->search, function ($query, $searchItem) {
@@ -114,7 +116,7 @@ class PAPController extends Controller
         $functions = clone ($functions)
             ->distinct('FFUNCCOD')
             ->get();
-
+        $popsp_agencies =PopspAgency::where('department_code',auth()->user()->department_code)->get();
         return inertia('PAPS/Create', [
             'mfos' => $mfos,
             'chief_agenda' => $chief_executive_agenda,
@@ -125,6 +127,7 @@ class PAPController extends Controller
             'idmfo' => $id,
             'functions' => $functions,
             'years' => $year_object,
+            'popsp_agencies' => $popsp_agencies,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -195,6 +198,9 @@ class PAPController extends Controller
             ->distinct('FFUNCCOD')
             ->orderBy('FFUNCTION', 'ASC')
             ->get();
+
+        $popsp_agencies =PopspAgency::all();
+        // dd($pops_agencies);
         // dd($functions);
         return inertia('PAPS/Create', [
             'mfos' => $mfos,
@@ -204,6 +210,7 @@ class PAPController extends Controller
             'executive_legislative' => $executive_legislative,
             'research' => $research,
             'functions' => $functions,
+            'popsp_agencies' => $popsp_agencies,
             // 'motherPAPS' => $motherPAPS,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
@@ -321,8 +328,10 @@ class PAPController extends Controller
             'focus_area',
             'is_mother_program',
             'mother_program_id',
-            'aip_code'
+            'aip_code',
+            'agency_name'
         ]);
+        // dd($data);
         $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
             ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
             ->with('func');
@@ -332,6 +341,8 @@ class PAPController extends Controller
         $functions = clone ($functions)
             ->distinct('FFUNCCOD')
             ->get();
+        $popsp_agencies =PopspAgency::all();
+        // dd($pops_agencies);
         return inertia('PAPS/Create', [
             "editData" => $data,
             "mfos" => $mfos,
@@ -343,6 +354,7 @@ class PAPController extends Controller
             "idmfo" => $idmfo,
             "functions" => $functions,
             'years' => $year_object,
+            'popsp_agencies' => $popsp_agencies,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -375,6 +387,7 @@ class PAPController extends Controller
             'is_mother_program' => $request->is_mother_program,
             'mother_program_id' => $request->mother_program_id,
             'aip_code' => $request->aip_code,
+            'agency_name' => $request->agency_name,
         ]);
         return redirect('/paps/direct')
             ->with('info', 'Program and Projects updated');
@@ -455,6 +468,9 @@ class PAPController extends Controller
     {
         // dd("direct");
         //dd($request->mfosel);
+        // dd(auth()->user());
+        $popsp_related_agency = PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
+        // dd($popsp_related_agency);
         $offices = FFUNCCOD::where('FFUNCTION', 'LIKE', '%Office%')->orderBy('FFUNCTION', 'ASC')->get();
         $offices_shared = Office::where(function ($query) {
             $query->where('office', 'LIKE', '%Office%')
@@ -463,6 +479,7 @@ class PAPController extends Controller
             ->where('office', '!=', 'No Office')
             ->orderBy('office', 'ASC')
             ->get();
+        // dd($offices);
         $idn = auth()->user()->recid;
         $FFUNCCODE = auth()->user()->office;
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCODE)->first();
@@ -476,6 +493,15 @@ class PAPController extends Controller
         // dd(auth()->user());
         // dd($department_code);
         $sharedPAPS = SharedProgramAndProject::where('destination_department_code', $department_code)
+            ->when(auth()->user()->popsp_agency, function ($query) use ($popsp_related_agency) {
+                $query->where(function($query) use ($popsp_related_agency) {
+                    $query->where('destination_department_code', $popsp_related_agency->department_code)
+                        ->Where('origin_department_code', $popsp_related_agency->department_code_actual);
+                        // dd($popsp_related_agency);
+                });
+                // $query->wjere
+                // $query->orWhere('origin_department_code', $popsp_related_agency->agency_code);
+            })->get()
             ->pluck('idpaps'); // Get shared IDs
         // dd($sharedPAPS);
         $sharedPAPSData = $this->model->with('MFO')
@@ -493,6 +519,10 @@ class PAPController extends Controller
             })
             ->when($request->mfosel, function ($query, $searchItem) {
                 $query->where('idmfo', '=', $searchItem);
+            })
+            ->when(auth()->user()->popsp_agency, function($query){
+                // dd(auth()->user()->popsp_agency);
+                $query->where('agency_name', auth()->user()->popsp_agency);
             })
             ->where(function ($query) {
                 $query->where('idmfo', '>', '45')

@@ -9,6 +9,7 @@
         <div class="peers fxw-nw jc-sb ai-c">
             <h3 v-if="my_source=='budget'">Budget Proposal </h3>
             <h3 v-if="my_source=='direct'">Programs</h3>
+            <h3 v-if="my_source=='rev_app'">Review/Approve Project Profile</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -426,7 +427,9 @@
                                 <th>Implementing Offices</th>
                                 <th>Planned Amount</th>
                                 <th>View IPP</th>
-                                <th v-if="my_source=='budget'">Budget Details</th>
+                                <th v-if="my_source=='rev_app'">Review/Approve</th>
+                                <th v-if="my_source=='rev_app'">Return</th>
+                                <th v-if="my_source=='budget'">Budget Details </th>
                                 <!-- <th>Edit</th> -->
                                 <!-- <th>Actions</th> -->
                             </tr>
@@ -454,6 +457,60 @@
                                         </svg>
                                     </Link>
                                     <!-- {{ dat }} -->
+                                </td>
+                                <td v-if="my_source=='rev_app'">
+                                    <!-- Review -->
+                                    <button
+                                        v-if="dat.status == '0'"
+                                        @click="statusAction(dat, 1)"
+                                        :style="{
+                                        padding: '4px 10px',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        backgroundColor: 'blue',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold',
+                                        marginRight: '4px'
+                                        }"
+                                    >
+                                        Review
+                                    </button>
+
+                                    <!-- Approve -->
+                                    <button
+                                        v-if="dat.status == '1'"
+                                        @click="statusAction(dat, 2)"
+                                        :style="{
+                                        padding: '4px 10px',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        backgroundColor: 'darkgreen',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold',
+                                        marginRight: '4px'
+                                        }"
+                                    >
+                                        Approve
+                                    </button>
+                                </td>
+                                <td v-if="my_source=='rev_app'">
+                                    <button
+                                        v-if="['0','1','2'].includes(dat.status)"
+                                        @click="statusAction(dat, -2)"
+                                        :style="{
+                                        padding: '4px 10px',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        backgroundColor: 'red',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold'
+                                        }"
+                                    >
+                                        Return
+                                    </button>
                                 </td>
                                 <td v-if="my_source=='budget'">
                                      <button
@@ -523,7 +580,7 @@
 
             </div>
         </div>
-        <!-- {{ my_source }} -->
+        {{ my_source }}
     </div>
     <!-- {{ ooe_description }}
     {{ ooe_id }} -->
@@ -540,6 +597,8 @@ import Printing from "@/Shared/FilterPrint";
 import LBP2Modal from "@/Shared/PrintModal";
 import AIPModal from "@/Shared/PrintModal";
 import { Button } from "bootstrap";
+import { Inertia } from '@inertiajs/inertia'
+
 export default {
     props: {
         auth: Object,
@@ -623,7 +682,10 @@ export default {
             no_ooe: false,
 
             ccet: 'no',       // This is the main variable bound by v-model
-            checked: false
+            checked: false,
+
+            formAction: '',
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
     },
     computed: {
@@ -1224,6 +1286,56 @@ export default {
             var link_final = linkt+jasper_ip+short_link;
             // '/revision/export/aip'
             window.open(link_final, '_blank');
+        },
+
+        // statusAction(revision_plan, newStatus) {
+        //     const actions = {
+        //         0: "Submit",
+        //         1: "Review",
+        //         2: "Approve",
+        //         "-2": "Return"
+        //     };
+
+        //     const actionLabel = actions[newStatus];
+        //     const typeLabel = revision_plan.type === 'p' ? 'project profile' : 'project design';
+
+        //     // Build confirmation message
+        //     const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+
+        //     if (!confirm(confirmMessage)) return;
+
+        //     axios.post(`/status/revision/update/${revision_plan.id}/${actionLabel}/${newStatus}`)
+        //         .then(response => {
+        //             // revision_plan.status = String(newStatus);
+        //             window.location.href = response.request.responseURL;
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //         });
+        // }
+       statusAction(revision_plan, newStatus) {
+            const actions = {
+                0: "Submit",
+                "-1": "Recall",
+                1: "Review",
+                2: "Approve",
+                "-2": "Return"
+            };
+
+            const actionLabel = actions[newStatus];
+            const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+
+            const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+            const actionlabelcomplete = actionLabel + ' ' + typeLabel;
+            if (!confirm(confirmMessage)) return;
+
+            Inertia.post(
+                `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
+                {},
+                {
+                    preserveScroll: true
+                }
+            );
         }
     }
 };

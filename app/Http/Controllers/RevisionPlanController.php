@@ -14,6 +14,7 @@ use App\Models\Implementing_team;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring_and_evaluation;
 use App\Models\OOE;
+use App\Models\PopspAgency;
 use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
 use App\Models\RevisionPlanComment;
@@ -47,7 +48,10 @@ class RevisionPlanController extends Controller
     public function index(Request $request, $idpaps)
     {
         // dd($idpaps);
-
+        // if(auth()->user()->popsp_agency){
+        //     return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
+        // }
+        // dd($request->source);
         $myid = auth()->user()->recid;
         $dept_id = auth()->user()->department_code;
         $FFUNCCOD = FFUNCCOD::where('department_code', $dept_id)->first()->FFUNCCOD;
@@ -74,6 +78,8 @@ class RevisionPlanController extends Controller
             //     'ff.FFUNCTION'
             // )
             // ->
+            // dd( auth()->user()->popsp_agency);
+            $popsp_agency =PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
             $data = RevisionPlan::with(['paps', 'paps.office'])
                 // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
                 // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
@@ -81,8 +87,13 @@ class RevisionPlanController extends Controller
                 // ->Join(DB::raw('fms.accountaccess acc'), 'acc.ffunccod', '=', 'ff.FFUNCCOD')
                 // ->where('acc.iduser', '=', $myid)
                 // ->where('paps.department_code', '=', $dept_id)
-                ->whereHas('paps', function ($query) use ($dept_id) {
+                ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                     $query->where('department_code', $dept_id);
+                        // ->orWhere('department_code', optional($popsp_agency)->department_code_actual);
+                })
+                ->when(auth()->user()->popsp_agency, function($query)use ($dept_id, $popsp_agency){
+                    // dd("may agency", $popsp_agency);
+                    $query->where('agency_name', $popsp_agency->agency_code);
                 })
                 ->get()
                 ->map(function ($item) use ($budget_controller) {
@@ -131,9 +142,11 @@ class RevisionPlanController extends Controller
                         'version' => $item->version,
                         'budget_sum' => $budgetary_requirement,
                         'imp_amount' => $imp_amount,
+                        'status' => $item->status
                         // 'paps'=>$item->paps
                     ];
                 });
+            // dd(auth()->user());
 
 
             // dd($data);
@@ -205,7 +218,8 @@ class RevisionPlanController extends Controller
                         'type' => $item->type,
                         'version' => $item->version,
                         'budget_sum' => $budgetary_requirement,
-                        'imp_amount' => $imp_amount
+                        'imp_amount' => $imp_amount,
+                        'status' => $item->status
                     ];
                 });
 
@@ -287,6 +301,7 @@ class RevisionPlanController extends Controller
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
         // dd($max_id);
         $duplicate = RevisionPlan::where('id', $max_id)->get();
+        $popsp_agencies =PopspAgency::all();
         // dd($paps_all);
         if ($count > 0) {
 
@@ -294,7 +309,7 @@ class RevisionPlanController extends Controller
                 "idpaps" => $id,
                 "hgdgs" => $hgdg,
                 "paps" => $paps,
-
+                "popsp_agencies" => $popsp_agencies,
                 "duplicate" => $duplicate,
                 "can" => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
@@ -309,6 +324,7 @@ class RevisionPlanController extends Controller
                 "paps" => $paps,
                 "paps_all" => $paps_all,
                 "source" => $request->source,
+                "popsp_agencies" => $popsp_agencies,
                 "can" => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                     'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -414,7 +430,14 @@ class RevisionPlanController extends Controller
     }
     public function view(Request $request, $id)
     {
+        // dd(env('DB_DATABASE'));
+        // dd(config('database.connections.mysql.database'));
         $src = $request->source;
+
+        if (auth()->user()->department_code != '04' && $src == 'rev_app') {
+            return redirect('/forbidden')
+                ->with('error', 'You do not have access to this page.');
+        }
         //REVISION PLANS
         $paps = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])
             ->where('id', $id)
@@ -731,7 +754,11 @@ class RevisionPlanController extends Controller
             }
         }
         // dd($functions);
+        $all_comments = $this->getAllRevisionPlanComments($id);
+        // ->sortByDesc('created_at')
+        // dd($all_comments->pluck('created_at'));
         return inertia('RevisionPlans/View', [
+            "all_comments" => $all_comments,
             "paps" => $paps,
             "office" => $functions->FFUNCTION,
             "implementation" => $implement,
@@ -772,6 +799,108 @@ class RevisionPlanController extends Controller
             ],
         ]);
     }
+    function getAllRevisionPlanComments(int $revisionPlanId)
+    {
+        // 1️⃣ Comments directly on revision_plans
+        $revisionPlanComments = RevisionPlanComment::where('table_name', 'revision_plans')
+            ->where('table_row_id', $revisionPlanId);
+
+        // 2️⃣ activity_projects comments
+        $activityProjectIds = DB::table('activity_projects')
+            ->where('project_id', $revisionPlanId)
+            ->pluck('id');
+
+        $activityComments = RevisionPlanComment::where('table_name', 'activity_projects')
+            ->whereIn('table_row_id', $activityProjectIds);
+
+        // 3️⃣ expected_revised_outcomes / outputs linked to activity_projects
+        $outcomeIds = DB::table('expected_revised_outcomes')
+            ->whereIn('activity_project_id', $activityProjectIds)
+            ->pluck('id');
+
+        $outputIds = DB::table('expected_revised_outputs')
+            ->whereIn('activity_project_id', $activityProjectIds)
+            ->pluck('id');
+
+        $activityOutcomeComments = RevisionPlanComment::where('table_name', 'expected_revised_outcomes')
+            ->whereIn('table_row_id', $outcomeIds);
+
+        $activityOutputComments = RevisionPlanComment::where('table_name', 'expected_revised_outputs')
+            ->whereIn('table_row_id', $outputIds);
+
+        // 4️⃣ strategy_projects comments
+        $strategyProjectIds = DB::table('strategy_projects')
+            ->where('project_id', $revisionPlanId)
+            ->pluck('id');
+
+        $strategyComments = RevisionPlanComment::where('table_name', 'strategy_projects')
+            ->whereIn('table_row_id', $strategyProjectIds);
+
+        // strategy outcomes / outputs
+        $strategyOutcomeIds = DB::table('expected_revised_outcomes')
+            ->whereIn('strategy_project_id', $strategyProjectIds)
+            ->pluck('id');
+
+        $strategyOutputIds = DB::table('expected_revised_outputs')
+            ->whereIn('strategy_project_id', $strategyProjectIds)
+            ->pluck('id');
+
+        $strategyOutcomeComments = RevisionPlanComment::where('table_name', 'expected_revised_outcomes')
+            ->whereIn('table_row_id', $strategyOutcomeIds);
+
+        $strategyOutputComments = RevisionPlanComment::where('table_name', 'expected_revised_outputs')
+            ->whereIn('table_row_id', $strategyOutputIds);
+
+        // 5️⃣ budget_requirements
+        $budgetIds = DB::table('budget_requirements')
+            ->where('revision_plan_id', $revisionPlanId)
+            ->pluck('id');
+
+        $budgetComments = RevisionPlanComment::where('table_name', 'budget_requirements')
+            ->whereIn('table_row_id', $budgetIds);
+
+        // 6️⃣ monitoring_and_evaluations
+        $monitoringIds = DB::table('monitoring_and_evaluations')
+            ->where('revision_plan_id', $revisionPlanId)
+            ->pluck('id');
+
+        $monitoringComments = RevisionPlanComment::where('table_name', 'monitoring_and_evaluations')
+            ->whereIn('table_row_id', $monitoringIds);
+
+        // 7️⃣ risk_manangements
+        $riskIds = DB::table('risk_manangements')
+            ->where('revision_plan_id', $revisionPlanId)
+            ->pluck('id');
+
+        $riskComments = RevisionPlanComment::where('table_name', 'risk_manangements')
+            ->whereIn('table_row_id', $riskIds);
+
+        // 8️⃣ team_plans
+        $teamIds = DB::table('team_plans')
+            ->where('revision_plan_id', $revisionPlanId)
+            ->pluck('id');
+
+        $teamComments = RevisionPlanComment::where('table_name', 'team_plans')
+            ->whereIn('table_row_id', $teamIds);
+
+        // 9️⃣ Merge all queries using union
+        $allComments = $revisionPlanComments
+            ->unionAll($activityComments)
+            ->unionAll($activityOutcomeComments)
+            ->unionAll($activityOutputComments)
+            ->unionAll($strategyComments)
+            ->unionAll($strategyOutcomeComments)
+            ->unionAll($strategyOutputComments)
+            ->unionAll($budgetComments)
+            ->unionAll($monitoringComments)
+            ->unionAll($riskComments)
+            ->unionAll($teamComments)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return $allComments;
+    }
+
     public function budgetRequirements($id)
     {
         $groupByAccountCodeCount = BudgetRequirement::where('revision_plan_id', $id)
@@ -822,19 +951,54 @@ class RevisionPlanController extends Controller
         // dd($paps);
         // dd($idpaps);
         $hgdg = HGDG_Checklist::get();
+        $popsp_agencies =PopspAgency::all();
+        $source =$request->source;
         // $count = RevisionPlan::where('idpaps', $id)->count();
         // $max_id = RevisionPlan::where('idpaps', $id)->max('id');
-        return inertia('RevisionPlans/Create', [
-            "idpaps" => $idpaps,
-            "hgdgs" => $hgdg,
-            "paps" => $paps,
-            "editData" => $data,
-            "source" => $request->source,
-            "can" => [
-                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
-            ],
-        ]);
+        if($source=='direct'){
+            $dept_code = auth()->user()->department_code;
+            if (isset($paps)) {
+                $paps_all = ProgramAndProject::with('MFO')
+                    ->where(function ($query) use ($dept_code) {
+                        $query->whereHas('MFO', function ($query) use ($dept_code) {
+                            $query->where('department_code', $dept_code);
+                        })
+                            ->orWhere('department_code', $dept_code);
+                    })
+
+                    ->get();
+                // dd("wala si paps");
+                // $all_paps = Progr
+            }
+            return inertia('RevisionPlans/Create', [
+                "idpaps" => $idpaps,
+                "hgdgs" => $hgdg,
+                "paps" => $paps,
+                "paps_all" => $paps_all,
+                "editData" => $data,
+                "source" => $request->source,
+                "popsp_agencies" => $popsp_agencies,
+                "can" => [
+                    'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                    'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                ],
+            ]);
+        }else{
+            return inertia('RevisionPlans/Create', [
+                "idpaps" => $idpaps,
+                "hgdgs" => $hgdg,
+                "paps" => $paps,
+
+                "editData" => $data,
+                "source" => $request->source,
+                "popsp_agencies" => $popsp_agencies,
+                "can" => [
+                    'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                    'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                ],
+            ]);
+        }
+
     }
     public function update(Request $request)
     {
@@ -1595,6 +1759,9 @@ class RevisionPlanController extends Controller
         $dept_id = auth()->user()->department_code;
         $source = $request->source;
         // dd($dept_id);
+        if(auth()->user()->popsp_agency){
+            return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
+        }
         if ($source != 'budget') {
             if ($dept_id != '04' && $dept_id != '01') {
                 return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
@@ -1658,6 +1825,11 @@ class RevisionPlanController extends Controller
                     ->groupBy('revision_plan_id')
                     ->havingRaw('SUM(amount) > 0');
             })
+
+                ->when($request->source == 'rev_app', function ($query) {
+                    // dd("rev app ang source");
+                    $query->where('status', '>=', '0');
+                })
             ->when($request->FFUNCCOD, function ($query) use ($request) {
                 $query->whereHas('paps', function ($query_inner) use ($request) {
                     $query_inner->where('FFUNCCOD', $request->FFUNCCOD);
@@ -1712,6 +1884,7 @@ class RevisionPlanController extends Controller
                 'budget_sum' => $budgetary_requirement,
                 'imp_amount' => $imp_amount,
                 'idpaps' => $item->idpaps,
+                'status' => $item->status,
             ];
         });
         // $data->setCollection(

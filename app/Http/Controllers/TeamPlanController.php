@@ -42,8 +42,8 @@ class TeamPlanController extends Controller
                 // dd($item);
                 return [
                     "id" => $item->id,
-                    "name" => $item->userEmployee ? $item->userEmployee->employee_name : "",
-                    "position" => $item->userEmployee ? $item->userEmployee->position_long_title : "",
+                    "name" => $item->userEmployee ? $item->userEmployee->employee_name : $item->name,
+                    "position" => $item->userEmployee ? $item->userEmployee->position_long_title : $item->position,
                     "competency" => $item->competency,
                     "role" => $item->role,
                     "with_gad_training" => $item->with_gad_training
@@ -82,19 +82,58 @@ class TeamPlanController extends Controller
     public function store(Request $request)
     {
         // dd($request);
-        $attributes = $request->validate($this->rules(), $this->errorMessages());
+        $validated = $request->validate([
+            'competency'            => 'nullable',
+            'revision_plan_id'      => 'required|integer',
+            'implementing_team_id'  => 'nullable',
+            'role'                  => 'required|string',
+            'with_gad_training'     => 'required',
+            'specify_GAD_training'  => 'nullable',
+            'name'                  => 'required|string',
+            'position'              => 'required|string',
+            'id'                    => 'nullable|integer', // or required if needed
+            'gender'                => 'required'
+        ]);
+
+        // dd(env("DB_DATABASE"),"null lagi");
+        // $attributes = $request->validate($this->rules(), $this->errorMessages());
         // $this->model->create($attributes);
         // dd($request);
-        $us = UserEmployees::where('empl_id', $request->implementing_team_id)->first();
+        // $us = UserEmployees::where('empl_id', $request->implementing_team_id)->first();
+        // $team = new TeamPlan();
+        // $team->revision_plan_id = $request->revision_plan_id;
+        // $team->implementing_team_id = $request->implementing_team_id;
+        // $team->role = $request->role;
+        // $team->empl_id = $us->empl_id;
+        // $team->name = $request->name;
+        // $team->competency = $request->competency;
+        // $team->position = $us?$us->position_long_title: $request->position;
+        // $team->with_gad_training = $request->with_gad_training;
+        // $team->specify_GAD_training = $request->specify_GAD_training ?? null;
+        // $team->save();
+        $us = null;
+
+        if (!empty($request->implementing_team_id)) {
+            $us = UserEmployees::where('empl_id', $request->implementing_team_id)->first();
+        }
+
         $team = new TeamPlan();
         $team->revision_plan_id = $request->revision_plan_id;
         $team->implementing_team_id = $request->implementing_team_id;
         $team->role = $request->role;
-        $team->empl_id = $us->empl_id;
+
+        // If $us exists → use its empl_id, otherwise null
+        $team->empl_id = $us ? $us->empl_id : null;
+
+        // If $us exists → use its position, else fallback to request
+        $team->position = $us ? $us->position_long_title : $request->position;
+
+        $team->name = $request->name;
+        $team->gender = $request->gender;
         $team->competency = $request->competency;
-        $team->position = $us->position_long_title;
         $team->with_gad_training = $request->with_gad_training;
         $team->specify_GAD_training = $request->specify_GAD_training ?? null;
+
         $team->save();
         return redirect('/team/' . $request->revision_plan_id . '/revision/plan/team')
             ->with('message', 'Team member added!');
@@ -109,6 +148,7 @@ class TeamPlanController extends Controller
         $FFUNCCOD = AccountAccess::where('iduser', $uid)->first();
         $people = $people = UserEmployees::all();
         //dd($people);
+        // dd($editData);
         return inertia('ImplementingTeamRevision/Create', [
             "revs" => $revs,
             "revid" => $revid,
@@ -123,19 +163,57 @@ class TeamPlanController extends Controller
     public function update(Request $request)
     {
         //dd("update");
+        
         // $data = $this->model->findOrFail($request->id);
-        $attributes = $request->validate($this->rules(), $this->errorMessages());
+        $validated = $request->validate([
+            'competency'            => 'nullable',
+            'revision_plan_id'      => 'required|integer',
+            'implementing_team_id'  => 'nullable',
+            'role'                  => 'required|string',
+            'with_gad_training'     => 'required',
+            'specify_GAD_training'  => 'nullable',
+            'name'                  => 'required|string',
+            'position'              => 'required|string',
+            'id'                    => 'nullable|integer', // or required if needed
+            'gender'                => 'required'
+        ]);
+        // $attributes = $request->validate($this->rules(), $this->errorMessages());
         // $data->update($attributes);
-        $us = UserEmployees::where('empl_id', $request->implementing_team_id)->first();
+        // $us = UserEmployees::where('empl_id', $request->implementing_team_id)->first();
+        // $team = $this->model->findOrFail($request->id);
+        // $team->revision_plan_id = $request->revision_plan_id;
+        // $team->implementing_team_id = $request->implementing_team_id;
+        // $team->role = $request->role;
+        // $team->empl_id = $us->empl_id;
+        // $team->name = $request->name;
+        // $team->competency = $request->competency;
+        // $team->position = $us?$us->position_long_title: $request->position;
+        // $team->with_gad_training = $request->with_gad_training;
+        // $team->specify_GAD_training = $request->specify_GAD_training ?? null;
+        // $team->save();
+        $us = null;
+
+        if (!empty($request->implementing_team_id)) {
+            $us = UserEmployees::where('empl_id', $request->implementing_team_id)->first();
+        }
+
         $team = $this->model->findOrFail($request->id);
         $team->revision_plan_id = $request->revision_plan_id;
         $team->implementing_team_id = $request->implementing_team_id;
         $team->role = $request->role;
-        $team->empl_id = $us->empl_id;
+
+        // If $us exists → use its empl_id, otherwise null
+        $team->empl_id = $us ? $us->empl_id : null;
+
+        // If $us exists → use its position, else fallback to request
+        $team->position = $us ? $us->position_long_title : $request->position;
+
+        $team->name = $request->name;
+        $team->gender = $request->gender;
         $team->competency = $request->competency;
-        $team->position = $us->position_long_title;
         $team->with_gad_training = $request->with_gad_training;
         $team->specify_GAD_training = $request->specify_GAD_training ?? null;
+
         $team->save();
         return redirect('/team/' . $request->revision_plan_id . '/revision/plan/team')
             ->with('message', 'Team member added!');

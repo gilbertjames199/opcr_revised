@@ -279,8 +279,8 @@
                 </li> -->
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/revision_plans?source=direct"
-                        :class="{ 'active': $page.url === '/revision_plans' }"
-                        v-if="$page.props.auth.user.department_code == '04' || $page.props.auth.user.department_code == '01'"
+                        :class="{ 'active': $page.url === '/revision_plans?source=direct' }"
+                        v-if="($page.props.auth.user.department_code == '04' || $page.props.auth.user.department_code == '01')"
                     >
                     <span></span>
                     <span class="icon-holder">
@@ -533,6 +533,12 @@
                             <Link class="sidebar-link" href="/review-approve/ratings/"
                                 :class="{ 'active': $page.url === '/review-approve/ratings/' }">
                             <span class="title">Rating</span>
+                            </Link>
+                        </li>
+                        <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/revision_plans?source=rev_app"
+                                :class="{ 'active': $page.url === '/revision_plans?source=rev_app' }">
+                            <span class="title">Project Profile</span>
                             </Link>
                         </li>
 

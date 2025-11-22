@@ -46,8 +46,10 @@
                             <tr class="bg-secondary text-white">
                                 <th>Project Title</th>
                                 <th>Office</th>
+                                <th>Status</th>
                                 <th>View</th>
                                 <th>Edit</th>
+                                <th></th>
                                 <th>Version</th>
                                 <th>Actions</th>
                             </tr>
@@ -60,6 +62,33 @@
                                     </span>
                                 </td>
                                 <td>{{ dat.FFUNCTION }}</td>
+                                <td>
+                                    <span
+                                        :style="{
+                                        display: 'inline-block',
+                                        padding: '2px 8px',
+                                        borderRadius: '4px',
+                                        color: 'white',
+                                        fontWeight: 'bold',
+                                        backgroundColor:
+                                            dat.status == '-2' ? 'red' :
+                                            dat.status == '-1' ? 'gray' :
+                                            dat.status == '0'  ? 'orange' :
+                                            dat.status == '1'  ? 'blue' :
+                                            dat.status == '2'  ? 'green' :
+                                            'black'
+                                        }"
+                                    >
+                                        {{
+                                        dat.status == '-2' ? 'Returned' :
+                                        dat.status == '-1' ? 'Saved' :
+                                        dat.status == '0'  ? 'Submitted' :
+                                        dat.status == '1'  ? 'Reviewed' :
+                                        dat.status == '2'  ? 'Approved' :
+                                        'Unknown'
+                                        }}
+                                    </span>
+                                </td>
                                 <td><Link
                                         class="btn btn-primary btn-sm"
                                         :href="`/revision/view/project/paps/${dat.id}`">
@@ -91,6 +120,41 @@
                                         </svg>
                                     </Link>
 
+                                </td>
+                                <td>
+                                    <!-- Submit button when status = -1 -->
+                                    <button
+                                        v-if="dat.status == '-1' || dat.status == '-2'"
+                                        @click="submitItem(dat, 0)"
+                                        :style="{
+                                        padding: '4px 10px',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        backgroundColor: 'blue',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold'
+                                        }"
+                                    >
+                                        Submit
+                                    </button>
+
+                                    <!-- Recall button when status = 0 -->
+                                    <button
+                                        v-if="dat.status == '0'"
+                                        @click="submitItem(dat, -1)"
+                                        :style="{
+                                        padding: '4px 10px',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        backgroundColor: 'red',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold'
+                                        }"
+                                    >
+                                        Recall
+                                    </button>
                                 </td>
                                 <td>{{ dat.version }}</td>
                                 <td>
@@ -134,6 +198,7 @@
                 </div>
 
             </div>
+            {{ rev_plan_selected }}
         </div>
         <AIPModal v-if="showAIPModal" @close-modal-event="hideAIPModal">
             <div class="d-flex justify-content-center">
@@ -156,6 +221,8 @@
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import AIPModal from "@/Shared/PrintModal";
+import { Inertia } from '@inertiajs/inertia'
+
 export default {
     props: {
         data: Object,
@@ -173,7 +240,8 @@ export default {
             aip_printLink: "",
             ccet: 'no',       // This is the main variable bound by v-model
             checked: false,    // Internal boolean to control the checkbox
-            aip_printLink_excel: ""
+            aip_printLink_excel: "",
+            rev_plan_selected: [],
         }
     },
     components: {
@@ -270,6 +338,56 @@ export default {
             var link_final = linkt+jasper_ip+short_link+params;
             // '/revision/export/aip'
             window.open(link_final, '_blank');
+        },
+        submitItem(revision_plan, newStatus){
+            // let projectTypeLabel = '';
+            // if (revision_plan.type === 'p') {
+            //     projectTypeLabel = type === 0 ? 'Submit Project Profile' : 'Recall Project Profile';
+            // } else if (revision_plan.type === 'd') {
+            //     projectTypeLabel = type === 0 ? 'Submit Project Design' : 'Recall Project Design';
+            // }
+
+            // // Build confirmation message
+            // const confirmMessage = `Are you sure you want to ${type === 0 ? 'Submit' : 'Recall'} the project ${revision_plan.type === 'p' ? 'profile' : 'design'} entitled "${revision_plan.project_title}"?`;
+
+            // // Ask user for confirmation
+            // if (!confirm(confirmMessage)) {
+            //     return; // Stop if user clicks "Cancel"
+            // }
+            // const id = revision_plan.id;
+            // const new_status = type; // 0 or -1
+
+            // axios.post(`/status/revision/update/${id}/${projectTypeLabel}/${new_status}`)
+            //     .then(response => {
+            //         // Update local status
+            //         revision_plan.status = String(new_status);
+            //         console.log(`${projectTypeLabel} successful`);
+            //     })
+            //     .catch(error => {
+            //         console.error(`${projectTypeLabel} failed:`, error);
+            //     });
+            const actions = {
+                0: "Submit",
+                "-1": "Recall",
+                1: "Review",
+                2: "Approve",
+                "-2": "Return"
+            };
+
+            const actionLabel = actions[newStatus];
+            const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+
+            const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+            const actionlabelcomplete = actionLabel + ' ' + typeLabel;
+            if (!confirm(confirmMessage)) return;
+
+            Inertia.post(
+                `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
+                {},
+                {
+                    preserveScroll: true
+                }
+            );
         }
     }
 };

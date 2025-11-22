@@ -24,4 +24,9 @@ class BudgetRequirement extends Model
         return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');
         // ->where('table_name', 'revision_plans');
     }
+
+    public function revisionPlan()
+    {
+        return $this->belongsTo(RevisionPlan::class, 'revision_plan_id', 'id');
+    }
 }

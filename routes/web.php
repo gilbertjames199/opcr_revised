@@ -92,6 +92,7 @@ use App\Http\Controllers\IPCRController;
 use App\Http\Controllers\MeansOfVerificationController;
 use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
+use App\Http\Controllers\ProjectProfileTrackingController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
 use App\Http\Controllers\RevisionPlanCommentController;
 use App\Http\Controllers\SentenceParserController;
@@ -110,6 +111,7 @@ use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OpcrAccomplishment;
 use App\Models\OpcrTarget;
 use App\Models\OpcrTargetBudget;
+use App\Models\ProjectProfileTracking;
 use App\Models\UserOffice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -141,6 +143,7 @@ Route::middleware('auth')->group(function () {
     //FOrbidden
     Route::prefix('/forbidden')->group(function () {
         Route::get('/', [ForbiddenController::class, 'index']);
+        Route::get('/parameterized/{message}', [ForbiddenController::class, 'forbidden_parameterized']);
     });
     //Users
     Route::prefix('/users')->group(function () {
@@ -434,6 +437,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
         Route::get('/export/aip', [RevisionPlanController::class, 'exportStrategies'])->name('export.aip');
+    });
+    Route::prefix('/status/revision')->group(function () {
+        Route::post('/update/{id}/{type}/{new_status}', [ProjectProfileTrackingController::class, 'status_update']);
+        Route::get('/review/approve', [ProjectProfileTrackingController::class, 'review_approve_index']);
     });
     Route::prefix('/revisio/n')->group(function () {
         Route::patch('/', [RevisionPlanController::class, 'update']);
@@ -881,6 +888,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/return/remarks/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'returnOpcrRating']);
             Route::post('/submit/opcr/{column}/{opcr_rating_id}/{item_score}', [TargetAccomplishmentReviewApproveController::class, 'update_rating_score']);
             Route::get('/{opcr_list_id}/view/opcr/rating/submission', [TargetAccomplishmentReviewApproveController::class, 'viewRating']);
+        });
+        Route::prefix('/ipp')->group(function () {
+            Route::get('/', [ProjectProfileTrackingController::class, 'index_ipp']);
+            // Route::get('/{opcr_list_id}/review', [ProjectProfileTrackingController::class, 'reviewOPCRRating']);
+            // Route::post('/approve/{opcr_list_id}/opcr', [ProjectProfileTrackingController::class, 'approveOPCRRating']);
+            // Route::post('/return/remarks/{opcr_list_id}/opcr', [ProjectProfileTrackingController::class, 'returnOpcrRating']);
+            // Route::post('/submit/opcr/{column}/{opcr_rating_id}/{item_score}', [ProjectProfileTrackingController::class, 'update_rating_score']);
+            // Route::get('/{opcr_list_id}/view/opcr/rating/submission', [ProjectProfileTrackingController::class, 'viewRating']);
         });
         // approveOPCRTarget
         // reviewOPCRAccomplishment
