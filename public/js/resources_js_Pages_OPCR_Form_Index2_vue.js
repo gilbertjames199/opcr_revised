@@ -1200,7 +1200,7 @@ var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "row justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-12"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ opcrs[0].mfo_desc }} ** {{ opcrs[1].mfo_desc }} <br>\n                            {{ opcrs[2].mfo_desc }} ** {{ opcrs[3].mfo_desc }} "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ data.from }} to {{ data.to }} of\n                            {{ data.total }} entries ")])])], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ opcrs[0].mfo_desc }} ** {{ opcrs[1].mfo_desc }} <br>\r\n                            {{ opcrs[2].mfo_desc }} ** {{ opcrs[3].mfo_desc }} "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ data.from }} to {{ data.to }} of\r\n                            {{ data.total }} entries ")])])], -1
 /* HOISTED */
 );
 
@@ -1231,7 +1231,7 @@ var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   style: {
     "align": "center"
   }
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary text-white\" @click=\"submitAction('1')\" v-if=\"emp_status === '0'\">\n                        Review\n                    </button>\n                    <button class=\"btn btn-primary text-white\" @click=\"submitAction('2')\" v-if=\"emp_status === '1'\">\n                        Approve\n                    </button>&nbsp;\n                    <button class=\"btn btn-danger text-white\" @click=\"showModal3()\">\n                        Return\n                    </button> ")], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary text-white\" @click=\"submitAction('1')\" v-if=\"emp_status === '0'\">\r\n                        Review\r\n                    </button>\r\n                    <button class=\"btn btn-primary text-white\" @click=\"submitAction('2')\" v-if=\"emp_status === '1'\">\r\n                        Approve\r\n                    </button>&nbsp;\r\n                    <button class=\"btn btn-danger text-white\" @click=\"showModal3()\">\r\n                        Return\r\n                    </button> ")], -1
 /* HOISTED */
 );
 
@@ -1414,7 +1414,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     placeholder: "Search..."
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.search]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"peer\">\n                    <Link class=\"btn btn-primary btn-sm\" :href=\"`/ELA/create`\">Add Agenda</Link>\n                    <button class=\"btn btn-primary btn-sm mL-2 text-white\" @click=\"showFilter()\">Filter</button>\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.search]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"peer\">\r\n                    <Link class=\"btn btn-primary btn-sm\" :href=\"`/ELA/create`\">Add Agenda</Link>\r\n                    <button class=\"btn btn-primary btn-sm mL-2 text-white\" @click=\"showFilter()\">Filter</button>\r\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/opcrlist/".concat($props.FFUNCCOD)
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -1433,7 +1433,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onSubmit: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if=\"index === 0 || opcr.mfo_desc !== opcrs[index - 1].mfo_desc\"\n                                        :rowspan=\"getRowspan(opcr.mfo_desc, index)\""), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.form.opcrs, function (opcr, index) {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if=\"index === 0 || opcr.mfo_desc !== opcrs[index - 1].mfo_desc\"\r\n                                        :rowspan=\"getRowspan(opcr.mfo_desc, index)\""), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.form.opcrs, function (opcr, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: index
     }, [index === 0 || opcr.mfo_desc !== $props.opcrs[index - 1].mfo_desc ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", {
@@ -1454,7 +1454,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     )], 8
     /* PROPS */
-    , _hoisted_15)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td :rowspan=\"form.opcrs.length\" v-if=\"index === 0\" style=\"vertical-align:middle\">\n                                        PS = {{ halfSem(ps) }} <br>(annual={{ format_number_conv(ps) }}) <br><br>MOOE = {{\n                                            halfSem(mooe) }} (annual={{ format_number_conv(mooe) }})\n                                    </td> "), _hoisted_16, index === 0 || opcr.office_accountable !== $props.opcrs[index - 1].office_accountable ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", {
+    , _hoisted_15)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td :rowspan=\"form.opcrs.length\" v-if=\"index === 0\" style=\"vertical-align:middle\">\r\n                                        PS = {{ halfSem(ps) }} <br>(annual={{ format_number_conv(ps) }}) <br><br>MOOE = {{\r\n                                            halfSem(mooe) }} (annual={{ format_number_conv(mooe) }})\r\n                                    </td> "), _hoisted_16, index === 0 || opcr.office_accountable !== $props.opcrs[index - 1].office_accountable ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", {
       key: 2,
       rowspan: $options.getRowspan2(opcr.office_accountable, index),
       style: {
@@ -1723,7 +1723,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           title: "Delete"
         }, _hoisted_94, 8
         /* PROPS */
-        , _hoisted_92), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a\n                                    :href=\"`/file-upload/download/${file.id}`\"\n                                    class=\"btn btn-success\"\n                                    download\n                                    >\n                                    Download\n                                    </a>&nbsp; "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\n                                    @click=\"deleteFile(file.id)\"\n                                    class=\"btn btn-danger text-white\">\n                                    Delete\n                                    </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\n                                    @click=\"deleteFile(file.id)\"\n                                    class=\"p-1 rounded hover:bg-red-100\"\n                                    title=\"Delete\"\n                                    >\n                                    <svg\n                                        xmlns=\"http://www.w3.org/2000/svg\"\n                                        width=\"20\"\n                                        height=\"20\"\n                                        fill=\"red\"\n                                        class=\"bi bi-trash-fill\"\n                                        viewBox=\"0 0 16 16\"\n                                    >\n                                        <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\n                                    </svg>\n                                    </button> ")])]);
+        , _hoisted_92), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a\r\n                                    :href=\"`/file-upload/download/${file.id}`\"\r\n                                    class=\"btn btn-success\"\r\n                                    download\r\n                                    >\r\n                                    Download\r\n                                    </a>&nbsp; "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\r\n                                    @click=\"deleteFile(file.id)\"\r\n                                    class=\"btn btn-danger text-white\">\r\n                                    Delete\r\n                                    </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\r\n                                    @click=\"deleteFile(file.id)\"\r\n                                    class=\"p-1 rounded hover:bg-red-100\"\r\n                                    title=\"Delete\"\r\n                                    >\r\n                                    <svg\r\n                                        xmlns=\"http://www.w3.org/2000/svg\"\r\n                                        width=\"20\"\r\n                                        height=\"20\"\r\n                                        fill=\"red\"\r\n                                        class=\"bi bi-trash-fill\"\r\n                                        viewBox=\"0 0 16 16\"\r\n                                    >\r\n                                        <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\r\n                                    </svg>\r\n                                    </button> ")])]);
       }), 128
       /* KEYED_FRAGMENT */
       ))])])])])];
@@ -1743,11 +1743,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_95, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" file_extension: {{ file_extension }} -- {{ view_link }} -- {{ disk }} "), $props.disk === 'public' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_96, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <iframe v-if=\"file_extension === 'pdf'\"\n                    :src=\"`/storage/${current_filepath}`\"\n                    width=\"100%\"\n                    height=\"500px\">\n                </iframe> "), _ctx.file_extension === 'pdf' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_97, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+      return [_hoisted_95, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" file_extension: {{ file_extension }} -- {{ view_link }} -- {{ disk }} "), $props.disk === 'public' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_96, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <iframe v-if=\"file_extension === 'pdf'\"\r\n                    :src=\"`/storage/${current_filepath}`\"\r\n                    width=\"100%\"\r\n                    height=\"500px\">\r\n                </iframe> "), _ctx.file_extension === 'pdf' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_97, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
         src: _ctx.view_link,
         width: "100%",
         height: "500px"
-      }, "\n                    ", 8
+      }, "\r\n                    ", 8
       /* PROPS */
       , _hoisted_98)])) : $data.imageTypes.includes(_ctx.file_extension) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
         key: 1
@@ -1766,13 +1766,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         src: "https://docs.google.com/gview?url=".concat(encodeURIComponent(_ctx.view_link), "&embedded=true"),
         width: "100%",
         height: "600"
-      }, "\n                    ", 8
+      }, "\r\n                    ", 8
       /* PROPS */
       , _hoisted_101)]))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_102, [_ctx.file_extension === 'pdf' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_103, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
         src: _ctx.view_link,
         width: "100%",
         height: "500px"
-      }, "\n                    ", 8
+      }, "\r\n                    ", 8
       /* PROPS */
       , _hoisted_104)])) : $data.imageTypes.includes(_ctx.file_extension.toLowerCase()) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_105, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Image siya "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
         src: _ctx.view_link,
@@ -1787,9 +1787,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         src: "https://docs.google.com/gview?url=".concat(encodeURIComponent(_ctx.view_link), "&embedded=true"),
         width: "100%",
         height: "600"
-      }, "\n                    ", 8
+      }, "\r\n                    ", 8
       /* PROPS */
-      , _hoisted_108)]))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <br>\n            <iframe :src=\"`/storage/${current_filepath}`\"></iframe>\n            <br>\n            <a :href=\"`/storage/${current_filepath}`\" target=\"_blank\">\n                Open File\n            </a> ")];
+      , _hoisted_108)]))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <br>\r\n            <iframe :src=\"`/storage/${current_filepath}`\"></iframe>\r\n            <br>\r\n            <a :href=\"`/storage/${current_filepath}`\" target=\"_blank\">\r\n                Open File\r\n            </a> ")];
     }),
     _: 1
     /* STABLE */
@@ -1923,7 +1923,7 @@ var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
     style: {
       "background-color": "#090137"
     }
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<button type=\"button\" class=\"btn btn-primary\" @click=\"saveChanges\">Save changes</button>\n                        <button type=\"button\" class=\"btn btn-secondary\" @click=\"closeModal\">Close</button>")], -1
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<button type=\"button\" class=\"btn btn-primary\" @click=\"saveChanges\">Save changes</button>\r\n                        <button type=\"button\" class=\"btn btn-secondary\" @click=\"closeModal\">Close</button>")], -1
   /* HOISTED */
   );
 });
@@ -1943,7 +1943,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.closeModal && $options.closeModal.apply($options, arguments);
     })
-  }, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<p>Modal body text goes here.</p>\n                        <multiselect v-model=\"value\" :options=\"options\" mode=\"tags\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {}, undefined, true)]), _hoisted_11])])])])]);
+  }, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<p>Modal body text goes here.</p>\r\n                        <multiselect v-model=\"value\" :options=\"options\" mode=\"tags\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {}, undefined, true)]), _hoisted_11])])])])]);
 }
 
 /***/ }),
@@ -2134,7 +2134,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\n    text-align: center;\n}\n.col-centered {\n    display: inline-block;\n    float: none;\n    text-align: left;\n    margin-right: -4px;\n}\n.pos {\n    position: top;\n    top: 240px;\n}\n\n/* force horizontal overflow for testing */\n    /* table {\n      min-width: 800px;\n    }\n    .table-responsive {\n      display: block;\n      width: 100%;\n      overflow-x: auto;\n      -webkit-overflow-scrolling: touch;\n    } */\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\r\n    text-align: center;\n}\n.col-centered {\r\n    display: inline-block;\r\n    float: none;\r\n    text-align: left;\r\n    margin-right: -4px;\n}\n.pos {\r\n    position: top;\r\n    top: 240px;\n}\r\n\r\n/* force horizontal overflow for testing */\r\n    /* table {\r\n      min-width: 800px;\r\n    }\r\n    .table-responsive {\r\n      display: block;\r\n      width: 100%;\r\n      overflow-x: auto;\r\n      -webkit-overflow-scrolling: touch;\r\n    } */\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2180,7 +2180,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.custom-modal[data-v-8a5e42b0] {\n  max-width: 80% !important; /* width of modal */\n  width: 80% !important;\n}\n    /* Override default value of 'none' */\n.modal[data-v-8a5e42b0] {\n      display: block;\n}\n  ", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.custom-modal[data-v-8a5e42b0] {\r\n  max-width: 80% !important; /* width of modal */\r\n  width: 80% !important;\n}\r\n    /* Override default value of 'none' */\n.modal[data-v-8a5e42b0] {\r\n      display: block;\n}\r\n  ", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

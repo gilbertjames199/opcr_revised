@@ -65,13 +65,13 @@ const FilePond = vueFilePond(
 );
 //.use(yearPicker)
 const setFavicon = (iconUrl) => {
-  let link = document.querySelector("link[rel~='icon']")
-  if (!link) {
-    link = document.createElement("link")
-    link.rel = "icon"
-    document.head.appendChild(link)
-  }
-  link.href = iconUrl
+    let link = document.querySelector("link[rel~='icon']")
+    if (!link) {
+        link = document.createElement("link")
+        link.rel = "icon"
+        document.head.appendChild(link)
+    }
+    link.href = iconUrl
 }
 
 // ✅ Set your favicon
@@ -311,9 +311,9 @@ createInertiaApp({
                             // const ext = filename.split('.').pop().toLowerCase()
                             const ext = filename
                             // 'jpg', 'jpeg', 'png', 'gif',
-                            return ['pdf','doc', 'docx', 'dot', 'dotx', 'dotm','xls', 'xlsx', 'xlsm',
-                            'xlsb', 'xlt', 'xltx', 'xltm', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp',
-                            'mp3', 'mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'
+                            return ['pdf', 'doc', 'docx', 'dot', 'dotx', 'dotm', 'xls', 'xlsx', 'xlsm',
+                                'xlsb', 'xlt', 'xltx', 'xltm', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp',
+                                'mp3', 'mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'
                             ].includes(ext)
                         },
                     }
@@ -505,6 +505,21 @@ createInertiaApp({
 
                         return `${month} ${year}`;
                     },
+                    formatMonthYear2(date_value) {
+                        // Make sure the value exists
+                        if (!date_value) return '';
+
+                        // Split the date string
+                        const [year, month] = date_value.split('-');
+
+                        // Create a date object (month index is zero-based)
+                        const dateObj = new Date(year, month - 1);
+
+                        // Format month name
+                        const monthName = dateObj.toLocaleString('en-US', { month: 'long' });
+
+                        return `${monthName} ${year}`;
+                    },
                     formatMonth(date_value) {
                         const dateParts = date_value.split('-');
                         const year = dateParts[0];
@@ -577,7 +592,7 @@ createInertiaApp({
                             return '/images/icons/file.png'; // default icon
                         }
                     },
-                    getStatus(number_status){
+                    getStatus(number_status) {
                         const status = parseFloat(number_status);
 
                         if (status === -1) return 'Saved';

@@ -14,6 +14,7 @@
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`" v-if="source==undefined">Add Revision Plan</Link>&nbsp;
+                    <Link class="btn btn-primary btn-sm" :href="`/revision/streamlined/create/${idpaps}`" v-if="source==undefined">Add Project Profile</Link>&nbsp;
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Revision Plan</Link>&nbsp;
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
                     <button @click="exportUsers" class="btn btn-primary btn-sm mL-2 text-white">Export AIP to Excel</button>&nbsp;

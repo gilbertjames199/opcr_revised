@@ -92,6 +92,7 @@ use App\Http\Controllers\IPCRController;
 use App\Http\Controllers\MeansOfVerificationController;
 use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
+use App\Http\Controllers\ProjectProfileStreamlinedController;
 use App\Http\Controllers\ProjectProfileTrackingController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
 use App\Http\Controllers\RevisionPlanCommentController;
@@ -438,6 +439,21 @@ Route::middleware('auth')->group(function () {
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
         Route::get('/export/aip', [RevisionPlanController::class, 'exportStrategies'])->name('export.aip');
     });
+    // Revision Plan Streamlined
+    Route::prefix('/revision/streamlined')->group(function () {
+        Route::get('/{id}', [ProjectProfileStreamlinedController::class, 'streamlined_index']);
+        Route::get('/create/{id}', [ProjectProfileStreamlinedController::class, 'streamlined_create']);
+        // /revision/streamlined/${table_name}/${column_here}/${id}/${new_data}/update
+        Route::patch('/{id}/update', [ProjectProfileStreamlinedController::class, 'streamlined_update']);
+        Route::delete('/{id}/{table}', [ProjectProfileStreamlinedController::class, 'streamlined_delete']);
+        Route::post('/store', [ProjectProfileStreamlinedController::class, 'streamlined_store']);
+        Route::get('/edit/{id}', [ProjectProfileStreamlinedController::class, 'streamlined_edit']);
+        Route::patch('/update', [ProjectProfileStreamlinedController::class, 'streamlined_update']);
+    });
+    Route::prefix('/implementation-workplan')->group(function () {
+        Route::post('/strategies', [StrategyController::class, 'save_strategies']);
+        Route::post('/strategies/activities', [ActivityController::class, 'save_activities']);
+    });
     Route::prefix('/status/revision')->group(function () {
         Route::post('/update/{id}/{type}/{new_status}', [ProjectProfileTrackingController::class, 'status_update']);
         Route::get('/review/approve', [ProjectProfileTrackingController::class, 'review_approve_index']);
@@ -522,6 +538,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{idbudget}', [BudgetRequirementController::class, 'edit']);
         Route::delete('/{id}/{idbudget}', [BudgetRequirementController::class, 'destroy']);
         Route::patch('/update/{idrev}', [BudgetRequirementController::class, 'update']);
+        Route::post('/store/budget', [BudgetRequirementController::class, 'store_budget_from_revplan']);
     });
     //testing helpers
     Route::get('test-helper', [BudgetRequirementController::class, 'getFirstLastName']);
@@ -815,9 +832,9 @@ Route::middleware('auth')->group(function () {
     });
     // MOV API
     Route::prefix('/movs')->group(function () {
-        Route::get('',[MeansOfVerificationController::class,'index']);
-        Route::get('/get/mov/{opcr_id}',[MeansOfVerificationController::class,'get_mov']);
-        Route::post('/save/{opcr_id}/{opcr_list_id}',[MeansOfVerificationController::class,'store']);
+        Route::get('', [MeansOfVerificationController::class, 'index']);
+        Route::get('/get/mov/{opcr_id}', [MeansOfVerificationController::class, 'get_mov']);
+        Route::post('/save/{opcr_id}/{opcr_list_id}', [MeansOfVerificationController::class, 'store']);
         Route::delete('/delete-multiple/many', [MeansOfVerificationController::class, 'destroyMultiple']);
         Route::get('/download/{id}', [MeansOfVerificationController::class, 'download1']);
         // file-upload/delete-multiple/many

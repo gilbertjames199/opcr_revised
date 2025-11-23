@@ -346,4 +346,35 @@ class BudgetRequirementController extends Controller
         return redirect('/budget/' . $revision_plan_id)
             ->with('message', 'Budget Requirement updated');
     }
+
+    public function store_budget_from_revplan(Request $request)
+    {
+        // $request->validate([
+        //     'revision_plan_id' => 'required|integer',
+        //     'particulars' => 'required|string|max:255',
+        //     'account_code' => 'required|string|max:50',
+        //     'amount' => 'nullable|numeric',
+        //     'proposed_budget' => 'nullable|numeric',
+        //     'category' => 'required|string|max:50',
+        //     'category_gad' => 'required|string|max:50',
+        //     'source' => 'nullable|string|max:255',
+        //     'selected_chart_of_account' => 'nullable|string|max:100',
+        // ]);
+        // dd($request->revision_plan_id);
+        // Create budget requirement
+        $budget = BudgetRequirement::create([
+            'revision_plan_id' => $request->revision_plan_id,
+            'particulars' => $request->particulars,
+            'account_code' => $request->account_code,
+            'amount' => $request->amount ? $request->amount : "0.00",
+            'proposed_budget' => $request->proposed_budget ? $request->proposed_budget : "0.00",
+            'category' => $request->category,
+            'category_gad' => $request->category_gad,
+            'source' => $request->source,
+            // 'selected_chart_of_account' => $request->selected_chart_of_account,
+        ]);
+
+        // Return JSON response
+        return response()->json($budget);
+    }
 }

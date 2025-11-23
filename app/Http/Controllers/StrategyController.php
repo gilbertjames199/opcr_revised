@@ -8,6 +8,7 @@ use App\Models\IntermediateOutcome;
 use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use App\Models\Strategy;
+use App\Models\StrategyProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -191,5 +192,50 @@ class StrategyController extends Controller
         }
         //dd($request->raao_id);
         return redirect('/strategies/' . $idpaps . '/' . $ismfo . '/strat/mfo')->with($status, $msg);
+    }
+
+    public function save_strategies(Request $request)
+    {
+        $strategies = $request->input('strategies', []);
+
+        foreach ($strategies as $data) {
+            $strategy = Strategy::create([
+                'description' => $data['description'] ?? null,
+                'idpaps'      => $data['idpaps'] ?? null,
+                'idmfo'       => $data['idmfo'] ?? null,
+                'FFUNCCOD'    => $data['FFUNCCOD'] ?? null,
+                'year_period' => $data['year_period'] ?? null,
+            ]);
+
+            StrategyProject::create([
+                'strategy_id'      => $strategy->id,   // inherit the created strategy id
+                'project_id'       => $request->input('paps_id'),         // inherit from request
+                'target_indicator' => null,
+                'date_from'        => null,
+                'date_to'          => null,
+                'ps_q1'            => null,
+                'ps_q2'            => null,
+                'ps_q3'            => null,
+                'ps_q4'            => null,
+                'mooe_q1'          => null,
+                'mooe_q2'          => null,
+                'mooe_q3'          => null,
+                'mooe_q4'          => null,
+                'co_q1'            => null,
+                'co_q2'            => null,
+                'co_q3'            => null,
+                'co_q4'            => null,
+                'fe_q1'            => null,
+                'fe_q2'            => null,
+                'fe_q3'            => null,
+                'fe_q4'            => null,
+                'gad_issue'        => null,
+                'ccet_code'        => null,
+                'responsible'      => null,
+                'is_active'        => 1,
+            ]);
+        }
+
+        return response()->json(['message' => 'Strategies saved successfully.']);
     }
 }

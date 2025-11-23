@@ -79,7 +79,7 @@ class RevisionPlanController extends Controller
             // )
             // ->
             // dd( auth()->user()->popsp_agency);
-            $popsp_agency =PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
+            $popsp_agency = PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
             $data = RevisionPlan::with(['paps', 'paps.office'])
                 // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
                 // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
@@ -89,9 +89,9 @@ class RevisionPlanController extends Controller
                 // ->where('paps.department_code', '=', $dept_id)
                 ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                     $query->where('department_code', $dept_id);
-                        // ->orWhere('department_code', optional($popsp_agency)->department_code_actual);
+                    // ->orWhere('department_code', optional($popsp_agency)->department_code_actual);
                 })
-                ->when(auth()->user()->popsp_agency, function($query)use ($dept_id, $popsp_agency){
+                ->when(auth()->user()->popsp_agency, function ($query) use ($dept_id, $popsp_agency) {
                     // dd("may agency", $popsp_agency);
                     $query->where('agency_name', $popsp_agency->agency_code);
                 })
@@ -301,7 +301,7 @@ class RevisionPlanController extends Controller
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
         // dd($max_id);
         $duplicate = RevisionPlan::where('id', $max_id)->get();
-        $popsp_agencies =PopspAgency::all();
+        $popsp_agencies = PopspAgency::all();
         // dd($paps_all);
         if ($count > 0) {
 
@@ -430,6 +430,7 @@ class RevisionPlanController extends Controller
     }
     public function view(Request $request, $id)
     {
+        // dd($id);
         // dd(env('DB_DATABASE'));
         // dd(config('database.connections.mysql.database'));
         $src = $request->source;
@@ -757,6 +758,7 @@ class RevisionPlanController extends Controller
         $all_comments = $this->getAllRevisionPlanComments($id);
         // ->sortByDesc('created_at')
         // dd($all_comments->pluck('created_at'));
+        // dd($paps);
         return inertia('RevisionPlans/View', [
             "all_comments" => $all_comments,
             "paps" => $paps,
@@ -951,11 +953,11 @@ class RevisionPlanController extends Controller
         // dd($paps);
         // dd($idpaps);
         $hgdg = HGDG_Checklist::get();
-        $popsp_agencies =PopspAgency::all();
-        $source =$request->source;
+        $popsp_agencies = PopspAgency::all();
+        $source = $request->source;
         // $count = RevisionPlan::where('idpaps', $id)->count();
         // $max_id = RevisionPlan::where('idpaps', $id)->max('id');
-        if($source=='direct'){
+        if ($source == 'direct') {
             $dept_code = auth()->user()->department_code;
             if (isset($paps)) {
                 $paps_all = ProgramAndProject::with('MFO')
@@ -983,7 +985,7 @@ class RevisionPlanController extends Controller
                     'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
                 ],
             ]);
-        }else{
+        } else {
             return inertia('RevisionPlans/Create', [
                 "idpaps" => $idpaps,
                 "hgdgs" => $hgdg,
@@ -998,7 +1000,6 @@ class RevisionPlanController extends Controller
                 ],
             ]);
         }
-
     }
     public function update(Request $request)
     {
@@ -1759,7 +1760,7 @@ class RevisionPlanController extends Controller
         $dept_id = auth()->user()->department_code;
         $source = $request->source;
         // dd($dept_id);
-        if(auth()->user()->popsp_agency){
+        if (auth()->user()->popsp_agency) {
             return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
         }
         if ($source != 'budget') {
@@ -1826,10 +1827,10 @@ class RevisionPlanController extends Controller
                     ->havingRaw('SUM(amount) > 0');
             })
 
-                ->when($request->source == 'rev_app', function ($query) {
-                    // dd("rev app ang source");
-                    $query->where('status', '>=', '0');
-                })
+            ->when($request->source == 'rev_app', function ($query) {
+                // dd("rev app ang source");
+                $query->where('status', '>=', '0');
+            })
             ->when($request->FFUNCCOD, function ($query) use ($request) {
                 $query->whereHas('paps', function ($query_inner) use ($request) {
                     $query_inner->where('FFUNCCOD', $request->FFUNCCOD);
@@ -1942,6 +1943,7 @@ class RevisionPlanController extends Controller
         $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($totals);
         // dd($acc);
+        // dd($data);
         $dept_code = auth()->user()->department_code;
         $functions2 = FFUNCCOD::where('department_code', $dept_code)->first();
         return inertia('RevisionPlans/Direct', [
