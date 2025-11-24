@@ -5287,8 +5287,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? comment.column_name : ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name) ? "".concat(comment.table_row_id, "_").concat(comment.table_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
       }
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? comment.column_name : ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name) ? "".concat(comment.table_row_id, "_").concat(comment.table_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name)), 11
-    /* TEXT, CLASS, PROPS */
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment) + " ", 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{\n                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                                ? comment.column_name\n                                                    : (\n                                                    ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)\n                                                        ? `${comment.table_row_id}_${comment.table_name}`\n                                                        : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\n                                                )\n                                        }} ")], 10
+    /* CLASS, PROPS */
     , _hoisted_333), _hoisted_334]);
   }), 128
   /* KEYED_FRAGMENT */

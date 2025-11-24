@@ -1935,7 +1935,8 @@
                                         )"
                                         :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
                                     >
-                                        {{ comment.comment }} {{
+                                        {{ comment.comment }}
+                                        <!-- {{
                                             ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                 ? comment.column_name
                                                     : (
@@ -1943,7 +1944,7 @@
                                                         ? `${comment.table_row_id}_${comment.table_name}`
                                                         : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                 )
-                                        }}
+                                        }} -->
                                     </span>
 
                                     <hr>
