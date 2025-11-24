@@ -674,7 +674,7 @@ class ProjectProfileStreamlinedController extends Controller
     public function signatories($id)
     {
         return Signatory::where('revision_plan_id', $id)
-            ->orderByRaw("FIELD(acted, 'Prepared', 'Reviewed', 'Noted', 'Approved')")
+            ->orderByRaw("FIELD(acted, 'Prepared', 'Reviewed', 'Noted', 'Recommending Approval','Approved','As to AIP Inclusion','As to AIP Appropriation')")
             ->get();
     }
     public function risk_management($id)

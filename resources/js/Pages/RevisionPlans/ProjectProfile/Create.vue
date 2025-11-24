@@ -1717,14 +1717,51 @@
                                 Add Signatories
                         </button>
                     </p>
-                    {{signatoriesProps }}
+                    <!-- {{signatoriesProps }} -->
                     <div id="signatories" class="signatory-grid">
-
                         <div v-for="(signatory, index) in signatoriesprops" :key="index" class="signatory-card">
-                        <strong>{{ signatory.acted }} by: </strong><br><br>
-                        <span class="text-decoration-underline"><b>{{ signatory.name
-                                                                }}</b></span>
-                                                                <br>{{ signatory.position }}<br><br><br><br>
+                        <strong>
+                            <select v-model="signatory.acted" class="form-select" autocomplete="chrome-off"
+                                @change="updateRevisionPlans('signatories', 'acted', signatory.id, signatory.acted)"
+                            >
+                                <option>Prepared</option>
+                                <option>Reviewed</option>
+                                <option>Noted</option>
+                                <option>Approved</option>
+                                <option>Recommending Approval</option>
+                                <option>As to AIP Inclusion</option>
+                                <option>As to AIP Appropriation</option>
+                            </select>
+                            <span v-if="signatory.acted==='Prepared' || signatory.acted==='Reviewed'
+                                || signatory.acted==='Noted' || signatory.acted==='Approved'
+                            "
+                            >by:</span>
+                        </strong>
+                        <br><br>
+                        <span class="text-decoration-underline">
+                            <b>
+                                <input
+                                    class="form-control transparent-bg "
+                                    v-model="signatory.name"
+                                    type="text"
+                                    @input="setUnsaved(true)"
+                                    @change="updateRevisionPlans('signatories', 'name', signatory.id, signatory.name)" />
+
+                                <!-- </input> -->
+                            </b>
+                        </span>
+                            <br>
+                                <input
+                                    class="form-control transparent-bg "
+                                    v-model="signatory.position"
+                                    type="text"
+                                    @input="setUnsaved(true)"
+                                    @change="updateRevisionPlans('signatories', 'position', signatory.id, signatory.position)" />
+                            <br><br><br><br>
+                            <button class="btn btn-danger btn-sm text-white"
+                                @click="deleteData(signatory.id, 'signatories', signatory.name)">
+                                🗑 Delete
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -2402,7 +2439,61 @@
             </div>
     </MonitoringModal>
     <SignatoryModal v-if="SignatoryModalVisible" @close-modal-event="closeSignatoryModal" title="SIGNATORIES">
+        <!-- ADD SIGNATORY BUTTON -->
+      <button @click="addSignatoryRow"
+              class="btn btn-primary mb-3">
+        + Add Signatory
+      </button>
 
+      <!-- SIGNATORIES TABLE -->
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Acted</th>
+            <th>Sequence</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr v-for="(row, index) in signatories" :key="index">
+            <td>
+              <input type="text" v-model="row.name" class="form-control">
+            </td>
+
+            <td>
+              <input type="text" v-model="row.position" class="form-control">
+            </td>
+
+            <td>
+
+              <select v-model="row.acted" class="form-select" autocomplete="chrome-off">
+                    <option>Prepared</option>
+                    <option>Reviewed</option>
+                    <option>Noted</option>
+                    <option>Approved</option>
+                    <option>Recommending Approval</option>
+                    <option>As to AIP Inclusion</option>
+                    <option>As to AIP Appropriation</option>
+                </select>
+            </td>
+
+            <td>
+              <input type="number" v-model="row.sequence" class="form-control">
+            </td>
+
+            <td>
+              <button @click="removeSignatoryRow(index)"
+                      class="btn btn-danger btn-sm">
+                Remove
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button @click="saveSignatories()" class="btn btn-success text-white">Save</button>
     </SignatoryModal>
 </template>
 <script>
@@ -3299,16 +3390,39 @@ export default {
             });
         },
         // SIGNATORIES*******************************
-        // SignatoryModalVisible: false,
-        // signatories: []
-        // SignatoryModal
         closeSignatoryModal(){
             this.SignatoryModalVisible=false;
         },
         showSignatoryModal(){
             this.SignatoryModalVisible=true;
-        }
-
+        },
+        addSignatoryRow() {
+            this.signatories.push({
+                id: null,
+                name: "",
+                position: "",
+                acted: "",
+                sequence: "",
+                revision_plan_id: this.editData.id,
+            });
+        },
+        removeSignatoryRow(index) {
+            this.signatories.splice(index, 1);
+        },
+        async saveSignatories() {
+            await axios.post("/revision/streamlined/subtables/save/signatories", {
+            signatories: this.signatories,
+            revision_plan_id: this.editData.id
+            })
+            .then(res => {
+                console.log("Signatories saved successfully:", res.data);
+                this.closeSignatoryModal();
+                window.location.reload()
+            })
+            .catch(err => {
+                console.error("Error saving signatories:", err);
+            });
+        },
     },
 };
 </script>

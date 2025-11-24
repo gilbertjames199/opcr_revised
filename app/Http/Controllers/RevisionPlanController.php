@@ -728,7 +728,7 @@ class RevisionPlanController extends Controller
         //RISK MANAGEEMNT
         $risks = Risk_manangement::with(['comments', 'comments.user'])->where('revision_plan_id', $id)->get();
         $signatories = Signatory::where('revision_plan_id', $id)
-            ->orderByRaw("FIELD(acted, 'Prepared', 'Reviewed', 'Noted', 'Approved')")
+            ->orderByRaw("FIELD(acted, 'Prepared', 'Reviewed', 'Noted', 'Recommending Approval','Approved','As to AIP Inclusion','As to AIP Appropriation')")
             ->get();
         //PREPARED
         // $sig_app =[];

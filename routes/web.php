@@ -458,6 +458,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/revision/streamlined/subtables')->group(function(){
         Route::post('/save/monitoring/and/evaluation', [MonitoringAndEvaluationController::class, 'save_multiple']);
         Route::post('/save/risk/management', [RiskManangementController::class, 'save_multiple']);
+        Route::post('/save/signatories', [SignatoryController::class, 'save_multiple']);
     });
     Route::prefix('/status/revision')->group(function () {
         Route::post('/update/{id}/{type}/{new_status}', [ProjectProfileTrackingController::class, 'status_update']);
