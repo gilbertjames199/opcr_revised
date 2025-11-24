@@ -25,6 +25,14 @@ class StrategyProjectController extends Controller
     {
 
         $revision_plan = RevisionPlan::find($idrevplan);
+        if($revision_plan->status>-1){
+            $status_words = [
+                '0'=>'submitted',
+                '1'=>'reviewed',
+                '2'=>'locked'
+            ];
+            return redirect()->back()->with('error', 'Cannot access the workplan module. The project profile is already '.$status_words[$revision_plan->status].'.');
+        }
         // dd($revision_plan);
 
         // NOTE: For each change made in this block, ensure that the corresponding updates are reflected in the refresh function within this controller.

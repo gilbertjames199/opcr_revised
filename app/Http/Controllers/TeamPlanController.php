@@ -21,6 +21,14 @@ class TeamPlanController extends Controller
     {
 
         $revs = RevisionPlan::findOrFail($revid);
+        if($revs->status>-1){
+            $status_words = [
+                '0'=>'submitted',
+                '1'=>'reviewed',
+                '2'=>'locked'
+            ];
+            return redirect()->back()->with('error', 'Cannot access the implementing team module. The selected project profile is already '.$status_words[$revs->status].'.');
+        }
         // $data = TeamPlan::where('revision_plan_id', $revid)
         //     ->get()
         //     ->map(function ($item) {
@@ -63,6 +71,14 @@ class TeamPlanController extends Controller
     {
         //dd("revid: ".$revid);
         $revs = RevisionPlan::findOrFail($revid);
+        if($revs->status>-1){
+            $status_words = [
+                '0'=>'submitted',
+                '1'=>'reviewed',
+                '2'=>'locked'
+            ];
+            return redirect()->back()->with('error', 'Cannot access the implementing team module. The selected project profile is already '.$status_words[$revs->status].'.');
+        }
         $uid = auth()->user()->recid;
         $FFUNCCOD = AccountAccess::where('iduser', $uid)->first();
         // $people = Implementing_team::where('FFUNCCOD',trim($FFUNCCOD->ffunccod))
@@ -141,9 +157,18 @@ class TeamPlanController extends Controller
     public function edit(Request $request, $id)
     {
         $editData = TeamPlan::findOrFail($id);
+        // dd($editData);
         $revid = $editData->revision_plan_id;
 
         $revs = RevisionPlan::findOrFail($revid);
+        if($revs->status>-1){
+            $status_words = [
+                '0'=>'submitted',
+                '1'=>'reviewed',
+                '2'=>'locked'
+            ];
+            return redirect()->back()->with('error', 'Cannot access the implementing team module. The selected project profile is already '.$status_words[$revs->status].'.');
+        }
         $uid = auth()->user()->recid;
         $FFUNCCOD = AccountAccess::where('iduser', $uid)->first();
         $people = $people = UserEmployees::all();
@@ -163,7 +188,7 @@ class TeamPlanController extends Controller
     public function update(Request $request)
     {
         //dd("update");
-        
+
         // $data = $this->model->findOrFail($request->id);
         $validated = $request->validate([
             'competency'            => 'nullable',

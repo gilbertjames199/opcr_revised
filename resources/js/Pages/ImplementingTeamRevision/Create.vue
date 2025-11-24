@@ -78,7 +78,12 @@
             </form>
         </div>
 
-        <!-- {{ form }} -->
+        <!-- {{ form }}
+        --
+        {{ editData }}
+
+        --
+        {{ people }} -->
     </div>
 
 </template>
@@ -144,7 +149,7 @@ export default {
                     this.bar=this.bari
                 }
                 this.pageTitle = "Edit"
-                this.form.implementing_team_id=this.editData.implementing_team_id
+                this.form.implementing_team_id=this.editData.empl_id
                 this.form.role=this.editData.role
                 this.form.id=this.editData.id
                 this.form.with_gad_training = this.editData.with_gad_training

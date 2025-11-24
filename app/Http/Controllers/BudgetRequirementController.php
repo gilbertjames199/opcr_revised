@@ -32,7 +32,16 @@ class BudgetRequirementController extends Controller
         //         ->orderBy('particulars')
         //         ->get();
         $revs = RevisionPlan::where('id', '=', $idrev)->get();
-        // dd($revs);
+        $revo = $revs[0];
+        // dd($revo);
+        if($revo->status>-1){
+            $status_words = [
+                '0'=>'submitted',
+                '1'=>'reviewed',
+                '2'=>'locked'
+            ];
+            return redirect()->back()->with('error', 'Cannot access the budgetary requirements module. The selected project profile is already '.$status_words[$revo->status].'.');
+        }
         $total = 0;
         // dd($revs);
         if ($revs[0]->is_strategy_based) {

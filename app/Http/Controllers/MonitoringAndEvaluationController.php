@@ -25,6 +25,14 @@ class MonitoringAndEvaluationController extends Controller
                     ->paginate(10)
                     ->withQueryString();
         $revs = RevisionPlan::findOrFail($id);
+        if($revs->status>-1){
+            $status_words = [
+                '0'=>'submitted',
+                '1'=>'reviewed',
+                '2'=>'locked'
+            ];
+            return redirect()->back()->with('error', 'Cannot access Monitoring and Evaluation module. The selected project profile is already '.$status_words[$revs->status].'.');
+        }
         return inertia('EvaluationMechanismTool/Index',[
             "data"=>$data,
             "revs"=>$revs,
@@ -39,6 +47,15 @@ class MonitoringAndEvaluationController extends Controller
 
     public function create(Request $request, $id){
             //dd('create');
+        $revs = RevisionPlan::findOrFail($id);
+        if($revs->status>-1){
+            $status_words = [
+                '0'=>'submitted',
+                '1'=>'reviewed',
+                '2'=>'locked'
+            ];
+            return redirect()->back()->with('error', 'Cannot access Monitoring and Evaluation module. The selected project profile is already '.$status_words[$revs->status].'.');
+        }
         return inertia('EvaluationMechanismTool/Create',[
             'revision_plan_id'=>$id,
             'can'=>[
@@ -73,7 +90,15 @@ class MonitoringAndEvaluationController extends Controller
             'gad',
             'revision_plan_id'
         ]);
-
+        $revs = RevisionPlan::findOrFail($data->revision_plan_id);
+        if($revs->status>-1){
+            $status_words = [
+                '0'=>'submitted',
+                '1'=>'reviewed',
+                '2'=>'locked'
+            ];
+            return redirect()->back()->with('error', 'Cannot access Monitoring and Evaluation module. The selected project profile is already '.$status_words[$revs->status].'.');
+        }
         return inertia('EvaluationMechanismTool/Create', [
             "editData" => $data,
             'revision_plan_id'=>$data->revision_plan_id,

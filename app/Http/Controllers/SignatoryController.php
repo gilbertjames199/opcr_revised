@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RevisionPlan;
 use App\Models\Signatory;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,6 +20,14 @@ class SignatoryController extends Controller
        //
        public function index(Request $request, $revid){
         $revs = RevisionPlan::findOrFail($revid);
+        if($revs->status>-1){
+                $status_words = [
+                    '0'=>'submitted',
+                    '1'=>'reviewed',
+                    '2'=>'locked'
+                ];
+                return redirect()->back()->with('error', 'Cannot access signatories module. The selected project profile is already '.$status_words[$revs->status].'.');
+            }
         $data = $this->model
                     ->where('revision_plan_id', $revid)
                     ->orderBy('created_at', 'desc')
@@ -38,6 +47,14 @@ class SignatoryController extends Controller
     public function create(Request $request, $revid){
         //dd('create');
         $revs = RevisionPlan::findOrFail($revid);
+         if($revs->status>-1){
+            $status_words = [
+                '0'=>'submitted',
+                '1'=>'reviewed',
+                '2'=>'locked'
+            ];
+            return redirect()->back()->with('error', 'Cannot access signatories module. The selected project profile is already '.$status_words[$revs->status].'.');
+        }
         return inertia('Signatories/Create',[
             'revs'=>$revs,
             'can'=>[
@@ -71,6 +88,14 @@ class SignatoryController extends Controller
             'revision_plan_id'
         ]);
         $revs = RevisionPlan::findOrFail($data->revision_plan_id);
+        if($revs->status>-1){
+            $status_words = [
+                '0'=>'submitted',
+                '1'=>'reviewed',
+                '2'=>'locked'
+            ];
+            return redirect()->back()->with('error', 'Cannot access signatories module. The selected project profile is already '.$status_words[$revs->status].'.');
+        }
         return inertia('Signatories/Create', [
             "editData" => $data,
             'revs'=>$revs,
