@@ -38,7 +38,18 @@ class RevisionPlan extends Model
     {
         return $this->hasMany(ActivityProject::class, 'project_id', 'id');
     }
-
+    public function teamPlans(){
+        return $this->hasMany(TeamPlan::class, 'revision_plan_id', 'id');
+    }
+    public function monitoringAndEvaluations(){
+        return $this->hasMany(Monitoring_and_evaluation::class, 'revision_plan_id', 'id');
+    }
+    public function riskManagements(){
+        return $this->hasMany(Risk_manangement::class, 'revision_plan_id', 'id');
+    }
+    public function signatories(){
+        return $this->hasMany(Signatory::class, 'revision_plan_id', 'id');
+    }
     // protected $fillable = [
     //     'id',
     //     'idpaps',

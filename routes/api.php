@@ -23,4 +23,9 @@ Route::prefix('api_ppa')->group(function () {
     Route::get('/', [RevisionPlanController::class, 'api_ppa']);
     Route::get('/aip', [RevisionPlanController::class, 'aip_api']);
     Route::get('/print/aip', [RevisionPlanController::class, 'print_aip']);
+
+});
+
+Route::prefix('/project/profile/api')->group(function(){
+    Route::get('/',[RevisionPlanController::class, 'ipp']);
 });

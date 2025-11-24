@@ -1,9 +1,9 @@
 <template>
     <div class="permissions-modal">
         <div class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-xl">
+            <div class="modal-dialog modal-lg">
                 <div class="d-flex justify-content-center">
-                    <div class="modal-content" style="width: 100% !important; height: 40% !important; ">
+                    <div class="modal-content" style="width: 150% !important; height: 40% !important; ">
                         <div class="modal-header" style="background-color:#030014">
                             <h4 class="modal-title" style="color: #ffe819; text-align: center !important;">
                                 <b>{{ title }}</b>
@@ -60,8 +60,5 @@
     /* Override default value of 'none' */
     .modal {
       display: block;
-    }
-    .modal {
-        z-index: 9999 !important;
     }
   </style>

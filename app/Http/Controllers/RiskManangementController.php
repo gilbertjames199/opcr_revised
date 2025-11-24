@@ -132,5 +132,19 @@ class RiskManangementController extends Controller
         return redirect('/RiskManagement/'.$id)->with('warning', 'Implementing Team Deleted');
 
     }
+    public function save_multiple(Request $request){
+        $riskManagements = $request->input('risk_managements', []);
+
+    foreach ($riskManagements as $data) {
+        Risk_manangement::create([
+                'possible_risk'     => $data['possible_risk'] ?? null,
+                'person_affected'   => $data['person_affected'] ?? null,
+                'management'        => $data['management'] ?? null,
+                'revision_plan_id'  => $data['revision_plan_id'] ?? null,
+            ]);
+        }
+
+        return response()->json(['message' => 'Saved successfully']);
+    }
 
 }

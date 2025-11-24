@@ -14,6 +14,7 @@
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`" v-if="source==undefined">Add Revision Plan</Link>&nbsp;
+                    <Link class="btn btn-primary btn-sm" :href="`/revision/streamlined/create/${idpaps}`" v-if="source==undefined">Add Project Profile</Link>&nbsp;
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Revision Plan</Link>&nbsp;
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
                     <button @click="exportUsers" class="btn btn-primary btn-sm mL-2 text-white">Export AIP to Excel</button>&nbsp;
@@ -49,6 +50,7 @@
                                 <th>Status</th>
                                 <th>View</th>
                                 <th>Edit</th>
+                                <th>Full Edit</th>
                                 <th></th>
                                 <th>Version</th>
                                 <th>Actions</th>
@@ -101,7 +103,8 @@
 
                                     <!-- {{ dat }} -->
                                 </td>
-                                <td><Link v-if="paps"
+                                <td>
+                                    <Link v-if="paps"
                                         class="btn btn-primary btn-sm"
                                         :href="`/revision/edit/${dat.id}`">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -121,16 +124,27 @@
                                     </Link>
 
                                 </td>
+                                <td >
+                                    <Link v-if="dat.idpaps"
+                                        class="btn btn-primary btn-sm"
+                                        :href="`/revision/streamlined/create/${dat.idpaps}?source=direct&idrevplan=${dat.id}`">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                        </svg>
+                                    </Link>
+                                </td>
                                 <td>
                                     <!-- Submit button when status = -1 -->
                                     <button
                                         v-if="dat.status == '-1' || dat.status == '-2'"
                                         @click="submitItem(dat, 0)"
+                                        :disabled="!can_submit(dat.budget_sum, dat.imp_amount)"
                                         :style="{
                                         padding: '4px 10px',
                                         border: 'none',
                                         borderRadius: '4px',
-                                        backgroundColor: 'blue',
+                                        backgroundColor: can_submit(dat.budget_sum, dat.imp_amount) ? 'blue' : '#9bbce0', // light greyish blue
                                         color: 'white',
                                         cursor: 'pointer',
                                         fontWeight: 'bold'
@@ -309,6 +323,25 @@ export default {
                 status_now=showAmount+"Warning: total amount of implementation plans is greater than the total  amount of budgetary requirement."
             }
             return status_now;
+        },
+        can_submit(budget, imp_amount){
+            // var status_now="";
+            // var showAmount ="";
+            var bdg = parseFloat(budget);
+            var imp = parseFloat(imp_amount);
+            return bdg >= 1 && imp >= 1 && bdg === imp;
+            // if(bdg>imp){
+            //     return false;
+            // }
+            // if(bdg<imp){
+            //     return false;
+            // }
+            // if(bdg<1){
+            //     return false;
+            // }
+            // if(imp<1){
+            //     return false;
+            // }
         },
         showAIPModalMethod(){
             var linkt = "https://";

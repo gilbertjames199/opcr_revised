@@ -128,4 +128,54 @@ class ActivityController extends Controller
         //dd($request->raao_id);
         return redirect('/activities/' . $strategy_id)->with($status, $msg);
     }
+
+    public function save_activities(Request $request)
+    {
+        $activitiesData = $request->activities;
+        $strategy_id = $request->strategy_id;
+        foreach ($activitiesData as $row) {
+
+            // 1. Save to activities table
+            $activity = Activity::create([
+                'description' => $row['description'],
+                'strategy_id' => $strategy_id,
+            ]);
+
+            // 2. Save to activity_projects (inherit parent activity_id)
+            ActivityProject::create([
+                'activity_id'       => $activity->id,
+                'project_id'        => $row['project_id'],
+                'target_indicator'  => $row['target_indicator'],
+                'date_from'         => $row['date_from'],
+                'date_to'           => $row['date_to'],
+
+                'ps_q1' => $row['ps_q1'],
+                'ps_q2' => $row['ps_q2'],
+                'ps_q3' => $row['ps_q3'],
+                'ps_q4' => $row['ps_q4'],
+
+                'mooe_q1' => $row['mooe_q1'],
+                'mooe_q2' => $row['mooe_q2'],
+                'mooe_q3' => $row['mooe_q3'],
+                'mooe_q4' => $row['mooe_q4'],
+
+                'co_q1' => $row['co_q1'],
+                'co_q2' => $row['co_q2'],
+                'co_q3' => $row['co_q3'],
+                'co_q4' => $row['co_q4'],
+
+                'fe_q1' => $row['fe_q1'],
+                'fe_q2' => $row['fe_q2'],
+                'fe_q3' => $row['fe_q3'],
+                'fe_q4' => $row['fe_q4'],
+
+                'gad_issue' => $row['gad_issue'],
+                'ccet_code' => $row['ccet_code'],
+                'responsible' => $row['responsible'],
+                'is_active' => $row['is_active'],
+            ]);
+        }
+
+        return response()->json(['message' => 'Success'], 200);
+    }
 }

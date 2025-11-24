@@ -473,7 +473,7 @@
                     </div> -->
                     <div v-if="implementation">
 
-                        <h3 >
+                        <h3 id="implementation_workplan">
                             <!-- /strategies-and-activities/${dat.id} -->
                             V.
                             <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
@@ -1080,7 +1080,7 @@
                     <!--BUDGETARY REQUIREMENTS-->
                     <!-- v-if="b_mooe.length>0 || b_capital.length>0 || b_ps.length>0" -->
                     <div>
-                        <h3>
+                        <h3 id="budgetary_requirements">
                             VI. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
                             ? `/budget/${paps.id}`:null">
                                 Estimated Cost/Budgetary Requirements
@@ -2022,7 +2022,7 @@
                         <br>
                     </div>
                     <!--IMPLEMENTING TEAM v-if="team_members.length > 0 || paps.implementing_team !== null"-->
-                    <h3 >
+                    <h3 id='implementing_team'>
                         VII. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
                             ? `/team/${paps.id}/revision/plan/team`:null"
                         :class="{
@@ -2161,7 +2161,7 @@
                     </div>
                     <br>
                     <!--PARTNERSHIP & SUSTAINABILITY-->
-                    <h3 v-if="paps.partnership !== null">
+                    <h3 id="partnership_sustainability" v-if="paps.partnership !== null">
                         VIII. <Link>Partnership and Sustainability</Link>
                     </h3>
                     <div align="justify" style="white-space: pre-line">
@@ -2170,7 +2170,7 @@
                     <br>
                     <br>
                     <!--MONITORING & EVALUATION-->
-                    <h3 v-if="monitors.length > 0 || paps.monitoring !== null">
+                    <h3 id="monitoring_evaluation" v-if="monitors.length > 0 || paps.monitoring !== null">
                         IX. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
                             ? `/EvaluationMechanismTool/${paps.id}`:null">Monitoring and Evaluation</Link>
                     </h3>
@@ -2258,7 +2258,7 @@
                         <br><br>
                     </div>
                     <!--RISK MANAGEMENT-->
-                    <h3 v-if="risks.length > 0 || paps.risk_management !== null">
+                    <h3 id="risk_management" v-if="risks.length > 0 || paps.risk_management !== null">
                         X. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
                             ? `/RiskManagement/${paps.id}`:null">Risk Management</Link>
                     </h3>
@@ -2330,7 +2330,7 @@
                         <br><br>
                     </div>
                     <!--SIGNATORIES-->
-                    <div class="signatory-grid">
+                    <div id="signatories" class="signatory-grid">
                         <div v-for="(signatory, index) in signatories" :key="index" class="signatory-card">
                         <strong>{{ signatory.acted }} by: </strong><br><br>
                         <span class="text-decoration-underline"><b>{{ signatory.name
@@ -2402,64 +2402,148 @@
                     </button>
             </div>
             <div class="bgc-white p-20 bd sticky-comments" v-if="showComments">
-                 <div class="comments-header">
-                    <h4>COMMENTS ...</h4>
-                    <button class="close-btn text-danger" @click="toggleShowCommentPanel">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                        </svg>
-                    </button>
-                </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="close-btn text-danger" @click="toggleShowCommentPanel">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                            </svg>
+                        </button>
+                    </div>
 
-                <div class="scrollable-text">
-                    <ul class="list-unstyled">
-                        <li v-for="(comment, index) in all_comments" :key="index" class="mb-2">
+                    <div class="tab">
+                        <button style="color: red;" @click="openTab('Comments')">Comments</button>
+                        <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
+                    </div>
 
-                            <span
-                                class="clickable-comment"
-                                @click="scrollToSection(
-                                    ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                        ? comment.column_name
-                                            : (
-                                            ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
-                                                ? `${comment.table_row_id}_${comment.table_name}`
-                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                        )
+                    <div v-if="open_tab==='Comments'">
+                        <div class="comments-header">
+                            <h4>COMMENTS ...</h4>
 
-                                )"
-                                :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
-                            >
-                                {{ comment.comment }}
-                                <!-- ({{ comment.table_name }}) -column_name:<b>{{ comment.column_name }}</b> -->
-                            </span>
+                        </div>
 
-                            <hr>
-                        </li>
-                    </ul>
-                    <!-- <table class="table table-hover table-bordered border-dark">
-                        <tr v-for="(comment, index) in all_comments" :key="index">
-                            <td>
+                        <div class="scrollable-text">
+                            <ul class="list-unstyled">
+                                <li v-for="(comment, index) in all_comments" :key="index" class="mb-2">
 
-                                <span
-                                    class="clickable-comment"
-                                    @click="scrollToSection(
-                                            ['beneficiaries', 'objectives', 'rationale'].includes(comment.column_name)
+                                    <span
+                                        class="clickable-comment"
+                                        @click="scrollToSection(
+                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                 ? comment.column_name
-                                                : (comment.table_name === 'revision_plans'
-                                                    ? comment.table_name
-                                                    : `${comment.table_row_id}_${comment.table_name}`
+                                                    : (
+                                                    ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
+                                                        ? `${comment.table_row_id}_${comment.table_name}`
+                                                        : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                 )
-                                        )
-                                    "
-                                >
-                                    {{comment.comment }} ( {{comment.table_name }})
-                                </span>
-                                <hr>
-                            </td>
-                        </tr>
-                    </table> -->
-                    <!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. [32] Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? [D]Quis autem vel eum i[r]ure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? [33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem reru[d]um facilis est e[r]t expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellend[a]us. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. [32] But I must explain to you how all this mistaken idea of reprobating pleasure and extolling pain arose. To do so, I will give you a complete account of the system and expound the teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter extremely painful consequences. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? [33] On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammeled and nothing prevents us from being what we like best, every pleasure is welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures must be repudiated and annoyances accepted. The wise man, therefore, always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains. -->
-                </div>
+
+                                        )"
+                                        :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
+                                    >
+                                        {{ comment.comment }} {{
+                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                ? comment.column_name
+                                                    : (
+                                                    ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
+                                                        ? `${comment.table_row_id}_${comment.table_name}`
+                                                        : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                )
+                                        }}
+                                    </span>
+
+                                    <hr>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div v-if="open_tab==='Navigation'">
+                        <div class="comments-header">
+                            <h4>NAVIGATION ...</h4>
+
+                        </div>
+                        <div class="scrollable-text">
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('revision_plans')">
+                                        I.      Title
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('rationale')">
+                                        II.     Rationale
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('objective')">
+                                        III.    Objectives
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('beneficiaries')">
+                                        IV.     Target Beneficiaries
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('implementation_workplan')">
+                                        V.      Implementation Schedule/Workplan
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('budgetary_requirements')">
+                                        VI.     Estimated Cost/Budgetary Requirements
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('implementing_team')">
+                                        VII.    Implementing Team
+                                    </span>
+                                </li>
+                            </ul>
+                            <!-- partnership_sustainability -->
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('partnership_sustainability')">
+                                        VIII.   Partnership and Sustainability
+                                    </span>
+                                </li>
+                            </ul>
+
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('monitoring_evaluation')">
+                                        XI.     Monitoring and Evaluation
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('risk_management')">
+                                        X.      Risk Management
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('signatories')">
+                                        XI.     Signatories
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
             </div>
         </div>
         <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
@@ -2651,7 +2735,8 @@ export default {
             tot_gad: 0,
             tot_non:0,
             grand_total: 0,
-            showComments: false
+            showComments: false,
+            open_tab: 'Navigation',
         }
     },
     mounted() {
@@ -2674,6 +2759,9 @@ export default {
     },
     watch: {},
     methods: {
+        openTab(tab_name){
+            this.open_tab=tab_name
+        },
         isOne() {
             // var mooe=this.b_mooe.length;
             // var co=this.b_capital.length;

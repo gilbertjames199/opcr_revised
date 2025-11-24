@@ -201,7 +201,11 @@ hr {
     overflow: hidden;
     border: 1px solid #ccc cv z;
     //background-color: #f1f1f1;
-    background-color: #0b4497;
+    background-color: #3a2602;
+
+    /* Rounded upper edges */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 /* Style the buttons that are used to open the tab content */
@@ -215,6 +219,10 @@ hr {
     transition: 0.3s;
     font-weight: bold;
     color: rgb(236, 237, 194) !important;
+
+    /* Rounded upper edges */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 /* Change background color of buttons on hover */

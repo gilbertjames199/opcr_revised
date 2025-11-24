@@ -19,6 +19,7 @@ use App\Models\ProgramAndProject;
 use App\Models\RevisionPlan;
 use App\Models\RevisionPlanComment;
 use App\Models\Risk_manangement;
+use App\Models\SharedProgramAndProject;
 use App\Models\Signatory;
 use App\Models\Strategy;
 use App\Models\StrategyProject;
@@ -79,19 +80,20 @@ class RevisionPlanController extends Controller
             // )
             // ->
             // dd( auth()->user()->popsp_agency);
-            $popsp_agency =PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
+            $sharedPaps = SharedProgramAndProject::where('destination_department_code', $dept_id)->get()->pluck('idpaps');
+
+            $popsp_agency = PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
+            $department_code_actual=null;
+            if($popsp_agency){
+                $department_code_actual= $popsp_agency->department_code_actual;
+            }
+            // dd($popsp_agency);
             $data = RevisionPlan::with(['paps', 'paps.office'])
-                // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
-                // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
-                // ->leftJoin(DB::raw('afms.functions ff'), 'ff.FFUNCCOD', '=', 'paps.FFUNCCOD')
-                // ->Join(DB::raw('fms.accountaccess acc'), 'acc.ffunccod', '=', 'ff.FFUNCCOD')
-                // ->where('acc.iduser', '=', $myid)
-                // ->where('paps.department_code', '=', $dept_id)
                 ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                     $query->where('department_code', $dept_id);
-                        // ->orWhere('department_code', optional($popsp_agency)->department_code_actual);
+                    // ->orWhere('department_code', optional($popsp_agency)->department_code_actual);
                 })
-                ->when(auth()->user()->popsp_agency, function($query)use ($dept_id, $popsp_agency){
+                ->when(auth()->user()->popsp_agency, function ($query) use ($dept_id, $popsp_agency) {
                     // dd("may agency", $popsp_agency);
                     $query->where('agency_name', $popsp_agency->agency_code);
                 })
@@ -213,6 +215,7 @@ class RevisionPlanController extends Controller
                     return [
                         // 'FFUNCTION' => $item->FFUNCTION,
                         'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
+                        'idpaps' => $item->idpaps,
                         'id' => $item->id,
                         'project_title' => $item->project_title,
                         'type' => $item->type,
@@ -301,7 +304,7 @@ class RevisionPlanController extends Controller
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
         // dd($max_id);
         $duplicate = RevisionPlan::where('id', $max_id)->get();
-        $popsp_agencies =PopspAgency::all();
+        $popsp_agencies = PopspAgency::all();
         // dd($paps_all);
         if ($count > 0) {
 
@@ -430,6 +433,7 @@ class RevisionPlanController extends Controller
     }
     public function view(Request $request, $id)
     {
+        // dd($id);
         // dd(env('DB_DATABASE'));
         // dd(config('database.connections.mysql.database'));
         $src = $request->source;
@@ -757,6 +761,7 @@ class RevisionPlanController extends Controller
         $all_comments = $this->getAllRevisionPlanComments($id);
         // ->sortByDesc('created_at')
         // dd($all_comments->pluck('created_at'));
+        // dd($paps);
         return inertia('RevisionPlans/View', [
             "all_comments" => $all_comments,
             "paps" => $paps,
@@ -951,11 +956,11 @@ class RevisionPlanController extends Controller
         // dd($paps);
         // dd($idpaps);
         $hgdg = HGDG_Checklist::get();
-        $popsp_agencies =PopspAgency::all();
-        $source =$request->source;
+        $popsp_agencies = PopspAgency::all();
+        $source = $request->source;
         // $count = RevisionPlan::where('idpaps', $id)->count();
         // $max_id = RevisionPlan::where('idpaps', $id)->max('id');
-        if($source=='direct'){
+        if ($source == 'direct') {
             $dept_code = auth()->user()->department_code;
             if (isset($paps)) {
                 $paps_all = ProgramAndProject::with('MFO')
@@ -983,7 +988,7 @@ class RevisionPlanController extends Controller
                     'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
                 ],
             ]);
-        }else{
+        } else {
             return inertia('RevisionPlans/Create', [
                 "idpaps" => $idpaps,
                 "hgdgs" => $hgdg,
@@ -998,7 +1003,6 @@ class RevisionPlanController extends Controller
                 ],
             ]);
         }
-
     }
     public function update(Request $request)
     {
@@ -1759,7 +1763,7 @@ class RevisionPlanController extends Controller
         $dept_id = auth()->user()->department_code;
         $source = $request->source;
         // dd($dept_id);
-        if(auth()->user()->popsp_agency){
+        if (auth()->user()->popsp_agency) {
             return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
         }
         if ($source != 'budget') {
@@ -1826,10 +1830,10 @@ class RevisionPlanController extends Controller
                     ->havingRaw('SUM(amount) > 0');
             })
 
-                ->when($request->source == 'rev_app', function ($query) {
-                    // dd("rev app ang source");
-                    $query->where('status', '>=', '0');
-                })
+            ->when($request->source == 'rev_app', function ($query) {
+                // dd("rev app ang source");
+                $query->where('status', '>=', '0');
+            })
             ->when($request->FFUNCCOD, function ($query) use ($request) {
                 $query->whereHas('paps', function ($query_inner) use ($request) {
                     $query_inner->where('FFUNCCOD', $request->FFUNCCOD);
@@ -1942,6 +1946,7 @@ class RevisionPlanController extends Controller
         $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($totals);
         // dd($acc);
+        // dd($data);
         $dept_code = auth()->user()->department_code;
         $functions2 = FFUNCCOD::where('department_code', $dept_code)->first();
         return inertia('RevisionPlans/Direct', [
@@ -3002,5 +3007,67 @@ class RevisionPlanController extends Controller
         return RevisionPlan::where('id', $id)
             ->where('is_strategy_based', 0)
             ->get();
+    }
+
+    public function ipp(Request $request){
+        return RevisionPlan::with(['teamPlans',
+                    'monitoringAndEvaluations',
+                    'riskManagements',
+                    'signatories'])
+                ->where('id',$request->id)
+                ->get()
+                ->map(function($item){
+                    return [
+                        'id' => $item->id,
+                        'idpaps' => $item->idpaps,
+                        'idmfo' => $item->idmfo,
+                        'status' => $item->status,
+                        'program_id' => $item->program_id,
+                        'agency_name' => $item->agency_name,
+                        'FFUNCCOD' => $item->FFUNCCOD,
+                        'year_period' => $item->year_period,
+                        'scope' => $item->scope,
+                        'aip_code' => $item->aip_code,
+                        'project_title' => $item->project_title,
+                        'project_location' => $item->project_location,
+                        'list_of_lgu_covered' => $item->list_of_lgu_covered,
+                        'date_start' => $item->date_start,
+                        'date_end' => $item->date_end,
+                        'beneficiary_male' => $item->beneficiary_male,
+                        'beneficiary_female' => $item->beneficiary_female,
+                        'baseline_male' => $item->baseline_male,
+                        'baseline_female' => $item->baseline_female,
+                        'baseline_total' => $item->baseline_total,
+                        'data_source' => $item->data_source,
+                        'amount' => $item->amount,
+                        'proposed_budget' => $item->proposed_budget,
+                        'attributed_amount' => $item->attributed_amount,
+                        'checklist_id' => $item->checklist_id,
+                        'hgdg_score' => $item->hgdg_score,
+                        'hgdg_percent' => $item->hgdg_percent,
+                        'rationale' => $item->rationale,
+                        'objective' => $item->objective,
+                        'beneficiaries' => $item->beneficiaries,
+                        'implementing_team' => $item->implementing_team,
+                        'implementing_teams'=>$item->teamPlans,
+                        'partnership' => $item->partnership,
+                        'monitoring' => $item->monitoring,
+                        'monitoring_and_evaluations'=>$item->monitoringAndEvaluations,
+                        'risk_management' => $item->risk_management,
+                        'risk_managements'=> $item->riskManagements,
+                        'version' => $item->version,
+                        'type' => $item->type,
+                        'final' => $item->final,
+                        'supplemental' => $item->supplemental,
+                        'user_id' => $item->user_id,
+                        'created_at' => $item->created_at,
+                        'updated_at' => $item->updated_at,
+                        'is_strategy_based' => $item->is_strategy_based,
+                        'is_activity_based' => $item->is_activity_based,
+                        'breakdown_by_expected_output' => $item->breakdown_by_expected_output,
+                        'signatories'=>$item->signatories
+
+                    ];
+                });
     }
 }

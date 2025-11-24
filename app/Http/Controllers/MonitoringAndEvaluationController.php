@@ -134,4 +134,21 @@ class MonitoringAndEvaluationController extends Controller
         return redirect('/EvaluationMechanismTool/'.$revid)->with('warning', 'Monitoring and Evaluation Deleted');
 
     }
+
+    public function save_multiple(Request $request){
+        $rows = $request->input('rows', []);
+
+        foreach ($rows as $row) {
+
+            Monitoring_and_evaluation::create([
+                'evaluation_mechanism_tool' => $row['evaluation_mechanism_tool'] ?? null,
+                'opr'                       => $row['opr'] ?? null,
+                'target_beneficiaries'      => $row['target_beneficiaries'] ?? null,
+                'gad'                       => $row['gad'] ?? null,
+                'revision_plan_id'          => $row['revision_plan_id'],
+            ]);
+        }
+
+        return redirect()->back()->with('message', 'monitoring and evaluation details updated successfully!');
+    }
 }
