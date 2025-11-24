@@ -458,7 +458,7 @@
                             </Link>
                         </h3>
                         <p>
-                            <button class="btn btn-primary btn-sm text-white"
+                            <button class="btn btn-success btn-sm text-white"
                                 @click="showStrategyModal()">
                                     Add Strategies
                             </button>
@@ -1389,7 +1389,7 @@
                         </button>
                     </h3>
                     <p>
-                        <button class="btn btn-primary btn-sm text-white"
+                        <button class="btn btn-success btn-sm text-white"
                             @click="showTeamModal()">
                                 Add Team Members
                         </button>
@@ -1494,7 +1494,7 @@
                             ? `/EvaluationMechanismTool/${paps.id}`:null">Monitoring and Evaluation</Link>
                     </h3>
                     <p>
-                        <button class="btn btn-primary btn-sm text-white"
+                        <button class="btn btn-success btn-sm text-white"
                             @click="showMonitoringModal()">
                                 Add Monitoring and Evaluation Details
                         </button>
@@ -1617,7 +1617,7 @@
                             ? `/RiskManagement/${paps.id}`:null">Risk Management</Link>
                     </h3>
                     <p>
-                        <button class="btn btn-primary btn-sm text-white"
+                        <button class="btn btn-success btn-sm text-white"
                             @click="showRiskManagementModal()">
                                 Add Risk Management Details
                         </button>
@@ -1712,7 +1712,7 @@
                             ? `/RiskManagement/${paps.id}`:null">Signatories</Link>
                     </h3>
                     <p>
-                        <button class="btn btn-primary btn-sm text-white"
+                        <button class="btn btn-success btn-sm text-white"
                             @click="showSignatoryModal()">
                                 Add Signatories
                         </button>

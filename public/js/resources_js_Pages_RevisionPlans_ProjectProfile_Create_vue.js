@@ -3471,7 +3471,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary btn-sm text-white",
+    "class": "btn btn-success btn-sm text-white",
     onClick: _cache[68] || (_cache[68] = function ($event) {
       return $options.showStrategyModal();
     })
@@ -4706,7 +4706,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.handleClick('Implementing Team', 'implementing team', $data.paps.implementing_team, 'implementing_team', 'revision_plans', $data.paps, $data.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary btn-sm text-white",
+    "class": "btn btn-success btn-sm text-white",
     onClick: _cache[108] || (_cache[108] = function ($event) {
       return $options.showTeamModal();
     })
@@ -4865,7 +4865,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary btn-sm text-white",
+    "class": "btn btn-success btn-sm text-white",
     onClick: _cache[113] || (_cache[113] = function ($event) {
       return $options.showMonitoringModal();
     })
@@ -5049,7 +5049,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary btn-sm text-white",
+    "class": "btn btn-success btn-sm text-white",
     onClick: _cache[119] || (_cache[119] = function ($event) {
       return $options.showRiskManagementModal();
     })
@@ -5197,7 +5197,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary btn-sm text-white",
+    "class": "btn btn-success btn-sm text-white",
     onClick: _cache[122] || (_cache[122] = function ($event) {
       return $options.showSignatoryModal();
     })
