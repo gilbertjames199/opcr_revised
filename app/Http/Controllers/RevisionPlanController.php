@@ -88,7 +88,12 @@ class RevisionPlanController extends Controller
                 $department_code_actual= $popsp_agency->department_code_actual;
             }
             // dd($popsp_agency);
-            $data = RevisionPlan::with(['paps', 'paps.office'])
+            $data=[];
+            if($popsp_agency){
+
+                $data=$this->getPopsPProfilesDirect($request, $budget_controller, $dept_id, $popsp_agency);
+            }else{
+                $data = RevisionPlan::with(['paps', 'paps.office'])
                 ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                     $query->where('department_code', $dept_id);
                     // ->orWhere('department_code', optional($popsp_agency)->department_code_actual);
@@ -148,6 +153,8 @@ class RevisionPlanController extends Controller
                         // 'paps'=>$item->paps
                     ];
                 });
+            }
+
             // dd(auth()->user());
 
 
@@ -1251,7 +1258,81 @@ class RevisionPlanController extends Controller
         return redirect('/revision/general/administration/services/' . $FFUNCCOD . '/plan')
             ->with('message', 'Revision Plan added');
     }
+    //PAPS
+    public function getPopsPProfilesDirect(Request $request, $budget_controller, $dept_id, $popsp_agency ){
+        $popsp_related_agency = PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
+        $sharedPAPS = SharedProgramAndProject::where('destination_department_code', auth()->user()->department_code)
+            ->when(auth()->user()->popsp_agency, function ($query) use ($popsp_related_agency) {
+                $query->where(function($query) use ($popsp_related_agency) {
+                    $query->where('destination_department_code', $popsp_related_agency->department_code)
+                        ->Where('origin_department_code', $popsp_related_agency->department_code_actual);
+                        // dd($popsp_related_agency);
+                });
+                // $query->wjere
+                // $query->orWhere('origin_department_code', $popsp_related_agency->agency_code);
+            })->get()
+            ->pluck('idpaps');
+        $PAPS = ProgramAndProject::where('department_code', auth()->user()->department_code)
+            ->where('agency_name', auth()->user()->agency_name)
+            ->get()
+            ->pluck('id');
 
+        $idpaps_all = $sharedPAPS->concat($PAPS);
+        return RevisionPlan::with(['paps', 'paps.office'])
+                ->whereIn('idpaps', $idpaps_all)
+                ->get()
+                ->map(function ($item) use ($budget_controller) {
+                    // COUNT THE COMMENTS
+                    // dd($item);
+                    $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)->where('table_name', 'revision_plans')->count();
+                    // dd($revision_comment);
+
+                    // BUDGERTARY REQUIREMENTs
+                    $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                        ->sum('amount');
+
+                    $imp_amount = 0.00;
+                    // DB::table('targets')
+                    //     ->where('implementation_plans.idrev_plan', $item->id)
+                    //     ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                    //     ->select('targets.*', 'implementation_plans.*')
+                    //     ->sum('targets.planned_budget');
+                    $total = [];
+                    // dd($item);
+                    if ($item->is_strategy_based == 1) {
+                        $total = $budget_controller->getStratTotal($item->id);
+                    } else {
+                        $total = $budget_controller->getActivityTotal($item->id);
+                    }
+                    // dd($item->is_strategy_based);
+                    if ($total) {
+                        $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                            $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                            $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
+                            $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                    }
+                    // dd($total);
+                    // dd($item);
+                    // dd($item->project_title);
+                    // if ($item->id == 201) {
+                    //     dd($item);
+                    // }
+                    return [
+                        // 'FFUNCTION' => $item->FFUNCTION,
+                        'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
+                        'idpaps' => $item->idpaps,
+                        'id' => $item->id,
+                        'project_title' => $item->project_title,
+                        'type' => $item->type,
+                        'version' => $item->version,
+                        'budget_sum' => $budgetary_requirement,
+                        'imp_amount' => $imp_amount,
+                        'status' => $item->status
+                        // 'paps'=>$item->paps
+                    ];
+                });
+        // dd($idpaps_all);
+    }
     //MFO Revision Plans
     public function mfo_index(Request $request, $idmfo)
     {
