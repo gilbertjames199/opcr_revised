@@ -3196,7 +3196,7 @@ table {
 }
 
 @keyframes highlightFlash {
-    0% { background-color: yellow; }
+    0% { background-color: #c1fb3a; }
     100% { background-color: transparent; }
 }
 
