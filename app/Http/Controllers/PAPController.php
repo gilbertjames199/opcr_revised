@@ -513,6 +513,7 @@ class PAPController extends Controller
             })
             ->whereIn('id', $sharedPAPS)
             ->get();
+
         $data = $this->model->with('MFO')
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');
@@ -520,7 +521,7 @@ class PAPController extends Controller
             ->when($request->mfosel, function ($query, $searchItem) {
                 $query->where('idmfo', '=', $searchItem);
             })
-            ->when(auth()->user()->popsp_agency, function($query){
+            ->when(auth()->user()->popsp_agency && auth()->user()->department_code=='01', function($query){
                 // dd(auth()->user()->popsp_agency);
                 $query->where('agency_name', auth()->user()->popsp_agency);
             })

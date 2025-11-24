@@ -56,7 +56,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     idpaps: Number,
     paps_all: Object,
     paps_specific: Object
-  }, _defineProperty(_props, "source", String), _defineProperty(_props, "hgdgs", Object), _defineProperty(_props, "popsp_agencies", Object), _defineProperty(_props, "office", Object), _defineProperty(_props, "all_comments", Object), _defineProperty(_props, "s_mooe_gad", Number), _defineProperty(_props, "s_mooe_non", Number), _defineProperty(_props, "s_cap_gad", Number), _defineProperty(_props, "s_cap_non", Number), _defineProperty(_props, "s_ps_gad", Number), _defineProperty(_props, "s_ps_non", Number), _defineProperty(_props, "s_fe_gad", Number), _defineProperty(_props, "s_fe_non", Number), _defineProperty(_props, "budget_requirements", Object), _defineProperty(_props, "account_code", Object), _defineProperty(_props, "implementation", Object), _defineProperty(_props, "monitoring_and_avaluation", Object), _defineProperty(_props, "implementing_team", Object), _defineProperty(_props, "signatories", Object), _defineProperty(_props, "risk_manangement", Object), _props),
+  }, _defineProperty(_props, "source", String), _defineProperty(_props, "hgdgs", Object), _defineProperty(_props, "popsp_agencies", Object), _defineProperty(_props, "office", Object), _defineProperty(_props, "all_comments", Object), _defineProperty(_props, "s_mooe_gad", Number), _defineProperty(_props, "s_mooe_non", Number), _defineProperty(_props, "s_cap_gad", Number), _defineProperty(_props, "s_cap_non", Number), _defineProperty(_props, "s_ps_gad", Number), _defineProperty(_props, "s_ps_non", Number), _defineProperty(_props, "s_fe_gad", Number), _defineProperty(_props, "s_fe_non", Number), _defineProperty(_props, "budget_requirements", Object), _defineProperty(_props, "account_code", Object), _defineProperty(_props, "implementation", Object), _defineProperty(_props, "monitoring_and_avaluation", Object), _defineProperty(_props, "implementing_team", Object), _defineProperty(_props, "signatoriesprops", Object), _defineProperty(_props, "risk_manangement", Object), _props),
   components: {
     Places: function Places() {
       return new Promise(function (resolve) {
@@ -5080,7 +5080,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[122] || (_cache[122] = function ($event) {
       return $options.showSignatoryModal();
     })
-  }, " Add Signatories ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_298, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.signatories, function (signatory, index) {
+  }, " Add Signatories ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.signatoriesProps) + " ", 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_298, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.signatoriesprops, function (signatory, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
       "class": "signatory-card"
@@ -5176,7 +5178,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[135] || (_cache[135] = function ($event) {
       return $options.scrollToSection('monitoring_evaluation');
     })
-  }, " XI. Monitoring and Evaluation ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_343, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_344, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " IX. Monitoring and Evaluation ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_343, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_344, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[136] || (_cache[136] = function ($event) {
       return $options.scrollToSection('risk_management');

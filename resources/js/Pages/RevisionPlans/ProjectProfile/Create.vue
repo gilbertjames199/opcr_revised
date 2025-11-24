@@ -1717,8 +1717,10 @@
                                 Add Signatories
                         </button>
                     </p>
+                    {{signatoriesProps }}
                     <div id="signatories" class="signatory-grid">
-                        <div v-for="(signatory, index) in signatories" :key="index" class="signatory-card">
+
+                        <div v-for="(signatory, index) in signatoriesprops" :key="index" class="signatory-card">
                         <strong>{{ signatory.acted }} by: </strong><br><br>
                         <span class="text-decoration-underline"><b>{{ signatory.name
                                                                 }}</b></span>
@@ -1980,7 +1982,7 @@
                             <ul class="list-unstyled">
                                 <li class="mb-2" style="color: blue">
                                     <span class="clickable-comment"  @click="scrollToSection('monitoring_evaluation')">
-                                        XI.     Monitoring and Evaluation
+                                        IX.     Monitoring and Evaluation
                                     </span>
                                 </li>
                             </ul>
@@ -2455,7 +2457,7 @@ export default {
         // OTHERS
         monitoring_and_avaluation: Object,
         implementing_team: Object,
-        signatories: Object,
+        signatoriesprops: Object,
         risk_manangement: Object,
     },
     components: {

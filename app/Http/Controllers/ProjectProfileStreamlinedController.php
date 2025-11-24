@@ -154,6 +154,7 @@ class ProjectProfileStreamlinedController extends Controller
         // dd($all_comments);
         // dd($acc);
         $implementation = $this->getImplementationPlan($editData->id, $editData, $paps0->id);
+        // dd($this->signatories($editData->id));
         // dd($implementation);
         return inertia('RevisionPlans/ProjectProfile/Create', [
             "idpaps" => $id,
@@ -182,7 +183,7 @@ class ProjectProfileStreamlinedController extends Controller
             // IMPLEMENTING TEAM
             "implementing_team" => $this->team_members($editData->id),
             // SIGNATORIES
-            "signatories" => $this->signatories($editData->id),
+            "signatoriesprops" => $this->signatories($editData->id),
             // RISK MANAGEMENT
             "risk_manangement" => $this->risk_management($editData->id),
             // SOURCE
