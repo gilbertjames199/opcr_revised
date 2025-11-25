@@ -206,7 +206,7 @@ class PAPController extends Controller
         // dd($functions, auth()->user()->department_code);
         $popsp_agencies =PopspAgency::all();
         // dd($pops_agencies);
-        dd($functions);
+        // dd($functions);
         return inertia('PAPS/Create', [
             'mfos' => $mfos,
             'chief_agenda' => $chief_executive_agenda,
