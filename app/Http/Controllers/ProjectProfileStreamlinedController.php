@@ -65,10 +65,10 @@ class ProjectProfileStreamlinedController extends Controller
             // dd("wala si paps");
             // $all_paps = Progr
         }
-        $hgdg = HGDG_Checklist::get();
+
         $count = RevisionPlan::where('idpaps', $id)->count();
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
-        $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
+
         // dd($max_id);
         $duplicate=[];
         if($request->source=='direct'){
@@ -77,8 +77,12 @@ class ProjectProfileStreamlinedController extends Controller
         }else{
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $max_id)->first();
         }
-
+        $hgdg = HGDG_Checklist::get();
+        $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($duplicate);
+        if(intval($duplicate->status)>=0){
+            return redirect()->back()->with('error', 'Project profile already submitted');
+        }
         $popsp_agencies = PopspAgency::all();
 
         if ($count < 1) {
