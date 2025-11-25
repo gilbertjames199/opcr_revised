@@ -1270,16 +1270,19 @@ class RevisionPlanController extends Controller
                 });
                 // $query->wjere
                 // $query->orWhere('origin_department_code', $popsp_related_agency->agency_code);
-            })->get()
+            })
+            ->get()
             ->pluck('idpaps');
         $PAPS = ProgramAndProject::where('department_code', auth()->user()->department_code)
-            ->where('agency_name', auth()->user()->agency_name)
+            // ->where('agency_name', auth()->user()->agency_name)
+            ->where('department_code', auth()->user()->department_code)
             ->get()
             ->pluck('id');
 
         $idpaps_all = $sharedPAPS->concat($PAPS);
         return RevisionPlan::with(['paps', 'paps.office'])
                 ->whereIn('idpaps', $idpaps_all)
+                // ->where('department_code', auth()->user()->department_code)
                 ->get()
                 ->map(function ($item) use ($budget_controller) {
                     // COUNT THE COMMENTS
