@@ -1407,13 +1407,14 @@
                                         <td colspan="3"></td>
                                     </tr>
                                 </template>
-                                <tr>
+
+
+                            </tbody>
+                            <tr>
                                     <td colspan="4"><h4>TOTAL</h4></td>
                                     <td>₱ {{ overallBudget.toLocaleString() }}</td>
                                     <td colspan="3"></td>
                                 </tr>
-
-                            </tbody>
                         </table>
 
                     </div>
