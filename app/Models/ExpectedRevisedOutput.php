@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ExpectedRevisedOutput extends Model
 {
     use HasFactory;
-
+    protected $guarded=['id'];
     public function comments()
     {
         return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');

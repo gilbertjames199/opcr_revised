@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ExpectedRevisedOutcome extends Model
 {
     use HasFactory;
+    protected $guarded=['id'];
     public function activityProject()
     {
         return $this->belongsTo(ActivityProject::class, 'activity_id', 'id');

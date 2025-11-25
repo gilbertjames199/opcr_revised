@@ -688,8 +688,15 @@
                                                                     <div :class="{
                                                                         'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
                                                                         has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)
-                                                                    }" :id="pair.id + '_expected_revised_outputs'"
-                                                                    ><span v-if="pair.quantity>0" > {{ pair.quantity }} </span> {{ pair.output_description }}
+                                                                    }" :id="pair.id + '_expected_revised_outputs'" v-if="pair.output_description"
+                                                                    >       <textarea
+                                                                                class="form-control transparent-bg "
+                                                                                v-model="pair.output_description"
+                                                                                type="text"
+                                                                                @input="setUnsaved(true)"
+                                                                                @change="updateRevisionPlans('expected_revised_outputs', 'description', pair.id, pair.output_description)">
+                                                                            </textarea>
+                                                                            <!-- <span v-if="pair.quantity>0" > {{ pair.quantity }} </span> {{ pair.output_description }} gfhfghfghgfhgfh -->
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
                                                                             </button>
@@ -699,11 +706,17 @@
                                                                     </div>
                                                                     <!-- OUTCOMES*********************************************************************** -->
                                                                     <div :class="{
-                                                                        'text-danger': has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments) ||
-                                                                        has_comment('Implementation Plan','outcome_description',pair.output_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)
-                                                                    }" v-if="pair.outcome_description" :id="pair.id + '_expected_revised_outcomes'"
+                                                                            'text-danger': has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments) ||
+                                                                            has_comment('Implementation Plan','outcome_description',pair.output_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)
+                                                                        }" v-if="pair.outcome_description" :id="pair.id + '_expected_revised_outcomes'"
                                                                     >
-                                                                        {{ pair.outcome_description }}
+                                                                        <textarea
+                                                                                class="form-control transparent-bg "
+                                                                                v-model="pair.outcome_description"
+                                                                                type="text"
+                                                                                @input="setUnsaved(true)"
+                                                                                @change="updateRevisionPlans('expected_revised_outcomes', 'description', pair.id, pair.outcome_description)">
+                                                                        </textarea>
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
                                                                             @click="handleClick('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)">*
                                                                         </button>
@@ -1048,12 +1061,17 @@
                                             </td>
                                             <!--Actions-->
                                             <td>
+                                                <!-- activity_id {{ act.activityProject[0].activity_id }}
+                                                activity_project_id: {{ act.activityProject[0].id }} -->
                                                 <button class="btn btn-primary btn-sm text-white"
-                                                @click="showExpectedOutputsModal(act.id)">
-                                                    Expected Outputs
+                                                @click="showExpectedOutputModal(act.activityProject[0].expected_output,act.activityProject[0].activity_id,
+                                                    act.activityProject[0].id)
+                                                    ">
+                                                        Expected Outputs
                                                 </button><hr >
                                                 <button class="btn btn-primary btn-sm text-white"
-                                                @click="showExpectedOutcomesModal(act.id)">
+                                                @click="showExpectedOutcomeModal(act.activityProject[0].expected_outcome,act.activityProject[0].activity_id,
+                                                    act.activityProject[0].id)">
                                                     Expected Outcomes
                                                 </button><hr >
                                                 <button class="btn btn-primary btn-sm text-white"
@@ -1742,7 +1760,9 @@
                     </p>
                     <!-- {{signatoriesProps }} -->
                     <div id="signatories" class="signatory-grid">
-                        <div v-for="(signatory, index) in signatoriesprops" :key="index" class="signatory-card">
+                        <div v-for="(signatory, index) in signatoriesprops" :key="index"
+                             :class="['signatory-card', (signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed') ? 'signatory-card-full' : 'signatory-card']"
+                        >
                         <strong>
                             <select v-model="signatory.acted" class="form-select" autocomplete="chrome-off"
                                 @change="updateRevisionPlans('signatories', 'acted', signatory.id, signatory.acted)"
@@ -2519,6 +2539,187 @@
       </table>
       <button @click="saveSignatories()" class="btn btn-success text-white">Save</button>
     </SignatoryModal>
+    <ExpectedOutputModal v-if="ExpectedOutputModalVisible" @close-modal-event="hideExpectedOutputModal" title="EXPECTED OUTPUTS">
+
+        <h4>Expected Outputs</h4>
+        <!-- {{ expected_outputs_current }}
+        activity_id: {{ activity_id }}
+        activity_project_id: {{ activity_project_id }} -->
+        <div v-if="expected_outputs_new.length > 0" >
+            <div class="mb-3">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                        <th>Description</th>
+                        <th>Target Indicator</th>
+                        <th>Physical Q1</th>
+                        <th>Physical Q2</th>
+                        <th>Physical Q3</th>
+                        <th>Physical Q4</th>
+                        <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(output, index) in expected_outputs_new" :key="index">
+                        <td><textarea v-model="output.description" class="form-control"></textarea></td>
+                        <td><input type="text" v-model="output.target_indicator" class="form-control"></td>
+                        <td><input type="number" v-model="output.physical_q1" class="form-control"></td>
+                        <td><input type="number" v-model="output.physical_q2" class="form-control"></td>
+                        <td><input type="number" v-model="output.physical_q3" class="form-control"></td>
+                        <td><input type="number" v-model="output.physical_q4" class="form-control"></td>
+                        <td>
+                            <button @click="removeExpectedOutput(index)" class="btn btn-danger btn-sm">Remove</button>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mt-3">
+            <button @click="addExpectedOutput" class="btn btn-primary">Add Row</button>
+            <button @click="saveExpectedOutputs" class="btn btn-success" v-if="expected_outputs_new.length > 0">Save</button>
+        </div>
+        <table class="table table-bordered">
+
+            <tr>
+                <thead>
+                    <tr class="table thead-dark">
+                        <th rowspan="2">Description</th>
+                        <th rowspan="2">Target/Indicator</th>
+                        <th>Q1</th>
+                        <th>Q2</th>
+                        <th>Q3</th>
+                        <th>Q4</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="exp in expected_outputs_current">
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.description"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'description', exp.id, exp.description)">
+
+                            </textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.target_indicator"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'target_indicator', exp.id, exp.target_indicator)">
+
+                            </textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.physical_q1"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'physical_q1', exp.id, exp.physical_q1)">
+                            </textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.physical_q2"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'physical_q2', exp.id, exp.physical_q2)">
+                            </textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.physical_q3"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'physical_q3', exp.id, exp.physical_q3)">
+                            </textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.physical_q4"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'physical_q4', exp.id, exp.physical_q4)">
+                            </textarea>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm text-white"
+                                @click="deleteData(exp.id, 'expected_revised_outputs', exp.description)">
+                                🗑 Delete Activity
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </tr>
+        </table>
+    </ExpectedOutputModal>
+    <ExpectedOutcomeModal v-if="ExpectedOutcomeModalVisible" @close-modal-event="hideExpectedOutcomeModal" title="EXPECTED OUTCOMES">
+        <!-- {{ expected_outputs_current }} -->
+        <!-- Table for Expected Outcomes -->
+        <table class="table table-bordered w-100" style="width: 100%;" v-if="expected_outcomes_new.length > 0" >
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(outcome, index) in expected_outcomes_new" :key="index">
+                    <td>
+                        <textarea v-model="outcome.description" class="form-control"></textarea>
+                    </td>
+                    <td>
+                        <button @click="removeOutcome(index)" class="btn btn-danger btn-sm">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Add & Save Buttons -->
+        <div class="mt-2">
+            <button @click="addOutcome" class="btn btn-primary">Add Outcome</button>
+            <button @click="saveExpectedOutcomes" class="btn btn-success" v-if="expected_outcomes_new.length > 0">Save All</button>
+        </div>
+        <table class="table table-bordered w-100" style="width: 100%;">
+            <tr>
+                <thead>
+                    <tr class="table thead-dark">
+                        <th rowspan="2">Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="exp in expected_outcomes_current">
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.description"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outcomes', 'description', exp.id, exp.description)">
+
+                            </textarea>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm text-white"
+                                @click="deleteExpectedOutcome(exp.id, 'expected_revised_outcomes', exp.description, index)">
+                                🗑 Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </tr>
+        </table>
+    </ExpectedOutcomeModal>
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -2532,7 +2733,8 @@ import TeamModal from "@/Shared/ModalDynamicTitle";
 import RiskManagementModal from "@/Shared/ModalDynamicTitle";
 import MonitoringModal from "@/Shared/ModalDynamicTitle";
 import SignatoryModal from "@/Shared/ModalDynamicTitle";
-
+import ExpectedOutputModal from "@/Shared/ModalDynamicTitle";
+import ExpectedOutcomeModal from "@/Shared/ModalDynamicTitle";
 import axios from 'axios';
 import debounce from 'lodash/debounce';
 
@@ -2590,7 +2792,9 @@ export default {
         TeamModal,
         RiskManagementModal,
         MonitoringModal,
-        SignatoryModal
+        SignatoryModal,
+        ExpectedOutputModal,
+        ExpectedOutcomeModal
 
     },
     data() {
@@ -2687,7 +2891,21 @@ export default {
             monitoring_and_evaluations: [],
             // SIGNATORIES*******************************
             SignatoryModalVisible: false,
-            signatories: []
+            signatories: [],
+
+
+            //EXPECTED OUTPUTS *******************************
+            ExpectedOutputModalVisible: false,
+            expected_outputs_current: [],
+            expected_outputs_new: [],
+            activity_id: 0,
+            activity_project_id: 0,
+
+            //EXPECTED OUTCOMES *******************************
+            ExpectedOutcomeModalVisible: false,
+            expected_outcomes_current: [],
+            expected_outcomes_new: [],
+
         };
     },
     computed: {
@@ -3529,7 +3747,144 @@ export default {
             });
 
             return total;
-        }
+        },
+
+
+        //EXPECTED OUTPUT ******************************************
+        showExpectedOutputModal(activity, activity_id, activity_project_id){
+            this.activity_id=activity_id
+            this.activity_project_id=activity_project_id
+            this.expected_outputs_new = [];
+            this.expected_outputs_current = activity
+            this.ExpectedOutputModalVisible=true;
+        },
+        hideExpectedOutputModal(){
+            this.ExpectedOutputModalVisible=false;
+            window.location.reload()
+        },
+        addExpectedOutput() {
+            this.expected_outputs_new.push({
+                id: null,
+                description: '',
+                strategy_id: null,
+                strategy_project_id: null,
+                activity_id: this.activity_id,
+                activity_project_id: this.activity_project_id,
+                is_strategy_outcome: 0,
+                project_id: this.activity_project_id,
+                target_indicator: '',
+                date_from: null,
+                date_to: null,
+                physical_q1: 0,
+                physical_q2: 0,
+                physical_q3: 0,
+                physical_q4: 0,
+                ps_q1: 0,
+                ps_q2: 0,
+                ps_q3: 0,
+                ps_q4: 0,
+                mooe_q1: 0,
+                mooe_q2: 0,
+                mooe_q3: 0,
+                mooe_q4: 0,
+                co_q1: 0,
+                co_q2: 0,
+                co_q3: 0,
+                co_q4: 0,
+                gad_issue: '',
+                ccet_code: '',
+                responsible: '',
+                is_active: 1,
+                is_strategy_output: 0,
+            });
+        },
+        removeExpectedOutput(index) {
+            this.expected_outputs_new.splice(index, 1);
+        },
+        async saveExpectedOutputs() {
+            try {
+                const response = await axios.post('/revision/streamlined/expected/revised/outputs', {
+                    expected_outputs: this.expected_outputs_new
+                });
+                alert('Saved successfully!');
+                 this.expected_outputs_current.push(...this.expected_outputs_new);
+
+                this.expected_outputs_new = []; // Clear table after save
+                this.$emit('close-modal-event'); // Close modal
+            } catch (error) {
+                console.error(error);
+                alert('Error saving expected outputs.');
+            }
+        },
+        //EXPECTED OUTCOMES ******************************************
+        showExpectedOutcomeModal(activity, activity_id, activity_project_id){
+            this.expected_outcomes_new=[];
+            this.activity_id=activity_id
+            this.activity_project_id=activity_project_id
+            this.expected_outputs_new = [];
+            this.expected_outcomes_current = activity
+            this.ExpectedOutcomeModalVisible=true;
+        },
+        hideExpectedOutcomeModal(){
+            // alert('outcome')
+            this.ExpectedOutcomeModalVisible=false;
+            window.location.reload()
+        },
+        addOutcome() {
+            this.expected_outcomes_new.push({
+                id: null,
+                description: '',
+                strategy_id: null,
+                strategy_project_id: null,
+                activity_id: this.activity_id,
+                activity_project_id: this.activity_project_id,
+                is_strategy_outcome: 0
+            });
+        },
+        removeOutcome(index) {
+            this.expected_outcomes_new.splice(index, 1);
+        },
+        async saveExpectedOutcomes() {
+            try {
+                const payload = this.expected_outcomes_new.map(item => ({
+                    ...item,
+                    activity_id: this.activity_id,
+                    activity_project_id: this.activity_project_id,
+                    project_id: this.project_id
+                }));
+
+                const response = await axios.post('/revision/streamlined/expected/outcomes', { rows: payload });
+
+                if (response.data.success) {
+                    // Push saved outcomes to current list
+                    this.expected_outcomes_current.push(...this.expected_outcomes_new);
+                    // Clear new outcomes
+                    this.expected_outcomes_new = [];
+                    // this.hideExpectedOutcomeModal();
+                } else {
+                    alert('Failed to save expected outcomes');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error saving expected outcomes');
+            }
+        },
+        deleteExpectedOutcome(id, table, title, index){
+            this.deleteData(id,table,title)
+            let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
+            if (confirm(text) == true) {
+                this.$inertia.delete(`/revision/streamlined/${id}/${table}`, {
+                    onSuccess: () => {
+                        // Only runs if backend deletion succeeds
+                        this.expected_outcomes_current.splice(index, 1);
+                    },
+                    onError: () => {
+                        alert("Delete failed! Please try again.");
+                    },
+                });
+            }
+        },
+
     },
 };
 </script>
@@ -3583,7 +3938,10 @@ table {
   padding: 1rem;
   border-radius: 8px;
 }
-
+.signatory-card-full {
+  width: 100%; /* each card full width */
+  margin-bottom: 1rem;
+}
 .sticky-comments {
     position: fixed;
     top: 70px;

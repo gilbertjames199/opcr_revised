@@ -460,6 +460,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/save/risk/management', [RiskManangementController::class, 'save_multiple']);
         Route::post('/save/signatories', [SignatoryController::class, 'save_multiple']);
     });
+    Route::prefix('/revision/streamlined/expected')->group(function(){
+        Route::post('/revised/outputs', [ExpectedRevisedOutputController::class, 'save_multiple']);
+        Route::post('/outcomes', [ExpectedRevisedOutcomeController::class, 'save_multiple']);
+    });
     Route::prefix('/status/revision')->group(function () {
         Route::post('/update/{id}/{type}/{new_status}', [ProjectProfileTrackingController::class, 'status_update']);
         Route::get('/review/approve', [ProjectProfileTrackingController::class, 'review_approve_index']);

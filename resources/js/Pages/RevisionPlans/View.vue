@@ -2330,15 +2330,19 @@
                         </span>
                         <br><br>
                     </div>
-                    <!--SIGNATORIES-->
+                    <!--SIGNATORIES class="signatory-card"-->
                     <div id="signatories" class="signatory-grid">
-                        <div v-for="(signatory, index) in signatories" :key="index" class="signatory-card">
-                        <strong>{{ signatory.acted }} by: </strong><br><br>
-                        <span class="text-decoration-underline"><b>{{ signatory.name
-                                                                }}</b></span>
-                                                                <br>{{ signatory.position }}<br><br><br><br>
+                        <div v-for="(signatory, index) in signatories" :key="index"
+                            :class="['signatory-card', (signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed') ? 'signatory-card-full' : 'signatory-card']">
+
+                            <div v-if="signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed'"></div>
+                            <strong>{{ signatory.acted }} by: </strong><br><br>
+                            <span class="text-decoration-underline"><b>{{ signatory.name
+                                                                    }}</b></span>
+                                                                    <br>{{ signatory.position }}<br><br><br><br>
                         </div>
                     </div>
+
                     <!-- <div v-if="paps.type === 'p'">
                         <table class="table table-borderless no-border-table">
                             <tbody>
@@ -3157,6 +3161,11 @@ table {
   border-radius: 8px;
 }
 
+
+.signatory-card-full {
+  width: 100%; /* each card full width */
+  margin-bottom: 1rem;
+}
 .sticky-comments {
     position: fixed;
     top: 70px;
