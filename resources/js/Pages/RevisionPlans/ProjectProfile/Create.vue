@@ -293,7 +293,9 @@
                                 <th colspan="1">Amount (Php)</th>
                                 <td colspan="2" class="text-end"  :id="paps.id+'_revision_plans_amount'" :class="{
                                     'text-danger': has_comment('Title','Amount',imp_amount,'amount','revision_plans', paps, paps.comments)
-                                }">{{ format_number_conv(imp_amount, 2, true) }}
+                                }">
+                                    <!-- {{ format_number_conv(imp_amount, 2, true) }} -->
+                                      ₱ {{ overallBudget.toLocaleString() }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','Amount',imp_amount,'amount','revision_plans', paps, paps.comments)">*
                                     </button>
@@ -1074,7 +1076,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">{{ format_number_conv(v_imp_ps,2,true) }}
+                                        }">
+                                            <!-- {{ format_number_conv(v_imp_ps,2,true) }} -->
+                                              ₱ {{ totalImplementationPS.toLocaleString() }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
                                                 format_number_conv(v_imp_ps,2,true),
@@ -1109,7 +1113,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">{{ format_number_conv(v_imp_mooe,2,true) }}
+                                        }">
+                                        <!-- {{ format_number_conv(v_imp_mooe,2,true) }} -->
+                                          ₱ {{ totalImplementationMOOE.toLocaleString() }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
                                                     format_number_conv(v_imp_mooe,2,true),
@@ -1144,7 +1150,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">{{ format_number_conv(v_imp_fe,2,true) }}
+                                        }">
+                                        <!-- {{ format_number_conv(v_imp_fe,2,true) }} -->
+                                          ₱ {{ totalImplementationFE.toLocaleString() }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
                                                     format_number_conv(v_imp_fe,2,true),
@@ -1179,7 +1187,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">{{ format_number_conv(v_imp_co,2,true)}}
+                                        }">
+                                        <!-- {{ format_number_conv(v_imp_co,2,true)}} -->
+                                          ₱ {{ totalImplementationCO.toLocaleString() }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
                                                     format_number_conv(v_imp_co,2,true),
@@ -1215,7 +1225,9 @@
                                                 paps,
                                                 paps.comments)
                                             }"
-                                        >{{ format_number_conv(imp_amount,2,true) }}
+                                        >
+                                        <!-- {{ format_number_conv(imp_amount,2,true) }} -->
+                                          ₱ {{ totalImplementationAll.toLocaleString() }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
                                                     format_number_conv(imp_amount,2,true),
@@ -1363,8 +1375,16 @@
                                         </td>
                                     </tr>
 
-
-
+                                    <!-- TOTAL ROW -->
+                                    <tr class="fw-bold bg-light">
+                                        <td></td>
+                                        <td colspan="2">TOTAL {{ gadType }}</td>
+                                        <td></td>
+                                        <td>
+                                            ₱ {{ budgetSum(category, gadType).toLocaleString() }}
+                                        </td>
+                                        <td colspan="3"></td>
+                                    </tr>
                                 </template>
 
                             </tbody>
@@ -2718,6 +2738,53 @@ export default {
             });
 
             return result;
+        },
+        budgetSum() {
+            return (category, gadType) => {
+                const group = this.groupedBudget[category]?.[gadType];
+                if (!group) return 0;
+
+                return group.reduce((total, item) => {
+                    const amount = parseFloat(item.amount || 0);
+                    return total + (isNaN(amount) ? 0 : amount);
+                }, 0);
+            };
+        },
+        overallBudget() {
+            let total = 0;
+
+            for (const category in this.groupedBudget) {
+                const gadGroups = this.groupedBudget[category];
+
+                for (const gadType in gadGroups) {
+                    const rows = gadGroups[gadType];
+
+                    rows.forEach(item => {
+                        const amount = parseFloat(item.amount || 0);
+                        if (!isNaN(amount)) {
+                            total += amount;
+                        }
+                    });
+                }
+            }
+
+            return total;
+        },
+        totalImplementationPS() {
+            return this.computeCategory("ps");
+        },
+        totalImplementationMOOE() {
+            return this.computeCategory("mooe");
+        },
+        totalImplementationCO() {
+            return this.computeCategory("co");
+        },
+        totalImplementationFE() {
+            return this.computeCategory("fe");
+        },
+
+        totalImplementationAll() {
+            return this.computeCategory("total");
         }
 
     },
@@ -3424,6 +3491,42 @@ export default {
                 console.error("Error saving signatories:", err);
             });
         },
+
+        //IMPLEMENTATION
+        computeCategory(type) {
+            if (!this.implementation) return 0;
+
+            const categories = ["ps", "mooe", "co", "fe"];
+            const activeCats = type === "total" ? categories : [type];
+
+            let sum = 0;
+
+            this.implementation.forEach(item => {
+                if (item.activity && Array.isArray(item.activity)) {
+                    item.activity.forEach(act => {
+                        activeCats.forEach(cat => {
+                            sum += this.sumQuarterValues(act, cat);
+                        });
+                    });
+                }
+            });
+
+            return sum;
+        },
+
+        sumQuarterValues(act, category) {
+            const quarters = ["q1", "q2", "q3", "q4"];
+            let total = 0;
+
+            quarters.forEach(q => {
+                const key = `${category}_${q}`;
+                // ex: "mooe_q1"
+                let val = act[key];
+                total += parseFloat(val) || 0;
+            });
+
+            return total;
+        }
     },
 };
 </script>
