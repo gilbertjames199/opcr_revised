@@ -198,10 +198,15 @@ class PAPController extends Controller
             ->distinct('FFUNCCOD')
             ->orderBy('FFUNCTION', 'ASC')
             ->get();
-
+        // dd($functions);
+        if(!isset($functions) || $functions->isEmpty()){
+            // dd('dasdasdasdasd');
+            $functions = FFUNCCOD::where('department_code', auth()->user()->department_code)->get();
+        }
+        // dd($functions, auth()->user()->department_code);
         $popsp_agencies =PopspAgency::all();
         // dd($pops_agencies);
-        // dd($functions);
+        dd($functions);
         return inertia('PAPS/Create', [
             'mfos' => $mfos,
             'chief_agenda' => $chief_executive_agenda,
@@ -521,10 +526,10 @@ class PAPController extends Controller
             ->when($request->mfosel, function ($query, $searchItem) {
                 $query->where('idmfo', '=', $searchItem);
             })
-            ->when(auth()->user()->popsp_agency && auth()->user()->department_code=='01', function($query){
-                // dd(auth()->user()->popsp_agency);
-                $query->where('agency_name', auth()->user()->popsp_agency);
-            })
+            // ->when(auth()->user()->popsp_agency && auth()->user()->department_code=='01', function($query){
+            //     dd(auth()->user()->popsp_agency);
+            //     $query->where('agency_name', auth()->user()->popsp_agency);
+            // })
             ->where(function ($query) {
                 $query->where('idmfo', '>', '45')
                     ->orWhere(function ($query) {
