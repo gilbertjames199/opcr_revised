@@ -1273,6 +1273,7 @@ class RevisionPlanController extends Controller
             })
             ->get()
             ->pluck('idpaps');
+            // dd($popsp_agency);
         $PAPS = ProgramAndProject::where('department_code', auth()->user()->department_code)
             // ->where('agency_name', auth()->user()->agency_name)
             ->where('department_code', auth()->user()->department_code)
@@ -1314,6 +1315,9 @@ class RevisionPlanController extends Controller
                             $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
                             $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
                     }
+                    // if($item->id==233){
+                    //     dd($budgetary_requirement, $imp_amount);
+                    // }
                     // dd($total);
                     // dd($item);
                     // dd($item->project_title);

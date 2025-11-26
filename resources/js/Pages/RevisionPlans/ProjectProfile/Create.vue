@@ -1295,7 +1295,7 @@
                                     <th>Account Code</th>
                                     <th>Amount</th>
                                     <th>Source</th>
-                                    <th>Edit</th>
+                                    <!-- <th>Edit</th> -->
                                     <th>Delete</th>
                                 </tr>
                             </thead>
@@ -1347,7 +1347,7 @@
                                                 type="text"
                                                 v-model="row.account_code"
                                                 @input="setUnsaved(true)"
-                                                @change="updateRevisionPlans('budget_requirements', 'account_code', row.id, row.account_code)">
+                                                @change="updateRevisionPlans('budget_requirements', 'account_code', row.id, row.account_code)" disabled>
                                                     {{ row.account_code }}
                                             </textarea>
                                         </td>
@@ -1373,12 +1373,12 @@
                                         </td>
 
                                         <!-- EDIT -->
-                                        <td>
+                                        <!-- <td>
                                             <button class="btn btn-primary btn-sm text-white"
                                                 @click="showBudgetModal(form.id,gadType,category)">
                                                 ✏ Edit
                                             </button>
-                                        </td>
+                                        </td> -->
 
                                         <!-- DELETE -->
                                         <td>
@@ -1458,6 +1458,7 @@
                                     <th>Position</th>
                                     <th>Employment Status</th>
                                     <th>GAD-related trainings</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1519,6 +1520,18 @@
                                         <button v-if="has_comment('Team Plan','with_gad_training',team_member.with_gad_training,'with_gad_training','team_plans', team_member, team_member.comments)" class="superscript-btn"
                                             @click="handleClick('Team Plan','with_gad_training',team_member.with_gad_training,'with_gad_training','team_plans', team_member, team_member.comments)">*
                                         </button>
+                                    </td>
+                                    <!--Actions-->
+                                    <td>
+                                        <Button
+                                            class="btn btn-primary btn-sm"
+                                            @click="showTeamModalEdit(team_member)"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                            </svg>
+                                        </Button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -2391,6 +2404,7 @@
 
     </ActivityModal>
     <TeamModal v-if="TeamModalVisible" @close-modal-event="closeTeamModal" title="IMPLEMENTING TEAM">
+        {{ team_members }}
         <input type="hidden" required>
         <input type="hidden" v-model="team_members.revision_plan_id" class="form-control" autocomplete="chrome-off">
         <label for="">ASSIGN PERSON</label>
@@ -2420,6 +2434,14 @@
         <label for="">ROLE IN THE PROJECT</label>
         <input type="text" v-model="team_members.role" class="form-control" autocomplete="chrome-off">
 
+        <label for="">JOB STATUS</label>
+        <input type="text" v-model="team_members.status" class="form-control" autocomplete="chrome-off">
+        <select v-model="team_members.status" class="form-control" autocomplete="chrome-off">
+            <option>Job </option>
+            <!-- <option>Regular</options>
+            <option>Job Order</option>
+            <option>Casual</option> -->
+        </select>
 
         <input type="checkbox"
         v-model="team_members.with_gad_training"
@@ -3683,12 +3705,13 @@ export default {
         // team_members: [],
         // TeamModal,
         showTeamModal(){
-            this.TeamModalVisible=true;
+
             this.all_employees=[];
             this.addTeamRow()
             axios.get('/get_employees_all')
                 .then(response => {
                     this.all_employees = response.data;   // store employees
+                    this.TeamModalVisible=true;
                 })
                 .catch(error => {
                     console.error("Error loading employees:", error);
@@ -3697,6 +3720,30 @@ export default {
         closeTeamModal(){
             this.TeamModalVisible=false;
             this.all_employees=[];
+        },
+        showTeamModalEdit(emp){
+            this.TeamModalVisible=true;
+            this.all_employees=[];
+            this.team_members=({
+                id: emp.id,
+                revision_plan_id: this.editData.id,
+                implementing_team_id: emp.empl_id,
+                role:  emp.role,
+                empl_id: emp.empl_id,
+                name:  emp.name,
+                competency:  emp.competency,
+                position:  emp.position,
+                with_gad_training: emp.with_gad_training,
+                specify_GAD_training:  emp.specify_GAD_training,
+                gender:  emp.gender
+            });
+            axios.get('/get_employees_all')
+                .then(response => {
+                    this.all_employees = response.data;   // store employees
+                })
+                .catch(error => {
+                    console.error("Error loading employees:", error);
+                });
         },
         // TEAM MEMBERS *********************************************
         addTeamRow() {

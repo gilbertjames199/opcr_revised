@@ -571,6 +571,7 @@ class ProjectProfileStreamlinedController extends Controller
                 $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
                 // dd($co_total);
                 // dd($item->strategyProject[0]);
+
                 return [
                     "id" => $item->id,
                     "description" => $item->description,
@@ -657,10 +658,11 @@ class ProjectProfileStreamlinedController extends Controller
                 // dd($item);
                 return [
                     "id" => $item->id,
-                    "name" => $item->userEmployee ? $item->userEmployee->employee_name : "",
-                    "gender" => $item->userEmployee ? $item->userEmployee->gender : "",
-                    "status" => $item->userEmployee ? $item->userEmployee->employment_type_descr : "",
-                    "position" => $item->userEmployee ? $item->userEmployee->position_long_title : "",
+                    "name" => $item->userEmployee ? $item->userEmployee->employee_name : $item->name,
+                    "gender" => $item->userEmployee ? $item->userEmployee->gender : $item->gender,
+                    "status" => $item->userEmployee ? $item->userEmployee->employment_type_descr : $item->status,
+                    "position" => $item->userEmployee ? $item->userEmployee->position_long_title : $item->position,
+                    "empl_id" =>$item->userEmployee ? $item->userEmployee->empl_id : $item->empl_id,
                     "competency" => $item->competency,
                     "role" => $item->role,
                     "with_gad_training" => $item->with_gad_training,
