@@ -595,15 +595,15 @@
             <div class="d-flex align-items-center mb-2">
                 <label class="me-2" style="width: 80px;">Sector:</label>
                 <select v-model="ipp_list_sector" class="form-select w-auto">
+                    <option></option>
                     <option>Other Services</option>
                     <option>General Public Services Sector</option>
                     <option>Social Services Sector</option>
                     <option>Economic Services</option>
                 </select>
             </div>
+            <!-- {{ list_link }} -->
             <div class="d-flex justify-content-center">
-                <!-- {{ aip_printLink }} -->
-                  <!-- {{ list_link }} -->
 
                 <iframe :src="list_link" style="width:100%; height:500px" />
             </div>
@@ -826,6 +826,12 @@ export default {
                 }
             );
         }, 300),
+        ipp_list_office(newVal) {
+            this.updateReportLink();
+        },
+        ipp_list_sector(newVal) {
+            this.updateReportLink();
+        }
     },
     methods:{
         showCreate(){
@@ -1375,6 +1381,9 @@ export default {
             this.toggleIppListModal()
             // http://reports.dvodeoro.local:8080/jasperserver/flow.html?_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FList_IPP&standAlone=true
             this.list_link = this.ippListLink()
+        },
+        updateReportLink() {
+            this.list_link = this.ippListLink();
         },
         ippListLink(){
             var linkt = "https://";

@@ -1089,7 +1089,7 @@
                         </h3>
                         <!-- {{ capitalOutlay }}
                         showBudgetTable: {{ showBudgetTable() }} -->
-                        <table v-if="showBudgetTable()" class="table table-hover table-bordered border-dark">
+                        <!-- <table v-if="showBudgetTable()" class="table table-hover table-bordered border-dark">
                             <thead>
                                 <tr class="bg-secondary text-white">
                                     <th colspan="3">Particular</th>
@@ -1101,7 +1101,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- MOOE **************************************************************** -->
                                 <tr v-if="(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0"
 
                                 >
@@ -1109,7 +1108,7 @@
                                 </tr>
                                 <tr v-if="(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0" v-for="mooe in maintenanceOperating">
                                     <td ></td>
-                                    <!-- MOOE -PARTICULARS -->
+                                    MOOE -PARTICULARS
                                     <td colspan="2"
                                     :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.particulars,'particulars','budget_requirements', mooe, mooe.comments)
@@ -1122,7 +1121,7 @@
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.particulars,'particulars','budget_requirements', mooe, mooe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE -ACCOUNT CODE -->
+                                    MOOE -ACCOUNT CODE
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.account_code,'account_code','budget_requirements', mooe, mooe.comments)
                                             }" :id="mooe.id + '_budget_requirements_account_code'"
@@ -1134,7 +1133,7 @@
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.account_code,'account_code','budget_requirements', mooe, mooe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE GAD Attirbuted -->
+                                    MOOE GAD Attirbuted
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.GAD_amount,'GAD_amount','budget_requirements', mooe, mooe.comments)
                                             }" :id="mooe.id + '_budget_requirements_GAD_amount'">{{ format_number_conv(mooe.GAD_amount,2,true) }}
@@ -1145,7 +1144,7 @@
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.GAD_amount,'GAD_amount','budget_requirements', mooe, mooe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE NON-GAD -->
+                                     MOOE NON-GAD
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.NONGAD_amount,'NONGAD_amount','budget_requirements', mooe, mooe.comments)
                                             }" :id="mooe.id + '_budget_requirements_NONGAD_amount'">
@@ -1157,7 +1156,7 @@
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.NONGAD_amount,'NONGAD_amount','budget_requirements', mooe, mooe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE Total -->
+                                     MOOE Total
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.Total,'Total','budget_requirements', mooe, mooe.comments)
                                             }" :id="mooe.id + '_budget_requirements_Total'">{{ format_number_conv(mooe.Total,2,true) }}
@@ -1168,7 +1167,7 @@
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.Total,'Total','budget_requirements', mooe, mooe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE Source -->
+                                    MOOE Source
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.Source,'Source','budget_requirements', mooe, mooe.comments)
                                             }" :id="mooe.id + '_budget_requirements_Source'">{{ mooe.Source }}
@@ -1185,7 +1184,7 @@
                                     <td colspan="3">
                                         SUB-TOTAL (MOOE)
                                     </td>
-                                    <!-- MOOE GAD ******************************************************************************************************************-->
+                                    MOOE GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements', format_number_conv(s_mooe_gad,2,true), format_number_conv(s_mooe_gad,2,true), 'budgetary_mooe_gad', 'revision_plans', paps, paps.comments)
                                     }">
@@ -1197,7 +1196,7 @@
                                             @click="handleClick('Budgetary Requirements',format_number_conv(s_mooe_gad,2,true),format_number_conv(s_mooe_gad,2,true),'budgetary_mooe_gad','revision_plans', paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE NON-GAD ******************************************************************************************************************-->
+                                    MOOE NON-GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)
                                     }">
@@ -1209,7 +1208,7 @@
                                             @click="handleClick('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE TOTAL ****************************************************************************************************************** -->
+                                    MOOE TOTAL ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements', format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true), format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true),
                                         'budgetary_mooe_total', 'revision_plans', paps, paps.comments)
@@ -1227,13 +1226,12 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <!-- PERSONNEL SERVICES ****************************************************** -->
                                  <tr v-if="(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0">
                                     <td colspan="8"><b>PERSONNEL SERVICES</b></td>
                                 </tr>
                                 <tr  v-if="(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0" v-for="ps in personnelServices">
                                     <td :id="ps.id + '_budget_requirements'"></td>
-                                    <!-- PS Particulars -->
+                                    PS Particular
                                     <td colspan="2" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.particulars,'particulars','budget_requirements', ps, ps.comments)
                                             }" :id="ps.id + '_budget_requirements_particulars'">{{ ps.particulars }}
@@ -1244,7 +1242,7 @@
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.particulars,'particulars','budget_requirements', ps, ps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS Account Code -->
+                                    PS Account Code
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.account_code,'account_code','budget_requirements', ps, ps.comments)
                                             }" :id="ps.id + '_budget_requirements_account_code'">{{ ps.account_code }}
@@ -1255,7 +1253,7 @@
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.account_code,'account_code','budget_requirements', ps, ps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS GAD Amount -->
+                                     PS GAD Amount
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.GAD_amount,'GAD_amount','budget_requirements', ps, ps.comments)
                                             }" :id="ps.id + '_budget_requirements_GAD_amount'">{{ format_number_conv(ps.GAD_amount,2,true) }}
@@ -1266,7 +1264,7 @@
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.GAD_amount,'GAD_amount','budget_requirements', ps, ps.comments)">*
                                         </button>
                                     </td>
-                                    <!--  PS NONGAD Amount-->
+                                    PS NONGAD Amount
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.NONGAD_amount,'NONGAD_amount','budget_requirements', ps, ps.comments)
                                             }" :id="ps.id + '_budget_requirements_NONGAD_amount'">
@@ -1278,7 +1276,7 @@
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.NONGAD_amount,'NONGAD_amount','budget_requirements', ps, ps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS Total -->
+                                     PS Total
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.Total,'Total','budget_requirements', ps, ps.comments)
                                             }" :id="ps.id + '_budget_requirements_Total'">{{ format_number_conv(ps.Total,2,true) }}
@@ -1289,7 +1287,7 @@
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.Total,'Total','budget_requirements', ps, ps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS Source -->
+                                     PS Source
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.Source,'Source','budget_requirements', ps, ps.comments)
                                             }" :id="ps.id + '_budget_requirements_Source'">{{ ps.Source }}
@@ -1304,7 +1302,7 @@
                                 <tr v-if="(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0">
                                     <td ></td>
                                     <td colspan="3">SUB-TOTAL (PS)</td>
-                                    <!-- PS GAD ******************************************************************************************************************-->
+                                     PS GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         format_number_conv(s_ps_gad,2,true),
@@ -1331,7 +1329,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS NON-GAD ******************************************************************************************************************-->
+                                    PS NON-GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         format_number_conv(s_ps_non,2,true),
@@ -1358,7 +1356,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS TOTAL ****************************************************************************************************************** -->
+                                    PS TOTAL ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),
@@ -1388,13 +1386,12 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <!-- FINANCIAL EXPENSES ****************************************************** -->
                                 <tr v-if="(parseFloat(s_fe_gad) + parseFloat(s_fe_non))>0">
                                     <td colspan="8"><b>FINANCIAL EXPENSES</b></td>
                                 </tr>
                                 <tr v-if="(parseFloat(s_fe_gad) + parseFloat(s_fe_non))>0" v-for="fe in financialExpenses">
                                     <td :id="fe.id + '_budget_requirements'"></td>
-                                    <!-- Financial Expenses Particulars -->
+                                    Financial Expenses Particulars
 
                                     <td colspan="2" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.particulars,'particulars','budget_requirements', fe, fe.comments)
@@ -1406,7 +1403,7 @@
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.particulars,'particulars','budget_requirements', fe, fe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Financial Expenses Account Code -->
+                                     Financial Expenses Account Code
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.account_code,'account_code','budget_requirements', fe, fe.comments)
                                             }" :id="fe.id + '_budget_requirements_account_code'">{{ fe.account_code }}
@@ -1417,7 +1414,7 @@
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.account_code,'account_code','budget_requirements', fe, fe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Financial Expenses GAD Attributed -->
+                                     Financial Expenses GAD Attributed
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.GAD_amount,'GAD_amount','budget_requirements', fe, fe.comments)
                                             }" :id="fe.id + '_budget_requirements_GAD_amount'">{{ format_number_conv(fe.GAD_amount,2,true) }}
@@ -1428,7 +1425,7 @@
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.GAD_amount,'GAD_amount','budget_requirements', fe, fe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Financial Expenses NON-GAD Amount -->
+                                     Financial Expenses NON-GAD Amount
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.NONGAD_amount,'NONGAD_amount','budget_requirements', fe, fe.comments)
                                             }" :id="fe.id + '_budget_requirements_NONGAD_amount'">{{ format_number_conv(fe.NONGAD_amount,2,true) }}
@@ -1439,7 +1436,7 @@
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.NONGAD_amount,'NONGAD_amount','budget_requirements', fe, fe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Financial Expenses Total -->
+                                    Financial Expenses Total
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.Total,'Total','budget_requirements', fe, fe.comments)
                                             }" :id="fe.id + '_budget_requirements_Total'">{{ format_number_conv(fe.Total,2,true) }}
@@ -1450,7 +1447,7 @@
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.Total,'Total','budget_requirements', fe, fe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Financial Expenses Source -->
+                                    Financial Expenses Source
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.Source,'Source','budget_requirements', fe, fe.comments)
                                             }" :id="fe.id + '_budget_requirements_Source'">{{ fe.Source }}
@@ -1465,7 +1462,7 @@
                                 <tr v-if="(parseFloat(s_fe_gad) + parseFloat(s_fe_non))>0">
                                     <td ></td>
                                     <td colspan="3">SUB-TOTAL (Financial Expenses)</td>
-                                    <!-- FE GAD ******************************************************************************************************************-->
+                                     FE GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         format_number_conv(s_fe_gad,2,true),
@@ -1493,7 +1490,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- FE NON-GAD ******************************************************************************************************************-->
+                                    FE NON-GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         format_number_conv(s_fe_non,2,true),
@@ -1520,7 +1517,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- FE TOTAL ******************************************************************************************************************-->
+                                     FE TOTAL ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                             'TOTAL FINANCIAL EXPENSES',
@@ -1549,13 +1546,12 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <!-- CAPITAL OUTLAY*********************************************************** -->
                                 <tr v-if="(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0">
                                     <td colspan="8"><b>CAPITAL OUTLAY</b></td>
                                 </tr>
                                 <tr v-if="(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0" v-for="cap in capitalOutlay">
                                     <td ></td>
-                                    <!-- Capital Outlay Particulars -->
+                                     Capital Outlay Particulars
                                     <td colspan="2" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.particulars,'particulars','budget_requirements', cap, cap.comments)
                                             }" :id="cap.id + '_budget_requirements_particulars'">{{ cap.particulars }}
@@ -1566,7 +1562,7 @@
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.particulars,'particulars','budget_requirements', cap, cap.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Capital Outlay Account Code -->
+                                     Capital Outlay Account Code
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.account_code,'account_code','budget_requirements', cap, cap.comments)
                                             }" :id="cap.id + '_budget_requirements_account_code'">{{ cap.account_code }}
@@ -1577,7 +1573,7 @@
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.account_code,'account_code','budget_requirements', cap, cap.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Capital Outlay GAD Attributed -->
+                                     Capital Outlay GAD Attributed
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.GAD_amount,'GAD_amount','budget_requirements', cap, cap.comments)
                                             }" :id="cap.id + '_budget_requirements_GAD_amount'">{{ format_number_conv(cap.GAD_amount,2,true) }}
@@ -1588,7 +1584,7 @@
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.GAD_amount,'GAD_amount','budget_requirements', cap, cap.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Capital Outlay NON-GAD Amount -->
+                                     Capital Outlay NON-GAD Amount
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.NONGAD_amount,'NONGAD_amount','budget_requirements', cap, cap.comments)
                                             }" :id="cap.id + '_budget_requirements_NONGAD_amount'">{{ format_number_conv(cap.NONGAD_amount,2,true) }}
@@ -1599,7 +1595,7 @@
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.NONGAD_amount,'NONGAD_amount','budget_requirements', cap, cap.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Capital Outlay Total -->
+                                    Capital Outlay Total
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.Total,'Total','budget_requirements', cap, cap.comments)
                                             }" :id="cap.id + '_budget_requirements_Total'">{{ format_number_conv(cap.Total,2,true) }}
@@ -1610,7 +1606,7 @@
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.Total,'Total','budget_requirements', cap, cap.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Capital Outlay Source -->
+                                     Capital Outlay Source
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.Source,'Source','budget_requirements', cap, cap.comments)
                                             }" :id="cap.id + '_budget_requirements_Source'">{{ cap.Source }}
@@ -1625,7 +1621,7 @@
                                 <tr v-if="(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0">
                                     <td ></td>
                                     <td colspan="3">SUB-TOTAL (Capital Outlay)</td>
-                                    <!-- CAPITAL OUTLAY GAD ******************************************************************************************************************-->
+                                    CAPITAL OUTLAY GAD ******************************************************************************************************************--
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         'Capital Outlay GAD -Total',
@@ -1652,7 +1648,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- CAPITAL OUTLAY NON-GAD ******************************************************************************************************************-->
+                                    -- CAPITAL OUTLAY NON-GAD ******************************************************************************************************************--
                                      <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         'Capital Outlay Non-GAD -Total',
@@ -1679,7 +1675,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                     <!-- CAPITAL OUTLAY TOTAL ******************************************************************************************************************-->
+                                     -- CAPITAL OUTLAY TOTAL ******************************************************************************************************************-
                                     <td class="text-end" :class="{
                                             'text-danger': has_comment('Budgetary Requirements',
                                             'Capital Outlay -Total',
@@ -1708,30 +1704,8 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <!-- CAPITAL OUTLAY*********************************************************** -->
-                                <!-- <tr>
-                                <td colspan="8"><b>CAPITAL OUTLAY</b></td>
-                                </tr>
-                                <tr v-for="cap in capitalOutlay">
-                                    <td></td>
-                                    <td colspan="2">{{ cap.particulars }}</td>
-                                    <td>{{ cap.account_code }}</td>
-                                    <td class="text-end">{{ format_number_conv(cap.GAD_amount,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(cap.NONGAD_amount,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(cap.Total,2,true) }}</td>
-                                    <td>{{ cap.Source }}</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td colspan="3">SUB-TOTAL (Capital Outlay)</td>
-                                    <td class="text-end">{{ format_number_conv(s_cap_gad,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(s_cap_non,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true) }}</td>
-                                    <td></td>
-                                </tr> -->
                                 <tr>
                                     <td colspan="4">TOTAL</td>
-                                    <!-- GAD TOTAL *********************************************************** -->
                                     <td class="text-end"
                                         :class="{
                                             'text-danger': has_comment('Budgetary Requirements',
@@ -1761,7 +1735,6 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- NON-GAD TOTAL *********************************************************** -->
                                     <td class="text-end"
                                         :class="{
                                             'text-danger': has_comment('Budgetary Requirements',
@@ -1791,7 +1764,6 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- GRAND TOTAL *********************************************************** -->
                                     <td class="text-end"
                                         :class="{
                                             'text-danger': has_comment('Budgetary Requirements',
@@ -1827,6 +1799,129 @@
                                     <td></td>
                                 </tr>
                             </tbody>
+                        </table> -->
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">Particulars</th>
+                                    <th>Account Code</th>
+                                    <th>Amount</th>
+                                    <th>Source</th>
+                                    <!-- <th>Edit</th> -->
+                                </tr>
+                            </thead>
+
+                            <tbody v-for="(gadGroups, category) in groupedBudget" :key="category">
+
+                                <!-- CATEGORY HEADER -->
+                                <tr v-if="hasAnyRows(gadGroups)" class="table-primary">
+                                    <td colspan="8" class="fw-bold text-uppercase">
+                                        {{ formatCategory(category) }}
+                                    </td>
+                                </tr>
+
+                                <!-- GAD + NON-GAD GROUPS -->
+                                <template v-for="(rows, gadType) in gadGroups" :key="gadType" >
+
+                                    <!-- SUB HEADER (GAD / NON-GAD) -->
+                                    <tr v-if="hasRows(rows)" class="table-secondary" >
+                                        <td></td>
+                                        <td colspan="7" class="fw-bold">
+                                            <div class="d-flex justify-content-between align-items-center w-100">
+                                                {{ gadType }}
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                    <!-- DATA ROWS -->
+                                     <tr v-if="hasRows(rows)"  v-for="row in rows" :key="row.id">
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <textarea
+                                                class="form-control transparent-bg "
+                                                type="text"
+                                                v-model="row.particulars"
+                                                @input="setUnsaved(true)"
+                                                @change="updateRevisionPlans('budget_requirements', 'particulars', row.id, row.particulars)">
+                                                    {{ row.particulars }}
+                                            </textarea>
+                                        </td>
+                                        <td>
+                                            <textarea
+                                                class="form-control transparent-bg "
+                                                type="text"
+                                                v-model="row.account_code"
+                                                @input="setUnsaved(true)"
+                                                @change="updateRevisionPlans('budget_requirements', 'account_code', row.id, row.account_code)" disabled>
+                                                    {{ row.account_code }}
+                                            </textarea>
+                                        </td>
+                                        <td>
+                                            <textarea
+                                                class="form-control transparent-bg "
+                                                type="text"
+                                                v-model="row.amount"
+                                                @input="setUnsaved(true)"
+                                                @change="updateRevisionPlans('budget_requirements', 'amount', row.id, row.amount)">
+                                                    {{ row.amount }}
+                                            </textarea>
+                                        </td>
+                                        <td>
+                                            <textarea
+                                                class="form-control transparent-bg "
+                                                type="text"
+                                                v-model="row.source"
+                                                @input="setUnsaved(true)"
+                                                @change="updateRevisionPlans('budget_requirements', 'source', row.id, row.source)">
+                                                    {{ row.source }}
+                                            </textarea>
+                                        </td>
+
+                                        <!-- EDIT -->
+                                        <!-- <td>
+                                            <button class="btn btn-primary btn-sm text-white"
+                                                @click="showBudgetModal(form.id,gadType,category)">
+                                                ✏ Edit
+                                            </button>
+                                        </td> -->
+
+
+                                    </tr>
+
+                                    <!-- NO DATA ROW -->
+                                    <!-- <tr v-if="rows.length === 0">
+                                        <td colspan="8" class="text-center text-muted">
+                                            No entries under {{ gadType }} {{ formatCategory(category)  }}
+                                        </td>
+                                    </tr> -->
+
+                                    <!-- TOTAL ROW -->
+                                    <tr v-if="hasRows(rows)"  class="fw-bold bg-light">
+                                        <td></td>
+                                        <td colspan="2">TOTAL {{ gadType }}</td>
+                                        <td></td>
+                                        <td>
+                                            ₱ {{ budgetSum(category, gadType).toLocaleString() }}
+                                        </td>
+                                        <td colspan="3"></td>
+                                    </tr>
+                                </template>
+
+
+                            </tbody>
+                             <tr>
+                                    <td colspan="4"><h4>TOTAL</h4></td>
+                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            <!-- <tr>
+                                    <td colspan="4"><h4>TOTAL</h4></td>
+                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                    <td colspan="3"></td>
+                                </tr> -->
                         </table>
                         <!-- <table v-if="showBudgetTable()" class="table table-hover table-bordered border-dark">
                             <thead>
@@ -2689,7 +2784,7 @@ export default {
         signatories: Object,
         data: Object,
         imp_amount: Number,
-
+        budget_requirements: Object,
         department_code_project: String,
         department_code_user: String,
         // mooe_gad: Object,
@@ -2714,7 +2809,63 @@ export default {
         src: Object,
 
     },
-    computed: {},
+    computed: {
+        groupedBudget() {
+            const result = {
+                maintenanceOperating: { GAD: [], "NON-GAD": [] },
+                personnelServices: { GAD: [], "NON-GAD": [] },
+                financialExpenses: { GAD: [], "NON-GAD": [] },
+                capitalOutlay: { GAD: [], "NON-GAD": [] },
+            };
+
+            const map = {
+                'Maintenance, Operating, and Other Expenses': 'maintenanceOperating',
+                'Personnel Services': 'personnelServices',
+                'Financial Expenses': 'financialExpenses',
+                'Capital Outlay': 'capitalOutlay',
+            };
+
+            this.budget_requirements.forEach(item => {
+            const catKey = map[item.category];
+            if (!catKey) return;
+                const gadKey = item.category_gad.toUpperCase() === 'GAD' ? 'GAD' : 'NON-GAD';
+                result[catKey][gadKey].push(item);
+            });
+
+            return result;
+        },
+        budgetSum() {
+            return (category, gadType) => {
+                const group = this.groupedBudget[category]?.[gadType];
+                if (!group) return 0;
+
+                return group.reduce((total, item) => {
+                    const amount = parseFloat(item.amount || 0);
+                    return total + (isNaN(amount) ? 0 : amount);
+                }, 0);
+            };
+        },
+        overallBudget() {
+            let total = 0;
+
+            for (const category in this.groupedBudget) {
+                const gadGroups = this.groupedBudget[category];
+
+                for (const gadType in gadGroups) {
+                    const rows = gadGroups[gadType];
+
+                    rows.forEach(item => {
+                        const amount = parseFloat(item.amount || 0);
+                        if (!isNaN(amount)) {
+                            total += amount;
+                        }
+                    });
+                }
+            }
+
+            return total;
+        },
+    },
 
     data() {
         return {
@@ -3107,6 +3258,24 @@ export default {
             // Highlight effect
             el.classList.add("highlight-target");
             setTimeout(() => el.classList.remove("highlight-target"), 2000);
+        },
+
+        //BUDGETARY
+        formatCategory(key) {
+            const map = {
+                maintenanceOperating: 'Maintenance, Operating, and Other Expenses',
+                personnelServices: 'Personnel Services',
+                financialExpenses: 'Financial Expenses',
+                capitalOutlay: 'Capital Outlay'
+            };
+            return map[key] || key;
+        },
+        hasRows(rows) {
+            return rows && rows.length > 0;
+        },
+
+        hasAnyRows(gadGroupsForCategory) {
+            return Object.values(gadGroupsForCategory).some(r => r.length > 0);
         }
 
     }

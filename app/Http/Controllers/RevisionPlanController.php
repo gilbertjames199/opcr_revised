@@ -665,7 +665,8 @@ class RevisionPlanController extends Controller
             });
         //Budget Revised
 
-        $budgetRequirements = $this->budgetRequirements($id);
+        // $budgetRequirements = $this->budgetRequirements($id);
+        $budgetRequirements = $this->budgetRequirementsUngrouped($id);
         // dd($id);
         // dd($budgetRequirements);
         // dd("jjj");
@@ -747,7 +748,7 @@ class RevisionPlanController extends Controller
         // $sig_app =  Signatory::where('revision_plan_id', $id)
         //     ->where('acted', 'Approved')->get();
         //IMPLEMENTATION PLAN
-        $imp_amount = "0.00";
+        $imp_amount = "0.00";http://192.168.160.9:8076/revision/view/project/paps/1?source=direct
         // dd($paps);
         if ($paps->is_strategy_based == 1) {
             $imp_amount = StrategyProject::where('project_id', $id)->where('is_active', '1')
@@ -770,6 +771,7 @@ class RevisionPlanController extends Controller
         // ->sortByDesc('created_at')
         // dd($all_comments->pluck('created_at'));
         // dd($paps);
+        // dd($budgetRequirements);
         return inertia('RevisionPlans/View', [
             "all_comments" => $all_comments,
             "paps" => $paps,
@@ -803,6 +805,7 @@ class RevisionPlanController extends Controller
             "maintenanceOperating" => $maintenanceOperating,
             "personnelServices" => $personnelServices,
             "financialExpenses" => $financialExpenses,
+            "budget_requirements"=>$budgetRequirements,
             // "data" => $data,
             "src" => $src,
             "imp_amount" => $imp_amount,
@@ -952,6 +955,17 @@ class RevisionPlanController extends Controller
         // dd($groupByField);
         // dd($budgetRequirements);
         return $budgetRequirements;
+    }
+
+    public function budgetRequirementsUngrouped($id){
+        return BudgetRequirement::with(['comments' => function ($query) {
+            $query->where('table_name', 'budget_requirements');
+        }])
+            ->select('id', 'revision_plan_id', 'particulars', 'account_code', 'amount', 'proposed_budget', 'category', 'category_gad', 'source')
+            ->where('revision_plan_id', $id)
+            ->orderBy('category') // optional: keep some order
+            ->orderBy('category_gad')
+            ->get();
     }
     public function edit(Request $request, $id)
     {

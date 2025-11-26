@@ -1414,7 +1414,7 @@
                                     <td colspan="4"><h4>TOTAL</h4></td>
                                     <td>₱ {{ overallBudget.toLocaleString() }}</td>
                                     <td colspan="3"></td>
-                                </tr>
+                            </tr>
                         </table>
 
                     </div>

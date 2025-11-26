@@ -252,7 +252,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         preserveState: true,
         replace: true
       });
-    }, 300)
+    }, 300),
+    ipp_list_office: function ipp_list_office(newVal) {
+      this.updateReportLink();
+    },
+    ipp_list_sector: function ipp_list_sector(newVal) {
+      this.updateReportLink();
+    }
   },
   methods: {
     showCreate: function showCreate() {
@@ -881,6 +887,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     showIppListModal: function showIppListModal() {
       this.toggleIppListModal(); // http://reports.dvodeoro.local:8080/jasperserver/flow.html?_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FList_IPP&standAlone=true
 
+      this.list_link = this.ippListLink();
+    },
+    updateReportLink: function updateReportLink() {
       this.list_link = this.ippListLink();
     },
     ippListLink: function ippListLink() {
@@ -1819,29 +1828,33 @@ var _hoisted_170 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 /* HOISTED */
 );
 
-var _hoisted_171 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "Other Services", -1
+var _hoisted_171 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_172 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "General Public Services Sector", -1
+var _hoisted_172 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "Other Services", -1
 /* HOISTED */
 );
 
-var _hoisted_173 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "Social Services Sector", -1
+var _hoisted_173 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "General Public Services Sector", -1
 /* HOISTED */
 );
 
-var _hoisted_174 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "Economic Services", -1
+var _hoisted_174 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "Social Services Sector", -1
 /* HOISTED */
 );
 
-var _hoisted_175 = [_hoisted_171, _hoisted_172, _hoisted_173, _hoisted_174];
-var _hoisted_176 = {
+var _hoisted_175 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "Economic Services", -1
+/* HOISTED */
+);
+
+var _hoisted_176 = [_hoisted_171, _hoisted_172, _hoisted_173, _hoisted_174, _hoisted_175];
+var _hoisted_177 = {
   "class": "d-flex justify-content-center"
 };
-var _hoisted_177 = ["src"];
+var _hoisted_178 = ["src"];
 
-var _hoisted_178 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_179 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
@@ -2629,9 +2642,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return $data.ipp_list_sector = $event;
         }),
         "class": "form-select w-auto"
-      }, _hoisted_175, 512
+      }, _hoisted_176, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.ipp_list_sector]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_176, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ aip_printLink }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ list_link }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.ipp_list_sector]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ list_link }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_177, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
         src: $data.list_link,
         style: {
           "width": "100%",
@@ -2639,7 +2652,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, null, 8
       /* PROPS */
-      , _hoisted_177)]), _hoisted_178];
+      , _hoisted_178)]), _hoisted_179];
     }),
     _: 1
     /* STABLE */
