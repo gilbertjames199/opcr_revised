@@ -3264,8 +3264,9 @@ class RevisionPlanController extends Controller
         if($request->id){
             $revision = RevisionPlan::with(['paps','paps.office','budget'])->where('id', $request->id)->first();
             // dd($revision);
+            $budget_total = $this->getTotalBudget($revision);
             $activities = ActivityProject::with(['expected_output','expected_outcome'])->where('project_id', $revision->id)->get()
-            ->map(function($item) use ($revision){
+            ->map(function($item) use ($revision, $budget_total){
                 // dd($revision->paps->office->FFUNCTION);
                 // dd($revision->budget[0]->source);
                 return [
@@ -3279,7 +3280,7 @@ class RevisionPlanController extends Controller
                     'target_indicator' => $item->target_indicator,
                     'date_from'        => $item->date_from,
                     'date_to'          => $item->date_to,
-
+                    'budget_total'     => $budget_total,
                     'ps_q1'            => $item->ps_q1,
                     'ps_q2'            => $item->ps_q2,
                     'ps_q3'            => $item->ps_q3,
@@ -3315,5 +3316,22 @@ class RevisionPlanController extends Controller
             return [];
         }
 
+    }
+
+    public function getTotalBudget($revision){
+
+
+        $activitiesQuery = ActivityProject::where('project_id', $revision->id);
+
+        // ---- TOTAL BUDGET ACROSS ALL ACTIVITY ROWS ----
+        $total_budget = $activitiesQuery->get()->reduce(function($carry, $row) {
+            return $carry
+                + $row->ps_q1 + $row->ps_q2 + $row->ps_q3 + $row->ps_q4
+                + $row->mooe_q1 + $row->mooe_q2 + $row->mooe_q3 + $row->mooe_q4
+                + $row->co_q1 + $row->co_q2 + $row->co_q3 + $row->co_q4
+                + $row->fe_q1 + $row->fe_q2 + $row->fe_q3 + $row->fe_q4;
+        }, 0);
+
+        return $total_budget;
     }
 }
