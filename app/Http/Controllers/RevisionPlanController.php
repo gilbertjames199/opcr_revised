@@ -3154,4 +3154,120 @@ class RevisionPlanController extends Controller
                     ];
                 });
     }
+
+    public function list(Request $request){
+        $filter=$request->all;
+        $budget_controller = new BudgetRequirementController($this->budget);
+        // dd($budget_controller);
+        $data = RevisionPlan::
+            // select(
+            //     'revision_plans.id',
+            //     'revision_plans.project_title',
+            //     'revision_plans.version',
+            //     'revision_plans.type',
+            //     'revision_plans.is_strategy_based',
+            //     'revision_plans.idpaps',
+            //     'ff.FFUNCTION',
+            //     'paps.aip_code',
+            //     // DB::raw('sum(budget_requirements.amount)')
+            // )->
+            with(['budget', 'paps', 'paps.office'])
+            // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
+            // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
+            // ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
+            // ->leftJoin(DB::raw('budget_requirements'), 'budget_requirements.revision_plan_id', '=', 'revision_plans.id')
+            ->whereHas('budget', function ($query) {
+                $query->select(DB::raw('revision_plan_id'))
+                    ->groupBy('revision_plan_id')
+                    ->havingRaw('SUM(amount) > 0');
+            })
+
+            ->when($request->source == 'rev_app', function ($query) {
+                // dd("rev app ang source");
+                $query->where('status', '>=', '0');
+            })
+            ->when($request->FFUNCCOD, function ($query) use ($request) {
+                $query->whereHas('paps', function ($query_inner) use ($request) {
+                    $query_inner->where('FFUNCCOD', $request->FFUNCCOD);
+                });
+            })
+            ->where('project_title', 'LIKE', '%' . $request->search . '%')
+            // ->whereHas('paps', function ($query) use ($request, $source, $dept_id) {
+            //     $query->when($source == 'budget', function ($query) use ($dept_id) {
+            //         $query->where('department_code', $dept_id);
+            //     });
+            //     // $query->whereHas('paps.office', function($query_o)use($request){
+            //     //     $query_o->when($request->FFUNCCOD, function ($query) use ($request) {
+            //     //         $query->where('ff.FFUNCCOD', $request->FFUNCCOD);
+            //     //     });
+            //     // });
+            // })
+            // ->whereHas('paps.office', function($query){
+            //     $query->orderBy('FFUNCTION');
+            // })
+            ->get(); // <- Pagination
+        // dd($data);
+        return $data->map(function ($item) use ($budget_controller) {
+            $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)
+                ->where('table_name', 'revision_plans')
+                ->count();
+
+            $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                ->sum('amount');
+
+            $imp_amount = 0.00;
+            if ($item->is_strategy_based == 1) {
+                $total = $budget_controller->getStratTotal($item->id);
+            } else {
+                $total = $budget_controller->getActivityTotal($item->id);
+            }
+
+            if ($total) {
+                $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                    $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                    $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
+                    $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+            }
+            // dd($item->FFUNCTION);
+            // dd($item);
+            $budget_val = is_numeric(str_replace(',', '', $budgetary_requirement))
+                ? floatval(str_replace(',', '', $budgetary_requirement))
+                : 0;
+
+            $imp_val = is_numeric(str_replace(',', '', $imp_amount))
+                            ? floatval(str_replace(',', '', $imp_amount))
+                            : 0;
+
+            $warning = '';
+
+            if ($budget_val !== $imp_val) {
+                if ($budget_val > $imp_val) {
+                    $warning = 'Workplan Total is GREATER than the total in Budgetary Requirements';
+                } else {
+                    $warning = 'Workplan Total is LESS than the total in Budgetary Requirements';
+                }
+            }
+
+            return [
+                'FFUNCTION' => optional(optional($item->paps)->office)->FFUNCTION,
+                'id' => $item->id,
+                'project_title' => $item->project_title,
+                'type' => $item->type,
+                'version' => $item->version,
+                'budget_sum' => $budgetary_requirement,
+                'imp_amount' => $imp_amount,
+                'idpaps' => $item->idpaps,
+                'status' => $item->status,
+                'warning' => $warning,
+            ];
+        });
+    }
+
+    public function workplan(Request $request){
+        // return "james";
+        $revision = RevisionPlan::where('id', $request->id)->first();
+        $activities = ActivityProject::with(['expected_output','expected_outcome'])->where('project_id', $revision->id)->get();
+
+        return $activities;
+    }
 }

@@ -10,7 +10,7 @@ class TeamPlan extends Model
     use HasFactory;
     protected $connection = "mysql";
     protected $table = 'team_plans';
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function userEmployee()
     {

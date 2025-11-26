@@ -454,7 +454,9 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/implementation-workplan')->group(function () {
         Route::post('/strategies', [StrategyController::class, 'save_strategies']);
         Route::post('/strategies/activities', [ActivityController::class, 'save_activities']);
+        Route::post('/implementing/team/plans', [TeamPlanController::class, 'save_team']);
     });
+    Route::get('/get_employees_all', [TeamPlanController::class, 'getEmployees']);
     Route::prefix('/revision/streamlined/subtables')->group(function(){
         Route::post('/save/monitoring/and/evaluation', [MonitoringAndEvaluationController::class, 'save_multiple']);
         Route::post('/save/risk/management', [RiskManangementController::class, 'save_multiple']);

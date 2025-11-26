@@ -270,4 +270,45 @@ class TeamPlanController extends Controller
             'role.required' => 'Role is required'
         ];
     }
+
+    public function save_team(Request $request)
+    {
+        // Validate the rows array exists
+        // $request->validate([
+        //     'rows' => 'required|array',
+        // ]);
+
+        $rows = $request->input('rows', []);
+
+        // foreach ($rows as $row) {
+
+        // Insert or update row
+        TeamPlan::updateOrCreate(
+            [
+                'id' => $request->input['id'] ?? 0,   // if id = 0 → will insert
+            ],
+            [
+                'revision_plan_id'      => $rows['revision_plan_id'] ?? null,
+                'implementing_team_id'  => $rows['implementing_team_id'] ?? 0,
+                'role'                  => $rows['role'] ?? '',
+                'empl_id'               => $rows['empl_id'] ?? 0,
+                'name'                  => $rows['name'] ?? '',
+                'competency'            => $rows['competency'] ?? '',
+                'position'              => $rows['position'] ?? '',
+                'with_gad_training'     => $rows['with_gad_training'] ?? 'No',
+                'specify_GAD_training'  => $rows['specify_GAD_training'] ?? '',
+                'gender'                => $rows['gender'] ?? '',
+            ]
+        );
+        // }
+
+        return response()->json([
+            'message' => 'Team members saved successfully.'
+        ]);
+    }
+    public function getEmployees(Request $request){
+        // dd(UserEmployees::all());
+        return UserEmployees::select('empl_id','employee_name','gender','position_long_title')->get();
+    }
+
 }

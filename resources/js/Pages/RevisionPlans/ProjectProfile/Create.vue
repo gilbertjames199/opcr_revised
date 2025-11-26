@@ -2390,7 +2390,56 @@
 
 
     </ActivityModal>
-    <TeamModal v-if="TeamModalVisible" @close-modal-event="closeTeamModal" title="IMPLEMENTING TEAM"></TeamModal>
+    <TeamModal v-if="TeamModalVisible" @close-modal-event="closeTeamModal" title="IMPLEMENTING TEAM">
+        <input type="hidden" required>
+        <input type="hidden" v-model="team_members.revision_plan_id" class="form-control" autocomplete="chrome-off">
+        <label for="">ASSIGN PERSON</label>
+        team_members.implementing_team_id: {{ team_members.implementing_team_id }}
+        <multiselect
+            :options="employees_computed"
+            :searchable="true"
+            label="label"
+            track-by="empl_id"
+            :reduce="emp => emp.empl_id"
+            v-model="team_members.implementing_team_id"
+            @input="updateEmployee($event)"
+        />
+
+        <label for="">NAME</label>
+        <input type="text" v-model="team_members.name" class="form-control" autocomplete="chrome-off">
+
+
+        <label for="">GENDER</label>
+        <select class="form-select" v-model="team_members.gender" autocomplete="chrome-off">
+            <options>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </options>
+        </select>
+
+        <label for="">ROLE IN THE PROJECT</label>
+        <input type="text" v-model="team_members.role" class="form-control" autocomplete="chrome-off">
+
+
+        <input type="checkbox"
+        v-model="team_members.with_gad_training"
+        :true-value="1"
+        :false-value="0">
+            &nbsp;With GAD training
+        <br>
+
+        <span>
+            <label for="">Specify GAD Training</label>
+            <input type="text" v-model="team_members.specify_GAD_training" class="form-control" autocomplete="chrome-off">
+        </span>
+        <input type="hidden" v-model="team_members.id" class="form-control" autocomplete="chrome-off">
+
+
+        <label for="">POSITION</label>
+        <input type="text" v-model="team_members.position" class="form-control" autocomplete="chrome-off">
+
+        <button class="btn btn-primary" @click="saveTeamMembers">Save</button>
+    </TeamModal>
     <RiskManagementModal v-if="RiskManagementModalVisible" @close-modal-event="closeRiskManagementModal" title="RISK MANAGEMENT">
 
         <!-- TABLE -->
@@ -2555,14 +2604,20 @@
             <div class="mb-3">
                 <table class="table table-bordered">
                     <thead>
-                        <tr>
-                        <th>Description</th>
-                        <th>Target Indicator</th>
-                        <th>Physical Q1</th>
-                        <th>Physical Q2</th>
-                        <th>Physical Q3</th>
-                        <th>Physical Q4</th>
-                        <th>Actions</th>
+                        <tr class="table table-secondary text-center align-middle">
+                            <th rowspan="3">Description</th>
+                            <th rowspan="3">Target/Indicator</th>
+                            <th colspan="4">Physical</th>
+                            <th rowspan="3">Actions</th>
+                        </tr>
+                        <tr class="table table-secondary text-center align-middle">
+                            <th colspan="4">Timeline/Duration</th>
+                        </tr>
+                        <tr class="table table-secondary text-center align-middle">
+                            <th>1st Quarter</th>
+                            <th>2nd Quarter</th>
+                            <th>3rd Quarter</th>
+                            <th>4th Quarter</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2589,14 +2644,20 @@
 
             <tr>
                 <thead>
-                    <tr class="table thead-dark">
-                        <th rowspan="2">Description</th>
-                        <th rowspan="2">Target/Indicator</th>
-                        <th>Q1</th>
-                        <th>Q2</th>
-                        <th>Q3</th>
-                        <th>Q4</th>
-                        <th>Actions</th>
+                    <tr class="table table-secondary text-center align-middle">
+                        <th rowspan="3">Description</th>
+                        <th rowspan="3">Target/Indicator</th>
+                        <th colspan="4">Physical</th>
+                        <th rowspan="3">Actions</th>
+                    </tr>
+                    <tr class="table table-secondary text-center align-middle">
+                        <th colspan="4">Timeline/Duration</th>
+                    </tr>
+                    <tr class="table table-secondary text-center align-middle">
+                        <th>1st Quarter</th>
+                        <th>2nd Quarter</th>
+                        <th>3rd Quarter</th>
+                        <th>4th Quarter</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -2659,8 +2720,8 @@
                         </td>
                         <td>
                             <button class="btn btn-danger btn-sm text-white"
-                                @click="deleteData(exp.id, 'expected_revised_outputs', exp.description)">
-                                🗑 Delete Activity
+                                @click="deleteExpectedOutput(exp.id, 'expected_revised_outputs', exp.description, index)">
+                                🗑 Delete
                             </button>
                         </td>
                     </tr>
@@ -2889,6 +2950,7 @@ export default {
             //IMPLEMENTING TEAM *******************************
             TeamModalVisible: false,
             team_members: [],
+            all_employees: [],
             //RISK MANAGEEMENT *******************************
             RiskManagementModalVisible: false,
             risk_managements: [],
@@ -3012,7 +3074,21 @@ export default {
 
         totalImplementationAll() {
             return this.computeCategory("total");
-        }
+        },
+
+        employees_computed() {
+            // ALWAYS ensure it's an array
+            const emps = Array.isArray(this.all_employees)
+                ? this.all_employees
+                : [];
+
+            return emps.map(emp => ({
+                value: emp.empl_id,
+                label: `${emp.empl_id} - ${emp.employee_name}`,
+                _raw: emp
+            }));
+        },
+
 
     },
     mounted() {
@@ -3608,11 +3684,68 @@ export default {
         // TeamModal,
         showTeamModal(){
             this.TeamModalVisible=true;
+            this.all_employees=[];
+            this.addTeamRow()
+            axios.get('/get_employees_all')
+                .then(response => {
+                    this.all_employees = response.data;   // store employees
+                })
+                .catch(error => {
+                    console.error("Error loading employees:", error);
+                });
         },
         closeTeamModal(){
             this.TeamModalVisible=false;
+            this.all_employees=[];
         },
+        // TEAM MEMBERS *********************************************
+        addTeamRow() {
+            this.team_members=({
+                id: 0,
+                revision_plan_id: this.editData.id,
+                implementing_team_id: 0,
+                role: '',
+                empl_id: 0,
+                name: '',
+                competency: '',
+                position: '',
+                with_gad_training: 1,
+                specify_GAD_training: '',
+                gender: ''
+            });
+        },
+        removeTeamRow(index) {
+            this.team_members.splice(index, 1);
+        },
+        saveTeamMembers() {
+            axios.post('/implementation-workplan/implementing/team/plans', {
+                'rows': this.team_members
+            })
+            .then(res => {
+                // optionally clear or close modal
+                // this.TeamModalVisible = false;
+            });
 
+        },
+        // updateEmployee(){
+        //     var selectedEmp = this.all_employees.find(peop => String(peop.empl_id) === String(this.team_members.implementing_team_id));
+        //     // alert("fsdfsdf")
+        //     console.log(this.team_members.implementing_team_id)
+        //     console.log(selectedEmp)
+        //     this.team_members.name = selectedEmp ? selectedEmp.employee_name : '';
+        //     this.team_members.gender = selectedEmp ? selectedEmp.gender : '';
+        //     this.team_members.position = selectedEmp ? selectedEmp.position_long_title : '';
+        // },
+        updateEmployee(emplId) {
+            const selectedEmp = this.all_employees.find(
+                peop => String(peop.empl_id) === String(emplId)
+            );
+
+            this.team_members.name     = selectedEmp?.employee_name || '';
+            this.team_members.gender   = selectedEmp?.gender || '';
+            this.team_members.position = selectedEmp?.position_long_title || '';
+            this.team_members.empl_id  = emplId;
+        },
         //RISK MANAGEEMENT *******************************
         // RiskManagementModalVisible: false,
         // risk_managements: [],
@@ -3822,6 +3955,20 @@ export default {
                 alert('Error saving expected outputs.');
             }
         },
+        deleteExpectedOutput(id, table, title, index){
+            let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
+            if (confirm(text) == true) {
+                this.$inertia.delete(`/revision/streamlined/${id}/${table}`, {
+                    onSuccess: () => {
+                        // Only runs if backend deletion succeeds
+                        this.expected_outputs_current.splice(index, 1);
+                    },
+                    onError: () => {
+                        alert("Delete failed! Please try again.");
+                    },
+                });
+            }
+        },
         //EXPECTED OUTCOMES ******************************************
         showExpectedOutcomeModal(activity, activity_id, activity_project_id){
             this.expected_outcomes_new=[];
@@ -3876,7 +4023,7 @@ export default {
             }
         },
         deleteExpectedOutcome(id, table, title, index){
-            this.deleteData(id,table,title)
+            // this.deleteData(id,table,title)
             let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
             if (confirm(text) == true) {
                 this.$inertia.delete(`/revision/streamlined/${id}/${table}`, {
@@ -3890,6 +4037,9 @@ export default {
                 });
             }
         },
+
+
+
 
     },
 };
