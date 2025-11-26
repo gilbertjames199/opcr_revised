@@ -3271,7 +3271,47 @@ class RevisionPlanController extends Controller
     public function workplan(Request $request){
         // return "james";
         $revision = RevisionPlan::where('id', $request->id)->first();
-        $activities = ActivityProject::with(['expected_output','expected_outcome'])->where('project_id', $revision->id)->get();
+        $activities = ActivityProject::with(['expected_output','expected_outcome'])->where('project_id', $revision->id)->get()
+        ->map(function($item){
+
+            return [
+                'id'               => $item->id,
+                'activity'         => $item->activity? $item->activity->description:"",
+                'activity_id'      => $item->activity_id,
+                'project_id'       => $item->project_id,
+                'target_indicator' => $item->target_indicator,
+                'date_from'        => $item->date_from,
+                'date_to'          => $item->date_to,
+
+                'ps_q1'            => $item->ps_q1,
+                'ps_q2'            => $item->ps_q2,
+                'ps_q3'            => $item->ps_q3,
+                'ps_q4'            => $item->ps_q4,
+
+                'mooe_q1'          => $item->mooe_q1,
+                'mooe_q2'          => $item->mooe_q2,
+                'mooe_q3'          => $item->mooe_q3,
+                'mooe_q4'          => $item->mooe_q4,
+
+                'co_q1'            => $item->co_q1,
+                'co_q2'            => $item->co_q2,
+                'co_q3'            => $item->co_q3,
+                'co_q4'            => $item->co_q4,
+
+                'fe_q1'            => $item->fe_q1,
+                'fe_q2'            => $item->fe_q2,
+                'fe_q3'            => $item->fe_q3,
+                'fe_q4'            => $item->fe_q4,
+
+                'gad_issue'        => $item->gad_issue,
+                'ccet_code'        => $item->ccet_code,
+                'responsible'      => $item->responsible,
+                'is_active'        => $item->is_active,
+
+                'expected_output'       => $item->expected_output,
+                'expected_outcome'       => $item->expected_outcome,
+            ];
+        });
 
         return $activities;
     }

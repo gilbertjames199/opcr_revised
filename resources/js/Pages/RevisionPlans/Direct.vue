@@ -19,6 +19,7 @@
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showPrint()">Print</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showIppListModal()">IPP List</button>
                     <!-- <input
                         type="checkbox"
                         v-model="checked"
@@ -580,7 +581,15 @@
 
             </div>
         </div>
-        {{ my_source }}
+        <IppListModal v-if="IppListModalVisible" @close-modal-event="toggleIppListModal" title="IPP List">
+            <div class="d-flex justify-content-center">
+                <!-- {{ aip_printLink }} -->
+                  <!-- {{ list_link }} -->
+                <iframe :src="list_link" style="width:100%; height:500px" />
+            </div>
+            <br>
+        </IppListModal>
+        <!-- {{ my_source }} -->
     </div>
     <!-- {{ ooe_description }}
     {{ ooe_id }} -->
@@ -592,6 +601,7 @@ import ModalRightAlign from "../../Shared/ModalRightAlign.vue";
 import ModalRightAlignCRUD from "../../Shared/ModalRightAlign.vue";
 import ModalRightAppropriation from "../../Shared/ModalRightAlign.vue";
 import ModalRightAppropriationCrud from "../../Shared/ModalRightAlign.vue";
+import IppListModal from "@/Shared/ModalDynamicTitle";
 import { useForm } from "@inertiajs/inertia-vue3";
 import Printing from "@/Shared/FilterPrint";
 import LBP2Modal from "@/Shared/PrintModal";
@@ -685,7 +695,11 @@ export default {
             checked: false,
 
             formAction: '',
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+
+            //IPP List
+            IppListModalVisible: false,
+            list_link: ""
         }
     },
     computed: {
@@ -771,7 +785,7 @@ export default {
         this.setCurrentYear()
     },
     components: {
-        Pagination, Filtering, ModalRightAlign, ModalRightAlignCRUD, ModalRightAppropriation, ModalRightAppropriationCrud, Printing, LBP2Modal, AIPModal
+        Pagination, Filtering, ModalRightAlign, ModalRightAlignCRUD, ModalRightAppropriation, ModalRightAppropriationCrud, Printing, LBP2Modal, AIPModal, IppListModal
     },
     watch: {
         // search: _.debounce(function (value) {
@@ -894,7 +908,6 @@ export default {
             this.total_budget = sum_budget;
             this.budget_sum = this.calculateTotalAmount();
         },
-
         add_budget_prep() {
             this.form.revision_plan_id = this.rev_id;
             this.form.idooe = "";
@@ -907,8 +920,6 @@ export default {
             this.showModalRightAlign=false;
             this.showModalRightAlignCRUD = true;
         },
-
-
         setCode() {
             //alert(this.form.particulars);
             var ind = this.ooes.findIndex(ooe => ooe.recid === this.form.idooe);
@@ -1336,6 +1347,24 @@ export default {
                     preserveScroll: true
                 }
             );
+        },
+        // PRINT IPP List
+        showIppListModal(){
+            this.toggleIppListModal()
+            // http://reports.dvodeoro.local:8080/jasperserver/flow.html?_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FList_IPP&standAlone=true
+            this.list_link = this.ippListLink()
+        },
+        ippListLink(){
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FList_IPP&standAlone=true&decorate=no&output=pdf';
+            // var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&Date=' + dates;
+            var link1 = linkt + jasper_ip + jasper_link;
+            return link1;
+        },
+        toggleIppListModal(){
+            this.IppListModalVisible = !this.IppListModalVisible
+
         }
     }
 };
