@@ -3165,17 +3165,6 @@ class RevisionPlanController extends Controller
         $budget_controller = new BudgetRequirementController($this->budget);
         // dd($budget_controller);
         $data = RevisionPlan::
-            // select(
-            //     'revision_plans.id',
-            //     'revision_plans.project_title',
-            //     'revision_plans.version',
-            //     'revision_plans.type',
-            //     'revision_plans.is_strategy_based',
-            //     'revision_plans.idpaps',
-            //     'ff.FFUNCTION',
-            //     'paps.aip_code',
-            //     // DB::raw('sum(budget_requirements.amount)')
-            // )->
             with(['budget', 'paps', 'paps.office'])
             // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
             // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
@@ -3252,7 +3241,8 @@ class RevisionPlanController extends Controller
                     $warning = 'Workplan Total is LESS than the total in Budgetary Requirements';
                 }
             }
-
+            // dd($item->paps);
+            // $item->paps->sector
             return [
                 'FFUNCTION' => optional(optional($item->paps)->office)->FFUNCTION,
                 'id' => $item->id,
@@ -3264,6 +3254,7 @@ class RevisionPlanController extends Controller
                 'idpaps' => $item->idpaps,
                 'status' => $item->status,
                 'warning' => $warning,
+                'sector'=>$item->paps->sector
             ];
         });
     }
@@ -3277,7 +3268,6 @@ class RevisionPlanController extends Controller
             // dd($revision->paps->office->FFUNCTION);
             // dd($revision->budget[0]->source);
             return [
-
                 'id'               => $item->id,
                 'project_name' => $revision->project_title ?? '',
                 'source_of_fund' => $revision->budget[0]->source ?? '',
