@@ -91,7 +91,8 @@
                                         }}
                                     </span>
                                 </td>
-                                <td><Link
+                                <td>
+                                    <Link
                                         class="btn btn-primary btn-sm"
                                         :href="`/revision/view/project/paps/${dat.id}`">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
@@ -190,6 +191,7 @@
                                             <li><Link class="dropdown-item" :href="`/EvaluationMechanismTool/${dat.id}`">Monitoring and Evaluation</Link></li>
                                             <li><Link class="dropdown-item" :href="`/RiskManagement/${dat.id}`">Risk Management</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Signatories/${dat.id}`">Signatories</Link></li>
+                                            <li><Button class="dropdown-item" @click="setLinkModal(dat.id)">Print Workplan</Button></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -212,7 +214,7 @@
                 </div>
 
             </div>
-            {{ rev_plan_selected }}
+            <!-- {{ rev_plan_selected }} -->
         </div>
         <AIPModal v-if="showAIPModal" @close-modal-event="hideAIPModal">
             <div class="d-flex justify-content-center">
@@ -229,13 +231,21 @@
                     Export to Excel
                 </button> -->
         </AIPModal>
+        <WorkPlanModal v-if="WorkPlanModalVisible" @close-modal-event="toggleWorkPlanModal" title="Comprehensive Workplan">
+            <div class="d-flex justify-content-center">
+                <!-- {{ cmp_link }} -->
+                <iframe :src="cmp_link" style="width:100%; height:500px" />
+
+            </div>
+        </WorkPlanModal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import AIPModal from "@/Shared/PrintModal";
-import { Inertia } from '@inertiajs/inertia'
+import { Inertia } from '@inertiajs/inertia';
+import WorkPlanModal from "@/Shared/ModalDynamicTitle";
 
 export default {
     props: {
@@ -256,10 +266,12 @@ export default {
             checked: false,    // Internal boolean to control the checkbox
             aip_printLink_excel: "",
             rev_plan_selected: [],
+            WorkPlanModalVisible: "",
+            cmp_link: ""
         }
     },
     components: {
-        Pagination, Filtering, AIPModal
+        Pagination, Filtering, AIPModal, WorkPlanModal
     },
     mounted(){
         this.updateValue(); // Initialize ccet based on the initial state of checked
@@ -421,6 +433,19 @@ export default {
                     preserveScroll: true
                 }
             );
+        },
+        //WORKPLAN
+        setLinkModal(id){
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link ='/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FComprehensive_WorkPlan&standAlone=true&output=pdf';
+            var params ='&id='+id
+            // console.log(params);
+            this.cmp_link = linkt+jasper_ip+jasper_link+params;
+            this.toggleWorkPlanModal()
+        },
+        toggleWorkPlanModal(){
+            this.WorkPlanModalVisible =!this.WorkPlanModalVisible
         }
     }
 };
