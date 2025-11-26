@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AIPController;
 use App\Http\Controllers\RevisionPlanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,8 @@ Route::prefix('/project/profile/api')->group(function(){
     Route::get('/',[RevisionPlanController::class, 'ipp']);
     Route::get('/list',[RevisionPlanController::class, 'list']);
     Route::get('/comprehensive/workplan',[RevisionPlanController::class, 'workplan']);
+});
+
+Route::prefix('/aip/summaries')->group(function(){
+    Route::get('/',[AIPController::class, 'summarize_ipp']);
 });

@@ -348,4 +348,70 @@ class AIPController extends Controller
 
         return $paps;
     }
+
+    public function summarize_ipp()
+    {
+       $categories = [
+            'Maintenance, Operating, and Other Expenses' => 'MOEE',
+            'Capital Outlay' => 'CO',
+            'Personnel Services' => 'PS',
+            'Financial Expenses' => 'FE',
+        ];
+
+        $rows = [
+            'General Public Services Sector',
+            'Social Services Sector',
+            'Economic Services',
+            '20% Development Fund',
+            'Local Disaster Risk Reduction and Mgt. Services',
+            'Other Sources',
+        ];
+
+        // Initialize result table
+        $result = [];
+        foreach ($rows as $row) {
+            $result[$row] = [
+                'MOEE' => 0,
+                'CO' => 0,
+                'PS' => 0,
+                'FE' => 0,
+                'maintenanceOperating' => 0,
+            ];
+        }
+
+        // Query budget totals grouped by sector or source
+        $budgetRows = DB::table('budget_requirements as br')
+            ->join('revision_plans as rp', 'br.revision_plan_id', '=', 'rp.id')
+            ->join('program_and_projects as paps', 'rp.idpaps', '=', 'paps.id')
+            ->select(
+                DB::raw("COALESCE(paps.sector, br.source) as row_name"),
+                'br.category',
+                DB::raw('SUM(br.amount) as total_amount')
+            )
+            ->where(function($query) use ($rows) {
+                $query->whereIn('paps.sector', $rows)
+                    ->orWhereIn('br.source', $rows);
+            })
+            ->groupBy('row_name', 'br.category')
+            ->get();
+
+        // Fill result
+        foreach ($budgetRows as $row) {
+            $rowName = $row->row_name;
+            $amount = floatval($row->total_amount);
+            $category = $row->category;
+
+            foreach ($categories as $catName => $shortKey) {
+                if ($category === $catName) {
+                    $result[$rowName][$shortKey] += $amount;
+                }
+            }
+
+            // Custom combined column
+            $result[$rowName]['maintenanceOperating'] =
+                $result[$rowName]['MOEE'] + $result[$rowName]['CO'];
+        }
+
+        return $result;
+    }
 }
