@@ -1524,14 +1524,21 @@
                                     <!--Actions-->
                                     <td>
                                         <Button
-                                            class="btn btn-primary btn-sm"
+                                            class="btn btn-primary btn-sm text-white"
                                             @click="showTeamModalEdit(team_member)"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                             </svg>
+                                        </Button>&nbsp;
+                                        <Button class="btn btn-danger btn-sm text-white"
+                                            @click="deleteData(team_member.id, 'team_members', team_member.name)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                            </svg>
                                         </Button>
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -2404,11 +2411,11 @@
 
     </ActivityModal>
     <TeamModal v-if="TeamModalVisible" @close-modal-event="closeTeamModal" title="IMPLEMENTING TEAM">
-        {{ team_members }}
+        <!-- {{ team_members }} -->
         <input type="hidden" required>
         <input type="hidden" v-model="team_members.revision_plan_id" class="form-control" autocomplete="chrome-off">
         <label for="">ASSIGN PERSON</label>
-        team_members.implementing_team_id: {{ team_members.implementing_team_id }}
+        <!-- team_members.implementing_team_id: {{ team_members.implementing_team_id }} -->
         <multiselect
             :options="employees_computed"
             :searchable="true"
@@ -2435,9 +2442,11 @@
         <input type="text" v-model="team_members.role" class="form-control" autocomplete="chrome-off">
 
         <label for="">JOB STATUS</label>
-        <input type="text" v-model="team_members.status" class="form-control" autocomplete="chrome-off">
+        <!-- <input type="text" v-model="team_members.status" class="form-control" autocomplete="chrome-off"> -->
         <select v-model="team_members.status" class="form-control" autocomplete="chrome-off">
-            <option>Job </option>
+            <option>Job Order</option>
+            <option>Regular</option>
+            <option>Casual</option>
             <!-- <option>Regular</options>
             <option>Job Order</option>
             <option>Casual</option> -->
@@ -3735,7 +3744,8 @@ export default {
                 position:  emp.position,
                 with_gad_training: emp.with_gad_training,
                 specify_GAD_training:  emp.specify_GAD_training,
-                gender:  emp.gender
+                gender:  emp.gender,
+                status: emp.status
             });
             axios.get('/get_employees_all')
                 .then(response => {
@@ -3758,7 +3768,8 @@ export default {
                 position: '',
                 with_gad_training: 1,
                 specify_GAD_training: '',
-                gender: ''
+                gender: '',
+                status: ''
             });
         },
         removeTeamRow(index) {
@@ -3770,7 +3781,10 @@ export default {
             })
             .then(res => {
                 // optionally clear or close modal
-                // this.TeamModalVisible = false;
+                alert('Successfully savede team member!')
+                this.team_members=[]
+                this.TeamModalVisible = false;
+                window.location.reload()
             });
 
         },
@@ -3792,6 +3806,21 @@ export default {
             this.team_members.gender   = selectedEmp?.gender || '';
             this.team_members.position = selectedEmp?.position_long_title || '';
             this.team_members.empl_id  = emplId;
+            this.team_members.status = selectedEmp?.employment_type_descr || '';
+            // this.team_members=({
+            //     id: selectedEmp?.employee_name || 0,
+            //     revision_plan_id: this.editData.id,
+            //     implementing_team_id: selectedEmp?.empl_id || '',
+            //     role: selectedEmp?.role || '',
+            //     empl_id: selectedEmp?.empl_id || '',
+            //     name: selectedEmp?.name || '',
+            //     competency: selectedEmp?.competency || '',
+            //     position: selectedEmp?.position || '',
+            //     with_gad_training: selectedEmp?.with_gad_training || '',
+            //     specify_GAD_training: selectedEmp?.specify_GAD_training || '',
+            //     gender: selectedEmp?.gender || '',
+            //     status: selectedEmp?.status || ''
+            // });
         },
         //RISK MANAGEEMENT *******************************
         // RiskManagementModalVisible: false,

@@ -308,7 +308,7 @@ class TeamPlanController extends Controller
     }
     public function getEmployees(Request $request){
         // dd(UserEmployees::all());
-        return UserEmployees::select('empl_id','employee_name','gender','position_long_title')->get();
+        return UserEmployees::select('empl_id','employee_name','gender','position_long_title','employment_type_descr')->get();
     }
 
 }
