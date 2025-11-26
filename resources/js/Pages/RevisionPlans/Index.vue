@@ -231,7 +231,7 @@
                     Export to Excel
                 </button> -->
         </AIPModal>
-        <WorkPlanModal v-if="WorkPlanModalVisible" @close-modal-event="toggleWorkPlanModal" title="Comprehensive Workplan">
+        <WorkPlanModal v-if="WorkPlanModalVisible" @close-modal-event="toggleWorkPlanModal" title="Comprehensive Workplan/Schedule">
             <div class="d-flex justify-content-center">
                 <!-- {{ cmp_link }} -->
                 <iframe :src="cmp_link" style="width:100%; height:500px" />
