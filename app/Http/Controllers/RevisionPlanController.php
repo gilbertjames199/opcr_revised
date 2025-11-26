@@ -3269,13 +3269,18 @@ class RevisionPlanController extends Controller
     }
 
     public function workplan(Request $request){
-        // return "james";
-        $revision = RevisionPlan::where('id', $request->id)->first();
+        // return "james"; office, project name source of fund budget allocation
+        $revision = RevisionPlan::with(['paps','paps.office'])->where('id', $request->id)->first();
+        // dd($revision);
         $activities = ActivityProject::with(['expected_output','expected_outcome'])->where('project_id', $revision->id)->get()
-        ->map(function($item){
-
+        ->map(function($item) use ($revision){
+            // dd($revision->paps->office->FFUNCTION);
             return [
+
                 'id'               => $item->id,
+                'project_name' => $revision->project_title ?? '',
+                'source_of_fund'   => 'source of fund',
+                'office' => optional(optional($revision->paps)->office)->FFUNCTION ?? '',
                 'activity'         => $item->activity? $item->activity->description:"",
                 'activity_id'      => $item->activity_id,
                 'project_id'       => $item->project_id,
