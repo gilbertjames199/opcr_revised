@@ -582,9 +582,29 @@
             </div>
         </div>
         <IppListModal v-if="IppListModalVisible" @close-modal-event="toggleIppListModal" title="IPP List">
+            <div class="d-flex align-items-center mb-2">
+                <label class="me-2" style="width: 80px;">Office:</label>
+                <select v-model="ipp_list_office" class="form-select w-auto">
+                    <option></option>
+                    <option v-for="office in offices" :value="office.FFUNCCOD">
+                        {{ office.FFUNCTION }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="d-flex align-items-center mb-2">
+                <label class="me-2" style="width: 80px;">Sector:</label>
+                <select v-model="ipp_list_sector" class="form-select w-auto">
+                    <option>Other Services</option>
+                    <option>General Public Services Sector</option>
+                    <option>Social Services Sector</option>
+                    <option>Economic Services</option>
+                </select>
+            </div>
             <div class="d-flex justify-content-center">
                 <!-- {{ aip_printLink }} -->
                   <!-- {{ list_link }} -->
+
                 <iframe :src="list_link" style="width:100%; height:500px" />
             </div>
             <br>
@@ -699,7 +719,9 @@ export default {
 
             //IPP List
             IppListModalVisible: false,
-            list_link: ""
+            list_link: "",
+            ipp_list_office: "",
+            ipp_list_sector: "",
         }
     },
     computed: {
@@ -1358,8 +1380,8 @@ export default {
             var linkt = "https://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FList_IPP&standAlone=true&decorate=no&output=pdf';
-            // var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&Date=' + dates;
-            var link1 = linkt + jasper_ip + jasper_link;
+            var params = '&sector=' + this.ipp_list_sector + '&office=' + this.ipp_list_office;
+            var link1 = linkt + jasper_ip + jasper_link+params;
             return link1;
         },
         toggleIppListModal(){

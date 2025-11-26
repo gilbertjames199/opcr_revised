@@ -3163,6 +3163,7 @@ class RevisionPlanController extends Controller
     public function list(Request $request){
         $filter=$request->all;
         $budget_controller = new BudgetRequirementController($this->budget);
+
         // dd($budget_controller);
         $data = RevisionPlan::
             with(['budget', 'paps', 'paps.office'])
@@ -3180,9 +3181,15 @@ class RevisionPlanController extends Controller
                 // dd("rev app ang source");
                 $query->where('status', '>=', '0');
             })
-            ->when($request->FFUNCCOD, function ($query) use ($request) {
+            ->when($request->office, function ($query) use ($request) {
                 $query->whereHas('paps', function ($query_inner) use ($request) {
-                    $query_inner->where('FFUNCCOD', $request->FFUNCCOD);
+                    $query_inner->where('FFUNCCOD', $request->office);
+                });
+            })
+            ->when($request->sector, function ($query) use ($request) {
+                // $query->where('sector', $request->sector);
+                $query->whereHas('paps', function ($query_inner) use ($request) {
+                    $query_inner->where('sector', $request->sector);
                 });
             })
             ->where('project_title', 'LIKE', '%' . $request->search . '%')
@@ -3245,6 +3252,7 @@ class RevisionPlanController extends Controller
             // $item->paps->sector
             return [
                 'FFUNCTION' => optional(optional($item->paps)->office)->FFUNCTION,
+                // 'FFUNCCOD'=>$item->paps->office->FFUNCCOD,
                 'id' => $item->id,
                 'project_title' => $item->project_title,
                 'type' => $item->type,

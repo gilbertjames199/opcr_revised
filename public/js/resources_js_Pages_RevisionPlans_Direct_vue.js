@@ -127,7 +127,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       //IPP List
       IppListModalVisible: false,
-      list_link: ""
+      list_link: "",
+      ipp_list_office: "",
+      ipp_list_sector: ""
     };
   },
   computed: {
@@ -884,9 +886,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     ippListLink: function ippListLink() {
       var linkt = "https://";
       var jasper_ip = this.jasper_ip;
-      var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FList_IPP&standAlone=true&decorate=no&output=pdf'; // var params = '&id=' + ffunccod + '&FUNCTION=' + ffunction + '&Date=' + dates;
-
-      var link1 = linkt + jasper_ip + jasper_link;
+      var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FList_IPP&standAlone=true&decorate=no&output=pdf';
+      var params = '&sector=' + this.ipp_list_sector + '&office=' + this.ipp_list_office;
+      var link1 = linkt + jasper_ip + jasper_link + params;
       return link1;
     },
     toggleIppListModal: function toggleIppListModal() {
@@ -1787,11 +1789,59 @@ var _hoisted_164 = {
   "class": "col-md-12"
 };
 var _hoisted_165 = {
+  "class": "d-flex align-items-center mb-2"
+};
+
+var _hoisted_166 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "me-2",
+  style: {
+    "width": "80px"
+  }
+}, "Office:", -1
+/* HOISTED */
+);
+
+var _hoisted_167 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_168 = ["value"];
+var _hoisted_169 = {
+  "class": "d-flex align-items-center mb-2"
+};
+
+var _hoisted_170 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "me-2",
+  style: {
+    "width": "80px"
+  }
+}, "Sector:", -1
+/* HOISTED */
+);
+
+var _hoisted_171 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "Other Services", -1
+/* HOISTED */
+);
+
+var _hoisted_172 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "General Public Services Sector", -1
+/* HOISTED */
+);
+
+var _hoisted_173 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "Social Services Sector", -1
+/* HOISTED */
+);
+
+var _hoisted_174 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "Economic Services", -1
+/* HOISTED */
+);
+
+var _hoisted_175 = [_hoisted_171, _hoisted_172, _hoisted_173, _hoisted_174];
+var _hoisted_176 = {
   "class": "d-flex justify-content-center"
 };
-var _hoisted_166 = ["src"];
+var _hoisted_177 = ["src"];
 
-var _hoisted_167 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_178 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
@@ -2559,7 +2609,29 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     title: "IPP List"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_165, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ aip_printLink }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ list_link }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_165, [_hoisted_166, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+        "onUpdate:modelValue": _cache[50] || (_cache[50] = function ($event) {
+          return $data.ipp_list_office = $event;
+        }),
+        "class": "form-select w-auto"
+      }, [_hoisted_167, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.offices, function (office) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+          value: office.FFUNCCOD
+        }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(office.FFUNCTION), 9
+        /* TEXT, PROPS */
+        , _hoisted_168);
+      }), 256
+      /* UNKEYED_FRAGMENT */
+      ))], 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.ipp_list_office]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_169, [_hoisted_170, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+        "onUpdate:modelValue": _cache[51] || (_cache[51] = function ($event) {
+          return $data.ipp_list_sector = $event;
+        }),
+        "class": "form-select w-auto"
+      }, _hoisted_175, 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.ipp_list_sector]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_176, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ aip_printLink }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ list_link }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
         src: $data.list_link,
         style: {
           "width": "100%",
@@ -2567,7 +2639,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, null, 8
       /* PROPS */
-      , _hoisted_166)]), _hoisted_167];
+      , _hoisted_177)]), _hoisted_178];
     }),
     _: 1
     /* STABLE */
