@@ -298,6 +298,7 @@ class TeamPlanController extends Controller
                 'with_gad_training'     => $rows['with_gad_training'] ?? 'No',
                 'specify_GAD_training'  => $rows['specify_GAD_training'] ?? '',
                 'gender'                => $rows['gender'] ?? '',
+                'status'                => $rows['status'] ?? ''
             ]
         );
         // }
@@ -309,6 +310,45 @@ class TeamPlanController extends Controller
     public function getEmployees(Request $request){
         // dd(UserEmployees::all());
         return UserEmployees::select('empl_id','employee_name','gender','position_long_title','employment_type_descr')->get();
+    }
+    public function update_team(Request $request)
+    {
+        $rows = $request->input('rows', []);
+
+        // Make sure 'id' is provided
+        $id = $rows['id'] ?? null;
+
+        if ($id) {
+            $teamPlan = TeamPlan::find($id);
+
+            if ($teamPlan) {
+                $teamPlan->update([
+                    'revision_plan_id'      => $rows['revision_plan_id'] ?? null,
+                    'implementing_team_id'  => $rows['implementing_team_id'] ?? 0,
+                    'role'                  => $rows['role'] ?? '',
+                    'empl_id'               => $rows['empl_id'] ?? 0,
+                    'name'                  => $rows['name'] ?? '',
+                    'competency'            => $rows['competency'] ?? '',
+                    'position'              => $rows['position'] ?? '',
+                    'with_gad_training'     => $rows['with_gad_training'] ?? 'No',
+                    'specify_GAD_training'  => $rows['specify_GAD_training'] ?? '',
+                    'gender'                => $rows['gender'] ?? '',
+                    'status'                => $rows['status'] ?? ''
+                ]);
+
+                return response()->json([
+                    'message' => 'Team member updated successfully.'
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Team member not found.'
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'message' => 'ID is required for update.'
+            ], 400);
+        }
     }
 
 }

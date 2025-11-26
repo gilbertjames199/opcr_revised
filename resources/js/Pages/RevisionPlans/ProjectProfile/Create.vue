@@ -2420,7 +2420,7 @@
             :options="employees_computed"
             :searchable="true"
             label="label"
-            track-by="empl_id"
+            track-by="label"
             :reduce="emp => emp.empl_id"
             v-model="team_members.implementing_team_id"
             @input="updateEmployee($event)"
@@ -2469,7 +2469,7 @@
         <label for="">POSITION</label>
         <input type="text" v-model="team_members.position" class="form-control" autocomplete="chrome-off">
 
-        <button class="btn btn-primary" @click="saveTeamMembers">Save</button>
+        <button class="btn btn-primary text-white" @click="saveTeamMembers()">Save</button>
     </TeamModal>
     <RiskManagementModal v-if="RiskManagementModalVisible" @close-modal-event="closeRiskManagementModal" title="RISK MANAGEMENT">
 
@@ -2982,6 +2982,7 @@ export default {
             TeamModalVisible: false,
             team_members: [],
             all_employees: [],
+            action_type_team: '',
             //RISK MANAGEEMENT *******************************
             RiskManagementModalVisible: false,
             risk_managements: [],
@@ -3714,7 +3715,7 @@ export default {
         // team_members: [],
         // TeamModal,
         showTeamModal(){
-
+            this.action_type_team = 'store'
             this.all_employees=[];
             this.addTeamRow()
             axios.get('/get_employees_all')
@@ -3731,6 +3732,7 @@ export default {
             this.all_employees=[];
         },
         showTeamModalEdit(emp){
+            this.action_type_team = 'update'
             this.TeamModalVisible=true;
             this.all_employees=[];
             this.team_members=({
@@ -3776,16 +3778,30 @@ export default {
             this.team_members.splice(index, 1);
         },
         saveTeamMembers() {
-            axios.post('/implementation-workplan/implementing/team/plans', {
-                'rows': this.team_members
-            })
-            .then(res => {
-                // optionally clear or close modal
-                alert('Successfully savede team member!')
-                this.team_members=[]
-                this.TeamModalVisible = false;
-                window.location.reload()
-            });
+            if(this.action_type_team==='store'){
+                axios.post('/implementation-workplan/implementing/team/plans', {
+                    'rows': this.team_members
+                })
+                .then(res => {
+                    // optionally clear or close modal
+                    alert('Successfully saved team member!')
+                    this.team_members=[]
+                    this.TeamModalVisible = false;
+                    window.location.reload()
+                });
+            }else if(this.action_type_team==='update'){
+                axios.patch('/implementation-workplan/implementing/team/plans/update', {
+                    'rows': this.team_members
+                })
+                .then(res => {
+                    // optionally clear or close modal
+                    alert('Successfully saved team member!')
+                    this.team_members=[]
+                    this.TeamModalVisible = false;
+                    window.location.reload()
+                });
+            }
+
 
         },
         // updateEmployee(){

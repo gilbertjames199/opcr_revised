@@ -161,7 +161,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       category_gad: "",
       source: "",
       selected_chart_of_account: ""
-    }), _defineProperty(_ref, "StrategyModalVisible", false), _defineProperty(_ref, "strategies", []), _defineProperty(_ref, "strategy_id", 0), _defineProperty(_ref, "ActivityModalVisible", false), _defineProperty(_ref, "activities", []), _defineProperty(_ref, "TeamModalVisible", false), _defineProperty(_ref, "team_members", []), _defineProperty(_ref, "all_employees", []), _defineProperty(_ref, "RiskManagementModalVisible", false), _defineProperty(_ref, "risk_managements", []), _defineProperty(_ref, "MonitoringModalVisible", false), _defineProperty(_ref, "monitoring_and_evaluations", []), _defineProperty(_ref, "SignatoryModalVisible", false), _defineProperty(_ref, "signatories", []), _defineProperty(_ref, "ExpectedOutputModalVisible", false), _defineProperty(_ref, "expected_outputs_current", []), _defineProperty(_ref, "expected_outputs_new", []), _defineProperty(_ref, "activity_id", 0), _defineProperty(_ref, "activity_project_id", 0), _defineProperty(_ref, "ExpectedOutcomeModalVisible", false), _defineProperty(_ref, "expected_outcomes_current", []), _defineProperty(_ref, "expected_outcomes_new", []), _ref;
+    }), _defineProperty(_ref, "StrategyModalVisible", false), _defineProperty(_ref, "strategies", []), _defineProperty(_ref, "strategy_id", 0), _defineProperty(_ref, "ActivityModalVisible", false), _defineProperty(_ref, "activities", []), _defineProperty(_ref, "TeamModalVisible", false), _defineProperty(_ref, "team_members", []), _defineProperty(_ref, "all_employees", []), _defineProperty(_ref, "action_type_team", ''), _defineProperty(_ref, "RiskManagementModalVisible", false), _defineProperty(_ref, "risk_managements", []), _defineProperty(_ref, "MonitoringModalVisible", false), _defineProperty(_ref, "monitoring_and_evaluations", []), _defineProperty(_ref, "SignatoryModalVisible", false), _defineProperty(_ref, "signatories", []), _defineProperty(_ref, "ExpectedOutputModalVisible", false), _defineProperty(_ref, "expected_outputs_current", []), _defineProperty(_ref, "expected_outputs_new", []), _defineProperty(_ref, "activity_id", 0), _defineProperty(_ref, "activity_project_id", 0), _defineProperty(_ref, "ExpectedOutcomeModalVisible", false), _defineProperty(_ref, "expected_outcomes_current", []), _defineProperty(_ref, "expected_outcomes_new", []), _ref;
   },
   computed: {
     wordsRemaining: function wordsRemaining() {
@@ -999,6 +999,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     showTeamModal: function showTeamModal() {
       var _this8 = this;
 
+      this.action_type_team = 'store';
       this.all_employees = [];
       this.addTeamRow();
       axios__WEBPACK_IMPORTED_MODULE_6___default().get('/get_employees_all').then(function (response) {
@@ -1016,6 +1017,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     showTeamModalEdit: function showTeamModalEdit(emp) {
       var _this9 = this;
 
+      this.action_type_team = 'update';
       this.TeamModalVisible = true;
       this.all_employees = [];
       this.team_members = {
@@ -1061,15 +1063,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     saveTeamMembers: function saveTeamMembers() {
       var _this10 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_6___default().post('/implementation-workplan/implementing/team/plans', {
-        'rows': this.team_members
-      }).then(function (res) {
-        // optionally clear or close modal
-        alert('Successfully savede team member!');
-        _this10.team_members = [];
-        _this10.TeamModalVisible = false;
-        window.location.reload();
-      });
+      if (this.action_type_team === 'store') {
+        axios__WEBPACK_IMPORTED_MODULE_6___default().post('/implementation-workplan/implementing/team/plans', {
+          'rows': this.team_members
+        }).then(function (res) {
+          // optionally clear or close modal
+          alert('Successfully saved team member!');
+          _this10.team_members = [];
+          _this10.TeamModalVisible = false;
+          window.location.reload();
+        });
+      } else if (this.action_type_team === 'update') {
+        axios__WEBPACK_IMPORTED_MODULE_6___default().patch('/implementation-workplan/implementing/team/plans/update', {
+          'rows': this.team_members
+        }).then(function (res) {
+          // optionally clear or close modal
+          alert('Successfully saved team member!');
+          _this10.team_members = [];
+          _this10.TeamModalVisible = false;
+          window.location.reload();
+        });
+      }
     },
     // updateEmployee(){
     //     var selectedEmp = this.all_employees.find(peop => String(peop.empl_id) === String(this.team_members.implementing_team_id));
@@ -5555,7 +5569,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
       "class": "btn btn-danger btn-sm text-white",
       onClick: function onClick($event) {
-        return $options.deleteData(team_member.id, 'team_members', team_member.name);
+        return $options.deleteData(team_member.id, 'team_plans', team_member.name);
       }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -6633,7 +6647,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         options: $options.employees_computed,
         searchable: true,
         label: "label",
-        "track-by": "empl_id",
+        "track-by": "label",
         reduce: function reduce(emp) {
           return emp.empl_id;
         },
@@ -6724,9 +6738,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 512
       /* NEED_PATCH */
       ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.team_members.position]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-        "class": "btn btn-primary",
-        onClick: _cache[169] || (_cache[169] = function () {
-          return $options.saveTeamMembers && $options.saveTeamMembers.apply($options, arguments);
+        "class": "btn btn-primary text-white",
+        onClick: _cache[169] || (_cache[169] = function ($event) {
+          return $options.saveTeamMembers();
         })
       }, "Save")];
     }),

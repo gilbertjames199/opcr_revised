@@ -455,6 +455,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/strategies', [StrategyController::class, 'save_strategies']);
         Route::post('/strategies/activities', [ActivityController::class, 'save_activities']);
         Route::post('/implementing/team/plans', [TeamPlanController::class, 'save_team']);
+        // /implementation-workplan/implementing/team/plans/update
+        Route::patch('/implementing/team/plans/update', [TeamPlanController::class, 'update_team']);
     });
     Route::get('/get_employees_all', [TeamPlanController::class, 'getEmployees']);
     Route::prefix('/revision/streamlined/subtables')->group(function(){
