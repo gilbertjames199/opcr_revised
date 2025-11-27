@@ -889,7 +889,7 @@
                                             <!-- RESPONSIBLE INDIVIDUAL -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_responsible'"><span v-if="paps.is_strategy_based==0">{{ act.responsible }}</span>
+                                            }" :id="act.activity_id + '_activity_projects_responsible'"><span v-if="paps.is_strategy_based==0">{{ act.responsible }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)">*
                                                 </button>
