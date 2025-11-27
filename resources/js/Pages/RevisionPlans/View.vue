@@ -1839,45 +1839,108 @@
                                      <tr v-if="hasRows(rows)"  v-for="row in rows" :key="row.id">
                                         <td></td>
                                         <td></td>
-                                        <td>
-                                            <textarea
-                                                class="form-control transparent-bg "
-                                                type="text"
-                                                v-model="row.particulars"
-                                                @input="setUnsaved(true)"
-                                                @change="updateRevisionPlans('budget_requirements', 'particulars', row.id, row.particulars)">
-                                                    {{ row.particulars }}
-                                            </textarea>
+                                        <!-- PARTICULARS -->
+                                        <td
+                                            :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_particulars'"
+                                        >
+                                            {{ row.particulars }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
-                                        <td>
-                                            <textarea
+                                        <!-- ACCOUNT CODE -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_account_code'"
+                                        >
+                                            <!-- <textarea
                                                 class="form-control transparent-bg "
                                                 type="text"
                                                 v-model="row.account_code"
                                                 @input="setUnsaved(true)"
                                                 @change="updateRevisionPlans('budget_requirements', 'account_code', row.id, row.account_code)" disabled>
                                                     {{ row.account_code }}
-                                            </textarea>
+                                            </textarea> -->
+                                            {{ row.account_code }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
-                                        <td>
-                                            <textarea
-                                                class="form-control transparent-bg "
-                                                type="text"
-                                                v-model="row.amount"
-                                                @input="setUnsaved(true)"
-                                                @change="updateRevisionPlans('budget_requirements', 'amount', row.id, row.amount)">
-                                                    {{ row.amount }}
-                                            </textarea>
+                                        <!-- AMOUNT -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Amount',row.amount,
+                                                    'amount','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_amount'">
+                                            {{ row.amount }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Amount',row.amount,
+                                                    'amount','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Amount',row.amount,
+                                                    'amount','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Amount',row.amount,
+                                                    'amount','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
-                                        <td>
-                                            <textarea
+                                        <!-- SOURCE OF FUND -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_source'">
+                                            <!-- <textarea
                                                 class="form-control transparent-bg "
                                                 type="text"
                                                 v-model="row.source"
                                                 @input="setUnsaved(true)"
                                                 @change="updateRevisionPlans('budget_requirements', 'source', row.id, row.source)">
                                                     {{ row.source }}
-                                            </textarea>
+                                            </textarea> -->
+                                            {{ row.source }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
 
                                         <!-- EDIT -->
@@ -1913,10 +1976,10 @@
 
                             </tbody>
                              <tr>
-                                    <td colspan="4"><h4>TOTAL</h4></td>
-                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>
-                                    <td colspan="3"></td>
-                                </tr>
+                                <td colspan="4"><h4>TOTAL</h4></td>
+                                <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                <td colspan="3"></td>
+                            </tr>
                             <!-- <tr>
                                     <td colspan="4"><h4>TOTAL</h4></td>
                                     <td>₱ {{ overallBudget.toLocaleString() }}</td>
@@ -2648,7 +2711,7 @@
         </div>
         <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
             <div class="d-flex justify-content-center">
-
+                <!-- {{ comment_reference_object }} -->
             </div>
             <div>
                 <span v-if="auth.user.department_code==='04'">
