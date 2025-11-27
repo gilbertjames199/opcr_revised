@@ -572,7 +572,8 @@
                                             <!-- DESCRIPTION -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_activities'"><b>{{ act.description }}</b>
+                                            }" :id="act.activity_id + '_activity_projects_activities'"><b>{{ act.description }}</b>
+
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)">*
                                                 </button>
@@ -674,23 +675,30 @@
                                                         <template v-for="(pair, i) in getPairedOutputs(act.activityProject[0])" :key="i" >
                                                             <tr style="height: 100%;">
                                                                 <!-- Target Indicator -->
-                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="dat.id + '_activity_projects_target_indicator'">
-                                                                    <span v-if="paps.is_strategy_based==0 && pair.target_indicator">{{ pair.target_indicator }}
+                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="pair.id + '_expected_revised_outputs_target_indicator'">
+                                                                    <span v-if="paps.is_strategy_based==0 && pair.target_indicator"
+                                                                            :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator','expected_revised_outputs', pair, pair.comments) ||
+                                                                        has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator','expected_revised_outputs', pair, pair.comments)
+                                                                    }"
+                                                                    >{{ pair.target_indicator }}
                                                                         <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
+                                                                            @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
                                                                         </button>
-                                                                        <button v-if="has_comment('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
+                                                                        <button v-if="has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
                                                                         </button>
 
                                                                     </span>
                                                                     <br><br>
                                                                 </td>
                                                                 <!-- GAD Issue -->
-                                                                <td v-if="i === 0" class="align-top" :id="dat.id + '_activity_projects_gad_issue'" :class="{
+                                                                <td v-if="i === 0" class="align-top" :id="act.activity_id + '_activity_projects_gad_issue'" :class="{
                                                                     'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
-                                                                }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
+                                                                }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length"
+
+                                                                >
                                                                     <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
                                                                             @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
@@ -707,7 +715,7 @@
                                                                     has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
                                                                 }" >
                                                                     <span v-if="paps.is_strategy_based==0">
-                                                                        <span v-if="act.date_from" :id="dat.id + '_activity_projects_date_from'">{{ formatMonthYear(act.date_from) }}
+                                                                        <span v-if="act.date_from" :id="act.activity_id + '_activity_projects_date_from'">{{ formatMonthYear(act.date_from) }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
                                                                             </button>
@@ -734,7 +742,7 @@
                                                                     <div :class="{
                                                                         'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
                                                                         has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)
-                                                                    }" :id="pair.id + '_expected_revised_outputs'"
+                                                                    }" :id="pair.id + '_expected_revised_outputs_output_description'"
                                                                     ><span v-if="pair.quantity>0" > {{ pair.quantity }} </span> {{ pair.output_description }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
@@ -771,7 +779,7 @@
                                                                 <!-- GAD Issue -->
                                                                 <td class="align-top" :class="{
                                                                     'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
-                                                                }" :id="dat.id + '_activity_projects_gad_issue'" style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
+                                                                }" :id="act.activity_id + '_activity_projects_gad_issue'" style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
                                                                     <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
                                                                             @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
@@ -788,7 +796,7 @@
                                                                     has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
                                                                 }" >
                                                                     <span v-if="paps.is_strategy_based==0">
-                                                                        <span v-if="act.date_from" :id="dat.id + '_activity_projects_date_from'">{{ formatMonthYear(act.date_from) }}
+                                                                        <span v-if="act.date_from" :id="act.activity_id + '_activity_projects_date_from'">{{ formatMonthYear(act.date_from) }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
                                                                             </button>
@@ -797,7 +805,7 @@
                                                                             </button>
                                                                         </span>
                                                                         <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                                        <span v-if="act.date_to" :id="dat.id + '_activity_projects_date_to'">{{ formatMonthYear(act.date_to) }}
+                                                                        <span v-if="act.date_to" :id="act.activity_id + '_activity_projects_date_to'">{{ formatMonthYear(act.date_to) }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
                                                                             </button>
@@ -820,7 +828,7 @@
                                             <!-- PERSONNEL SERVICES -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_ps_total'">
+                                            }" :id="act.activity_id + '_activity_projects_ps_total'">
                                                 <span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.ps_total),2,true) }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)">*
@@ -832,7 +840,7 @@
                                             <!-- MAINTENANCE, OPERATING, AND OTHER EXPENSES -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_mooe_total'">
+                                            }" :id="act.activity_id + '_activity_projects_mooe_total'">
                                                 <span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.mooe_total),2,true) }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)">*
@@ -844,7 +852,7 @@
                                             <!-- FINANCIAL EXPENSES -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_fe_total'"><span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.fe_total),2,true) }}</span>
+                                            }" :id="act.activity_id + '_activity_projects_fe_total'"><span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.fe_total),2,true) }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)">*
                                                 </button>
@@ -855,7 +863,7 @@
                                             <!-- CAPITAL OUTLAY -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_co_total'"><span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.co_total),2,true) }}</span>
+                                            }" :id="act.activity_id + '_activity_projects_co_total'"><span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.co_total),2,true) }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)">*
                                                 </button>
@@ -870,7 +878,7 @@
                                             <!-- CCET Code -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_ccet_code'"><span v-if="paps.is_strategy_based==0">{{ act.ccet_code }}</span>
+                                            }" :id="act.activity_id + '_activity_projects_ccet_code'"><span v-if="paps.is_strategy_based==0">{{ act.ccet_code }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)">*
                                                 </button>
@@ -2595,22 +2603,23 @@
                                                 ? comment.column_name
                                                     : (
                                                     ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
-                                                        ? `${comment.table_row_id}_${comment.table_name}`
+                                                        ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                         : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                 )
 
                                         )"
                                         :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
                                     >
-                                        {{ comment.comment }} {{
+                                        {{ comment.comment }}
+                                        <!-- {{
                                             ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                 ? comment.column_name
                                                     : (
                                                     ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
-                                                        ? `${comment.table_row_id}_${comment.table_name}`
+                                                        ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                         : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                 )
-                                        }}
+                                        }} -->
                                     </span>
 
                                     <hr>
