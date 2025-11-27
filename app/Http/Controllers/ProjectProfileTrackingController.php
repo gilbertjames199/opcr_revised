@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Appropriation;
 use App\Models\BudgetRequirement;
 use App\Models\FFUNCCOD;
+use App\Models\MeansOfVerification;
 use App\Models\OOE;
 use App\Models\ProjectProfileTracking;
 use App\Models\RevisionPlan;
 use App\Models\RevisionPlanComment;
+use App\Models\RevisionPlanDocuments;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -52,7 +55,8 @@ class ProjectProfileTrackingController extends Controller
         // Update the status
         $revplan->status = $new_status;
         $revplan->save();
-
+        RevisionPlanDocuments::where('revision_plan_id', $id)
+                ->update(['return_executed' => 1]);
         $this->projectProfileTracking->create([
             'action_by' => $us->recid,
             'action_type' => $type,
@@ -283,4 +287,5 @@ class ProjectProfileTrackingController extends Controller
             ->get();
         return $programs;
     }
+
 }

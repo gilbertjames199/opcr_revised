@@ -1869,9 +1869,25 @@ class RevisionPlanController extends Controller
         if (auth()->user()->popsp_agency) {
             return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
         }
+        // dd(auth()->user()->cats, $source);
         if ($source != 'budget') {
-            if ($dept_id != '04' && $dept_id != '01') {
-                return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
+            // if ($dept_id != '04' && $dept_id != '01' ) {
+            //     return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
+            // }
+            $empl_id=auth()->user()->cats;
+            // dd($empl_id);
+            $empl_id = trim($empl_id);
+            $dept_id = trim($dept_id);
+
+            $allowed = (
+                $dept_id === '04' ||
+                $dept_id === '01' ||
+                ($empl_id == '1399')
+            );
+
+            if (!$allowed) {
+                return redirect('/forbidden')
+                    ->with('error', 'You are not allowed to access this page');
             }
         }
 
@@ -2052,6 +2068,13 @@ class RevisionPlanController extends Controller
         // dd($data);
         $dept_code = auth()->user()->department_code;
         $functions2 = FFUNCCOD::where('department_code', $dept_code)->first();
+
+
+        // $component = $this->isBeforeSecondSem2025($list) ? 'OPCR/Form/Index' : 'OPCR/Form/Index2';
+        $baseUrl = app()->environment('production')
+            ? 'http://122.53.120.18:8067/images/'
+            : asset('storage/');
+        $disk = app()->environment('production') ? 'custom_uploads' : 'public';
         return inertia('RevisionPlans/Direct', [
             'data' => $data,
             'FFUNCCOD' => $FFUNCCOD,
@@ -2071,6 +2094,8 @@ class RevisionPlanController extends Controller
             "totals" => $totals,
             'pgHead' => $pgHead,
             "acc" => $acc,
+            'fileBaseUrl' => $baseUrl,
+            'disk' => $disk,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)

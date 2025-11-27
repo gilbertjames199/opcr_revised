@@ -22,6 +22,7 @@ class HandleInertiaRequests extends Middleware
             $profile =  User::where('recid', auth()->user()->recid)->first();
             $office = DB::connection('mysql2')->table('offices')->where('department_code', auth()->user()->department_code)->first();
             // dd($profile);
+            // dd(auth()->user());
             return array_merge(parent::share($request), [
                 'auth' => auth()->user() ? [ //if there is a user
                     'user' => [

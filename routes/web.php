@@ -96,6 +96,7 @@ use App\Http\Controllers\ProjectProfileStreamlinedController;
 use App\Http\Controllers\ProjectProfileTrackingController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
 use App\Http\Controllers\RevisionPlanCommentController;
+use App\Http\Controllers\RevisionPlanDocumentsController;
 use App\Http\Controllers\SentenceParserController;
 use App\Http\Controllers\SharedProgramAndProjectController;
 use App\Http\Controllers\StrategyProjectController;
@@ -468,8 +469,17 @@ Route::middleware('auth')->group(function () {
         Route::post('/revised/outputs', [ExpectedRevisedOutputController::class, 'save_multiple']);
         Route::post('/outcomes', [ExpectedRevisedOutcomeController::class, 'save_multiple']);
     });
+    Route::prefix('/revison_plan_documents')->group(function(){
+        Route::get('/{id}', [RevisionPlanDocumentsController::class,'get_docs']);
+        // Route::delete('/{id}', [RevisionPlanDocumentsController::class,'get_docs']);
+        Route::delete('/delete-multiple/many', [RevisionPlanDocumentsController::class, 'destroyMultiple']);
+    });
+
+
+    // ,[RevisionPlanDocumentsController::class,'get_docs']);
     Route::prefix('/status/revision')->group(function () {
         Route::post('/update/{id}/{type}/{new_status}', [ProjectProfileTrackingController::class, 'status_update']);
+        Route::post('/update/{id}/{type}/{new_status}/upload/justification', [RevisionPlanDocumentsController::class, 'upload_justification']);
         Route::get('/review/approve', [ProjectProfileTrackingController::class, 'review_approve_index']);
     });
     Route::prefix('/revisio/n')->group(function () {
@@ -479,11 +489,11 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/revision_plans')->group(function () {
         Route::get('/', [RevisionPlanController::class, 'direct']);
         Route::get('/budget/{rev_id}', [RevisionPlanController::class, 'get_budget_data']);
-        // Route::get('/create/{id}', [RevisionPlanController::class, 'create']);
         Route::post('/store', [BudgetPrepController::class, 'store']);
         Route::get('/budget/edit/{id}', [BudgetPrepController::class, 'fetch_data']);
         Route::patch('/', [BudgetPrepController::class, 'update']);
         Route::delete('/{id}', [BudgetPrepController::class, 'destroy']);
+        // Route::get('/create/{id}', [RevisionPlanController::class, 'create']);
         // Route::get('/view/project/paps/{id}', [RevisionPlanController::class, 'view']);
         // Route::get('/general/administration/services/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas']);
         // Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);

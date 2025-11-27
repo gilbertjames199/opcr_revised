@@ -280,7 +280,7 @@
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/revision_plans?source=direct"
                         :class="{ 'active': $page.url === '/revision_plans?source=direct' }"
-                        v-if="($page.props.auth.user.department_code == '04' || $page.props.auth.user.department_code == '01')"
+                        v-if="($page.props.auth.user.department_code == '04' || $page.props.auth.user.office.empl_id == '1399')"
                     >
                     <span></span>
                     <span class="icon-holder">
