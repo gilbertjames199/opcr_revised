@@ -117,6 +117,7 @@
                     </section>
                     <table name="tabel" class="table table-hover table-bordered border-dark">
                         <tbody>
+                            <!-- TITLE -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Title</th>
                                 <td colspan="6" :class="{
@@ -133,6 +134,7 @@
 
                                 </td>
                             </tr>
+                            <!-- PROJECT LOCATION -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Project Location</th>
                                 <td colspan="6" :class="{
@@ -146,6 +148,7 @@
                                     </button>
                                 </td>
                             </tr>
+                            <!-- IMPLEMENTATION SCHEDULE -FROM-TO -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Implementation Schedule</th>
                                 <th colspan="1">Start</th>
@@ -173,6 +176,7 @@
                                     </button>
                                 </td>
                             </tr>
+                            <!-- INTENDED BENEFICIARIES -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Intended Beneficiaries</th>
                                 <th colspan="1">Male</th>
@@ -210,6 +214,7 @@
                                     </button>
                                 </td>
                             </tr>
+                            <!-- BASELINE DISAGGREGATED DATA -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Baseline Disaggregated Data</th>
                                 <th colspan="1">Male</th>
@@ -257,6 +262,7 @@
                                     </button>
                                 </td> -->
                             </tr>
+                            <!-- COST OF PROGRAM -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Cost of Program</th>
                                 <th colspan="1">Amount (Php)</th>
@@ -283,11 +289,12 @@
                                     </button>
                                 </td>
                             </tr>
+                            <!-- HGDG CHECKLIST -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">HGDG Checklist</th>
                                 <td colspan="3" :id="paps.id+'_revision_plans_HGDG Checklist'" :class="{
                                     'text-danger': has_comment('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)
-                                }">GAD {{ paps.checklist.box_number }} {{ paps.checklist.sector }}
+                                }" >GAD {{ paps.checklist.box_number }} {{ paps.checklist.sector }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)">*
                                     </button>
@@ -334,7 +341,10 @@
                         </section>
                         <br>
                         <div class="bgc-white p-20 bd" >
-                            <div v-html="paps.rationale" style="white-space: pre-line"></div>
+                            <div v-html="paps.rationale"
+                                style="white-space: pre-line"
+                                ref="rationaleDiv"
+                                @mouseup="onHighlight"></div>
                         </div>
                         <br>
                      </span>
@@ -683,15 +693,16 @@
                                                                     }"
                                                                     >{{ pair.target_indicator }}
                                                                         <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
-                                                                        <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
-                                                                        </button>
-                                                                        <button v-if="has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
-                                                                        </button>
+
 
                                                                     </span>
                                                                     <br><br>
+                                                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                                                        @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
+                                                                    </button>
+                                                                    <button v-if="has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
+                                                                        @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
+                                                                    </button>
                                                                 </td>
                                                                 <!-- GAD Issue -->
                                                                 <td v-if="i === 0" class="align-top" :id="act.activity_id + '_activity_projects_gad_issue'" :class="{
@@ -2449,7 +2460,21 @@
                                         'text-danger': has_comment('Risk Management','Possible Risks',risk.possible_risk,'possible_risk','risk_manangements', risk, risk.comments)
                                     }"
                                     :id="risk.id + '_risk_manangements_possible_risk'"
-                                    ><span v-html="risk.possible_risk"></span>
+                                    >
+                                    <!-- {{ has_comment('Risk Management','Possible Risks',risk.possible_risk,'possible_risk','risk_manangements', risk, risk.comments) }} -->
+                                        <!-- <span v-html="risk.possible_risk"></span> -->
+                                         <div
+                                        v-html="risk.possible_risk"
+                                        :style="has_comment(
+                                            'Risk Management',
+                                            'Possible Risks',
+                                            risk.possible_risk,
+                                            'possible_risk',
+                                            'risk_manangements',
+                                            risk,
+                                            risk.comments
+                                        ) ? 'color:red !important;' : ''"
+                                        ></div>
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Risk Management','Possible Risks',risk.possible_risk,'possible_risk','risk_manangements', risk, risk.comments)">*
                                         </button>
@@ -2580,22 +2605,17 @@
                             </svg>
                         </button>
                     </div>
-
                     <div class="tab">
                         <button style="color: red;" @click="openTab('Comments')">Comments</button>
                         <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
                     </div>
-
                     <div v-if="open_tab==='Comments'">
                         <div class="comments-header">
                             <h4>COMMENTS ...</h4>
-
                         </div>
-
                         <div class="scrollable-text">
                             <ul class="list-unstyled">
                                 <li v-for="(comment, index) in all_comments" :key="index" class="mb-2">
-
                                     <span
                                         class="clickable-comment"
                                         @click="scrollToSection(
@@ -2606,7 +2626,6 @@
                                                         ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                         : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                 )
-
                                         )"
                                         :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
                                     >
@@ -3348,6 +3367,50 @@ export default {
 
         hasAnyRows(gadGroupsForCategory) {
             return Object.values(gadGroupsForCategory).some(r => r.length > 0);
+        },
+
+
+        //RATIONALE COMMENTS
+        onHighlight() {
+            const data = this.getHighlightIndexes();
+            alert("callllllsdfsdbhfjkbgf")
+            if (data) {
+                console.log("Start index:", data.start);
+                console.log("End index:", data.end);
+                console.log("Selected text:", data.selected);
+            }
+        },
+        getHighlightIndexes() {
+            const selection = window.getSelection();
+
+            if (!selection || selection.rangeCount === 0) {
+                return null;
+            }
+
+            const range = selection.getRangeAt(0);
+            const selectedText = selection.toString();
+
+            if (!selectedText) {
+                return null;
+            }
+
+            // Get the full text (flattened) from the div
+            const container = this.$refs.rationaleDiv;
+            const fullText = container.innerText;
+
+            // Build a Range to compute index relative to the container
+            const preRange = document.createRange();
+            preRange.selectNodeContents(container);
+            preRange.setEnd(range.startContainer, range.startOffset);
+
+            const startIndex = preRange.toString().length;
+            const endIndex = startIndex + selectedText.length;
+
+            return {
+                start: startIndex,
+                end: endIndex,
+                selected: selectedText
+            };
         }
 
     }

@@ -618,15 +618,16 @@
                                                                 <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="dat.id + '_activity_projects_target_indicator'">
                                                                     <span v-if="paps.is_strategy_based==0 && pair.target_indicator">{{ pair.target_indicator }}
                                                                         <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
-                                                                        <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
-                                                                        </button>
-                                                                        <button v-if="has_comment('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
-                                                                        </button>
+
 
                                                                     </span>
                                                                     <br><br>
+                                                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                                                        @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
+                                                                    </button>
+                                                                    <button v-if="has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
+                                                                        @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
+                                                                    </button>
                                                                 </td>
                                                                 <!-- GAD Issue -->
                                                                 <td v-if="i === 0" class="align-top" :id="dat.id + '_activity_projects_gad_issue'" :class="{
@@ -1331,7 +1332,15 @@
                                      <tr v-for="row in rows" :key="row.id">
                                         <td></td>
                                         <td></td>
-                                        <td>
+                                        <!-- BUDGET PARTICULARS -->
+                                        <td
+                                            :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_particulars'"
+                                        >
                                             <textarea
                                                 class="form-control transparent-bg "
                                                 type="text"
@@ -1340,8 +1349,26 @@
                                                 @change="updateRevisionPlans('budget_requirements', 'particulars', row.id, row.particulars)">
                                                     {{ row.particulars }}
                                             </textarea>
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
-                                        <td>
+                                        <!-- ACCOUNT CODE -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_account_code'">
                                             <textarea
                                                 class="form-control transparent-bg "
                                                 type="text"
@@ -1350,8 +1377,27 @@
                                                 @change="updateRevisionPlans('budget_requirements', 'account_code', row.id, row.account_code)" disabled>
                                                     {{ row.account_code }}
                                             </textarea>
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
-                                        <td>
+                                        <!-- AMOUNT -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Amount',row.amount,
+                                                    'amount','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_amount'"
+                                        >
                                             <textarea
                                                 class="form-control transparent-bg "
                                                 type="text"
@@ -1360,8 +1406,26 @@
                                                 @change="updateRevisionPlans('budget_requirements', 'amount', row.id, row.amount)">
                                                     {{ row.amount }}
                                             </textarea>
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
-                                        <td>
+                                        <!-- SOURCE OF FUND -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_source'">
                                             <textarea
                                                 class="form-control transparent-bg "
                                                 type="text"
@@ -1370,6 +1434,18 @@
                                                 @change="updateRevisionPlans('budget_requirements', 'source', row.id, row.source)">
                                                     {{ row.source }}
                                             </textarea>
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
 
                                         <!-- EDIT -->
@@ -3198,6 +3274,29 @@ export default {
                 //alert('undefined si idpaps!');
             }
         }
+
+
+
+
+
+        //TEXTAREA -Set Sizes ***********************************************************************************************************
+        // const applyAutosize = (el) => {
+        //     el.style.overflow = 'hidden';
+        //     el.style.resize = 'none';
+
+        //     const resize = () => {
+        //         el.style.height = 'auto';
+        //         el.style.height = el.scrollHeight + 'px';
+        //     };
+
+        //     el.addEventListener('input', resize);
+        //     resize(); // initial
+        // };
+
+        // Apply to all textareas inside this page
+        // this.$nextTick(() => {
+        //     this.$el.querySelectorAll('textarea').forEach(applyAutosize);
+        // });
 
     },
     beforeUnmount() {
