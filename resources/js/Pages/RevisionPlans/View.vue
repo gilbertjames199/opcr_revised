@@ -516,7 +516,7 @@
                             </thead>
                             <tbody>
                                 <template v-for="(dat, index) in implementation" :key="dat.id">
-
+                                    <!-- STRATEGIES***************************************************************************************************** -->
                                     <tr  style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==1">
                                         <td  :class="{
                                             'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
@@ -581,6 +581,7 @@
                                             </button>
                                         </td>
                                     </tr>
+                                    <!-- ACTIVITIES **************************************************************************************************** -->
                                     <template v-if="dat.activity && paps.is_strategy_based==0">
                                         <tr  v-for="(act, subIndex) in dat.activity" :key="subIndex" style="height: 100%">
                                             <!-- DESCRIPTION -->
@@ -619,67 +620,12 @@
                                                     </tr>
                                             </td> -->
                                             <!-- GAD ISSUE -->
-                                            <!-- <td :class="{
-                                                'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
-                                            }">
-                                                <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
-                                                    <button v-if="can_view_comment()" class="superscript-btn"
-                                                        @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
-                                                    </button>
-                                                    <button v-if="has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)" class="superscript-btn"
-                                                        @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
-                                                    </button>
-                                                </span>
-                                            </td> -->
-                                            <!-- DATE FROM/DATE TO -->
-                                            <!-- <td :class="{
-                                                'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
-                                                has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
-                                            }">
-                                                <span v-if="paps.is_strategy_based==0">
-                                                    <span v-if="act.date_from">{{ formatMonthYear(act.date_from) }}
-                                                        <button v-if="can_view_comment()" class="superscript-btn"
-                                                            @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
-                                                        </button>
-                                                        <button v-if="has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)" class="superscript-btn"
-                                                            @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
-                                                        </button>
-                                                    </span>
-                                                    <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                    <span v-if="act.date_to">{{ formatMonthYear(act.date_to) }}
-                                                        <button v-if="can_view_comment()" class="superscript-btn"
-                                                            @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
-                                                        </button>
-                                                        <button v-if="has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)" class="superscript-btn"
-                                                            @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
-                                                        </button>
-                                                    </span>
-                                                </span>
-                                            </td> -->
-                                            <!-- EXPECTED OUTPUT/OUTCOME -->
-                                            <!-- <td>
-                                                <span v-if="paps.is_strategy_based==0">
-                                                    <div v-if="act.activityProject[0]" v-for="(eo,index) in act.activityProject[0].expected_output" :key="index">
 
-                                                        <div>{{ act.activityProject[0].expected_output[index]?.description }} </div>
-                                                        <hr>
 
-                                                    </div>
-                                                    <tr v-if="act.activityProject[0]" v-for="eo in act.activityProject[0].expected_outcome">
-                                                        <div>{{ eo }} **</div>
-
-                                                        <hr>
-                                                    </tr>
-                                                </span>
-
-                                            </td> -->
                                             <!-- MERGED -->
-                                             <!-- <td>
-                                                <span v-if="getPairedOutputs(act.activityProject[0]) && getPairedOutputs(act.activityProject[0]).length">
-                                                    Dsadasdasdasdasdads
-                                                </span>
-                                                <span v-else>Empty siya</span>
-                                             </td> -->
+
+
+                                            <!-- TARGET/INDICATORs, EXPECTED OUTPUTS, GAD ISSUE, IMPLEMENTATION DATES-->
                                             <td colspan="4" style="width: 32%; padding: 0; border: 1px solid #000; vertical-align: top;">
                                                 <div style="display: flex; flex-direction: column; height: 100%; min-height: 100%;">
                                                     <!-- style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;" -->
@@ -738,8 +684,9 @@
                                                                                 @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
                                                                             </button>
                                                                         </span>
+
                                                                         <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                                        <span v-if="act.date_to" :id="dat.id + '_activity_projects_date_to'">{{ formatMonthYear(act.date_to) }}
+                                                                        <span v-if="act.date_to" :id="act.activity_id + '_activity_projects_date_to'">{{ formatMonthYear(act.date_to) }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
                                                                             </button>
@@ -915,6 +862,7 @@
                                         </tr>
                                     </template>
                                 </template>
+                                <!-- TOTALS*********************************************************************************** -->
                                 <tr>
                                         <td colspan="5">TOTAL</td>
                                         <!-- PS TOTAL -->
@@ -1998,8 +1946,40 @@
 
 
                             </tbody>
+                            <tr >
+                                <td colspan="4"><h5>GAD TOTAL</h5></td>
+                                <td :class="{
+                                            'text-danger': has_comment('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)
+                                        }"
+                                        :id="paps.id + '_revision_plans_gad_total'">
+                                        ₱ {{ gadBudgetTotal.toLocaleString() }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                </td>
+                                <td colspan="3"></td>
+                            </tr>
                              <tr>
-                                <td colspan="4"><h4>TOTAL</h4></td>
+                                <td colspan="4"><h5>TOTAL</h5></td>
                                 <td>₱ {{ overallBudget.toLocaleString() }}</td>
                                 <td colspan="3"></td>
                             </tr>
@@ -2598,7 +2578,12 @@
                     <button class="close-btn text-danger" @click="toggleShowCommentPanel">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
-                        </svg>
+                        </svg>&nbsp;
+                        <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
+                            <b>
+                                {{ countUnresolvedComments }} unresolved updates !!! Click Here
+                            </b>
+                        </span>
                     </button>
             </div>
             <div class="p-20 bd sticky-comments" v-if="showComments" style="background: rgba(255, 255, 255, 0.7);">
@@ -2611,9 +2596,9 @@
                     </div>
                     <div class="tab">
                         <button style="color: red;" @click="openTab('Comments')">Comments
-                            <span v-if="countUnresolvedComments>0" style="color: red;">
+                            <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
                                 <b>
-                                    ({{ countUnresolvedComments }})
+                                    ({{ countUnresolvedComments }} unresolved)
                                 </b>
                             </span>
                         </button>
@@ -2642,15 +2627,13 @@
                                         :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
                                     >
                                         {{ comment.comment }}
-                                        <!-- {{
-                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                        {{ ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                 ? comment.column_name
                                                     : (
                                                     ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
                                                         ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                         : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                )
-                                        }} -->
+                                                )  }}
                                     </span>
 
                                     <hr>
@@ -2960,6 +2943,28 @@ export default {
                     rows.forEach(item => {
                         const amount = parseFloat(item.amount || 0);
                         if (!isNaN(amount)) {
+                            total += amount;
+                        }
+                    });
+                }
+            }
+
+            return total;
+        },
+        gadBudgetTotal() {
+            let total = 0;
+
+            for (const category in this.groupedBudget) {
+                const gadGroups = this.groupedBudget[category];
+
+                for (const gadType in gadGroups) {
+                    const rows = gadGroups[gadType];
+
+                    rows.forEach(item => {
+                        const amount = parseFloat(item.amount || 0);
+
+                        // Only include rows with category_gad === "GAD"
+                        if (!isNaN(amount) && item.category_gad === "GAD") {
                             total += amount;
                         }
                     });
@@ -3548,5 +3553,15 @@ table {
 
 .comment-rejected:hover {
     color: #CC7722; /* golden ochre */
+}
+
+.blink {
+    color: red;
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    0%, 100% { color: red; }
+    50% { color: #f8d823; } /* paler red */
 }
 </style>

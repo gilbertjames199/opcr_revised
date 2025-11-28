@@ -615,7 +615,7 @@
                                                         <template v-for="(pair, i) in getPairedOutputs(act.activityProject[0])" :key="i" >
                                                             <tr style="height: 100%;">
                                                                 <!-- Target Indicator -->
-                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="dat.id + '_activity_projects_target_indicator'">
+                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="pair.id + '_activity_projects_target_indicator'">
                                                                     <span v-if="paps.is_strategy_based==0 && pair.target_indicator">{{ pair.target_indicator }}
                                                                         <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
 
@@ -630,7 +630,7 @@
                                                                     </button>
                                                                 </td>
                                                                 <!-- GAD Issue -->
-                                                                <td v-if="i === 0" class="align-top" :id="dat.id + '_activity_projects_gad_issue'" :class="{
+                                                                <td v-if="i === 0" class="align-top" :id="act.activity_id + '_activity_projects_gad_issue'" :class="{
                                                                     'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
                                                                 }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
                                                                     <span v-if="paps.is_strategy_based==0">
@@ -658,8 +658,8 @@
                                                                 }" >
                                                                     <span v-if="paps.is_strategy_based==0">
 
-                                                                        <span v-if="act.date_from" :id="dat.id + '_activity_projects_date_from'">
-                                                                            <input class="form-control" type="date" v-model="act.date_from"
+                                                                        <span v-if="act.date_from" >
+                                                                            <input class="form-control" type="date" v-model="act.date_from" :id="act.activity_id + '_activity_projects_date_from'"
                                                                                 @change="updateRevisionPlans('activity_projects', 'date_from', act.activity_id, act.date_from)"/>
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
@@ -669,9 +669,10 @@
                                                                             </button>
                                                                         </span>
                                                                         <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                                        <span v-if="act.date_to" :id="dat.id + '_activity_projects_date_to'">
+                                                                        <span v-if="act.date_to" >
                                                                             <input class="form-control" type="date" v-model="act.date_to"
-                                                                                @change="updateRevisionPlans('activity_projects', 'date_to', act.activity_id, act.date_to)"/>
+                                                                                @change="updateRevisionPlans('activity_projects', 'date_to', act.activity_id, act.date_to)"
+                                                                                :id="act.activity_id + '_activity_projects_date_to'"/>
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
                                                                             </button>
@@ -689,8 +690,8 @@
                                                                     <div :class="{
                                                                         'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
                                                                         has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)
-                                                                    }" :id="pair.id + '_expected_revised_outputs'" v-if="pair.output_description"
-                                                                    >       <textarea
+                                                                    }"  v-if="pair.output_description"
+                                                                    >       <textarea :id="pair.id + '_expected_revised_outputs'"
                                                                                 class="form-control transparent-bg "
                                                                                 v-model="pair.output_description"
                                                                                 type="text"
@@ -801,7 +802,7 @@
                                             <!-- PERSONNEL SERVICES -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_ps_total'">
+                                            }" :id="act.activity_id + '_activity_projects_ps_total'">
                                                 <span v-if="paps.is_strategy_based==0">
                                                     <p>Q1:<input class="form-control"
                                                             type="number"
@@ -833,6 +834,7 @@
                                                     </p>
                                                     {{ format_number_conv((parseFloat(act.ps_q1)+parseFloat(act.ps_q2)+parseFloat(act.ps_q3)+parseFloat(act.ps_q4)),2,true) }}
                                                 </span>
+                                                {{ dat.id + '_activity_projects_ps_total' }}
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)">*
                                                 </button>
@@ -928,7 +930,7 @@
                                             <!-- CAPITAL OUTLAY -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_co_total'">
+                                            }" :id="act.activity_id + '_activity_projects_co_total'">
                                                     <span v-if="paps.is_strategy_based==0">
                                                         <p>Q1:<input class="form-control"
                                                                 type="number"
@@ -1021,7 +1023,7 @@
                                             <!-- CCET Code -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_ccet_code'">
+                                            }" :id="act.activity_id + '_activity_projects_ccet_code'">
                                                 <span v-if="paps.is_strategy_based==0">
                                                     <textarea
                                                         class="form-control transparent-bg "
@@ -1042,7 +1044,7 @@
                                             <!-- RESPONSIBLE INDIVIDUAL -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_responsible'">
+                                            }" :id="act.activity_id + '_activity_projects_responsible'">
                                                 <span v-if="paps.is_strategy_based==0">
                                                     <textarea
                                                         class="form-control transparent-bg "
@@ -1068,7 +1070,7 @@
                                                 @click="showExpectedOutputModal(act.activityProject[0].expected_output,act.activityProject[0].activity_id,
                                                     act.activityProject[0].id)
                                                     ">
-                                                        Expected Outputs
+                                                        Expected Outputs fsdfsdf
                                                 </button><hr >
                                                 <button class="btn btn-primary btn-sm text-white"
                                                 @click="showExpectedOutcomeModal(act.activityProject[0].expected_outcome,act.activityProject[0].activity_id,
@@ -1087,6 +1089,7 @@
                                         </tr>
                                     </template>
                                 </template>
+                                <!-- TOTALS*********************************************************************************** -->
                                 <tr>
                                         <td colspan="5">TOTAL</td>
                                         <!-- PS TOTAL -->
@@ -2041,6 +2044,12 @@
                             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
                         </svg>
                     </button>
+                    &nbsp;
+                    <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
+                        <b>
+                            {{ countUnresolvedComments }} unresolved updates !!! Click Here
+                        </b>
+                    </span>
             </div>
             <div class="bgc-white p-20 bd sticky-comments" v-if="showComments">
                     <div class="d-flex justify-content-end">
@@ -2052,7 +2061,13 @@
                     </div>
 
                     <div class="tab">
-                        <button style="color: red;" @click="openTab('Comments')">Comments</button>
+                        <button style="color: red;" @click="openTab('Comments')">Comments
+                            <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
+                                <b>
+                                    ({{ countUnresolvedComments }} unresolved)
+                                </b>
+                            </span>
+                        </button>
                         <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
                     </div>
 
@@ -2081,7 +2096,7 @@
                                         :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
                                     >
                                         {{ comment.comment }}
-                                        <!-- {{
+                                        {{
                                             ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                 ? comment.column_name
                                                     : (
@@ -2089,7 +2104,7 @@
                                                         ? `${comment.table_row_id}_${comment.table_name}`
                                                         : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                 )
-                                        }} -->
+                                        }}
                                     </span>
 
                                     <hr>
@@ -3197,7 +3212,10 @@ export default {
                 _raw: emp
             }));
         },
-
+        countUnresolvedComments() {
+            // alert('unresolved')
+            return this.all_comments.filter(c => c.comment_status !== "1").length;
+        }
 
     },
     mounted() {
@@ -4402,5 +4420,18 @@ table {
     color: red;
 
 } */
+ .comment-rejected:hover {
+    color: #CC7722; /* golden ochre */
+}
+
+.blink {
+    color: red;
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    0%, 100% { color: red; }
+    50% { color: #f8d823; } /* paler red */
+}
 </style>
 

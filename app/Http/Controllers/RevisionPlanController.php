@@ -900,7 +900,7 @@ class RevisionPlanController extends Controller
             ->whereIn('table_row_id', $teamIds);
 
         // 9️⃣ Merge all queries using union
-        $allComments = $revisionPlanComments
+        $unionQuery = $revisionPlanComments
             ->unionAll($activityComments)
             ->unionAll($activityOutcomeComments)
             ->unionAll($activityOutputComments)
@@ -910,7 +910,10 @@ class RevisionPlanController extends Controller
             ->unionAll($budgetComments)
             ->unionAll($monitoringComments)
             ->unionAll($riskComments)
-            ->unionAll($teamComments)
+            ->unionAll($teamComments);
+        $allComments = DB::table(DB::raw("({$unionQuery->toSql()}) as comments"))
+            ->mergeBindings($unionQuery->getQuery()) // important to merge bindings
+            ->orderBy('comment_status', 'asc')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -3385,5 +3388,132 @@ class RevisionPlanController extends Controller
         }, 0);
 
         return $total_budget;
+    }
+    public function imp_schedule(Request $request){
+        $empty = [];
+        $strat= StrategyProject::with(['strategy',
+            'strategy.activity',
+            'strategy.activity.activityProject',
+            // 'strategy.activity.activityProject.expected_output',
+            // 'strategy.activity.activityProject.expected_outcome'
+        ])
+            ->where('project_id', $request->id)
+            ->get()
+            ->map(function($item){
+                $strategy = optional($item->strategy);
+
+                return [
+                    'strategy' => $strategy->description ?? null,
+
+                    'activities' => $strategy->activity
+                        ? $strategy->activity->flatMap(function ($act) {
+
+                            $projects = $act->activityProject ?? collect();
+
+                            return $projects->map(function ($proj) use($act){
+                                // Build expected outputs first
+                                // $expectedOutputs = collect($proj->expected_output ?? [])
+                                //     ->map(function ($eo) {
+                                //         return [
+                                //             'description' => $eo->description ?? null,
+                                //             'target_indicator' => $eo->target_indicator ?? null,
+                                //         ];
+                                //     });
+
+                                // // Append expected outcomes to SAME ARRAY
+                                // $expectedOutcomes = collect($proj->expected_outcome ?? [])
+                                //     ->map(function ($eo) {
+                                //         return [
+                                //             'description' => $eo->description ?? null,
+                                //             'target_indicator' => $eo->target_indicator ?? null,
+                                //         ];
+                                //     });
+
+                                // Merge both into a single array
+                                // $combined = $expectedOutputs->merge($expectedOutcomes);
+
+                                return [
+                                    'activity_project_id'=>$proj->id ?? null,
+                                    'description' => $act->description ?? null,
+                                    'gad_issue' => $proj->gad_issue ?? null,
+                                    'date_from' => $proj->date_from ?? null,
+                                    'date_to' => $proj->date_to ?? null,
+
+                                    'ps_q1' => $proj->ps_q1 ?? 0,
+                                    'ps_q2' => $proj->ps_q2 ?? 0,
+                                    'ps_q3' => $proj->ps_q3 ?? 0,
+                                    'ps_q4' => $proj->ps_q4 ?? 0,
+
+                                    'mooe_q1' => $proj->mooe_q1 ?? 0,
+                                    'mooe_q2' => $proj->mooe_q2 ?? 0,
+                                    'mooe_q3' => $proj->mooe_q3 ?? 0,
+                                    'mooe_q4' => $proj->mooe_q4 ?? 0,
+
+                                    'fe_q1' => $proj->fe_q1 ?? 0,
+                                    'fe_q2' => $proj->fe_q2 ?? 0,
+                                    'fe_q3' => $proj->fe_q3 ?? 0,
+                                    'fe_q4' => $proj->fe_q4 ?? 0,
+
+                                    'co_q1' => $proj->co_q1 ?? 0,
+                                    'co_q2' => $proj->co_q2 ?? 0,
+                                    'co_q3' => $proj->co_q3 ?? 0,
+                                    'co_q4' => $proj->co_q4 ?? 0,
+                                    'ccet' => $proj->ccet ?? null,
+                                    'responsible' => $proj->responsible ?? null,
+
+                                    // 'expected_outputs' => $combined->values(),
+                                    // 'expected_outputs' => ($proj->expected_output ?? collect())
+                                    //     ->map(function ($eo) {
+                                    //         return [
+                                    //             'description' => $eo->description ?? null,
+                                    //             'target_indicator' => $eo->target_indicator ?? null,
+                                    //         ];
+                                    //     }),
+                                ];
+                            });
+
+                        })
+                        : collect(),
+                ];
+            });
+        return $strat->isEmpty()
+            ? $empty
+            : $strat;
+
+    }
+    public function getCombinedExpected(Request $request)
+    {
+        // Load project with both relations
+        $project = ActivityProject::with([
+            'expected_output',
+            'expected_outcome'
+        ])->find($request->id);
+
+        if (!$project) {
+            return collect(); // or return [];
+        }
+
+        // expected_outputs
+        $expectedOutputs = collect($project->expected_output ?? [])
+            ->map(function ($eo) {
+                return [
+                    'description' => $eo->description ?? null,
+                    'target_indicator' => $eo->target_indicator ?? null,
+                ];
+            });
+
+        // expected_outcomes
+        $expectedOutcomes = collect($project->expected_outcome ?? [])
+            ->map(function ($eo) {
+                return [
+                    'description' => $eo->description ?? null,
+                    'target_indicator' => $eo->target_indicator ?? null,
+                ];
+            });
+
+        // merge into one single array
+        return $expectedOutputs
+            ->merge($expectedOutcomes)
+            ->values();
     }
 }

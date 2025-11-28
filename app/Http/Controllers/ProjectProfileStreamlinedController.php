@@ -285,7 +285,7 @@ class ProjectProfileStreamlinedController extends Controller
             ->whereIn('table_row_id', $teamIds);
 
         // 9️⃣ Merge all queries using union
-        $allComments = $revisionPlanComments
+        $unionQuery = $revisionPlanComments
             ->unionAll($activityComments)
             ->unionAll($activityOutcomeComments)
             ->unionAll($activityOutputComments)
@@ -295,7 +295,10 @@ class ProjectProfileStreamlinedController extends Controller
             ->unionAll($budgetComments)
             ->unionAll($monitoringComments)
             ->unionAll($riskComments)
-            ->unionAll($teamComments)
+            ->unionAll($teamComments);
+        $allComments = DB::table(DB::raw("({$unionQuery->toSql()}) as comments"))
+            ->mergeBindings($unionQuery->getQuery()) // important to merge bindings
+            ->orderBy('comment_status', 'asc')
             ->orderBy('created_at', 'desc')
             ->get();
 
