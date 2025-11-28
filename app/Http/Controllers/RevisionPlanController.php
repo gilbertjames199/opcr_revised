@@ -3178,7 +3178,7 @@ class RevisionPlanController extends Controller
                         'hgdg_score' => $item->hgdg_score,
                         'hgdg_percent' => $item->hgdg_percent,
                         'rationale' => $item->rationale,
-                        'objective' => $item->objective,
+                        'objective' => trim($item->objective),
                         'beneficiaries' => $item->beneficiaries,
                         'implementing_team' => $item->implementing_team,
                         'implementing_teams'=>$item->teamPlans,
