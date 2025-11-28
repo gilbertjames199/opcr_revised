@@ -500,7 +500,7 @@
                                         marginRight: '4px'
                                         }"
                                     >
-                                        General Project Design
+                                        Generate Project Design
                                     </button>
                                 </td>
                                 <td v-if="my_source=='rev_app'">
