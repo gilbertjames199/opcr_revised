@@ -1070,7 +1070,7 @@
                                                 @click="showExpectedOutputModal(act.activityProject[0].expected_output,act.activityProject[0].activity_id,
                                                     act.activityProject[0].id)
                                                     ">
-                                                        Expected Outputs fsdfsdf
+                                                        Expected Outputs
                                                 </button><hr >
                                                 <button class="btn btn-primary btn-sm text-white"
                                                 @click="showExpectedOutcomeModal(act.activityProject[0].expected_outcome,act.activityProject[0].activity_id,
@@ -1101,8 +1101,10 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_ps'">
                                             <!-- {{ format_number_conv(v_imp_ps,2,true) }} -->
+                                              {{ paps.id+'_revision_plans_imp_ps' }}
                                               ₱ {{ totalImplementationPS.toLocaleString() }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
@@ -1138,7 +1140,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_mooe'"
+                                        >
                                         <!-- {{ format_number_conv(v_imp_mooe,2,true) }} -->
                                           ₱ {{ totalImplementationMOOE.toLocaleString() }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
@@ -1175,7 +1179,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_fe'"
+                                        >
                                         <!-- {{ format_number_conv(v_imp_fe,2,true) }} -->
                                           ₱ {{ totalImplementationFE.toLocaleString() }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
@@ -1212,7 +1218,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_fe'"
+                                        >
                                         <!-- {{ format_number_conv(v_imp_co,2,true)}} -->
                                           ₱ {{ totalImplementationCO.toLocaleString() }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
@@ -2051,7 +2059,7 @@
                         </b>
                     </span>
             </div>
-            <div class="bgc-white p-20 bd sticky-comments" v-if="showComments">
+            <div class="p-20 bd sticky-comments" v-if="showComments" style="background: rgba(255, 255, 255, 0.7);">
                     <div class="d-flex justify-content-end">
                         <button class="close-btn text-danger" @click="toggleShowCommentPanel">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -2079,7 +2087,7 @@
 
                         <div class="scrollable-text">
                             <ul class="list-unstyled">
-                                <li v-for="(comment, index) in all_comments" :key="index" class="mb-2">
+                                <li v-for="(comment, index) in all_comments" :key="index" class="mb-2" >
 
                                     <span
                                         class="clickable-comment"
@@ -2094,9 +2102,10 @@
 
                                         )"
                                         :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
+                                        style="cursor: pointer; "
                                     >
                                         {{ comment.comment }}
-                                        {{
+                                        <!-- {{
                                             ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                 ? comment.column_name
                                                     : (
@@ -2104,7 +2113,7 @@
                                                         ? `${comment.table_row_id}_${comment.table_name}`
                                                         : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                 )
-                                        }}
+                                        }} -->
                                     </span>
 
                                     <hr>
@@ -2118,7 +2127,7 @@
                             <h4>NAVIGATION ...</h4>
 
                         </div>
-                        <div class="scrollable-text">
+                        <div class="scrollable-text" style="cursor: pointer;">
                             <ul class="list-unstyled">
                                 <li class="mb-2" style="color: blue">
                                     <span class="clickable-comment"  @click="scrollToSection('revision_plans')">

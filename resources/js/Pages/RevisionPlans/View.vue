@@ -874,7 +874,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">{{ format_number_conv(v_imp_ps,2,true) }}
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_ps'"
+                                        >{{ format_number_conv(v_imp_ps,2,true) }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
                                                 format_number_conv(v_imp_ps,2,true),
@@ -909,7 +911,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">{{ format_number_conv(v_imp_mooe,2,true) }}
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_mooe'"
+                                        >{{ format_number_conv(v_imp_mooe,2,true) }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
                                                     format_number_conv(v_imp_mooe,2,true),
@@ -944,7 +948,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">{{ format_number_conv(v_imp_fe,2,true) }}
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_fe'"
+                                        >{{ format_number_conv(v_imp_fe,2,true) }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
                                                     format_number_conv(v_imp_fe,2,true),
@@ -979,7 +985,9 @@
                                             'revision_plans',
                                             paps,
                                             paps.comments)
-                                        }">{{ format_number_conv(v_imp_co,2,true)}}
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_co'">
+                                        {{ format_number_conv(v_imp_co,2,true)}}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
                                                     format_number_conv(v_imp_co,2,true),
@@ -1015,6 +1023,7 @@
                                                 paps,
                                                 paps.comments)
                                             }"
+                                            :id="paps.id+'_revision_plans_total_imp_amount'"
                                         >{{ format_number_conv(imp_amount,2,true) }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
@@ -2627,13 +2636,13 @@
                                         :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
                                     >
                                         {{ comment.comment }}
-                                        {{ ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                        <!-- {{ ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                 ? comment.column_name
                                                     : (
                                                     ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
                                                         ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                         : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                )  }}
+                                                )  }} -->
                                     </span>
 
                                     <hr>
