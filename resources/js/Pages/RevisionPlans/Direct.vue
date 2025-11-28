@@ -20,6 +20,12 @@
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showIppListModal()">IPP List</button>
+                    Filter Plans by Comment
+                    <select v-model="has_comments_filtering" @change="filterPrograms(search, filter_FFUNCCOD)">
+                        <option value="">All Plans</option>
+                        <option value="1">Plans with comments</option>
+                        <option value="0">Plans with no comments</option>
+                    </select>
                     <!-- <input
                         type="checkbox"
                         v-model="checked"
@@ -957,6 +963,8 @@ export default {
         pgHead: String,
         fileBaseUrl: String,
         disk: String,
+        // HAS COMMENTS
+        has_comments: String
     },
     data() {
         return{
@@ -1044,6 +1052,9 @@ export default {
             //Document Display
             displaySideModal: false,
             showImageModal: false,
+
+            // COMMENTS FILTERING
+            has_comments_filtering: '',
 
         }
     },
@@ -1142,6 +1153,7 @@ export default {
 
         }
         window.addEventListener("keydown", this.handleKeydown);
+        this.has_comments_filtering=this.has_comments
     },
     beforeUnmount() {
         window.removeEventListener("keydown", this.handleKeydown);
@@ -1244,7 +1256,8 @@ export default {
                 {
                     search: search,
                     FFUNCCOD: office_code,
-                    source: this.my_source
+                    source: this.my_source,
+                    has_comments: this.has_comments_filtering
                 },
                 {
                     preserveScroll: true,

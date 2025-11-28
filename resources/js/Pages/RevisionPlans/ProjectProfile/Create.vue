@@ -2046,171 +2046,180 @@
             </form> -->
         </div>
         <div class="col-3">
-            <div class="sticky-comments" v-if="!showComments">
-                    <button class="close-btn text-danger" @click="toggleShowCommentPanel">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
-                        </svg>
-                    </button>
-                    &nbsp;
-                    <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
-                        <b>
-                            {{ countUnresolvedComments }} unresolved updates !!! Click Here
-                        </b>
-                    </span>
-            </div>
-            <div class="p-20 bd sticky-comments" v-if="showComments" style="background: rgba(255, 255, 255, 0.7);">
-                    <div class="d-flex justify-content-end">
+            <!-- <div
+                class="draggable-panel"
+                ref="dragPanel"
+                @mousedown="startDrag"
+            > -->
+                <!-- ALL YOUR EXISTING COMMENT PANEL HTML HERE -->
+                <div class="sticky-comments" v-if="!showComments">
                         <button class="close-btn text-danger" @click="toggleShowCommentPanel">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
                             </svg>
-                        </button>
-                    </div>
-
-                    <div class="tab">
-                        <button style="color: red;" @click="openTab('Comments')">Comments
+                            &nbsp;
                             <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
                                 <b>
-                                    ({{ countUnresolvedComments }} unresolved)
+                                    {{ countUnresolvedComments }} unresolved {{ countUnresolvedComments > 1 ? 'updates' : 'update' }} !!! Click Here
                                 </b>
                             </span>
                         </button>
-                        <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
-                    </div>
 
-                    <div v-if="open_tab==='Comments'">
-                        <div class="comments-header">
-                            <h4>COMMENTS ...</h4>
-
+                </div>
+                <div class="p-20 bd sticky-comments" v-if="showComments" style="background: rgba(255, 255, 255, 0.7);">
+                        <div class="d-flex justify-content-end">
+                            <button class="close-btn text-danger" @click="toggleShowCommentPanel">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                </svg>
+                            </button>
                         </div>
 
-                        <div class="scrollable-text">
-                            <ul class="list-unstyled">
-                                <li v-for="(comment, index) in all_comments" :key="index" class="mb-2" >
-
-                                    <span
-                                        class="clickable-comment"
-                                        @click="scrollToSection(
-                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                ? comment.column_name
-                                                    : (
-                                                    ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
-                                                        ? `${comment.table_row_id}_${comment.table_name}`
-                                                        : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                )
-
-                                        )"
-                                        :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
-                                        style="cursor: pointer; "
-                                    >
-                                        {{ comment.comment }}
-                                        <!-- {{
-                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                ? comment.column_name
-                                                    : (
-                                                    ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
-                                                        ? `${comment.table_row_id}_${comment.table_name}`
-                                                        : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                )
-                                        }} -->
-                                    </span>
-
-                                    <hr>
-                                </li>
-                            </ul>
-
+                        <div class="tab">
+                            <button style="color: red;" @click="openTab('Comments')">Comments
+                                <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
+                                    <b>
+                                        ({{ countUnresolvedComments }} unresolved)
+                                    </b>
+                                </span>
+                            </button>
+                            <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
                         </div>
-                    </div>
-                    <div v-if="open_tab==='Navigation'">
-                        <div class="comments-header">
-                            <h4>NAVIGATION ...</h4>
 
+                        <div v-if="open_tab==='Comments'">
+                            <div class="comments-header">
+                                <h4>COMMENTS ...</h4>
+
+                            </div>
+
+                            <div class="scrollable-text">
+                                <ul class="list-unstyled">
+                                    <li v-for="(comment, index) in all_comments" :key="index" class="mb-2" >
+
+                                        <span
+                                            class="clickable-comment"
+                                            @click="scrollToSection(
+                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                    ? comment.column_name
+                                                        : (
+                                                        ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
+                                                            ? `${comment.table_row_id}_${comment.table_name}`
+                                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                    )
+
+                                            )"
+                                            :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
+                                            style="cursor: pointer; "
+                                        >
+                                            {{ comment.comment }}
+                                            <!-- {{
+                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                    ? comment.column_name
+                                                        : (
+                                                        ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
+                                                            ? `${comment.table_row_id}_${comment.table_name}`
+                                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                    )
+                                            }} -->
+                                        </span>
+
+                                        <hr>
+                                    </li>
+                                </ul>
+
+                            </div>
                         </div>
-                        <div class="scrollable-text" style="cursor: pointer;">
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('revision_plans')">
-                                        I.      Title
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('rationale')">
-                                        II.     Rationale
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('objective')">
-                                        III.    Objectives
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('beneficiaries')">
-                                        IV.     Target Beneficiaries
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('implementation_workplan')">
-                                        V.      Implementation Schedule/Workplan
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('budgetary_requirements')">
-                                        VI.     Estimated Cost/Budgetary Requirements
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('implementing_team')">
-                                        VII.    Implementing Team
-                                    </span>
-                                </li>
-                            </ul>
-                            <!-- partnership_sustainability -->
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('partnership_sustainability')">
-                                        VIII.   Partnership and Sustainability
-                                    </span>
-                                </li>
-                            </ul>
+                        <div v-if="open_tab==='Navigation'">
+                            <div class="comments-header">
+                                <h4>NAVIGATION ...</h4>
 
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('monitoring_evaluation')">
-                                        IX.     Monitoring and Evaluation
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('risk_management')">
-                                        X.      Risk Management
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('signatories')">
-                                        XI.     Signatories
-                                    </span>
-                                </li>
-                            </ul>
+                            </div>
+                            <div class="scrollable-text" style="cursor: pointer;">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('revision_plans')">
+                                            I.      Title
+                                        </span>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('rationale')">
+                                            II.     Rationale
+                                        </span>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('objective')">
+                                            III.    Objectives
+                                        </span>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('beneficiaries')">
+                                            IV.     Target Beneficiaries
+                                        </span>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('implementation_workplan')">
+                                            V.      Implementation Schedule/Workplan
+                                        </span>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('budgetary_requirements')">
+                                            VI.     Estimated Cost/Budgetary Requirements
+                                        </span>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('implementing_team')">
+                                            VII.    Implementing Team
+                                        </span>
+                                    </li>
+                                </ul>
+                                <!-- partnership_sustainability -->
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('partnership_sustainability')">
+                                            VIII.   Partnership and Sustainability
+                                        </span>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('monitoring_evaluation')">
+                                            IX.     Monitoring and Evaluation
+                                        </span>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('risk_management')">
+                                            X.      Risk Management
+                                        </span>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2" style="color: blue">
+                                        <span class="clickable-comment"  @click="scrollToSection('signatories')">
+                                            XI.     Signatories
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
-            </div>
+                </div>
+            <!-- </div> -->
+
         </div>
         <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
 

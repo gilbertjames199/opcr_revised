@@ -316,6 +316,9 @@ createInertiaApp({
                                 'mp3', 'mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'
                             ].includes(ext)
                         },
+                        isDragging: false,
+                        dragOffsetX: 0,
+                        dragOffsetY: 0,
                     }
                 },
                 methods: {
@@ -601,6 +604,28 @@ createInertiaApp({
                         if (status === 2) return 'Approved';
 
                         return 'unknown';
+                    },
+                    //DRAGGABLE PANELS
+                    startDrag(e) {
+                        if (e.target.closest("button")) return; // do NOT drag when clicking buttons
+
+                        this.isDragging = true;
+                        this.dragOffsetX = e.clientX - this.$refs.dragPanel.offsetLeft;
+                        this.dragOffsetY = e.clientY - this.$refs.dragPanel.offsetTop;
+
+                        document.addEventListener("mousemove", this.onDrag);
+                        document.addEventListener("mouseup", this.stopDrag);
+                    },
+                    onDrag(e) {
+                        if (!this.isDragging) return;
+
+                        this.$refs.dragPanel.style.left = e.clientX - this.dragOffsetX + "px";
+                        this.$refs.dragPanel.style.top = e.clientY - this.dragOffsetY + "px";
+                    },
+                    stopDrag() {
+                        this.isDragging = false;
+                        document.removeEventListener("mousemove", this.onDrag);
+                        document.removeEventListener("mouseup", this.stopDrag);
                     }
 
                 }

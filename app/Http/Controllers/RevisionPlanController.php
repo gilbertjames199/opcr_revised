@@ -93,6 +93,7 @@ class RevisionPlanController extends Controller
 
                 $data=$this->getPopsPProfilesDirect($request, $budget_controller, $dept_id, $popsp_agency);
             }else{
+                // dd($request);
                 $data = RevisionPlan::with(['paps', 'paps.office'])
                 ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                     $query->where('department_code', $dept_id);
@@ -101,6 +102,85 @@ class RevisionPlanController extends Controller
                 ->when(auth()->user()->popsp_agency, function ($query) use ($dept_id, $popsp_agency) {
                     // dd("may agency", $popsp_agency);
                     $query->where('agency_name', $popsp_agency->agency_code);
+                })
+                ->when($request->has_comments == 1, function ($query) {
+                    $query->whereExists(function ($sub) {
+                        $sub->select(DB::raw(1))
+                            ->from('revision_plan_comments as rpc')
+                            ->where(function ($inner) {
+                                $inner->where('rpc.table_name', 'revision_plans')
+                                    ->whereColumn('rpc.table_row_id', 'revision_plans.id');
+                            })
+                            // activity_projects
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('activity_projects as ap')
+                                    ->whereColumn('ap.project_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc2', 'rpc2.table_row_id', '=', 'ap.id')
+                                    ->where('rpc2.table_name', 'activity_projects');
+                            })
+                            // strategy_projects
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('strategy_projects as sp')
+                                    ->whereColumn('sp.project_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc3', 'rpc3.table_row_id', '=', 'sp.id')
+                                    ->where('rpc3.table_name', 'strategy_projects');
+                            })
+                            // 4️⃣ expected_revised_outputs comments
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('activity_projects as ap')
+                                    ->whereColumn('ap.project_id', 'revision_plans.id')
+                                    ->join('expected_revised_outputs as ero2', 'ero2.activity_project_id', '=', 'ap.id')
+                                    ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'ero2.id')
+                                    ->where('rpc4.table_name', 'expected_revised_outputs');
+                            })
+
+                            // 3️⃣ expected_revised_outcomes comments
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('activity_projects as ap')
+                                    ->whereColumn('ap.project_id', 'revision_plans.id')
+                                    ->join('expected_revised_outcomes as ero', 'ero.activity_project_id', '=', 'ap.id')
+                                    ->join('revision_plan_comments as rpc3', 'rpc3.table_row_id', '=', 'ero.id')
+                                    ->where('rpc3.table_name', 'expected_revised_outcomes');
+                            })
+                            // budget_requirements
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('budget_requirements as br')
+                                    ->whereColumn('br.revision_plan_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'br.id')
+                                    ->where('rpc4.table_name', 'budget_requirements');
+                            })
+                            // team plans
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('team_plans as tp')
+                                    ->whereColumn('tp.revision_plan_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'tp.id')
+                                    ->where('rpc4.table_name', 'team_plans');
+                            })
+
+                            // monitoring and evaluation
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('monitoring_and_evaluations as me')
+                                    ->whereColumn('me.revision_plan_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'me.id')
+                                    ->where('rpc4.table_name', 'monitoring_and_evaluations');
+                            })
+
+                            // risk managements
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('risk_manangements as rm')
+                                    ->whereColumn('rm.revision_plan_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'rm.id')
+                                    ->where('rpc4.table_name', 'risk_manangements');
+                            });
+                    });
                 })
                 ->get()
                 ->map(function ($item) use ($budget_controller) {
@@ -1923,29 +2003,11 @@ class RevisionPlanController extends Controller
             ->orderBy('FFUNCTION', 'ASC')
             ->get();
 
-        // dd($offices);
-        // $paps = ProgramAndProject::where('id', $idpaps)->first();
+
         $budget_controller = new BudgetRequirementController($this->budget);
-        // dd("revision");
-        // dd($request->FFUNCCOD);
-        // dd($request->search);
+
         $data = RevisionPlan::
-            // select(
-            //     'revision_plans.id',
-            //     'revision_plans.project_title',
-            //     'revision_plans.version',
-            //     'revision_plans.type',
-            //     'revision_plans.is_strategy_based',
-            //     'revision_plans.idpaps',
-            //     'ff.FFUNCTION',
-            //     'paps.aip_code',
-            //     // DB::raw('sum(budget_requirements.amount)')
-            // )->
             with(['budget', 'paps', 'paps.office'])
-            // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
-            // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
-            // ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
-            // ->leftJoin(DB::raw('budget_requirements'), 'budget_requirements.revision_plan_id', '=', 'revision_plans.id')
             ->whereHas('budget', function ($query) {
                 $query->select(DB::raw('revision_plan_id'))
                     ->groupBy('revision_plan_id')
@@ -1953,7 +2015,6 @@ class RevisionPlanController extends Controller
             })
 
             ->when($request->source == 'rev_app', function ($query) {
-                // dd("rev app ang source");
                 $query->where('status', '>=', '0');
             })
             ->when($request->FFUNCCOD, function ($query) use ($request) {
@@ -1966,19 +2027,90 @@ class RevisionPlanController extends Controller
                 $query->when($source == 'budget', function ($query) use ($dept_id) {
                     $query->where('department_code', $dept_id);
                 });
-                // $query->whereHas('paps.office', function($query_o)use($request){
-                //     $query_o->when($request->FFUNCCOD, function ($query) use ($request) {
-                //         $query->where('ff.FFUNCCOD', $request->FFUNCCOD);
-                //     });
-                // });
             })
-            // ->whereHas('paps.office', function($query){
-            //     $query->orderBy('FFUNCTION');
-            // })
+            ->when($request->has_comments == 1, function ($query) {
+                    $query->whereExists(function ($sub) {
+                        $sub->select(DB::raw(1))
+                            ->from('revision_plan_comments as rpc')
+                            ->where(function ($inner) {
+                                $inner->where('rpc.table_name', 'revision_plans')
+                                    ->whereColumn('rpc.table_row_id', 'revision_plans.id');
+                            })
+                            // activity_projects
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('activity_projects as ap')
+                                    ->whereColumn('ap.project_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc2', 'rpc2.table_row_id', '=', 'ap.id')
+                                    ->where('rpc2.table_name', 'activity_projects');
+                            })
+                            // strategy_projects
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('strategy_projects as sp')
+                                    ->whereColumn('sp.project_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc3', 'rpc3.table_row_id', '=', 'sp.id')
+                                    ->where('rpc3.table_name', 'strategy_projects');
+                            })
+                            // 4️⃣ expected_revised_outputs comments
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('activity_projects as ap')
+                                    ->whereColumn('ap.project_id', 'revision_plans.id')
+                                    ->join('expected_revised_outputs as ero2', 'ero2.activity_project_id', '=', 'ap.id')
+                                    ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'ero2.id')
+                                    ->where('rpc4.table_name', 'expected_revised_outputs');
+                            })
+
+                            // 3️⃣ expected_revised_outcomes comments
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('activity_projects as ap')
+                                    ->whereColumn('ap.project_id', 'revision_plans.id')
+                                    ->join('expected_revised_outcomes as ero', 'ero.activity_project_id', '=', 'ap.id')
+                                    ->join('revision_plan_comments as rpc3', 'rpc3.table_row_id', '=', 'ero.id')
+                                    ->where('rpc3.table_name', 'expected_revised_outcomes');
+                            })
+                            // budget_requirements
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('budget_requirements as br')
+                                    ->whereColumn('br.revision_plan_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'br.id')
+                                    ->where('rpc4.table_name', 'budget_requirements');
+                            })
+                            // team plans
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('team_plans as tp')
+                                    ->whereColumn('tp.revision_plan_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'tp.id')
+                                    ->where('rpc4.table_name', 'team_plans');
+                            })
+
+                            // monitoring and evaluation
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('monitoring_and_evaluations as me')
+                                    ->whereColumn('me.revision_plan_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'me.id')
+                                    ->where('rpc4.table_name', 'monitoring_and_evaluations');
+                            })
+
+                            // risk managements
+                            ->orWhereExists(function ($inner) {
+                                $inner->select(DB::raw(1))
+                                    ->from('risk_manangements as rm')
+                                    ->whereColumn('rm.revision_plan_id', 'revision_plans.id')
+                                    ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'rm.id')
+                                    ->where('rpc4.table_name', 'risk_manangements');
+                            });
+                    });
+                })
             ->paginate(10)
-            ->withQueryString(); // <- Pagination
-        // dd($data);
+            ->withQueryString();
         $data->through(function ($item) use ($budget_controller) {
+            $all_comments = $this->getAllRevisionPlanComments($item->id);
             $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)
                 ->where('table_name', 'revision_plans')
                 ->count();
@@ -1999,8 +2131,6 @@ class RevisionPlanController extends Controller
                     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
                     $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
             }
-            // dd($item->FFUNCTION);
-            // dd($item);
             return [
                 'FFUNCTION' => optional(optional($item->paps)->office)->FFUNCTION,
                 'id' => $item->id,
@@ -2013,19 +2143,13 @@ class RevisionPlanController extends Controller
                 'status' => $item->status,
             ];
         });
-        // $data->setCollection(
-        //     $data->getCollection()->filter(function ($item) {
-        //         return data_get($item, 'budget_sum') != 0;
-        //     })->values()
-        // );
-        // dd($data);
+
         $year_c = date('Y');
         $year_n = intval($year_c) + 1;
         $year_p = intval($year_c) - 1;
         $functions = $this->getFunctions($myid);
         $programs = $this->getPrograms($year_c);
-        // $budget_total =BudgetRequirement::join('revision_plans', 'revision_plans.id', 'budget_requirements.revision_plan_id')
-        //     ->join('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
+
         $latestRevisionPlanIds = DB::table('revision_plans as rp1')
             ->select('rp1.id')
             ->whereRaw('NOT EXISTS (
@@ -2036,7 +2160,7 @@ class RevisionPlanController extends Controller
             ->where('program_and_projects.department_code', auth()->user()->department_code)
             ->pluck('id')
             ->toArray();
-        // dd($latestRevisionPlanIds);
+
         $total_budget = BudgetRequirement::select('amount')
             ->whereIn('revision_plan_id', $latestRevisionPlanIds)
             ->sum('amount');
@@ -2045,39 +2169,23 @@ class RevisionPlanController extends Controller
             ->selectRaw("FORMAT(IFNULL(SUM(appropriations.second_sem), 0), 2, 'en_US') AS second_sem")
             ->selectRaw("FORMAT(IFNULL(SUM(appropriations.first_sem + appropriations.second_sem), 0), 2, 'en_US') AS total")
             ->selectRaw("FORMAT(IFNULL(" . $total_budget . ", 0), 2, 'en_US') AS budget_year")
-            // ->selectRaw($total_budget . ' AS budget_year')
             ->join('program_and_projects', 'program_and_projects.id', 'appropriations.idpaps')
             ->where('program_and_projects.department_code', auth()->user()->department_code)
             ->first();
 
-        // $totals = BudgetRequirement::selectRaw('FORMAT(SUM(appropriations.past_year), 2, \'en_US\') AS past_year')
-        //     ->selectRaw('FORMAT(SUM(appropriations.first_sem), 2, \'en_US\') AS first_sem')
-        //     ->selectRaw('FORMAT(SUM(appropriations.second_sem), 2, \'en_US\') AS second_sem')
-        //     ->selectRaw('FORMAT((SUM(appropriations.first_sem) + SUM(appropriations.second_sem)), 2, \'en_US\') AS total')
-        //     ->selectRaw('FORMAT(SUM(budget_requirements.amount), 2, \'en_US\') AS budget_year')
-        //     ->join('revision_plans', 'revision_plans.id', 'budget_requirements.revision_plan_id')
-        //     ->join('program_and_projects', 'program_and_projects.id', 'revision_plans.idpaps')
-        //     ->leftjoin('appropriations', 'program_and_projects.id', 'appropriations.idpaps')
-        //     ->where('program_and_projects.department_code', auth()->user()->department_code)
-        //     ->when($request->year, function ($query) use ($request) {
-        //         $query->where('revision_plans', $request->year);
-        //     })
-        //     ->groupBy('program_and_projects.department_code')
-        //     ->first();
-        // dd($totals);
+
         $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
-        // dd($totals);
-        // dd($acc);
-        // dd($data);
+
         $dept_code = auth()->user()->department_code;
         $functions2 = FFUNCCOD::where('department_code', $dept_code)->first();
 
 
-        // $component = $this->isBeforeSecondSem2025($list) ? 'OPCR/Form/Index' : 'OPCR/Form/Index2';
+
         $baseUrl = app()->environment('production')
             ? 'http://122.53.120.18:8067/images/'
             : asset('storage/');
         $disk = app()->environment('production') ? 'custom_uploads' : 'public';
+        $has_comments = $request->has_comments;
         return inertia('RevisionPlans/Direct', [
             'data' => $data,
             'FFUNCCOD' => $FFUNCCOD,

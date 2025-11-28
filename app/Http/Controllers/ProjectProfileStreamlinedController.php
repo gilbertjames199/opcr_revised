@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\ActivityProject;
 use App\Models\BudgetRequirement;
 use App\Models\HGDG_Checklist;
 use App\Models\Monitoring_and_evaluation;
@@ -636,9 +637,25 @@ class ProjectProfileStreamlinedController extends Controller
         if ($table == 'strategies') {
             $strat = Strategy::where('id', $id)->first();
             $strat->delete();
+
+            $strat_proj = StrategyProject::where('strategy_id', $id)->get();
+            foreach ($strat_proj as $proj) {
+                $proj->is_active = 0;
+                $proj->save();
+            }
+
+            $activities=Activity::where('strategy_id', $id)->get();
+            foreach ($activities as $act) {
+                ActivityProject::where('activity_id', $act->id)
+                    ->update(['is_active' => 0]);
+            }
         } else if ($table == 'activities') {
             $act = Activity::where('id', $id)->first();
             $act->delete();
+
+            $act_proj = ActivityProject::where('activity_id',$id)->first();
+            $act_proj->is_active=0;
+            $act_proj->save();
         } else {
             // Delete the record
             $deleted = DB::table($table)

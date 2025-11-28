@@ -1879,7 +1879,7 @@
                                                     'amount','budget_requirements', row, row.comments)
                                             }"
                                             :id="row.id + '_budget_requirements_amount'">
-                                            {{ row.amount }}
+                                            {{ format_number_conv(row.amount,2,true) }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Budgetary Requirements',
                                                     'Amount',row.amount,

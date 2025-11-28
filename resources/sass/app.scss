@@ -264,3 +264,17 @@ hr {
         display: none;
     }
 }
+
+// DRAGGABLE PANELS
+.draggable-panel {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    cursor: move;
+    z-index: 9999;
+}
+
+.noselect {
+    user-select: none;
+}
+
