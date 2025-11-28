@@ -292,15 +292,19 @@
                             <!-- HGDG CHECKLIST -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">HGDG Checklist</th>
-                                <td colspan="3" :id="paps.id+'_revision_plans_HGDG Checklist'" :class="{
+                                <td colspan="3" :id="paps.id+'_revision_plans_HGDG Checklist'" >
+                                <span v-if="paps.checklist" :class="{
                                     'text-danger': has_comment('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)
-                                }" >GAD {{ paps.checklist.box_number }} {{ paps.checklist.sector }}
+                                }" >
+                                    GAD {{ paps.checklist?.box_number }} {{ paps.checklist?.sector }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)">*
                                     </button>
                                     <button v-if="has_comment('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)" class="superscript-btn"
                                         @click="handleClick('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)">*
                                     </button>
+                                </span>
+
                                 </td>
                                 <th class="bg-secondary text-white" colspan="1">
                                     <Link :href="`/HGDGScore/${paps.id}`" style="color:white">HGDG Score </Link>
