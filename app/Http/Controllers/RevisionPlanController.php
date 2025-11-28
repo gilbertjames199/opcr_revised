@@ -3156,7 +3156,8 @@ class RevisionPlanController extends Controller
                         'program_id' => $item->program_id,
                         'agency_name' => $item->agency_name,
                         'FFUNCCOD' => $item->FFUNCCOD,
-                        'year_period' => $item->year_period ?? date('Y', strtotime($item->date_start)),
+                        'year_period' => ($item->year_period && $item->year_period != 0)? $item->year_period
+                            : date('Y', strtotime($item->date_start)),
                         'scope' => $item->scope,
                         'aip_code' => $item->aip_code,
                         'project_title' => $item->project_title,
