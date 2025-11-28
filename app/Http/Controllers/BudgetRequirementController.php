@@ -207,6 +207,9 @@ class BudgetRequirementController extends Controller
                 'fe_q4'
             )
             ->where('is_active', '1')
+            ->whereHas('activity', function ($q) {
+                $q->whereNull('deleted_at');   // activity must NOT be soft deleted
+            })
             ->get();
 
         // $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
