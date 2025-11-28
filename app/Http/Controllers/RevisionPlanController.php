@@ -3138,10 +3138,13 @@ class RevisionPlanController extends Controller
     }
 
     public function ipp(Request $request){
+
         return RevisionPlan::with(['teamPlans',
                     'monitoringAndEvaluations',
                     'riskManagements',
-                    'signatories'])
+                    'signatories',
+                    'paps.office'
+                ])
                 ->where('id',$request->id)
                 ->get()
                 ->map(function($item){
@@ -3193,7 +3196,8 @@ class RevisionPlanController extends Controller
                         'is_strategy_based' => $item->is_strategy_based,
                         'is_activity_based' => $item->is_activity_based,
                         'breakdown_by_expected_output' => $item->breakdown_by_expected_output,
-                        'signatories'=>$item->signatories
+                        'signatories'=>$item->signatories,
+                        'office'=>optional(optional($item)->paps)->office
 
                     ];
                 });

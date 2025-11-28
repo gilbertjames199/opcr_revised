@@ -2601,7 +2601,7 @@
                         </svg>
                     </button>
             </div>
-            <div class="bgc-white p-20 bd sticky-comments" v-if="showComments">
+            <div class="p-20 bd sticky-comments" v-if="showComments" style="background: rgba(255, 255, 255, 0.7);">
                     <div class="d-flex justify-content-end">
                         <button class="close-btn text-danger" @click="toggleShowCommentPanel">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -2610,14 +2610,22 @@
                         </button>
                     </div>
                     <div class="tab">
-                        <button style="color: red;" @click="openTab('Comments')">Comments</button>
+                        <button style="color: red;" @click="openTab('Comments')">Comments
+                            <span v-if="countUnresolvedComments>0" style="color: red;">
+                                <b>
+                                    ({{ countUnresolvedComments }})
+                                </b>
+                            </span>
+                        </button>
                         <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
                     </div>
                     <div v-if="open_tab==='Comments'">
                         <div class="comments-header">
-                            <h4>COMMENTS ...</h4>
+                            <h4>COMMENTS ...
+
+                            </h4>
                         </div>
-                        <div class="scrollable-text">
+                        <div class="scrollable-text" style="background: rgba(255, 255, 255, 0.7);">
                             <ul class="list-unstyled">
                                 <li v-for="(comment, index) in all_comments" :key="index" class="mb-2">
                                     <span
@@ -2656,7 +2664,7 @@
                             <h4>NAVIGATION ...</h4>
 
                         </div>
-                        <div class="scrollable-text">
+                        <div class="scrollable-text" style="background: rgba(255, 255, 255, 0.7);">
                             <ul class="list-unstyled">
                                 <li class="mb-2" style="color: blue">
                                     <span class="clickable-comment"  @click="scrollToSection('revision_plans')">
@@ -2960,6 +2968,9 @@ export default {
 
             return total;
         },
+        countUnresolvedComments() {
+            return this.all_comments.filter(c => c.comment_status !== "1").length;
+        }
     },
 
     data() {
