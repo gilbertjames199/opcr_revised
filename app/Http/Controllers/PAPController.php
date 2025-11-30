@@ -663,4 +663,14 @@ class PAPController extends Controller
             ->get();
         return ['data' => $data];
     }
+    public function getPAPS(){
+        $usedPapsIds = RevisionPlan::whereIn('type', ['d', 'sip'])
+            ->where('status', 1)
+            ->pluck('idpaps')
+            ->unique();
+
+        return ProgramAndProject::where('department_code', auth()->user()->department_code)
+            ->whereNotIn('id', $usedPapsIds)
+            ->get();
+    }
 }

@@ -420,6 +420,22 @@
             </div>
             <br>
             <button class="btn btn-primary btn-sm mL-2 text-white" @click="exportAIP()">Export to Excel</button>
+            <button class="btn btn-primary btn-sm mL-2 text-white" @click="updateAIPStatus('LDC0')"
+                v-if="my_source==='rev_app'"
+            >
+                Submit AIP for LDC Review
+            </button>
+            <button class="btn btn-primary btn-sm mL-2 text-white" v-if="my_source==='rev_app'"
+            @click="updateAIPStatus('SP0', year_period)">
+                Submit AIP for SP Review
+            </button>
+
+            <!-- LDC0 -Submitted for LDC Review;
+            LDC-1 -Returned by LDC;
+            LCD1 -Approved by LDC;
+            SP0 -Submitted for SP Review;
+            SP-1 -Returned by SP;
+            SP1 -Approved by SP -->
         </AIPModal>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
@@ -431,6 +447,7 @@
                                 <th>AIP Code</th>
                                 <th>Program Title</th>
                                 <th>Version</th>
+                                <th>Type</th>
                                 <th>Implementing Offices</th>
                                 <th>Planned Amount</th>
                                 <th>View IPP</th>
@@ -445,11 +462,15 @@
                             <tr v-for="dat in data.data">
                                 <td></td>
                                 <td>{{ dat.project_title }}
-                                    <span style="color:red; font-weight: bold">
+                                    <span style="color:red; font-weight: bold" >
                                         {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
+                                    </span >
+                                    <span v-if="dat.comments_count" style="color: red; font-weight: bold" class="blink">
+                                        Review the Project for warnings
                                     </span>
                                 </td>
                                 <td>{{ dat.version }}</td>
+                                <td>{{ formatProjectType(dat.type) }}</td>
                                 <td>{{ dat.FFUNCTION }}</td>
                                 <th class="text-end">
                                     {{ format_number_conv(dat.budget_sum,2,true) }}
@@ -467,14 +488,16 @@
                                 </td>
                                 <td v-if="my_source=='rev_app'">
                                     <!-- Review -->
+                                    <!-- {{ dat.budget_sum }}, {{ dat.imp_amount }} {{  dat.comments_count }} -->
                                     <button
                                         v-if="dat.status == '0'"
+                                        :disabled="(dat.comments_count > 0) || (Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum)))"
                                         @click="statusAction(dat, 1)"
                                         :style="{
                                         padding: '4px 10px',
                                         border: 'none',
                                         borderRadius: '4px',
-                                        backgroundColor: 'blue',
+                                        backgroundColor: (dat.comments_count > 0) || (Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum))) ? '#a0c4ff' : 'blue',
                                         color: 'white',
                                         cursor: 'pointer',
                                         fontWeight: 'bold',
@@ -488,7 +511,7 @@
 
                                     <!-- @click="statusAction(dat, 2)" -->
                                     <button
-                                        v-if="dat.status == '1'"
+                                        v-if="dat.status == '1' && parseInt(dat.number_of_clones)<1 && dat.type==='p'"
                                         :style="{
                                         padding: '4px 10px',
                                         border: 'none',
@@ -1056,6 +1079,9 @@ export default {
             // COMMENTS FILTERING
             has_comments_filtering: '',
 
+            // YEAR PERIOD SELECTED
+            year_period: 0,
+
         }
     },
     computed: {
@@ -1483,6 +1509,7 @@ export default {
             var yr = new Date().getFullYear()
             this.form.year = parseFloat(yr) + 1;
             this.dates = parseFloat(yr) + 1;
+            this.year_period=this.form.year;
         },
         filterProgram() {
             // this.form.idprogram=null;
@@ -2087,7 +2114,10 @@ export default {
             this.statusAction(this.selected_plan, this.selected_status);
             this.ReturnWithAmmendmentsModalVisible=false;
 
-        }
+        },
+
+
+
 
     }
 };
@@ -2105,5 +2135,14 @@ export default {
             .pos{
                 position: top;
                 top: 240px;
+            }
+            .blink {
+                color: red;
+                animation: blinker 1s linear infinite;
+            }
+
+            @keyframes blinker {
+                0%, 100% { color: red; }
+                50% { color: #f8d823; }
             }
 </style>

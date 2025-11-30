@@ -7,14 +7,17 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>PPA Profile </h3>
+            <h3 v-if="source==='sip'">SIP Profile</h3>
+            <h3 v-else>PPA Profile </h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`" v-if="source==undefined">Add Revision Plan</Link>&nbsp;
-                    <Link class="btn btn-primary btn-sm" :href="`/revision/streamlined/create/${idpaps}`" v-if="source==undefined">Add Project Profile</Link>&nbsp;
+                    <!-- :href="`/revision/streamlined/create/${idpaps}?source=sip`"  -->
+                    <Button class="btn btn-primary btn-sm text-white" @click="showSIPModal" v-if="source=='sip'">Add SIP Profile</Button>&nbsp;
+                    <Link class="btn btn-primary btn-sm" :href="`/revision/streamlined/create/${idpaps}`" v-else-if="source==undefined">Add Project Profile</Link>&nbsp;
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Revision Plan</Link>&nbsp;
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
                     <button @click="exportUsers" class="btn btn-primary btn-sm mL-2 text-white">Export AIP to Excel</button>&nbsp;
@@ -53,17 +56,21 @@
                                 <th>Full Edit</th>
                                 <th></th>
                                 <th>Version</th>
+                                <th>Type</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="dat in data">
+                                <!-- TITLE -->
                                 <td>{{ dat.project_title }}
                                     <span style="color:red; font-weight: bold">
                                         {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
                                     </span>
                                 </td>
+                                <!-- OFFICE -->
                                 <td>{{ dat.FFUNCTION }}</td>
+                                <!-- STATUS -->
                                 <td>
                                     <span
                                         :style="{
@@ -91,6 +98,7 @@
                                         }}
                                     </span>
                                 </td>
+                                <!-- VIEW -->
                                 <td>
                                     <Link
                                         class="btn btn-primary btn-sm"
@@ -104,6 +112,7 @@
 
                                     <!-- {{ dat }} -->
                                 </td>
+                                <!-- EDIT -->
                                 <td>
                                     <Link v-if="paps"
                                         class="btn btn-primary btn-sm"
@@ -125,16 +134,18 @@
                                     </Link>
 
                                 </td>
+                                <!-- FULL EDIT -->
                                 <td >
                                     <Link v-if="dat.idpaps"
                                         class="btn btn-primary btn-sm"
-                                        :href="`/revision/streamlined/create/${dat.idpaps}?source=direct&idrevplan=${dat.id}`">
+                                        :href="`/revision/streamlined/create/${dat.idpaps}?source=sip&idrevplan=${dat.id}`">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                         </svg>
                                     </Link>
                                 </td>
+                                <!-- SUBMIT/RECALL/GENERATE ACTIONS -->
                                 <td>
                                     <!-- Submit button when status = -1 -->
                                     <button
@@ -170,8 +181,45 @@
                                     >
                                         Recall
                                     </button>
+                                    <!-- Generate Project Design button when status = 'approved' (example) -->
+                                    <button
+                                        v-if="dat.status == 1 && parseInt(dat.number_of_clones)<1 && dat.type==='p'"
+                                        @click="generateProjectDesign(dat.id, 'd')"
+                                        :style="{
+                                            padding: '4px 10px',
+                                            border: 'none',
+                                            borderRadius: '4px',
+                                            backgroundColor: 'green',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold'
+                                        }"
+                                    >
+                                        Generate Project Design
+                                    </button>
+
+                                    <!-- Generate Project Design button when status = 'approved' (example) -->
+                                    <button
+                                        v-if="dat.status == 1 && parseInt(dat.number_of_clones)<1 && source==='sip'"
+                                        @click="generateProjectDesign(dat.id, 'sip')"
+                                        :style="{
+                                            padding: '4px 10px',
+                                            border: 'none',
+                                            borderRadius: '4px',
+                                            backgroundColor: 'green',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold'
+                                        }"
+                                    >
+                                        Generate SIP Profile
+                                    </button>
+                                    <!-- {{ dat.number_of_clones }} -->
                                 </td>
-                                <td>{{ dat.version }}</td>
+                                <!-- VERSIONS -->
+                                <td>{{ dat.version }} </td>
+                                <!-- TYPE -->
+                                <td>{{ formatProjectType(dat.type) }}</td>
                                 <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
@@ -229,7 +277,7 @@
                 {{ aip_printLink }}<br>
             <button @click="exportUsers" class="btn btn-primary text-white">
                     Export to Excel
-                </button> -->
+            </button> -->
         </AIPModal>
         <WorkPlanModal v-if="WorkPlanModalVisible" @close-modal-event="toggleWorkPlanModal" title="Comprehensive Workplan/Schedule">
             <div class="d-flex justify-content-center">
@@ -238,12 +286,28 @@
 
             </div>
         </WorkPlanModal>
+        <SIPModal v-if="SIPModalVisible" @close-modal-event="SIPModalVisible=false" title="SIP Profile">
+            Select PAPS: {{ selected_sip_paps }}
+            <select v-model="selected_sip_paps" class="form-select">
+                <option></option>
+                <option v-for="pap in paps" :value="pap.id" >
+                    {{ pap.paps_desc }}
+                </option>
+            </select>
+            <Link class="btn btn-primary btn-sm"
+                    :href="`/revision/streamlined/create/${selected_sip_paps}?source=sip`"
+                    :disabled="!selected_sip_paps"
+                    v-if="source=='sip'">
+                        Add SIP Profile
+            </Link>&nbsp;
+        </SIPModal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import AIPModal from "@/Shared/PrintModal";
+import SIPModal from "@/Shared/ModalDynamicTitle";
 import { Inertia } from '@inertiajs/inertia';
 import WorkPlanModal from "@/Shared/ModalDynamicTitle";
 
@@ -267,11 +331,14 @@ export default {
             aip_printLink_excel: "",
             rev_plan_selected: [],
             WorkPlanModalVisible: "",
-            cmp_link: ""
+            cmp_link: "",
+            SIPModalVisible: false,
+            paps: [],
+            selected_sip_paps: null
         }
     },
     components: {
-        Pagination, Filtering, AIPModal, WorkPlanModal
+        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal
     },
     mounted(){
         this.updateValue(); // Initialize ccet based on the initial state of checked
@@ -446,6 +513,40 @@ export default {
         },
         toggleWorkPlanModal(){
             this.WorkPlanModalVisible =!this.WorkPlanModalVisible
+        },
+        // GENERATE PROJECT DEISGN
+        generateProjectDesign(id, type){
+            if (!id) return;
+
+            // Browser confirmation
+            if (!confirm("Are you sure you want to generate the Project Design for this project?")) {
+                return; // User canceled
+            }
+
+            // Make the Inertia POST request
+            Inertia.post(`/project/design/generate/${id}`, {
+                'type': type
+            }, {
+                onSuccess: () => {
+                    // optional: anything you want to run after success
+                    console.log("Project Design generated.");
+                },
+                onError: (errors) => {
+                    console.error(errors);
+                }
+            });
+        },
+        // NEW SIP GENERATION
+        showSIPModal(){
+
+            axios.get('/get/PAPS')
+                .then(res => {
+                    this.paps = res.data;
+                    this.SIPModalVisible=true;
+                })
+                .catch(err => {
+                    console.error('Failed to load PAPS:', err);
+                });
         }
     }
 };

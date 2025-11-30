@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityProject;
+use App\Models\AnnualInvestmentPlanInstitutional;
 use App\Models\BudgetRequirement;
 use App\Models\RevisionPlan;
 use App\Models\StrategyProject;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -34,13 +36,13 @@ class BudgetRequirementController extends Controller
         $revs = RevisionPlan::where('id', '=', $idrev)->get();
         $revo = $revs[0];
         // dd($revo);
-        if($revo->status>-1){
+        if ($revo->status > -1) {
             $status_words = [
-                '0'=>'submitted',
-                '1'=>'reviewed',
-                '2'=>'locked'
+                '0' => 'submitted',
+                '1' => 'reviewed',
+                '2' => 'locked'
             ];
-            return redirect()->back()->with('error', 'Cannot access the budgetary requirements module. The selected project profile is already '.$status_words[$revo->status].'.');
+            return redirect()->back()->with('error', 'Cannot access the budgetary requirements module. The selected project profile is already ' . $status_words[$revo->status] . '.');
         }
         $total = 0;
         // dd($revs);
@@ -374,6 +376,16 @@ class BudgetRequirementController extends Controller
         // ]);
         // dd($request->revision_plan_id);
         // Create budget requirement
+        $revplan = RevisionPlan::where('id', $request->revision_plan_id)->first();
+        $year = Carbon::parse($revplan->date_start)->year;
+        $aip_institutional = AnnualInvestmentPlanInstitutional::where('year_period', $year)->first();
+        // dd($revplan, $aip_institutional);
+        $sip_number = null;
+        if ($aip_institutional) {
+            if (intval($aip_institutional->sip_period) > 0) {
+                $sip_number = "SIP" . $aip_institutional->sip_period;
+            }
+        }
         $budget = BudgetRequirement::create([
             'revision_plan_id' => $request->revision_plan_id,
             'particulars' => $request->particulars,
@@ -383,6 +395,7 @@ class BudgetRequirementController extends Controller
             'category' => $request->category,
             'category_gad' => $request->category_gad,
             'source' => $request->source,
+            'sip_number' => $sip_number
             // 'selected_chart_of_account' => $request->selected_chart_of_account,
         ]);
 

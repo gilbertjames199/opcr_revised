@@ -834,7 +834,7 @@
                                                     </p>
                                                     {{ format_number_conv((parseFloat(act.ps_q1)+parseFloat(act.ps_q2)+parseFloat(act.ps_q3)+parseFloat(act.ps_q4)),2,true) }}
                                                 </span>
-                                                {{ dat.id + '_activity_projects_ps_total' }}
+                                                <!-- {{ dat.id + '_activity_projects_ps_total' }} -->
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)">*
                                                 </button>
@@ -1104,7 +1104,7 @@
                                         }"
                                         :id="paps.id+'_revision_plans_imp_ps'">
                                             <!-- {{ format_number_conv(v_imp_ps,2,true) }} -->
-                                              {{ paps.id+'_revision_plans_imp_ps' }}
+                                              <!-- {{ paps.id+'_revision_plans_imp_ps' }} -->
                                               ₱ {{ totalImplementationPS.toLocaleString() }}
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan',
@@ -1288,6 +1288,7 @@
                                         </td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1305,6 +1306,7 @@
                                 <tr>
                                     <th colspan="3">Particulars</th>
                                     <th>Account Code</th>
+                                    <th v-if="source==='sip'">SIP Number</th>
                                     <th>Amount</th>
                                     <th>Source</th>
                                     <!-- <th>Edit</th> -->
@@ -1401,6 +1403,10 @@
                                                     'account_code','budget_requirements', row, row.comments)">*
                                             </button>
                                         </td>
+                                        <!-- SIP Number -->
+                                         <td v-if="source==='sip'">
+                                            {{ row.sip_number }}
+                                         </td>
                                         <!-- AMOUNT -->
                                         <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements',
@@ -1488,6 +1494,7 @@
                                         <td></td>
                                         <td colspan="2">TOTAL {{ gadType }}</td>
                                         <td></td>
+                                        <td v-if="source==='sip'"></td>
                                         <td>
                                             ₱ {{ budgetSum(category, gadType).toLocaleString() }}
                                         </td>
@@ -1497,8 +1504,42 @@
 
 
                             </tbody>
+                            <tr >
+                                <td colspan="4"><h5>GAD TOTAL</h5></td>
+                                <td v-if="source==='sip'"></td>
+                                <td :class="{
+                                            'text-danger': has_comment('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)
+                                        }"
+                                        :id="paps.id + '_revision_plans_gad_total'">
+                                        ₱ {{ gadBudgetTotal.toLocaleString() }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                </td>
+                                <td colspan="3"></td>
+                            </tr>
                             <tr>
                                     <td colspan="4"><h4>TOTAL</h4></td>
+                                    <td v-if="source==='sip'"></td>
                                     <td>₱ {{ overallBudget.toLocaleString() }}</td>
                                     <td colspan="3"></td>
                             </tr>
@@ -2076,6 +2117,7 @@
                         </div>
 
                         <div class="tab">
+                            <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
                             <button style="color: red;" @click="openTab('Comments')">Comments
                                 <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
                                     <b>
@@ -2083,7 +2125,6 @@
                                     </b>
                                 </span>
                             </button>
-                            <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
                         </div>
 
                         <div v-if="open_tab==='Comments'">
@@ -2111,6 +2152,16 @@
                                             :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
                                             style="cursor: pointer; "
                                         >
+                                            <!-- IF UNRESOLVED -->
+                                            <svg v-if="comment.comment_status == 0"
+                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                            </svg>
+                                            <!-- IF RESOLVED -->
+                                             <svg v-if="comment.comment_status == 1"
+                                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+                                            </svg>
                                             {{ comment.comment }}
                                             <!-- {{
                                                 ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
@@ -2984,6 +3035,9 @@ export default {
         implementing_team: Object,
         signatoriesprops: Object,
         risk_manangement: Object,
+
+        // SOURCE
+        source: String
     },
     components: {
 
@@ -3193,6 +3247,28 @@ export default {
                     rows.forEach(item => {
                         const amount = parseFloat(item.amount || 0);
                         if (!isNaN(amount)) {
+                            total += amount;
+                        }
+                    });
+                }
+            }
+
+            return total;
+        },
+        gadBudgetTotal() {
+            let total = 0;
+
+            for (const category in this.groupedBudget) {
+                const gadGroups = this.groupedBudget[category];
+
+                for (const gadType in gadGroups) {
+                    const rows = gadGroups[gadType];
+
+                    rows.forEach(item => {
+                        const amount = parseFloat(item.amount || 0);
+
+                        // Only include rows with category_gad === "GAD"
+                        if (!isNaN(amount) && item.category_gad === "GAD") {
                             total += amount;
                         }
                     });
@@ -3741,6 +3817,7 @@ export default {
         },
         closeStrategyModal(){
             this.StrategyModalVisible=false;
+            this.strategies=[];
         },
         addStrategy() {
              const nextYear = new Date().getFullYear() + 1; // current year + 1
@@ -3795,6 +3872,7 @@ export default {
         },
         closeActivityModal(){
             this.ActivityModalVisible=false;
+            this.activities=[];
         },
         getDefaultActivityRow() {
             return {
@@ -3845,11 +3923,7 @@ export default {
             }
         },
 
-        //IMPLEMENTING TEAM
         //IMPLEMENTING TEAM *******************************
-        // TeamModalVisible: false,
-        // team_members: [],
-        // TeamModal,
         showTeamModal(){
             this.action_type_team = 'store'
             this.all_employees=[];
@@ -3866,6 +3940,7 @@ export default {
         closeTeamModal(){
             this.TeamModalVisible=false;
             this.all_employees=[];
+            // this.team_members=[];
         },
         showTeamModalEdit(emp){
             this.action_type_team = 'update'
@@ -3975,14 +4050,12 @@ export default {
             // });
         },
         //RISK MANAGEEMENT *******************************
-        // RiskManagementModalVisible: false,
-        // risk_managements: [],
-        // RiskManagementModal,
         showRiskManagementModal(){
             this.RiskManagementModalVisible=true;
         },
         closeRiskManagementModal(){
             this.RiskManagementModalVisible=false;
+            this.risk_managements=[];
         },
         addRiskManagementRow() {
             this.risk_managements.push({
@@ -3993,11 +4066,9 @@ export default {
                 revision_plan_id: this.editData.id
             });
         },
-
         removeRiskManagementRow(index) {
             this.risk_managements.splice(index, 1);
         },
-
         saveRiskManagements() {
             axios.post('/revision/streamlined/subtables/save/risk/management', {
                 risk_managements: this.risk_managements
@@ -4014,6 +4085,7 @@ export default {
         // MONITORING AND EVALUATION*******************************
         closeMonitoringModal(){
             this.MonitoringModalVisible=false;
+            this.monitoring_and_evaluations=[];
         },
         showMonitoringModal(){
             this.MonitoringModalVisible=true;

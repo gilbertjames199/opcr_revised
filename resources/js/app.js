@@ -56,6 +56,9 @@ import Multiselect from '@vueform/multiselect';
 //VUE Sweetalert
 import VueSweetalert2 from 'vue-sweetalert2';
 
+// VUE INERTIA
+import { Inertia } from '@inertiajs/inertia';
+
 const FilePond = vueFilePond(
     FilePondPluginFileValidateType,
     FilePondPluginImagePreview,
@@ -95,6 +98,7 @@ createInertiaApp({
             .component("FilePond", FilePond)
             .component("v-select", vSelect)
             .component('QuillEditor', QuillEditor)
+            .component('Inertia', Inertia)
             .mixin({
                 data() {
                     return {
@@ -626,6 +630,64 @@ createInertiaApp({
                         this.isDragging = false;
                         document.removeEventListener("mousemove", this.onDrag);
                         document.removeEventListener("mouseup", this.stopDrag);
+                    },
+                    formatProjectType(type) {
+                        const map = {
+                            p: 'Project Profile',
+                            d: 'Project Design',
+                            'sip': 'SIP Profile'
+                        }
+                        return map[type] || type
+                    },
+                    formatAipStatus(value, type) {
+                        const map_sp = {
+                            "-1": "Saved",
+                            "0": "Submitted",
+                            "1": "Approved",
+                            "-2": "Returned"
+                        }
+                        const map_ldc = {
+                            "-1": "Saved",
+                            "0": "Submitted",
+                            "1": "Approved",
+                            "-2": "Returned"
+                        }
+                        return type === "ldc" ? map_ldc[value] : map_sp[value];
+                    },
+                    // AIP Submission
+                    updateAIPStatus(type, year) {
+                        // Map type codes to human-readable messages
+                        const typeMessages = {
+                            'LDC0': 'submit this AIP for LDC review?',
+                            'LDC-2': 'return this AIP back from LDC?',
+                            'LDC1': 'approve this AIP for LDC?',
+                            'SP0': 'submit this AIP for SP review?',
+                            'SP-2': 'return this AIP back from SP?',
+                            'SP1': 'approve this AIP for SP?',
+                        };
+
+                        const message = typeMessages[type] || 'proceed with this action?';
+
+                        // Ask user for confirmation
+                        if (!confirm(`Are you sure you want to ${message} for the year ${year}?`)) {
+                            return; // Exit if user cancels
+                        }
+
+                        // Payload to send
+                        const payload = {
+                            year_period: year
+                        };
+
+                        // Send the request via Inertia
+                        Inertia.post(`/institutional_aip/status/${type}`, payload, {
+                            onSuccess: () => {
+                                this.$toast.success('AIP status updated successfully.');
+                            },
+                            onError: (errors) => {
+                                console.error(errors);
+                                this.$toast.error('Failed to update AIP status.');
+                            }
+                        });
                     }
 
                 }

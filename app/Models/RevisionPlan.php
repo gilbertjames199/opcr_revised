@@ -12,9 +12,18 @@ class RevisionPlan extends Model
     protected $table = 'revision_plans';
     protected $guarded = [];
 
+    public function clonedVersions()
+    {
+        return $this->hasMany(RevisionPlan::class, 'reference_profile_id', 'id');
+    }
     public function checklist()
     {
         return $this->hasOne(HGDG_Checklist::class, 'id', 'checklist_id');
+    }
+
+    public function hgdgScores()
+    {
+        return $this->hasMany(HGDGScore::class, 'idrevplan', 'id');
     }
     public function comments()
     {
@@ -38,16 +47,20 @@ class RevisionPlan extends Model
     {
         return $this->hasMany(ActivityProject::class, 'project_id', 'id');
     }
-    public function teamPlans(){
+    public function teamPlans()
+    {
         return $this->hasMany(TeamPlan::class, 'revision_plan_id', 'id');
     }
-    public function monitoringAndEvaluations(){
+    public function monitoringAndEvaluations()
+    {
         return $this->hasMany(Monitoring_and_evaluation::class, 'revision_plan_id', 'id');
     }
-    public function riskManagements(){
+    public function riskManagements()
+    {
         return $this->hasMany(Risk_manangement::class, 'revision_plan_id', 'id');
     }
-    public function signatories(){
+    public function signatories()
+    {
         return $this->hasMany(Signatory::class, 'revision_plan_id', 'id');
     }
     // protected $fillable = [

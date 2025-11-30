@@ -71,22 +71,26 @@ class ProjectProfileStreamlinedController extends Controller
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
 
         // dd($max_id);
-        $duplicate=[];
-        if($request->source=='direct'){
+        $duplicate = [];
+        if ($request->source == 'direct') {
             $source = $request->source;
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $request->idrevplan)->first();
-        }else{
+        } else {
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $max_id)->first();
         }
         $hgdg = HGDG_Checklist::get();
         $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($duplicate);
-        if(intval($duplicate->status)>=0){
-            return redirect()->back()->with('error', 'Project profile already submitted');
+        if ($duplicate) {
+            if (intval($duplicate->status) >= 0) {
+                return redirect()->back()->with('error', 'Project profile already submitted');
+            }
         }
+
         $popsp_agencies = PopspAgency::all();
 
         if ($count < 1) {
+            // dd()
             $firstDayNextYear = now()->addYear()->startOfYear()->format('Y-m-d');
             $lastDayNextYear  = now()->addYear()->endOfYear()->format('Y-m-d');
             $rev_plan_firstgenerate = new RevisionPlan();
@@ -193,7 +197,7 @@ class ProjectProfileStreamlinedController extends Controller
             // RISK MANAGEMENT
             "risk_manangement" => $this->risk_management($editData->id),
             // SOURCE
-            "source"=>$source,
+            "source" => $request->source,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -446,7 +450,7 @@ class ProjectProfileStreamlinedController extends Controller
         return BudgetRequirement::with(['comments' => function ($query) {
             $query->where('table_name', 'budget_requirements');
         }])
-            ->select('id', 'revision_plan_id', 'particulars', 'account_code', 'amount', 'proposed_budget', 'category', 'category_gad', 'source')
+            ->select('id', 'revision_plan_id', 'particulars', 'account_code', 'amount', 'proposed_budget', 'category', 'category_gad', 'source', 'sip_number')
             ->where('revision_plan_id', $id)
             ->orderBy('category') // optional: keep some order
             ->orderBy('category_gad')
@@ -644,7 +648,7 @@ class ProjectProfileStreamlinedController extends Controller
                 $proj->save();
             }
 
-            $activities=Activity::where('strategy_id', $id)->get();
+            $activities = Activity::where('strategy_id', $id)->get();
             foreach ($activities as $act) {
                 ActivityProject::where('activity_id', $act->id)
                     ->update(['is_active' => 0]);
@@ -653,8 +657,8 @@ class ProjectProfileStreamlinedController extends Controller
             $act = Activity::where('id', $id)->first();
             $act->delete();
 
-            $act_proj = ActivityProject::where('activity_id',$id)->first();
-            $act_proj->is_active=0;
+            $act_proj = ActivityProject::where('activity_id', $id)->first();
+            $act_proj->is_active = 0;
             $act_proj->save();
         } else {
             // Delete the record
@@ -682,7 +686,7 @@ class ProjectProfileStreamlinedController extends Controller
                     "gender" => $item->userEmployee ? $item->userEmployee->gender : $item->gender,
                     "status" => $item->userEmployee ? $item->userEmployee->employment_type_descr : $item->status,
                     "position" => $item->userEmployee ? $item->userEmployee->position_long_title : $item->position,
-                    "empl_id" =>$item->userEmployee ? $item->userEmployee->empl_id : $item->empl_id,
+                    "empl_id" => $item->userEmployee ? $item->userEmployee->empl_id : $item->empl_id,
                     "competency" => $item->competency,
                     "role" => $item->role,
                     "with_gad_training" => $item->with_gad_training,
