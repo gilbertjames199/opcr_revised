@@ -1715,10 +1715,12 @@
                             <tbody>
                                 <tr v-for="monitor in monitoring_and_avaluation">
                                     <!-- M&E Evaluation Mechanism Tool -->
-                                    <td :class="{
-                                                'text-danger': has_comment('Monitoring and Evaluation','Evaluation Mechanism Tool',monitor.evaluation_mechanism_tool,'evaluation_mechanism_tool','monitoring_and_evaluations', monitor, monitor.comments)
-                                    }" :id="monitor.id + '_monitoring_and_evaluations_evaluation_mechanism_tool'" >
+                                    <td :id="monitor.id + '_monitoring_and_evaluations_evaluation_mechanism_tool'">
                                         <textarea
+                                            :class="{
+                                                'text-danger': has_comment('Monitoring and Evaluation','Evaluation Mechanism Tool',monitor.evaluation_mechanism_tool,'evaluation_mechanism_tool','monitoring_and_evaluations', monitor, monitor.comments)
+                                            }"
+
                                             class="form-control transparent-bg "
                                             type="text"
                                             v-model="monitor.evaluation_mechanism_tool"
@@ -1734,12 +1736,13 @@
                                         </button>
                                     </td>
                                     <!-- M&E OPR and their roles -->
-                                    <td :class="{
-                                                'text-danger': has_comment('Monitoring and Evaluation','OPCR & their roles',monitor.opr,'opr','monitoring_and_evaluations', monitor, monitor.comments)
-                                    }"
+                                    <td
                                     :id="monitor.id + '_monitoring_and_evaluations_opr'"
                                     >
                                         <textarea
+                                            :class="{
+                                                'text-danger': has_comment('Monitoring and Evaluation','OPCR & their roles',monitor.opr,'opr','monitoring_and_evaluations', monitor, monitor.comments)
+                                            }"
                                             class="form-control transparent-bg "
                                             type="text"
                                             v-model="monitor.opr"
@@ -1916,43 +1919,78 @@
                         <div v-for="(signatory, index) in signatoriesprops" :key="index"
                              :class="['signatory-card', (signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed') ? 'signatory-card-full' : 'signatory-card']"
                         >
-                        <strong>
-                            <select v-model="signatory.acted" class="form-select" autocomplete="chrome-off"
-                                @change="updateRevisionPlans('signatories', 'acted', signatory.id, signatory.acted)"
-                            >
-                                <option>Prepared</option>
-                                <option>Reviewed</option>
-                                <option>Noted</option>
-                                <option>Approved</option>
-                                <option>Recommending Approval</option>
-                                <option>As to AIP Inclusion</option>
-                                <option>As to AIP Appropriation</option>
-                            </select>
-                            <span v-if="signatory.acted==='Prepared' || signatory.acted==='Reviewed'
-                                || signatory.acted==='Noted' || signatory.acted==='Approved'
-                            "
-                            >by:</span>
-                        </strong>
-                        <br><br>
-                        <span class="text-decoration-underline">
-                            <b>
-                                <input
-                                    class="form-control transparent-bg "
-                                    v-model="signatory.name"
-                                    type="text"
-                                    @input="setUnsaved(true)"
-                                    @change="updateRevisionPlans('signatories', 'name', signatory.id, signatory.name)" />
+                            <!-- SIGNATORY ACTED ************************************************************************** -->
+                            <strong>
 
-                                <!-- </input> -->
-                            </b>
-                        </span>
+                                <select v-model="signatory.acted" class="form-select" autocomplete="chrome-off"
+                                    @change="updateRevisionPlans('signatories', 'acted', signatory.id, signatory.acted)"
+                                    :class="{'text-danger':
+                                        has_comment('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)
+                                        }" :id="signatory.id + '_signatories_acted'"
+                                >
+                                    <option>Prepared</option>
+                                    <option>Reviewed</option>
+                                    <option>Noted</option>
+                                    <option>Approved</option>
+                                    <option >Recommending Approval</option>
+                                    <option v-if="editData.type !== 'p'">As to AIP Inclusion</option>
+                                    <option v-if="editData.type !== 'p'">As to AIP Appropriation</option>
+                                </select>
+                                <span v-if="signatory.acted==='Prepared' || signatory.acted==='Reviewed'
+                                    || signatory.acted==='Noted' || signatory.acted==='Approved'
+                                "
+                                >by:
+
+                                </span>
+                                <button v-if="can_view_comment()" class="superscript-btn"
+                                    @click="handleClick('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)">*
+                                </button>
+                                <button v-if="has_comment('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)" class="superscript-btn"
+                                    @click="handleClick('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)">*
+                                </button>
+                            </strong>
+                            <br><br>
+
+                            <!-- SIGNATORY ACTED ************************************************************************** -->
+                            <span class="text-decoration-underline" :id="signatory.id + '_signatories_name'">
+                                <b>
+                                    <input
+                                        class="form-control"
+                                        :class="{'text-danger': has_comment('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)}"
+                                        v-model="signatory.name"
+                                        type="text"
+                                        :id="signatory.id + '_signatories_name'"
+                                        @input="setUnsaved(true)"
+                                        @change="updateRevisionPlans('signatories', 'name', signatory.id, signatory.name)" />
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)" class="superscript-btn"
+                                        @click="handleClick('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)">*
+                                    </button>
+                                    <!-- </input> -->
+                                </b>
+                            </span>
                             <br>
-                            <input
+                            <span :id="signatory.id + '_signatories_position'">
+                                <input
                                 class="form-control transparent-bg "
+                                :class="{'text-danger':
+                                    has_comment('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)
+                                    }"
+
                                 v-model="signatory.position"
                                 type="text"
                                 @input="setUnsaved(true)"
                                 @change="updateRevisionPlans('signatories', 'position', signatory.id, signatory.position)" />
+                                <button v-if="can_view_comment()" class="superscript-btn"
+                                    @click="handleClick('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)">*
+                                </button>
+                                <button v-if="has_comment('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)" class="superscript-btn"
+                                    @click="handleClick('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)">*
+                                </button>
+                            </span>
+
                             <br><br><br><br>
                             <button class="btn btn-danger btn-sm text-white"
                                 @click="deleteData(signatory.id, 'signatories', signatory.name)">
@@ -3424,6 +3462,9 @@ export default {
             }
 
             if(this.comment_table==='expected_revised_outcomes'){
+                table_row_id_l = this.comment_reference_object.id
+            }
+            if(this.comment_table==='signatories'){
                 table_row_id_l = this.comment_reference_object.id
             }
             //alert(table_row_id_l)

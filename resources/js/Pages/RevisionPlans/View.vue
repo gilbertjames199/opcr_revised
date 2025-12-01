@@ -2519,12 +2519,57 @@
                         <div v-for="(signatory, index) in signatories" :key="index"
                             :class="['signatory-card', (signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed') ? 'signatory-card-full' : 'signatory-card']">
 
-                            <div v-if="signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed'"></div>
-                            <strong>{{ signatory.acted }} by: </strong><br><br>
-                            <span class="text-decoration-underline"><b>{{ signatory.name
-                                                                    }}</b></span>
-                                                                    <br>{{ signatory.position }}<br><br><br><br>
+                            <!-- <div v-if="signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed'"></div> -->
+                            <span :class="{'text-danger':
+                                    has_comment('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)
+                                    }" :id="signatory.id + '_signatories_acted'">
+                                <strong>
+                                    {{ signatory.acted }}
+                                <span v-if="signatory.acted==='Prepared' || signatory.acted==='Reviewed'
+                                    || signatory.acted==='Noted' || signatory.acted==='Approved'
+                                "
+                                >by:
+                                </span>
+                                <button v-if="can_view_comment()" class="superscript-btn"
+                                    @click="handleClick('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)">*
+                                </button>
+                                <button v-if="has_comment('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)" class="superscript-btn"
+                                    @click="handleClick('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)">*
+                                </button>
+                                </strong><br><br>
+
+                            </span>
+
+                            <span class="text-decoration-underline"
+                                :class="{'text-danger':
+                                    has_comment('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)
+                                    }" :id="signatory.id + '_signatories_name'"
+                            >
+                                <b>
+                                    {{ signatory.name}}
+                                </b>
+                                <button v-if="can_view_comment()" class="superscript-btn"
+                                    @click="handleClick('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)">*
+                                </button>
+                                <button v-if="has_comment('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)" class="superscript-btn"
+                                    @click="handleClick('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)">*
+                                </button>
+                            </span>
+                            <br>
+                                <span :class="{'text-danger':
+                                    has_comment('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)
+                                    }" :id="signatory.id + '_signatories_position'">
+                                    {{ signatory.position }}
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)" class="superscript-btn"
+                                        @click="handleClick('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)">*
+                                    </button>
+                                </span>
+                            <br><br><br><br>
                         </div>
+
                     </div>
 
                     <!-- <div v-if="paps.type === 'p'">
@@ -2630,30 +2675,38 @@
                                 </div>
                                 <ul class="list-unstyled">
                                     <li v-for="(comment, index) in unresolvedComments" :key="'r-' + index" class="mb-2">
-                                        <span
-                                            class="clickable-comment"
-                                            @click="scrollToSection(
-                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                    ? comment.column_name
-                                                    : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                            )"
-                                            :class="'comment-rejected'"
-                                        >
+
                                             <table style="border-collapse: collapse; border: none !important;">
                                                 <tr style="border: none !important; vertical-align: top;">
                                                     <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
-                                                            class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
-                                                        </svg>&nbsp;&nbsp;&nbsp;
+                                                        <button class="btn p-0 border-0 bg-transparent"
+                                                            @click="submitAction('delete', comment.id, index)"
+                                                            title="Delete this comment"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                                                class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                                            </svg>&nbsp;&nbsp;&nbsp;
+                                                        </button>
+
                                                     </td>
                                                     <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                        {{ comment.comment }}
+                                                        <span
+                                                            class="clickable-comment"
+                                                            @click="scrollToSection(
+                                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                    ? comment.column_name
+                                                                    : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                            )"
+                                                            :class="'comment-rejected'"
+                                                        >
+                                                            {{ comment.comment }}
+                                                        </span>
                                                     </td>
                                                 </tr>
                                             </table>
 
-                                        </span>
+
                                         <!-- Action Buttons -->
                                         <div class="text-end">
                                             <button class="btn btn-success btn-sm text-white"
@@ -3304,6 +3357,9 @@ export default {
             if(this.comment_table==='expected_revised_outcomes'){
                 table_row_id_l = this.comment_reference_object.id
             }
+            if(this.comment_table==='signatories'){
+                table_row_id_l = this.comment_reference_object.id
+            }
             //alert(table_row_id_l)
             this.$inertia.post(myurl, {
                 params: {
@@ -3619,7 +3675,7 @@ table {
 }
 
 .scrollable-text {
-    height: 300px;           /*define the height you want*/
+    height: 400px;           /*define the height you want*/
     overflow-y: auto;        /*vertical scrollbar if content exceeds height*/
     /*padding: 0px;           optional padding*/
     /*border: 1px solid #ccc;  optional border*/

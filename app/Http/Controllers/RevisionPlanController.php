@@ -988,9 +988,10 @@ class RevisionPlanController extends Controller
             ->get();
         //RISK MANAGEEMNT
         $risks = Risk_manangement::with(['comments', 'comments.user'])->where('revision_plan_id', $id)->get();
-        $signatories = Signatory::where('revision_plan_id', $id)
+        $signatories = Signatory::with(['comments'])->where('revision_plan_id', $id)
             ->orderByRaw("FIELD(acted, 'Prepared', 'Reviewed', 'Noted', 'Recommending Approval','Approved','As to AIP Inclusion','As to AIP Appropriation')")
             ->get();
+        // dd($signatories);
         //PREPARED
         // $sig_app =[];
         // $sig_prep = [];
@@ -1008,7 +1009,7 @@ class RevisionPlanController extends Controller
         //     ->where('acted', 'Approved')->get();
         //IMPLEMENTATION PLAN
         $imp_amount = "0.00";
-        http: //192.168.160.9:8076/revision/view/project/paps/1?source=direct
+        // http: //192.168.160.9:8076/revision/view/project/paps/1?source=direct
         // dd($paps);
         if ($paps->is_strategy_based == 1) {
             $imp_amount = StrategyProject::where('project_id', $id)->where('is_active', '1')
@@ -1159,6 +1160,12 @@ class RevisionPlanController extends Controller
         $teamComments = RevisionPlanComment::where('table_name', 'team_plans')
             ->whereIn('table_row_id', $teamIds);
 
+        // Signatories
+        $signatories = Signatory::where('revision_plan_id', $revisionPlanId)->pluck('id');
+        $signatoryComments = RevisionPlanComment::where('table_name','signatories')
+            ->whereIn('table_row_id', $signatories);
+        // dd($signatories);
+
         // 9️⃣ Merge all queries using union
         $unionQuery = $revisionPlanComments
             ->unionAll($activityComments)
@@ -1170,7 +1177,8 @@ class RevisionPlanController extends Controller
             ->unionAll($budgetComments)
             ->unionAll($monitoringComments)
             ->unionAll($riskComments)
-            ->unionAll($teamComments);
+            ->unionAll($teamComments)
+            ->unionAll($signatoryComments);
         $allComments = DB::table(DB::raw("({$unionQuery->toSql()}) as comments"))
             ->mergeBindings($unionQuery->getQuery()) // important to merge bindings
             ->orderBy('comment_status', 'asc')

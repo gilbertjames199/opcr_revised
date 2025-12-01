@@ -289,6 +289,11 @@ class ProjectProfileStreamlinedController extends Controller
         $teamComments = RevisionPlanComment::where('table_name', 'team_plans')
             ->whereIn('table_row_id', $teamIds);
 
+        // Signatories
+        $signatories = Signatory::where('revision_plan_id', $revisionPlanId)->pluck('id');
+        $signatoryComments = RevisionPlanComment::where('table_name','signatories')
+            ->whereIn('table_row_id', $signatories);
+
         // 9️⃣ Merge all queries using union
         $unionQuery = $revisionPlanComments
             ->unionAll($activityComments)
@@ -300,7 +305,8 @@ class ProjectProfileStreamlinedController extends Controller
             ->unionAll($budgetComments)
             ->unionAll($monitoringComments)
             ->unionAll($riskComments)
-            ->unionAll($teamComments);
+            ->unionAll($teamComments)
+            ->unionAll($signatoryComments);
         $allComments = DB::table(DB::raw("({$unionQuery->toSql()}) as comments"))
             ->mergeBindings($unionQuery->getQuery()) // important to merge bindings
             ->orderBy('comment_status', 'asc')
@@ -704,7 +710,7 @@ class ProjectProfileStreamlinedController extends Controller
     }
     public function signatories($id)
     {
-        return Signatory::where('revision_plan_id', $id)
+        return Signatory::with(['comments'])->where('revision_plan_id', $id)
             ->orderByRaw("FIELD(acted, 'Prepared', 'Reviewed', 'Noted', 'Recommending Approval','Approved','As to AIP Inclusion','As to AIP Appropriation')")
             ->get();
     }

@@ -488,7 +488,7 @@ class PAPController extends Controller
         $idn = auth()->user()->recid;
         $FFUNCCODE = auth()->user()->office;
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCODE)->first();
-        // dd($office);
+        // dd(auth()->user());
         $department_code = $office->department_code;
         $divisions = OfficeDivision::where('department_code', $department_code)
             ->orderBy('division_name1', 'ASC')
