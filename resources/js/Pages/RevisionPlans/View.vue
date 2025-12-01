@@ -587,7 +587,7 @@
                                             <!-- DESCRIPTION -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
-                                            }" :id="act.activity_id + '_activity_projects_activities'"><b>{{ act.description }}</b>
+                                            }" :id="act.activity_id + '_activity_projects_activities'"><b>{{ act.description }} </b>
 
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)">*
@@ -635,7 +635,11 @@
                                                         <template v-for="(pair, i) in getPairedOutputs(act.activityProject[0])" :key="i" >
                                                             <tr style="height: 100%;">
                                                                 <!-- Target Indicator -->
-                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="pair.id + '_expected_revised_outputs_target_indicator'">
+                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;"
+                                                                    :id="(pair.outcome_description
+                                                                        ? pair.id + '_expected_revised_outcomes_target_indicator'
+                                                                        : pair.id + '_expected_revised_outputs_target_indicator')"
+                                                                >
                                                                     <span v-if="paps.is_strategy_based==0 && pair.target_indicator"
                                                                             :class="{
                                                                         'text-danger': has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator','expected_revised_outputs', pair, pair.comments) ||
@@ -643,9 +647,8 @@
                                                                     }"
                                                                     >{{ pair.target_indicator }}
                                                                         <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
-
-
                                                                     </span>
+
                                                                     <br><br>
                                                                     <button v-if="can_view_comment()" class="superscript-btn"
                                                                         @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
@@ -697,9 +700,7 @@
                                                                     </span>
                                                                 </td>
                                                                 <!-- Expected Outputs/Outcomes -->
-                                                                <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;"
-
-                                                                >
+                                                                <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;">
                                                                     <!-- OUTPUTS*********************************************************************** -->
                                                                     <div :class="{
                                                                         'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
@@ -2701,6 +2702,11 @@
                                                             :class="'comment-rejected'"
                                                         >
                                                             {{ comment.comment }}
+                                                                                <!-- {{
+                                                                        ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                            ? comment.column_name
+                                                                            : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
+                                                                    }} -->
                                                         </span>
                                                     </td>
                                                 </tr>

@@ -3071,7 +3071,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "border": "1px solid #000",
             "padding": "4px"
           },
-          id: pair.id + '_expected_revised_outputs_target_indicator'
+          id: pair.outcome_description ? pair.id + '_expected_revised_outcomes_target_indicator' : pair.id + '_expected_revised_outputs_target_indicator'
         }, [$props.paps.is_strategy_based == 0 && pair.target_indicator ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
           key: 0,
           "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
@@ -4300,8 +4300,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? comment.column_name : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
       }
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment), 9
-    /* TEXT, PROPS */
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment) + " ", 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{\n                                                                        ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                                                            ? comment.column_name\n                                                                            : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)\n                                                                    }} ")], 8
+    /* PROPS */
     , _hoisted_342)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Action Buttons "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_343, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-success btn-sm text-white",
       onClick: function onClick($event) {
