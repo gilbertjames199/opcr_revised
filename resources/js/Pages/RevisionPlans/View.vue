@@ -2675,7 +2675,7 @@
                                     <strong>Unresolved Comments</strong>
                                 </div>
                                 <ul class="list-unstyled">
-                                    <li v-for="(comment, index) in unresolvedComments" :key="'r-' + index" class="mb-2">
+                                    <li v-for="(comment, index) in unresolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
 
                                             <table style="border-collapse: collapse; border: none !important;">
                                                 <tr style="border: none !important; vertical-align: top;">
@@ -2751,7 +2751,7 @@
                                 </div>
 
                                 <ul class="list-unstyled">
-                                    <li v-for="(comment, index) in resolvedComments" :key="'r-' + index" class="mb-2">
+                                    <li v-for="(comment, index) in resolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
                                         <span
                                             class="clickable-comment"
                                             @click="scrollToSection(
@@ -2820,9 +2820,9 @@
                             <h4>NAVIGATION ...</h4>
 
                         </div>
-                        <div class="scrollable-text" style="background: rgba(255, 255, 255, 0.7);">
+                        <div class="scrollable-text" style="background: rgba(255, 255, 255, 0.7); cursor: pointer;" >
                             <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
+                                <li class="mb-2" style="color: blue" >
                                     <span class="clickable-comment"  @click="scrollToSection('revision_plans')">
                                         I.      Title
                                     </span>
@@ -3575,8 +3575,12 @@ export default {
         //RATIONALE COMMENTS
         onHighlight() {
             const data = this.getHighlightIndexes();
-            alert("callllllsdfsdbhfjkbgf")
+
             if (data) {
+                alert("calculating text range selected: start="+data.start+
+                    "; end="+data.end +
+                    "; selected:" + data.selected
+                )
                 console.log("Start index:", data.start);
                 console.log("End index:", data.end);
                 console.log("Selected text:", data.selected);
