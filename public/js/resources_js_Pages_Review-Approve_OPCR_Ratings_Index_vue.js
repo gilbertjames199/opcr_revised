@@ -735,7 +735,7 @@ var _hoisted_18 = {
 var _hoisted_19 = ["onClick"];
 
 var _hoisted_20 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link class=\"text-danger dropdown-item\" @click=\"deleteSectoral(dat.id)\">\r\n                                                Delete</Link> ")], -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link class=\"text-danger dropdown-item\" @click=\"deleteSectoral(dat.id)\">\n                                                Delete</Link> ")], -1
   /* HOISTED */
   );
 });
@@ -1453,7 +1453,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<p style=\"text-align: justify;\">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.\r\n    </p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<p style=\"text-align: justify;\">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.\n    </p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return _ctx.search = $event;
     }),
@@ -1472,7 +1472,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link :href=\"'/Sectoral'\">\r\n                <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"25\" height=\"25\" fill=\"currentColor\" class=\"bi bi-x-lg\" viewBox=\"0 0 16 16\">\r\n                    <path fill-rule=\"evenodd\" d=\"M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z\"/>\r\n                    <path fill-rule=\"evenodd\" d=\"M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z\"/>\r\n                </svg>\r\n            </Link> ")]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.data.data, function (dat) {
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link :href=\"'/Sectoral'\">\n                <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"25\" height=\"25\" fill=\"currentColor\" class=\"bi bi-x-lg\" viewBox=\"0 0 16 16\">\n                    <path fill-rule=\"evenodd\" d=\"M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z\"/>\n                    <path fill-rule=\"evenodd\" d=\"M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z\"/>\n                </svg>\n            </Link> ")]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.data.data, function (dat) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.office.FFUNCTION), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.semester), 1
@@ -1537,7 +1537,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.paps_desc), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>{{ dat.success_indicator }}</td>\r\n                                    <td>{{ dat.target_success_indicator }}</td>\r\n                                    <td>{{ dat.quantity }}</td>\r\n                                    @change=\"saveRating()\"\r\n                                    "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" width: 2.5em;  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>{{ dat.success_indicator }}</td>\n                                    <td>{{ dat.target_success_indicator }}</td>\n                                    <td>{{ dat.quantity }}</td>\n                                    @change=\"saveRating()\"\n                                    "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" width: 2.5em;  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
           "onUpdate:modelValue": function onUpdateModelValue($event) {
             return $data.opcr_data[index].q1 = $event;
           },
@@ -1661,7 +1661,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           ref: "remarksTextarea"
         }, null, 40
         /* PROPS, HYDRATE_EVENTS */
-        , _hoisted_91), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.opcr_data[index].remarks]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("opcr_data[index].mov_is_visible: {{ opcr_data[index].mov_is_visible }}\r\n                                        count_movs: {{ opcr_data[index].count_movs }}\r\n                                        :disabled=\"!dat.movs\"\r\n                                            :style=\"!dat.movs ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''\" "), !$data.opcr_data[index].mov_is_visible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        , _hoisted_91), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.opcr_data[index].remarks]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("opcr_data[index].mov_is_visible: {{ opcr_data[index].mov_is_visible }}\n                                        count_movs: {{ opcr_data[index].count_movs }}\n                                        :disabled=\"!dat.movs\"\n                                            :style=\"!dat.movs ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''\" "), !$data.opcr_data[index].mov_is_visible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 0,
           onClick: function onClick($event) {
             return $options.updateMOVisVisible($data.opcr_data[index].mov_is_visible, index);
@@ -1746,15 +1746,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }
         }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(opcr.office_accountable), 9
         /* TEXT, PROPS */
-        , _hoisted_127)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <textarea v-model=\"opcr_data[index].accomplishments\"\r\n                                            style=\"height: inherit\"></textarea> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_data[index].accomplishments), 1
+        , _hoisted_127)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <textarea v-model=\"opcr_data[index].accomplishments\"\n                                            style=\"height: inherit\"></textarea> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_data[index].accomplishments), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input v-model=\"opcr_data[index].rating_q\" class=\"centered-input\" type=\"number\"\r\n                                            min=\"0\" max=\"5\" step=\"1\" disabled> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_data[index].rating_q), 1
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input v-model=\"opcr_data[index].rating_q\" class=\"centered-input\" type=\"number\"\n                                            min=\"0\" max=\"5\" step=\"1\" disabled> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_data[index].rating_q), 1
         /* TEXT */
         )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_data[index].rating_e), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input v-model=\"opcr_data[index].rating_t\" class=\"centered-input\" type=\"number\"\r\n                                            min=\"0\" max=\"5\" step=\"1\" disabled> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_data[index].rating_t), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input v-model=\"opcr_data[index].rating_t\" class=\"centered-input\" type=\"number\"\n                                            min=\"0\" max=\"5\" step=\"1\" disabled> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.opcr_data[index].rating_t), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input :value=\"computeAverage(opcr_data[index])\" class=\"centered-input\" type=\"number\"\r\n                                       min=\"0\" max=\"5\" step=\"1\" disabled\r\n                                    > "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.computeAverage($data.opcr_data[index])), 1
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input :value=\"computeAverage(opcr_data[index])\" class=\"centered-input\" type=\"number\"\n                                       min=\"0\" max=\"5\" step=\"1\" disabled\n                                    > "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.computeAverage($data.opcr_data[index])), 1
         /* TEXT */
         )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
           "onUpdate:modelValue": function onUpdateModelValue($event) {
@@ -1822,11 +1822,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_141, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" file_extension: {{ file_extension }} -- {{ view_link }} -- {{ disk }} "), $props.disk === 'public' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_142, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <iframe v-if=\"file_extension === 'pdf'\"\r\n                    :src=\"`/storage/${current_filepath}`\"\r\n                    width=\"100%\"\r\n                    height=\"500px\">\r\n                </iframe> "), _ctx.file_extension === 'pdf' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_143, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
+      return [_hoisted_141, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" file_extension: {{ file_extension }} -- {{ view_link }} -- {{ disk }} "), $props.disk === 'public' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_142, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <iframe v-if=\"file_extension === 'pdf'\"\n                    :src=\"`/storage/${current_filepath}`\"\n                    width=\"100%\"\n                    height=\"500px\">\n                </iframe> "), _ctx.file_extension === 'pdf' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_143, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
         src: _ctx.view_link,
         width: "100%",
         height: "500px"
-      }, "\r\n                    ", 8
+      }, "\n                    ", 8
       /* PROPS */
       , _hoisted_144)])) : _ctx.imageTypes.includes(_ctx.file_extension) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
         key: 1
@@ -1845,13 +1845,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         src: "https://docs.google.com/gview?url=".concat(encodeURIComponent(_ctx.view_link), "&embedded=true"),
         width: "100%",
         height: "600"
-      }, "\r\n                    ", 8
+      }, "\n                    ", 8
       /* PROPS */
       , _hoisted_147)]))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_148, [_ctx.file_extension === 'pdf' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_149, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
         src: _ctx.view_link,
         width: "100%",
         height: "500px"
-      }, "\r\n                    ", 8
+      }, "\n                    ", 8
       /* PROPS */
       , _hoisted_150)])) : _ctx.imageTypes.includes(_ctx.file_extension.toLowerCase()) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_151, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Image siya "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
         src: _ctx.view_link,
@@ -1866,14 +1866,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         src: "https://docs.google.com/gview?url=".concat(encodeURIComponent(_ctx.view_link), "&embedded=true"),
         width: "100%",
         height: "600"
-      }, "\r\n                    ", 8
+      }, "\n                    ", 8
       /* PROPS */
-      , _hoisted_154)]))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <br>\r\n            <iframe :src=\"`/storage/${current_filepath}`\"></iframe>\r\n            <br>\r\n            <a :href=\"`/storage/${current_filepath}`\" target=\"_blank\">\r\n                Open File\r\n            </a> ")];
+      , _hoisted_154)]))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <br>\n            <iframe :src=\"`/storage/${current_filepath}`\"></iframe>\n            <br>\n            <a :href=\"`/storage/${current_filepath}`\" target=\"_blank\">\n                Open File\n            </a> ")];
     }),
     _: 1
     /* STABLE */
 
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n        <Modal2 v-if=\"displayModal2\" @close-modal-event=\"hideModal\">\r\n            <button @click=\"backTo()\" class=\"btn btn-light\">\r\n                <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                    class=\"bi bi-box-arrow-in-left\" viewBox=\"0 0 16 16\">\r\n                    <path fill-rule=\"evenodd\"\r\n                        d=\"M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0z\" />\r\n                    <path fill-rule=\"evenodd\"\r\n                        d=\"M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z\" />\r\n                </svg>\r\n            </button>\r\n            {{ mode }} Remarks:\r\n            <input class=\"form-control\" v-model=\"remarks\" type=\"text\" />\r\n            viewModal(opcr_id, status, opcr)\r\n            &nbsp;v-if=\"auth.user.office.department_code == '04'\"\r\n            <button @click=\"confirmSubmission()\" class=\"btn btn-primary text-white\">Done</button>&nbsp;\r\n            <button @click=\"hideModal()\" class=\"btn btn-danger text-white\">Cancel</button>\r\n        </Modal2> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth }}\r\n        {{ auth.user.office.department_code }}\r\n        ")])], 64
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\n        <Modal2 v-if=\"displayModal2\" @close-modal-event=\"hideModal\">\n            <button @click=\"backTo()\" class=\"btn btn-light\">\n                <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\n                    class=\"bi bi-box-arrow-in-left\" viewBox=\"0 0 16 16\">\n                    <path fill-rule=\"evenodd\"\n                        d=\"M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0z\" />\n                    <path fill-rule=\"evenodd\"\n                        d=\"M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z\" />\n                </svg>\n            </button>\n            {{ mode }} Remarks:\n            <input class=\"form-control\" v-model=\"remarks\" type=\"text\" />\n            viewModal(opcr_id, status, opcr)\n            &nbsp;v-if=\"auth.user.office.department_code == '04'\"\n            <button @click=\"confirmSubmission()\" class=\"btn btn-primary text-white\">Done</button>&nbsp;\n            <button @click=\"hideModal()\" class=\"btn btn-danger text-white\">Cancel</button>\n        </Modal2> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth }}\n        {{ auth.user.office.department_code }}\n        ")])], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -2002,7 +2002,7 @@ var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
     style: {
       "background-color": "#090137"
     }
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<button type=\"button\" class=\"btn btn-primary\" @click=\"saveChanges\">Save changes</button>\r\n                        <button type=\"button\" class=\"btn btn-secondary\" @click=\"closeModal\">Close</button>")], -1
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<button type=\"button\" class=\"btn btn-primary\" @click=\"saveChanges\">Save changes</button>\n                        <button type=\"button\" class=\"btn btn-secondary\" @click=\"closeModal\">Close</button>")], -1
   /* HOISTED */
   );
 });
@@ -2022,7 +2022,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.closeModal && $options.closeModal.apply($options, arguments);
     })
-  }, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<p>Modal body text goes here.</p>\r\n                        <multiselect v-model=\"value\" :options=\"options\" mode=\"tags\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {}, undefined, true)]), _hoisted_11])])])])]);
+  }, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<p>Modal body text goes here.</p>\n                        <multiselect v-model=\"value\" :options=\"options\" mode=\"tags\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {}, undefined, true)]), _hoisted_11])])])])]);
 }
 
 /***/ }),
@@ -2213,7 +2213,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.sticky-header[data-v-76431a50] {\r\n  position: -webkit-sticky;\r\n  position: sticky;\r\n  top: 0;\r\n  background: white; /* Important so header isn’t transparent */\r\n  z-index: 2;        /* Keeps header above body rows */\n}\n.row-centered[data-v-76431a50] {\r\n    text-align: center;\n}\n.col-centered[data-v-76431a50] {\r\n    display: inline-block;\r\n    float: none;\r\n    text-align: left;\r\n    margin-right: -4px;\n}\n.pos[data-v-76431a50] {\r\n    position: top;\r\n    top: 240px;\n}\n.force-white[data-v-76431a50] {\r\n  background-color: red !important;\n}\n.no-stripe-bg[data-v-76431a50] {\r\n  background-color: white !important;\r\n  --bs-table-accent-bg: white !important;\r\n  position: relative;\r\n  z-index: 1;\n}\r\n/* .btn-link-style {\r\n  background: none;\r\n  border: none;\r\n  color: #007bff;  Bootstrap primary link color\r\n  padding: 0;\r\n  font: inherit;\r\n  cursor: pointer;\r\n  text-decoration: underline;\r\n}\r\n\r\n.btn-link-style:hover {\r\n  color: #0056b3; Darker on hover\r\n  text-decoration: none;\r\n} */\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.sticky-header[data-v-76431a50] {\n  position: -webkit-sticky;\n  position: sticky;\n  top: 0;\n  background: white; /* Important so header isn’t transparent */\n  z-index: 2;        /* Keeps header above body rows */\n}\n.row-centered[data-v-76431a50] {\n    text-align: center;\n}\n.col-centered[data-v-76431a50] {\n    display: inline-block;\n    float: none;\n    text-align: left;\n    margin-right: -4px;\n}\n.pos[data-v-76431a50] {\n    position: top;\n    top: 240px;\n}\n.force-white[data-v-76431a50] {\n  background-color: red !important;\n}\n.no-stripe-bg[data-v-76431a50] {\n  background-color: white !important;\n  --bs-table-accent-bg: white !important;\n  position: relative;\n  z-index: 1;\n}\n/* .btn-link-style {\n  background: none;\n  border: none;\n  color: #007bff;  Bootstrap primary link color\n  padding: 0;\n  font: inherit;\n  cursor: pointer;\n  text-decoration: underline;\n}\n\n.btn-link-style:hover {\n  color: #0056b3; Darker on hover\n  text-decoration: none;\n} */\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2259,7 +2259,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.custom-modal[data-v-8a5e42b0] {\r\n  max-width: 80% !important; /* width of modal */\r\n  width: 80% !important;\n}\r\n    /* Override default value of 'none' */\n.modal[data-v-8a5e42b0] {\r\n      display: block;\n}\r\n  ", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.custom-modal[data-v-8a5e42b0] {\n  max-width: 80% !important; /* width of modal */\n  width: 80% !important;\n}\n    /* Override default value of 'none' */\n.modal[data-v-8a5e42b0] {\n      display: block;\n}\n  ", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

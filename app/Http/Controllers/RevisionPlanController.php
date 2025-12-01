@@ -67,12 +67,17 @@ class RevisionPlanController extends Controller
         $AIPInstitutional = AnnualInvestmentPlanInstitutional::where('year_period', $year_period)->first();
         if ($request->source == 'sip') {
             // dd($request->source, $AIPInstitutional->sp_approved, $AIPInstitutional->sip_period);
-            if ($AIPInstitutional->sp_approved != '1') {
+            if($AIPInstitutional){
+                if ($AIPInstitutional->sp_approved != '1') {
+                    return redirect()->back()->with('error', 'The AIP is not yet finalized');
+                }
+                if (intval($AIPInstitutional->sip_period) < 1) {
+                    return redirect()->back()->with('error', 'SIP preparation has not commenced yet.');
+                }
+            }else{
                 return redirect()->back()->with('error', 'The AIP is not yet finalized');
             }
-            if (intval($AIPInstitutional->sip_period) < 1) {
-                return redirect()->back()->with('error', 'SIP preparation has not commenced yet.');
-            }
+
         }
         // dd($FFUNCCOD);
         $paps = ProgramAndProject::where('id', $idpaps)->first();
@@ -3520,7 +3525,11 @@ class RevisionPlanController extends Controller
     {
         $filter = $request->all;
         $budget_controller = new BudgetRequirementController($this->budget);
-
+        // Determine the year
+        $year = $request->has('year')
+            ? $request->year
+            : date('Y') + 1;
+            // dd($year);
         // dd($budget_controller);
         $data = RevisionPlan::with(['budget', 'paps', 'paps.office'])
             // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
@@ -3562,6 +3571,8 @@ class RevisionPlanController extends Controller
             // ->whereHas('paps.office', function($query){
             //     $query->orderBy('FFUNCTION');
             // })
+            ->whereYear('date_start', $year)
+            ->where('type','p')
             ->get(); // <- Pagination
         // dd($data);
         return $data->map(function ($item) use ($budget_controller) {

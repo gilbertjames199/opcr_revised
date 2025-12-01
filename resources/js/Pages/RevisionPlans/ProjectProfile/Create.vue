@@ -1544,7 +1544,6 @@
                                     <td colspan="3"></td>
                             </tr>
                         </table>
-
                     </div>
                     <!--VI. IMPLEMENTING TEAM************************************************** -->
                     <h3 id='implementing_team'>
@@ -1948,12 +1947,12 @@
                             </b>
                         </span>
                             <br>
-                                <input
-                                    class="form-control transparent-bg "
-                                    v-model="signatory.position"
-                                    type="text"
-                                    @input="setUnsaved(true)"
-                                    @change="updateRevisionPlans('signatories', 'position', signatory.id, signatory.position)" />
+                            <input
+                                class="form-control transparent-bg "
+                                v-model="signatory.position"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('signatories', 'position', signatory.id, signatory.position)" />
                             <br><br><br><br>
                             <button class="btn btn-danger btn-sm text-white"
                                 @click="deleteData(signatory.id, 'signatories', signatory.name)">
@@ -1962,136 +1961,9 @@
                         </div>
                     </div>
                 </div>
-            <!-- <form @submit.prevent="submit()">
-                <div>
-                    <label for="">PROJECT TITLE</label>
-                    <input type="text" v-model="form.project_title" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.project_title">{{ form.errors.project_title }}</div>
 
-                    <label for="">AIP Code</label>
-                    <input type="text" v-model="form.aip_code" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.aip_code">{{ form.errors.aip_code }}</div>
-
-                    <label for="">PROJECT LOCATION</label>
-                    <input type="text" v-model="form.project_location" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.project_location">{{ form.errors.project_location }}</div>
-
-                    <label for="">LIST OF LGUs COVERED</label>
-                    <input type="text" v-model="form.list_of_lgu_covered" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.list_of_lgu_covered">{{ form.errors.list_of_lgu_covered }}
-                    </div>
-
-                    <hr style="background-color: black !important; border:1px; height: 1px;">
-                    IMPLEMENTATION SCHEDULE<br>
-                    <label for="">START</label>
-                    <input type="date" v-model="form.date_start" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.date_start">{{ form.errors.date_start }}</div>
-
-                    <label for="">END</label>
-                    <input type="date" v-model="form.date_end" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.date_end">{{ form.errors.date_end }}</div>
-                    <hr style="background-color: black !important; border:1px; height: 1px;">
-
-                    INTENDED BENEFICIARIES<br>
-                    <div class="peers">
-                        <div class="peer mR-10">
-                            <label for="">MALE</label>
-                            <input type="number" v-model="form.beneficiary_male" class="form-control" autocomplete="chrome-off" @change="setIntendedTotal">
-                            <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_male">{{ form.errors.beneficiary_male }}</div>
-                        </div>
-                        <div class="peer mR-10">
-                            <label for="">FEMALE</label>
-                            <input type="number" v-model="form.beneficiary_female" class="form-control" autocomplete="chrome-off" @change="setIntendedTotal">
-                            <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_female">{{ form.errors.beneficiary_female }}</div>
-                        </div>
-                        <div class="peer mR-10">
-                            <label for="">TOTAL</label>
-                            <input type="number" v-model="total_intended" class="form-control" autocomplete="chrome-off">
-                        </div>
-                    </div>
-                    <hr style="background-color: black !important; border:1px; height: 1px;">
-                    BASELINE DISAGGREGATED DATA<br>
-                    <div class="peers">
-                        <div class="peer mR-10">
-                            <label for="">MALE</label>
-                            <input type="number" v-model="form.baseline_male" class="form-control" autocomplete="chrome-off" @change="setTotal">
-                            <div class="fs-6 c-red-500" v-if="form.errors.baseline_male">{{ form.errors.baseline_male }}</div>
-                        </div>
-
-                        <div class="peer mR-10">
-                            <label for="">FEMALE</label>
-                            <input type="number" v-model="form.baseline_female" class="form-control" autocomplete="chrome-off" @change="setTotal">
-                            <div class="fs-6 c-red-500" v-if="form.errors.baseline_female">{{ form.errors.baseline_female }}</div>
-                        </div>
-                        <div class="peer mR-10">
-                            <label for="">TOTAL</label>
-                            <input type="number" v-model="form.baseline_total" class="form-control" autocomplete="chrome-off" >
-                            <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
-
-                        </div>
-                    </div>
-
-                    DATA SOURCE<br>
-                    <div class="peers">
-
-                        <div class="peer mR-10">
-
-                            <input type="text" v-model="form.data_source" class="form-control" autocomplete="chrome-off" >
-                            <div class="fs-6 c-red-500" v-if="form.errors.data_source">{{ form.errors.data_source }}</div>
-
-                        </div>
-                    </div>
-
-                    <hr style="background-color: black !important; border:1px; height: 1px;">
-
-
-                    <label for="">RATIONALE</label>
-                    <QuillEditor theme="snow" v-model:content="form.rationale" @input="limitWords" contentType="html"
-                        toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
-
-                    <label for="">OBJECTIVES</label>
-                    <QuillEditor theme="snow" v-model:content="form.objective" contentType="html" toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.objective">{{ form.errors.objective }}</div>
-
-                    <label for="">BENEFICIARIES</label>
-                    <QuillEditor theme="snow" v-model:content="form.beneficiaries" contentType="html" toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.beneficiaries">{{ form.errors.beneficiaries }}</div>
-
-                    <label for="">IMPLEMENTING TEAM</label>
-                    <QuillEditor theme="snow" v-model:content="form.implementing_team" contentType="html" toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.implementing_team">{{ form.errors.implementing_team }}</div>
-
-                    <label for="">PARTNERSHIPS AND SUSTAINABILITY</label>
-                    <QuillEditor theme="snow" v-model:content="form.partnership" contentType="html" toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.partnership">{{ form.errors.partnership }}</div>
-
-                    <label for="">MONITORING AND EVALUATION</label>
-                    <QuillEditor theme="snow" v-model:content="form.monitoring" contentType="html" toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.monitoring">{{ form.errors.monitoring }}</div>
-
-                    <label for="">RISK MANAGEMENT</label>
-                    <QuillEditor theme="snow" v-model:content="form.risk_management" contentType="html" toolbar="essential"
-                    />
-                    <div class="fs-6 c-red-500" v-if="form.errors.risk_management">{{ form.errors.risk_management }}</div>
-
-
-
-                    <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
-
-                    <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">
-                        Save changes
-                    </button>
-                </div>
-
-            </form> -->
         </div>
         <div class="col-3">
-            <!-- <div
-                class="draggable-panel"
-                ref="dragPanel"
-                @mousedown="startDrag"
-            > -->
                 <!-- ALL YOUR EXISTING COMMENT PANEL HTML HERE -->
                 <div class="sticky-comments" v-if="!showComments">
                         <button class="close-btn text-danger" @click="toggleShowCommentPanel">
@@ -2101,7 +1973,7 @@
                             &nbsp;
                             <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
                                 <b>
-                                    {{ countUnresolvedComments }} unresolved {{ countUnresolvedComments > 1 ? 'updates' : 'update' }} !!! Click Here
+                                    {{ countUnresolvedComments }} unresolved {{ countUnresolvedComments > 1 ? 'updates' : 'update' }} — click to review
                                 </b>
                             </span>
                         </button>
