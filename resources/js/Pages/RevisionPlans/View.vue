@@ -2708,13 +2708,14 @@
                                                                             : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
                                                                     }} -->
                                                         </span>
+                                                        <div v-html="comment.reply"></div>
                                                     </td>
                                                 </tr>
                                             </table>
 
 
                                         <!-- Action Buttons -->
-                                        <div class="text-end">
+                                        <div class="text-end" v-if="auth.user.department_code==='04'">
                                             <button class="btn btn-success btn-sm text-white"
                                                 @click="submitAction('resolve', comment.id, index)"
                                                 title="Mark comment as Resolved">
@@ -2778,7 +2779,7 @@
 
 
                                         </span>
-                                        <div class="text-end">
+                                        <div class="text-end" v-if="auth.user.department_code==='04'">
                                             <!-- <button class="btn btn-success btn-sm text-white"
                                                 @click="submitAction('resolve', comment.id, index)"
                                                 title="Mark comment as Resolved">
@@ -3156,7 +3157,31 @@ export default {
             return this.all_comments.filter(c => c.comment_status == 1);
         }
     },
+    watch: {
+        search: _.debounce(function (value) {
+            const paps_id_here = 0;
+            const source_here="";
 
+            if(this.paps.id){
+                paps_id_here=this.paps.id
+            }
+            if(this.src){
+                source_here="?source="+this.src
+            }
+            this.$inertia.get(
+                "/source/"+paps_id_here+ source_here,
+                {
+                    search: value,
+                    filter_type: this.filter_type
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 300),
+    },
     data() {
         return {
             unsaved: false,

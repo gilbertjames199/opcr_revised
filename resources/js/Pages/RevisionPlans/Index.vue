@@ -7,11 +7,25 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3 v-if="source==='sip'">SIP Profile</h3>
-            <h3 v-else>PPA Profile </h3>
+            <div class="peers">
+                <h3 v-if="source==='sip'">SIP Profile</h3>
+                <h3 v-else>PPA Profile </h3>
+            </div>
+            <div class="peers">
+                <Link :href="`/paps/direct`">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                    </svg>
+                </Link>
+            </div>
+        </div>
+
+        <div class="peers fxw-nw jc-sb ai-c">
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`" v-if="source==undefined">Add Revision Plan</Link>&nbsp;
@@ -22,22 +36,25 @@
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
                     <button @click="exportUsers" class="btn btn-primary btn-sm mL-2 text-white">Export AIP to Excel</button>&nbsp;
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>&nbsp;
+                    Filter by type:
+                    <select v-model="type_filter" @change="filterProjects">
+                        <option></option>
+                        <option value="p">Project Profile</option>
+                        <option value="d">Project Design</option>
+                    </select>
                     <input
                         type="checkbox"
                         v-model="checked"
                         @change="updateValue"
                     />&nbsp; No Climate Change Expenditure (Please Click the box if your LGU does not have any climate change expenditure)
                 </div>
+
+
             </div>
 
-            <Link :href="`/paps/direct`">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
-            </Link>
         </div>
-        <div class="peers fxw-nw jc-sb ai-c" v-if="paps">
+
+        <div class="peers fxw-nw jc-sb ai-c" v-if="paps.paps_desc">
             <h5>Program/Project: <u>{{ paps.paps_desc }}</u></h5>
         </div>
         <div class="masonry-sizer col-md-6"></div>
@@ -302,6 +319,7 @@
             </Link>&nbsp;
         </SIPModal>
     </div>
+    src: {{source}}
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
@@ -319,7 +337,9 @@ export default {
         filters: Object,
         paps: Object,
         monitors: Object,
-        source: String
+        source: String,
+        // search: String,
+        // type_f: String,
     },
     data() {
         return{
@@ -334,13 +354,36 @@ export default {
             cmp_link: "",
             SIPModalVisible: false,
             paps: [],
-            selected_sip_paps: null
+            selected_sip_paps: null,
+            type_filter: this.$props.filters.type_filter,
+            paps_id_here: 0,
         }
     },
     components: {
         Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal
     },
+    watch: {
+        search: _.debounce(function (value) {
+
+            this.$inertia.get(
+                "/revision/"+this.paps_id_here,
+                {
+                    search: value,
+                    type_filter: this.type_filter,
+                    source:this.source
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 300),
+    },
     mounted(){
+        if(this.paps.id){
+            this.paps_id_here=this.paps.id
+        }
         this.updateValue(); // Initialize ccet based on the initial state of checked
     },
     methods:{
@@ -547,6 +590,22 @@ export default {
                 .catch(err => {
                     console.error('Failed to load PAPS:', err);
                 });
+        },
+        // FILTER BY TYPE
+        filterProjects(){
+            this.$inertia.get(
+                "/revision/"+this.paps_id_here,
+                {
+                    search: this.search,
+                    type_filter: this.type_filter,
+                    source:this.source
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
         }
     }
 };

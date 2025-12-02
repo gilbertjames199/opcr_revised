@@ -16,16 +16,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Shared/Filter */ "./resources/js/Shared/Filter.vue");
 /* harmony import */ var _Shared_Pagination__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Shared/Pagination */ "./resources/js/Shared/Pagination.vue");
 /* harmony import */ var _Shared_ModalDynamicTitle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Shared/ModalDynamicTitle */ "./resources/js/Shared/ModalDynamicTitle.vue");
+var _components$props$com;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-only"); }
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_components$props$com = {
   components: {
     Filtering: _Shared_Filter__WEBPACK_IMPORTED_MODULE_1__["default"],
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -173,6 +179,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     }
   },
+  watch: {
+    search: _.debounce(function (value) {
+      var paps_id_here = 0;
+      var source_here = "";
+
+      if (this.paps.id) {
+        this.paps.id, _readOnlyError("paps_id_here");
+      }
+
+      if (this.src) {
+        "?source=" + this.src, _readOnlyError("source_here");
+      }
+
+      this.$inertia.get("/source/" + paps_id_here + source_here, {
+        search: value,
+        filter_type: this.filter_type
+      }, {
+        preserveScroll: true,
+        preserveState: true,
+        replace: true
+      });
+    }, 300)
+  },
   data: function data() {
     return {
       unsaved: false,
@@ -218,457 +247,455 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   beforeUnmount: function beforeUnmount() {
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
-  },
-  watch: {},
-  methods: {
-    openTab: function openTab(tab_name) {
-      this.open_tab = tab_name;
-    },
-    isOne: function isOne() {// var mooe=this.b_mooe.length;
-      // var co=this.b_capital.length;
-      // var ps=this.b_ps.length;
-      // var has=0;
-      // if(mooe>0){
-      //     has+=1;
-      // }
-      // if(ps>0){        has+=1;
-      // }
-      // if(co>0){
-      //     has+=1;
-      // }
-      // this.has=has;
-    },
-    getBudgetTotal: function getBudgetTotal() {
-      var total = parseFloat(this.s_cap_gad) + parseFloat(this.s_cap_non);
-      total = total + parseFloat(this.s_mooe_gad) + parseFloat(this.s_mooe_non);
-      total = total + parseFloat(this.s_ps_gad) + parseFloat(this.s_ps_non);
-      return this.format_number_conv(total, 2, true);
-    },
-    showBudgetTable: function showBudgetTable() {
-      var sb = false; // if (this.mooe_gad.length > 0 || this.mooe_non.length > 0 ||
-      //     this.cap_gad.length > 0 || this.cap_non.length > 0 ||
-      //     this.ps_gad.length > 0 || this.ps_non.length > 0
-      // ) {
-      //     sb = true;
-      // }
-
-      if (this.maintenanceOperating.length > 0 || this.capitalOutlay.length > 0 || this.personnelServices.length > 0) {
-        sb = true;
-      }
-
-      return sb;
-    },
-    calculateTotals: function calculateTotals(revs_is_strat_based) {
-      var ps_total = 0;
-      var mooe_total = 0;
-      var co_total = 0;
-      var fe_total = 0;
-      this.implementation.forEach(function (strategy) {
-        if (revs_is_strat_based == 1) {
-          // Sum from the main strategy level
-          ps_total += parseFloat(strategy.ps_total) || 0;
-          mooe_total += parseFloat(strategy.mooe_total) || 0;
-          co_total += parseFloat(strategy.co_total) || 0;
-          fe_total += parseFloat(strategy.fe_total) || 0;
-        } else {
-          // Sum from the activity child table
-          if (Array.isArray(strategy.activity)) {
-            strategy.activity.forEach(function (activity) {
-              ps_total += parseFloat(activity.ps_total) || 0;
-              mooe_total += parseFloat(activity.mooe_total) || 0;
-              co_total += parseFloat(activity.co_total) || 0;
-              fe_total += parseFloat(activity.fe_total) || 0;
-            });
-          }
-        }
-      });
-      this.v_imp_ps = ps_total;
-      this.v_imp_mooe = mooe_total;
-      this.v_imp_co = co_total;
-      this.v_imp_fe = fe_total;
-      return {
-        ps_total: ps_total,
-        mooe_total: mooe_total,
-        co_total: co_total,
-        fe_total: fe_total
-      };
-    },
-    can_view_comment: function can_view_comment() {
-      var can_comment_here = false;
-
-      if (this.auth.user.department_code == '04') {
-        can_comment_here = true;
-      }
-
-      return can_comment_here;
-    },
-    has_comment: function has_comment(section, subtitle, data, column, table, obj, comments_obj) {
-      var has_comm = false;
-      console.log("comments object ************");
-      console.log(comments_obj);
-      console.trace(); // if(this.auth.user.department_code==='04'){
-      //     has_comm=false
-      // }else{
-
-      var count = Array.isArray(comments_obj) ? comments_obj.filter(function (comment) {
-        return comment.table_name === table && comment.column_name === column && comment.comment_status === "0";
-      }).length : 0;
-
-      if (count > 0) {
-        has_comm = true;
-      } // }
-
-
-      return has_comm;
-    },
-    handleClick: function handleClick(section, subtitle, data, column, table, obj, comments_obj) {
-      this.comment_section = section;
-      this.comment_subtitle = subtitle;
-      this.comment_data = data;
-      this.comment_column = column;
-      this.comment_table = table;
-      this.comment_reference_object = obj; // this.comments = comments_obj;
-
-      this.comments = comments_obj.filter(function (comment) {
-        return comment.table_name === table && comment.column_name === column;
-      });
-      this.show_comment_modal = true;
-    },
-    closeCommentModal: function closeCommentModal() {
-      this.show_comment_modal = false;
-    },
-    saveComment: function saveComment() {
-      var _this2 = this;
-
-      // Logic to save the comment
-      // This is just a placeholder, implement your actual saving logic here
-      var myurl = "/revision-plan-comments/store"; // await axios
-
-      var table_row_id_l = 0; // console.log(this.comment_table)
-
-      if (this.comment_table === 'revision_plans') {
-        table_row_id_l = this.comment_reference_object.id;
-      }
-
-      if (this.comment_table === 'strategy_projects') {
-        table_row_id_l = this.comment_reference_object.strategy_id;
-      }
-
-      if (this.comment_table === 'activity_projects') {
-        table_row_id_l = this.comment_reference_object.activity_id;
-      }
-
-      if (this.comment_table === 'budget_requirements') {
-        table_row_id_l = this.comment_reference_object.id; // alert(table_row_id_l)
-        // console.log(this.comment_reference_object)
-      }
-
-      if (this.comment_table === 'team_plans') {
-        table_row_id_l = this.comment_reference_object.id;
-      }
-
-      if (this.comment_table === 'monitoring_and_evaluations') {
-        table_row_id_l = this.comment_reference_object.id;
-      }
-
-      if (this.comment_table === 'risk_manangements') {
-        table_row_id_l = this.comment_reference_object.id;
-      }
-
-      if (this.comment_table === 'expected_revised_outputs') {
-        table_row_id_l = this.comment_reference_object.id;
-      }
-
-      if (this.comment_table === 'expected_revised_outcomes') {
-        table_row_id_l = this.comment_reference_object.id;
-      }
-
-      if (this.comment_table === 'signatories') {
-        table_row_id_l = this.comment_reference_object.id;
-      } //alert(table_row_id_l)
-
-
-      this.$inertia.post(myurl, {
-        params: {
-          table_row_id: table_row_id_l,
-          table_name: this.comment_table,
-          column_name: this.comment_column,
-          comment_status: 0,
-          comment: this.comment
-        }
-      });
-      this.closeCommentModal();
-      setTimeout(function () {
-        _this2.comment = "";
-      }, 1000); // 1000 milliseconds = 1 second
-    },
-    submitAction: function submitAction(type, comment_id, index) {
-      var _this3 = this;
-
-      var actionText = {
-        "delete": "delete this comment",
-        reset: "reset the status of this comment to unresolved",
-        resolve: "mark this comment as resolved"
-      };
-
-      if (!confirm("Are you sure you want to ".concat(actionText[type], "?"))) {
-        return; // User cancelled
-      }
-
-      var myurl = "/revision-plan-comments/action/done";
-      this.$inertia.post(myurl, {
-        params: {
-          type: type,
-          id: comment_id
-        }
-      }, {
-        preserveScroll: true,
-        onSuccess: function onSuccess() {
-          if (type === 'delete') {
-            _this3.comments.splice(index, 1);
-
-            alert("Comment deleted successfully.");
-          } else if (type === 'reset') {
-            _this3.comments[index].comment_status = '0';
-            alert("Comment status reset to unresolved.");
-          } else if (type === 'resolve') {
-            _this3.comments[index].comment_status = '1';
-            alert("Comment resolved successfully.");
-          }
-        }
-      });
-    },
-    getPairedOutputs: function getPairedOutputs(activityProject) {
-      var output = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.expected_output) || [];
-      var outcome = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.expected_outcome) || [];
-      var max_output = Math.max(output.length);
-      var max_outcome = Math.max(outcome.length);
-      var q1 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q1) || 0;
-      var q2 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q2) || 0;
-      var q3 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q3) || 0;
-      var q4 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q4) || 0;
-      var quant = parseFloat(q1) + parseFloat(q2) + parseFloat(q3) + parseFloat(q4);
-      var rr1 = Array.from({
-        length: max_output
-      }, function (_, i) {
-        var _output$i, _output$i2, _output$i3, _output$i4, _output$i5, _output$i6, _output$i7, _output$i8;
-
-        return {
-          id: ((_output$i = output[i]) === null || _output$i === void 0 ? void 0 : _output$i.id) || '',
-          target_indicator: ((_output$i2 = output[i]) === null || _output$i2 === void 0 ? void 0 : _output$i2.target_indicator) || '',
-          outcome_description: '',
-          output_description: ((_output$i3 = output[i]) === null || _output$i3 === void 0 ? void 0 : _output$i3.description) || '',
-          table: 'expected_revised_outputs',
-          quantity: parseFloat(((_output$i4 = output[i]) === null || _output$i4 === void 0 ? void 0 : _output$i4.physical_q1) || 0) + parseFloat(((_output$i5 = output[i]) === null || _output$i5 === void 0 ? void 0 : _output$i5.physical_q2) || 0) + parseFloat(((_output$i6 = output[i]) === null || _output$i6 === void 0 ? void 0 : _output$i6.physical_q3) || 0) + parseFloat(((_output$i7 = output[i]) === null || _output$i7 === void 0 ? void 0 : _output$i7.physical_q4) || 0),
-          comments: ((_output$i8 = output[i]) === null || _output$i8 === void 0 ? void 0 : _output$i8.comments) || []
-        };
-      }); // { length: max },
-
-      var rr2 = Array.from({
-        length: max_outcome
-      }, function (_, i) {
-        var _outcome$i, _outcome$i2, _outcome$i3;
-
-        return {
-          id: ((_outcome$i = outcome[i]) === null || _outcome$i === void 0 ? void 0 : _outcome$i.id) || '',
-          target_indicator: '',
-          outcome_description: ((_outcome$i2 = outcome[i]) === null || _outcome$i2 === void 0 ? void 0 : _outcome$i2.description) || '',
-          output_description: '',
-          table: 'expected_revised_outcomes',
-          quantity: 0,
-          comments: ((_outcome$i3 = outcome[i]) === null || _outcome$i3 === void 0 ? void 0 : _outcome$i3.comments) || []
-        };
-      });
-      return rr1.concat(rr2);
-    },
-    updateComment: function updateComment(id, comment, index) {
-      var _this4 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var myurl;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                // const payload = {
-                //         id: id,
-                //         // strategy_id: this.form.localData[strategyIndex].id,
-                //         reply: reply,
-                //         type: "update",
-                //     };
-                // Clear existing timeout to prevent multiple calls
-                // clearTimeout(this.timeouts[`activity_${strategyIndex}_${activityIndex}`]);
-                myurl = "/revision-plan-comments/" + id;
-
-                if (_this4.reply_concat.trim()) {
-                  _context.next = 3;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 3:
-                try {
-                  _this4.$inertia.patch(myurl, {
-                    params: {
-                      reply: _this4.reply_concat,
-                      id: id
-                    }
-                  }, {
-                    preserveScroll: true,
-                    onSuccess: function onSuccess() {
-                      // $uname . ' replied: ' . $reply . '<br>';
-                      var comment_init = "";
-
-                      if (_this4.comments[index].reply) {
-                        comment_init = _this4.comments[index].reply;
-                      }
-
-                      _this4.comments[index].reply = comment_init + " <b>" + _this4.auth.user.FullName + "</b> replied: <i>" + _this4.reply_concat + "</i> <br><br>";
-                      _this4.comments[index].show_comment_box = false; // Hide the comment box after replying
-
-                      _this4.reply_concat = ""; // Clear the reply input after saving
-
-                      _this4.is_replying = false; // Reset the replying state
-                    }
-                  }); // console.log(payload);
-
-
-                  _this4.unsaved = false; // Reset unsaved flag after successful save
-                } catch (error) {
-                  console.error('Error updating comment:', error);
-                }
-
-              case 4:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    // async saveComment(payload) {
-    //     // alert("naabiot");
-    //     try {
-    //         const response = await axios.post(`/activities-project/r/create`, payload);
-    //         console.log(response.data);
-    //         // this.refreshData();
-    //     } catch (error) {
-    //         console.error('Error creating activity:', error);
-    //     }
-    // },
-    setUnsaved: function setUnsaved(status) {
-      this.unsaved = status;
-    },
-    showCommentBox: function showCommentBox(index) {
-      // Toggle the show_comment_box property for the comment at the given index
-      if (this.is_replying == false || this.reply_index == index) {
-        this.comments[index].show_comment_box = !this.comments[index].show_comment_box;
-        this.reply_index = index; // Set the reply index to the current comment
-
-        this.reply_concat = ""; // Clear the reply input when showing the comment box
-
-        this.is_replying = !this.is_replying; // Set replying state to true
-      }
-    },
-    toggleShowCommentPanel: function toggleShowCommentPanel() {
-      this.showComments = !this.showComments;
-    },
-
-    /*scrollToSection(target) {
-        // const el = document.getElementById(target);
-        // alert(target);
-        // if (el) {
-        //     el.scrollIntoView({
-        //         behavior: "smooth",
-        //         block: "start"
-        //     });
-        // }
-        const el = document.getElementById(target);
-        if (!el) return;
-         const navbarHeight = 90; // adjust to your real navbar height
-         const topPos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-         window.scrollTo({
-            top: topPos,
-            behavior: "smooth"
-        });
-    }*/
-    scrollToSection: function scrollToSection(target) {
-      var el = document.getElementById(target);
-      if (!el) return; // alert(target);
-
-      var navbarHeight = 90;
-      var targetPos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-      window.scrollTo({
-        top: targetPos,
-        behavior: "smooth"
-      }); // Highlight effect
-
-      el.classList.add("highlight-target");
-      setTimeout(function () {
-        return el.classList.remove("highlight-target");
-      }, 2000);
-    },
-    //BUDGETARY
-    formatCategory: function formatCategory(key) {
-      var map = {
-        maintenanceOperating: 'Maintenance, Operating, and Other Expenses',
-        personnelServices: 'Personnel Services',
-        financialExpenses: 'Financial Expenses',
-        capitalOutlay: 'Capital Outlay'
-      };
-      return map[key] || key;
-    },
-    hasRows: function hasRows(rows) {
-      return rows && rows.length > 0;
-    },
-    hasAnyRows: function hasAnyRows(gadGroupsForCategory) {
-      return Object.values(gadGroupsForCategory).some(function (r) {
-        return r.length > 0;
-      });
-    },
-    //RATIONALE COMMENTS
-    onHighlight: function onHighlight() {
-      var data = this.getHighlightIndexes();
-      alert("callllllsdfsdbhfjkbgf");
-
-      if (data) {
-        console.log("Start index:", data.start);
-        console.log("End index:", data.end);
-        console.log("Selected text:", data.selected);
-      }
-    },
-    getHighlightIndexes: function getHighlightIndexes() {
-      var selection = window.getSelection();
-
-      if (!selection || selection.rangeCount === 0) {
-        return null;
-      }
-
-      var range = selection.getRangeAt(0);
-      var selectedText = selection.toString();
-
-      if (!selectedText) {
-        return null;
-      } // Get the full text (flattened) from the div
-
-
-      var container = this.$refs.rationaleDiv;
-      var fullText = container.innerText; // Build a Range to compute index relative to the container
-
-      var preRange = document.createRange();
-      preRange.selectNodeContents(container);
-      preRange.setEnd(range.startContainer, range.startOffset);
-      var startIndex = preRange.toString().length;
-      var endIndex = startIndex + selectedText.length;
-      return {
-        start: startIndex,
-        end: endIndex,
-        selected: selectedText
-      };
-    }
   }
-});
+}, _defineProperty(_components$props$com, "watch", {}), _defineProperty(_components$props$com, "methods", {
+  openTab: function openTab(tab_name) {
+    this.open_tab = tab_name;
+  },
+  isOne: function isOne() {// var mooe=this.b_mooe.length;
+    // var co=this.b_capital.length;
+    // var ps=this.b_ps.length;
+    // var has=0;
+    // if(mooe>0){
+    //     has+=1;
+    // }
+    // if(ps>0){        has+=1;
+    // }
+    // if(co>0){
+    //     has+=1;
+    // }
+    // this.has=has;
+  },
+  getBudgetTotal: function getBudgetTotal() {
+    var total = parseFloat(this.s_cap_gad) + parseFloat(this.s_cap_non);
+    total = total + parseFloat(this.s_mooe_gad) + parseFloat(this.s_mooe_non);
+    total = total + parseFloat(this.s_ps_gad) + parseFloat(this.s_ps_non);
+    return this.format_number_conv(total, 2, true);
+  },
+  showBudgetTable: function showBudgetTable() {
+    var sb = false; // if (this.mooe_gad.length > 0 || this.mooe_non.length > 0 ||
+    //     this.cap_gad.length > 0 || this.cap_non.length > 0 ||
+    //     this.ps_gad.length > 0 || this.ps_non.length > 0
+    // ) {
+    //     sb = true;
+    // }
+
+    if (this.maintenanceOperating.length > 0 || this.capitalOutlay.length > 0 || this.personnelServices.length > 0) {
+      sb = true;
+    }
+
+    return sb;
+  },
+  calculateTotals: function calculateTotals(revs_is_strat_based) {
+    var ps_total = 0;
+    var mooe_total = 0;
+    var co_total = 0;
+    var fe_total = 0;
+    this.implementation.forEach(function (strategy) {
+      if (revs_is_strat_based == 1) {
+        // Sum from the main strategy level
+        ps_total += parseFloat(strategy.ps_total) || 0;
+        mooe_total += parseFloat(strategy.mooe_total) || 0;
+        co_total += parseFloat(strategy.co_total) || 0;
+        fe_total += parseFloat(strategy.fe_total) || 0;
+      } else {
+        // Sum from the activity child table
+        if (Array.isArray(strategy.activity)) {
+          strategy.activity.forEach(function (activity) {
+            ps_total += parseFloat(activity.ps_total) || 0;
+            mooe_total += parseFloat(activity.mooe_total) || 0;
+            co_total += parseFloat(activity.co_total) || 0;
+            fe_total += parseFloat(activity.fe_total) || 0;
+          });
+        }
+      }
+    });
+    this.v_imp_ps = ps_total;
+    this.v_imp_mooe = mooe_total;
+    this.v_imp_co = co_total;
+    this.v_imp_fe = fe_total;
+    return {
+      ps_total: ps_total,
+      mooe_total: mooe_total,
+      co_total: co_total,
+      fe_total: fe_total
+    };
+  },
+  can_view_comment: function can_view_comment() {
+    var can_comment_here = false;
+
+    if (this.auth.user.department_code == '04') {
+      can_comment_here = true;
+    }
+
+    return can_comment_here;
+  },
+  has_comment: function has_comment(section, subtitle, data, column, table, obj, comments_obj) {
+    var has_comm = false;
+    console.log("comments object ************");
+    console.log(comments_obj);
+    console.trace(); // if(this.auth.user.department_code==='04'){
+    //     has_comm=false
+    // }else{
+
+    var count = Array.isArray(comments_obj) ? comments_obj.filter(function (comment) {
+      return comment.table_name === table && comment.column_name === column && comment.comment_status === "0";
+    }).length : 0;
+
+    if (count > 0) {
+      has_comm = true;
+    } // }
+
+
+    return has_comm;
+  },
+  handleClick: function handleClick(section, subtitle, data, column, table, obj, comments_obj) {
+    this.comment_section = section;
+    this.comment_subtitle = subtitle;
+    this.comment_data = data;
+    this.comment_column = column;
+    this.comment_table = table;
+    this.comment_reference_object = obj; // this.comments = comments_obj;
+
+    this.comments = comments_obj.filter(function (comment) {
+      return comment.table_name === table && comment.column_name === column;
+    });
+    this.show_comment_modal = true;
+  },
+  closeCommentModal: function closeCommentModal() {
+    this.show_comment_modal = false;
+  },
+  saveComment: function saveComment() {
+    var _this2 = this;
+
+    // Logic to save the comment
+    // This is just a placeholder, implement your actual saving logic here
+    var myurl = "/revision-plan-comments/store"; // await axios
+
+    var table_row_id_l = 0; // console.log(this.comment_table)
+
+    if (this.comment_table === 'revision_plans') {
+      table_row_id_l = this.comment_reference_object.id;
+    }
+
+    if (this.comment_table === 'strategy_projects') {
+      table_row_id_l = this.comment_reference_object.strategy_id;
+    }
+
+    if (this.comment_table === 'activity_projects') {
+      table_row_id_l = this.comment_reference_object.activity_id;
+    }
+
+    if (this.comment_table === 'budget_requirements') {
+      table_row_id_l = this.comment_reference_object.id; // alert(table_row_id_l)
+      // console.log(this.comment_reference_object)
+    }
+
+    if (this.comment_table === 'team_plans') {
+      table_row_id_l = this.comment_reference_object.id;
+    }
+
+    if (this.comment_table === 'monitoring_and_evaluations') {
+      table_row_id_l = this.comment_reference_object.id;
+    }
+
+    if (this.comment_table === 'risk_manangements') {
+      table_row_id_l = this.comment_reference_object.id;
+    }
+
+    if (this.comment_table === 'expected_revised_outputs') {
+      table_row_id_l = this.comment_reference_object.id;
+    }
+
+    if (this.comment_table === 'expected_revised_outcomes') {
+      table_row_id_l = this.comment_reference_object.id;
+    }
+
+    if (this.comment_table === 'signatories') {
+      table_row_id_l = this.comment_reference_object.id;
+    } //alert(table_row_id_l)
+
+
+    this.$inertia.post(myurl, {
+      params: {
+        table_row_id: table_row_id_l,
+        table_name: this.comment_table,
+        column_name: this.comment_column,
+        comment_status: 0,
+        comment: this.comment
+      }
+    });
+    this.closeCommentModal();
+    setTimeout(function () {
+      _this2.comment = "";
+    }, 1000); // 1000 milliseconds = 1 second
+  },
+  submitAction: function submitAction(type, comment_id, index) {
+    var _this3 = this;
+
+    var actionText = {
+      "delete": "delete this comment",
+      reset: "reset the status of this comment to unresolved",
+      resolve: "mark this comment as resolved"
+    };
+
+    if (!confirm("Are you sure you want to ".concat(actionText[type], "?"))) {
+      return; // User cancelled
+    }
+
+    var myurl = "/revision-plan-comments/action/done";
+    this.$inertia.post(myurl, {
+      params: {
+        type: type,
+        id: comment_id
+      }
+    }, {
+      preserveScroll: true,
+      onSuccess: function onSuccess() {
+        if (type === 'delete') {
+          _this3.comments.splice(index, 1);
+
+          alert("Comment deleted successfully.");
+        } else if (type === 'reset') {
+          _this3.comments[index].comment_status = '0';
+          alert("Comment status reset to unresolved.");
+        } else if (type === 'resolve') {
+          _this3.comments[index].comment_status = '1';
+          alert("Comment resolved successfully.");
+        }
+      }
+    });
+  },
+  getPairedOutputs: function getPairedOutputs(activityProject) {
+    var output = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.expected_output) || [];
+    var outcome = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.expected_outcome) || [];
+    var max_output = Math.max(output.length);
+    var max_outcome = Math.max(outcome.length);
+    var q1 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q1) || 0;
+    var q2 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q2) || 0;
+    var q3 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q3) || 0;
+    var q4 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q4) || 0;
+    var quant = parseFloat(q1) + parseFloat(q2) + parseFloat(q3) + parseFloat(q4);
+    var rr1 = Array.from({
+      length: max_output
+    }, function (_, i) {
+      var _output$i, _output$i2, _output$i3, _output$i4, _output$i5, _output$i6, _output$i7, _output$i8;
+
+      return {
+        id: ((_output$i = output[i]) === null || _output$i === void 0 ? void 0 : _output$i.id) || '',
+        target_indicator: ((_output$i2 = output[i]) === null || _output$i2 === void 0 ? void 0 : _output$i2.target_indicator) || '',
+        outcome_description: '',
+        output_description: ((_output$i3 = output[i]) === null || _output$i3 === void 0 ? void 0 : _output$i3.description) || '',
+        table: 'expected_revised_outputs',
+        quantity: parseFloat(((_output$i4 = output[i]) === null || _output$i4 === void 0 ? void 0 : _output$i4.physical_q1) || 0) + parseFloat(((_output$i5 = output[i]) === null || _output$i5 === void 0 ? void 0 : _output$i5.physical_q2) || 0) + parseFloat(((_output$i6 = output[i]) === null || _output$i6 === void 0 ? void 0 : _output$i6.physical_q3) || 0) + parseFloat(((_output$i7 = output[i]) === null || _output$i7 === void 0 ? void 0 : _output$i7.physical_q4) || 0),
+        comments: ((_output$i8 = output[i]) === null || _output$i8 === void 0 ? void 0 : _output$i8.comments) || []
+      };
+    }); // { length: max },
+
+    var rr2 = Array.from({
+      length: max_outcome
+    }, function (_, i) {
+      var _outcome$i, _outcome$i2, _outcome$i3;
+
+      return {
+        id: ((_outcome$i = outcome[i]) === null || _outcome$i === void 0 ? void 0 : _outcome$i.id) || '',
+        target_indicator: '',
+        outcome_description: ((_outcome$i2 = outcome[i]) === null || _outcome$i2 === void 0 ? void 0 : _outcome$i2.description) || '',
+        output_description: '',
+        table: 'expected_revised_outcomes',
+        quantity: 0,
+        comments: ((_outcome$i3 = outcome[i]) === null || _outcome$i3 === void 0 ? void 0 : _outcome$i3.comments) || []
+      };
+    });
+    return rr1.concat(rr2);
+  },
+  updateComment: function updateComment(id, comment, index) {
+    var _this4 = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var myurl;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              // const payload = {
+              //         id: id,
+              //         // strategy_id: this.form.localData[strategyIndex].id,
+              //         reply: reply,
+              //         type: "update",
+              //     };
+              // Clear existing timeout to prevent multiple calls
+              // clearTimeout(this.timeouts[`activity_${strategyIndex}_${activityIndex}`]);
+              myurl = "/revision-plan-comments/" + id;
+
+              if (_this4.reply_concat.trim()) {
+                _context.next = 3;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 3:
+              try {
+                _this4.$inertia.patch(myurl, {
+                  params: {
+                    reply: _this4.reply_concat,
+                    id: id
+                  }
+                }, {
+                  preserveScroll: true,
+                  onSuccess: function onSuccess() {
+                    // $uname . ' replied: ' . $reply . '<br>';
+                    var comment_init = "";
+
+                    if (_this4.comments[index].reply) {
+                      comment_init = _this4.comments[index].reply;
+                    }
+
+                    _this4.comments[index].reply = comment_init + " <b>" + _this4.auth.user.FullName + "</b> replied: <i>" + _this4.reply_concat + "</i> <br><br>";
+                    _this4.comments[index].show_comment_box = false; // Hide the comment box after replying
+
+                    _this4.reply_concat = ""; // Clear the reply input after saving
+
+                    _this4.is_replying = false; // Reset the replying state
+                  }
+                }); // console.log(payload);
+
+
+                _this4.unsaved = false; // Reset unsaved flag after successful save
+              } catch (error) {
+                console.error('Error updating comment:', error);
+              }
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  // async saveComment(payload) {
+  //     // alert("naabiot");
+  //     try {
+  //         const response = await axios.post(`/activities-project/r/create`, payload);
+  //         console.log(response.data);
+  //         // this.refreshData();
+  //     } catch (error) {
+  //         console.error('Error creating activity:', error);
+  //     }
+  // },
+  setUnsaved: function setUnsaved(status) {
+    this.unsaved = status;
+  },
+  showCommentBox: function showCommentBox(index) {
+    // Toggle the show_comment_box property for the comment at the given index
+    if (this.is_replying == false || this.reply_index == index) {
+      this.comments[index].show_comment_box = !this.comments[index].show_comment_box;
+      this.reply_index = index; // Set the reply index to the current comment
+
+      this.reply_concat = ""; // Clear the reply input when showing the comment box
+
+      this.is_replying = !this.is_replying; // Set replying state to true
+    }
+  },
+  toggleShowCommentPanel: function toggleShowCommentPanel() {
+    this.showComments = !this.showComments;
+  },
+
+  /*scrollToSection(target) {
+      // const el = document.getElementById(target);
+      // alert(target);
+      // if (el) {
+      //     el.scrollIntoView({
+      //         behavior: "smooth",
+      //         block: "start"
+      //     });
+      // }
+      const el = document.getElementById(target);
+      if (!el) return;
+       const navbarHeight = 90; // adjust to your real navbar height
+       const topPos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+       window.scrollTo({
+          top: topPos,
+          behavior: "smooth"
+      });
+  }*/
+  scrollToSection: function scrollToSection(target) {
+    var el = document.getElementById(target);
+    if (!el) return; // alert(target);
+
+    var navbarHeight = 90;
+    var targetPos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+    window.scrollTo({
+      top: targetPos,
+      behavior: "smooth"
+    }); // Highlight effect
+
+    el.classList.add("highlight-target");
+    setTimeout(function () {
+      return el.classList.remove("highlight-target");
+    }, 2000);
+  },
+  //BUDGETARY
+  formatCategory: function formatCategory(key) {
+    var map = {
+      maintenanceOperating: 'Maintenance, Operating, and Other Expenses',
+      personnelServices: 'Personnel Services',
+      financialExpenses: 'Financial Expenses',
+      capitalOutlay: 'Capital Outlay'
+    };
+    return map[key] || key;
+  },
+  hasRows: function hasRows(rows) {
+    return rows && rows.length > 0;
+  },
+  hasAnyRows: function hasAnyRows(gadGroupsForCategory) {
+    return Object.values(gadGroupsForCategory).some(function (r) {
+      return r.length > 0;
+    });
+  },
+  //RATIONALE COMMENTS
+  onHighlight: function onHighlight() {
+    var data = this.getHighlightIndexes();
+
+    if (data) {
+      alert("calculating text range selected: start=" + data.start + "; end=" + data.end + "; selected:" + data.selected);
+      console.log("Start index:", data.start);
+      console.log("End index:", data.end);
+      console.log("Selected text:", data.selected);
+    }
+  },
+  getHighlightIndexes: function getHighlightIndexes() {
+    var selection = window.getSelection();
+
+    if (!selection || selection.rangeCount === 0) {
+      return null;
+    }
+
+    var range = selection.getRangeAt(0);
+    var selectedText = selection.toString();
+
+    if (!selectedText) {
+      return null;
+    } // Get the full text (flattened) from the div
+
+
+    var container = this.$refs.rationaleDiv;
+    var fullText = container.innerText; // Build a Range to compute index relative to the container
+
+    var preRange = document.createRange();
+    preRange.selectNodeContents(container);
+    preRange.setEnd(range.startContainer, range.startOffset);
+    var startIndex = preRange.toString().length;
+    var endIndex = startIndex + selectedText.length;
+    return {
+      start: startIndex,
+      end: endIndex,
+      selected: selectedText
+    };
+  }
+}), _components$props$com);
 
 /***/ }),
 
@@ -1990,16 +2017,18 @@ var _hoisted_341 = {
   }
 };
 var _hoisted_342 = ["onClick"];
-var _hoisted_343 = {
+var _hoisted_343 = ["innerHTML"];
+var _hoisted_344 = {
+  key: 0,
   "class": "text-end"
 };
-var _hoisted_344 = ["onClick"];
 var _hoisted_345 = ["onClick"];
-var _hoisted_346 = {
+var _hoisted_346 = ["onClick"];
+var _hoisted_347 = {
   key: 1
 };
 
-var _hoisted_347 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_348 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "p-2 mt-4 mb-2",
   style: {
     "background": "#e8ffe8",
@@ -2009,24 +2038,24 @@ var _hoisted_347 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 /* HOISTED */
 );
 
-var _hoisted_348 = {
+var _hoisted_349 = {
   "class": "list-unstyled"
 };
-var _hoisted_349 = ["onClick"];
-var _hoisted_350 = {
+var _hoisted_350 = ["onClick"];
+var _hoisted_351 = {
   style: {
     "border-collapse": "collapse",
     "border": "none !important"
   }
 };
-var _hoisted_351 = {
+var _hoisted_352 = {
   style: {
     "border": "none !important",
     "vertical-align": "top"
   }
 };
 
-var _hoisted_352 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_353 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   style: {
     "border": "none !important",
     "vertical-align": "top",
@@ -2045,237 +2074,238 @@ var _hoisted_352 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 /* HOISTED */
 );
 
-var _hoisted_353 = {
+var _hoisted_354 = {
   style: {
     "border": "none !important",
     "vertical-align": "top",
     "text-align": "left"
   }
 };
-var _hoisted_354 = {
+var _hoisted_355 = {
+  key: 0,
   "class": "text-end"
 };
-var _hoisted_355 = ["onClick"];
+var _hoisted_356 = ["onClick"];
 
-var _hoisted_356 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_357 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "bi bi-arrow-counterclockwise"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_357 = ["onClick"];
-var _hoisted_358 = {
+var _hoisted_358 = ["onClick"];
+var _hoisted_359 = {
   key: 1
 };
 
-var _hoisted_359 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_360 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "comments-header"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "NAVIGATION ...")], -1
 /* HOISTED */
 );
 
-var _hoisted_360 = {
+var _hoisted_361 = {
   "class": "scrollable-text",
   style: {
     "background": "rgba(255, 255, 255, 0.7)",
     "cursor": "pointer"
   }
 };
-var _hoisted_361 = {
-  "class": "list-unstyled"
-};
 var _hoisted_362 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_363 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_364 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_365 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_366 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_367 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_368 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_369 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_370 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_371 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_372 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_373 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_374 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_375 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_376 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_377 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_378 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_379 = {
-  "class": "list-unstyled"
-};
-var _hoisted_380 = {
   "class": "mb-2",
   style: {
     "color": "blue"
   }
 };
-var _hoisted_381 = {
+var _hoisted_380 = {
   "class": "list-unstyled"
 };
+var _hoisted_381 = {
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
+};
 var _hoisted_382 = {
+  "class": "list-unstyled"
+};
+var _hoisted_383 = {
   "class": "mb-2",
   style: {
     "color": "blue"
   }
 };
 
-var _hoisted_383 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_384 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "d-flex justify-content-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ comment_reference_object }} ")], -1
 /* HOISTED */
 );
 
-var _hoisted_384 = {
+var _hoisted_385 = {
   key: 0
 };
 
-var _hoisted_385 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Section: ", -1
+var _hoisted_386 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Section: ", -1
 /* HOISTED */
 );
 
-var _hoisted_386 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Subtitle:", -1
+var _hoisted_387 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Subtitle:", -1
 /* HOISTED */
 );
 
-var _hoisted_387 = ["innerHTML"];
+var _hoisted_388 = ["innerHTML"];
 
-var _hoisted_388 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Data:", -1
+var _hoisted_389 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Data:", -1
 /* HOISTED */
 );
 
-var _hoisted_389 = ["innerHTML"];
+var _hoisted_390 = ["innerHTML"];
 
-var _hoisted_390 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Column:", -1
+var _hoisted_391 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Column:", -1
 /* HOISTED */
 );
 
-var _hoisted_391 = {
-  key: 0
-};
 var _hoisted_392 = {
-  key: 1
+  key: 0
 };
 var _hoisted_393 = {
+  key: 1
+};
+var _hoisted_394 = {
   key: 2
 };
 
-var _hoisted_394 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Table:", -1
+var _hoisted_395 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Table:", -1
 /* HOISTED */
 );
 
-var _hoisted_395 = {
+var _hoisted_396 = {
   "class": "col-9"
 };
-var _hoisted_396 = {
+var _hoisted_397 = {
   "class": "table table-hover table-bordered border-dark"
 };
 
-var _hoisted_397 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+var _hoisted_398 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   "class": "bg-secondary text-white"
 }, "Comment", -1
 /* HOISTED */
 );
 
-var _hoisted_398 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+var _hoisted_399 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   "class": "bg-secondary text-white"
 }, "Status  ", -1
 /* HOISTED */
 );
 
-var _hoisted_399 = {
+var _hoisted_400 = {
   key: 0,
   "class": "bg-secondary text-white"
 };
 
-var _hoisted_400 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+var _hoisted_401 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   "class": "bg-secondary text-white"
 }, "Date", -1
 /* HOISTED */
 );
 
-var _hoisted_401 = {
+var _hoisted_402 = {
   key: 0
 };
-var _hoisted_402 = {
+var _hoisted_403 = {
   "class": "bg-white p-3 rounded border"
 };
 
-var _hoisted_403 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_404 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_404 = ["innerHTML"];
-var _hoisted_405 = ["onClick"];
-var _hoisted_406 = ["disabled", "onClick"];
-var _hoisted_407 = ["onClick"];
-var _hoisted_408 = {
+var _hoisted_405 = ["innerHTML"];
+var _hoisted_406 = ["onClick"];
+var _hoisted_407 = ["disabled", "onClick"];
+var _hoisted_408 = ["onClick"];
+var _hoisted_409 = {
   key: 0
 };
-var _hoisted_409 = ["onClick"];
+var _hoisted_410 = ["onClick"];
 
-var _hoisted_410 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_411 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "16",
   height: "16",
@@ -2290,10 +2320,10 @@ var _hoisted_410 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 /* HOISTED */
 );
 
-var _hoisted_411 = [_hoisted_410];
-var _hoisted_412 = ["onClick"];
+var _hoisted_412 = [_hoisted_411];
+var _hoisted_413 = ["onClick"];
 
-var _hoisted_413 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_414 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "16",
   height: "16",
@@ -2309,10 +2339,10 @@ var _hoisted_413 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 /* HOISTED */
 );
 
-var _hoisted_414 = [_hoisted_413];
-var _hoisted_415 = ["onClick"];
+var _hoisted_415 = [_hoisted_414];
+var _hoisted_416 = ["onClick"];
 
-var _hoisted_416 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_417 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "16",
   height: "16",
@@ -2325,13 +2355,13 @@ var _hoisted_416 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 /* HOISTED */
 );
 
-var _hoisted_417 = [_hoisted_416];
+var _hoisted_418 = [_hoisted_417];
 
-var _hoisted_418 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_419 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_419 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_420 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "d-flex justify-content-center"
 }, null, -1
 /* HOISTED */
@@ -4308,7 +4338,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{\n                                                                        ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                                                            ? comment.column_name\n                                                                            : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)\n                                                                    }} ")], 8
     /* PROPS */
-    , _hoisted_342)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Action Buttons "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_343, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    , _hoisted_342), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      innerHTML: comment.reply
+    }, null, 8
+    /* PROPS */
+    , _hoisted_343)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Action Buttons "), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_344, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-success btn-sm text-white",
       onClick: function onClick($event) {
         return $options.submitAction('resolve', comment.id, index);
@@ -4316,7 +4350,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       title: "Mark comment as Resolved"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <i class=\"bi bi-check-circle\"></i> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" resolve ")], 8
     /* PROPS */
-    , _hoisted_344), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary btn-sm text-white\"\n                                                @click=\"submitAction('reset', comment.id, index)\"\n                                                title=\"Reset to Unresolved\">\n                                                <i class=\"bi bi-arrow-counterclockwise\"></i>\n                                                 reset\n                                            </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    , _hoisted_345), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary btn-sm text-white\"\n                                                @click=\"submitAction('reset', comment.id, index)\"\n                                                title=\"Reset to Unresolved\">\n                                                <i class=\"bi bi-arrow-counterclockwise\"></i>\n                                                 reset\n                                            </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-danger btn-sm text-white",
       onClick: function onClick($event) {
         return $options.submitAction('delete', comment.id, index);
@@ -4324,10 +4358,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       title: "Delete this comment"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <i class=\"bi bi-trash-fill\"></i>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" delete ")], 8
     /* PROPS */
-    , _hoisted_345)])]);
+    , _hoisted_346)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("END OF UNRESOLVED"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 🟢 RESOLVED COMMENTS "), $options.resolvedComments.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_346, [_hoisted_347, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_348, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.resolvedComments, function (comment, index) {
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("END OF UNRESOLVED"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 🟢 RESOLVED COMMENTS "), $options.resolvedComments.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_347, [_hoisted_348, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_349, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.resolvedComments, function (comment, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       key: 'r-' + index,
       "class": "mb-2",
@@ -4339,19 +4373,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? comment.column_name : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
       }
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_350, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_351, [_hoisted_352, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_353, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_351, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_352, [_hoisted_353, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_354, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment), 1
     /* TEXT */
     )])])], 8
     /* PROPS */
-    , _hoisted_349), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_354, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-success btn-sm text-white\"\n                                                @click=\"submitAction('resolve', comment.id, index)\"\n                                                title=\"Mark comment as Resolved\">\n                                                <i class=\"bi bi-check-circle\"></i>\n                                                 resolve\n                                            </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    , _hoisted_350), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_355, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-success btn-sm text-white\"\n                                                @click=\"submitAction('resolve', comment.id, index)\"\n                                                title=\"Mark comment as Resolved\">\n                                                <i class=\"bi bi-check-circle\"></i>\n                                                 resolve\n                                            </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-primary btn-sm text-white",
       onClick: function onClick($event) {
         return $options.submitAction('reset', comment.id, index);
       },
       title: "Reset to Unresolved"
-    }, [_hoisted_356, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" reset ")], 8
+    }, [_hoisted_357, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" reset ")], 8
     /* PROPS */
-    , _hoisted_355), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    , _hoisted_356), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-danger btn-sm text-white",
       onClick: function onClick($event) {
         return $options.submitAction('delete', comment.id, index);
@@ -4359,60 +4393,60 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       title: "Delete this comment"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <i class=\"bi bi-trash-fill\"></i>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" delete ")], 8
     /* PROPS */
-    , _hoisted_357)])]);
+    , _hoisted_358)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("END OF RESOLVED"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                        ? comment.column_name\n                                            : (\n                                            ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)\n                                                ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\n                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\n                                        )  }} ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.open_tab === 'Navigation' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_358, [_hoisted_359, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_360, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_361, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_362, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("END OF RESOLVED"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                        ? comment.column_name\n                                            : (\n                                            ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)\n                                                ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\n                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\n                                        )  }} ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.open_tab === 'Navigation' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_359, [_hoisted_360, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_361, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_362, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_363, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[53] || (_cache[53] = function ($event) {
       return $options.scrollToSection('revision_plans');
     })
-  }, " I. Title ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_363, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_364, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " I. Title ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_364, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_365, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[54] || (_cache[54] = function ($event) {
       return $options.scrollToSection('rationale');
     })
-  }, " II. Rationale ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_365, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_366, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " II. Rationale ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_366, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_367, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[55] || (_cache[55] = function ($event) {
       return $options.scrollToSection('objective');
     })
-  }, " III. Objectives ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_367, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_368, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " III. Objectives ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_368, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_369, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[56] || (_cache[56] = function ($event) {
       return $options.scrollToSection('beneficiaries');
     })
-  }, " IV. Target Beneficiaries ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_369, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_370, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " IV. Target Beneficiaries ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_370, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_371, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[57] || (_cache[57] = function ($event) {
       return $options.scrollToSection('implementation_workplan');
     })
-  }, " V. Implementation Schedule/Workplan ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_371, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_372, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " V. Implementation Schedule/Workplan ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_372, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_373, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[58] || (_cache[58] = function ($event) {
       return $options.scrollToSection('budgetary_requirements');
     })
-  }, " VI. Estimated Cost/Budgetary Requirements ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_373, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_374, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " VI. Estimated Cost/Budgetary Requirements ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_374, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_375, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[59] || (_cache[59] = function ($event) {
       return $options.scrollToSection('implementing_team');
     })
-  }, " VII. Implementing Team ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" partnership_sustainability "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_375, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_376, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " VII. Implementing Team ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" partnership_sustainability "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_376, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_377, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[60] || (_cache[60] = function ($event) {
       return $options.scrollToSection('partnership_sustainability');
     })
-  }, " VIII. Partnership and Sustainability ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_377, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_378, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " VIII. Partnership and Sustainability ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_378, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_379, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[61] || (_cache[61] = function ($event) {
       return $options.scrollToSection('monitoring_evaluation');
     })
-  }, " XI. Monitoring and Evaluation ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_379, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_380, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " XI. Monitoring and Evaluation ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_380, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_381, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[62] || (_cache[62] = function ($event) {
       return $options.scrollToSection('risk_management');
     })
-  }, " X. Risk Management ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_381, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_382, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " X. Risk Management ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_382, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_383, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[63] || (_cache[63] = function ($event) {
       return $options.scrollToSection('signatories');
@@ -4423,7 +4457,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     title: "COMMENTS"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_383, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [$props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_384, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+      return [_hoisted_384, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [$props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_385, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
         "class": "form-control",
         rows: "5",
         "onUpdate:modelValue": _cache[64] || (_cache[64] = function ($event) {
@@ -4437,32 +4471,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[65] || (_cache[65] = function ($event) {
           return $options.saveComment();
         })
-      }, " Submit Comment ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_385, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_section), 1
+      }, " Submit Comment ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_386, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_section), 1
       /* TEXT */
-      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_386, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_387, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
         innerHTML: $data.comment_subtitle
       }, null, 8
       /* PROPS */
-      , _hoisted_387)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_388, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+      , _hoisted_388)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_389, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
         innerHTML: $data.comment_data
       }, null, 8
       /* PROPS */
-      , _hoisted_389)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_390, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_column) + " ", 1
+      , _hoisted_390)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_391, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_column) + " ", 1
       /* TEXT */
-      ), $data.comment_column == 'Person Affected' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_391, "Preventive Measures")) : $data.comment_column == 'Management' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_392, "Mechanisms to monitor")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_393, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.comment_colun), 1
+      ), $data.comment_column == 'Person Affected' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_392, "Preventive Measures")) : $data.comment_column == 'Management' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_393, "Mechanisms to monitor")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_394, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.comment_colun), 1
       /* TEXT */
-      ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_394, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_table), 1
+      ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_395, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_table), 1
       /* TEXT */
-      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>Reference Object: {{ comment_reference_object.id }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_395, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_396, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_397, _hoisted_398, $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("th", _hoisted_399, "Actions  ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th class=\"bg-secondary text-white\" v-if=\"auth.user.department_code==='04'\">Actions&nbsp;&nbsp;</th> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th class=\"bg-secondary text-white\">Comment by&nbsp;&nbsp;</th> "), _hoisted_400])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.comments, function (comment, index) {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [comment.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h6", _hoisted_401, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.user.FullName) + " commented:  ", 1
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>Reference Object: {{ comment_reference_object.id }}</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_396, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_397, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_398, _hoisted_399, $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("th", _hoisted_400, "Actions  ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th class=\"bg-secondary text-white\" v-if=\"auth.user.department_code==='04'\">Actions&nbsp;&nbsp;</th> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th class=\"bg-secondary text-white\">Comment by&nbsp;&nbsp;</th> "), _hoisted_401])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.comments, function (comment, index) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [comment.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h6", _hoisted_402, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.user.FullName) + " commented:  ", 1
         /* TEXT */
-        )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_402, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment), 1
+        )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_403, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment), 1
         /* TEXT */
-        )]), _hoisted_403, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+        )]), _hoisted_404, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
           innerHTML: comment.reply
         }, null, 8
         /* PROPS */
-        , _hoisted_404), comment.show_comment_box == false ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        , _hoisted_405), comment.show_comment_box == false ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 1,
           "class": "btn btn-link p-0",
           onClick: function onClick($event) {
@@ -4470,7 +4504,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }
         }, "reply", 8
         /* PROPS */
-        , _hoisted_405)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), comment.show_comment_box ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("textarea", {
+        , _hoisted_406)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), comment.show_comment_box ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("textarea", {
           key: 2,
           "class": "form-control",
           type: "text",
@@ -4488,7 +4522,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }
         }, "Send", 8
         /* PROPS */
-        , _hoisted_406)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), comment.show_comment_box ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        , _hoisted_407)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), comment.show_comment_box ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 4,
           "class": "btn btn-danger text-white",
           onClick: function onClick($event) {
@@ -4496,7 +4530,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }
         }, "Cancel", 8
         /* PROPS */
-        , _hoisted_407)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+        , _hoisted_408)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
           style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
             backgroundColor: comment.comment_status === '0' ? '#fecaca' : '#bbf7d0',
             color: comment.comment_status === '0' ? '#991b1b' : '#065f46'
@@ -4506,43 +4540,43 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* TEXT */
         )], 4
         /* STYLE */
-        ), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_408, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        ), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_409, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
           "class": "btn btn-success text-white",
           onClick: function onClick($event) {
             return $options.submitAction('resolve', comment.id, index);
           },
           title: "Mark comment as Resolved"
-        }, _hoisted_411, 8
+        }, _hoisted_412, 8
         /* PROPS */
-        , _hoisted_409), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        , _hoisted_410), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
           "class": "btn btn-primary text-white",
           onClick: function onClick($event) {
             return $options.submitAction('reset', comment.id, index);
           },
           title: "Reset to Unresolved"
-        }, _hoisted_414, 8
+        }, _hoisted_415, 8
         /* PROPS */
-        , _hoisted_412), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        , _hoisted_413), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
           "class": "btn btn-danger text-white",
           onClick: function onClick($event) {
             return $options.submitAction('delete', comment.id, index);
           },
           title: "Delete this comment"
-        }, _hoisted_417, 8
+        }, _hoisted_418, 8
         /* PROPS */
-        , _hoisted_415), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>\n                                    <span v-if=\"comment.user\">{{ comment.user.FullName }}</span>\n                                    <span v-else>Not recorded</span>\n                                </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatDate(comment.created_at)), 1
+        , _hoisted_416), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>\n                                    <span v-if=\"comment.user\">{{ comment.user.FullName }}</span>\n                                    <span v-else>Not recorded</span>\n                                </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatDate(comment.created_at)), 1
         /* TEXT */
         )]);
       }), 256
       /* UNKEYED_FRAGMENT */
-      ))])])])]), _hoisted_418];
+      ))])])])]), _hoisted_419];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_419, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{paps}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ department_code_project }}\n        {{ department_code_user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }}\n        {{ paps.is_strategy_based }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Sa class=\"row gap-10\" ni")])], 64
+  , ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_420, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{paps}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ department_code_project }}\n        {{ department_code_user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }}\n        {{ paps.is_strategy_based }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Sa class=\"row gap-10\" ni")])], 64
   /* STABLE_FRAGMENT */
   );
 }

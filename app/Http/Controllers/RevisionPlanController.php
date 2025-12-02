@@ -90,19 +90,7 @@ class RevisionPlanController extends Controller
         if ($paps_type === "GAS") {
             return redirect('/revision/general/administration/services/' . $FFUNCCOD . '/plan');
         } else if ($idpaps == "0") {
-            // dd($request);
-            // dd($dept_id);
-            // select(
-            //     'revision_plans.id',
-            //     'revision_plans.idpaps',
-            //     'revision_plans.project_title',
-            //     'revision_plans.version',
-            //     'revision_plans.type',
-            //     'revision_plans.is_strategy_based',
-            //     'ff.FFUNCTION'
-            // )
-            // ->
-            // dd( auth()->user()->popsp_agency);
+
             $sharedPaps = SharedProgramAndProject::where('destination_department_code', $dept_id)->get()->pluck('idpaps');
 
             $popsp_agency = PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
@@ -118,24 +106,18 @@ class RevisionPlanController extends Controller
             } else {
                 if ($request->source == 'sip') {
                     $data = $this->getSip($request, $dept_id, $popsp_agency, $budget_controller);
-                    // dd($data);
                 } else {
                     $data = $this->getDirect($request, $dept_id, $popsp_agency, $budget_controller);
                 }
 
-                // dd($request);
-
             }
 
-            // dd(auth()->user());
-
-
-            // dd($data);
             return inertia('RevisionPlans/Index', [
+                // "filters" => $request->only(['search']),
                 'data' => $data,
                 "idpaps" => $idpaps,
                 "paps" => $paps,
-                "filters" => $request->only(['search']),
+                "filters" => $request->only(['search','type_filter']),
                 "source" => $request->source,
                 'can' => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
@@ -145,19 +127,6 @@ class RevisionPlanController extends Controller
         } else {
             // dd(RevisionPlan::where('idpaps', $idpaps)->get());
             $data = RevisionPlan::with(['paps', 'paps.office'])
-                // select(
-                //     'revision_plans.id',
-                //     'revision_plans.project_title',
-                //     'revision_plans.version',
-                //     'revision_plans.type',
-                //     'revision_plans.is_strategy_based',
-                //     'ff.FFUNCTION'
-                // )
-                //     ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
-                //     ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
-                //     ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
-                // ->Join(DB::raw('fms.accountaccess acc'), 'acc.ffunccod', '=', 'ff.FFUNCCOD')
-                // ->where('acc.iduser', '=', $myid)
                 ->where('idpaps', '=', $idpaps)
                 ->get()
                 ->map(function ($item) use ($budget_controller) {
@@ -452,6 +421,12 @@ class RevisionPlanController extends Controller
                                 ->where('rpc4.table_name', 'risk_manangements');
                         });
                 });
+            })
+            ->when($request->search, function($query)use($request){
+                $query->where('project_title','LIKE','%'.$request->search.'%');
+            })
+            ->when($request->type_filter, function($query)use($request){
+                $query->where('type',$request->type_filter);
             })
             ->get()
             ->map(function ($item) use ($budget_controller) {
@@ -3730,17 +3705,18 @@ class RevisionPlanController extends Controller
         ])
             ->where('project_id', $request->id)
             ->get()
-            ->map(function ($item) {
+            ->map(function ($item) use($request) {
                 $strategy = optional($item->strategy);
 
                 return [
                     'strategy' => $strategy->description ?? null,
-
+                    'id'=> $strategy->id??null,
+                    'revision_plan_id'=>$request->id,
                     'activities' => $strategy->activity
                         ? $strategy->activity->flatMap(function ($act) {
 
                             $projects = $act->activityProject ?? collect();
-
+                            // dd($act);
                             return $projects->map(function ($proj) use ($act) {
                                 // Build expected outputs first
                                 // $expectedOutputs = collect($proj->expected_output ?? [])
@@ -3765,6 +3741,8 @@ class RevisionPlanController extends Controller
 
                                 return [
                                     'activity_project_id' => $proj->id ?? null,
+                                    'revision_plan_id'=>$request->id,
+                                    'strategy_id'=>$act->strategy_id??null,
                                     'description' => $act->description ?? null,
                                     'gad_issue' => $proj->gad_issue ?? null,
                                     'date_from' => $proj->date_from ?? null,
