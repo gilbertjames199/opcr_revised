@@ -33,6 +33,7 @@ Route::prefix('/project/profile/api')->group(function(){
     Route::get('/comprehensive/workplan',[RevisionPlanController::class, 'workplan']);
     Route::get('/implementation/schedule/workplan',[RevisionPlanController::class, 'imp_schedule']);
     Route::get('/implementation/schedule/outputs/outcome',[RevisionPlanController::class, 'getCombinedExpected']);
+    Route::get('/implementation/schedule/activity',[RevisionPlanController::class, 'getActivity']);
 });
 
 Route::prefix('/aip/summaries')->group(function(){

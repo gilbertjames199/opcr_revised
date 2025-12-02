@@ -466,7 +466,7 @@
                                         {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
                                     </span >
                                     <span v-if="dat.comments_count" style="color: red; font-weight: bold" class="blink">
-                                        Review the Project for comments
+                                        Review the project for comments
                                     </span>
                                 </td>
                                 <td>{{ dat.version }}</td>
@@ -588,7 +588,6 @@
                                         </svg>
                                     </Link>
                                 </td> -->
-
                                 <!-- <td>
                                     <div class="dropdown dropstart" >
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">

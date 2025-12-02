@@ -24,6 +24,7 @@ use App\Models\Risk_manangement;
 use App\Models\SharedProgramAndProject;
 use App\Models\Signatory;
 use App\Models\Strategy;
+use App\Models\Activity;
 use App\Models\StrategyProject;
 use App\Models\Target;
 use App\Models\TeamPlan;
@@ -3822,5 +3823,61 @@ class RevisionPlanController extends Controller
         return $expectedOutputs
             ->merge($expectedOutcomes)
             ->values();
+    }
+    public function getActivity(Request $request){
+        $empty = [];
+        $activities = Activity::with(['activityProject'])
+            ->where('strategy_id', $request->strategy_id)
+            ->get()
+            ->map(function($act)use($request){
+                $projects = $act->activityProject ?? collect();
+                    // dd($act);
+                    return $projects->map(function ($proj) use ($act, $request) {
+
+                        return [
+                            'activity_project_id' => $proj->id ?? null,
+                            'revision_plan_id'=>$request->id,
+                            'strategy_id'=>$act->strategy_id??null,
+                            'description' => $act->description ?? null,
+                            'gad_issue' => $proj->gad_issue ?? null,
+                            'date_from' => $proj->date_from ?? null,
+                            'date_to' => $proj->date_to ?? null,
+
+                            'ps_q1' => $proj->ps_q1 ?? 0,
+                            'ps_q2' => $proj->ps_q2 ?? 0,
+                            'ps_q3' => $proj->ps_q3 ?? 0,
+                            'ps_q4' => $proj->ps_q4 ?? 0,
+
+                            'mooe_q1' => $proj->mooe_q1 ?? 0,
+                            'mooe_q2' => $proj->mooe_q2 ?? 0,
+                            'mooe_q3' => $proj->mooe_q3 ?? 0,
+                            'mooe_q4' => $proj->mooe_q4 ?? 0,
+
+                            'fe_q1' => $proj->fe_q1 ?? 0,
+                            'fe_q2' => $proj->fe_q2 ?? 0,
+                            'fe_q3' => $proj->fe_q3 ?? 0,
+                            'fe_q4' => $proj->fe_q4 ?? 0,
+
+                            'co_q1' => $proj->co_q1 ?? 0,
+                            'co_q2' => $proj->co_q2 ?? 0,
+                            'co_q3' => $proj->co_q3 ?? 0,
+                            'co_q4' => $proj->co_q4 ?? 0,
+                            'ccet' => $proj->ccet ?? null,
+                            'responsible' => $proj->responsible ?? null,
+
+                            // 'expected_outputs' => $combined->values(),
+                            // 'expected_outputs' => ($proj->expected_output ?? collect())
+                            //     ->map(function ($eo) {
+                            //         return [
+                            //             'description' => $eo->description ?? null,
+                            //             'target_indicator' => $eo->target_indicator ?? null,
+                            //         ];
+                            //     }),
+                        ];
+                    });
+            });
+        return $activities->isEmpty()
+            ? $activities
+            : $activities;
     }
 }
