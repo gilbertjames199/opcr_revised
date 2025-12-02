@@ -3826,58 +3826,107 @@ class RevisionPlanController extends Controller
     }
     public function getActivity(Request $request){
         $empty = [];
-        $activities = Activity::with(['activityProject'])
-            ->where('strategy_id', $request->strategy_id)
+        // $activities = Activity::with(['activityProject'])
+        //     ->where('strategy_id', $request->strategy_id)
+        //     ->get()
+        //     ->map(function($act)use($request){
+        //         $projects = $act->activityProject ?? collect();
+
+        //             return $projects->map(function ($proj) use ($act, $request) {
+
+                        // return [
+                        //     'activity_project_id' => $proj->id ?? null,
+                        //     'revision_plan_id'=>$request->id,
+                        //     'strategy_id'=>$act->strategy_id??null,
+                        //     'description' => $act->description ?? null,
+                        //     'gad_issue' => $proj->gad_issue ?? null,
+                        //     'date_from' => $proj->date_from ?? null,
+                        //     'date_to' => $proj->date_to ?? null,
+
+                        //     'ps_q1' => $proj->ps_q1 ?? 0,
+                        //     'ps_q2' => $proj->ps_q2 ?? 0,
+                        //     'ps_q3' => $proj->ps_q3 ?? 0,
+                        //     'ps_q4' => $proj->ps_q4 ?? 0,
+
+                        //     'mooe_q1' => $proj->mooe_q1 ?? 0,
+                        //     'mooe_q2' => $proj->mooe_q2 ?? 0,
+                        //     'mooe_q3' => $proj->mooe_q3 ?? 0,
+                        //     'mooe_q4' => $proj->mooe_q4 ?? 0,
+
+                        //     'fe_q1' => $proj->fe_q1 ?? 0,
+                        //     'fe_q2' => $proj->fe_q2 ?? 0,
+                        //     'fe_q3' => $proj->fe_q3 ?? 0,
+                        //     'fe_q4' => $proj->fe_q4 ?? 0,
+
+                        //     'co_q1' => $proj->co_q1 ?? 0,
+                        //     'co_q2' => $proj->co_q2 ?? 0,
+                        //     'co_q3' => $proj->co_q3 ?? 0,
+                        //     'co_q4' => $proj->co_q4 ?? 0,
+                        //     'ccet' => $proj->ccet ?? null,
+                        //     'responsible' => $proj->responsible ?? null,
+
+                        //     // 'expected_outputs' => $combined->values(),
+                        //     // 'expected_outputs' => ($proj->expected_output ?? collect())
+                        //     //     ->map(function ($eo) {
+                        //     //         return [
+                        //     //             'description' => $eo->description ?? null,
+                        //     //             'target_indicator' => $eo->target_indicator ?? null,
+                        //     //         ];
+                        //     //     }),
+                        // ];
+        //             });
+        //     });
+        $activityProjects = ActivityProject::with(['activity'])
+            ->where('project_id', $request->revision_plan_id)
+            ->whereHas('activity', function($query)use($request){
+                $query->where('strategy_id', $request->strategy_id);
+            })
             ->get()
-            ->map(function($act)use($request){
-                $projects = $act->activityProject ?? collect();
-                    // dd($act);
-                    return $projects->map(function ($proj) use ($act, $request) {
+            ->map(function($proj)use($request){
+                // dd($request->revision_plan_id);
+                return [
+                    'activity_project_id' => $proj->id ?? null,
+                    'revision_plan_id'=>$request->revision_plan_id,
+                    'strategy_id'=>optional(optional($proj)->activity)->strategy_id,
+                    'description' => optional(optional($proj)->activity)->description,
+                    'gad_issue' => $proj->gad_issue ?? null,
+                    'date_from' => $proj->date_from ?? null,
+                    'date_to' => $proj->date_to ?? null,
 
-                        return [
-                            'activity_project_id' => $proj->id ?? null,
-                            'revision_plan_id'=>$request->id,
-                            'strategy_id'=>$act->strategy_id??null,
-                            'description' => $act->description ?? null,
-                            'gad_issue' => $proj->gad_issue ?? null,
-                            'date_from' => $proj->date_from ?? null,
-                            'date_to' => $proj->date_to ?? null,
+                    'ps_q1' => $proj->ps_q1 ?? 0,
+                    'ps_q2' => $proj->ps_q2 ?? 0,
+                    'ps_q3' => $proj->ps_q3 ?? 0,
+                    'ps_q4' => $proj->ps_q4 ?? 0,
 
-                            'ps_q1' => $proj->ps_q1 ?? 0,
-                            'ps_q2' => $proj->ps_q2 ?? 0,
-                            'ps_q3' => $proj->ps_q3 ?? 0,
-                            'ps_q4' => $proj->ps_q4 ?? 0,
+                    'mooe_q1' => $proj->mooe_q1 ?? 0,
+                    'mooe_q2' => $proj->mooe_q2 ?? 0,
+                    'mooe_q3' => $proj->mooe_q3 ?? 0,
+                    'mooe_q4' => $proj->mooe_q4 ?? 0,
 
-                            'mooe_q1' => $proj->mooe_q1 ?? 0,
-                            'mooe_q2' => $proj->mooe_q2 ?? 0,
-                            'mooe_q3' => $proj->mooe_q3 ?? 0,
-                            'mooe_q4' => $proj->mooe_q4 ?? 0,
+                    'fe_q1' => $proj->fe_q1 ?? 0,
+                    'fe_q2' => $proj->fe_q2 ?? 0,
+                    'fe_q3' => $proj->fe_q3 ?? 0,
+                    'fe_q4' => $proj->fe_q4 ?? 0,
 
-                            'fe_q1' => $proj->fe_q1 ?? 0,
-                            'fe_q2' => $proj->fe_q2 ?? 0,
-                            'fe_q3' => $proj->fe_q3 ?? 0,
-                            'fe_q4' => $proj->fe_q4 ?? 0,
+                    'co_q1' => $proj->co_q1 ?? 0,
+                    'co_q2' => $proj->co_q2 ?? 0,
+                    'co_q3' => $proj->co_q3 ?? 0,
+                    'co_q4' => $proj->co_q4 ?? 0,
+                    'ccet' => $proj->ccet ?? null,
+                    'responsible' => $proj->responsible ?? null,
 
-                            'co_q1' => $proj->co_q1 ?? 0,
-                            'co_q2' => $proj->co_q2 ?? 0,
-                            'co_q3' => $proj->co_q3 ?? 0,
-                            'co_q4' => $proj->co_q4 ?? 0,
-                            'ccet' => $proj->ccet ?? null,
-                            'responsible' => $proj->responsible ?? null,
-
-                            // 'expected_outputs' => $combined->values(),
-                            // 'expected_outputs' => ($proj->expected_output ?? collect())
-                            //     ->map(function ($eo) {
-                            //         return [
-                            //             'description' => $eo->description ?? null,
-                            //             'target_indicator' => $eo->target_indicator ?? null,
-                            //         ];
-                            //     }),
-                        ];
-                    });
+                    // 'expected_outputs' => $combined->values(),
+                    // 'expected_outputs' => ($proj->expected_output ?? collect())
+                    //     ->map(function ($eo) {
+                    //         return [
+                    //             'description' => $eo->description ?? null,
+                    //             'target_indicator' => $eo->target_indicator ?? null,
+                    //         ];
+                    //     }),
+                ];
             });
-        return $activities->isEmpty()
-            ? $activities
-            : $activities;
+        return $activityProjects->isEmpty()
+            ? $empty
+            : $activityProjects;
     }
 }
