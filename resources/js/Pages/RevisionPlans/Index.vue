@@ -42,6 +42,7 @@
                         <option value="p">Project Profile</option>
                         <option value="d">Project Design</option>
                     </select>
+                    &nbsp;&nbsp;&nbsp;
                     <input
                         type="checkbox"
                         v-model="checked"

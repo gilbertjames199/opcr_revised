@@ -466,7 +466,7 @@
                                         {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
                                     </span >
                                     <span v-if="dat.comments_count" style="color: red; font-weight: bold" class="blink">
-                                        Review the Project for warnings
+                                        Review the Project for comments
                                     </span>
                                 </td>
                                 <td>{{ dat.version }}</td>
