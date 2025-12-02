@@ -234,15 +234,15 @@ hr {
 /* Create an active/current tablink class */
 /*color: #fff;
       background-color: #6c757d;*/
-.tab button.active {
+.tab .button.active {
     color: #f6f3f3 !important;
     font-weight: bold;
-    background-color: #cd3706;
+    background-color: #9e5b03;
 }
 
-.tab button.active:hover {
-    background-color: rgb(243, 102, 7);
-    color: #f3ec11 !important;
+.tab .button.active:hover {
+    background-color: rgb(177, 224, 6);
+    color: #fcfcfc !important;
 }
 
 /* Style the tab content */

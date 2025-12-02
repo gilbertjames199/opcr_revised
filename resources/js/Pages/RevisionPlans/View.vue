@@ -2651,8 +2651,8 @@
                         </button>
                     </div>
                     <div class="tab">
-                        <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
-                        <button style="color: red;" @click="openTab('Comments')">Comments
+                        <button class="button" :class="{ active: open_tab === 'Navigation' }" @click="openTab('Navigation')">Navigation</button>
+                        <button class="button" :class="{ active: open_tab === 'Comments' }" @click="openTab('Comments')">Comments
                             <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
                                 <b>
                                     ({{ countUnresolvedComments }} unresolved)
