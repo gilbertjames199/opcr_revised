@@ -5,6 +5,7 @@
     <div class="row gap-10 masonry pos-r">
     <div class="row gap-5">
         <!--class="peers fxw-nw jc-sb ai-c"-->
+        <h1>GAD V2</h1>
         <div class="peers fxw-nw jc-sb ai-c justify-content-end" v-if="src !== 'budget'">
             <Link v-if="paps.scope === 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
                             ? `/revision/general/administration/services/${paps.FFUNCCOD}/plan`:`/revision_plans`">
@@ -1788,175 +1789,86 @@
                                     <th>Account Code</th>
                                     <th>Amount</th>
                                     <th>Source</th>
-                                    <!-- <th>Edit</th> -->
                                 </tr>
                             </thead>
 
-                            <tbody v-for="(gadGroups, category) in groupedBudget" :key="category">
+                            <tbody v-for="(rows, category) in groupedBudget" :key="category">
 
                                 <!-- CATEGORY HEADER -->
-                                <tr v-if="hasAnyRows(gadGroups)" class="table-primary">
+                                <tr v-if="rows.length > 0" class="table-primary">
                                     <td colspan="8" class="fw-bold text-uppercase">
                                         {{ formatCategory(category) }}
                                     </td>
                                 </tr>
 
-                                <!-- GAD + NON-GAD GROUPS -->
-                                <template v-for="(rows, gadType) in gadGroups" :key="gadType" >
+                                <!-- DATA ROWS -->
+                                <tr v-for="row in rows" :key="row.id">
+                                    <td></td>
+                                    <td></td>
+                                    <!-- PARTICULARS -->
+                                    <td
+                                        :class="{'text-danger': has_comment('Budgetary Requirements','Particulars',row.particulars,'particulars','budget_requirements', row, row.comments)}"
+                                        :id="row.id + '_budget_requirements_particulars'"
+                                    >
+                                        {{ row.particulars }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements','Particulars',row.particulars,'particulars','budget_requirements', row, row.comments)">
+                                            *
+                                        </button>
+                                    </td>
 
-                                    <!-- SUB HEADER (GAD / NON-GAD) -->
-                                    <tr v-if="hasRows(rows)" class="table-secondary" >
-                                        <td></td>
-                                        <td colspan="7" class="fw-bold">
-                                            <div class="d-flex justify-content-between align-items-center w-100">
-                                                {{ gadType }}
+                                    <!-- ACCOUNT CODE -->
+                                    <td
+                                        :class="{'text-danger': has_comment('Budgetary Requirements','Account Code',row.account_code,'account_code','budget_requirements', row, row.comments)}"
+                                        :id="row.id + '_budget_requirements_account_code'"
+                                    >
+                                        {{ row.account_code }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements','Account Code',row.account_code,'account_code','budget_requirements', row, row.comments)">
+                                            *
+                                        </button>
+                                    </td>
 
-                                            </div>
+                                    <!-- AMOUNT -->
+                                    <td
+                                        :class="{'text-danger': has_comment('Budgetary Requirements','Amount',row.amount,'amount','budget_requirements', row, row.comments)}"
+                                        :id="row.id + '_budget_requirements_amount'"
+                                    >
+                                        {{ format_number_conv(row.amount,2,true) }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements','Amount',row.amount,'amount','budget_requirements', row, row.comments)">
+                                            *
+                                        </button>
+                                    </td>
 
-                                        </td>
-                                    </tr>
+                                    <!-- SOURCE -->
+                                    <td
+                                        :class="{'text-danger': has_comment('Budgetary Requirements','Source',row.source,'source','budget_requirements', row, row.comments)}"
+                                        :id="row.id + '_budget_requirements_source'"
+                                    >
+                                        {{ row.source }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements','Source',row.source,'source','budget_requirements', row, row.comments)">
+                                            *
+                                        </button>
+                                    </td>
+                                </tr>
 
-                                    <!-- DATA ROWS -->
-                                     <tr v-if="hasRows(rows)"  v-for="row in rows" :key="row.id">
-                                        <td></td>
-                                        <td></td>
-                                        <!-- PARTICULARS -->
-                                        <td
-                                            :class="{
-                                                'text-danger': has_comment('Budgetary Requirements',
-                                                    'Particulars',row.particulars,
-                                                    'particulars','budget_requirements', row, row.comments)
-                                            }"
-                                            :id="row.id + '_budget_requirements_particulars'"
-                                        >
-                                            {{ row.particulars }}
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Budgetary Requirements',
-                                                    'Particulars',row.particulars,
-                                                    'particulars','budget_requirements', row, row.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Budgetary Requirements',
-                                                    'Particulars',row.particulars,
-                                                    'particulars','budget_requirements', row, row.comments)" class="superscript-btn"
-                                                @click="handleClick('Budgetary Requirements',
-                                                    'Particulars',row.particulars,
-                                                    'particulars','budget_requirements', row, row.comments)">*
-                                            </button>
-                                        </td>
-                                        <!-- ACCOUNT CODE -->
-                                        <td :class="{
-                                                'text-danger': has_comment('Budgetary Requirements',
-                                                    'Account Code',row.account_code,
-                                                    'account_code','budget_requirements', row, row.comments)
-                                            }"
-                                            :id="row.id + '_budget_requirements_account_code'"
-                                        >
-                                            <!-- <textarea
-                                                class="form-control transparent-bg "
-                                                type="text"
-                                                v-model="row.account_code"
-                                                @input="setUnsaved(true)"
-                                                @change="updateRevisionPlans('budget_requirements', 'account_code', row.id, row.account_code)" disabled>
-                                                    {{ row.account_code }}
-                                            </textarea> -->
-                                            {{ row.account_code }}
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Budgetary Requirements',
-                                                    'Account Code',row.account_code,
-                                                    'account_code','budget_requirements', row, row.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Budgetary Requirements',
-                                                    'Account Code',row.account_code,
-                                                    'account_code','budget_requirements', row, row.comments)" class="superscript-btn"
-                                                @click="handleClick('Budgetary Requirements',
-                                                    'Account Code',row.account_code,
-                                                    'account_code','budget_requirements', row, row.comments)">*
-                                            </button>
-                                        </td>
-                                        <!-- AMOUNT -->
-                                        <td :class="{
-                                                'text-danger': has_comment('Budgetary Requirements',
-                                                    'Amount',row.amount,
-                                                    'amount','budget_requirements', row, row.comments)
-                                            }"
-                                            :id="row.id + '_budget_requirements_amount'">
-                                            {{ format_number_conv(row.amount,2,true) }}
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Budgetary Requirements',
-                                                    'Amount',row.amount,
-                                                    'amount','budget_requirements', row, row.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Budgetary Requirements',
-                                                    'Amount',row.amount,
-                                                    'amount','budget_requirements', row, row.comments)" class="superscript-btn"
-                                                @click="handleClick('Budgetary Requirements',
-                                                    'Amount',row.amount,
-                                                    'amount','budget_requirements', row, row.comments)">*
-                                            </button>
-                                        </td>
-                                        <!-- SOURCE OF FUND -->
-                                        <td :class="{
-                                                'text-danger': has_comment('Budgetary Requirements',
-                                                    'Source',row.source,
-                                                    'source','budget_requirements', row, row.comments)
-                                            }"
-                                            :id="row.id + '_budget_requirements_source'">
-                                            <!-- <textarea
-                                                class="form-control transparent-bg "
-                                                type="text"
-                                                v-model="row.source"
-                                                @input="setUnsaved(true)"
-                                                @change="updateRevisionPlans('budget_requirements', 'source', row.id, row.source)">
-                                                    {{ row.source }}
-                                            </textarea> -->
-                                            {{ row.source }}
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Budgetary Requirements',
-                                                    'Source',row.source,
-                                                    'source','budget_requirements', row, row.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Budgetary Requirements',
-                                                    'Source',row.source,
-                                                    'source','budget_requirements', row, row.comments)" class="superscript-btn"
-                                                @click="handleClick('Budgetary Requirements',
-                                                    'Source',row.source,
-                                                    'source','budget_requirements', row, row.comments)">*
-                                            </button>
-                                        </td>
-
-                                        <!-- EDIT -->
-                                        <!-- <td>
-                                            <button class="btn btn-primary btn-sm text-white"
-                                                @click="showBudgetModal(form.id,gadType,category)">
-                                                ✏ Edit
-                                            </button>
-                                        </td> -->
-
-
-                                    </tr>
-
-                                    <!-- NO DATA ROW -->
-                                    <!-- <tr v-if="rows.length === 0">
-                                        <td colspan="8" class="text-center text-muted">
-                                            No entries under {{ gadType }} {{ formatCategory(category)  }}
-                                        </td>
-                                    </tr> -->
-
-                                    <!-- TOTAL ROW -->
-                                    <tr v-if="hasRows(rows)"  class="fw-bold bg-light">
-                                        <td></td>
-                                        <td colspan="2">TOTAL {{ gadType }}</td>
-                                        <td></td>
-                                        <td>
-                                            ₱ {{ budgetSum(category, gadType).toLocaleString() }}
-                                        </td>
-                                        <td colspan="3"></td>
-                                    </tr>
-                                </template>
-
+                                <!-- TOTAL ROW -->
+                                <tr v-if="rows.length > 0" class="fw-bold bg-light">
+                                    <td></td>
+                                    <td colspan="2">TOTAL {{ formatCategory(category) }}</td>
+                                    <td></td>
+                                    <td>
+                                        ₱ {{ rows.reduce((sum, r) => sum + Number(r.amount), 0).toLocaleString() }}
+                                    </td>
+                                    <td colspan="3"></td>
+                                </tr>
 
                             </tbody>
-                            <tr >
+
+
+                            <!-- <tr >
                                 <td colspan="4"><h5>GAD TOTAL</h5></td>
                                 <td :class="{
                                             'text-danger': has_comment('Budgetary Requirements',
@@ -1987,7 +1899,7 @@
                                         </button>
                                 </td>
                                 <td colspan="3"></td>
-                            </tr>
+                            </tr> -->
                              <tr>
                                 <td colspan="4"><h5>TOTAL</h5></td>
                                 <td>₱ {{ overallBudget.toLocaleString() }}</td>
@@ -1997,7 +1909,7 @@
                                     <td colspan="4"><h4>TOTAL</h4></td>
                                     <td>₱ {{ overallBudget.toLocaleString() }}</td>
                                     <td colspan="3"></td>
-                                </tr> -->
+                                </tr>-->
                         </table>
                         <!-- <table v-if="showBudgetTable()" class="table table-hover table-bordered border-dark">
                             <thead>
@@ -3020,6 +2932,7 @@
         <!-- {{ auth.user }}
         {{ paps.is_strategy_based }} -->
     </div> <!--Sa class="row gap-10" ni-->
+    {{budget_requirements}}
     </div>
 </template>
 <script>
@@ -3072,10 +2985,10 @@ export default {
     computed: {
         groupedBudget() {
             const result = {
-                maintenanceOperating: { GAD: [], "NON-GAD": [] },
-                personnelServices: { GAD: [], "NON-GAD": [] },
-                financialExpenses: { GAD: [], "NON-GAD": [] },
-                capitalOutlay: { GAD: [], "NON-GAD": [] },
+                maintenanceOperating: [],
+                personnelServices: [],
+                financialExpenses: [],
+                capitalOutlay: [],
             };
 
             const map = {
@@ -3086,10 +2999,9 @@ export default {
             };
 
             this.budget_requirements.forEach(item => {
-            const catKey = map[item.category];
-            if (!catKey) return;
-                const gadKey = item.category_gad.toUpperCase() === 'GAD' ? 'GAD' : 'NON-GAD';
-                result[catKey][gadKey].push(item);
+                const catKey = map[item.category];
+                if (!catKey) return;
+                result[catKey].push(item);   // push directly, no GAD / NON-GAD classification
             });
 
             return result;
@@ -3109,18 +3021,14 @@ export default {
             let total = 0;
 
             for (const category in this.groupedBudget) {
-                const gadGroups = this.groupedBudget[category];
+                const rows = this.groupedBudget[category];
 
-                for (const gadType in gadGroups) {
-                    const rows = gadGroups[gadType];
-
-                    rows.forEach(item => {
-                        const amount = parseFloat(item.amount || 0);
-                        if (!isNaN(amount)) {
-                            total += amount;
-                        }
-                    });
-                }
+                rows.forEach(item => {
+                    const amount = parseFloat(item.amount || 0);
+                    if (!isNaN(amount)) {
+                        total += amount;
+                    }
+                });
             }
 
             return total;

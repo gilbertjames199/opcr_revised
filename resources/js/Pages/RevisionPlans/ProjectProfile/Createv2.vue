@@ -1299,6 +1299,7 @@
                     </div>
                     <!--VI. BUDGETARY REQUIREMENTS************************************************** -->
                     <div>
+                        <!-- {{ editData.type }} -- {{ source }} -->
                         <h3 id="budgetary_requirements">
                             VI. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
                             ? `/budget/${paps.id}`:null">
@@ -1310,7 +1311,7 @@
                                 <tr>
                                     <th colspan="3">Particulars</th>
                                     <th>Account Code</th>
-                                    <th v-if="source==='sip'">SIP Number</th>
+                                    <th v-if="editData.type=='sip'">SIP Number</th>
                                     <th>Amount</th>
                                     <th>Source</th>
                                     <!-- <th>Edit</th> -->
@@ -1318,32 +1319,39 @@
                                 </tr>
                             </thead>
 
-                            <tbody v-for="(gadGroups, category) in groupedBudget" :key="category">
+                            <tbody v-for="(rows, category) in groupedBudget" :key="category">
 
                                 <!-- CATEGORY HEADER -->
                                 <tr class="table-primary">
                                     <td colspan="8" class="fw-bold text-uppercase">
-                                        {{ formatCategory(category) }}
+
+                                        <div class="d-flex justify-content-between align-items-center w-100">
+                                            {{ formatCategory(category) }}
+                                            <button class="btn btn-success btn-sm text-white"
+                                                @click="showBudgetModal(paps.id,'N/A',formatCategory(category))">
+                                                ADD NEW
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
 
                                 <!-- GAD + NON-GAD GROUPS -->
-                                <template v-for="(rows, gadType) in gadGroups" :key="gadType">
+                                <!-- <template v-for="rows in gadGroups" :key="gadType"> -->
 
                                     <!-- SUB HEADER (GAD / NON-GAD) -->
-                                    <tr class="table-secondary">
+                                    <!-- <tr class="table-secondary">
                                         <td></td>
                                         <td colspan="7" class="fw-bold">
                                             <div class="d-flex justify-content-between align-items-center w-100">
                                                 {{ gadType }}
                                                 <button class="btn btn-success btn-sm text-white"
-                                                    @click="showBudgetModal(paps.id,gadType,formatCategory(category))">
+                                                    @click="showBudgetModal(paps.id,'',formatCategory(category))">
                                                     ADD NEW
                                                 </button>
                                             </div>
 
                                         </td>
-                                    </tr>
+                                    </tr> -->
 
                                     <!-- DATA ROWS -->
                                      <tr v-for="row in rows" :key="row.id">
@@ -1489,7 +1497,7 @@
                                     <!-- NO DATA ROW -->
                                     <tr v-if="rows.length === 0">
                                         <td colspan="8" class="text-center text-muted">
-                                            No entries under {{ gadType }} {{ formatCategory(category)  }}
+                                            No entries under {{ formatCategory(category)  }}
                                         </td>
                                     </tr>
 
@@ -1504,11 +1512,9 @@
                                         </td>
                                         <td colspan="3"></td>
                                     </tr>
-                                </template>
-
-
+                                <!-- </template> -->
                             </tbody>
-                            <tr >
+                            <!-- <tr >
                                 <td colspan="4"><h5>GAD TOTAL</h5></td>
                                 <td v-if="source==='sip'"></td>
                                 <td :class="{
@@ -1540,7 +1546,7 @@
                                         </button>
                                 </td>
                                 <td colspan="3"></td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                     <td colspan="4"><h4>TOTAL</h4></td>
                                     <td v-if="source==='sip'"></td>
@@ -2330,14 +2336,14 @@
                 </select>
             </div>
 
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label class="form-label">GAD Type</label>
                 <select v-model="budget_new.category_gad" class="form-select" disabled>
                     <option value="">Select type</option>
                     <option value="GAD">GAD</option>
                     <option value="NON-GAD">NON-GAD</option>
                 </select>
-            </div>
+            </div> -->
 
             <div class="mb-3">
                 <label class="form-label">Source</label>
@@ -3116,10 +3122,10 @@ export default {
 
         groupedBudget() {
             const result = {
-                maintenanceOperating: { GAD: [], "NON-GAD": [] },
-                personnelServices: { GAD: [], "NON-GAD": [] },
-                financialExpenses: { GAD: [], "NON-GAD": [] },
-                capitalOutlay: { GAD: [], "NON-GAD": [] },
+                maintenanceOperating: [],
+                personnelServices: [],
+                financialExpenses: [],
+                capitalOutlay: [],
             };
 
             const map = {
@@ -3130,10 +3136,9 @@ export default {
             };
 
             this.budget_requirements.forEach(item => {
-            const catKey = map[item.category];
-            if (!catKey) return;
-                const gadKey = item.category_gad.toUpperCase() === 'GAD' ? 'GAD' : 'NON-GAD';
-                result[catKey][gadKey].push(item);
+                const catKey = map[item.category];
+                if (!catKey) return;
+                result[catKey].push(item);   // push directly, no GAD / NON-GAD classification
             });
 
             return result;
@@ -3153,18 +3158,14 @@ export default {
             let total = 0;
 
             for (const category in this.groupedBudget) {
-                const gadGroups = this.groupedBudget[category];
+                const rows = this.groupedBudget[category];
 
-                for (const gadType in gadGroups) {
-                    const rows = gadGroups[gadType];
-
-                    rows.forEach(item => {
-                        const amount = parseFloat(item.amount || 0);
-                        if (!isNaN(amount)) {
-                            total += amount;
-                        }
-                    });
-                }
+                rows.forEach(item => {
+                    const amount = parseFloat(item.amount || 0);
+                    if (!isNaN(amount)) {
+                        total += amount;
+                    }
+                });
             }
 
             return total;

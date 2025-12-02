@@ -1009,7 +1009,10 @@ class RevisionPlanController extends Controller
         // dd($all_comments->pluck('created_at'));
         // dd($paps);
         // dd($budgetRequirements);
-        return inertia('RevisionPlans/View', [
+        // dd($paps);
+        $view_returned = $paps->gad_version=='1'?'RevisionPlans/View':'RevisionPlans/View2';
+
+        return inertia($view_returned, [
             "all_comments" => $all_comments,
             "paps" => $paps,
             "office" => $functions->FFUNCTION,

@@ -67,6 +67,7 @@ class ProjectDesignController extends Controller
 
             $new_plan->type = $type;
             $new_plan->status = "-1";
+            $new_plan->gad_version = "2";
             $new_plan->reference_profile_id = $rev_plan->id;
             $new_plan->created_at = now();
             $new_plan->updated_at = now();

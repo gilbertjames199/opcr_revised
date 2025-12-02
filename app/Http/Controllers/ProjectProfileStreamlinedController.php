@@ -162,11 +162,14 @@ class ProjectProfileStreamlinedController extends Controller
         }
         // dd($all_comments);
         // dd($acc);
+        // dd($editData);
+        $view_returned = $editData->gad_version=='1'?'RevisionPlans/ProjectProfile/Create':'RevisionPlans/ProjectProfile/Createv2';
         $implementation = $this->getImplementationPlan($editData->id, $editData, $paps0->id);
         // return $implementation;
         // dd($this->signatories($editData->id));
         // <!-- dd($implementation); -->
-        return inertia('RevisionPlans/ProjectProfile/Create', [
+        // dd($request->source);
+        return inertia($view_returned, [
             "idpaps" => $id,
             "hgdgs" => $hgdg,
             "paps_specific" => $paps0,
