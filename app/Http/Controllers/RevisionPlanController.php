@@ -3713,11 +3713,11 @@ class RevisionPlanController extends Controller
                     'id'=> $strategy->id??null,
                     'revision_plan_id'=>$request->id,
                     'activities' => $strategy->activity
-                        ? $strategy->activity->flatMap(function ($act) {
+                        ? $strategy->activity->flatMap(function ($act) use($request){
 
                             $projects = $act->activityProject ?? collect();
                             // dd($act);
-                            return $projects->map(function ($proj) use ($act) {
+                            return $projects->map(function ($proj) use ($act, $request) {
                                 // Build expected outputs first
                                 // $expectedOutputs = collect($proj->expected_output ?? [])
                                 //     ->map(function ($eo) {
