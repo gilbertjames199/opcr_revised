@@ -4,7 +4,11 @@
     </Head>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Profile/Design </h3>
+            <h3>{{ pageTitle }} Project
+                <span v-if="editData.type === 'p'">Profile</span>
+                <span v-if="editData.type === 'd'">Design</span>
+                <span v-if="editData.type === 'sip'">Profile (SIP)</span>
+            </h3>
             <Link :href="`/revision/0?source=direct`" v-if="source=='direct'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                     viewBox="0 0 16 16">
@@ -590,8 +594,9 @@
                                                 <!-- DESCRIPTION -->
                                                 <td :class="{
                                                     'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
-                                                }" :id="act.id + '_activity_projects_activities'">
-
+                                                }" :id="act.activity_id + '_activity_projects_activities'">
+                                                <!-- {{act}}
+                                                    {{ act.id }}_activity_projects_activities -->
                                                     <textarea
                                                         class="form-control transparent-bg "
                                                         v-model="act.description"
@@ -2046,7 +2051,8 @@
                                 <h4>COMMENTS ...</h4>
 
                             </div>
-
+                            <div><i>Click a comment and follow the <span style="color: red">red</span> arrow</i></div>
+                            <hr>
                             <div class="scrollable-text">
                                 <ul class="list-unstyled">
                                     <li v-for="(comment, index) in all_comments" :key="index" class="mb-2" >
@@ -2892,7 +2898,7 @@
             </tr>
         </table>
     </ExpectedOutcomeModal>
-
+    <div class="jump-arrow"></div>
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -3568,6 +3574,7 @@ export default {
                 }
             });
         },
+        // TARGETED GUIDES
         scrollToSection(target) {
             const el = document.getElementById(target);
             if (!el) return;
@@ -3583,7 +3590,46 @@ export default {
             // Highlight effect
             el.classList.add("highlight-target");
             setTimeout(() => el.classList.remove("highlight-target"), 2000);
+
+            // NEW → show arrow
+            this.showArrow(el);
         },
+        showArrow(el) {
+            // Remove previous arrow
+            const oldArrow = document.querySelector(".jump-arrow");
+            if (oldArrow) oldArrow.remove();
+
+            // Create container div
+            const arrow = document.createElement("div");
+            arrow.classList.add("jump-arrow");
+            arrow.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="red" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                </svg>
+            `;
+            document.body.appendChild(arrow);
+
+            // Get target element position
+            const rect = el.getBoundingClientRect();
+            const scrollTop = window.scrollY || window.pageYOffset;
+
+            // Position arrow at the **top of the target element**
+            const arrowX = rect.left - 40; // offset left from element
+            const arrowY = scrollTop + rect.top; // align with element top
+
+            arrow.style.position = "absolute";
+            arrow.style.left = arrowX + "px";
+            arrow.style.top = arrowY + "px";
+            arrow.style.zIndex = 9999;
+            arrow.style.transition = "opacity 0.3s";
+
+            // Fade out after 2.5 seconds
+            setTimeout(() => {
+                arrow.style.opacity = 0;
+                setTimeout(() => arrow.remove(), 500);
+            }, 2500);
+        },
+
         // END OF COMMENTS*************************************************
 
         //EDITS***********************************************************
@@ -4491,6 +4537,23 @@ table {
     0%, 100% { color: red; }
     50% { color: #f8d823; } /* paler red */
 }
+
+/* .jump-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-right: 18px solid red;
+    z-index: 9999;
+    animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; }
+} */
 
 
 </style>
