@@ -258,6 +258,13 @@
                                             <li><Link class="dropdown-item" :href="`/RiskManagement/${dat.id}`">Risk Management</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Signatories/${dat.id}`">Signatories</Link></li>
                                             <li><Button class="dropdown-item" @click="setLinkModal(dat.id)">Print Workplan</Button></li>
+                                            <li>
+                                                <Button class="dropdown-item" @click="openPrintProfile(dat.id)">
+                                                    Print Project
+                                                    <span v-if="type=='p'">Profile</span>
+                                                    <span v-else>Design</span>
+                                                </Button>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -319,6 +326,17 @@
                         Add SIP Profile
             </Link>&nbsp;
         </SIPModal>
+        <ProjectPrintModal v-if="printProfileVIsible" @close-modal-event="printProfileVIsible=false" title="Printed Output">
+            <h1>Project Profile</h1>
+
+            <div class="d-flex justify-content-center">
+                <!-- {{ aip_printLink }} -->
+                <iframe :src="ppa_link" style="width:100%; height:500px" />
+
+            </div>
+
+            <!-- {{ppa_link}} -->
+        </ProjectPrintModal>
     </div>
     src: {{source}}
 </template>
@@ -327,6 +345,7 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import AIPModal from "@/Shared/PrintModal";
 import SIPModal from "@/Shared/ModalDynamicTitle";
+import ProjectPrintModal from "@/Shared/ModalDynamicTitle";
 import { Inertia } from '@inertiajs/inertia';
 import WorkPlanModal from "@/Shared/ModalDynamicTitle";
 
@@ -358,10 +377,15 @@ export default {
             selected_sip_paps: null,
             type_filter: this.$props.filters.type_filter,
             paps_id_here: 0,
+            printProfileVIsible: false,
+
+            // /Project id
+            rev_plan_id: 0,
+            ppa_link: ""
         }
     },
     components: {
-        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal
+        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal
     },
     watch: {
         search: _.debounce(function (value) {
@@ -388,6 +412,9 @@ export default {
         this.updateValue(); // Initialize ccet based on the initial state of checked
     },
     methods:{
+        printProfileVisible($rev_print_id){
+            this.printProfileVIsible=true
+        },
         showCreate(){
             this.$inertia.get(
                 "/targets/create",
@@ -607,6 +634,18 @@ export default {
                     replace: true,
                 }
             );
+        },
+        // OPEN PPA
+        openPrintProfile(rev_plan_id_p){
+            this.rev_plan_id=rev_plan_id_p
+            this.printProfileVIsible=true
+
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link ='/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FIndividual_Output&reportUnit=%2Freports%2Fplanning_system%2FIndividual_Output%2FProject_Profile&standAlone=true&standAlone=true&output=pdf';
+            var params ='&id='+rev_plan_id_p
+            // console.log(params);
+            this.ppa_link = linkt+jasper_ip+jasper_link+params;
         }
     }
 };

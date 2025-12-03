@@ -5,6 +5,8 @@
     <div class="row gap-10 masonry pos-r">
     <div class="row gap-5">
         <!--class="peers fxw-nw jc-sb ai-c"-->
+        <button @click="printDiv">Print</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <div class="peers fxw-nw jc-sb ai-c justify-content-end" v-if="src !== 'budget'">
             <Link v-if="paps.scope === 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
                             ? `/revision/general/administration/services/${paps.FFUNCCOD}/plan`:`/revision_plans`">
@@ -48,6 +50,8 @@
                         d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
                 </svg>
             </Link>
+
+
         </div>
         <div class="peers fxw-nw jc-sb ai-c justify-content-end" v-if="src==='budget'">
             <Link v-if="paps.scope === 'GAS'" :href="`/revision_plans?source=budget`">
@@ -78,9 +82,14 @@
                         d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
                 </svg>
             </Link>
+            <button @click="printDiv">Print</button>
+        </div>
+        <div class="col-9">
+
         </div>
 
-        <div class="col-9">
+
+        <div class="col-9" ref="printableDiv">
             <div class="d-flex justify-content-center">
                 <img :src="getImagePath('logo.png')" alt="" class="img-fluid" style="width:100px; height:100px">
 
@@ -101,10 +110,6 @@
                     <div v-else>PROJECT DESIGN</div>
                 </h4>
             </div>
-        </div>
-
-
-        <div class="col-9">
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
                     <!--MAIN TABLE-->
@@ -3680,7 +3685,44 @@ export default {
                 end: endIndex,
                 selected: selectedText
             };
-        }
+        },
+        printDiv() {
+            const div = this.$refs.printableDiv;
+            if (!div) return;
+
+            const divContents = div.innerHTML;
+
+            // Get all stylesheets from the main page
+            let styles = '';
+            Array.from(document.styleSheets).forEach((styleSheet) => {
+                try {
+                if (styleSheet.href) {
+                    // External stylesheet
+                    styles += `<link rel="stylesheet" href="${styleSheet.href}">`;
+                } else if (styleSheet.cssRules) {
+                    // Inline style
+                    let css = Array.from(styleSheet.cssRules)
+                    .map(rule => rule.cssText)
+                    .join(' ');
+                    styles += `<style>${css}</style>`;
+                }
+                } catch (e) {
+                // ignore cross-origin stylesheets
+                }
+            });
+
+            const printWindow = window.open('', '', 'height=800,width=1000');
+            printWindow.document.write('<html><head><title>Print Preview</title>');
+            printWindow.document.write(styles); // include styles
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
+
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+            }
 
     }
 }

@@ -3453,6 +3453,8 @@ class RevisionPlanController extends Controller
             ->get()
             ->map(function ($item) {
                 // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
+                $signatories=$this->getSignatories($item->id);
+
                 return [
                     'id' => $item->id,
                     'idpaps' => $item->idpaps,
@@ -3486,12 +3488,12 @@ class RevisionPlanController extends Controller
                     'objective' => trim($item->objective),
                     'beneficiaries' => $item->beneficiaries,
                     'implementing_team' => $item->implementing_team,
-                    // 'implementing_teams' => $item->teamPlans,
+                    'implementing_teams' => $item->teamPlans,
                     'partnership' => $item->partnership,
                     'monitoring' => $item->monitoring,
-                    // 'monitoring_and_evaluations' => $item->monitoringAndEvaluations,
+                    'monitoring_and_evaluations' => $item->monitoringAndEvaluations,
                     'risk_management' => $item->risk_management,
-                    // 'risk_managements' => $item->riskManagements,
+                    'risk_managements' => $item->riskManagements,
                     'version' => $item->version,
                     'type' => $item->type,
                     'final' => $item->final,
@@ -3506,15 +3508,24 @@ class RevisionPlanController extends Controller
                     // ...$this->getSignatories($item->id),
                     // 'office' => optional(optional($item)->paps)->office,
                     'total_implementation' => $this->getActivityTotal($item->id),
-                    'budget_total'=> floatval($this->getTotalBudgetRequirements($item->id))
+                    'budget_total'=> floatval($this->getTotalBudgetRequirements($item->id)),
+                    'name_prepared'    => $signatories['name_prepared'] ?? null,
+                    'position_prepared'=> $signatories['position_prepared'] ?? null,
+                    'acted_prepared'   => $signatories['acted_prepared'] ?? null,
+                    'name_reviewed'    => $signatories['name_reviewed'] ?? null,
+                    'position_reviewed'=> $signatories['position_reviewed'] ?? null,
+                    'acted_reviewed'   => $signatories['acted_reviewed'] ?? null,
+                    'name_approved'    => $signatories['name_approved'] ?? null,
+                    'position_approved'=> $signatories['position_approved'] ?? null,
+                    'acted_approved'   => $signatories['acted_approved'] ?? null,
 
                 ];
             });
-        $signatories = $this->getSignatories($request->id);
-        $revplanArray = $revplan->toArray();
-        $revplanArray = $revplanArray[0] ?? [];
-        $result = array_merge($revplanArray, $signatories);
-        return $result;
+        // $signatories = $this->getSignatories($request->id);
+        // $revplanArray = $revplan->toArray();
+        // $revplanArray = $revplanArray[0] ?? [];
+        // $result = array_merge($revplanArray, $signatories);
+        return $revplan;
         // $sigs= $this->getSignatories($request->id);
         // return $revplan->concat($sigs);
     }
@@ -3522,7 +3533,13 @@ class RevisionPlanController extends Controller
     {
         $empty = [];
 
-        $data = Signatory::where('revision_plan_id', $id)->get();
+        // $data = Signatory::where('revision_plan_id', $id)->get()->distinct('acted');
+        $data = Signatory::where('revision_plan_id', $id)
+            ->get()
+            ->groupBy('acted')
+            ->map(function ($group) {
+                return $group->first(); // take only the first entry per 'acted' type
+            });
 
         if ($data->isEmpty()) {
             return $empty;
