@@ -425,30 +425,19 @@ class BudgetRequirementController extends Controller
     }
     public function getBudgetCategoriesType(Request $request){
         $categories = BudgetRequirement::select('category')
-                    ->where('category_gad', $request->category_gad)
-                    ->whereNotNull('category')
-                    ->where('category', '!=', '')
-                    ->where('revision_plan_id', $request->revision_plan_id)
-                    ->groupBy('category')
-                    ->get()
-                    ->map(function ($cat) use ($request) {
-                        // Get budget requirements for this category under the GAD category
-                        // $budget_requirements = BudgetRequirement::where('category_gad', $gad->category_gad)
-                        //     ->where('category', $cat->category)
-                        //     ->where('revision_plan_id', $request->revision_plan_id)
-                        //     ->get();
-
-                        return [
-                            'revision_plan_id'=>$request->revision_plan_id,
-                            'category' => $cat->category,
-
-
-                            // 'budget_requirements' => $budget_requirements
-                        ];
-                    })
-                    ->filter() // only include if not empty
-                    ->values();
-        $empty=[];
+            ->where('category_gad', $request->category_gad)
+            ->where('revision_plan_id', $request->revision_plan_id)
+            ->groupBy('category')
+            ->get()
+            ->map(function ($cat) use ($request) {
+                return [
+                    'revision_plan_id' => $request->revision_plan_id,
+                    'category' => $cat->category,
+                ];
+            })
+            ->filter() // keep only non-empty items
+            ->values();
+                $empty=[];
         if ($categories->isEmpty()) {
             return $empty;
         }

@@ -148,5 +148,18 @@ class SignatoryController extends Controller
         return response()->json(['status' => 'success']);
     }
 
+    public function getSignatories(Request $request)
+    {
+        $empty = [];
+
+        $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
+
+        if ($data->isEmpty()) {
+            return $empty;
+        }
+
+        return $data;
+    }
+
 
 }

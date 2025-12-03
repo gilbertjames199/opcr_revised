@@ -351,4 +351,19 @@ class TeamPlanController extends Controller
         }
     }
 
+    public function getTeamPlan(Request $request)
+    {
+
+
+        $empty = [];
+
+        $data = TeamPlan::where('revision_plan_id', $request->revision_plan_id)->get();
+
+        if ($data->isEmpty()) {
+            return $empty;
+        }
+
+        return $data;
+    }
+
 }

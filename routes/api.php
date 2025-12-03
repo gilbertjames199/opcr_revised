@@ -3,6 +3,10 @@
 use App\Http\Controllers\AIPController;
 use App\Http\Controllers\RevisionPlanController;
 use App\Http\Controllers\BudgetRequirementController;
+use App\Http\Controllers\MonitoringAndEvaluationController;
+use App\Http\Controllers\RiskManangementController;
+use App\Http\Controllers\TeamPlanController;
+use App\Http\Controllers\SignatoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,4 +52,23 @@ Route::prefix('budget/requirements')->group(function(){
 });
 Route::prefix('/aip/summaries')->group(function(){
     Route::get('/',[AIPController::class, 'summarize_ipp']);
+});
+
+Route::prefix('revision-plan')->group(function () {
+
+    // Team Plan
+    Route::get('/team-plan', [TeamPlanController::class, 'getTeamPlan'])
+        ->name('teamplan.index');
+
+    // Risk Management
+    Route::get('/risk-management', [RiskManangementController::class, 'getRiskManagement'])
+        ->name('riskmanagement.index');
+
+    // Monitoring & Evaluation
+    Route::get('/monitoring-evaluation', [MonitoringAndEvaluationController::class, 'getMonitoringAndEvaluation'])
+        ->name('monitoring.index');
+
+    // Signatory
+    Route::get('/signatory', [SignatoryController::class, 'getSignatories'])
+        ->name('signatory.index');
 });

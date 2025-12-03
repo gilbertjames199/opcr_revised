@@ -147,4 +147,17 @@ class RiskManangementController extends Controller
         return response()->json(['message' => 'Saved successfully']);
     }
 
+    public function getRiskManagement(Request $request)
+    {
+        $empty = [];
+
+        $data = Risk_manangement::where('revision_plan_id', $request->revision_plan_id)->get();
+
+        if ($data->isEmpty()) {
+            return $empty;
+        }
+
+        return $data;
+    }
+
 }

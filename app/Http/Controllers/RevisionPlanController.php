@@ -3443,10 +3443,10 @@ class RevisionPlanController extends Controller
     {
 
         return RevisionPlan::with([
-            'teamPlans',
-            'monitoringAndEvaluations',
-            'riskManagements',
-            'signatories',
+            // 'teamPlans',
+            // 'monitoringAndEvaluations',
+            // 'riskManagements',
+            // 'signatories',
             'paps.office'
         ])
             ->where('id', $request->id)
@@ -3485,12 +3485,12 @@ class RevisionPlanController extends Controller
                     'objective' => trim($item->objective),
                     'beneficiaries' => $item->beneficiaries,
                     'implementing_team' => $item->implementing_team,
-                    'implementing_teams' => $item->teamPlans,
+                    // 'implementing_teams' => $item->teamPlans,
                     'partnership' => $item->partnership,
                     'monitoring' => $item->monitoring,
-                    'monitoring_and_evaluations' => $item->monitoringAndEvaluations,
+                    // 'monitoring_and_evaluations' => $item->monitoringAndEvaluations,
                     'risk_management' => $item->risk_management,
-                    'risk_managements' => $item->riskManagements,
+                    // 'risk_managements' => $item->riskManagements,
                     'version' => $item->version,
                     'type' => $item->type,
                     'final' => $item->final,
@@ -3501,13 +3501,46 @@ class RevisionPlanController extends Controller
                     'is_strategy_based' => $item->is_strategy_based,
                     'is_activity_based' => $item->is_activity_based,
                     'breakdown_by_expected_output' => $item->breakdown_by_expected_output,
-                    'signatories' => $item->signatories,
-                    'office' => optional(optional($item)->paps)->office
+                    // 'signatories' => $item->signatories,
+                    // 'office' => optional(optional($item)->paps)->office,
+                    'total_implementation' => $this->getActivityTotal($item->id),
+                    'budget_total'=> floatval($this->getTotalBudgetRequirements($item->id))
 
                 ];
             });
     }
+    public function getActivityTotal($idrev)
+    {
+        $total = ActivityProject::where('project_id', $idrev)
+            ->select(
+                'ps_q1',
+                'ps_q2',
+                'ps_q3',
+                'ps_q4',
+                'mooe_q1',
+                'mooe_q2',
+                'mooe_q3',
+                'mooe_q4',
+                'co_q1',
+                'co_q2',
+                'co_q3',
+                'co_q4',
+                'fe_q1',
+                'fe_q2',
+                'fe_q3',
+                'fe_q4'
+            )
+            ->where('is_active', '1')
+            ->whereHas('activity', function ($q) {
+                $q->whereNull('deleted_at');   // activity must NOT be soft deleted
+            })
+            ->get();
 
+        $all_total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+            $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+            $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+        return $all_total;
+    }
     public function list(Request $request)
     {
         $filter = $request->all;
@@ -3679,7 +3712,10 @@ class RevisionPlanController extends Controller
             return [];
         }
     }
-
+    public function getTotalBudgetRequirements($id){
+        return BudgetRequirement::where('revision_plan_id', $id)
+            ->sum('amount');
+    }
     public function getTotalBudget($revision)
     {
 
