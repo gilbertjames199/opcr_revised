@@ -43,6 +43,7 @@ Route::prefix('/project/profile/api')->group(function(){
 });
 Route::prefix('budget/requirements')->group(function(){
     Route::get('/categories',[BudgetRequirementController::class, 'getbudgetCategories']);
+    Route::get('/categoryType',[BudgetRequirementController::class, 'getBudgetCategoriesType']);
     Route::get('/details',[BudgetRequirementController::class, 'getbudgetDetails']);
 });
 Route::prefix('/aip/summaries')->group(function(){
