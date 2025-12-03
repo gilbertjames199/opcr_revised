@@ -3442,7 +3442,7 @@ class RevisionPlanController extends Controller
     public function ipp(Request $request)
     {
 
-        return RevisionPlan::with([
+        $revplan= RevisionPlan::with([
             // 'teamPlans',
             // 'monitoringAndEvaluations',
             // 'riskManagements',
@@ -3452,6 +3452,7 @@ class RevisionPlanController extends Controller
             ->where('id', $request->id)
             ->get()
             ->map(function ($item) {
+                // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
                 return [
                     'id' => $item->id,
                     'idpaps' => $item->idpaps,
@@ -3501,13 +3502,61 @@ class RevisionPlanController extends Controller
                     'is_strategy_based' => $item->is_strategy_based,
                     'is_activity_based' => $item->is_activity_based,
                     'breakdown_by_expected_output' => $item->breakdown_by_expected_output,
-                    // 'signatories' => $item->signatories,
+                    // Merge all signatory fields directly at top level
+                    // ...$this->getSignatories($item->id),
                     // 'office' => optional(optional($item)->paps)->office,
                     'total_implementation' => $this->getActivityTotal($item->id),
                     'budget_total'=> floatval($this->getTotalBudgetRequirements($item->id))
 
                 ];
             });
+        $signatories = $this->getSignatories($request->id);
+        $revplanArray = $revplan->toArray();
+        $revplanArray = $revplanArray[0] ?? [];
+        $result = array_merge($revplanArray, $signatories);
+        return $result;
+        // $sigs= $this->getSignatories($request->id);
+        // return $revplan->concat($sigs);
+    }
+    public function getSignatories($id)
+    {
+        $empty = [];
+
+        $data = Signatory::where('revision_plan_id', $id)->get();
+
+        if ($data->isEmpty()) {
+            return $empty;
+        }
+
+        // Custom order sequence
+        $order = [
+            'Prepared',
+            'Reviewed',
+            'Noted',
+            'Recommending Approval',
+            'Approved',
+            'As to AIP Inclusion',
+            'As to AIP Appropriation',
+        ];
+
+        // Sort based on custom order
+        $sorted = $data->sortBy(function ($item) use ($order) {
+            return array_search($item->acted, $order);
+        });
+
+        $final = [];
+
+        foreach ($sorted as $item) {
+
+            // Transform acted → lowercase_with_underscores
+            $acted_key = strtolower(str_replace(' ', '_', $item->acted));
+
+            $final["name_{$acted_key}"]     = $item->name;
+            $final["position_{$acted_key}"] = $item->position;
+            $final["acted_{$acted_key}"]    = 1;
+        }
+
+        return $final;
     }
     public function getActivityTotal($idrev)
     {
