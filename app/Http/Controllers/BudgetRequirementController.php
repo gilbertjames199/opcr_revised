@@ -427,7 +427,10 @@ class BudgetRequirementController extends Controller
                         //     ->get();
 
                         return [
+                            'revision_plan_id'=>$request->revision_plan_id,
                             'category' => $cat->category,
+
+
                             // 'budget_requirements' => $budget_requirements
                         ];
                     })
@@ -435,6 +438,7 @@ class BudgetRequirementController extends Controller
                     ->values();
 
                 return [
+                    'revision_plan_id'=>$request->revision_plan_id,
                     'category_gad' => $gad->category_gad,
                     'categories' => $categories
                 ];
