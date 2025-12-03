@@ -3887,14 +3887,18 @@ class RevisionPlanController extends Controller
             ->get()
             ->map(function($proj)use($request){
                 // dd($request->revision_plan_id);
+                // dd($proj);
+                // if($proj->date_from){
+                //     dd($proj);
+                // }
                 return [
                     'activity_project_id' => $proj->id ?? null,
                     'revision_plan_id'=>$request->revision_plan_id,
                     'strategy_id'=>optional(optional($proj)->activity)->strategy_id,
                     'description' => optional(optional($proj)->activity)->description,
                     'gad_issue' => $proj->gad_issue ?? null,
-                    'date_from' => $proj->date_from ?? null,
-                    'date_to' => $proj->date_to ?? null,
+                    'date_from' => $proj->date_from ?? "2026-01-01",
+                    'date_to' => $proj->date_to ?? "2026-12-31",
 
                     'ps_q1' => $proj->ps_q1 ?? 0,
                     'ps_q2' => $proj->ps_q2 ?? 0,
