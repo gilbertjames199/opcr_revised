@@ -3553,7 +3553,7 @@ class RevisionPlanController extends Controller
 
             $final["name_{$acted_key}"]     = $item->name;
             $final["position_{$acted_key}"] = $item->position;
-            $final["acted_{$acted_key}"]    = 1;
+            $final["acted_{$acted_key}"]    = $item->acted;
         }
 
         return $final;
