@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AIPController;
 use App\Http\Controllers\RevisionPlanController;
+use App\Http\Controllers\BudgetRequirementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +41,10 @@ Route::prefix('/project/profile/api')->group(function(){
     // Route::get('/implementation/schedule/activity',[RevisionPlanController::class, 'getActivity']);
     // Route::get('/implementation/schedule/activity',[RevisionPlanController::class, 'getActivity']);
 });
-
+Route::prefix('budget/requirements')->group(function(){
+    Route::get('/categories',[BudgetRequirementController::class, 'getbudgetCategories']);
+    Route::get('/details',[BudgetRequirementController::class, 'getbudgetDetails']);
+});
 Route::prefix('/aip/summaries')->group(function(){
     Route::get('/',[AIPController::class, 'summarize_ipp']);
 });

@@ -402,4 +402,52 @@ class BudgetRequirementController extends Controller
         // Return JSON response
         return response()->json($budget);
     }
+
+    public function getbudgetCategories(Request $request){
+        $gad_categories = BudgetRequirement::select('category_gad')
+            ->whereNotNull('category_gad')
+            ->where('revision_plan_id', $request->revision_plan_id)
+            ->where('category_gad', '!=', '')
+            ->groupBy('category_gad')
+            ->get()
+            ->map(function ($gad)use($request) {
+                // For this GAD category, get all normal categories that have records
+                $categories = BudgetRequirement::select('category')
+                    ->where('category_gad', $gad->category_gad)
+                    ->whereNotNull('category')
+                    ->where('category', '!=', '')
+                    ->where('revision_plan_id', $request->revision_plan_id)
+                    ->groupBy('category')
+                    ->get()
+                    ->map(function ($cat) use ($gad, $request) {
+                        // Get budget requirements for this category under the GAD category
+                        // $budget_requirements = BudgetRequirement::where('category_gad', $gad->category_gad)
+                        //     ->where('category', $cat->category)
+                        //     ->where('revision_plan_id', $request->revision_plan_id)
+                        //     ->get();
+
+                        return [
+                            'category' => $cat->category,
+                            // 'budget_requirements' => $budget_requirements
+                        ];
+                    })
+                    ->filter() // only include if not empty
+                    ->values();
+
+                return [
+                    'category_gad' => $gad->category_gad,
+                    'categories' => $categories
+                ];
+            })
+            ->filter(fn($item) => $item['categories']->count() > 0) // only include if there is at least 1 category
+            ->values();
+
+        return $gad_categories;
+    }
+    public function getbudgetDetails(Request $request){
+        $budget=BudgetRequirement::where('revision_plan_id', $request->revision_plan_id)
+                    ->where('category', $request->category)
+                    ->where('category_gad', $request->category_gad)
+                    ->get();
+    }
 }
