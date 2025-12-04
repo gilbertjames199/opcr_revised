@@ -3943,13 +3943,30 @@ class RevisionPlanController extends Controller
             ->get()
             ->map(function($proj)use($request){
                 // Collect expected outputs (description column)
-                $expected_outputs = optional(optional($proj)->activity)->expected_output
-                    ? optional($proj->activity->expected_output)->pluck('description')->implode('<br><br>')
+                // dd($proj->expected_output);
+                $expected_outputs = collect(optional(optional($proj)->activity)->expected_output)
+                    ->filter(fn($eo) => is_object($eo))
+                    ->map(function ($eo) {
+
+                        // Convert to numeric safely using (float) casting
+                        $total = (float)($eo->physical_q1 ?? 0)
+                            + (float)($eo->physical_q2 ?? 0)
+                            + (float)($eo->physical_q3 ?? 0)
+                            + (float)($eo->physical_q4 ?? 0);
+
+                        return "{$total} " . (string)($eo->description ?? '');
+                    })
+                    ->whenEmpty(fn() => collect())   // ensure safe implode
+                    ->implode('<br><br>');
+
+                // Collect expected outcomes (target_indicator column)
+                $target_indicators = optional($proj)->expected_output
+                    ? optional($proj)->expected_output->pluck('target_indicator')->implode('<br><br>')
                     : null;
 
                 // Collect expected outcomes (target_indicator column)
-                $target_indicators = optional(optional($proj)->activity)->expected_outcome
-                    ? optional($proj->activity->expected_outcome)->pluck('target_indicator')->implode('<br><br>')
+                $expected_outcomes = optional($proj)->expected_outcome
+                    ? optional($proj)->expected_outcome->pluck('description')->implode('<br><br>')
                     : null;
                 return [
                     'activity_project_id' => $proj->id ?? null,
