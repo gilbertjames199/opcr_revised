@@ -3463,6 +3463,7 @@ class RevisionPlanController extends Controller
                     'program_id' => $item->program_id,
                     'agency_name' => $item->agency_name,
                     'FFUNCCOD' => $item->FFUNCCOD,
+                    'office' => optional(optional($item->paps)->office)->FFUNCTION ?? '',
                     'year_period' => ($item->year_period && $item->year_period != 0) ? $item->year_period
                         : date('Y', strtotime($item->date_start)),
                     'scope' => $item->scope,
