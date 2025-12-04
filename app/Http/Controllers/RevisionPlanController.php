@@ -3931,19 +3931,26 @@ class RevisionPlanController extends Controller
     }
     public function getActivity(Request $request){
         $empty = [];
-
-        $activityProjects = ActivityProject::with(['activity'])
+        // dd("fsdfdsfsdfsdfsdfsdf");
+        $activityProjects = ActivityProject::with(['activity',
+                'expected_output',
+                'expected_outcome'
+            ])
             ->where('project_id', $request->revision_plan_id)
             ->whereHas('activity', function($query)use($request){
                 $query->where('strategy_id', $request->strategy_id);
             })
             ->get()
             ->map(function($proj)use($request){
-                // dd($request->revision_plan_id);
-                // dd($proj);
-                // if($proj->date_from){
-                //     dd($proj);
-                // }
+                // Collect expected outputs (description column)
+                $expected_outputs = optional(optional($proj)->activity)->expected_output
+                    ? optional($proj->activity->expected_output)->pluck('description')->implode('<br><br>')
+                    : null;
+
+                // Collect expected outcomes (target_indicator column)
+                $target_indicators = optional(optional($proj)->activity)->expected_outcome
+                    ? optional($proj->activity->expected_outcome)->pluck('target_indicator')->implode('<br><br>')
+                    : null;
                 return [
                     'activity_project_id' => $proj->id ?? null,
                     'revision_plan_id'=>$request->revision_plan_id,
@@ -3974,7 +3981,8 @@ class RevisionPlanController extends Controller
                     'co_q4' => $proj->co_q4 ?? 0,
                     'ccet' => $proj->ccet ?? null,
                     'responsible' => $proj->responsible ?? null,
-
+                    'expected_outputs' => $expected_outputs,
+                    'target_indicators' => $target_indicators,
                     // 'expected_outputs' => $combined->values(),
                     // 'expected_outputs' => ($proj->expected_output ?? collect())
                     //     ->map(function ($eo) {

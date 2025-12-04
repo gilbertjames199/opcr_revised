@@ -265,6 +265,11 @@
                                                     <span v-else>Design</span>
                                                 </Button>
                                             </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/cdf/${dat.id}`">
+                                                    Cash Disbursements Forecast
+                                                </Link>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>

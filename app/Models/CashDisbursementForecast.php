@@ -15,4 +15,9 @@ class CashDisbursementForecast extends Model
     {
         return $this->belongsTo(RevisionPlan::class, 'revision_plan_id', 'id');
     }
+
+    public function cashDisbursementForecastAccount()
+    {
+        return $this->hasMany(CashDisbursementForecastAccount::class, 'cash_disbursement_forecast_id','id');
+    }
 }

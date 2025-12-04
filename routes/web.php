@@ -20,6 +20,7 @@ use App\Http\Controllers\AccomplishmentController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityProjectController;
 use App\Http\Controllers\BudgetRequirementController;
+use App\Http\Controllers\CashDisbursementForecastController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\IntermediateOutcomeController;
@@ -464,6 +465,10 @@ Route::middleware('auth')->group(function () {
     // Project Design
     Route::prefix('/project/design')->group(function () {
         Route::post('/generate/{id}', [ProjectDesignController::class, 'generateProjectDesign']);
+    });
+    // Cash Disbursements Forecast
+    Route::prefix('/cdf')->group(function(){
+        Route::get('/{revision_plan_id}', [CashDisbursementForecastController::class, 'set_cdf']);
     });
     Route::get('/get_employees_all', [TeamPlanController::class, 'getEmployees']);
     Route::prefix('/revision/streamlined/subtables')->group(function () {
