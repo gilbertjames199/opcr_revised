@@ -5,7 +5,7 @@
     <div class="row gap-10 masonry pos-r">
     <div class="row gap-5">
         <!--class="peers fxw-nw jc-sb ai-c"-->
-        <button class="button button-primary" @click="printDiv">Print</button>
+
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <div class="peers fxw-nw jc-sb ai-c justify-content-end" v-if="src !== 'budget'">
             <Link v-if="paps.scope === 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
