@@ -3454,7 +3454,7 @@ class RevisionPlanController extends Controller
             ->map(function ($item) {
                 // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
                 $signatories=$this->getSignatories($item->id);
-
+                // dd($signatories);
                 return [
                     'id' => $item->id,
                     'idpaps' => $item->idpaps,
@@ -3519,6 +3519,9 @@ class RevisionPlanController extends Controller
                     'name_reviewed'    => $signatories['name_reviewed'] ?? null,
                     'position_reviewed'=> $signatories['position_reviewed'] ?? null,
                     'acted_reviewed'   => $signatories['acted_reviewed'] ?? null,
+                    'name_recommending_approval'    => $signatories['name_recommending_approval'] ?? null,
+                    'position_recommending_approval'=> $signatories['position_recommending_approval'] ?? null,
+                    'acted_recommending_approval'   => $signatories['acted_recommending_approval'] ?? null,
                     'name_approved'    => $signatories['name_approved'] ?? null,
                     'position_approved'=> $signatories['position_approved'] ?? null,
                     'acted_approved'   => $signatories['acted_approved'] ?? null,
