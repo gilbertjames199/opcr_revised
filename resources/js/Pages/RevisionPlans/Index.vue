@@ -261,12 +261,12 @@
                                             <li>
                                                 <Button class="dropdown-item" @click="openPrintProfile(dat.id)">
                                                     Print Project
-                                                    <span v-if="type=='p'">Profile</span>
+                                                    <span v-if="dat.type==='p'">Profile</span>
                                                     <span v-else>Design</span>
                                                 </Button>
                                             </li>
                                             <li>
-                                                <Link class="dropdown-item" :href="`/cdf/${dat.id}`">
+                                                <Link class="dropdown-item" :href="`/cdf/${dat.id}`" v-if="dat.type==='d'">
                                                     Cash Disbursements Forecast
                                                 </Link>
                                             </li>
