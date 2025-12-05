@@ -141,7 +141,10 @@ class ProjectProfileStreamlinedController extends Controller
         } else {
             $editData = $duplicate;
         }
-
+        // dd($editData->idpaps, $idpaps);
+        if($editData->idpaps != $idpaps){
+            return redirect()->back()->with('error', 'Mismatch in Program and Project data. Please try again.');
+        }
         $budgetRequirements = [];
         // dd($id, $hgdg, $paps, $request->source, $office, $all_comments, $editData);
         if (isset($editData)) {

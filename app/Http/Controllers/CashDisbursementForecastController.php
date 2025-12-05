@@ -7,6 +7,7 @@ use App\Models\CashDisbursementForecast;
 use App\Models\BudgetRequirement;
 use App\Models\CashDisbursementForecastAccount;
 use App\Models\ActivityProject;
+use App\Models\RevisionPlan;
 class CashDisbursementForecastController extends Controller
 {
     protected $cdf;
@@ -16,6 +17,14 @@ class CashDisbursementForecastController extends Controller
     }
 
     public function set_cdf(Request $request, $revision_plan_id){
+        $rev_plan =$this->get_revision_plan($revision_plan_id);
+
+        if(!$rev_plan){
+            return redirect()->back()->with('error', 'Revision Plan not found. Please try again.');
+        }
+        if($rev_plan->type=='p'){
+            return redirect()->back()->with('error', 'Cash Disbursement Forecast is not applicable for Project Profile.');
+        }
         $data = CashDisbursementForecast::where('revision_plan_id', $revision_plan_id)
                     ->get();
         $budgetRequirements=[];
@@ -213,5 +222,64 @@ class CashDisbursementForecastController extends Controller
             'updated_column' => $column,
             'new_value' => $request->data
         ], 200);
+    }
+    public function get_revision_plan($revision_plan_id){
+        $data = RevisionPlan::where('id', $revision_plan_id)
+                    ->first();
+        return $data;
+    }
+
+    public function cdf_api(Request $request){
+
+        $revision_plan_id = $request->revision_plan_id;
+        $cdf_id=$request->cash_disbursement_forecast_id;
+        $category = $request->category;
+        $data = CashDisbursementForecastAccount::with(['budgetRequirement'])
+                    ->where('cash_disbursement_forecast_id', $cdf_id)
+                    ->whereHas('budgetRequirement', function($q) use ($category){
+                        $q->where('category', $category);
+                    })
+                    ->get()
+                    ->map(function($item){
+                        return [
+                            'account_code' => $item->budgetRequirement->account_code,
+                            'particulars' => $item->budgetRequirement->particulars,
+                            'appropriations' => $item->budgetRequirement->amount,
+                            'category' => $item->budgetRequirement->category,
+                            'january' => $item->january,
+                            'february' => $item->february,
+                            'march' => $item->march,
+                            'april' => $item->april,
+                            'may' => $item->may,
+                            'june' => $item->june,
+                            'july' => $item->july,
+                            'august' => $item->august,
+                            'september' => $item->september,
+                            'october' => $item->october,
+                            'november' => $item->november,
+                            'december' => $item->december,
+                            'total' => $item->january + $item->february + $item->march + $item->april + $item->may + $item->june + $item->july + $item->august + $item->september + $item->october + $item->november + $item->december,
+                        ];
+                    });
+
+        return $data;
+    }
+    public function cdf_categories(Request $request){
+        $revision_plan_id=$request->revision_plan_id;
+        $result = CashDisbursementForecastAccount::with(['budgetRequirement', 'cashDisbursementForecast'])
+                ->whereHas('cashDisbursementForecast', fn($q) =>
+                    $q->where('revision_plan_id', $revision_plan_id)
+                )
+                ->get()
+                ->groupBy(fn($a) => optional($a->budgetRequirement)->category)
+                ->filter(fn($cat, $key) => $key)      // remove null keys
+                ->keys()                              // unique categories
+                ->map(fn($cat) => [
+                    'category' => $cat,
+                    'cash_disbursement_forecast_id' =>
+                        optional(CashDisbursementForecast::where('revision_plan_id', $revision_plan_id)->first())->id
+                ]);
+
+        return $result;
     }
 }

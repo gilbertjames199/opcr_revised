@@ -35,6 +35,11 @@ class RevisionPlan extends Model
         return $this->hasMany(BudgetRequirement::class, 'revision_plan_id', 'id');
         // ->where('table_name', 'revision_plans');
     }
+
+    public function cashDisbursementForecasts()
+    {
+        return $this->hasMany(CashDisbursementForecast::class, 'revision_plan_id', 'id');
+    }
     public function paps()
     {
         return $this->belongsTo(ProgramAndProject::class, 'idpaps', 'id');

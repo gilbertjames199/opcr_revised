@@ -86,11 +86,15 @@ __webpack_require__.r(__webpack_exports__);
 
       var prefix = prefixes[category];
       if (!prefix) return 0;
-      var field = "".concat(prefix).concat(quarter_period); // Sum all values under the field
+      var field = "".concat(prefix).concat(quarter_period); // console.log("category:", category, "prefix:", prefix);
+      // console.log("Calculating total for field:", field);
+      // Sum all values under the field
 
       return implementation.reduce(function (sum, item) {
         var _item$field;
 
+        console.log("Item value for", field, ":", item[field]);
+        console.log("Current sum:", sum);
         var value = parseFloat((_item$field = item[field]) !== null && _item$field !== void 0 ? _item$field : 0);
         return sum + (isNaN(value) ? 0 : value);
       }, 0);
@@ -118,6 +122,15 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
       return total;
+    },
+    getTotalPerAccountCode: function getTotalPerAccountCode(item) {
+      var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+      var total = 0;
+      months.forEach(function (month) {
+        var val = parseFloat(item[month]) || 0;
+        total += val;
+      });
+      return this.format_number_conv(total, 2, true);
     }
   }
 });
@@ -322,12 +335,12 @@ var _hoisted_34 = ["disabled", "onUpdate:modelValue", "onChange"];
 var _hoisted_35 = ["disabled", "onUpdate:modelValue", "onChange"];
 var _hoisted_36 = ["disabled", "onUpdate:modelValue", "onChange"];
 var _hoisted_37 = {
+  key: 0,
+  "class": "text-danger"
+};
+var _hoisted_38 = {
   key: 2
 };
-
-var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
-/* HOISTED */
-);
 
 var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
 /* HOISTED */
@@ -337,37 +350,37 @@ var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_41 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-  colspan: "2"
-}, " 1st Quarter Total ", -1
+var _hoisted_41 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
 /* HOISTED */
 );
 
 var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   colspan: "2"
-}, " 2nd Quarter Total ", -1
+}, " 1st Quarter Total ", -1
 /* HOISTED */
 );
 
 var _hoisted_43 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   colspan: "2"
-}, " 3rd Quarter Total ", -1
+}, " 2nd Quarter Total ", -1
 /* HOISTED */
 );
 
 var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   colspan: "2"
+}, " 3rd Quarter Total ", -1
+/* HOISTED */
+);
+
+var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  colspan: "2"
 }, " 4th Quarter Total ", -1
 /* HOISTED */
 );
 
-var _hoisted_45 = {
+var _hoisted_46 = {
   key: 3
 };
-
-var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
-/* HOISTED */
-);
 
 var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
 /* HOISTED */
@@ -377,54 +390,58 @@ var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   colspan: "2"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dat.implementation }} "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 1st Quarter Wokplan Total ")], -1
 /* HOISTED */
 );
 
-var _hoisted_50 = {
+var _hoisted_51 = {
   key: 0,
   "class": "text-danger"
 };
 
-var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   colspan: "2"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dat.implementation }} "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 2nd Quarter Wokplan Total ")], -1
 /* HOISTED */
 );
 
-var _hoisted_52 = {
+var _hoisted_53 = {
   colspan: "2"
 };
-var _hoisted_53 = {
+var _hoisted_54 = {
   key: 0,
   "class": "text-danger"
 };
 
-var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "3rd Quarter Wokplan Total ", -1
+var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "3rd Quarter Wokplan Total ", -1
 /* HOISTED */
 );
 
-var _hoisted_55 = {
+var _hoisted_56 = {
   key: 0,
   "class": "text-danger"
 };
 
-var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_57 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   colspan: "2"
 }, "4th Quarter Wokplan Total ", -1
 /* HOISTED */
 );
 
-var _hoisted_57 = {
+var _hoisted_58 = {
   key: 0,
   "class": "text-danger"
 };
-var _hoisted_58 = {
+var _hoisted_59 = {
   "class": "row justify-content-center"
 };
-var _hoisted_59 = {
+var _hoisted_60 = {
   "class": "col-md-12"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -642,34 +659,36 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }
         }, null, 40
         /* PROPS, HYDRATE_EVENTS */
-        , _hoisted_36), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.december]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(parseFloat(item.january) + parseFloat(item.february) + parseFloat(item.march) + parseFloat(item.april) + parseFloat(item.may) + parseFloat(item.june) + parseFloat(item.july) + parseFloat(item.august) + parseFloat(item.september) + parseFloat(item.october) + parseFloat(item.november) + parseFloat(item.december)), 1
+        , _hoisted_36), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.december]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getTotalPerAccountCode(item)) + " ", 1
         /* TEXT */
-        )]);
+        ), $options.getTotalPerAccountCode(item) !== _ctx.format_number_conv(item.amount, 2, true) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Total disbursement does not equal to Appropriation. "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, " (Difference: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(item.amount) - parseFloat($options.getTotalPerAccountCode(item).replace(/,/g, '')), 2, true)) + ") ", 1
+        /* TEXT */
+        )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
       }), 256
       /* UNKEYED_FRAGMENT */
-      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), cash.items.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_37, [_hoisted_38, _hoisted_39, _hoisted_40, _hoisted_41, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q1'), 2, true)), 1
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), cash.items.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_38, [_hoisted_39, _hoisted_40, _hoisted_41, _hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q1'), 2, true)), 1
       /* TEXT */
-      ), _hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q1'), 2, true)), 1
+      ), _hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q2'), 2, true)), 1
       /* TEXT */
-      ), _hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q1'), 2, true)), 1
+      ), _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q3'), 2, true)), 1
       /* TEXT */
-      ), _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q1'), 2, true)), 1
+      ), _hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q4'), 2, true)), 1
       /* TEXT */
-      )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), cash.items.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_45, [_hoisted_46, _hoisted_47, _hoisted_48, _hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.getQuarterlyTotal(dat.implementation, 'q1', cash.category), 2, true)) + " ", 1
+      )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), cash.items.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_46, [_hoisted_47, _hoisted_48, _hoisted_49, _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.getQuarterlyTotal(dat.implementation, 'q1', cash.category, cash.category), 2, true)) + " ", 1
       /* TEXT */
-      ), $options.computeCategoryTotals(cash.items, 'q1') !== $options.getQuarterlyTotal(dat.implementation, 'q1', cash.category) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_50, " First Quarter CDF total is not equal to first quarter Workplan total. (Difference: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q1') - $options.getQuarterlyTotal(dat.implementation, 'q1', cash.category), 2, true)) + ") ", 1
+      ), $options.computeCategoryTotals(cash.items, 'q1') !== $options.getQuarterlyTotal(dat.implementation, 'q1', cash.category) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_51, " First Quarter CDF total is not equal to first quarter Workplan total. (Difference: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q1') - $options.getQuarterlyTotal(dat.implementation, 'q1', cash.category), 2, true)) + ") ", 1
       /* TEXT */
-      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.getQuarterlyTotal(dat.implementation, 'q2'), 2, true)) + " ", 1
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.getQuarterlyTotal(dat.implementation, 'q2', cash.category), 2, true)) + " ", 1
       /* TEXT */
-      ), $options.computeCategoryTotals(cash.items, 'q2') !== $options.getQuarterlyTotal(dat.implementation, 'q2', cash.category) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_53, " Second Quarter CDF total is not equal to second quarter Workplan total. (Difference: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q2') - $options.getQuarterlyTotal(dat.implementation, 'q2', cash.category), 2, true)) + ") ", 1
+      ), $options.computeCategoryTotals(cash.items, 'q2') !== $options.getQuarterlyTotal(dat.implementation, 'q2', cash.category) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_54, " Second Quarter CDF total is not equal to second quarter Workplan total. (Difference: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q2') - $options.getQuarterlyTotal(dat.implementation, 'q2', cash.category), 2, true)) + ") ", 1
       /* TEXT */
-      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.getQuarterlyTotal(dat.implementation, 'q3'), 2, true)) + " ", 1
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.getQuarterlyTotal(dat.implementation, 'q3', cash.category), 2, true)) + " ", 1
       /* TEXT */
-      ), $options.computeCategoryTotals(cash.items, 'q3') !== $options.getQuarterlyTotal(dat.implementation, 'q3', cash.category) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_55, " Third Quarter CDF total is not equal to third quarter Workplan total. (Difference: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q3') - $options.getQuarterlyTotal(dat.implementation, 'q3', cash.category), 2, true)) + ") ", 1
+      ), $options.computeCategoryTotals(cash.items, 'q3') !== $options.getQuarterlyTotal(dat.implementation, 'q3', cash.category) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_56, " Third Quarter CDF total is not equal to third quarter Workplan total. (Difference: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q3') - $options.getQuarterlyTotal(dat.implementation, 'q3', cash.category), 2, true)) + ") ", 1
       /* TEXT */
-      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_56, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.getQuarterlyTotal(dat.implementation, 'q4'), 2, true)) + " ", 1
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_57, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.getQuarterlyTotal(dat.implementation, 'q4', cash.category), 2, true)) + " ", 1
       /* TEXT */
-      ), $options.computeCategoryTotals(cash.items, 'q4') !== $options.getQuarterlyTotal(dat.implementation, 'q4', cash.category) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_57, " Fourth Quarter CDF total is not equal to fourth quarter Workplan total. (Difference: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q4') - $options.getQuarterlyTotal(dat.implementation, 'q4', cash.category), 2, true)) + ") ", 1
+      ), $options.computeCategoryTotals(cash.items, 'q4') !== $options.getQuarterlyTotal(dat.implementation, 'q4', cash.category) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_58, " Fourth Quarter CDF total is not equal to fourth quarter Workplan total. (Difference: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($options.computeCategoryTotals(cash.items, 'q4') - $options.getQuarterlyTotal(dat.implementation, 'q4', cash.category), 2, true)) + ") ", 1
       /* TEXT */
       )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
       /* STABLE_FRAGMENT */
@@ -681,7 +700,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     );
   }), 256
   /* UNKEYED_FRAGMENT */
-  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_59, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {
+  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_59, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_60, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {
     next: $props.data.next_page_url,
     prev: $props.data.prev_page_url
   }, null, 8

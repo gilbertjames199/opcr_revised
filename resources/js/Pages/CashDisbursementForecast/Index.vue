@@ -162,7 +162,15 @@
                                             v-model="item.december" @change="saveAmounts(item.id, item.december,'december')">
                                         </td>
                                         <td>
-                                            {{ parseFloat(item.january) + parseFloat(item.february) + parseFloat(item.march) + parseFloat(item.april) + parseFloat(item.may) + parseFloat(item.june) + parseFloat(item.july) + parseFloat(item.august) + parseFloat(item.september) + parseFloat(item.october) + parseFloat(item.november) + parseFloat(item.december) }}
+                                            {{ getTotalPerAccountCode(item) }}
+                                            <p class="text-danger"
+                                            v-if="getTotalPerAccountCode(item)!==format_number_conv(item.amount, 2, true)">
+                                                Total disbursement does not equal to Appropriation.
+                                                <p>
+                                                    (Difference:
+                                                    {{ format_number_conv(parseFloat(item.amount) - parseFloat(getTotalPerAccountCode(item).replace(/,/g, '')), 2, true) }})
+                                                </p>
+                                            </p>
                                         </td>
                                     </tr>
                                     <tr v-if="cash.items.length>0">
@@ -176,15 +184,15 @@
                                         <td colspan="2">
                                             2nd Quarter Total
                                         </td>
-                                        <td>{{ format_number_conv(computeCategoryTotals(cash.items,'q1'),2,true) }}</td>
+                                        <td>{{ format_number_conv(computeCategoryTotals(cash.items,'q2'),2,true) }}</td>
                                         <td colspan="2">
                                             3rd Quarter Total
                                         </td>
-                                        <td>{{ format_number_conv(computeCategoryTotals(cash.items,'q1'),2,true) }}</td>
+                                        <td>{{ format_number_conv(computeCategoryTotals(cash.items,'q3'),2,true) }}</td>
                                         <td colspan="2">
                                             4th Quarter Total
                                         </td>
-                                        <td>{{ format_number_conv(computeCategoryTotals(cash.items,'q1'),2,true) }}</td>
+                                        <td>{{ format_number_conv(computeCategoryTotals(cash.items,'q4'),2,true) }}</td>
                                     </tr>
                                     <tr v-if="cash.items.length>0">
                                         <td></td>
@@ -195,7 +203,7 @@
                                             1st Quarter Wokplan Total
                                         </td>
                                         <td>
-                                            {{ format_number_conv(getQuarterlyTotal(dat.implementation, 'q1', cash.category), 2, true) }}
+                                            {{ format_number_conv(getQuarterlyTotal(dat.implementation, 'q1', cash.category, cash.category), 2, true) }}
                                             <p class="text-danger"
                                             v-if="computeCategoryTotals(cash.items,'q1')!==getQuarterlyTotal(dat.implementation, 'q1', cash.category)">
                                                 First Quarter CDF total is not equal to first quarter Workplan total.
@@ -208,7 +216,7 @@
                                             2nd Quarter Wokplan Total
                                         </td>
                                         <td colspan="2">
-                                            {{ format_number_conv(getQuarterlyTotal(dat.implementation, 'q2'), 2, true) }}
+                                            {{ format_number_conv(getQuarterlyTotal(dat.implementation, 'q2', cash.category), 2, true) }}
                                             <p class="text-danger"
                                             v-if="computeCategoryTotals(cash.items,'q2')!==getQuarterlyTotal(dat.implementation, 'q2', cash.category)">
                                                 Second Quarter CDF total is not equal to second quarter Workplan total.
@@ -217,7 +225,7 @@
                                             </p>
                                         </td>
                                         <td>3rd Quarter Wokplan Total  </td>
-                                        <td >{{ format_number_conv(getQuarterlyTotal(dat.implementation, 'q3'), 2, true) }}
+                                        <td >{{ format_number_conv(getQuarterlyTotal(dat.implementation, 'q3', cash.category), 2, true) }}
                                             <p class="text-danger"
                                             v-if="computeCategoryTotals(cash.items,'q3')!==getQuarterlyTotal(dat.implementation, 'q3', cash.category)">
                                                 Third Quarter CDF total is not equal to third quarter Workplan total.
@@ -226,7 +234,7 @@
                                             </p>
                                         </td>
                                         <td colspan="2">4th Quarter Wokplan Total  </td>
-                                        <td>{{ format_number_conv(getQuarterlyTotal(dat.implementation, 'q4'), 2, true) }}
+                                        <td>{{ format_number_conv(getQuarterlyTotal(dat.implementation, 'q4', cash.category), 2, true) }}
                                             <p class="text-danger"
                                             v-if="computeCategoryTotals(cash.items,'q4')!==getQuarterlyTotal(dat.implementation, 'q4', cash.category)">
                                                 Fourth Quarter CDF total is not equal to fourth quarter Workplan total.
@@ -365,9 +373,12 @@ export default {
             if (!prefix) return 0;
 
             const field = `${prefix}${quarter_period}`;
-
+            // console.log("category:", category, "prefix:", prefix);
+            // console.log("Calculating total for field:", field);
             // Sum all values under the field
             return implementation.reduce((sum, item) => {
+                console.log("Item value for", field, ":", item[field]);
+                console.log("Current sum:", sum);
                 const value = parseFloat(item[field] ?? 0);
                 return sum + (isNaN(value) ? 0 : value);
             }, 0);
@@ -399,7 +410,16 @@ export default {
             });
 
             return total;
-        }
+        },
+        getTotalPerAccountCode(item){
+            const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+            let total = 0;
+            months.forEach(month => {
+                const val = parseFloat(item[month]) || 0;
+                total += val;
+            });
+            return this.format_number_conv(total, 2, true);
+        },
     }
 };
 </script>

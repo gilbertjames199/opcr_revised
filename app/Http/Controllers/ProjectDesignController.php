@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\RevisionPlan;
 use Illuminate\Http\Request;
+use App\Models\CashDisbursementForecast;
+use App\Models\BudgetRequirement;
+use App\Models\CashDisbursementForecastAccount;
+use App\Models\CurrentAipYear;
 use Illuminate\Support\Facades\DB;
 
 class ProjectDesignController extends Controller
@@ -19,7 +23,11 @@ class ProjectDesignController extends Controller
     {
         // dd($request->input('type'));
         // 1️⃣ Check if a project design already exists
-        $existing = RevisionPlan::where('reference_profile_id', $id)->first();
+        $current_year =CurrentAipYear::first()->year;
+        $existing = RevisionPlan::where('reference_profile_id', $id)
+                ->where('type', $request->input('type'))
+                ->whereYear('date_start', $current_year)
+                ->first();
 
         if ($existing) {
             return redirect()->back()->with(
@@ -53,7 +61,9 @@ class ProjectDesignController extends Controller
                 'monitoringAndEvaluations',
                 'riskManagements',
                 'signatories',
-                'hgdgScores'
+                'hgdgScores',
+                'cashDisbursementForecasts',
+                'cashDisbursementForecasts.cashDisbursementForecastAccount'
             ])->findOrFail($id);
 
             // -----------------------------------------------------------
@@ -211,6 +221,11 @@ class ProjectDesignController extends Controller
                 $clone->save();
             }
 
+            // -----------------------------------------------------------
+            // CLONE CASH DISBURSEMENT FORECAST
+            if($rev_plan->type!='p'){
+                $this->generateCDF($new_plan, $rev_plan);
+            }
             DB::commit();
 
             return [
@@ -223,5 +238,83 @@ class ProjectDesignController extends Controller
                 'error' => $e->getMessage()
             ];
         }
+    }
+    protected function generateCDF($new_plan, $rev_plan){
+        $newCDF  = CashDisbursementForecast::create([
+            'revision_plan_id' => $new_plan->id,
+            'version' => 1,
+            'status' => 1
+        ]);
+
+        $budgetRequirements = BudgetRequirement::where('revision_plan_id', $new_plan->id)->get();
+
+        foreach ($budgetRequirements as $br) {
+            // ensure no duplicate for this BR + this new CDF
+            $exists = CashDisbursementForecastAccount::where('budget_requirement_id', $br->id)
+                ->where('cash_disbursement_forecast_id', $newCDF->id)
+                ->exists();
+
+            if (!$exists) {
+                CashDisbursementForecastAccount::create([
+                    'budget_requirement_id'            => $br->id,
+                    'cash_disbursement_forecast_id'    => $newCDF->id,
+                    'january'   => 0, 'february' => 0, 'march'    => 0,
+                    'april'     => 0, 'may'      => 0, 'june'     => 0,
+                    'july'      => 0, 'august'   => 0, 'september'=> 0,
+                    'october'   => 0, 'november' => 0, 'december' => 0
+                ]);
+            }
+        }
+
+        // ------------------------------------------------------
+        // 4.) UPDATE NEW CDF ACCOUNTS BASED ON OLD LATEST VALID VERSION
+        // ------------------------------------------------------
+
+        // Step 4.1: determine the latest valid old CDF version
+        $oldCDF = CashDisbursementForecast::where('revision_plan_id', $rev_plan->id)
+            ->when(true, function ($q) {
+                $q->orderByRaw("FIELD(status, 1, 0, -1)")->orderBy('version', 'DESC');
+            })
+            ->first();
+
+        if ($oldCDF) {
+
+            $oldAccounts = CashDisbursementForecastAccount::with('budgetRequirement')
+                ->where('cash_disbursement_forecast_id', $oldCDF->id)
+                ->get()
+                ->keyBy(fn($item) => optional($item->budgetRequirement)->account_code);
+
+            $newAccounts = CashDisbursementForecastAccount::with('budgetRequirement')
+                ->where('cash_disbursement_forecast_id', $newCDF->id)
+                ->get()
+                ->keyBy(fn($item) => optional($item->budgetRequirement)->account_code);
+
+            foreach ($newAccounts as $account_code => $newAcc) {
+
+                if (!$account_code) continue; // skip missing BR relations
+
+                if (isset($oldAccounts[$account_code])) {
+                    $oldAcc = $oldAccounts[$account_code];
+
+                    // Copy the monthly values
+                    $newAcc->update([
+                        'january'   => $oldAcc->january,
+                        'february'  => $oldAcc->february,
+                        'march'     => $oldAcc->march,
+                        'april'     => $oldAcc->april,
+                        'may'       => $oldAcc->may,
+                        'june'      => $oldAcc->june,
+                        'july'      => $oldAcc->july,
+                        'august'    => $oldAcc->august,
+                        'september' => $oldAcc->september,
+                        'october'   => $oldAcc->october,
+                        'november'  => $oldAcc->november,
+                        'december'  => $oldAcc->december,
+                    ]);
+                }
+            }
+        }
+        // Return the newly created row
+        // return [$new];
     }
 }
