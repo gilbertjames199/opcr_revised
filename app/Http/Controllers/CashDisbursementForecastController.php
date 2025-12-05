@@ -272,7 +272,7 @@ class CashDisbursementForecastController extends Controller
         $revPlan = RevisionPlan::with(['paps', 'paps.office'])
                     ->where('id', $revision_plan_id)
                     ->first();
-        // dd($revPlan);
+        // dd($revPlan->paps);
         if($revPlan){
                $result = [
                     'id'            => $revPlan->id,
@@ -296,7 +296,7 @@ class CashDisbursementForecastController extends Controller
                     'category' => $cat,
                     'cash_disbursement_forecast_id' =>
                         optional(CashDisbursementForecast::where('revision_plan_id', $revision_plan_id)->first())->id,
-                    'office' => optional($result)->office ?? 'N/A',
+                    'office' => optional($result)['office'] ?? 'N/A',
                     'year' => optional($result)['year'] ?? 'N/A',
                     'project_title' => optional($result)['project_title'] ?? 'N/A',
                 ]);
