@@ -128,7 +128,8 @@ class ProjectProfileStreamlinedController extends Controller
             $rev_plan_firstgenerate->monitoring = '';
             $rev_plan_firstgenerate->risk_management = '';
             $rev_plan_firstgenerate->version = 1;
-            $rev_plan_firstgenerate->type = 'p';
+            $rev_plan_firstgenerate->gad_version = ($request->source === 'sip' || $this->getCurrentAipYear() != 2026) ? 2 : 1;
+            $rev_plan_firstgenerate->type = $request->source=='sip'?'sip':'p';
             $rev_plan_firstgenerate->final = 0;
             $rev_plan_firstgenerate->supplemental = 0;
             $rev_plan_firstgenerate->user_id = auth()->user()->recid;
@@ -210,7 +211,10 @@ class ProjectProfileStreamlinedController extends Controller
             ],
         ]);
     }
-
+    public function getCurrentAipYear()
+    {
+        return CurrentAipYear::first()->year();
+    }
     function getAllRevisionPlanComments(int $revisionPlanId)
     {
         // 1️⃣ Comments directly on revision_plans

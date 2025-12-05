@@ -426,6 +426,7 @@ class RevisionPlanController extends Controller
             ->when($request->search, function($query)use($request){
                 $query->where('project_title','LIKE','%'.$request->search.'%');
             })
+            ->where('type','<>','sip')
             ->when($request->type_filter, function($query)use($request){
                 $query->where('type',$request->type_filter);
             })

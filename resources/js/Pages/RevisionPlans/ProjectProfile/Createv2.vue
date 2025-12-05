@@ -3,9 +3,13 @@
         <title>Edit Project Profile</title>
     </Head>
     <div class="relative row gap-20 masonry pos-r">
-        <h4>GAD V2</h4>
+        <h4>v2</h4>
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} <span v-if="editData.type === 'p'">Profile</span><span v-else>Design</span> </h3>
+            <h3>{{ pageTitle }}
+                <span v-if="editData.type === 'p'">Profile</span>
+                <span v-if="editData.type === 'd'">Design</span>
+                <span v-if="editData.type === 'sip'">Profile (SIP)</span>
+            </h3>
             <Link :href="`/revision/0?source=direct`" v-if="source=='direct'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                     viewBox="0 0 16 16">
@@ -1418,7 +1422,7 @@
                                             </button>
                                         </td>
                                         <!-- SIP Number -->
-                                         <td v-if="source==='sip'">
+                                         <td v-if="editData.type==='sip'">
                                             {{ row.sip_number }}
                                          </td>
                                         <!-- AMOUNT -->

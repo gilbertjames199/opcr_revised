@@ -862,10 +862,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS, DYNAMIC_SLOTS */
     , ["href"])], 2112
     /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
-    ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FULL EDIT "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [dat.idpaps ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
+    ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FULL EDIT "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /revision/streamlined/create/{{dat.idpaps}}?source={{source}}&idrevplan={{dat.id}} "), dat.idpaps ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
       key: 0,
       "class": "btn btn-primary btn-sm",
-      href: "/revision/streamlined/create/".concat(dat.idpaps, "?source=direct&idrevplan=").concat(dat.id)
+      href: "/revision/streamlined/create/".concat(dat.idpaps, "?source=").concat($props.source, "&idrevplan=").concat(dat.id)
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
         return [_hoisted_29];
@@ -1186,9 +1186,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" src: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.source), 1
-  /* TEXT */
-  )], 64
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" src: {{source}} fdfsdf ")], 64
   /* STABLE_FRAGMENT */
   );
 }

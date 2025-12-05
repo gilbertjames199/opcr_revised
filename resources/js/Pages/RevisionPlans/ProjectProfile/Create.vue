@@ -4,6 +4,7 @@
     </Head>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
+            <span>v1</span>
             <h3>{{ pageTitle }} Project
                 <span v-if="editData.type === 'p'">Profile</span>
                 <span v-if="editData.type === 'd'">Design</span>
@@ -2381,9 +2382,9 @@
         </table>
 
 
-        <button @click="addStrategy" class="btn btn-primary mt-2">Add Strategy</button>
+        <button @click="addStrategy" class="btn btn-primary mt-2">Add Row</button>
         <button @click="saveStrategies" class="btn btn-success mt-2">Save</button>
-        {{strategies}}
+        <!-- {{strategies}} -->
     </StrategyModal>
     <ActivityModal v-if="ActivityModalVisible" @close-modal-event="closeActivityModal" title="ACTIVITIES MODAL">
 
@@ -2593,7 +2594,7 @@
         </table>
         <!--ADD RISK MANAGEMENT ROW-->
         <button class="btn btn-primary mb-2 text-white" @click="addRiskManagementRow">
-            + Add Risk Management
+            + Add Row
         </button>
         &nbsp;&nbsp;
         <!-- SAVE BUTTON -->
@@ -2650,60 +2651,61 @@
     </MonitoringModal>
     <SignatoryModal v-if="SignatoryModalVisible" @close-modal-event="closeSignatoryModal" title="SIGNATORIES">
         <!-- ADD SIGNATORY BUTTON -->
-      <button @click="addSignatoryRow"
-              class="btn btn-primary mb-3">
-        + Add Signatory
-      </button>
 
-      <!-- SIGNATORIES TABLE -->
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Acted</th>
-            <th>Sequence</th>
-            <th>Action</th>
-          </tr>
-        </thead>
 
-        <tbody>
-          <tr v-for="(row, index) in signatories" :key="index">
-            <td>
-              <input type="text" v-model="row.name" class="form-control">
-            </td>
+        <!-- SIGNATORIES TABLE -->
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Acted</th>
+                <th>Sequence</th>
+                <th>Action</th>
+            </tr>
+            </thead>
 
-            <td>
-              <input type="text" v-model="row.position" class="form-control">
-            </td>
+            <tbody>
+            <tr v-for="(row, index) in signatories" :key="index">
+                <td>
+                <input type="text" v-model="row.name" class="form-control">
+                </td>
 
-            <td>
+                <td>
+                <input type="text" v-model="row.position" class="form-control">
+                </td>
 
-              <select v-model="row.acted" class="form-select" autocomplete="chrome-off">
-                    <option>Prepared</option>
-                    <option>Reviewed</option>
-                    <option>Noted</option>
-                    <option>Approved</option>
-                    <option>Recommending Approval</option>
-                    <option>As to AIP Inclusion</option>
-                    <option>As to AIP Appropriation</option>
-                </select>
-            </td>
+                <td>
 
-            <td>
-              <input type="number" v-model="row.sequence" class="form-control">
-            </td>
+                <select v-model="row.acted" class="form-select" autocomplete="chrome-off">
+                        <option>Prepared</option>
+                        <option>Reviewed</option>
+                        <option>Noted</option>
+                        <option>Approved</option>
+                        <option>Recommending Approval</option>
+                        <option>As to AIP Inclusion</option>
+                        <option>As to AIP Appropriation</option>
+                    </select>
+                </td>
 
-            <td>
-              <button @click="removeSignatoryRow(index)"
-                      class="btn btn-danger btn-sm">
-                Remove
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <button @click="saveSignatories()" class="btn btn-success text-white">Save</button>
+                <td>
+                <input type="number" v-model="row.sequence" class="form-control">
+                </td>
+
+                <td>
+                <button @click="removeSignatoryRow(index)"
+                        class="btn btn-danger btn-sm">
+                    Remove
+                </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button @click="addSignatoryRow"
+                class="btn btn-primary mb-3">
+            + Add Row
+        </button>&nbsp;&nbsp;
+        <button @click="saveSignatories()" class="btn btn-success text-white">Save</button>
     </SignatoryModal>
     <ExpectedOutputModal v-if="ExpectedOutputModalVisible" @close-modal-event="hideExpectedOutputModal" title="EXPECTED OUTPUTS">
 
