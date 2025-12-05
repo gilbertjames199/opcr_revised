@@ -8,6 +8,9 @@ use App\Models\BudgetRequirement;
 use App\Models\CashDisbursementForecastAccount;
 use App\Models\ActivityProject;
 use App\Models\RevisionPlan;
+use Carbon\Carbon;
+
+
 class CashDisbursementForecastController extends Controller
 {
     protected $cdf;
@@ -266,6 +269,21 @@ class CashDisbursementForecastController extends Controller
     }
     public function cdf_categories(Request $request){
         $revision_plan_id=$request->revision_plan_id;
+        $revPlan = RevisionPlan::with(['paps', 'paps.office'])
+                    ->where('id', $revision_plan_id)
+                    ->first();
+        // dd($revPlan);
+        if($revPlan){
+               $result = [
+                    'id'            => $revPlan->id,
+                    'project_title' => $revPlan->project_title,
+                    'year'          => $revPlan->date_start ? Carbon::parse($revPlan->date_start)->format('Y') : null,
+                    'office'        => optional(optional($revPlan->paps)->office)->FFUNCTION ?? 'N/A',
+                    'type'          => $revPlan->type,
+                ];
+        }
+        // dd($revPlan);
+        // dd($result);
         $result = CashDisbursementForecastAccount::with(['budgetRequirement', 'cashDisbursementForecast'])
                 ->whereHas('cashDisbursementForecast', fn($q) =>
                     $q->where('revision_plan_id', $revision_plan_id)
@@ -277,7 +295,10 @@ class CashDisbursementForecastController extends Controller
                 ->map(fn($cat) => [
                     'category' => $cat,
                     'cash_disbursement_forecast_id' =>
-                        optional(CashDisbursementForecast::where('revision_plan_id', $revision_plan_id)->first())->id
+                        optional(CashDisbursementForecast::where('revision_plan_id', $revision_plan_id)->first())->id,
+                    'office' => optional($result)->office ?? 'N/A',
+                    'year' => optional($result)['year'] ?? 'N/A',
+                    'project_title' => optional($result)['project_title'] ?? 'N/A',
                 ]);
 
         return $result;
