@@ -286,13 +286,11 @@
 
             </div>
         </div>
-        <PrintModal v-if="PrintModalVisible" @close-modal-event="PrintModalVisible = false" title="PRINT CASH DISBUREMENT FORECAST">
-            <h1>Cash Disbursements Forecast</h1>
-             <div class="d-flex justify-content-center">
+        <PrintModal v-if="PrintModalVisible" @close-modal-event="PrintModalVisible = false" title="CASH DISBUREMENT FORECAST PRINTING">
+            <div class="d-flex justify-content-center">
                 <!-- {{ aip_printLink }} -->
-                  <!-- {{ printLink }} -->
+                <!-- {{ printLink }} -->
                 <iframe :src="printLink" style="width:100%; height:500px" />
-
             </div>
         </PrintModal>
     </div>
