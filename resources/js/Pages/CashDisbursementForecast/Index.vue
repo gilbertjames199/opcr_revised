@@ -51,8 +51,11 @@
                         <tbody>
                             <template v-for="dat in data">
                                 <tr >
-                                    <td colspan="15"><h5>{{ dat.project_title.toUpperCase() }}</h5></td>
-                                    <td>
+                                    <td colspan="14"><h5>{{ dat.project_title.toUpperCase() }}</h5></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-primary btn-sm mL-2 text-white" @click="printCDF(dat.revision_plan_id)">Print</button>
+                                    </td>
+                                    <td >
                                         <div class="dropdown dropstart" >
                                             <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -88,7 +91,7 @@
                                     <tr v-if="cash.items.length>0">
                                         <td colspan="16" style="font-weight: bold;">
                                             {{  cash.category.toUpperCase() }}
-                                            <button class="btn btn-primary btn-sm mL-2 text-white" @click="printCDF(dat.revision_plan_id)">Print</button>
+
                                         </td>
                                     </tr>
                                     <tr v-for="item in cash.items" v-if="cash.items.length>0">

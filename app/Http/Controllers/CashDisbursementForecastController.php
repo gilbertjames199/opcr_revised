@@ -105,6 +105,7 @@ class CashDisbursementForecastController extends Controller
             'revisionPlan.activityProject'
         ])
         ->where('revision_plan_id', $revision_plan_id)
+        ->whereHas('cashDisbursementForecastAccount.budgetRequirement') // Ensure there are related budget requirements
         ->get()
         ->map(function($item) use ($categoriesOrder) {
             $grouped = [];
@@ -288,6 +289,7 @@ class CashDisbursementForecastController extends Controller
                 ->whereHas('cashDisbursementForecast', fn($q) =>
                     $q->where('revision_plan_id', $revision_plan_id)
                 )
+                ->whereHas('budgetRequirement')
                 ->get()
                 ->groupBy(fn($a) => optional($a->budgetRequirement)->category)
                 ->filter(fn($cat, $key) => $key)      // remove null keys
