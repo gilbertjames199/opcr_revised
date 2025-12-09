@@ -1033,6 +1033,13 @@
                                                     'text-danger': has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)
                                                 }" :id="act.activity_id + '_activity_projects_ccet_code'">
                                                     <span v-if="paps.is_strategy_based==0">
+                                                        <select>
+                                                            <option value="">-- Select CCET Code --</option>
+                                                            <option v-for="code in ccet_codes" :key="code.id" :value="code.code"
+                                                                :selected="act.ccet_code === code.code">
+                                                                {{ code.code }} - {{ code.description }}
+                                                            </option>
+                                                        </select>
                                                         <textarea
                                                             class="form-control transparent-bg "
                                                             v-model="act.ccet_code"
@@ -2298,7 +2305,8 @@
             </div>
             <br>
         </CommentModal>
-
+        <!-- ccet_computed:
+        {{ ccet_computed }} -->
     </div>
     <BudgetModal v-if="BudgetModalVisible" @close-modal-event="closeBudgetModal" title="BUDGETARY REQUIREMENTS">
         <div class="p-3">
@@ -2471,7 +2479,25 @@
                         <div>Total ({{  format_number_conv(parseFloat(act.fe_q1) + parseFloat(act.fe_q2) + parseFloat(act.fe_q3) + parseFloat(act.fe_q4), 2, true)  }})</div>
                     </td>
                     <!-- CCET -->
-                    <td><input v-model="act.ccet_code" class="form-control" /></td>
+                    <td>
+                        <!-- <input v-model="act.ccet_code" class="form-control" /> -->
+                        <!-- <select v-model="act.ccet_code" class="form-select" >
+                            <option value="">Select CCET</option>
+                            <option v-for="ccet in ccet_codes" :key="ccet.ccet_code" :value="ccet.ccet_code">
+                                {{ ccet.ccet_code }} - {{ ccet.description }}
+                            </option>
+                        </select> -->
+                        <multiselect
+                            class="form-select"
+                            :options="ccet_computed"
+                            :searchable="true"
+                            label="label"
+                            track-by="label"
+                            :reduce="act => act.ccet_code"
+                            v-model="act.ccet_code"
+                            @input="updateCCET($event)"
+                        />
+                    </td>
                     <!-- PERSON RESPONSIBLE -->
                     <td><input v-model="act.responsible" class="form-control" /></td>
                     <td>
@@ -2959,7 +2985,10 @@ export default {
         risk_manangement: Object,
 
         // SOURCE
-        source: String
+        source: String,
+
+        // CCET CODE
+        ccet_codes: Object,
     },
     components: {
 
@@ -3226,6 +3255,18 @@ export default {
                 value: emp.empl_id,
                 label: `${emp.empl_id} - ${emp.employee_name}`,
                 _raw: emp
+            }));
+        },
+
+        ccet_computed(){
+            const ccet_code_c = Array.isArray(this.ccet_codes)
+                ? this.ccet_codes
+                : [];
+
+            return ccet_code_c.map(ccet => ({
+                value: ccet.ccet_code,
+                label: `${ccet.ccet_code} - ${ccet.description}`,
+                _raw: ccet
             }));
         },
         countUnresolvedComments() {
@@ -3664,36 +3705,7 @@ export default {
                 console.error(`Error updating ${table_name} (${column_name})`, error);
             }
         }, 1000), // 🔥 Delay here (1s or 300ms)
-        // async updateRevisionPlans(table_name, column_name, id, new_data){
-        //     const payload = {
-        //         table_name: table_name,
-        //         column_name: column_name,
-        //         id: id,
-        //         new_data: encodeURIComponent(new_data)
-        //     };
 
-        //     const debouncedCall = debounce(async () => {
-        //         try {
-        //             const response = await axios.patch(`/revision/streamlined/${id}/update`, payload);
-        //             console.log(response.data);
-        //             this.setUnsaved(false);
-        //             // this.refreshData();
-        //         } catch (error) {
-        //             console.error('Error updating ' + table_name + ' (' + column_name + ')', error);
-        //         }
-        //     }, 1000);
-
-            // call the debounced function
-            // debouncedCall();
-            // try {
-            //     const response = await axios.patch(`/revision/streamlined/${id}/update`, payload);
-            //     console.log(response.data);
-            //     this.setUnsaved(false)
-            //     // this.refreshData();
-            // } catch (error) {
-            //     console.error('Error updating '+table_name+' ('+column_name+')', error);
-            // }
-        // },
 
         // GENERAL DELETION ************************************************
         deleteData(id, table, title){
@@ -4031,15 +4043,7 @@ export default {
 
 
         },
-        // updateEmployee(){
-        //     var selectedEmp = this.all_employees.find(peop => String(peop.empl_id) === String(this.team_members.implementing_team_id));
-        //     // alert("fsdfsdf")
-        //     console.log(this.team_members.implementing_team_id)
-        //     console.log(selectedEmp)
-        //     this.team_members.name = selectedEmp ? selectedEmp.employee_name : '';
-        //     this.team_members.gender = selectedEmp ? selectedEmp.gender : '';
-        //     this.team_members.position = selectedEmp ? selectedEmp.position_long_title : '';
-        // },
+
         updateEmployee(emplId) {
             const selectedEmp = this.all_employees.find(
                 peop => String(peop.empl_id) === String(emplId)
@@ -4050,6 +4054,32 @@ export default {
             this.team_members.position = selectedEmp?.position_long_title || '';
             this.team_members.empl_id  = emplId;
             this.team_members.status = selectedEmp?.employment_type_descr || '';
+            // this.team_members=({
+            //     id: selectedEmp?.employee_name || 0,
+            //     revision_plan_id: this.editData.id,
+            //     implementing_team_id: selectedEmp?.empl_id || '',
+            //     role: selectedEmp?.role || '',
+            //     empl_id: selectedEmp?.empl_id || '',
+            //     name: selectedEmp?.name || '',
+            //     competency: selectedEmp?.competency || '',
+            //     position: selectedEmp?.position || '',
+            //     with_gad_training: selectedEmp?.with_gad_training || '',
+            //     specify_GAD_training: selectedEmp?.specify_GAD_training || '',
+            //     gender: selectedEmp?.gender || '',
+            //     status: selectedEmp?.status || ''
+            // });
+        },
+        // CCET CODES *********************************************\
+        updateCCET(code_ccet) {
+            const selectedEmp = this.ccet_codes.find(
+                ccet => String(ccet.ccet_code) === String(code_ccet)
+            );
+
+            // this.team_members.name     = selectedEmp?.employee_name || '';
+            // this.team_members.gender   = selectedEmp?.gender || '';
+            // this.team_members.position = selectedEmp?.position_long_title || '';
+            // this.team_members.empl_id  = emplId;
+            // this.team_members.status = selectedEmp?.employment_type_descr || '';
             // this.team_members=({
             //     id: selectedEmp?.employee_name || 0,
             //     revision_plan_id: this.editData.id,
@@ -4453,7 +4483,7 @@ table {
 }
 
 @keyframes highlightFlash {
-    0% { background-color: #c1fb3a; }
+    0% { background-color: #46ff18ff; }
     100% { background-color: transparent; }
 }
 
@@ -4557,6 +4587,11 @@ table {
     100% { opacity: 0; }
 } */
 
-
+.dynamic-width {
+  display: inline-block;
+  width: 50ch; /* roughly 50 characters */
+  min-width: 150px; /* optional minimum */
+  max-width: 400px; /* optional maximum */
+}
 </style>
 
