@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\ActivityProject;
 use App\Models\BudgetRequirement;
+use App\Models\ClimateChangeExpenditureTagging;
 use App\Models\HGDG_Checklist;
 use App\Models\Monitoring_and_evaluation;
 use App\Models\Office;
@@ -147,6 +148,9 @@ class ProjectProfileStreamlinedController extends Controller
             return redirect()->back()->with('error', 'Mismatch in Program and Project data. Please try again.');
         }
         $budgetRequirements = [];
+
+        $ccet_codes =ClimateChangeExpenditureTagging::where('id','<>',1)->get();
+        // dd($ccet_codes);
         // dd($id, $hgdg, $paps, $request->source, $office, $all_comments, $editData);
         if (isset($editData)) {
             //ALL COMMENTS***************************************************************************************************
@@ -205,6 +209,7 @@ class ProjectProfileStreamlinedController extends Controller
             "risk_manangement" => $this->risk_management($editData->id),
             // SOURCE
             "source" => $request->source,
+            "ccet_codes" => $ccet_codes,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)

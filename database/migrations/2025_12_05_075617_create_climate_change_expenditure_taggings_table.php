@@ -20,6 +20,7 @@ class CreateClimateChangeExpenditureTaggingsTable extends Migration
             $table->string('instrument_of_delivery');
             $table->string('type');
             $table->string('ccet_code');
+            $table->string('type');
             $table->string('description');
             $table->timestamps();
         });
