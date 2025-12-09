@@ -18,6 +18,7 @@ class CreateClimateChangeExpenditureTaggingsTable extends Migration
             $table->string('strategic_priority');
             $table->string('sub_sector');
             $table->string('instrument_of_delivery');
+            $table->string('type');
             $table->string('ccet_code');
             $table->string('description');
             $table->timestamps();
