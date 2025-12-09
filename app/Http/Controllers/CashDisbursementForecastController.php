@@ -317,37 +317,86 @@ class CashDisbursementForecastController extends Controller
         // dd($revPlan);
         // dd($result);
         $totals = $this->getCDFTotals($revision_plan_id);
-        // dd($totals['budget_requirement']);
-        $result = CashDisbursementForecastAccount::with(['budgetRequirement', 'cashDisbursementForecast'])
-                ->whereHas('cashDisbursementForecast', fn($q) =>
-                    $q->where('revision_plan_id', $revision_plan_id)
-                )
-                ->whereHas('budgetRequirement')
-                ->get()
-                ->groupBy(fn($a) => optional($a->budgetRequirement)->category)
-                ->filter(fn($cat, $key) => $key)      // remove null keys
-                ->keys()                              // unique categories
-                ->map(fn($cat)=> [
-                    'category' => $cat,
+
+        $result = CashDisbursementForecastAccount::with([
+                'budgetRequirement',
+                'cashDisbursementForecast'
+            ])
+            ->whereHas('cashDisbursementForecast', fn($q) =>
+                $q->where('revision_plan_id', $revision_plan_id)
+            )
+            ->whereHas('budgetRequirement')
+            ->get()
+            ->groupBy(fn($a) => optional($a->budgetRequirement)->category)
+            ->filter(fn($cat, $key) => $key) // remove null category
+            ->map(function($group, $category) use ($revision_plan_id, $totals) {
+
+                $first = $group->first();
+                $cdf   = $first->cashDisbursementForecast;
+
+                return [
+                    'category' => $category,
                     'cash_disbursement_forecast_id' =>
                         optional(CashDisbursementForecast::where('revision_plan_id', $revision_plan_id)->first())->id,
-                    'office' => optional($result)['office'] ?? 'N/A',
-                    'year' => optional($result)['year'] ?? 'N/A',
-                    'project_title' => optional($result)['project_title'] ?? 'N/A',
-                    'budget_requirement'=>$totals['budget_requirement'],
-                    'january'=>$totals['january'],
-                    'february'=>$totals['february'],
-                    'march'=>$totals['march'],
-                    'april'=>$totals['april'],
-                    'may'=>$totals['may'],
-                    'june'=>$totals['june'],
-                    'july'=>$totals['july'],
-                    'august'=>$totals['august'],
-                    'september'=>$totals['september'],
-                    'october'=>$totals['october'],
-                    'november'=>$totals['november'],
-                    'december'=>$totals['december'],
-                ]);
+
+                    // ✔ Include your added details here (kept flat)
+                    'prepared_by'  => $cdf->prepared_by  ?? '',
+                    'approved_by'  => $cdf->approved_by  ?? '',
+
+                    'office'        => $first->office ?? 'N/A',
+                    'year'          => $first->year ?? 'N/A',
+                    'project_title' => $first->project_title ?? 'N/A',
+
+                    // Totals
+                    'budget_requirement' => $totals['budget_requirement'],
+                    'january'   => $totals['january'],
+                    'february'  => $totals['february'],
+                    'march'     => $totals['march'],
+                    'april'     => $totals['april'],
+                    'may'       => $totals['may'],
+                    'june'      => $totals['june'],
+                    'july'      => $totals['july'],
+                    'august'    => $totals['august'],
+                    'september' => $totals['september'],
+                    'october'   => $totals['october'],
+                    'november'  => $totals['november'],
+                    'december'  => $totals['december'],
+                ];
+            })
+            ->values(); // <- THIS FIXES THE ARRAY SHAPE
+
+        // dd($totals['budget_requirement']);
+        // $result = CashDisbursementForecastAccount::with(['budgetRequirement', 'cashDisbursementForecast'])
+        //         ->whereHas('cashDisbursementForecast', fn($q) =>
+        //             $q->where('revision_plan_id', $revision_plan_id)
+        //         )
+        //         ->whereHas('budgetRequirement')
+        //         ->get()
+        //         ->groupBy(fn($a) => optional($a->budgetRequirement)->category)
+        //         ->filter(fn($cat, $key) => $key)      // remove null keys
+        //         ->keys()                              // unique categories
+        //         ->map(fn($cat)=> [
+        //             'category' => $cat,
+        //             'cash_disbursement_forecast_id' =>
+        //                 optional(CashDisbursementForecast::where('revision_plan_id', $revision_plan_id)->first())->id,
+        //             'office' => optional($result)['office'] ?? 'N/A',
+        //             'year' => optional($result)['year'] ?? 'N/A',
+        //             'project_title' => optional($result)['project_title'] ?? 'N/A',
+        //             // dd($result[$cat]),
+        //             'budget_requirement'=>$totals['budget_requirement'],
+        //             'january'=>$totals['january'],
+        //             'february'=>$totals['february'],
+        //             'march'=>$totals['march'],
+        //             'april'=>$totals['april'],
+        //             'may'=>$totals['may'],
+        //             'june'=>$totals['june'],
+        //             'july'=>$totals['july'],
+        //             'august'=>$totals['august'],
+        //             'september'=>$totals['september'],
+        //             'october'=>$totals['october'],
+        //             'november'=>$totals['november'],
+        //             'december'=>$totals['december'],
+        //         ]);
 
         return $result;
     }
