@@ -278,3 +278,11 @@ hr {
     user-select: none;
 }
 
+// For multiselect width based on content
+.dynamic-width {
+  display: inline-block;
+  width: 20ch; /* roughly 20 characters */
+  min-width: 150px; /* optional minimum */
+  max-width: 400px; /* optional maximum */
+}
+

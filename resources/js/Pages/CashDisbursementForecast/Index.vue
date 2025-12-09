@@ -14,7 +14,7 @@
                 </div>
                 <div class="peer">
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/Monitoring/create/${idpaps}`">Add Monitoring</Link> -->
-                    <!-- <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="printCDF()">Print</button>
                 </div>
                 <Link :href="`/OPCRpaps/direct`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -42,7 +42,7 @@
                                 <th>Monitoring</th>
                                 <th>Action</th>
                             </tr> -->
-                            <tr class="bg-primary text-white">
+                            <tr class="bg-success text-white">
                                 <th colspan="15">Project Title</th>
                                 <th>Action</th>
                             </tr>
@@ -88,6 +88,7 @@
                                     <tr v-if="cash.items.length>0">
                                         <td colspan="16" style="font-weight: bold;">
                                             {{  cash.category.toUpperCase() }}
+                                            <button class="btn btn-primary btn-sm mL-2 text-white" @click="printCDF(dat.revision_plan_id)">Print</button>
                                         </td>
                                     </tr>
                                     <tr v-for="item in cash.items" v-if="cash.items.length>0">
@@ -119,7 +120,7 @@
                                         <td>
                                             <input type="number" class="form-control form-control-sm"
                                             :disabled="isQuarterDisabled(dat.implementation, 'q2', cash.category)"
-                                            v-model="item.april" @change="saveAmounts(item.id, item.april)">
+                                            v-model="item.april" @change="saveAmounts(item.id, item.april,'april')">
                                         </td>
                                         <td>
                                             <input type="number" class="form-control form-control-sm"
@@ -282,12 +283,21 @@
 
             </div>
         </div>
+        <PrintModal v-if="PrintModalVisible" @close-modal-event="PrintModalVisible = false" title="PRINT CASH DISBUREMENT FORECAST">
+            <h1>Cash Disbursements Forecast</h1>
+             <div class="d-flex justify-content-center">
+                <!-- {{ aip_printLink }} -->
+                  <!-- {{ printLink }} -->
+                <iframe :src="printLink" style="width:100%; height:500px" />
 
+            </div>
+        </PrintModal>
     </div>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import PrintModal from "@/Shared/ModalDynamicTitle";
 export default {
     props: {
         data: Object,
@@ -295,11 +305,12 @@ export default {
     },
     data() {
         return{
-
+            PrintModalVisible: false,
+            printLink: ''
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, PrintModal
     },
 
     methods:{
@@ -420,6 +431,14 @@ export default {
             });
             return this.format_number_conv(total, 2, true);
         },
+        printCDF(revid){
+            this.PrintModalVisible = true;
+            var params="&revision_plan_id="+revid;
+            this.printLink = 'https://'+
+            this.jasper_ip+
+            `jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FCash_Disbursement_Forecast&standAlone=true&decorate=no&output=pdf`
+            + params;
+        }
     }
 };
 </script>

@@ -1033,21 +1033,25 @@
                                                     'text-danger': has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)
                                                 }" :id="act.activity_id + '_activity_projects_ccet_code'">
                                                     <span v-if="paps.is_strategy_based==0">
-                                                        <select>
-                                                            <option value="">-- Select CCET Code --</option>
-                                                            <option v-for="code in ccet_codes" :key="code.id" :value="code.code"
-                                                                :selected="act.ccet_code === code.code">
-                                                                {{ code.code }} - {{ code.description }}
-                                                            </option>
-                                                        </select>
-                                                        <textarea
+                                                        <multiselect
+                                                            class="form-select dynamic-width"
+                                                            :options="ccet_computed"
+                                                            :searchable="true"
+                                                            label="label"
+                                                            track-by="label"
+                                                            :reduce="act => act.ccet_code"
+                                                            v-model="act.ccet_code"
+                                                            @input="newVal => updateRevisionPlans('activity_projects', 'ccet_code', act.activity_id, newVal)"
+                                                        />
+                                                        <!-- <textarea
                                                             class="form-control transparent-bg "
                                                             v-model="act.ccet_code"
                                                             type="text"
                                                             @input="setUnsaved(true)"
+                                                            @input="updateCCET($event)"
                                                             @change="updateRevisionPlans('activity_projects', 'ccet_code', act.activity_id, act.ccet_code)">
                                                                 {{ act.ccet_code }}
-                                                        </textarea>
+                                                        </textarea> -->
                                                     </span>
                                                     <button v-if="can_view_comment()" class="superscript-btn"
                                                         @click="handleClick('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)">*
@@ -2488,7 +2492,7 @@
                             </option>
                         </select> -->
                         <multiselect
-                            class="form-select"
+                            class="form-select dynamic-width"
                             :options="ccet_computed"
                             :searchable="true"
                             label="label"
@@ -3263,11 +3267,26 @@ export default {
                 ? this.ccet_codes
                 : [];
 
-            return ccet_code_c.map(ccet => ({
+            // return ccet_code_c.map(ccet => ({
+            //     value: ccet.ccet_code,
+            //     label: `${ccet.ccet_code} - ${ccet.description}`,
+            //     _raw: ccet
+            // }));
+            // Map existing options
+            const options = ccet_code_c.map(ccet => ({
                 value: ccet.ccet_code,
                 label: `${ccet.ccet_code} - ${ccet.description}`,
                 _raw: ccet
             }));
+
+            // Prepend default "Select CCET Code" option
+            options.unshift({
+                value: null,
+                label: "Select CCET Code",
+                _raw: null
+            });
+
+            return options;
         },
         countUnresolvedComments() {
             // alert('unresolved')
@@ -3690,6 +3709,14 @@ export default {
 
         // UPDATE Revision Plans*******************************************/
         updateRevisionPlans: debounce(async function(table_name, column_name, id, new_data) {
+            // If the column is ccet_code and new_data is empty, ask for confirmation
+            if (column_name === 'ccet_code' && (!new_data || new_data.trim() === '')) {
+                const confirmed = confirm("Are you sure you want to remove the CCET code?");
+                if (!confirmed) {
+                    // User canceled, stop here
+                    return;
+                }
+            }
             const payload = {
                 table_name: table_name,
                 column_name: column_name,
@@ -4075,25 +4102,7 @@ export default {
                 ccet => String(ccet.ccet_code) === String(code_ccet)
             );
 
-            // this.team_members.name     = selectedEmp?.employee_name || '';
-            // this.team_members.gender   = selectedEmp?.gender || '';
-            // this.team_members.position = selectedEmp?.position_long_title || '';
-            // this.team_members.empl_id  = emplId;
-            // this.team_members.status = selectedEmp?.employment_type_descr || '';
-            // this.team_members=({
-            //     id: selectedEmp?.employee_name || 0,
-            //     revision_plan_id: this.editData.id,
-            //     implementing_team_id: selectedEmp?.empl_id || '',
-            //     role: selectedEmp?.role || '',
-            //     empl_id: selectedEmp?.empl_id || '',
-            //     name: selectedEmp?.name || '',
-            //     competency: selectedEmp?.competency || '',
-            //     position: selectedEmp?.position || '',
-            //     with_gad_training: selectedEmp?.with_gad_training || '',
-            //     specify_GAD_training: selectedEmp?.specify_GAD_training || '',
-            //     gender: selectedEmp?.gender || '',
-            //     status: selectedEmp?.status || ''
-            // });
+
         },
         //RISK MANAGEEMENT *******************************
         showRiskManagementModal(){
@@ -4587,11 +4596,6 @@ table {
     100% { opacity: 0; }
 } */
 
-.dynamic-width {
-  display: inline-block;
-  width: 50ch; /* roughly 50 characters */
-  min-width: 150px; /* optional minimum */
-  max-width: 400px; /* optional maximum */
-}
+
 </style>
 

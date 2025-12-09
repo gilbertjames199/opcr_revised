@@ -842,7 +842,8 @@
                                             <!-- CCET Code -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)
-                                            }" :id="act.activity_id + '_activity_projects_ccet_code'"><span v-if="paps.is_strategy_based==0">{{ act.ccet_code }}</span>
+                                            }" :id="act.activity_id + '_activity_projects_ccet_code'">
+                                                <span v-if="paps.is_strategy_based==0">{{ act.ccet_code && act.ccet_code !== 'null'  ? act.ccet_code : '' }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)">*
                                                 </button>
@@ -3686,7 +3687,7 @@ table {
 }
 
 @keyframes highlightFlash {
-    0% { background-color: #c1fb3a; }
+    0% { background-color: #46ff18ff; }
     100% { background-color: transparent; }
 }
 

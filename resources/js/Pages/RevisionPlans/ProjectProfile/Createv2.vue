@@ -1032,14 +1032,24 @@
                                                     'text-danger': has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)
                                                 }" :id="act.activity_id + '_activity_projects_ccet_code'">
                                                     <span v-if="paps.is_strategy_based==0">
-                                                        <textarea
+                                                        <multiselect
+                                                            class="form-select dynamic-width"
+                                                            :options="ccet_computed"
+                                                            :searchable="true"
+                                                            label="label"
+                                                            track-by="label"
+                                                            :reduce="act => act.ccet_code"
+                                                            v-model="act.ccet_code"
+                                                            @input="newVal => updateRevisionPlans('activity_projects', 'ccet_code', act.activity_id, newVal)"
+                                                        />
+                                                        <!-- <textarea
                                                             class="form-control transparent-bg "
                                                             v-model="act.ccet_code"
                                                             type="text"
                                                             @input="setUnsaved(true)"
                                                             @change="updateRevisionPlans('activity_projects', 'ccet_code', act.activity_id, act.ccet_code)">
                                                                 {{ act.ccet_code }}
-                                                        </textarea>
+                                                        </textarea> -->
                                                     </span>
                                                     <button v-if="can_view_comment()" class="superscript-btn"
                                                         @click="handleClick('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)">*
@@ -2477,7 +2487,19 @@
                         <div>Total ({{  format_number_conv(parseFloat(act.fe_q1) + parseFloat(act.fe_q2) + parseFloat(act.fe_q3) + parseFloat(act.fe_q4), 2, true)  }})</div>
                     </td>
                     <!-- CCET -->
-                    <td><input v-model="act.ccet_code" class="form-control" /></td>
+                    <td>
+                        <!-- <input v-model="act.ccet_code" class="form-control" /> -->
+                        <multiselect
+                            class="form-select dynamic-width"
+                            :options="ccet_computed"
+                            :searchable="true"
+                            label="label"
+                            track-by="label"
+                            :reduce="act => act.ccet_code"
+                            v-model="act.ccet_code"
+                            @input="updateCCET($event)"
+                        />
+                    </td>
                     <!-- PERSON RESPONSIBLE -->
                     <td><input v-model="act.responsible" class="form-control" /></td>
                     <td>
@@ -2964,7 +2986,10 @@ export default {
         risk_manangement: Object,
 
         // SOURCE
-        source: String
+        source: String,
+
+        // CCET CODE
+        ccet_codes: Object,
     },
     components: {
 
@@ -3231,7 +3256,33 @@ export default {
         countUnresolvedComments() {
             // alert('unresolved')
             return this.all_comments.filter(c => c.comment_status !== "1").length;
-        }
+        },
+        ccet_computed(){
+            const ccet_code_c = Array.isArray(this.ccet_codes)
+                ? this.ccet_codes
+                : [];
+
+            // return ccet_code_c.map(ccet => ({
+            //     value: ccet.ccet_code,
+            //     label: `${ccet.ccet_code} - ${ccet.description}`,
+            //     _raw: ccet
+            // }));
+            // Map existing options
+            const options = ccet_code_c.map(ccet => ({
+                value: ccet.ccet_code,
+                label: `${ccet.ccet_code} - ${ccet.description}`,
+                _raw: ccet
+            }));
+
+            // Prepend default "Select CCET Code" option
+            options.unshift({
+                value: null,
+                label: "Select CCET Code",
+                _raw: null
+            });
+
+            return options;
+        },
 
     },
     mounted() {
@@ -3646,6 +3697,14 @@ export default {
 
         // UPDATE Revision Plans*******************************************/
         updateRevisionPlans: debounce(async function(table_name, column_name, id, new_data) {
+            // If the column is ccet_code and new_data is empty, ask for confirmation
+            if (column_name === 'ccet_code' && (!new_data || new_data.trim() === '')) {
+                const confirmed = confirm("Are you sure you want to remove the CCET code?");
+                if (!confirmed) {
+                    // User canceled, stop here
+                    window.location.reload(); // Reload to revert the change in UI
+                }
+            }
             const payload = {
                 table_name: table_name,
                 column_name: column_name,
@@ -4062,6 +4121,14 @@ export default {
             //     status: selectedEmp?.status || ''
             // });
         },
+        // CCET CODES *********************************************\
+        updateCCET(code_ccet) {
+            const selectedEmp = this.ccet_codes.find(
+                ccet => String(ccet.ccet_code) === String(code_ccet)
+            );
+
+
+        },
         //RISK MANAGEEMENT *******************************
         showRiskManagementModal(){
             this.RiskManagementModalVisible=true;
@@ -4450,7 +4517,7 @@ table {
 }
 
 @keyframes highlightFlash {
-    0% { background-color: #c1fb3a; }
+    0% { background-color: #46ff18ff; }
     100% { background-color: transparent; }
 }
 
