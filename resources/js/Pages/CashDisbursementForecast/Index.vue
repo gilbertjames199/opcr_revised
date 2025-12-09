@@ -179,8 +179,8 @@
                                     </tr>
                                     <tr v-if="cash.items.length>0">
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><b>TOTAL</b></td>
+                                        <td>{{ format_number_conv(getTotalAmount(), 2, true) }}</td>
                                         <td colspan="2">
                                             1st Quarter Total
                                         </td>
@@ -248,23 +248,18 @@
                                         </td>
                                     </tr>
                                 </template>
-                                <!-- <tr v-for="cash_acc in dat.cash_disbursement_forecast_account  ">
-                                    <td>{{ cash_acc.budget_requirement.particulars }}</td>
-                                    <td>{{ cash_acc.budget_requirement.account_code }}</td>
-                                    <td>{{ cash_acc.budget_requirement.amount }}</td>
-                                    <td>{{ cash_acc.january }}</td>
-                                    <td>{{ cash_acc.february }}</td>
-                                    <td>{{ cash_acc.march }}</td>
-                                    <td>{{ cash_acc.april }}</td>
-                                    <td>{{ cash_acc.may }}</td>
-                                    <td>{{ cash_acc.june }}</td>
-                                    <td>{{ cash_acc.july }}</td>
-                                    <td>{{ cash_acc.august }}</td>
-                                    <td>{{ cash_acc.september }}</td>
-                                    <td>{{ cash_acc.october }}</td>
-                                    <td>{{ cash_acc.november }}</td>
-                                    <td>{{ cash_acc.december }}</td>
-                                </tr> -->
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td colspan="2">Prepared by</td>
+                                    <td colspan="5">
+                                        <input type="text" v-model="dat.prepared_by" @change="saveSignatories(dat.id, dat.prepared_by,'prepared_by', dat.revision_plan_id)">
+                                    </td>
+                                    <td colspan="2">Approved by</td>
+                                    <td colspan="5">
+                                        <input type="text" v-model="dat.approved_by" @change="saveSignatories(dat.id, dat.approved_by,'approved_by', dat.revision_plan_id)">
+                                    </td>
+                                </tr>
+
                             </template>
 
                         </tbody>
@@ -359,8 +354,21 @@ export default {
             percentt=this.format_number(percentt,2,true)
             return percentt;
         },
-        saveAmounts(id, data, column){
-            axios.patch(`/cdf/${this.revision_plan_id}`, {
+        saveAmounts(id, data, column, rev_id){
+            axios.patch(`/cdf/${rev_id}`, {
+                id: id,
+                data: data,
+                column: column
+            })
+            .then(res => {
+                console.log("Updated", res.data);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+        },
+        saveSignatories(id, data,column){
+            axios.patch(`/cdf/signatories/${this.revision_plan_id}`, {
                 id: id,
                 data: data,
                 column: column
@@ -439,6 +447,19 @@ export default {
             this.jasper_ip+
             `jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FCash_Disbursement_Forecast&standAlone=true&decorate=no&output=pdf`
             + params;
+        },
+        getTotalAmount() {
+            let total = 0;
+
+            this.data.forEach(dat => {
+                dat.cash_disbursement_forecast_accounts?.forEach(cash => {
+                    cash.items?.forEach(item => {
+                        total += Number(item.amount) || 0;
+                    });
+                });
+            });
+
+            return total;
         }
     }
 };

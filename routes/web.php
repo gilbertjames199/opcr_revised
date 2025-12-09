@@ -470,6 +470,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/cdf')->group(function(){
         Route::get('/{revision_plan_id}', [CashDisbursementForecastController::class, 'set_cdf']);
         Route::patch('/{revision_plan_id}', [CashDisbursementForecastController::class, 'updateCdf']);
+        Route::patch('/signatories/{revision_plan_id}', [CashDisbursementForecastController::class, 'updateSignatories']);
     });
     Route::get('/get_employees_all', [TeamPlanController::class, 'getEmployees']);
     Route::prefix('/revision/streamlined/subtables')->group(function () {

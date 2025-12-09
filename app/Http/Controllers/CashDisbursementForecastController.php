@@ -159,6 +159,8 @@ class CashDisbursementForecastController extends Controller
             // dd($grouped);
             return [
                 'id' => $item->id,
+                'prepared_by' => $item->prepared_by,
+                'approved_by' => $item->approved_by,
                 'revision_plan_id' => $item->revision_plan_id,
                 'version' => $item->version,
                 'status' => $item->status,
@@ -210,6 +212,35 @@ class CashDisbursementForecastController extends Controller
 
         // Find the tuple in CashDisbursementForecastAccount
         $account = CashDisbursementForecastAccount::find($request->id);
+
+        if (!$account) {
+            return response()->json(['message' => 'Record not found'], 404);
+        }
+
+        // Update only the specified column
+        $column = $request->column;
+        $account->$column = $request->data;
+
+        $account->save();
+
+        return response()->json([
+            'message' => 'Updated successfully',
+            'updated_column' => $column,
+            'new_value' => $request->data
+        ], 200);
+    }
+    // Route::patch('/{revision_plan_id}', [CashDisbursementForecastController::class, 'updateCdf']);
+    public function updateSignatories(Request $request, $revision_plan_id)
+    {
+        // dd("diri siya niadto");
+        $request->validate([
+            'id' => 'required|integer',
+            'column' => 'required|string',
+            'data' => 'nullable'
+        ]);
+
+        // Find the tuple in CashDisbursementForecastAccount
+        $account = CashDisbursementForecast::find($request->id);
 
         if (!$account) {
             return response()->json(['message' => 'Record not found'], 404);
@@ -285,6 +316,8 @@ class CashDisbursementForecastController extends Controller
         }
         // dd($revPlan);
         // dd($result);
+        $totals = $this->getCDFTotals($revision_plan_id);
+        // dd($totals['budget_requirement']);
         $result = CashDisbursementForecastAccount::with(['budgetRequirement', 'cashDisbursementForecast'])
                 ->whereHas('cashDisbursementForecast', fn($q) =>
                     $q->where('revision_plan_id', $revision_plan_id)
@@ -294,15 +327,92 @@ class CashDisbursementForecastController extends Controller
                 ->groupBy(fn($a) => optional($a->budgetRequirement)->category)
                 ->filter(fn($cat, $key) => $key)      // remove null keys
                 ->keys()                              // unique categories
-                ->map(fn($cat) => [
+                ->map(fn($cat)=> [
                     'category' => $cat,
                     'cash_disbursement_forecast_id' =>
                         optional(CashDisbursementForecast::where('revision_plan_id', $revision_plan_id)->first())->id,
                     'office' => optional($result)['office'] ?? 'N/A',
                     'year' => optional($result)['year'] ?? 'N/A',
                     'project_title' => optional($result)['project_title'] ?? 'N/A',
+                    'budget_requirement'=>$totals['budget_requirement'],
+                    'january'=>$totals['january'],
+                    'february'=>$totals['february'],
+                    'march'=>$totals['march'],
+                    'april'=>$totals['april'],
+                    'may'=>$totals['may'],
+                    'june'=>$totals['june'],
+                    'july'=>$totals['july'],
+                    'august'=>$totals['august'],
+                    'september'=>$totals['september'],
+                    'october'=>$totals['october'],
+                    'november'=>$totals['november'],
+                    'december'=>$totals['december'],
                 ]);
 
         return $result;
+    }
+    protected function getCDFTotals($revision_plan_id){
+        $totals = CashDisbursementForecastAccount::with([
+                    'budgetRequirement',
+                    'cashDisbursementForecast'
+                ])
+                ->whereHas('cashDisbursementForecast', fn($q) =>
+                    $q->where('revision_plan_id', $revision_plan_id)
+                )
+                ->whereHas('budgetRequirement')
+                ->get()
+                ->reduce(function ($carry, $item) {
+
+                    $cdf = $item;
+                    $br  = $item->budgetRequirement;
+
+                    // Full month names (column names must match these)
+                    $months = [
+                        'january', 'february', 'march',
+                        'april', 'may', 'june',
+                        'july', 'august', 'september',
+                        'october', 'november', 'december'
+                    ];
+
+                    foreach ($months as $m) {
+                        $carry[$m] += $cdf->$m ?? 0;
+                    }
+
+                    // Sum total Budget Requirement
+                    $carry['budget_requirement'] += $br->amount ?? 0;
+
+                    return $carry;
+                }, [
+                    'january' => 0, 'february' => 0, 'march' => 0,
+                    'april' => 0, 'may' => 0, 'june' => 0,
+                    'july' => 0, 'august' => 0, 'september' => 0,
+                    'october' => 0, 'november' => 0, 'december' => 0,
+                    'budget_requirement' => 0,
+                ]);
+        return $totals;
+        // $totals = CashDisbursementForecastAccount::with(['budgetRequirement', 'cashDisbursementForecast'])
+        //         ->whereHas('cashDisbursementForecast', fn($q) =>
+        //             $q->where('revision_plan_id', $revision_plan_id)
+        //         )
+        //         ->whereHas('budgetRequirement')
+        //         ->get()
+        //         ->groupBy(fn($a) => $a->revision_plan_id)
+        //         ->map(fn($items, $key) => [
+        //             'category' => $key,
+        //             'total_appropriations' => $items->sum(fn($i) => optional($i->budgetRequirement)->amount ?? 0),
+        //             'total_january' => $items->sum(fn($i) => $i->january),
+        //             'total_february' => $items->sum(fn($i) => $i->february),
+        //             'total_march' => $items->sum(fn($i) => $i->march),
+        //             'total_april' => $items->sum(fn($i) => $i->april),
+        //             'total_may' => $items->sum(fn($i) => $i->may),
+        //             'total_june' => $items->sum(fn($i) => $i->june),
+        //             'total_july' => $items->sum(fn($i) => $i->july),
+        //             'total_august' => $items->sum(fn($i) => $i->august),
+        //             'total_september' => $items->sum(fn($i) => $i->september),
+        //             'total_october' => $items->sum(fn($i) => $i->october),
+        //             'total_november' => $items->sum(fn($i) => $i->november),
+        //             'total_december' => $items->sum(fn($i) => $i->december),
+        //         ]);
+        // return $totals;
     }
 }
