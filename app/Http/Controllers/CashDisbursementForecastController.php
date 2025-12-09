@@ -363,6 +363,7 @@ class CashDisbursementForecastController extends Controller
                     'october'   => $totals['october'],
                     'november'  => $totals['november'],
                     'december'  => $totals['december'],
+                    'total_months' => $totals['total_months'],
                 ];
             })
             ->values(); // <- THIS FIXES THE ARRAY SHAPE
@@ -426,7 +427,9 @@ class CashDisbursementForecastController extends Controller
                     ];
 
                     foreach ($months as $m) {
-                        $carry[$m] += $cdf->$m ?? 0;
+                        $amount = $cdf->$m ?? 0;
+                        $carry[$m] += $amount;
+                        $carry['total_months'] += $amount;
                     }
 
                     // Sum total Budget Requirement
@@ -439,6 +442,7 @@ class CashDisbursementForecastController extends Controller
                     'july' => 0, 'august' => 0, 'september' => 0,
                     'october' => 0, 'november' => 0, 'december' => 0,
                     'budget_requirement' => 0,
+                    'total_months' => 0,
                 ]);
         return $totals;
         // $totals = CashDisbursementForecastAccount::with(['budgetRequirement', 'cashDisbursementForecast'])
