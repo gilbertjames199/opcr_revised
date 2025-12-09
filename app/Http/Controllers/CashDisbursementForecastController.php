@@ -305,8 +305,9 @@ class CashDisbursementForecastController extends Controller
                     ->where('id', $revision_plan_id)
                     ->first();
         // dd($revPlan->paps);
+        $res=[];
         if($revPlan){
-               $result = [
+               $res = [
                     'id'            => $revPlan->id,
                     'project_title' => $revPlan->project_title,
                     'year'          => $revPlan->date_start ? Carbon::parse($revPlan->date_start)->format('Y') : null,
@@ -316,6 +317,7 @@ class CashDisbursementForecastController extends Controller
         }
         // dd($revPlan);
         // dd($result);
+        // dd($res['office']);
         $totals = $this->getCDFTotals($revision_plan_id);
 
         $result = CashDisbursementForecastAccount::with([
@@ -329,7 +331,7 @@ class CashDisbursementForecastController extends Controller
             ->get()
             ->groupBy(fn($a) => optional($a->budgetRequirement)->category)
             ->filter(fn($cat, $key) => $key) // remove null category
-            ->map(function($group, $category) use ($revision_plan_id, $totals) {
+            ->map(function($group, $category) use ($revision_plan_id, $totals, $res ) {
 
                 $first = $group->first();
                 $cdf   = $first->cashDisbursementForecast;
@@ -343,9 +345,9 @@ class CashDisbursementForecastController extends Controller
                     'prepared_by'  => $cdf->prepared_by  ?? '',
                     'approved_by'  => $cdf->approved_by  ?? '',
 
-                    'office'        => $first->office ?? 'N/A',
-                    'year'          => $first->year ?? 'N/A',
-                    'project_title' => $first->project_title ?? 'N/A',
+                    'office'        => $res['office'] ?? '',
+                    'year'          => $res['year'] ?? '',
+                    'project_title' => $res['project_title'] ?? '',
 
                     // Totals
                     'budget_requirement' => $totals['budget_requirement'],
