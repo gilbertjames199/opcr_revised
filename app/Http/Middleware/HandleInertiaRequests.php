@@ -31,7 +31,7 @@ class HandleInertiaRequests extends Middleware
                         'UserType' => auth()->user()->UserType,
                         'department_code' => auth()->user()->department_code,
                         'office' => $office,
-
+                        'recid' => auth()->user()->recid,
                         //     'level' =>auth()->user()->level,
                         //     'municipality' =>auth()->user()->municipality,
                         //     'barangay' =>auth()->user()->barangay,

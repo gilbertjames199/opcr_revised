@@ -53,7 +53,12 @@ class ProjectProfileTrackingController extends Controller
         }
         $typpe = $revplan->type == "p" ? "Project Profie" : "Project Design";
         // Update the status
-        $revplan->status = $new_status;
+        // dd($request);
+        if($request->column=='gad_status'){
+            $revplan->gad_status = $new_status;
+        }else{
+            $revplan->status = $new_status;
+        }
         $revplan->save();
         RevisionPlanDocuments::where('revision_plan_id', $id)
             ->update(['return_executed' => 1]);

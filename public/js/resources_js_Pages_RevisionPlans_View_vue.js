@@ -226,7 +226,12 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
       tot_non: 0,
       grand_total: 0,
       showComments: false,
-      open_tab: 'Navigation'
+      open_tab: 'Navigation',
+      // COMMENTS
+      selectedText: "",
+      selectedColumn: "",
+      showModal: false,
+      newComment: ""
     };
   },
   mounted: function mounted() {
@@ -414,17 +419,33 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
     if (this.comment_table === 'signatories') {
       table_row_id_l = this.comment_reference_object.id;
     } //alert(table_row_id_l)
+    // this.$inertia.post(myurl, {
+    //     params: {
+    //         table_row_id: table_row_id_l,
+    //         table_name: this.comment_table,
+    //         column_name: this.comment_column,
+    //         comment_status: 0,
+    //         comment: this.comment,
+    //     }
+    // });
 
 
-    this.$inertia.post(myurl, {
-      params: {
-        table_row_id: table_row_id_l,
-        table_name: this.comment_table,
-        column_name: this.comment_column,
-        comment_status: 0,
-        comment: this.comment
-      }
-    });
+    var payload = {
+      table_row_id: this.paps.id,
+      table_name: "revision_plans",
+      column_name: this.selectedColumn,
+      comment: this.newComment
+    };
+
+    if (['rationale', 'objectives', 'target_beneficiaries'].includes(this.selectedColumn)) {
+      payload.selected_text = this.selectedText;
+      payload.start_index = this.selectedStart;
+      payload.end_index = this.selectedEnd;
+      payload.context_before = this.contextBefore;
+      payload.context_after = this.contextAfter;
+    }
+
+    this.$inertia.post('/revision-plan-comment', payload);
     this.closeCommentModal();
     setTimeout(function () {
       _this2.comment = "";
@@ -686,79 +707,116 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
       return r.length > 0;
     });
   },
-  //RATIONALE COMMENTS
-  onHighlight: function onHighlight() {
-    var data = this.getHighlightIndexes();
+  // COMMENTS FOR RATIONALE, TARGET BENEFICIARIES, OBJECTIVES
+  // Detect user highlighted text
+  handleSelection: function handleSelection(column) {
+    var text = window.getSelection().toString().trim();
+    if (!text) return;
+    this.selectedText = text;
+    this.selectedColumn = column;
+    this.showModal = true;
+    console.log("Selected text:", text);
 
-    if (data) {
-      alert("calculating text range selected: start=" + data.start + "; end=" + data.end + "; selected:" + data.selected);
-      console.log("Start index:", data.start);
-      console.log("End index:", data.end);
-      console.log("Selected text:", data.selected);
+    if (column === 'rationale') {
+      this.handleClick('Rationale', 'rationale', this.selectedText, 'rationale', 'revision_plans', this.paps, this.paps.comments);
     }
   },
-  getHighlightIndexes: function getHighlightIndexes() {
-    var selection = window.getSelection();
-
-    if (!selection || selection.rangeCount === 0) {
-      return null;
-    }
-
-    var range = selection.getRangeAt(0);
-    var selectedText = selection.toString();
-
-    if (!selectedText) {
-      return null;
-    } // Get the full text (flattened) from the div
-
-
-    var container = this.$refs.rationaleDiv;
-    var fullText = container.innerText; // Build a Range to compute index relative to the container
-
-    var preRange = document.createRange();
-    preRange.selectNodeContents(container);
-    preRange.setEnd(range.startContainer, range.startOffset);
-    var startIndex = preRange.toString().length;
-    var endIndex = startIndex + selectedText.length;
-    return {
-      start: startIndex,
-      end: endIndex,
-      selected: selectedText
-    };
-  },
-  printDiv: function printDiv() {
-    var div = this.$refs.printableDiv;
-    if (!div) return;
-    var divContents = div.innerHTML; // Get all stylesheets from the main page
-
-    var styles = '';
-    Array.from(document.styleSheets).forEach(function (styleSheet) {
-      try {
-        if (styleSheet.href) {
-          // External stylesheet
-          styles += "<link rel=\"stylesheet\" href=\"".concat(styleSheet.href, "\">");
-        } else if (styleSheet.cssRules) {
-          // Inline style
-          var css = Array.from(styleSheet.cssRules).map(function (rule) {
-            return rule.cssText;
-          }).join(' ');
-          styles += "<style>".concat(css, "</style>");
-        }
-      } catch (e) {// ignore cross-origin stylesheets
-      }
+  // Save comment to backend
+  saveCommentNew: function saveCommentNew() {
+    this.$inertia.post('/revision-plan-comment', {
+      table_row_id: this.paps.id,
+      table_name: "revision_plans",
+      column_name: this.selectedColumn,
+      comment: this.newComment,
+      selected_text: this.selectedText
     });
-    var printWindow = window.open('', '', 'height=800,width=1000');
-    printWindow.document.write('<html><head><title>Print Preview</title>');
-    printWindow.document.write(styles); // include styles
+    this.showModal = false;
+    this.newComment = "";
+  },
+  // Highlight commented text
+  highlightedText: function highlightedText(column) {
+    var original = this.paps[column] || "";
+    var updated = original;
+    this.comments.filter(function (c) {
+      return c.column_name === column;
+    }).forEach(function (c) {
+      var safe = c.selected_text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      var regex = new RegExp(safe, "gi");
+      updated = updated.replace(regex, "<span style=\"color:red; font-weight:bold;\">".concat(c.selected_text, "</span>"));
+    });
+    return updated;
+  } //RATIONALE COMMENTS
+  // onHighlight() {
+  //     const data = this.getHighlightIndexes();
+  //     if (data) {
+  //         alert("calculating text range selected: start="+data.start+
+  //             "; end="+data.end +
+  //             "; selected:" + data.selected
+  //         )
+  //         console.log("Start index:", data.start);
+  //         console.log("End index:", data.end);
+  //         console.log("Selected text:", data.selected);
+  //     }
+  // },
+  // getHighlightIndexes() {
+  //     const selection = window.getSelection();
+  //     if (!selection || selection.rangeCount === 0) {
+  //         return null;
+  //     }
+  //     const range = selection.getRangeAt(0);
+  //     const selectedText = selection.toString();
+  //     if (!selectedText) {
+  //         return null;
+  //     }
+  //     // Get the full text (flattened) from the div
+  //     const container = this.$refs.rationaleDiv;
+  //     const fullText = container.innerText;
+  //     // Build a Range to compute index relative to the container
+  //     const preRange = document.createRange();
+  //     preRange.selectNodeContents(container);
+  //     preRange.setEnd(range.startContainer, range.startOffset);
+  //     const startIndex = preRange.toString().length;
+  //     const endIndex = startIndex + selectedText.length;
+  //     return {
+  //         start: startIndex,
+  //         end: endIndex,
+  //         selected: selectedText
+  //     };
+  // },
+  // printDiv() {
+  //     const div = this.$refs.printableDiv;
+  //     if (!div) return;
+  //     const divContents = div.innerHTML;
+  //     // Get all stylesheets from the main page
+  //     let styles = '';
+  //     Array.from(document.styleSheets).forEach((styleSheet) => {
+  //         try {
+  //         if (styleSheet.href) {
+  //             // External stylesheet
+  //             styles += `<link rel="stylesheet" href="${styleSheet.href}">`;
+  //         } else if (styleSheet.cssRules) {
+  //             // Inline style
+  //             let css = Array.from(styleSheet.cssRules)
+  //             .map(rule => rule.cssText)
+  //             .join(' ');
+  //             styles += `<style>${css}</style>`;
+  //         }
+  //         } catch (e) {
+  //         // ignore cross-origin stylesheets
+  //         }
+  //     });
+  //     const printWindow = window.open('', '', 'height=800,width=1000');
+  //     printWindow.document.write('<html><head><title>Print Preview</title>');
+  //     printWindow.document.write(styles); // include styles
+  //     printWindow.document.write('</head><body>');
+  //     printWindow.document.write(divContents);
+  //     printWindow.document.write('</body></html>');
+  //     printWindow.document.close();
+  //     printWindow.focus();
+  //     printWindow.print();
+  //     printWindow.close();
+  // }
 
-    printWindow.document.write('</head><body>');
-    printWindow.document.write(divContents);
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
-  }
 }), _components$props$com);
 
 /***/ }),
@@ -2447,6 +2505,23 @@ var _hoisted_422 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 /* HOISTED */
 );
 
+var _hoisted_423 = {
+  key: 3,
+  "class": "fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center"
+};
+var _hoisted_424 = {
+  "class": "bg-white p-4 rounded w-1/3 shadow-lg"
+};
+
+var _hoisted_425 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+  "class": "font-bold mb-2"
+}, "Add Comment", -1
+/* HOISTED */
+);
+
+var _hoisted_426 = {
+  "class": "text-right mt-3"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _$props$paps$checklis, _$props$paps$checklis2;
 
@@ -2541,7 +2616,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[0] || (_cache[0] = function () {
-      return $options.printDiv && $options.printDiv.apply($options, arguments);
+      return _ctx.printDiv && _ctx.printDiv.apply(_ctx, arguments);
     })
   }, "Print")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     src: _ctx.getImagePath('logo.png'),
@@ -2933,18 +3008,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
   /* CLASS */
-  )]), _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    innerHTML: $props.paps.rationale,
-    style: {
-      "white-space": "pre-line"
-    },
-    ref: "rationaleDiv",
-    onMouseup: _cache[31] || (_cache[31] = function () {
-      return $options.onHighlight && $options.onHighlight.apply($options, arguments);
-    })
+  )]), _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    innerHTML: $options.highlightedText('rationale'),
+    onMouseup: _cache[31] || (_cache[31] = function ($event) {
+      return $options.handleSelection('rationale');
+    }),
+    "class": "cursor-text"
   }, null, 40
   /* PROPS, HYDRATE_EVENTS */
-  , _hoisted_65)]), _hoisted_66])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" OBJECTIVES "), $props.paps.objective ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_67, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_68, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+  , _hoisted_65), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.rationale\"\n                                style=\"white-space: pre-line\"\n                                ref=\"rationaleDiv\"\n                                @mouseup=\"onHighlight\"></div> ")]), _hoisted_66])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" OBJECTIVES "), $props.paps.objective ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_67, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_68, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-danger': $options.has_comment('Objectives', 'objective', $props.paps.objective, 'objective', 'revision_plans', $props.paps, $props.paps.comments)
     })
@@ -4666,7 +4738,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_422, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{paps}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ department_code_project }}\n        {{ department_code_user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }}\n        {{ paps.is_strategy_based }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Sa class=\"row gap-10\" ni")])], 64
+  , ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_422, $data.showModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_423, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_424, [_hoisted_425, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+    "onUpdate:modelValue": _cache[68] || (_cache[68] = function ($event) {
+      return $data.newComment = $event;
+    }),
+    "class": "w-full border p-2 rounded"
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newComment]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_426, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[69] || (_cache[69] = function ($event) {
+      return $data.showModal = false;
+    }),
+    "class": "px-3 py-1 bg-gray-400 text-white rounded mr-2"
+  }, "Cancel"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[70] || (_cache[70] = function () {
+      return $options.saveComment && $options.saveComment.apply($options, arguments);
+    }),
+    "class": "px-3 py-1 bg-blue-600 text-white rounded"
+  }, "Save")])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{paps}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ department_code_project }}\n        {{ department_code_user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }}\n        {{ paps.is_strategy_based }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Sa class=\"row gap-10\" ni")])], 64
   /* STABLE_FRAGMENT */
   );
 }

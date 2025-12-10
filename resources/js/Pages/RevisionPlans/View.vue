@@ -350,10 +350,13 @@
                         </section>
                         <br>
                         <div class="bgc-white p-20 bd" >
-                            <div v-html="paps.rationale"
+                             <p v-html="highlightedText('rationale')"
+                                @mouseup="handleSelection('rationale')"
+                                class="cursor-text"></p>
+                            <!-- <div v-html="paps.rationale"
                                 style="white-space: pre-line"
                                 ref="rationaleDiv"
-                                @mouseup="onHighlight"></div>
+                                @mouseup="onHighlight"></div> -->
                         </div>
                         <br>
                      </span>
@@ -3021,6 +3024,19 @@
         <div class="d-flex justify-content-center">
 
         </div>
+
+
+        <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+            <div class="bg-white p-4 rounded w-1/3 shadow-lg">
+                <h3 class="font-bold mb-2">Add Comment</h3>
+                <textarea v-model="newComment" class="w-full border p-2 rounded"></textarea>
+
+                <div class="text-right mt-3">
+                    <button @click="showModal=false" class="px-3 py-1 bg-gray-400 text-white rounded mr-2">Cancel</button>
+                    <button @click="saveComment" class="px-3 py-1 bg-blue-600 text-white rounded">Save</button>
+                </div>
+            </div>
+        </div>
         <!-- {{paps}} -->
         <!-- {{ department_code_project }}
         {{ department_code_user }} -->
@@ -3216,6 +3232,12 @@ export default {
             grand_total: 0,
             showComments: false,
             open_tab: 'Navigation',
+
+            // COMMENTS
+            selectedText: "",
+            selectedColumn: "",
+            showModal: false,
+            newComment: ""
         }
     },
     mounted() {
@@ -3400,17 +3422,33 @@ export default {
                 table_row_id_l = this.comment_reference_object.id
             }
             //alert(table_row_id_l)
-            this.$inertia.post(myurl, {
-                params: {
-                    table_row_id: table_row_id_l,
-                    table_name: this.comment_table,
-                    column_name: this.comment_column,
-                    comment_status: 0,
-                    comment: this.comment,
-                }
-            });
+            // this.$inertia.post(myurl, {
+            //     params: {
+            //         table_row_id: table_row_id_l,
+            //         table_name: this.comment_table,
+            //         column_name: this.comment_column,
+            //         comment_status: 0,
+            //         comment: this.comment,
+            //     }
+            // });
+            let payload = {
+                table_row_id: this.paps.id,
+                table_name: "revision_plans",
+                column_name: this.selectedColumn,
+                comment: this.newComment,
+            };
+
+            if(['rationale', 'objectives', 'target_beneficiaries'].includes(this.selectedColumn)) {
+                payload.selected_text = this.selectedText;
+                payload.start_index = this.selectedStart;
+                payload.end_index = this.selectedEnd;
+                payload.context_before = this.contextBefore;
+                payload.context_after = this.contextAfter;
+            }
+
+            this.$inertia.post('/revision-plan-comment', payload);
             this.closeCommentModal();
-                        setTimeout(() => {
+            setTimeout(() => {
                 this.comment = "";
             }, 1000); // 1000 milliseconds = 1 second
         },
@@ -3640,90 +3678,134 @@ export default {
             return Object.values(gadGroupsForCategory).some(r => r.length > 0);
         },
 
+        // COMMENTS FOR RATIONALE, TARGET BENEFICIARIES, OBJECTIVES
+        // Detect user highlighted text
+        handleSelection(column) {
+            const text = window.getSelection().toString().trim();
+            if (!text) return;
 
-        //RATIONALE COMMENTS
-        onHighlight() {
-            const data = this.getHighlightIndexes();
-
-            if (data) {
-                alert("calculating text range selected: start="+data.start+
-                    "; end="+data.end +
-                    "; selected:" + data.selected
-                )
-                console.log("Start index:", data.start);
-                console.log("End index:", data.end);
-                console.log("Selected text:", data.selected);
+            this.selectedText = text;
+            this.selectedColumn = column;
+            this.showModal = true;
+            console.log("Selected text:", text);
+            if(column==='rationale'){
+                this.handleClick('Rationale','rationale',this.selectedText,'rationale','revision_plans', this.paps, this.paps.comments)
             }
         },
-        getHighlightIndexes() {
-            const selection = window.getSelection();
 
-            if (!selection || selection.rangeCount === 0) {
-                return null;
-            }
-
-            const range = selection.getRangeAt(0);
-            const selectedText = selection.toString();
-
-            if (!selectedText) {
-                return null;
-            }
-
-            // Get the full text (flattened) from the div
-            const container = this.$refs.rationaleDiv;
-            const fullText = container.innerText;
-
-            // Build a Range to compute index relative to the container
-            const preRange = document.createRange();
-            preRange.selectNodeContents(container);
-            preRange.setEnd(range.startContainer, range.startOffset);
-
-            const startIndex = preRange.toString().length;
-            const endIndex = startIndex + selectedText.length;
-
-            return {
-                start: startIndex,
-                end: endIndex,
-                selected: selectedText
-            };
-        },
-        printDiv() {
-            const div = this.$refs.printableDiv;
-            if (!div) return;
-
-            const divContents = div.innerHTML;
-
-            // Get all stylesheets from the main page
-            let styles = '';
-            Array.from(document.styleSheets).forEach((styleSheet) => {
-                try {
-                if (styleSheet.href) {
-                    // External stylesheet
-                    styles += `<link rel="stylesheet" href="${styleSheet.href}">`;
-                } else if (styleSheet.cssRules) {
-                    // Inline style
-                    let css = Array.from(styleSheet.cssRules)
-                    .map(rule => rule.cssText)
-                    .join(' ');
-                    styles += `<style>${css}</style>`;
-                }
-                } catch (e) {
-                // ignore cross-origin stylesheets
-                }
+        // Save comment to backend
+        saveCommentNew() {
+            this.$inertia.post('/revision-plan-comment', {
+                table_row_id: this.paps.id,
+                table_name: "revision_plans",
+                column_name: this.selectedColumn,
+                comment: this.newComment,
+                selected_text: this.selectedText
             });
 
-            const printWindow = window.open('', '', 'height=800,width=1000');
-            printWindow.document.write('<html><head><title>Print Preview</title>');
-            printWindow.document.write(styles); // include styles
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(divContents);
-            printWindow.document.write('</body></html>');
+            this.showModal = false;
+            this.newComment = "";
+        },
 
-            printWindow.document.close();
-            printWindow.focus();
-            printWindow.print();
-            printWindow.close();
-            }
+        // Highlight commented text
+        highlightedText(column) {
+            let original = this.paps[column] || "";
+            let updated = original;
+
+            this.comments
+                .filter(c => c.column_name === column)
+                .forEach(c => {
+                    const safe = c.selected_text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(safe, "gi");
+
+                    updated = updated.replace(regex, `<span style="color:red; font-weight:bold;">${c.selected_text}</span>`);
+                });
+
+            return updated;
+        }
+        //RATIONALE COMMENTS
+        // onHighlight() {
+        //     const data = this.getHighlightIndexes();
+
+        //     if (data) {
+        //         alert("calculating text range selected: start="+data.start+
+        //             "; end="+data.end +
+        //             "; selected:" + data.selected
+        //         )
+        //         console.log("Start index:", data.start);
+        //         console.log("End index:", data.end);
+        //         console.log("Selected text:", data.selected);
+        //     }
+        // },
+        // getHighlightIndexes() {
+        //     const selection = window.getSelection();
+
+        //     if (!selection || selection.rangeCount === 0) {
+        //         return null;
+        //     }
+
+        //     const range = selection.getRangeAt(0);
+        //     const selectedText = selection.toString();
+
+        //     if (!selectedText) {
+        //         return null;
+        //     }
+
+        //     // Get the full text (flattened) from the div
+        //     const container = this.$refs.rationaleDiv;
+        //     const fullText = container.innerText;
+
+        //     // Build a Range to compute index relative to the container
+        //     const preRange = document.createRange();
+        //     preRange.selectNodeContents(container);
+        //     preRange.setEnd(range.startContainer, range.startOffset);
+
+        //     const startIndex = preRange.toString().length;
+        //     const endIndex = startIndex + selectedText.length;
+
+        //     return {
+        //         start: startIndex,
+        //         end: endIndex,
+        //         selected: selectedText
+        //     };
+        // },
+        // printDiv() {
+        //     const div = this.$refs.printableDiv;
+        //     if (!div) return;
+
+        //     const divContents = div.innerHTML;
+
+        //     // Get all stylesheets from the main page
+        //     let styles = '';
+        //     Array.from(document.styleSheets).forEach((styleSheet) => {
+        //         try {
+        //         if (styleSheet.href) {
+        //             // External stylesheet
+        //             styles += `<link rel="stylesheet" href="${styleSheet.href}">`;
+        //         } else if (styleSheet.cssRules) {
+        //             // Inline style
+        //             let css = Array.from(styleSheet.cssRules)
+        //             .map(rule => rule.cssText)
+        //             .join(' ');
+        //             styles += `<style>${css}</style>`;
+        //         }
+        //         } catch (e) {
+        //         // ignore cross-origin stylesheets
+        //         }
+        //     });
+
+        //     const printWindow = window.open('', '', 'height=800,width=1000');
+        //     printWindow.document.write('<html><head><title>Print Preview</title>');
+        //     printWindow.document.write(styles); // include styles
+        //     printWindow.document.write('</head><body>');
+        //     printWindow.document.write(divContents);
+        //     printWindow.document.write('</body></html>');
+
+        //     printWindow.document.close();
+        //     printWindow.focus();
+        //     printWindow.print();
+        //     printWindow.close();
+        // }
 
     }
 }

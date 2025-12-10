@@ -472,12 +472,14 @@
                                 <td>{{ dat.version }}</td>
                                 <td>{{ formatProjectType(dat.type) }}</td>
                                 <td>{{ dat.FFUNCTION }}</td>
+
                                 <th class="text-end">
                                     {{ format_number_conv(dat.budget_sum,2,true) }}
                                 </th>
+                                <!-- View -->
                                 <td>
                                     <Link
-                                        class="btn btn-primary btn-sm"
+                                        class="btn btn-success btn-sm"
                                         :href="`/revision/view/project/paps/${dat.id}?source=${my_source}`">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -486,22 +488,47 @@
                                     </Link>
                                     <!-- {{ dat }} -->
                                 </td>
+                                <!-- Review/Approve -->
                                 <td v-if="my_source=='rev_app'">
                                     <!-- Review -->
                                     <!-- {{ dat.budget_sum }}, {{ dat.imp_amount }} {{  dat.comments_count }} -->
+                                      <!-- {{ dat.status }} -gad status: {{ dat.gad_status }} -->
                                     <button
-                                        v-if="dat.status == '0'"
-                                        :disabled="(dat.comments_count > 0) || (Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum)))"
-                                        @click="statusAction(dat, 1)"
+                                        v-if="dat.gad_status=='0'"
+                                        @click="statusAction(dat, 1, 'gad_status')"
+                                        :disabled="!canReviewApproveGAD()"
                                         :style="{
                                         padding: '4px 10px',
                                         border: 'none',
                                         borderRadius: '4px',
-                                        backgroundColor: (dat.comments_count > 0) || (Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum))) ? '#a0c4ff' : 'blue',
+                                        backgroundColor: canReviewApproveGAD() ? 'blue' : '#a0c4ff',
                                         color: 'white',
                                         cursor: 'pointer',
                                         fontWeight: 'bold',
                                         marginRight: '4px'
+                                        }"
+                                    >
+                                        GAD Review
+                                    </button>
+                                    <!-- canReviewApproveGAD: {{ canReviewApproveGAD() }} -->
+                                    <button
+                                        v-if="dat.status == '0' && dat.gad_status=='1'"
+                                        :disabled="canReviewApproveGAD() ||
+                                                    dat.comments_count > 0 ||
+                                                    Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum))"
+                                        @click="statusAction(dat, 1, 'status')"
+                                        :style="{
+                                            padding: '4px 10px',
+                                            border: 'none',
+                                            borderRadius: '4px',
+                                            backgroundColor: canReviewApproveGAD() ||
+                                                    dat.comments_count > 0 ||
+                                                    Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum))
+                                                    ? '#a0c4ff' : 'blue',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold',
+                                            marginRight: '4px'
                                         }"
                                     >
                                         Review
@@ -940,6 +967,7 @@
         </SideModal>
         <!-- {{ my_source }} -->
     </div>
+    <!-- {{ auth }} -->
     <!-- {{ ooe_description }}
     {{ ooe_id }} -->
 </template>
@@ -1080,7 +1108,7 @@ export default {
 
             // YEAR PERIOD SELECTED
             year_period: 0,
-
+            gad_reviewers: [684, 545],
         }
     },
     computed: {
@@ -1733,7 +1761,7 @@ export default {
         //             console.error(error);
         //         });
         // }
-        statusAction(revision_plan, newStatus) {
+        statusAction(revision_plan, newStatus, column) {
             const actions = {
                 0: "Submit",
                 "-1": "Recall",
@@ -1751,7 +1779,8 @@ export default {
             Inertia.post(
                 `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
                 {
-                    remarks: this.remarks   // ← SEND IT HERE
+                    remarks: this.remarks,   // ← SEND IT HERE
+                    column: column
                 },
                 {
                     preserveScroll: true
@@ -2115,7 +2144,13 @@ export default {
 
         },
 
+        // GAD Reviewers
+        canReviewApproveGAD(){
+            const reviewers = this.gad_reviewers ?? [];
+            const userId = this.$page.props.auth.user.recid;
 
+            return reviewers.includes(userId);
+        }
 
 
     }

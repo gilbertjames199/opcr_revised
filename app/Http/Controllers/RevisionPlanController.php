@@ -2332,10 +2332,11 @@ class RevisionPlanController extends Controller
                 'imp_amount' => $imp_amount,
                 'idpaps' => $item->idpaps,
                 'status' => $item->status,
+                'gad_status' => $item->gad_status,
                 'number_of_clones' => $item->cloned_versions_count, // ❗ special name
             ];
         });
-
+        // dd($data);
         $year_c = date('Y');
         $year_n = intval($year_c) + 1;
         $year_p = intval($year_c) - 1;
