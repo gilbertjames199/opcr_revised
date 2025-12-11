@@ -84,9 +84,9 @@
             </Link>
             <button @click="printDiv">Print</button>
         </div>
-        <div class="col-9">
+        <!-- <div class="col-9">
 
-        </div>
+        </div> -->
 
 
         <div class="col-9" ref="printableDiv">
@@ -329,8 +329,7 @@
                         </tbody>
                     </table>
                     <!-- RATIONALE -->
-
-                     <span v-if="paps.rationale">
+                    <span v-if="paps.rationale">
                         <section id="rationale">
                             <h3 :class="{
                                         'text-danger': has_comment('Rationale','rationale',paps.rationale,'rationale','revision_plans', paps, paps.comments)
@@ -353,13 +352,14 @@
                              <p v-html="highlightedText('rationale')"
                                 @mouseup="handleSelection('rationale')"
                                 class="cursor-text"></p>
+                                <!-- {{ highlightedText('rationale') }} -->
                             <!-- <div v-html="paps.rationale"
                                 style="white-space: pre-line"
                                 ref="rationaleDiv"
                                 @mouseup="onHighlight"></div> -->
                         </div>
                         <br>
-                     </span>
+                    </span>
 
                     <!-- OBJECTIVES -->
                     <span v-if="paps.objective">
@@ -386,7 +386,12 @@
 
                         <br>
                         <div  class="bgc-white p-20 bd">
-                            <div v-html="paps.objective" style="white-space: pre-line"></div>
+                            <!-- <div v-html="paps.objective" style="white-space: pre-line"></div> -->
+                            <p v-html="highlightedText('objective')"
+                                @mouseup="handleSelection('objective')"
+                                class="cursor-text"></p>
+
+                            <!-- {{ highlightedText('objective') }} -->
                         </div>
                         <br>
                     </span>
@@ -415,7 +420,10 @@
                         </section>
                     <br>
                     <div class="bgc-white p-20 bd">
-                        <div v-html="paps.beneficiaries" style="white-space: pre-line"></div>
+                        <!-- <div v-html="paps.beneficiaries" style="white-space: pre-line"></div> -->
+                        <p v-html="highlightedText('beneficiaries')"
+                                @mouseup="handleSelection('beneficiaries')"
+                                class="cursor-text"></p>
                     </div>
                     <br>
                     </span>
@@ -2714,11 +2722,14 @@
                                                             class="clickable-comment"
                                                             @click="scrollToSection(
                                                                 ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                                    ? comment.column_name
+                                                                    ? `${comment.id}_${comment.table_name}_${comment.column_name}`
                                                                     : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                             )"
                                                             :class="'comment-rejected'"
                                                         >
+                                                        <!-- Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                    ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                    : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
                                                             {{ comment.comment }}
                                                                                 <!-- {{
                                                                         ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
@@ -2775,7 +2786,7 @@
                                             class="clickable-comment"
                                             @click="scrollToSection(
                                                 ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                    ? comment.column_name
+                                                    ? `${comment.id}_${comment.table_name}_${comment.column_name}`
                                                     : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                             )"
                                             :class="'comment-approved'"
@@ -3452,13 +3463,21 @@ export default {
                 comment: this.comment,
             };
 
-            if(['rationale', 'objectives', 'target_beneficiaries'].includes(this.selectedColumn)) {
+            if(['rationale', 'objective', 'beneficiaries'].includes(this.comment_column)) {
                 payload.selected_text = this.selectedText;
                 payload.start_index = this.selectedStart;
                 payload.end_index = this.selectedEnd;
                 payload.context_before = this.contextBefore;
                 payload.context_after = this.contextAfter;
             }
+            console.log(payload);
+            alert(this.selectedStart+ " Selected Start");
+            console.log("selectedText: "+this.selectedText);
+
+            console.log("selectedStart: "+this.selectedStart);
+            console.log("selectedEnd: "+this.selectedEnd);
+            console.log("contextBefore: "+this.contextBefore);
+            console.log("contextAfter: "+this.contextAfter);
             await this.$nextTick();
             this.$inertia.post('/revision-plan-comments/store', payload);
             this.closeCommentModal();
@@ -3487,13 +3506,13 @@ export default {
                 onSuccess: () => {
                     if (type === 'delete') {
                         this.comments.splice(index, 1);
-                        alert("Comment deleted successfully.");
+                        // alert("Comment deleted successfully.");
                     } else if (type === 'reset') {
                         this.comments[index].comment_status = '0';
-                        alert("Comment status reset to unresolved.");
+                        // alert("Comment status reset to unresolved.");
                     } else if (type === 'resolve') {
                         this.comments[index].comment_status = '1';
-                        alert("Comment resolved successfully.");
+                        // alert("Comment resolved successfully.");
                     }
                 }
             });
@@ -3698,13 +3717,37 @@ export default {
             const text = window.getSelection().toString().trim();
             if (!text) return;
 
+             // Only handle fuzzy matching for specific columns
+            if (!['rationale', 'objective', 'beneficiaries'].includes(column)) return;
+
             this.selectedText = text;
             this.selectedColumn = column;
-            this.showModal = true;
-            console.log("Selected text:", text);
+
+            // Compute start and end index
+            const fullText = this.paps[column] || "";
+            const startIndex = fullText.indexOf(text);
+            const endIndex = startIndex + text.length;
+
+            // Compute context (30 chars before and after)
+            const contextBefore = fullText.substring(Math.max(0, startIndex - 30), startIndex);
+            const contextAfter = fullText.substring(endIndex, Math.min(fullText.length, endIndex + 30));
+
+            this.selectedStart = startIndex;
+            this.selectedEnd = endIndex;
+            this.contextBefore = contextBefore;
+            this.contextAfter = contextAfter;
+            //
+            // console.log("Selected text:", text);
             if(column==='rationale'){
                 this.handleClick('Rationale','rationale',this.selectedText,'rationale','revision_plans', this.paps, this.paps.comments)
             }
+            if(column==='objective'){
+                this.handleClick('Objective','objective',this.selectedText,'objective','revision_plans', this.paps, this.paps.comments)
+            }
+            if(column==='beneficiaries'){
+                this.handleClick('Beneficiaries','beneficiaries',this.selectedText,'beneficiaries','revision_plans', this.paps, this.paps.comments)
+            }
+            // beneficiaries
         },
 
         // Save comment to backend
@@ -3723,19 +3766,30 @@ export default {
 
         // Highlight commented text
         highlightedText(column) {
-            let original = this.paps[column] || "";
-            let updated = original;
+            const text = this.paps[column];
+            console.log(text);
+            let result = "";
+            let cursor = 0;
 
-            // this.comments
-            //     .filter(c => c.column_name === column)
-            //     .forEach(c => {
-            //         const safe = c.selected_text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            //         const regex = new RegExp(safe, "gi");
+            const items = this.all_comments
+                .filter(c => c.column_name === column)
+                .sort((a, b) => a.start_index - b.start_index);
 
-            //         updated = updated.replace(regex, `<span style="color:red; font-weight:bold;">${c.selected_text}</span>`);
-            //     });
+            items.forEach(c => {
+                result += text.slice(cursor, c.start_index);
 
-            return updated;
+                // If status = 1, keep normal text style
+                const style = c.comment_status === '1'
+                    ? ""
+                    : "color:#fa7602; font-weight:bold;";
+                result += `<span style="${style}" id="${c.id}_${c.table_name}_${c.column_name}">
+                    ${text.slice(c.start_index, c.end_index)}</span>`;
+                cursor = c.end_index;
+            });
+
+            result += text.slice(cursor);
+            return result;
+
         }
         //RATIONALE COMMENTS
         // onHighlight() {
