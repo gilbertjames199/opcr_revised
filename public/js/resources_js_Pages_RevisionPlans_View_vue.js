@@ -736,14 +736,14 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
   // Highlight commented text
   highlightedText: function highlightedText(column) {
     var original = this.paps[column] || "";
-    var updated = original;
-    this.comments.filter(function (c) {
-      return c.column_name === column;
-    }).forEach(function (c) {
-      var safe = c.selected_text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      var regex = new RegExp(safe, "gi");
-      updated = updated.replace(regex, "<span style=\"color:red; font-weight:bold;\">".concat(c.selected_text, "</span>"));
-    });
+    var updated = original; // this.comments
+    //     .filter(c => c.column_name === column)
+    //     .forEach(c => {
+    //         const safe = c.selected_text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    //         const regex = new RegExp(safe, "gi");
+    //         updated = updated.replace(regex, `<span style="color:red; font-weight:bold;">${c.selected_text}</span>`);
+    //     });
+
     return updated;
   } //RATIONALE COMMENTS
   // onHighlight() {

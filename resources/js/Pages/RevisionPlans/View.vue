@@ -3712,14 +3712,14 @@ export default {
             let original = this.paps[column] || "";
             let updated = original;
 
-            this.comments
-                .filter(c => c.column_name === column)
-                .forEach(c => {
-                    const safe = c.selected_text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    const regex = new RegExp(safe, "gi");
+            // this.comments
+            //     .filter(c => c.column_name === column)
+            //     .forEach(c => {
+            //         const safe = c.selected_text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            //         const regex = new RegExp(safe, "gi");
 
-                    updated = updated.replace(regex, `<span style="color:red; font-weight:bold;">${c.selected_text}</span>`);
-                });
+            //         updated = updated.replace(regex, `<span style="color:red; font-weight:bold;">${c.selected_text}</span>`);
+            //     });
 
             return updated;
         }

@@ -343,7 +343,9 @@ class CashDisbursementForecastController extends Controller
 
                     // ✔ Include your added details here (kept flat)
                     'prepared_by'  => $cdf->prepared_by  ?? '',
+                    'position_prepared_by'  => $cdf->position_prepared_by  ?? '',
                     'approved_by'  => $cdf->approved_by  ?? '',
+                    'position_approved_by'  => $cdf->position_approved_by  ?? '',
 
                     'office'        => $res['office'] ?? '',
                     'year'          => $res['year'] ?? '',
