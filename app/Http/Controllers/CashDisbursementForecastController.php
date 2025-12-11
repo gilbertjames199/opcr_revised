@@ -160,7 +160,9 @@ class CashDisbursementForecastController extends Controller
             return [
                 'id' => $item->id,
                 'prepared_by' => $item->prepared_by,
+                'position_prepared_by' => $item->position_prepared_by,
                 'approved_by' => $item->approved_by,
+                'position_approved_by' => $item->position_approved_by,
                 'revision_plan_id' => $item->revision_plan_id,
                 'version' => $item->version,
                 'status' => $item->status,

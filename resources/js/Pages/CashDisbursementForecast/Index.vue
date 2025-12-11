@@ -259,6 +259,17 @@
                                         <input type="text" v-model="dat.approved_by" @change="saveSignatories(dat.id, dat.approved_by,'approved_by', dat.revision_plan_id)">
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td colspan="2">Position</td>
+                                    <td colspan="5">
+                                        <input type="text" v-model="dat.position_prepared_by" @change="saveSignatories(dat.id, dat.position_prepared_by,'position_prepared_by', dat.revision_plan_id)">
+                                    </td>
+                                    <td colspan="2">Position</td>
+                                    <td colspan="5">
+                                        <input type="text" v-model="dat.position_approved_by" @change="saveSignatories(dat.id, dat.position_approved_by,'position_approved_by', dat.revision_plan_id)">
+                                    </td>
+                                </tr>
 
                             </template>
 
