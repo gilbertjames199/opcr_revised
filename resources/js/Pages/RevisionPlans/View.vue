@@ -2922,6 +2922,7 @@
                 <!-- {{ comment_reference_object }} -->
             </div>
             <div>
+
                 <span v-if="auth.user.department_code==='04'">
                     <div>
                         <textarea class="form-control" rows="5" v-model="comment"
@@ -3435,7 +3436,7 @@ export default {
                 table_row_id: this.paps.id,
                 table_name: "revision_plans",
                 column_name: this.selectedColumn,
-                comment: this.newComment,
+                comment: this.comment,
             };
 
             if(['rationale', 'objectives', 'target_beneficiaries'].includes(this.selectedColumn)) {
@@ -3446,7 +3447,7 @@ export default {
                 payload.context_after = this.contextAfter;
             }
 
-            this.$inertia.post('/revision-plan-comment', payload);
+            this.$inertia.post('/revision-plan-comments/store', payload);
             this.closeCommentModal();
             setTimeout(() => {
                 this.comment = "";

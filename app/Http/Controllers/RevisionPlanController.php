@@ -3733,13 +3733,15 @@ class RevisionPlanController extends Controller
     {
         // return "james"; office, project name source of fund budget allocation
         if ($request->id) {
-            $revision = RevisionPlan::with(['paps', 'paps.office', 'budget'])->where('id', $request->id)->first();
+            $revision = RevisionPlan::with(['paps', 'paps.office', 'budget', 'signatories'])->where('id', $request->id)->first();
             // dd($revision);
             $budget_total = $this->getTotalBudget($revision);
             $activities = ActivityProject::with(['expected_output', 'expected_outcome'])->where('project_id', $revision->id)->get()
                 ->map(function ($item) use ($revision, $budget_total) {
                     // dd($revision->paps->office->FFUNCTION);
                     // dd($revision->budget[0]->source);
+                    // dd($revision->signatories);
+                    $get = fn($type) => optional($revision->signatories->firstWhere('acted', $type));
                     return [
                         'id'               => $item->id,
                         'project_name' => $revision->project_title ?? '',
@@ -3776,9 +3778,17 @@ class RevisionPlanController extends Controller
                         'ccet_code'        => $item->ccet_code,
                         'responsible'      => $item->responsible,
                         'is_active'        => $item->is_active,
-
                         'expected_output'       => $item->expected_output,
                         'expected_outcome'       => $item->expected_outcome,
+                        // SIGNATORIES
+                        "approved_by"           => $this->getSig('Approved', $revision->signatories)->name,
+                        "approved_by_position"  => $this->getSig('Approved', $revision->signatories)->position,
+                        "prepared_by"           => $this->getSig('Prepared', $revision->signatories)->name,
+                        "prepared_by_position"  => $this->getSig('Prepared', $revision->signatories)->position,
+                        "reviewed_by"           => $this->getSig('Reviewed', $revision->signatories)->name,
+                        "reviewed_by_position"  => $this->getSig('Reviewed', $revision->signatories)->position,
+                        "noted_by"              => $this->getSig('Noted', $revision->signatories)->name ?? null,
+                        "noted_by_position"     => $this->getSig('Noted', $revision->signatories)->position ?? null,
                     ];
                 });
 
@@ -3786,6 +3796,11 @@ class RevisionPlanController extends Controller
         } else {
             return [];
         }
+    }
+    public function getSig($type, $signatories)
+    {
+        $signatory = $signatories->firstWhere('acted', $type);
+        return $signatory;
     }
     public function getTotalBudgetRequirements($id){
         return BudgetRequirement::where('revision_plan_id', $id)

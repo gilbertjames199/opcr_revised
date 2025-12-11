@@ -250,22 +250,22 @@
                                 </template>
                                 <tr>
                                     <td colspan="2"></td>
-                                    <td colspan="2">Prepared by</td>
+                                    <td colspan="2"><b>Prepared by:</b></td>
                                     <td colspan="5">
                                         <input type="text" v-model="dat.prepared_by" @change="saveSignatories(dat.id, dat.prepared_by,'prepared_by', dat.revision_plan_id)">
                                     </td>
-                                    <td colspan="2">Approved by</td>
+                                    <td colspan="2"><b>Approved by:</b></td>
                                     <td colspan="5">
                                         <input type="text" v-model="dat.approved_by" @change="saveSignatories(dat.id, dat.approved_by,'approved_by', dat.revision_plan_id)">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"></td>
-                                    <td colspan="2">Position</td>
+                                    <td colspan="2"><b>Position:</b></td>
                                     <td colspan="5">
                                         <input type="text" v-model="dat.position_prepared_by" @change="saveSignatories(dat.id, dat.position_prepared_by,'position_prepared_by', dat.revision_plan_id)">
                                     </td>
-                                    <td colspan="2">Position</td>
+                                    <td colspan="2"><b>Position:</b></td>
                                     <td colspan="5">
                                         <input type="text" v-model="dat.position_approved_by" @change="saveSignatories(dat.id, dat.position_approved_by,'position_approved_by', dat.revision_plan_id)">
                                     </td>

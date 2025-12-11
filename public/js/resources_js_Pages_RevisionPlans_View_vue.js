@@ -434,7 +434,7 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
       table_row_id: this.paps.id,
       table_name: "revision_plans",
       column_name: this.selectedColumn,
-      comment: this.newComment
+      comment: this.comment
     };
 
     if (['rationale', 'objectives', 'target_beneficiaries'].includes(this.selectedColumn)) {
@@ -445,7 +445,7 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
       payload.context_after = this.contextAfter;
     }
 
-    this.$inertia.post('/revision-plan-comment', payload);
+    this.$inertia.post('/revision-plan-comments/store', payload);
     this.closeCommentModal();
     setTimeout(function () {
       _this2.comment = "";

@@ -33,6 +33,14 @@ class RevisionPlanCommentController extends Controller
         $comment->comment = $request->params['comment'];
         $comment->comment_status = '0'; // Default to '0' if not provided
         $comment->user_id = auth()->user()->recid; // Assuming user is authenticated
+        // Only store fuzzy data for rationale, objectives, target_beneficiaries
+        if(in_array($request->params['column_name'], ['rationale', 'objectives', 'target_beneficiaries'])){
+            $comment->selected_text = $request->input('selected_text');
+            $comment->start_index = $request->input('start_index');
+            $comment->end_index = $request->input('end_index');
+            $comment->context_before = $request->input('context_before');
+            $comment->context_after = $request->input('context_after');
+        }
         $comment->save();
         return back()->with('success', 'Comment added successfully.');
         // $request->params['comment']
