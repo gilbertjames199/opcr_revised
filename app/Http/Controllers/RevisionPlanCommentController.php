@@ -21,20 +21,20 @@ class RevisionPlanCommentController extends Controller
     }
     public function storeComment(Request $request)
     {
-        // dd($request->params);
+        // dd($request);
         // dd(auth()->user()->recid);
         $request->validate([
-            'params.comment' => 'required',
+            'comment' => 'required',
         ]);
         $comment = new RevisionPlanComment();
-        $comment->table_row_id = $request->params['table_row_id'];
-        $comment->table_name = $request->params['table_name'];
-        $comment->column_name = $request->params['column_name'];
-        $comment->comment = $request->params['comment'];
+        $comment->table_row_id = $request->input('table_row_id');
+        $comment->table_name = $request->input('table_name');
+        $comment->column_name = $request->input('column_name');
+        $comment->comment = $request->input('comment');
         $comment->comment_status = '0'; // Default to '0' if not provided
         $comment->user_id = auth()->user()->recid; // Assuming user is authenticated
         // Only store fuzzy data for rationale, objectives, target_beneficiaries
-        if(in_array($request->params['column_name'], ['rationale', 'objectives', 'target_beneficiaries'])){
+        if(in_array($request->input('column_name'), ['rationale', 'objectives', 'target_beneficiaries'])){
             $comment->selected_text = $request->input('selected_text');
             $comment->start_index = $request->input('start_index');
             $comment->end_index = $request->input('end_index');
@@ -42,6 +42,7 @@ class RevisionPlanCommentController extends Controller
             $comment->context_after = $request->input('context_after');
         }
         $comment->save();
+        // dd($comment);
         return back()->with('success', 'Comment added successfully.');
         // $request->params['comment']
     }

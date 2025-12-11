@@ -596,7 +596,7 @@
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
                                             }" :id="act.activity_id + '_activity_projects_activities'"><b>{{ act.description }} </b>
-
+                                                {{ act.activity_id}}
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)">*
                                                 </button>
@@ -631,8 +631,6 @@
 
 
                                             <!-- MERGED -->
-
-
                                             <!-- TARGET/INDICATORs, EXPECTED OUTPUTS, GAD ISSUE, IMPLEMENTATION DATES-->
                                             <td colspan="4" style="width: 32%; padding: 0; border: 1px solid #000; vertical-align: top;">
                                                 <div style="display: flex; flex-direction: column; height: 100%; min-height: 100%;">
@@ -666,10 +664,19 @@
                                                                     </button>
                                                                 </td>
                                                                 <!-- GAD Issue -->
-                                                                <td v-if="i === 0" class="align-top" :id="act.activity_id + '_activity_projects_gad_issue'" :class="{
-                                                                    'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
-                                                                }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length"
-
+                                                                <td v-if="i === 0" class="align-top" :id="act.activity_id + '_activity_projects_gad_issue'"
+                                                                    :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
+                                                                    }"
+                                                                    :style="{width: '25%',
+                                                                            border: '1px solid #000',
+                                                                            padding: '4px',
+                                                                            backgroundColor: has_comment(
+                                                                                'Implementation Plan','activity GAD issue',
+                                                                                act.gad_issue,'gad_issue','activity_projects',
+                                                                                act, act.comments
+                                                                            ) ? 'red' : ''}"
+                                                                    :rowspan="getPairedOutputs(act.activityProject[0]).length"
                                                                 >
                                                                     <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
@@ -3381,7 +3388,7 @@ export default {
         closeCommentModal() {
             this.show_comment_modal = false;
         },
-        saveComment() {
+        async saveComment() {
             // Logic to save the comment
             // This is just a placeholder, implement your actual saving logic here
             var myurl = "/revision-plan-comments/store";
@@ -3432,10 +3439,16 @@ export default {
             //         comment: this.comment,
             //     }
             // });
+            // table_row_id: table_row_id_l,
+            //         table_name: this.comment_table,
+            //         column_name: this.comment_column,
+            //         comment_status: 0,
+            //         comment: this.comment,
             let payload = {
-                table_row_id: this.paps.id,
-                table_name: "revision_plans",
-                column_name: this.selectedColumn,
+                table_row_id: table_row_id_l,
+                table_name: this.comment_table,
+                column_name: this.comment_column,
+                comment_status: 0,
                 comment: this.comment,
             };
 
@@ -3446,7 +3459,7 @@ export default {
                 payload.context_before = this.contextBefore;
                 payload.context_after = this.contextAfter;
             }
-
+            await this.$nextTick();
             this.$inertia.post('/revision-plan-comments/store', payload);
             this.closeCommentModal();
             setTimeout(() => {

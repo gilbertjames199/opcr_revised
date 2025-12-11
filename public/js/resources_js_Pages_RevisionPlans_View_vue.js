@@ -373,83 +373,109 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
   saveComment: function saveComment() {
     var _this2 = this;
 
-    // Logic to save the comment
-    // This is just a placeholder, implement your actual saving logic here
-    var myurl = "/revision-plan-comments/store"; // await axios
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var myurl, table_row_id_l, payload;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              // Logic to save the comment
+              // This is just a placeholder, implement your actual saving logic here
+              myurl = "/revision-plan-comments/store"; // await axios
 
-    var table_row_id_l = 0; // console.log(this.comment_table)
+              table_row_id_l = 0; // console.log(this.comment_table)
 
-    if (this.comment_table === 'revision_plans') {
-      table_row_id_l = this.comment_reference_object.id;
-    }
+              if (_this2.comment_table === 'revision_plans') {
+                table_row_id_l = _this2.comment_reference_object.id;
+              }
 
-    if (this.comment_table === 'strategy_projects') {
-      table_row_id_l = this.comment_reference_object.strategy_id;
-    }
+              if (_this2.comment_table === 'strategy_projects') {
+                table_row_id_l = _this2.comment_reference_object.strategy_id;
+              }
 
-    if (this.comment_table === 'activity_projects') {
-      table_row_id_l = this.comment_reference_object.activity_id;
-    }
+              if (_this2.comment_table === 'activity_projects') {
+                table_row_id_l = _this2.comment_reference_object.activity_id;
+              }
 
-    if (this.comment_table === 'budget_requirements') {
-      table_row_id_l = this.comment_reference_object.id; // alert(table_row_id_l)
-      // console.log(this.comment_reference_object)
-    }
+              if (_this2.comment_table === 'budget_requirements') {
+                table_row_id_l = _this2.comment_reference_object.id; // alert(table_row_id_l)
+                // console.log(this.comment_reference_object)
+              }
 
-    if (this.comment_table === 'team_plans') {
-      table_row_id_l = this.comment_reference_object.id;
-    }
+              if (_this2.comment_table === 'team_plans') {
+                table_row_id_l = _this2.comment_reference_object.id;
+              }
 
-    if (this.comment_table === 'monitoring_and_evaluations') {
-      table_row_id_l = this.comment_reference_object.id;
-    }
+              if (_this2.comment_table === 'monitoring_and_evaluations') {
+                table_row_id_l = _this2.comment_reference_object.id;
+              }
 
-    if (this.comment_table === 'risk_manangements') {
-      table_row_id_l = this.comment_reference_object.id;
-    }
+              if (_this2.comment_table === 'risk_manangements') {
+                table_row_id_l = _this2.comment_reference_object.id;
+              }
 
-    if (this.comment_table === 'expected_revised_outputs') {
-      table_row_id_l = this.comment_reference_object.id;
-    }
+              if (_this2.comment_table === 'expected_revised_outputs') {
+                table_row_id_l = _this2.comment_reference_object.id;
+              }
 
-    if (this.comment_table === 'expected_revised_outcomes') {
-      table_row_id_l = this.comment_reference_object.id;
-    }
+              if (_this2.comment_table === 'expected_revised_outcomes') {
+                table_row_id_l = _this2.comment_reference_object.id;
+              }
 
-    if (this.comment_table === 'signatories') {
-      table_row_id_l = this.comment_reference_object.id;
-    } //alert(table_row_id_l)
-    // this.$inertia.post(myurl, {
-    //     params: {
-    //         table_row_id: table_row_id_l,
-    //         table_name: this.comment_table,
-    //         column_name: this.comment_column,
-    //         comment_status: 0,
-    //         comment: this.comment,
-    //     }
-    // });
+              if (_this2.comment_table === 'signatories') {
+                table_row_id_l = _this2.comment_reference_object.id;
+              } //alert(table_row_id_l)
+              // this.$inertia.post(myurl, {
+              //     params: {
+              //         table_row_id: table_row_id_l,
+              //         table_name: this.comment_table,
+              //         column_name: this.comment_column,
+              //         comment_status: 0,
+              //         comment: this.comment,
+              //     }
+              // });
+              // table_row_id: table_row_id_l,
+              //         table_name: this.comment_table,
+              //         column_name: this.comment_column,
+              //         comment_status: 0,
+              //         comment: this.comment,
 
 
-    var payload = {
-      table_row_id: this.paps.id,
-      table_name: "revision_plans",
-      column_name: this.selectedColumn,
-      comment: this.comment
-    };
+              payload = {
+                table_row_id: table_row_id_l,
+                table_name: _this2.comment_table,
+                column_name: _this2.comment_column,
+                comment_status: 0,
+                comment: _this2.comment
+              };
 
-    if (['rationale', 'objectives', 'target_beneficiaries'].includes(this.selectedColumn)) {
-      payload.selected_text = this.selectedText;
-      payload.start_index = this.selectedStart;
-      payload.end_index = this.selectedEnd;
-      payload.context_before = this.contextBefore;
-      payload.context_after = this.contextAfter;
-    }
+              if (['rationale', 'objectives', 'target_beneficiaries'].includes(_this2.selectedColumn)) {
+                payload.selected_text = _this2.selectedText;
+                payload.start_index = _this2.selectedStart;
+                payload.end_index = _this2.selectedEnd;
+                payload.context_before = _this2.contextBefore;
+                payload.context_after = _this2.contextAfter;
+              }
 
-    this.$inertia.post('/revision-plan-comments/store', payload);
-    this.closeCommentModal();
-    setTimeout(function () {
-      _this2.comment = "";
-    }, 1000); // 1000 milliseconds = 1 second
+              _context.next = 16;
+              return _this2.$nextTick();
+
+            case 16:
+              _this2.$inertia.post('/revision-plan-comments/store', payload);
+
+              _this2.closeCommentModal();
+
+              setTimeout(function () {
+                _this2.comment = "";
+              }, 1000); // 1000 milliseconds = 1 second
+
+            case 19:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   },
   submitAction: function submitAction(type, comment_id, index) {
     var _this3 = this;
@@ -533,11 +559,11 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
   updateComment: function updateComment(id, comment, index) {
     var _this4 = this;
 
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
       var myurl;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
               // const payload = {
               //         id: id,
@@ -550,11 +576,11 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
               myurl = "/revision-plan-comments/" + id;
 
               if (_this4.reply_concat.trim()) {
-                _context.next = 3;
+                _context2.next = 3;
                 break;
               }
 
-              return _context.abrupt("return");
+              return _context2.abrupt("return");
 
             case 3:
               try {
@@ -590,10 +616,10 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
 
             case 4:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
-      }, _callee);
+      }, _callee2);
     }))();
   },
   // async saveComment(payload) {
@@ -3226,6 +3252,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: act.activity_id + '_activity_projects_activities'
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.description), 1
       /* TEXT */
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.activity_id) + " ", 1
+      /* TEXT */
       ), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 0,
         "class": "superscript-btn",
@@ -3294,11 +3322,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             'text-danger': $options.has_comment('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments)
           }]),
           id: act.activity_id + '_activity_projects_gad_issue',
-          style: {
-            "width": "25%",
-            "border": "1px solid #000",
-            "padding": "4px"
-          },
+          style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
+            width: '25%',
+            border: '1px solid #000',
+            padding: '4px',
+            backgroundColor: $options.has_comment('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments) ? 'red' : ''
+          }),
           rowspan: $options.getPairedOutputs(act.activityProject[0]).length
         }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_119, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.gad_issue) + " ", 1
         /* TEXT */
@@ -3318,8 +3347,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }
         }, "* ", 8
         /* PROPS */
-        , _hoisted_121)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10
-        /* CLASS, PROPS */
+        , _hoisted_121)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 14
+        /* CLASS, STYLE, PROPS */
         , _hoisted_118)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Timeline "), i === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", {
           key: 1,
           style: {
