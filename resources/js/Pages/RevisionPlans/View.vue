@@ -88,7 +88,7 @@
 
         </div> -->
 
-
+        <!-- MAIN CONTENT****************************************************************************************************** -->
         <div class="col-9" ref="printableDiv">
             <div class="d-flex justify-content-center">
                 <img :src="getImagePath('logo.png')" alt="" class="img-fluid" style="width:100px; height:100px">
@@ -349,7 +349,8 @@
                         </section>
                         <br>
                         <div class="bgc-white p-20 bd" >
-                             <p v-html="highlightedText('rationale')"
+                             <p ref="rationale"
+                                v-html="renderedText('rationale')"
                                 @mouseup="handleSelection('rationale')"
                                 class="cursor-text"></p>
                                 <!-- {{ highlightedText('rationale') }} -->
@@ -387,7 +388,8 @@
                         <br>
                         <div  class="bgc-white p-20 bd">
                             <!-- <div v-html="paps.objective" style="white-space: pre-line"></div> -->
-                            <p v-html="highlightedText('objective')"
+                            <p  ref="objective"
+                                v-html="highlightedText('objective')"
                                 @mouseup="handleSelection('objective')"
                                 class="cursor-text"></p>
 
@@ -421,9 +423,10 @@
                     <br>
                     <div class="bgc-white p-20 bd">
                         <!-- <div v-html="paps.beneficiaries" style="white-space: pre-line"></div> -->
-                        <p v-html="highlightedText('beneficiaries')"
-                                @mouseup="handleSelection('beneficiaries')"
-                                class="cursor-text"></p>
+                        <p  ref="beneficiaries"
+                            v-html="highlightedText('beneficiaries')"
+                            @mouseup="handleSelection('beneficiaries')"
+                            class="cursor-text"></p>
                     </div>
                     <br>
                     </span>
@@ -2652,6 +2655,7 @@
                 </div>
             </div>
         </div>
+        <!-- NAVIGATION AND COMMENTS******************************************************************************************* -->
         <div class="col-3">
             <div class="sticky-comments" v-if="!showComments">
                     <button class="close-btn text-danger" @click="toggleShowCommentPanel">
@@ -2686,11 +2690,11 @@
                     </div>
                     <div v-if="open_tab==='Comments'">
                         <div class="comments-header">
-                            <h4>COMMENTS ...
-
-                            </h4>
+                            <h4>COMMENTS ...</h4>
                         </div>
                         <div><i>Click a comment and follow the <span style="color: red">red</span> arrow</i></div>
+                        <hr>
+
                         <hr>
                         <div class="scrollable-text" style="background: rgba(255, 255, 255, 0.7);">
                             <!--********************************************************************************************************-->
@@ -2726,6 +2730,9 @@
                                                                     : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                             )"
                                                             :class="'comment-rejected'"
+                                                            :title="['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                ? comment.selected_text
+                                                                : ''"
                                                         >
                                                         <!-- Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                     ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
@@ -2935,12 +2942,45 @@
 
             </div>
         </div>
-        <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
+        <!-- COMMENTING ******************************************************************************************************* -->
+        <div class="col-3">
+            <div class="p-20 bd sticky-comments" v-if="show_comment_modal" style="background: rgba(255, 255, 255, 0.7);">
+                <div class="d-flex justify-content-end">
+                    <button class="close-btn text-danger" @click="closeCommentModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                    </button>
+                </div>
+                <span v-if="auth.user.department_code==='04'">
+                    <div>
+                        <textarea class="form-control" rows="5" v-model="comment"
+                            placeholder="Write your comment here..."></textarea>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary mt-2 text-white" @click="saveComment()">
+                            Submit Comment
+                        </button>
+                    </div>
+                    <div>
+                        <div><b>Section: </b>{{ comment_section }}</div>
+                        <div><b>Subtitle:</b> <span v-html="comment_subtitle"></span></div>
+                        <div><b>Data:</b> <span v-html="comment_data"></span></div>
+                        <div><b>Column:</b> {{ comment_column }}
+                            <span v-if="comment_column=='Person Affected'">Preventive Measures</span>
+                            <span v-else-if="comment_column=='Management'">Mechanisms to monitor</span>
+                            <span v-else>{{ comment_column }}</span>
+                        </div>
+                        <div><b>Table:</b> {{ comment_table }}</div>
+                    </div>
+                </span>
+            </div>
+        </div>
+        <!-- <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
             <div class="d-flex justify-content-center">
-                <!-- {{ comment_reference_object }} -->
+
             </div>
             <div>
-
                 <span v-if="auth.user.department_code==='04'">
                     <div>
                         <textarea class="form-control" rows="5" v-model="comment"
@@ -2962,7 +3002,7 @@
                     <span v-else>{{ comment_colun }}</span>
                 </div>
                 <div><b>Table:</b> {{ comment_table }}</div>
-                <!-- <div>Reference Object: {{ comment_reference_object.id }}</div> -->
+
 
                 <div class="col-9">
                     <table class="table table-hover table-bordered border-dark">
@@ -2971,8 +3011,7 @@
                                 <th class="bg-secondary text-white">Comment</th>
                                 <th class="bg-secondary text-white">Status&nbsp;&nbsp;</th>
                                 <th class="bg-secondary text-white" v-if="auth.user.department_code==='04'">Actions&nbsp;&nbsp;</th>
-                                <!-- <th class="bg-secondary text-white" v-if="auth.user.department_code==='04'">Actions&nbsp;&nbsp;</th> -->
-                                <!-- <th class="bg-secondary text-white">Comment by&nbsp;&nbsp;</th> -->
+
 
                                 <th class="bg-secondary text-white">Date</th>
                             </tr>
@@ -3026,10 +3065,7 @@
                                         </button>&nbsp;
                                     </div>
                                 </td>
-                                <!-- <td>
-                                    <span v-if="comment.user">{{ comment.user.FullName }}</span>
-                                    <span v-else>Not recorded</span>
-                                </td> -->
+
 
                                 <td>{{ formatDate(comment.created_at) }}</td>
                             </tr>
@@ -3039,7 +3075,7 @@
 
             </div>
             <br>
-        </CommentModal>
+        </CommentModal> -->
         <div class="d-flex justify-content-center">
 
         </div>
@@ -3062,6 +3098,7 @@
         <!-- {{ auth.user }} -->
         <!-- {{ auth.user }}
         {{ paps.is_strategy_based }} -->
+         <!-- {{ all_comments }} -->
     </div> <!--Sa class="row gap-10" ni-->
     </div>
 </template>
@@ -3256,7 +3293,10 @@ export default {
             selectedText: "",
             selectedColumn: "",
             showModal: false,
-            newComment: ""
+            newComment: "",
+
+            // Rationale, Beneficiaries, Objectives (RBO) Commenting
+            commentingForRBO: true,
         }
     },
     mounted() {
@@ -3362,6 +3402,7 @@ export default {
             }
             return can_comment_here;
         },
+        //COMMENTS **************************************************************************************************
         has_comment(section, subtitle, data, column, table, obj, comments_obj){
             var has_comm =false;
             console.log("comments object ************")
@@ -3395,9 +3436,11 @@ export default {
                 comment.table_name === table && comment.column_name === column
             );
             this.show_comment_modal = true;
+            this.showComments=false;
         },
         closeCommentModal() {
             this.show_comment_modal = false;
+            this.removeHighlights();
         },
         async saveComment() {
             // Logic to save the comment
@@ -3485,6 +3528,107 @@ export default {
                 this.comment = "";
             }, 1000); // 1000 milliseconds = 1 second
         },
+        // COMMENTS FOR RATIONALE, TARGET BENEFICIARIES, OBJECTIVES
+        // Detect user highlighted text
+        handleSelection(column) {
+            // this.removeHighlights('rationale');
+            // this.removeHighlights('objective');
+            // this.removeHighlights('beneficiaries');
+            const text = window.getSelection().toString().trim();
+            if (!text) return;
+
+            // ❗ New validation: minimum 4 characters
+            if (text.length < 4) {
+                alert("Selected text must be at least 4 characters long.");
+                return;
+            }
+
+            this.highlightSelection(); // ⬅️ TEMPORARY HIGHLIGHT
+             // Only handle fuzzy matching for specific columns
+            if (!['rationale', 'objective', 'beneficiaries'].includes(column)) return;
+
+            this.selectedText = text;
+            this.selectedColumn = column;
+
+            // Compute start and end index
+            const fullText = this.paps[column] || "";
+            const startIndex = fullText.indexOf(text);
+            const endIndex = startIndex + text.length;
+
+            // Compute context (30 chars before and after)
+            const contextBefore = fullText.substring(Math.max(0, startIndex - 30), startIndex);
+            const contextAfter = fullText.substring(endIndex, Math.min(fullText.length, endIndex + 30));
+
+            this.selectedStart = startIndex;
+            this.selectedEnd = endIndex;
+            this.contextBefore = contextBefore;
+            this.contextAfter = contextAfter;
+            //
+            // console.log("Selected text:", text);
+            if(column==='rationale'){
+                this.handleClick('Rationale','rationale',this.selectedText,'rationale','revision_plans', this.paps, this.paps.comments)
+            }
+            if(column==='objective'){
+                this.handleClick('Objective','objective',this.selectedText,'objective','revision_plans', this.paps, this.paps.comments)
+            }
+            if(column==='beneficiaries'){
+                this.handleClick('Beneficiaries','beneficiaries',this.selectedText,'beneficiaries','revision_plans', this.paps, this.paps.comments)
+            }
+            // this.showComments=true;
+            // this.show_comment_modal = false;
+            // beneficiaries
+        },
+
+        // Save comment to backend
+        saveCommentNew() {
+            this.$inertia.post('/revision-plan-comment', {
+                table_row_id: this.paps.id,
+                table_name: "revision_plans",
+                column_name: this.selectedColumn,
+                comment: this.newComment,
+                selected_text: this.selectedText
+            });
+
+            this.showModal = false;
+            this.newComment = "";
+        },
+        renderedText(column) {
+            // .filter(c => c.column_name === column)
+            return this.highlightedTextGlobal(
+                this.all_comments,
+                this.paps[column],                       // your text
+                column
+            );
+        },
+        // Highlight commented text
+        highlightedText(column) {
+            const text = this.paps[column];
+            console.log(text);
+            let result = "";
+            let cursor = 0;
+
+            const items = this.all_comments
+                .filter(c => c.column_name === column)
+                .sort((a, b) => a.start_index - b.start_index);
+
+            items.forEach(c => {
+                result += text.slice(cursor, c.start_index);
+
+                // If status = 1, keep normal text style
+                const style = c.comment_status === '1'
+                    ? ""
+                    : "color:#fa7602; font-weight:bold;";
+                result += `<span style="${style}" id="${c.id}_${c.table_name}_${c.column_name}">
+                    ${text.slice(c.start_index, c.end_index)}</span>`;
+                cursor = c.end_index;
+            });
+
+            result += text.slice(cursor);
+            return result;
+
+        },
+        // END OF COMMENTS **********************************************************************************************
+
         submitAction(type, comment_id, index){
             let actionText = {
                 delete: "delete this comment",
@@ -3618,6 +3762,7 @@ export default {
         },
         toggleShowCommentPanel() {
             this.showComments = !this.showComments;
+            this.show_comment_modal = false;
         },
         /*scrollToSection(target) {
             // const el = document.getElementById(target);
@@ -3711,86 +3856,7 @@ export default {
             return Object.values(gadGroupsForCategory).some(r => r.length > 0);
         },
 
-        // COMMENTS FOR RATIONALE, TARGET BENEFICIARIES, OBJECTIVES
-        // Detect user highlighted text
-        handleSelection(column) {
-            const text = window.getSelection().toString().trim();
-            if (!text) return;
 
-             // Only handle fuzzy matching for specific columns
-            if (!['rationale', 'objective', 'beneficiaries'].includes(column)) return;
-
-            this.selectedText = text;
-            this.selectedColumn = column;
-
-            // Compute start and end index
-            const fullText = this.paps[column] || "";
-            const startIndex = fullText.indexOf(text);
-            const endIndex = startIndex + text.length;
-
-            // Compute context (30 chars before and after)
-            const contextBefore = fullText.substring(Math.max(0, startIndex - 30), startIndex);
-            const contextAfter = fullText.substring(endIndex, Math.min(fullText.length, endIndex + 30));
-
-            this.selectedStart = startIndex;
-            this.selectedEnd = endIndex;
-            this.contextBefore = contextBefore;
-            this.contextAfter = contextAfter;
-            //
-            // console.log("Selected text:", text);
-            if(column==='rationale'){
-                this.handleClick('Rationale','rationale',this.selectedText,'rationale','revision_plans', this.paps, this.paps.comments)
-            }
-            if(column==='objective'){
-                this.handleClick('Objective','objective',this.selectedText,'objective','revision_plans', this.paps, this.paps.comments)
-            }
-            if(column==='beneficiaries'){
-                this.handleClick('Beneficiaries','beneficiaries',this.selectedText,'beneficiaries','revision_plans', this.paps, this.paps.comments)
-            }
-            // beneficiaries
-        },
-
-        // Save comment to backend
-        saveCommentNew() {
-            this.$inertia.post('/revision-plan-comment', {
-                table_row_id: this.paps.id,
-                table_name: "revision_plans",
-                column_name: this.selectedColumn,
-                comment: this.newComment,
-                selected_text: this.selectedText
-            });
-
-            this.showModal = false;
-            this.newComment = "";
-        },
-
-        // Highlight commented text
-        highlightedText(column) {
-            const text = this.paps[column];
-            console.log(text);
-            let result = "";
-            let cursor = 0;
-
-            const items = this.all_comments
-                .filter(c => c.column_name === column)
-                .sort((a, b) => a.start_index - b.start_index);
-
-            items.forEach(c => {
-                result += text.slice(cursor, c.start_index);
-
-                // If status = 1, keep normal text style
-                const style = c.comment_status === '1'
-                    ? ""
-                    : "color:#fa7602; font-weight:bold;";
-                result += `<span style="${style}" id="${c.id}_${c.table_name}_${c.column_name}">
-                    ${text.slice(c.start_index, c.end_index)}</span>`;
-                cursor = c.end_index;
-            });
-
-            result += text.slice(cursor);
-            return result;
-
-        }
         //RATIONALE COMMENTS
         // onHighlight() {
         //     const data = this.getHighlightIndexes();
