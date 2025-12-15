@@ -3793,22 +3793,23 @@ class RevisionPlanController extends Controller
                         'ccet_code'        => $item->ccet_code,
                         'responsible'      => $item->responsible,
                         'is_active'        => $item->is_active,
-                        'expected_output' => collect($item->expected_output ?? [])->map(function ($eo) {
-                                return [
-                                    'id' => $eo->id ?? 0,
-                                    'description' => $eo->description ?? '',
-                                    'activity_id' => $eo->activity_id ?? null,
-                                    'activity_project_id' => $eo->activity_project_id ?? null,
+                        // 'expected_output' => collect($item->expected_output ?? [])->map(function ($eo) {
+                        //         return [
+                        //             'id' => $eo->id ?? 0,
+                        //             'description' => $eo->description ?? '',
+                        //             'activity_id' => $eo->activity_id ?? null,
+                        //             'activity_project_id' => $eo->activity_project_id ?? null,
 
-                                    'physical_q1' => number_format((float) ($eo->physical_q1 ?? 0), 2, '.', ''),
-                                    'physical_q2' => number_format((float) ($eo->physical_q2 ?? 0), 2, '.', ''),
-                                    'physical_q3' => number_format((float) ($eo->physical_q3 ?? 0), 2, '.', ''),
-                                    'physical_q4' => number_format((float) ($eo->physical_q4 ?? 0), 2, '.', ''),
+                        //             'physical_q1' => number_format((float) ($eo->physical_q1 ?? 0), 2, '.', ''),
+                        //             'physical_q2' => number_format((float) ($eo->physical_q2 ?? 0), 2, '.', ''),
+                        //             'physical_q3' => number_format((float) ($eo->physical_q3 ?? 0), 2, '.', ''),
+                        //             'physical_q4' => number_format((float) ($eo->physical_q4 ?? 0), 2, '.', ''),
 
-                                    'is_active' => (bool) ($eo->is_active ?? false),
-                                    'is_strategy_output' => (bool) ($eo->is_strategy_output ?? false),
-                                ];
-                            })->values(),
+                        //             'is_active' => (bool) ($eo->is_active ?? false),
+                        //             'is_strategy_output' => (bool) ($eo->is_strategy_output ?? false),
+                        //         ];
+                        //     })->values(),
+                        'expected_output'       => $item->expected_output,
                         'expected_outcome'       => $item->expected_outcome,
                         // =====================
                         // SIGNATORIES (SAFE)
@@ -3844,7 +3845,7 @@ class RevisionPlanController extends Controller
                         'noted_by_position' => $signatories
                             ? optional($this->getSig('Noted', $signatories))->position ?? ''
                             : '',
-                        'sig'=> $signatories,
+                        // 'sig'=> $signatories,
                         // "approved_by"           => $this->getSig('Approved', $revision->signatories)->name ?? null,
                         // "approved_by_position"  => $this->getSig('Approved', $revision->signatories)->position ?? null,
                         // "prepared_by"           => $this->getSig('Prepared', $revision->signatories)->name ?? null,
