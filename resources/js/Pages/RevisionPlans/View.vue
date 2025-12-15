@@ -349,15 +349,15 @@
                         </section>
                         <br>
                         <div class="bgc-white p-20 bd" >
-                             <p ref="rationale"
+                             <!-- <p ref="rationale"
                                 v-html="renderedText('rationale')"
                                 @mouseup="handleSelection('rationale')"
-                                class="cursor-text"></p>
+                                class="cursor-text"></p> -->
                                 <!-- {{ highlightedText('rationale') }} -->
-                            <!-- <div v-html="paps.rationale"
+                            <div v-html="paps.rationale"
                                 style="white-space: pre-line"
                                 ref="rationaleDiv"
-                                @mouseup="onHighlight"></div> -->
+                                @mouseup="onHighlight"></div>
                         </div>
                         <br>
                     </span>
@@ -388,12 +388,16 @@
                         <br>
                         <div  class="bgc-white p-20 bd">
                             <!-- <div v-html="paps.objective" style="white-space: pre-line"></div> -->
-                            <p  ref="objective"
+                            <!-- <p  ref="objective"
                                 v-html="highlightedText('objective')"
                                 @mouseup="handleSelection('objective')"
-                                class="cursor-text"></p>
+                                class="cursor-text"></p> -->
 
                             <!-- {{ highlightedText('objective') }} -->
+                              <div v-html="paps.objective"
+                                style="white-space: pre-line"
+                                ref="rationaleDiv"
+                                @mouseup="onHighlight"></div>
                         </div>
                         <br>
                     </span>
@@ -422,11 +426,11 @@
                         </section>
                     <br>
                     <div class="bgc-white p-20 bd">
-                        <!-- <div v-html="paps.beneficiaries" style="white-space: pre-line"></div> -->
-                        <p  ref="beneficiaries"
+                        <div v-html="paps.beneficiaries" style="white-space: pre-line"></div>
+                        <!-- <p  ref="beneficiaries"
                             v-html="highlightedText('beneficiaries')"
                             @mouseup="handleSelection('beneficiaries')"
-                            class="cursor-text"></p>
+                            class="cursor-text"></p> -->
                     </div>
                     <br>
                     </span>

@@ -3781,12 +3781,12 @@ class RevisionPlanController extends Controller
                         'expected_output'       => $item->expected_output,
                         'expected_outcome'       => $item->expected_outcome,
                         // SIGNATORIES
-                        "approved_by"           => $this->getSig('Approved', $revision->signatories)->name,
-                        "approved_by_position"  => $this->getSig('Approved', $revision->signatories)->position,
-                        "prepared_by"           => $this->getSig('Prepared', $revision->signatories)->name,
-                        "prepared_by_position"  => $this->getSig('Prepared', $revision->signatories)->position,
-                        "reviewed_by"           => $this->getSig('Reviewed', $revision->signatories)->name,
-                        "reviewed_by_position"  => $this->getSig('Reviewed', $revision->signatories)->position,
+                        "approved_by"           => $this->getSig('Approved', $revision->signatories)->name ?? null,
+                        "approved_by_position"  => $this->getSig('Approved', $revision->signatories)->position ?? null,
+                        "prepared_by"           => $this->getSig('Prepared', $revision->signatories)->name ?? null,
+                        "prepared_by_position"  => $this->getSig('Prepared', $revision->signatories)->position ?? null,
+                        "reviewed_by"           => $this->getSig('Reviewed', $revision->signatories)->name ?? null,
+                        "reviewed_by_position"  => $this->getSig('Reviewed', $revision->signatories)->position ?? null,
                         "noted_by"              => $this->getSig('Noted', $revision->signatories)->name ?? null,
                         "noted_by_position"     => $this->getSig('Noted', $revision->signatories)->position ?? null,
                     ];

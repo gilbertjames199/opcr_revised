@@ -697,200 +697,200 @@ createInertiaApp({
                     // **************************************************************************************************************************
                     //COMMENTS -Fuzzy Matching **************************************************************************************************
                     // Levenshtein distance (classic)
-                    levenshtein(a, b) {
-                        if (!a || !b) return (a === b) ? 0 : Math.max(a.length, b.length);
-                        const m = a.length, n = b.length;
-                        const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
-                        for (let i = 0; i <= m; i++) dp[i][0] = i;
-                        for (let j = 0; j <= n; j++) dp[0][j] = j;
-                        for (let i = 1; i <= m; i++) {
-                        for (let j = 1; j <= n; j++) {
-                            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-                            dp[i][j] = Math.min(
-                            dp[i - 1][j] + 1,
-                            dp[i][j - 1] + 1,
-                            dp[i - 1][j - 1] + cost
-                            );
-                        }
-                        }
-                        return dp[m][n];
-                    },
+                    // levenshtein(a, b) {
+                    //     if (!a || !b) return (a === b) ? 0 : Math.max(a.length, b.length);
+                    //     const m = a.length, n = b.length;
+                    //     const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+                    //     for (let i = 0; i <= m; i++) dp[i][0] = i;
+                    //     for (let j = 0; j <= n; j++) dp[0][j] = j;
+                    //     for (let i = 1; i <= m; i++) {
+                    //     for (let j = 1; j <= n; j++) {
+                    //         const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+                    //         dp[i][j] = Math.min(
+                    //         dp[i - 1][j] + 1,
+                    //         dp[i][j - 1] + 1,
+                    //         dp[i - 1][j - 1] + cost
+                    //         );
+                    //     }
+                    //     }
+                    //     return dp[m][n];
+                    // },
 
                     // find best fuzzy match of `needle` inside `haystack`
-                    findBestFuzzyMatch(haystack, needle, options = {}) {
-                        const text = (haystack || "");
-                        const target = (needle || "").trim();
-                        const result = { start: -1, end: -1, score: 0 };
+                    // findBestFuzzyMatch(haystack, needle, options = {}) {
+                    //     const text = (haystack || "");
+                    //     const target = (needle || "").trim();
+                    //     const result = { start: -1, end: -1, score: 0 };
 
-                        if (!target) return result;
+                    //     if (!target) return result;
 
-                        // fast exact match first
-                        const exactIdx = text.indexOf(target);
-                        if (exactIdx !== -1) {
-                        result.start = exactIdx;
-                        result.end = exactIdx + target.length;
-                        result.score = 1;
-                        return result;
-                        }
+                    //     // fast exact match first
+                    //     const exactIdx = text.indexOf(target);
+                    //     if (exactIdx !== -1) {
+                    //     result.start = exactIdx;
+                    //     result.end = exactIdx + target.length;
+                    //     result.score = 1;
+                    //     return result;
+                    //     }
 
-                        // sliding window fuzzy search
-                        const FUZZY_THRESHOLD = options.threshold ?? 0.6; // tune this
-                        const MAX_RELATIVE_LENGTH_MARGIN = options.margin ?? 0.4; // ±40% length window
-                        const tlen = target.length;
-                        if (tlen === 0) return result;
+                    //     // sliding window fuzzy search
+                    //     const FUZZY_THRESHOLD = options.threshold ?? 0.6; // tune this
+                    //     const MAX_RELATIVE_LENGTH_MARGIN = options.margin ?? 0.4; // ±40% length window
+                    //     const tlen = target.length;
+                    //     if (tlen === 0) return result;
 
-                        const minLen = Math.max(1, Math.floor(tlen * (1 - MAX_RELATIVE_LENGTH_MARGIN)));
-                        const maxLen = Math.min(text.length, Math.ceil(tlen * (1 + MAX_RELATIVE_LENGTH_MARGIN)));
+                    //     const minLen = Math.max(1, Math.floor(tlen * (1 - MAX_RELATIVE_LENGTH_MARGIN)));
+                    //     const maxLen = Math.min(text.length, Math.ceil(tlen * (1 + MAX_RELATIVE_LENGTH_MARGIN)));
 
-                        let bestScore = -1;
-                        let bestStart = -1;
-                        let bestEnd = -1;
+                    //     let bestScore = -1;
+                    //     let bestStart = -1;
+                    //     let bestEnd = -1;
 
-                        // To limit work: if haystack is huge, sample positions with step
-                        const maxCharsToScan = 5000;
-                        const step = text.length > maxCharsToScan ? Math.ceil(text.length / maxCharsToScan) : 1;
+                    //     // To limit work: if haystack is huge, sample positions with step
+                    //     const maxCharsToScan = 5000;
+                    //     const step = text.length > maxCharsToScan ? Math.ceil(text.length / maxCharsToScan) : 1;
 
-                        for (let winLen = minLen; winLen <= maxLen; winLen++) {
-                        for (let start = 0; start + winLen <= text.length; start += step) {
-                            const sub = text.substr(start, winLen);
-                            // quick filter: common prefix/char presence speeds up
-                            if (!this.quickFilter(target, sub)) continue;
-                            const dist = this.levenshtein(target, sub);
-                            const normalizer = Math.max(target.length, sub.length);
-                            const score = 1 - (dist / normalizer); // 1 = perfect
-                            if (score > bestScore) {
-                            bestScore = score;
-                            bestStart = start;
-                            bestEnd = start + winLen;
-                            // early exit if perfect or very good
-                            if (bestScore >= 0.99) break;
-                            }
-                        }
-                        if (bestScore >= 0.99) break;
-                        }
+                    //     for (let winLen = minLen; winLen <= maxLen; winLen++) {
+                    //     for (let start = 0; start + winLen <= text.length; start += step) {
+                    //         const sub = text.substr(start, winLen);
+                    //         // quick filter: common prefix/char presence speeds up
+                    //         if (!this.quickFilter(target, sub)) continue;
+                    //         const dist = this.levenshtein(target, sub);
+                    //         const normalizer = Math.max(target.length, sub.length);
+                    //         const score = 1 - (dist / normalizer); // 1 = perfect
+                    //         if (score > bestScore) {
+                    //         bestScore = score;
+                    //         bestStart = start;
+                    //         bestEnd = start + winLen;
+                    //         // early exit if perfect or very good
+                    //         if (bestScore >= 0.99) break;
+                    //         }
+                    //     }
+                    //     if (bestScore >= 0.99) break;
+                    //     }
 
-                        if (bestScore >= FUZZY_THRESHOLD) {
-                        result.start = bestStart;
-                        result.end = bestEnd;
-                        result.score = bestScore;
-                        }
-                        return result;
-                    },
+                    //     if (bestScore >= FUZZY_THRESHOLD) {
+                    //     result.start = bestStart;
+                    //     result.end = bestEnd;
+                    //     result.score = bestScore;
+                    //     }
+                    //     return result;
+                    // },
 
                     // quick heuristic filter to avoid expensive Levenshtein on obviously different strings
-                    quickFilter(a, b) {
-                        // require at least one significant char in common (ignores tiny strings)
-                        if (!a || !b) return false;
-                        const A = a.replace(/\s+/g, '').toLowerCase();
-                        const B = b.replace(/\s+/g, '').toLowerCase();
-                        // if either is very short, just allow
-                        if (A.length <= 3 || B.length <= 3) return true;
-                        // check if first 2 chars appear
-                        if (B.includes(A.slice(0, 2))) return true;
-                        // or share any 3-char ngram
-                        for (let i = 0; i < A.length - 2; i++) {
-                        if (B.includes(A.substr(i, 3))) return true;
-                        }
-                        return false;
-                    },
+                    // quickFilter(a, b) {
+                    //     // require at least one significant char in common (ignores tiny strings)
+                    //     if (!a || !b) return false;
+                    //     const A = a.replace(/\s+/g, '').toLowerCase();
+                    //     const B = b.replace(/\s+/g, '').toLowerCase();
+                    //     // if either is very short, just allow
+                    //     if (A.length <= 3 || B.length <= 3) return true;
+                    //     // check if first 2 chars appear
+                    //     if (B.includes(A.slice(0, 2))) return true;
+                    //     // or share any 3-char ngram
+                    //     for (let i = 0; i < A.length - 2; i++) {
+                    //     if (B.includes(A.substr(i, 3))) return true;
+                    //     }
+                    //     return false;
+                    // },
 
                     // Highlighted text with fuzzy fallback
-                    highlightedTextGlobal(all_comments, passed_text, column) {
-                        const text = passed_text || "";
-                        let result = "";
-                        let cursor = 0;
+                    // highlightedTextGlobal(all_comments, passed_text, column) {
+                    //     const text = passed_text || "";
+                    //     let result = "";
+                    //     let cursor = 0;
 
-                        // sort comments for that column
-                        const items = all_comments
-                        .filter(c => c.column_name === column)
-                        .sort((a, b) => (Number(a.start_index) || 0) - (Number(b.start_index) || 0));
+                    //     // sort comments for that column
+                    //     const items = all_comments
+                    //     .filter(c => c.column_name === column)
+                    //     .sort((a, b) => (Number(a.start_index) || 0) - (Number(b.start_index) || 0));
 
-                        items.forEach(c => {
-                            // determine start/end to use
-                            let start = (typeof c.start_index !== 'undefined' && c.start_index !== null) ? Number(c.start_index) : -1;
-                            let end = (typeof c.end_index !== 'undefined' && c.end_index !== null) ? Number(c.end_index) : -1;
-                            let usedScore = c.fuzzy_score ?? null;
+                    //     items.forEach(c => {
+                    //         // determine start/end to use
+                    //         let start = (typeof c.start_index !== 'undefined' && c.start_index !== null) ? Number(c.start_index) : -1;
+                    //         let end = (typeof c.end_index !== 'undefined' && c.end_index !== null) ? Number(c.end_index) : -1;
+                    //         let usedScore = c.fuzzy_score ?? null;
 
-                            // If the stored indices don't produce the expected selected_text, or indices absent, try fuzzy
-                            const selected = (c.selected_text || "").trim();
+                    //         // If the stored indices don't produce the expected selected_text, or indices absent, try fuzzy
+                    //         const selected = (c.selected_text || "").trim();
 
-                            const indicesProduceMatch = (start >= 0 && end > start && text.slice(start, end).trim().length > 0);
+                    //         const indicesProduceMatch = (start >= 0 && end > start && text.slice(start, end).trim().length > 0);
 
-                            let acceptIndices = false;
-                            if (indicesProduceMatch) {
-                                const slice = text.slice(start, end).trim();
-                                // if exact or close to exact, accept
-                                if (slice === selected) {
-                                acceptIndices = true;
-                                usedScore = 1;
-                                } else if (selected && slice.length > 0) {
-                                // small heuristic: if overlap > 0.8 of shorter length accept
-                                const minLen = Math.min(slice.length, selected.length);
-                                const commonPrefix = this.commonPrefixLength(slice, selected);
-                                if (commonPrefix / minLen > 0.8) {
-                                    acceptIndices = true;
-                                }
-                                } else {
-                                acceptIndices = false;
-                                }
-                            }
+                    //         let acceptIndices = false;
+                    //         if (indicesProduceMatch) {
+                    //             const slice = text.slice(start, end).trim();
+                    //             // if exact or close to exact, accept
+                    //             if (slice === selected) {
+                    //             acceptIndices = true;
+                    //             usedScore = 1;
+                    //             } else if (selected && slice.length > 0) {
+                    //             // small heuristic: if overlap > 0.8 of shorter length accept
+                    //             const minLen = Math.min(slice.length, selected.length);
+                    //             const commonPrefix = this.commonPrefixLength(slice, selected);
+                    //             if (commonPrefix / minLen > 0.8) {
+                    //                 acceptIndices = true;
+                    //             }
+                    //             } else {
+                    //             acceptIndices = false;
+                    //             }
+                    //         }
 
-                            if (!acceptIndices && selected) {
-                                // try fuzzy match
-                                const fuzzy = this.findBestFuzzyMatch(text, selected, { threshold: 0.6, margin: 0.4 });
-                                if (fuzzy.start >= 0) {
-                                start = fuzzy.start;
-                                end = fuzzy.end;
-                                usedScore = fuzzy.score;
-                                } else {
-                                // keep original indices OR skip highlight if not valid
-                                if (!(indicesProduceMatch)) {
-                                    // nothing reliable — skip highlighting for this comment
-                                    start = -1; end = -1; usedScore = 0;
-                                }
-                                }
-                            }
+                    //         if (!acceptIndices && selected) {
+                    //             // try fuzzy match
+                    //             const fuzzy = this.findBestFuzzyMatch(text, selected, { threshold: 0.6, margin: 0.4 });
+                    //             if (fuzzy.start >= 0) {
+                    //             start = fuzzy.start;
+                    //             end = fuzzy.end;
+                    //             usedScore = fuzzy.score;
+                    //             } else {
+                    //             // keep original indices OR skip highlight if not valid
+                    //             if (!(indicesProduceMatch)) {
+                    //                 // nothing reliable — skip highlighting for this comment
+                    //                 start = -1; end = -1; usedScore = 0;
+                    //             }
+                    //             }
+                    //         }
 
-                            // clamp/validate
-                            if (start < 0 || end <= start || start >= text.length) {
-                                // can't highlight: just append slice from cursor up to next comment (or full)
-                                return; // skip this comment (we keep ordering)
-                            }
+                    //         // clamp/validate
+                    //         if (start < 0 || end <= start || start >= text.length) {
+                    //             // can't highlight: just append slice from cursor up to next comment (or full)
+                    //             return; // skip this comment (we keep ordering)
+                    //         }
 
-                            // append normal text before highlight
-                            result += text.slice(cursor, start);
+                    //         // append normal text before highlight
+                    //         result += text.slice(cursor, start);
 
-                            // style by status
-                            const style = c.comment_status === '1' ? "" : "color:#fa7602; font-weight:bold;";
-                            // include tooltip for certain columns? you already handle title elsewhere
-                            result += `<span style="${style}" id="${c.id}_${c.table_name}_${c.column_name}" data-fuzzy-score="${usedScore ?? ''}">
-                                ${this.escapeHtml(text.slice(start, end))}
-                            </span>`;
+                    //         // style by status
+                    //         const style = c.comment_status === '1' ? "" : "color:#fa7602; font-weight:bold;";
+                    //         // include tooltip for certain columns? you already handle title elsewhere
+                    //         result += `<span style="${style}" id="${c.id}_${c.table_name}_${c.column_name}" data-fuzzy-score="${usedScore ?? ''}">
+                    //             ${this.escapeHtml(text.slice(start, end))}
+                    //         </span>`;
 
-                            cursor = end;
-                        });
+                    //         cursor = end;
+                    //     });
 
-                        result += text.slice(cursor);
-                        return result;
-                    },
+                    //     result += text.slice(cursor);
+                    //     return result;
+                    // },
 
                     // utility: escape HTML to avoid injection when inserting into DOM as innerHTML
-                    escapeHtml(str) {
-                        if (!str) return '';
-                        return str
-                        .replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/"/g, '&quot;')
-                        .replace(/'/g, '&#039;');
-                    },
+                    // escapeHtml(str) {
+                    //     if (!str) return '';
+                    //     return str
+                    //     .replace(/&/g, '&amp;')
+                    //     .replace(/</g, '&lt;')
+                    //     .replace(/>/g, '&gt;')
+                    //     .replace(/"/g, '&quot;')
+                    //     .replace(/'/g, '&#039;');
+                    // },
 
-                    commonPrefixLength(a, b) {
-                        const m = Math.min(a.length, b.length);
-                        let i = 0;
-                        while (i < m && a[i] === b[i]) i++;
-                        return i;
-                    },
+                    // commonPrefixLength(a, b) {
+                    //     const m = Math.min(a.length, b.length);
+                    //     let i = 0;
+                    //     while (i < m && a[i] === b[i]) i++;
+                    //     return i;
+                    // },
                     // **************************************************************************************************************************
                     // GET SELECTION
                     highlightSelection() {
