@@ -360,13 +360,13 @@
                                 ref="rationaleDiv"
                                 @mouseup="onHighlight"></div> -->
                                 <!-- {{ renderCommentedText(paps.rationale, all_comments, 'rationale') }} -->
-                            <p v-html="renderCommentedText(paps.rationale, all_comments, 'rationale')"
+                            <!-- <p v-html="renderCommentedText(paps.rationale, all_comments, 'rationale')"
                                 @mouseup="handleSelection('rationale')"
-                            ></p>
-                            <!-- <div ref="rationaleEl"
-                                @mouseup="onHighlight"
+                            ></p> -->
+                            <div ref="rationaleEl"
+                                @mouseup="handleSelection('rationale')"
                                 v-html="paps.rationale"
-                            ></div> -->
+                            ></div>
                         </div>
                         <br>
                     </span>
@@ -403,10 +403,14 @@
                                 class="cursor-text"></p> -->
 
                             <!-- {{ highlightedText('objective') }} -->
-                              <div v-html="paps.objective"
+                              <!-- <div v-html="paps.objective"
                                 style="white-space: pre-line"
                                 ref="rationaleDiv"
-                                @mouseup="onHighlight"></div>
+                                @mouseup="onHighlight"></div> -->
+                            <div ref="objectiveEl"
+                                @mouseup="handleSelection('objective')"
+                                v-html="paps.objective"
+                            ></div>
                         </div>
                         <br>
                     </span>
@@ -435,7 +439,11 @@
                         </section>
                     <br>
                     <div class="bgc-white p-20 bd">
-                        <div v-html="paps.beneficiaries" style="white-space: pre-line"></div>
+                        <!-- <div v-html="paps.beneficiaries" style="white-space: pre-line"></div> -->
+                        <div ref="beneficiariesEl"
+                                @mouseup="handleSelection('beneficiaries')"
+                                v-html="paps.beneficiaries"
+                            ></div>
                         <!-- <p  ref="beneficiaries"
                             v-html="highlightedText('beneficiaries')"
                             @mouseup="handleSelection('beneficiaries')"
@@ -2705,7 +2713,7 @@
                         <div class="comments-header">
                             <h4>COMMENTS ...</h4>
                         </div>
-                        <div><i>Click a comment and follow the <span style="color: red">red</span> arrow</i></div>
+                        <div><i>Click a comment and follow the arrow</i></div>
                         <hr>
 
                         <hr>
@@ -3301,7 +3309,14 @@ export default {
                 }
             );
         }, 300),
-
+        all_comments: {
+            handler() {
+                this.$nextTick(() => {
+                    this.applyRationaleHighlights()
+                })
+            },
+            deep: true
+        }
     },
     data() {
         return {
@@ -3353,18 +3368,28 @@ export default {
         this.tot_gad = parseFloat(this.s_cap_gad) + parseFloat(this.s_mooe_gad) + parseFloat(this.s_ps_gad) + parseFloat(this.s_fe_gad);
         this.tot_non = parseFloat(this.s_cap_non) + parseFloat(this.s_mooe_non) + parseFloat(this.s_ps_non) + parseFloat(this.s_fe_non);
         this.grand_total = this.tot_gad + this.tot_non;
-        this.highlightWithComments(
-            this.paps.rationale,
-            this.all_comments,
-            'rationale',
-            this.$refs.rationaleEl
-        );
+        // this.highlightWithComments(
+        //     this.paps.rationale,
+        //     this.all_comments,
+        //     'rationale',
+        //     this.$refs.rationaleEl
+        // );
+        this.applyAllHighlights()
     },
 
     beforeUnmount() {
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
     },
-    watch: {},
+    watch: {
+        all_comments: {
+            handler() {
+                this.$nextTick(() => {
+                    this.applyAllHighlights()
+                })
+            },
+            deep: true
+        }
+    },
     methods: {
         openTab(tab_name){
             this.open_tab=tab_name
@@ -3647,7 +3672,29 @@ export default {
                 column
             );
         },
+        // Re-render Comments on Save
+        applyAllHighlights() {
+            const columns = ['rationale', 'beneficiaries', 'objective']
 
+            columns.forEach(column => {
+                const el = this.$refs[`${column}El`]
+                if (!el || !this.paps[column]) return
+
+                const instance = new Mark(el)
+
+                // 🔴 MUST remove old highlights first
+                instance.unmark({
+                    done: () => {
+                        this.highlightWithComments(
+                            this.paps[column],
+                            this.all_comments,
+                            column,
+                            el
+                        )
+                    }
+                })
+            })
+        },
         // DEEPSEEK FUZZY MATCHING
         getHighlightedText(field) {
             return this.highlightCommentedText(
@@ -3870,7 +3917,7 @@ export default {
             const arrow = document.createElement("div");
             arrow.classList.add("jump-arrow");
             arrow.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="red" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#00ffc3" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
                     <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
                 </svg>
             `;
@@ -4094,8 +4141,9 @@ table {
     animation: highlightFlash 2s ease-out;
 }
 
+
 @keyframes highlightFlash {
-    0% { background-color: #46ff18ff; }
+    0% { background-color: #46ff18ff ; }
     100% { background-color: transparent; }
 }
 

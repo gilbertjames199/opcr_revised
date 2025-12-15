@@ -392,7 +392,7 @@
                         <div class="bgc-white p-20 bd" >
                             <QuillEditor theme="snow" v-model:content="form.rationale" contentType="html"
                              @update:content="val => updateRevisionPlans('revision_plans', 'rationale', form.id, val)"
-                            ref="quillEditor"
+                            ref="rationaleQuill"
                         />
                         </div>
                         <br>
@@ -422,7 +422,7 @@
 
                         <br>
                         <div  class="bgc-white p-20 bd">
-                            <QuillEditor theme="snow" v-model:content="form.objective" contentType="html"
+                            <QuillEditor theme="snow" v-model:content="form.objective" contentType="html" ref="rationaleQuill"
                             @update:content="val => updateRevisionPlans('revision_plans', 'objective', form.id, val)"
                             toolbar="essential" />
                         </div>
@@ -452,7 +452,7 @@
                         </section>
                     <br>
                     <div class="bgc-white p-20 bd">
-                        <QuillEditor theme="snow" v-model:content="form.beneficiaries" contentType="html"
+                        <QuillEditor theme="snow" v-model:content="form.beneficiaries" contentType="html" ref="objectiveQuill"
                              @update:content="val => updateRevisionPlans('revision_plans', 'beneficiaries', form.id, val)"
                             toolbar="essential" />
                     </div>
@@ -3296,7 +3296,11 @@ export default {
 
     },
     mounted() {
-        this.applyHighlights('rationale');
+        this.$nextTick(() => {
+            setTimeout(() => {
+                applyAllQuillHighlights();
+            }, 50)
+        })
 
         window.addEventListener('beforeunload', this.handleBeforeUnload);
         this.form.idpaps = this.idpaps;
@@ -3399,11 +3403,45 @@ export default {
     beforeUnmount() {
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
     },
+    watch: {
+        all_comments: {
+            handler() {
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.applyAllQuillHighlights()
+                    }, 50)
+                })
+            },
+            deep: true
+        }
+    },
     methods: {
-        applyHighlights(column) {
-            const html = this.form[column]; // original Quill content
-            const highlighted = this.highlightQuillComments(html, this.all_comments, column);
-            this.form[column] = highlighted; // sets Quill content with highlights
+        applyAllQuillHighlights() {
+            ['rationale', 'objective','beneficiaries'].forEach(column => {
+                this.applyQuillHighlights(column)
+            })
+        },
+        applyQuillHighlights(column) {
+            const quillRef = this.$refs[`${column}Quill`]
+            if (!quillRef || !this.form[column]) return
+
+            const quill = quillRef.getQuill()
+            if (!quill) return
+
+            const containerEl = quill.root
+            const instance = new Mark(containerEl)
+
+            // 🔴 Remove old highlights first
+            instance.unmark({
+                done: () => {
+                    this.highlightWithComments(
+                        this.form[column],
+                        this.all_comments,
+                        column,
+                        containerEl
+                    )
+                }
+            })
         },
         //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
         //alert(this.form.target_qty);

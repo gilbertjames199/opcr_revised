@@ -339,7 +339,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   mounted: function mounted() {
-    this.applyHighlights('rationale');
+    this.$nextTick(function () {
+      setTimeout(function () {
+        applyAllQuillHighlights();
+      }, 50);
+    });
     window.addEventListener('beforeunload', this.handleBeforeUnload);
     this.form.idpaps = this.idpaps;
 
@@ -434,12 +438,43 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   beforeUnmount: function beforeUnmount() {
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
   },
-  methods: {
-    applyHighlights: function applyHighlights(column) {
-      var html = this.form[column]; // original Quill content
+  watch: {
+    all_comments: {
+      handler: function handler() {
+        var _this2 = this;
 
-      var highlighted = this.highlightQuillComments(html, this.all_comments, column);
-      this.form[column] = highlighted; // sets Quill content with highlights
+        this.$nextTick(function () {
+          setTimeout(function () {
+            _this2.applyAllQuillHighlights();
+          }, 50);
+        });
+      },
+      deep: true
+    }
+  },
+  methods: {
+    applyAllQuillHighlights: function applyAllQuillHighlights() {
+      var _this3 = this;
+
+      ['rationale', 'objective', 'beneficiaries'].forEach(function (column) {
+        _this3.applyQuillHighlights(column);
+      });
+    },
+    applyQuillHighlights: function applyQuillHighlights(column) {
+      var _this4 = this;
+
+      var quillRef = this.$refs["".concat(column, "Quill")];
+      if (!quillRef || !this.form[column]) return;
+      var quill = quillRef.getQuill();
+      if (!quill) return;
+      var containerEl = quill.root;
+      var instance = new Mark(containerEl); // 🔴 Remove old highlights first
+
+      instance.unmark({
+        done: function done() {
+          _this4.highlightWithComments(_this4.form[column], _this4.all_comments, column, containerEl);
+        }
+      });
     },
     //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
     //alert(this.form.target_qty);
@@ -482,10 +517,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.total_intended = tot;
     },
     updateProjectTitle: function updateProjectTitle() {
-      var _this2 = this;
+      var _this5 = this;
 
       var selectedPap = this.paps_all.find(function (pap) {
-        return String(pap.id) === String(_this2.form.idpaps);
+        return String(pap.id) === String(_this5.form.idpaps);
       }); // alert("fsdfsdf")
 
       console.log(this.form.idpaps);
@@ -509,7 +544,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     updateComment: function updateComment(id, comment, index) {
-      var _this3 = this;
+      var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var myurl;
@@ -527,7 +562,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 // clearTimeout(this.timeouts[`activity_${strategyIndex}_${activityIndex}`]);
                 myurl = "/revision-plan-comments/" + id;
 
-                if (_this3.reply_concat.trim()) {
+                if (_this6.reply_concat.trim()) {
                   _context.next = 3;
                   break;
                 }
@@ -536,9 +571,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
               case 3:
                 try {
-                  _this3.$inertia.patch(myurl, {
+                  _this6.$inertia.patch(myurl, {
                     params: {
-                      reply: _this3.reply_concat,
+                      reply: _this6.reply_concat,
                       id: id
                     }
                   }, {
@@ -547,21 +582,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                       // $uname . ' replied: ' . $reply . '<br>';
                       var comment_init = "";
 
-                      if (_this3.comments[index].reply) {
-                        comment_init = _this3.comments[index].reply;
+                      if (_this6.comments[index].reply) {
+                        comment_init = _this6.comments[index].reply;
                       }
 
-                      _this3.comments[index].reply = comment_init + " <b>" + _this3.auth.user.FullName + "</b> replied: <i>" + _this3.reply_concat + "</i> <br><br>";
-                      _this3.comments[index].show_comment_box = false; // Hide the comment box after replying
+                      _this6.comments[index].reply = comment_init + " <b>" + _this6.auth.user.FullName + "</b> replied: <i>" + _this6.reply_concat + "</i> <br><br>";
+                      _this6.comments[index].show_comment_box = false; // Hide the comment box after replying
 
-                      _this3.reply_concat = ""; // Clear the reply input after saving
+                      _this6.reply_concat = ""; // Clear the reply input after saving
 
-                      _this3.is_replying = false; // Reset the replying state
+                      _this6.is_replying = false; // Reset the replying state
                     }
                   }); // console.log(payload);
 
 
-                  _this3.unsaved = false; // Reset unsaved flag after successful save
+                  _this6.unsaved = false; // Reset unsaved flag after successful save
                 } catch (error) {
                   console.error('Error updating comment:', error);
                 }
@@ -620,7 +655,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.show_comment_modal = false;
     },
     saveComment: function saveComment() {
-      var _this4 = this;
+      var _this7 = this;
 
       // Logic to save the comment
       // This is just a placeholder, implement your actual saving logic here
@@ -681,11 +716,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       this.closeCommentModal();
       setTimeout(function () {
-        _this4.comment = "";
+        _this7.comment = "";
       }, 1000); // 1000 milliseconds = 1 second
     },
     submitAction: function submitAction(type, comment_id, index) {
-      var _this5 = this;
+      var _this8 = this;
 
       var actionText = {
         "delete": "delete this comment",
@@ -707,14 +742,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         preserveScroll: true,
         onSuccess: function onSuccess() {
           if (type === 'delete') {
-            _this5.comments.splice(index, 1);
+            _this8.comments.splice(index, 1);
 
             alert("Comment deleted successfully.");
           } else if (type === 'reset') {
-            _this5.comments[index].comment_status = '0';
+            _this8.comments[index].comment_status = '0';
             alert("Comment status reset to unresolved.");
           } else if (type === 'resolve') {
-            _this5.comments[index].comment_status = '1';
+            _this8.comments[index].comment_status = '1';
             alert("Comment resolved successfully.");
           }
         }
@@ -872,17 +907,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log('Edit row', revision_plan_id, gadType, category);
     },
     selectChartOfAccount: function selectChartOfAccount() {
-      var _this6 = this;
+      var _this9 = this;
 
       setTimeout(function () {
-        if (_this6.budget_new.selected_chart_of_account !== null && _this6.budget_new.selected_chart_of_account !== undefined) {
-          var index = _this6.account_code.findIndex(function (data) {
-            return String(data.recid) === String(_this6.budget_new.selected_chart_of_account);
+        if (_this9.budget_new.selected_chart_of_account !== null && _this9.budget_new.selected_chart_of_account !== undefined) {
+          var index = _this9.account_code.findIndex(function (data) {
+            return String(data.recid) === String(_this9.budget_new.selected_chart_of_account);
           });
 
-          _this6.budget_new.particulars = _this6.account_code[index].FTITLE;
-          _this6.budget_new.account_code = _this6.account_code[index].FACTCODE;
-          console.log(_this6.account_code[index]);
+          _this9.budget_new.particulars = _this9.account_code[index].FTITLE;
+          _this9.budget_new.account_code = _this9.account_code[index].FACTCODE;
+          console.log(_this9.account_code[index]);
         } else {
           // Handle case when no option is selected (form.ipcr_code is null or undefined)
           return -1; // Return -1 to indicate no option is selected
@@ -890,7 +925,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, 300);
     },
     saveBudgetRequirement: function saveBudgetRequirement() {
-      var _this7 = this;
+      var _this10 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         var confirmed, response;
@@ -898,7 +933,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                if (!(!_this7.budget_new.particulars || _this7.budget_new.particulars.trim() === "")) {
+                if (!(!_this10.budget_new.particulars || _this10.budget_new.particulars.trim() === "")) {
                   _context3.next = 3;
                   break;
                 }
@@ -907,7 +942,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 return _context3.abrupt("return");
 
               case 3:
-                if (!(_this7.budget_new.amount === null || _this7.budget_new.amount === 0)) {
+                if (!(_this10.budget_new.amount === null || _this10.budget_new.amount === 0)) {
                   _context3.next = 6;
                   break;
                 }
@@ -916,7 +951,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 return _context3.abrupt("return");
 
               case 6:
-                if (!(!_this7.budget_new.source || _this7.budget_new.source.trim() === "")) {
+                if (!(!_this10.budget_new.source || _this10.budget_new.source.trim() === "")) {
                   _context3.next = 9;
                   break;
                 }
@@ -937,21 +972,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 12:
                 _context3.prev = 12;
                 // Set the revision_plan_id dynamically if needed
-                _this7.budget_new.revision_plan_id = _this7.paps.id;
+                _this10.budget_new.revision_plan_id = _this10.paps.id;
                 _context3.next = 16;
-                return axios__WEBPACK_IMPORTED_MODULE_6___default().post('/budget/store/budget', _this7.budget_new);
+                return axios__WEBPACK_IMPORTED_MODULE_6___default().post('/budget/store/budget', _this10.budget_new);
 
               case 16:
                 response = _context3.sent;
 
                 // Add the returned budget to your array (optional)
-                _this7.budget_requirements.push(response.data); // Close modal and reset
+                _this10.budget_requirements.push(response.data); // Close modal and reset
 
 
-                _this7.BudgetModalVisible = false;
-                _this7.budget_new = {
+                _this10.BudgetModalVisible = false;
+                _this10.budget_new = {
                   id: null,
-                  revision_plan_id: _this7.paps.id,
+                  revision_plan_id: _this10.paps.id,
                   particulars: "",
                   account_code: "",
                   amount: null,
@@ -1125,7 +1160,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.activities.splice(index, 1);
     },
     saveActivities: function saveActivities() {
-      var _this8 = this;
+      var _this11 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
         var response;
@@ -1136,8 +1171,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _context4.prev = 0;
                 _context4.next = 3;
                 return axios__WEBPACK_IMPORTED_MODULE_6___default().post('/implementation-workplan/strategies/activities', {
-                  activities: _this8.activities,
-                  strategy_id: _this8.strategy_id
+                  activities: _this11.activities,
+                  strategy_id: _this11.strategy_id
                 }).then(function (response) {
                   window.location.reload();
                 });
@@ -1146,7 +1181,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 response = _context4.sent;
                 alert('Activities saved successfully!');
 
-                _this8.closeActivityModal();
+                _this11.closeActivityModal();
 
                 _context4.next = 12;
                 break;
@@ -1167,15 +1202,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     //IMPLEMENTING TEAM *******************************
     showTeamModal: function showTeamModal() {
-      var _this9 = this;
+      var _this12 = this;
 
       this.action_type_team = 'store';
       this.all_employees = [];
       this.addTeamRow();
       axios__WEBPACK_IMPORTED_MODULE_6___default().get('/get_employees_all').then(function (response) {
-        _this9.all_employees = response.data; // store employees
+        _this12.all_employees = response.data; // store employees
 
-        _this9.TeamModalVisible = true;
+        _this12.TeamModalVisible = true;
       })["catch"](function (error) {
         console.error("Error loading employees:", error);
       });
@@ -1185,7 +1220,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.all_employees = []; // this.team_members=[];
     },
     showTeamModalEdit: function showTeamModalEdit(emp) {
-      var _this10 = this;
+      var _this13 = this;
 
       this.action_type_team = 'update';
       this.TeamModalVisible = true;
@@ -1205,7 +1240,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         status: emp.status
       };
       axios__WEBPACK_IMPORTED_MODULE_6___default().get('/get_employees_all').then(function (response) {
-        _this10.all_employees = response.data; // store employees
+        _this13.all_employees = response.data; // store employees
       })["catch"](function (error) {
         console.error("Error loading employees:", error);
       });
@@ -1231,7 +1266,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.team_members.splice(index, 1);
     },
     saveTeamMembers: function saveTeamMembers() {
-      var _this11 = this;
+      var _this14 = this;
 
       if (this.action_type_team === 'store') {
         axios__WEBPACK_IMPORTED_MODULE_6___default().post('/implementation-workplan/implementing/team/plans', {
@@ -1239,8 +1274,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }).then(function (res) {
           // optionally clear or close modal
           alert('Successfully saved team member!');
-          _this11.team_members = [];
-          _this11.TeamModalVisible = false;
+          _this14.team_members = [];
+          _this14.TeamModalVisible = false;
           window.location.reload();
         });
       } else if (this.action_type_team === 'update') {
@@ -1249,8 +1284,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }).then(function (res) {
           // optionally clear or close modal
           alert('Successfully saved team member!');
-          _this11.team_members = [];
-          _this11.TeamModalVisible = false;
+          _this14.team_members = [];
+          _this14.TeamModalVisible = false;
           window.location.reload();
         });
       }
@@ -1336,13 +1371,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.monitoring_and_evaluations.splice(index, 1);
     },
     saveMonitoringAndEvaluation: function saveMonitoringAndEvaluation() {
-      var _this12 = this;
+      var _this15 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_6___default().post('/revision/streamlined/subtables/save/monitoring/and/evaluation', {
         rows: this.monitoring_and_evaluations
       }).then(function (res) {
         // console.log("Saved:", res.data);
-        _this12.MonitoringModalVisible = false;
+        _this15.MonitoringModalVisible = false;
         window.location.reload();
       })["catch"](function (err) {
         console.error(err);
@@ -1369,7 +1404,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.signatories.splice(index, 1);
     },
     saveSignatories: function saveSignatories() {
-      var _this13 = this;
+      var _this16 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
@@ -1378,12 +1413,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 0:
                 _context5.next = 2;
                 return axios__WEBPACK_IMPORTED_MODULE_6___default().post("/revision/streamlined/subtables/save/signatories", {
-                  signatories: _this13.signatories,
-                  revision_plan_id: _this13.editData.id
+                  signatories: _this16.signatories,
+                  revision_plan_id: _this16.editData.id
                 }).then(function (res) {
                   console.log("Signatories saved successfully:", res.data);
 
-                  _this13.closeSignatoryModal();
+                  _this16.closeSignatoryModal();
 
                   window.location.reload();
                 })["catch"](function (err) {
@@ -1400,7 +1435,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     //IMPLEMENTATION
     computeCategory: function computeCategory(type) {
-      var _this14 = this;
+      var _this17 = this;
 
       if (!this.implementation) return 0;
       var categories = ["ps", "mooe", "co", "fe"];
@@ -1410,7 +1445,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (item.activity && Array.isArray(item.activity)) {
           item.activity.forEach(function (act) {
             activeCats.forEach(function (cat) {
-              sum += _this14.sumQuarterValues(act, cat);
+              sum += _this17.sumQuarterValues(act, cat);
             });
           });
         }
@@ -1480,10 +1515,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.expected_outputs_new.splice(index, 1);
     },
     saveExpectedOutputs: function saveExpectedOutputs() {
-      var _this15 = this;
+      var _this18 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6() {
-        var _this15$expected_outp, response;
+        var _this18$expected_outp, response;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
           while (1) {
@@ -1492,18 +1527,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _context6.prev = 0;
                 _context6.next = 3;
                 return axios__WEBPACK_IMPORTED_MODULE_6___default().post('/revision/streamlined/expected/revised/outputs', {
-                  expected_outputs: _this15.expected_outputs_new
+                  expected_outputs: _this18.expected_outputs_new
                 });
 
               case 3:
                 response = _context6.sent;
                 alert('Saved successfully!');
 
-                (_this15$expected_outp = _this15.expected_outputs_current).push.apply(_this15$expected_outp, _toConsumableArray(_this15.expected_outputs_new));
+                (_this18$expected_outp = _this18.expected_outputs_current).push.apply(_this18$expected_outp, _toConsumableArray(_this18.expected_outputs_new));
 
-                _this15.expected_outputs_new = []; // Clear table after save
+                _this18.expected_outputs_new = []; // Clear table after save
 
-                _this15.$emit('close-modal-event'); // Close modal
+                _this18.$emit('close-modal-event'); // Close modal
 
 
                 _context6.next = 14;
@@ -1524,7 +1559,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }))();
     },
     deleteExpectedOutput: function deleteExpectedOutput(id, table, title, index) {
-      var _this16 = this;
+      var _this19 = this;
 
       var text = "WARNING!\nAre you sure you want to delete a row from " + table + " with title " + title + "?";
 
@@ -1532,7 +1567,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.$inertia["delete"]("/revision/streamlined/".concat(id, "/").concat(table), {
           onSuccess: function onSuccess() {
             // Only runs if backend deletion succeeds
-            _this16.expected_outputs_current.splice(index, 1);
+            _this19.expected_outputs_current.splice(index, 1);
           },
           onError: function onError() {
             alert("Delete failed! Please try again.");
@@ -1569,21 +1604,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.expected_outcomes_new.splice(index, 1);
     },
     saveExpectedOutcomes: function saveExpectedOutcomes() {
-      var _this17 = this;
+      var _this20 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7() {
-        var payload, response, _this17$expected_outc;
+        var payload, response, _this20$expected_outc;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
                 _context7.prev = 0;
-                payload = _this17.expected_outcomes_new.map(function (item) {
+                payload = _this20.expected_outcomes_new.map(function (item) {
                   return _objectSpread(_objectSpread({}, item), {}, {
-                    activity_id: _this17.activity_id,
-                    activity_project_id: _this17.activity_project_id,
-                    project_id: _this17.project_id
+                    activity_id: _this20.activity_id,
+                    activity_project_id: _this20.activity_project_id,
+                    project_id: _this20.project_id
                   });
                 });
                 _context7.next = 4;
@@ -1596,10 +1631,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                 if (response.data.success) {
                   // Push saved outcomes to current list
-                  (_this17$expected_outc = _this17.expected_outcomes_current).push.apply(_this17$expected_outc, _toConsumableArray(_this17.expected_outcomes_new)); // Clear new outcomes
+                  (_this20$expected_outc = _this20.expected_outcomes_current).push.apply(_this20$expected_outc, _toConsumableArray(_this20.expected_outcomes_new)); // Clear new outcomes
 
 
-                  _this17.expected_outcomes_new = []; // this.hideExpectedOutcomeModal();
+                  _this20.expected_outcomes_new = []; // this.hideExpectedOutcomeModal();
                 } else {
                   alert('Failed to save expected outcomes');
                 }
@@ -1622,7 +1657,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }))();
     },
     deleteExpectedOutcome: function deleteExpectedOutcome(id, table, title, index) {
-      var _this18 = this;
+      var _this21 = this;
 
       // this.deleteData(id,table,title)
       var text = "WARNING!\nAre you sure you want to delete a row from " + table + " with title " + title + "?";
@@ -1631,7 +1666,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.$inertia["delete"]("/revision/streamlined/".concat(id, "/").concat(table), {
           onSuccess: function onSuccess() {
             // Only runs if backend deletion succeeds
-            _this18.expected_outcomes_current.splice(index, 1);
+            _this21.expected_outcomes_current.splice(index, 1);
           },
           onError: function onError() {
             alert("Delete failed! Please try again.");
@@ -4389,7 +4424,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.updateRevisionPlans('revision_plans', 'rationale', $data.form.id, val);
     })],
     contentType: "html",
-    ref: "quillEditor"
+    ref: "rationaleQuill"
   }, null, 8
   /* PROPS */
   , ["content"])]), _hoisted_66]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("III. OBJECTIVES ****************************************************************************************************************************"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_67, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
@@ -4434,6 +4469,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.updateRevisionPlans('revision_plans', 'objective', $data.form.id, val);
     })],
     contentType: "html",
+    ref: "rationaleQuill",
     toolbar: "essential"
   }, null, 8
   /* PROPS */
@@ -4479,6 +4515,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.updateRevisionPlans('revision_plans', 'beneficiaries', $data.form.id, val);
     })],
     contentType: "html",
+    ref: "objectiveQuill",
     toolbar: "essential"
   }, null, 8
   /* PROPS */

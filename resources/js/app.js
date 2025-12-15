@@ -66,6 +66,9 @@ import fuzzysort from "fuzzysort";
 import Mark from 'mark.js'
 import DiffMatchPatch from 'diff-match-patch'
 
+window.Mark = Mark
+window.DiffMatchPatch = DiffMatchPatch
+
 const FilePond = vueFilePond(
     FilePondPluginFileValidateType,
     FilePondPluginImagePreview,
@@ -727,11 +730,15 @@ createInertiaApp({
                                 context_after,
                                 id,
                                 table_name,
-                                column_name
+                                column_name,
+                                comment_status
                             } = comment
-                            const bgColor = comment_status === 1
-                                ? '#ffffffff'     // ✔ approved (example: light orange / yellow)
-                                : 'darkorange'  // ✔ default (pending / active)
+                            // const bgColor = comment_status === '0'
+                            //     ?   '#ff7112ff'  // ✔ approved (example: light orange / yellow)
+                            //     : '#ffffffff'   // ✔ default (pending / active)
+                            const fontColor = comment_status === '0'
+                                ? '#ff0000'   // red text for approved
+                                : null        // keep default text color
                             /**
                              * Step 1: Try exact context match
                              */
@@ -742,7 +749,10 @@ createInertiaApp({
                                 accuracy: "partially",
                                 acrossElements: true,
                                 each: el => {
-                                    el.style.backgroundColor = bgColor
+                                    // el.style.backgroundColor = bgColor
+                                    if (fontColor) {
+                                        el.style.color = fontColor
+                                    }
                                     el.setAttribute(
                                         "id",
                                         `${id}_${table_name}_${column_name}`
@@ -758,7 +768,10 @@ createInertiaApp({
                                 accuracy: "partially",
                                 acrossElements: true,
                                 each: el => {
-                                    el.style.backgroundColor = "darkorange"
+                                    // el.style.backgroundColor = bgColor
+                                    if (fontColor) {
+                                        el.style.color = fontColor
+                                    }
                                     el.setAttribute(
                                         "id",
                                         `${id}_${table_name}_${column_name}`
