@@ -3742,6 +3742,8 @@ class RevisionPlanController extends Controller
                     // dd($revision->budget[0]->source);
                     // dd($revision->signatories);
                     $get = fn($type) => optional($revision->signatories->firstWhere('acted', $type));
+                    $signatories = isset($revision) ? $revision->signatories : null;
+
                     return [
                         'id'               => $item->id,
                         'project_name' => $revision->project_title ?? '',
@@ -3754,41 +3756,102 @@ class RevisionPlanController extends Controller
                         'date_from'        => $item->date_from,
                         'date_to'          => $item->date_to,
                         'budget_total'     => $budget_total,
-                        'ps_q1'            => $item->ps_q1,
-                        'ps_q2'            => $item->ps_q2,
-                        'ps_q3'            => $item->ps_q3,
-                        'ps_q4'            => $item->ps_q4,
+                        // =====================
+                        // PS
+                        // =====================
+                        'ps_q1' => $this->money($item->ps_q1),
+                        'ps_q2' => $this->money($item->ps_q2),
+                        'ps_q3' => $this->money($item->ps_q3),
+                        'ps_q4' => $this->money($item->ps_q4),
 
-                        'mooe_q1'          => $item->mooe_q1,
-                        'mooe_q2'          => $item->mooe_q2,
-                        'mooe_q3'          => $item->mooe_q3,
-                        'mooe_q4'          => $item->mooe_q4,
+                        // =====================
+                        // MOOE
+                        // =====================
+                        'mooe_q1' => $this->money($item->mooe_q1),
+                        'mooe_q2' => $this->money($item->mooe_q2),
+                        'mooe_q3' => $this->money($item->mooe_q3),
+                        'mooe_q4' => $this->money($item->mooe_q4),
 
-                        'co_q1'            => $item->co_q1,
-                        'co_q2'            => $item->co_q2,
-                        'co_q3'            => $item->co_q3,
-                        'co_q4'            => $item->co_q4,
+                        // =====================
+                        // CO
+                        // =====================
+                        'co_q1' => $this->money($item->co_q1),
+                        'co_q2' => $this->money($item->co_q2),
+                        'co_q3' => $this->money($item->co_q3),
+                        'co_q4' => $this->money($item->co_q4),
 
-                        'fe_q1'            => $item->fe_q1,
-                        'fe_q2'            => $item->fe_q2,
-                        'fe_q3'            => $item->fe_q3,
-                        'fe_q4'            => $item->fe_q4,
+                        // =====================
+                        // FE
+                        // =====================
+                        'fe_q1' => $this->money($item->fe_q1),
+                        'fe_q2' => $this->money($item->fe_q2),
+                        'fe_q3' => $this->money($item->fe_q3),
+                        'fe_q4' => $this->money($item->fe_q4),
+
 
                         'gad_issue'        => $item->gad_issue,
                         'ccet_code'        => $item->ccet_code,
                         'responsible'      => $item->responsible,
                         'is_active'        => $item->is_active,
-                        'expected_output'       => $item->expected_output,
+                        'expected_output' => collect($item->expected_output ?? [])->map(function ($eo) {
+                                return [
+                                    'id' => $eo->id ?? 0,
+                                    'description' => $eo->description ?? '',
+                                    'activity_id' => $eo->activity_id ?? null,
+                                    'activity_project_id' => $eo->activity_project_id ?? null,
+
+                                    'physical_q1' => number_format((float) ($eo->physical_q1 ?? 0), 2, '.', ''),
+                                    'physical_q2' => number_format((float) ($eo->physical_q2 ?? 0), 2, '.', ''),
+                                    'physical_q3' => number_format((float) ($eo->physical_q3 ?? 0), 2, '.', ''),
+                                    'physical_q4' => number_format((float) ($eo->physical_q4 ?? 0), 2, '.', ''),
+
+                                    'is_active' => (bool) ($eo->is_active ?? false),
+                                    'is_strategy_output' => (bool) ($eo->is_strategy_output ?? false),
+                                ];
+                            })->values(),
                         'expected_outcome'       => $item->expected_outcome,
-                        // SIGNATORIES
-                        "approved_by"           => $this->getSig('Approved', $revision->signatories)->name ?? null,
-                        "approved_by_position"  => $this->getSig('Approved', $revision->signatories)->position ?? null,
-                        "prepared_by"           => $this->getSig('Prepared', $revision->signatories)->name ?? null,
-                        "prepared_by_position"  => $this->getSig('Prepared', $revision->signatories)->position ?? null,
-                        "reviewed_by"           => $this->getSig('Reviewed', $revision->signatories)->name ?? null,
-                        "reviewed_by_position"  => $this->getSig('Reviewed', $revision->signatories)->position ?? null,
-                        "noted_by"              => $this->getSig('Noted', $revision->signatories)->name ?? null,
-                        "noted_by_position"     => $this->getSig('Noted', $revision->signatories)->position ?? null,
+                        // =====================
+                        // SIGNATORIES (SAFE)
+                        // =====================
+                        'approved_by' => $signatories
+                            ? optional($this->getSig('Approved', $signatories))->name ?? ''
+                            : '',
+
+                        'approved_by_position' => $signatories
+                            ? optional($this->getSig('Approved', $signatories))->position ?? ''
+                            : '',
+
+                        'prepared_by' => $signatories
+                            ? optional($this->getSig('Prepared', $signatories))->name ?? ''
+                            : '',
+
+                        'prepared_by_position' => $signatories
+                            ? optional($this->getSig('Prepared', $signatories))->position ?? ''
+                            : '',
+
+                        'reviewed_by' => $signatories
+                            ? optional($this->getSig('Reviewed', $signatories))->name ?? ''
+                            : '',
+
+                        'reviewed_by_position' => $signatories
+                            ? optional($this->getSig('Reviewed', $signatories))->position ?? ''
+                            : '',
+
+                        'noted_by' => $signatories
+                            ? optional($this->getSig('Noted', $signatories))->name ?? ''
+                            : '',
+
+                        'noted_by_position' => $signatories
+                            ? optional($this->getSig('Noted', $signatories))->position ?? ''
+                            : '',
+                        // "approved_by"           => $this->getSig('Approved', $revision->signatories)->name ?? null,
+                        // "approved_by_position"  => $this->getSig('Approved', $revision->signatories)->position ?? null,
+                        // "prepared_by"           => $this->getSig('Prepared', $revision->signatories)->name ?? null,
+                        // "prepared_by_position"  => $this->getSig('Prepared', $revision->signatories)->position ?? null,
+                        // "reviewed_by"           => $this->getSig('Reviewed', $revision->signatories)->name ?? null,
+                        // "reviewed_by_position"  => $this->getSig('Reviewed', $revision->signatories)->position ?? null,
+                        // "noted_by"              => $this->getSig('Noted', $revision->signatories)->name ?? null,
+                        // "noted_by_position"     => $this->getSig('Noted', $revision->signatories)->position ?? null,
                     ];
                 });
 
@@ -3802,6 +3865,11 @@ class RevisionPlanController extends Controller
         $signatory = $signatories->firstWhere('acted', $type);
         return $signatory;
     }
+    private function money($value)
+    {
+        return number_format((float) ($value ?? 0), 2, '.', '');
+    }
+
     public function getTotalBudgetRequirements($id){
         return BudgetRequirement::where('revision_plan_id', $id)
             ->sum('amount');
