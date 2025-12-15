@@ -3743,7 +3743,7 @@ class RevisionPlanController extends Controller
                     // dd($revision->signatories);
                     $get = fn($type) => optional($revision->signatories->firstWhere('acted', $type));
                     $signatories = isset($revision) ? $revision->signatories : null;
-
+                    // dd($signatories);
                     return [
                         'id'               => $item->id,
                         'project_name' => $revision->project_title ?? '',
@@ -3844,6 +3844,7 @@ class RevisionPlanController extends Controller
                         'noted_by_position' => $signatories
                             ? optional($this->getSig('Noted', $signatories))->position ?? ''
                             : '',
+                        'sig'=> $signatories,
                         // "approved_by"           => $this->getSig('Approved', $revision->signatories)->name ?? null,
                         // "approved_by_position"  => $this->getSig('Approved', $revision->signatories)->position ?? null,
                         // "prepared_by"           => $this->getSig('Prepared', $revision->signatories)->name ?? null,
