@@ -25,6 +25,7 @@ use App\Models\SharedProgramAndProject;
 use App\Models\Signatory;
 use App\Models\Strategy;
 use App\Models\Activity;
+use App\Models\ExpectedRevisedOutput;
 use App\Models\StrategyProject;
 use App\Models\Target;
 use App\Models\TeamPlan;
@@ -3871,7 +3872,10 @@ class RevisionPlanController extends Controller
     {
         return number_format((float) ($value ?? 0), 2, '.', '');
     }
-
+    public function getExpectedOutputs(Request $request){
+        return ExpectedRevisedOutput::where('activity_project_id', $request->activity_project_id)
+            ->get();
+    }
     public function getTotalBudgetRequirements($id){
         return BudgetRequirement::where('revision_plan_id', $id)
             ->sum('amount');
