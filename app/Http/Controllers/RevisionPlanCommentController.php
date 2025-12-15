@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RevisionPlan;
 use App\Models\RevisionPlanComment;
 use Illuminate\Http\Request;
 
@@ -42,9 +43,72 @@ class RevisionPlanCommentController extends Controller
             $comment->context_after = $request->input('context_after');
         }
         $comment->save();
+        // if(in_array($request->input('column_name'), ['rationale', 'objective', 'beneficiaries'])){
+        //     $this->tagCommentInText(
+        //     $comment->id,
+        //     $request->input('table_name'),
+        //     $request->input('table_row_id'),
+        //     $request->input('column_name')
+        //     );
+        // }
+
         // dd($comment);
         return back()->with('success', 'Comment added successfully.');
         // $request->params['comment']
+    }
+
+    public static function tagCommentInText($commentId, $tableName, $rowId, $columnName)
+    {
+        // 1️⃣ Get the comment
+        $comment = RevisionPlanComment::find($commentId);
+        if (!$comment) {
+            return false;
+        }
+
+        // 2️⃣ Load the revision plan row
+        $revisionPlan = RevisionPlan::find($rowId);
+        if (!$revisionPlan) {
+            return false;
+        }
+
+        $originalText = $revisionPlan->{$columnName};
+        $selectedText = $comment->selected_text;
+
+        // 3️⃣ Locate the correct instance of the selected text using context
+        $startIndex = null;
+        $pattern = '/' . preg_quote($comment->context_before, '/') .
+                   '(' . preg_quote($selectedText, '/') . ')' .
+                   preg_quote($comment->context_after, '/') . '/';
+
+        if (preg_match($pattern, $originalText, $matches, PREG_OFFSET_CAPTURE)) {
+            $startIndex = $matches[1][1]; // offset of selected text
+        } else {
+            // fallback to stored start_index
+            $startIndex = $comment->start_index;
+        }
+
+        if ($startIndex === null) {
+            return false; // cannot locate exact text
+        }
+
+        $endIndex = $startIndex + strlen($selectedText);
+
+        // 4️⃣ Wrap the selected text in a span with unique ID
+        $before = substr($originalText, 0, $startIndex);
+        $toTag = substr($originalText, $startIndex, strlen($selectedText));
+        $after = substr($originalText, $endIndex);
+
+        $taggedText = $before .
+                      '<span id="' . $commentId . '_' . $tableName . '_' . $columnName . '" style="background-color: darkorange; color:black;">' .
+                      $toTag .
+                      '</span>' .
+                      $after;
+
+        // 5️⃣ Save back to the database
+        $revisionPlan->{$columnName} = $taggedText;
+        $revisionPlan->save();
+
+        return true;
     }
     public function actionComment(Request $request)
     {

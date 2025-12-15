@@ -59,6 +59,13 @@ import VueSweetalert2 from 'vue-sweetalert2';
 // VUE INERTIA
 import { Inertia } from '@inertiajs/inertia';
 
+// fuzzy sort
+import fuzzysort from "fuzzysort";
+
+// Additional Plugins for Fuzzy String Matching
+import Mark from 'mark.js'
+import DiffMatchPatch from 'diff-match-patch'
+
 const FilePond = vueFilePond(
     FilePondPluginFileValidateType,
     FilePondPluginImagePreview,
@@ -99,6 +106,9 @@ createInertiaApp({
             .component("v-select", vSelect)
             .component('QuillEditor', QuillEditor)
             .component('Inertia', Inertia)
+            .component('fuzzysort', fuzzysort)
+            .component("Mark", Mark)
+            .component("DiffMatchPatch", DiffMatchPatch)
             .mixin({
                 data() {
                     return {
@@ -695,7 +705,196 @@ createInertiaApp({
                         });
                     },
                     // **************************************************************************************************************************
+                    // GLOBAL HTML Utilities
+
+                    // **************************************************************************************************************************
                     //COMMENTS -Fuzzy Matching **************************************************************************************************
+                    /**
+                     * MAIN METHOD
+                     * Returns HTML with highlighted comments
+                     */
+                    highlightWithComments(rawText, comments, columnName, containerEl) {
+                        if (!rawText || !comments?.length) return
+
+                        const instance = new Mark(containerEl)
+
+                        const filtered = comments.filter(c => c.column_name === columnName)
+
+                        filtered.forEach(comment => {
+                            const {
+                                selected_text,
+                                context_before,
+                                context_after,
+                                id,
+                                table_name,
+                                column_name
+                            } = comment
+                            const bgColor = comment_status === 1
+                                ? '#ffffffff'     // ✔ approved (example: light orange / yellow)
+                                : 'darkorange'  // ✔ default (pending / active)
+                            /**
+                             * Step 1: Try exact context match
+                             */
+                            const pattern = `${context_before}${selected_text}${context_after}`
+
+                            instance.mark(pattern, {
+                                separateWordSearch: false,
+                                accuracy: "partially",
+                                acrossElements: true,
+                                each: el => {
+                                    el.style.backgroundColor = bgColor
+                                    el.setAttribute(
+                                        "id",
+                                        `${id}_${table_name}_${column_name}`
+                                    )
+                                }
+                            })
+
+                            /**
+                             * Step 2: If exact context fails, fallback to diff-based match
+                             */
+                            instance.mark(selected_text, {
+                                separateWordSearch: false,
+                                accuracy: "partially",
+                                acrossElements: true,
+                                each: el => {
+                                    el.style.backgroundColor = "darkorange"
+                                    el.setAttribute(
+                                        "id",
+                                        `${id}_${table_name}_${column_name}`
+                                    )
+                                }
+                            })
+                        })
+                    },
+                    renderCommentedText(text, comments, columnName) {
+                        if (!text || !comments) return text;
+
+                        const filtered = comments
+                            .filter(c => c.column_name === columnName)
+                            .filter(c => c.start_index >= 0 && c.end_index > c.start_index && c.start_index < text.length)
+                            .sort((a, b) => {
+                                // Sort by start index, then by length (longer first)
+                                if (a.start_index !== b.start_index) {
+                                    return a.start_index - b.start_index;
+                                }
+                                return (b.end_index - b.start_index) - (a.end_index - a.start_index);
+                            });
+
+                        // Track which characters are already highlighted
+                        const highlighted = new Array(text.length).fill(false);
+                        const highlights = [];
+
+                        // Process comments in order
+                        for (const comment of filtered) {
+                            const start = comment.start_index;
+                            const end = Math.min(comment.end_index, text.length);
+
+                            if (start >= end) continue;
+
+                            // Check how many characters in this range are already highlighted
+                            let newHighlightStart = start;
+                            while (newHighlightStart < end && highlighted[newHighlightStart]) {
+                                newHighlightStart++;
+                            }
+
+                            // If there's any unhighlighted portion, add it
+                            if (newHighlightStart < end) {
+                                let newHighlightEnd = newHighlightStart;
+                                while (newHighlightEnd < end && !highlighted[newHighlightEnd]) {
+                                    highlighted[newHighlightEnd] = true;
+                                    newHighlightEnd++;
+                                }
+
+                                highlights.push({
+                                    start: newHighlightStart,
+                                    end: newHighlightEnd,
+                                    comment: comment
+                                });
+                            }
+                        }
+
+                        // Sort highlights by start position
+                        highlights.sort((a, b) => a.start - b.start);
+
+                        // Build the result
+                        let result = '';
+                        let cursor = 0;
+
+                        for (const highlight of highlights) {
+                            const { start, end, comment } = highlight;
+
+                            // Add plain text before highlight
+                            if (cursor < start) {
+                                result += text.slice(cursor, start);
+                            }
+
+                            // Add highlighted text
+                            const selectedText = text.slice(start, end);
+                            result += `<span id="${comment.id}_${comment.table_name}_${comment.column_name}" ` +
+                                    `style="background-color: darkorange; color:black;">${selectedText}</span>`;
+
+                            cursor = end;
+                        }
+
+                        // Add remaining text
+                        if (cursor < text.length) {
+                            result += text.slice(cursor);
+                        }
+
+                        return result;
+                    },
+
+
+                    escapeHtml(str) {
+                        if (!str) return '';
+                        return str.replace(/&/g, "&amp;")
+                                .replace(/</g, "&lt;")
+                                .replace(/>/g, "&gt;")
+                                .replace(/"/g, "&quot;")
+                                .replace(/'/g, "&#039;");
+                    },
+                    highlightQuillComments(html, comments, columnName) {
+                        if (!html || !comments) return html;
+
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const textContent = doc.body.textContent || '';
+                        let cursor = 0;
+
+                        // Filter and sort comments by start_index
+                        const filtered = comments
+                            .filter(c => c.column_name === columnName)
+                            .sort((a, b) => a.start_index - b.start_index);
+
+                        const fragments = [];
+
+                        filtered.forEach(comment => {
+                            const start = comment.start_index;
+                            const end = comment.end_index;
+
+                            if (start < 0 || end <= start || start >= textContent.length) return;
+
+                            // Text before comment
+                            if (cursor < start) {
+                                fragments.push(this.escapeHtml(textContent.slice(cursor, start)));
+                            }
+
+                            // Highlighted text
+                            const selectedText = textContent.slice(start, Math.min(end, textContent.length)) || comment.selected_text;
+                            fragments.push(`<span id="${comment.id}_${comment.table_name}_${comment.column_name}" style="background-color: darkorange; color:black;">${this.escapeHtml(selectedText)}</span>`);
+
+                            cursor = end;
+                        });
+
+                        // Remaining text
+                        if (cursor < textContent.length) {
+                            fragments.push(this.escapeHtml(textContent.slice(cursor)));
+                        }
+
+                        return fragments.join('');
+                    },
+
                     // Levenshtein distance (classic)
                     // levenshtein(a, b) {
                     //     if (!a || !b) return (a === b) ? 0 : Math.max(a.length, b.length);
@@ -953,3 +1152,12 @@ InertiaProgress.init({
     includeCSS: true,
     showSpinner: false,
 })
+
+// if (!Vue.options.filters.escapeHtml) {
+//   Vue.filter('escapeHtml', function(text) {
+//     if (!text) return '';
+//     const div = document.createElement('div');
+//     div.textContent = text;
+//     return div.innerHTML;
+//   });
+// }

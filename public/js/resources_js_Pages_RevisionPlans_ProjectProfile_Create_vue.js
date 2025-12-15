@@ -339,6 +339,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   mounted: function mounted() {
+    this.applyHighlights('rationale');
     window.addEventListener('beforeunload', this.handleBeforeUnload);
     this.form.idpaps = this.idpaps;
 
@@ -434,6 +435,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
   },
   methods: {
+    applyHighlights: function applyHighlights(column) {
+      var html = this.form[column]; // original Quill content
+
+      var highlighted = this.highlightQuillComments(html, this.all_comments, column);
+      this.form[column] = highlighted; // sets Quill content with highlights
+    },
     //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
     //alert(this.form.target_qty);
     // if (this.act_words > this.maxWords) {
@@ -4382,7 +4389,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.updateRevisionPlans('revision_plans', 'rationale', $data.form.id, val);
     })],
     contentType: "html",
-    toolbar: "essential"
+    ref: "quillEditor"
   }, null, 8
   /* PROPS */
   , ["content"])]), _hoisted_66]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("III. OBJECTIVES ****************************************************************************************************************************"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_67, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
@@ -6541,7 +6548,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["clickable-comment", comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected']),
       onClick: function onClick($event) {
-        return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? comment.column_name : ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name) ? "".concat(comment.table_row_id, "_").concat(comment.table_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
+        return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? "".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name) : ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name) ? "".concat(comment.table_row_id, "_").concat(comment.table_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
       },
       style: {
         "cursor": "pointer"

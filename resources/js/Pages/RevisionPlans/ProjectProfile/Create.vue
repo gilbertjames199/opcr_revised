@@ -392,7 +392,8 @@
                         <div class="bgc-white p-20 bd" >
                             <QuillEditor theme="snow" v-model:content="form.rationale" contentType="html"
                              @update:content="val => updateRevisionPlans('revision_plans', 'rationale', form.id, val)"
-                            toolbar="essential" />
+                            ref="quillEditor"
+                        />
                         </div>
                         <br>
                      </span>
@@ -2073,7 +2074,7 @@
                                             class="clickable-comment"
                                             @click="scrollToSection(
                                                 ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                    ? comment.column_name
+                                                    ? `${comment.id}_${comment.table_name}_${comment.column_name}`
                                                         : (
                                                         ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
                                                             ? `${comment.table_row_id}_${comment.table_name}`
@@ -3295,6 +3296,8 @@ export default {
 
     },
     mounted() {
+        this.applyHighlights('rationale');
+
         window.addEventListener('beforeunload', this.handleBeforeUnload);
         this.form.idpaps = this.idpaps;
         if(this.source!==undefined){
@@ -3397,6 +3400,11 @@ export default {
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
     },
     methods: {
+        applyHighlights(column) {
+            const html = this.form[column]; // original Quill content
+            const highlighted = this.highlightQuillComments(html, this.all_comments, column);
+            this.form[column] = highlighted; // sets Quill content with highlights
+        },
         //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
         //alert(this.form.target_qty);
         // if (this.act_words > this.maxWords) {

@@ -3,6 +3,7 @@
         <title>View PAPS</title>
     </Head>
     <div class="row gap-10 masonry pos-r">
+    <h6>v1</h6>
     <div class="row gap-5">
         <!--class="peers fxw-nw jc-sb ai-c"-->
 
@@ -354,10 +355,18 @@
                                 @mouseup="handleSelection('rationale')"
                                 class="cursor-text"></p> -->
                                 <!-- {{ highlightedText('rationale') }} -->
-                            <div v-html="paps.rationale"
+                            <!-- <div v-html="paps.rationale"
                                 style="white-space: pre-line"
                                 ref="rationaleDiv"
-                                @mouseup="onHighlight"></div>
+                                @mouseup="onHighlight"></div> -->
+                                <!-- {{ renderCommentedText(paps.rationale, all_comments, 'rationale') }} -->
+                            <p v-html="renderCommentedText(paps.rationale, all_comments, 'rationale')"
+                                @mouseup="handleSelection('rationale')"
+                            ></p>
+                            <!-- <div ref="rationaleEl"
+                                @mouseup="onHighlight"
+                                v-html="paps.rationale"
+                            ></div> -->
                         </div>
                         <br>
                     </span>
@@ -3239,7 +3248,34 @@ export default {
         },
         resolvedComments() {
             return this.all_comments.filter(c => c.comment_status == 1);
-        }
+        },
+        // highlightedRationale() {
+        //     return this.highlightCommentedText(
+        //         this.paps.rationale,
+        //         this.all_comments,
+        //         'paps',
+        //         'rationale',
+        //         this.paps.id
+        //     );
+        // },
+        // highlightedObjective() {
+        //     return this.highlightCommentedText(
+        //         this.paps.objective,
+        //         this.all_comments,
+        //         'paps',
+        //         'objective',
+        //         this.paps.id
+        //     );
+        // },
+        // highlightedBeneficiaries() {
+        //     return this.highlightCommentedText(
+        //         this.paps.beneficiaries,
+        //         this.all_comments,
+        //         'paps',
+        //         'beneficiaries',
+        //         this.paps.id
+        //     );
+        // }
     },
     watch: {
         search: _.debounce(function (value) {
@@ -3265,6 +3301,7 @@ export default {
                 }
             );
         }, 300),
+
     },
     data() {
         return {
@@ -3316,6 +3353,12 @@ export default {
         this.tot_gad = parseFloat(this.s_cap_gad) + parseFloat(this.s_mooe_gad) + parseFloat(this.s_ps_gad) + parseFloat(this.s_fe_gad);
         this.tot_non = parseFloat(this.s_cap_non) + parseFloat(this.s_mooe_non) + parseFloat(this.s_ps_non) + parseFloat(this.s_fe_non);
         this.grand_total = this.tot_gad + this.tot_non;
+        this.highlightWithComments(
+            this.paps.rationale,
+            this.all_comments,
+            'rationale',
+            this.$refs.rationaleEl
+        );
     },
 
     beforeUnmount() {
@@ -3602,6 +3645,17 @@ export default {
                 this.all_comments,
                 this.paps[column],                       // your text
                 column
+            );
+        },
+
+        // DEEPSEEK FUZZY MATCHING
+        getHighlightedText(field) {
+            return this.highlightCommentedText(
+                this.paps[field],
+                this.all_comments,
+                'paps',
+                field,
+                this.paps.id
             );
         },
         // Highlight commented text
@@ -4075,5 +4129,22 @@ table {
 @keyframes blinker {
     0%, 100% { color: red; }
     50% { color: #f8d823; } /* paler red */
+}
+
+/* COMMENTED TEXT */
+.commented-text {
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.commented-text:hover {
+  background-color: #ff8c00 !important; /* Darker orange on hover */
+}
+
+.commented-text::after {
+  content: '💬';
+  font-size: 0.8em;
+  margin-left: 2px;
+  vertical-align: super;
 }
 </style>

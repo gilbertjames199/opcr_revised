@@ -3680,6 +3680,10 @@ class RevisionPlanController extends Controller
                 ->sum('amount');
 
             $imp_amount = 0.00;
+            $co_total =0.00;
+            $fe_total =0.00;
+            $mooe_total =0.00;
+            $ps_total =0.00;
             if ($item->is_strategy_based == 1) {
                 $total = $budget_controller->getStratTotal($item->id);
             } else {
@@ -3691,6 +3695,10 @@ class RevisionPlanController extends Controller
                     $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
                     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
                     $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                $co_total = $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+                $fe_total = $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                $mooe_total = $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4');
+                $ps_total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4');
             }
             // dd($item->FFUNCTION);
             // dd($item);
@@ -3722,6 +3730,10 @@ class RevisionPlanController extends Controller
                 'version' => $item->version,
                 'budget_sum' => $budgetary_requirement,
                 'imp_amount' => $imp_amount,
+                'co_total' => $co_total,
+                'fe_total' => $fe_total,
+                'mooe_total' => $mooe_total,
+                'ps_total' => $ps_total,
                 'idpaps' => $item->idpaps,
                 'status' => $item->status,
                 'warning' => $warning,
