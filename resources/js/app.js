@@ -716,6 +716,134 @@ createInertiaApp({
                      * MAIN METHOD
                      * Returns HTML with highlighted comments
                      */
+                    highlightWithComments123(rawText, comments, columnName, containerEl) {
+                        if (!rawText || !comments?.length) return
+
+                        const instance = new Mark(containerEl)
+                        const dmp = new DiffMatchPatch()
+
+                        const filtered = comments.filter(c => c.column_name === columnName)
+
+                        filtered.forEach(comment => {
+                            const {
+                                selected_text,
+                                context_before,
+                                context_after,
+                                id,
+                                table_name,
+                                column_name,
+                                comment_status,
+                                index_start,
+                                index_end
+                            } = comment
+
+                            const fontColor = comment_status === '0' ? '#ff0000' : null
+                            const length = index_end - index_start
+                            let matched = false
+
+                            const applyStyle = el => {
+                                if (fontColor) el.style.color = fontColor
+                                el.style.backgroundColor = 'white'
+                                el.setAttribute('id', `${id}_${table_name}_${column_name}`)
+                            }
+
+                            /**
+                             * STEP 1 — Exact context match
+                             */
+                            const pattern = `${context_before}${selected_text}${context_after}`
+
+                            instance.mark(pattern, {
+                                separateWordSearch: false,
+                                accuracy: 'partially',
+                                acrossElements: true,
+                                each: el => {
+                                    matched = true
+                                    applyStyle(el)
+                                }
+                            })
+
+                            if (matched) return
+
+                            /**
+                             * STEP 2 — DiffMatchPatch approximation
+                             */
+                            const diffs = dmp.diff_main(rawText, selected_text)
+                            dmp.diff_cleanupSemantic(diffs)
+
+                            let bestMatch = ''
+                            let bestScore = Infinity
+
+                            diffs.forEach(diff => {
+                                if (diff[0] === 0) {
+                                    const distance = dmp.diff_levenshtein(diffs)
+                                    if (distance < bestScore) {
+                                        bestScore = distance
+                                        bestMatch = diff[1]
+                                    }
+                                }
+                            })
+
+                            if (bestMatch && bestMatch.length > 3) {
+                                instance.mark(bestMatch, {
+                                    separateWordSearch: false,
+                                    accuracy: 'partially',
+                                    acrossElements: true,
+                                    each: el => {
+                                        matched = true
+                                        applyStyle(el)
+                                    }
+                                })
+                            }
+
+                            if (matched) return
+
+                            /**
+                             * STEP 3A — Context BEFORE → tag nearest chars AFTER
+                             */
+                            if (context_before) {
+                                const beforeIndex = rawText.lastIndexOf(context_before)
+                                if (beforeIndex !== -1) {
+                                    const start = beforeIndex + context_before.length
+                                    const fallbackText = rawText.substr(start, length)
+
+                                    instance.mark(fallbackText, {
+                                        separateWordSearch: false,
+                                        accuracy: 'partially',
+                                        acrossElements: true,
+                                        each: el => {
+                                            matched = true
+                                            applyStyle(el)
+                                        }
+                                    })
+                                }
+                            }
+
+                            if (matched) return
+
+                            /**
+                             * STEP 3B — Context AFTER → tag nearest chars BEFORE
+                             */
+                            if (context_after) {
+                                const afterIndex = rawText.indexOf(context_after)
+                                if (afterIndex !== -1) {
+                                    const start = Math.max(0, afterIndex - length)
+                                    const fallbackText = rawText.substr(start, length)
+
+                                    instance.mark(fallbackText, {
+                                        separateWordSearch: false,
+                                        accuracy: 'partially',
+                                        acrossElements: true,
+                                        each: el => {
+                                            matched = true
+                                            applyStyle(el)
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                    },
+
+
                     highlightWithComments(rawText, comments, columnName, containerEl) {
                         if (!rawText || !comments?.length) return
 
@@ -753,6 +881,7 @@ createInertiaApp({
                                     if (fontColor) {
                                         el.style.color = fontColor
                                     }
+                                    el.style.backgroundColor = "white"
                                     el.setAttribute(
                                         "id",
                                         `${id}_${table_name}_${column_name}`
@@ -772,6 +901,7 @@ createInertiaApp({
                                     if (fontColor) {
                                         el.style.color = fontColor
                                     }
+                                    el.style.backgroundColor = "white"
                                     el.setAttribute(
                                         "id",
                                         `${id}_${table_name}_${column_name}`

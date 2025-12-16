@@ -16,10 +16,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Shared/Filter */ "./resources/js/Shared/Filter.vue");
 /* harmony import */ var _Shared_Pagination__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Shared/Pagination */ "./resources/js/Shared/Pagination.vue");
 /* harmony import */ var _Shared_ModalDynamicTitle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Shared/ModalDynamicTitle */ "./resources/js/Shared/ModalDynamicTitle.vue");
-var _components$props$com;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -31,7 +27,7 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_components$props$com = {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     Filtering: _Shared_Filter__WEBPACK_IMPORTED_MODULE_1__["default"],
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -233,7 +229,7 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
         var _this2 = this;
 
         this.$nextTick(function () {
-          _this2.applyRationaleHighlights();
+          _this2.applyAllHighlights();
         });
       },
       deep: true
@@ -298,687 +294,687 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
   },
   beforeUnmount: function beforeUnmount() {
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
-  }
-}, _defineProperty(_components$props$com, "watch", {
-  all_comments: {
-    handler: function handler() {
+  },
+  // watch: {
+  //     all_comments: {
+  //         handler() {
+  //             this.$nextTick(() => {
+  //                 this.applyAllHighlights()
+  //             })
+  //         },
+  //         deep: true
+  //     }
+  // },
+  methods: {
+    openTab: function openTab(tab_name) {
+      this.open_tab = tab_name;
+    },
+    isOne: function isOne() {// var mooe=this.b_mooe.length;
+      // var co=this.b_capital.length;
+      // var ps=this.b_ps.length;
+      // var has=0;
+      // if(mooe>0){
+      //     has+=1;
+      // }
+      // if(ps>0){        has+=1;
+      // }
+      // if(co>0){
+      //     has+=1;
+      // }
+      // this.has=has;
+    },
+    getBudgetTotal: function getBudgetTotal() {
+      var total = parseFloat(this.s_cap_gad) + parseFloat(this.s_cap_non);
+      total = total + parseFloat(this.s_mooe_gad) + parseFloat(this.s_mooe_non);
+      total = total + parseFloat(this.s_ps_gad) + parseFloat(this.s_ps_non);
+      return this.format_number_conv(total, 2, true);
+    },
+    showBudgetTable: function showBudgetTable() {
+      var sb = false; // if (this.mooe_gad.length > 0 || this.mooe_non.length > 0 ||
+      //     this.cap_gad.length > 0 || this.cap_non.length > 0 ||
+      //     this.ps_gad.length > 0 || this.ps_non.length > 0
+      // ) {
+      //     sb = true;
+      // }
+
+      if (this.maintenanceOperating.length > 0 || this.capitalOutlay.length > 0 || this.personnelServices.length > 0) {
+        sb = true;
+      }
+
+      return sb;
+    },
+    calculateTotals: function calculateTotals(revs_is_strat_based) {
+      var ps_total = 0;
+      var mooe_total = 0;
+      var co_total = 0;
+      var fe_total = 0;
+      this.implementation.forEach(function (strategy) {
+        if (revs_is_strat_based == 1) {
+          // Sum from the main strategy level
+          ps_total += parseFloat(strategy.ps_total) || 0;
+          mooe_total += parseFloat(strategy.mooe_total) || 0;
+          co_total += parseFloat(strategy.co_total) || 0;
+          fe_total += parseFloat(strategy.fe_total) || 0;
+        } else {
+          // Sum from the activity child table
+          if (Array.isArray(strategy.activity)) {
+            strategy.activity.forEach(function (activity) {
+              ps_total += parseFloat(activity.ps_total) || 0;
+              mooe_total += parseFloat(activity.mooe_total) || 0;
+              co_total += parseFloat(activity.co_total) || 0;
+              fe_total += parseFloat(activity.fe_total) || 0;
+            });
+          }
+        }
+      });
+      this.v_imp_ps = ps_total;
+      this.v_imp_mooe = mooe_total;
+      this.v_imp_co = co_total;
+      this.v_imp_fe = fe_total;
+      return {
+        ps_total: ps_total,
+        mooe_total: mooe_total,
+        co_total: co_total,
+        fe_total: fe_total
+      };
+    },
+    can_view_comment: function can_view_comment() {
+      var can_comment_here = false;
+
+      if (this.auth.user.department_code == '04') {
+        can_comment_here = true;
+      }
+
+      return can_comment_here;
+    },
+    //COMMENTS **************************************************************************************************
+    has_comment: function has_comment(section, subtitle, data, column, table, obj, comments_obj) {
+      var has_comm = false;
+      console.log("comments object ************");
+      console.log(comments_obj);
+      console.trace(); // if(this.auth.user.department_code==='04'){
+      //     has_comm=false
+      // }else{
+
+      var count = Array.isArray(comments_obj) ? comments_obj.filter(function (comment) {
+        return comment.table_name === table && comment.column_name === column && comment.comment_status === "0";
+      }).length : 0;
+
+      if (count > 0) {
+        has_comm = true;
+      } // }
+
+
+      return has_comm;
+    },
+    handleClick: function handleClick(section, subtitle, data, column, table, obj, comments_obj) {
+      this.comment_section = section;
+      this.comment_subtitle = subtitle;
+      this.comment_data = data;
+      this.comment_column = column;
+      this.comment_table = table;
+      this.comment_reference_object = obj; // this.comments = comments_obj;
+
+      this.comments = comments_obj.filter(function (comment) {
+        return comment.table_name === table && comment.column_name === column;
+      });
+      this.show_comment_modal = true;
+      this.showComments = false;
+    },
+    closeCommentModal: function closeCommentModal() {
+      this.show_comment_modal = false;
+      this.removeHighlights();
+    },
+    saveComment: function saveComment() {
       var _this3 = this;
 
-      this.$nextTick(function () {
-        _this3.applyAllHighlights();
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var myurl, table_row_id_l, payload;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // Logic to save the comment
+                // This is just a placeholder, implement your actual saving logic here
+                myurl = "/revision-plan-comments/store"; // await axios
+
+                table_row_id_l = 0; // console.log(this.comment_table)
+
+                if (_this3.comment_table === 'revision_plans') {
+                  table_row_id_l = _this3.comment_reference_object.id;
+                }
+
+                if (_this3.comment_table === 'strategy_projects') {
+                  table_row_id_l = _this3.comment_reference_object.strategy_id;
+                }
+
+                if (_this3.comment_table === 'activity_projects') {
+                  table_row_id_l = _this3.comment_reference_object.activity_id;
+                }
+
+                if (_this3.comment_table === 'budget_requirements') {
+                  table_row_id_l = _this3.comment_reference_object.id; // alert(table_row_id_l)
+                  // console.log(this.comment_reference_object)
+                }
+
+                if (_this3.comment_table === 'team_plans') {
+                  table_row_id_l = _this3.comment_reference_object.id;
+                }
+
+                if (_this3.comment_table === 'monitoring_and_evaluations') {
+                  table_row_id_l = _this3.comment_reference_object.id;
+                }
+
+                if (_this3.comment_table === 'risk_manangements') {
+                  table_row_id_l = _this3.comment_reference_object.id;
+                }
+
+                if (_this3.comment_table === 'expected_revised_outputs') {
+                  table_row_id_l = _this3.comment_reference_object.id;
+                }
+
+                if (_this3.comment_table === 'expected_revised_outcomes') {
+                  table_row_id_l = _this3.comment_reference_object.id;
+                }
+
+                if (_this3.comment_table === 'signatories') {
+                  table_row_id_l = _this3.comment_reference_object.id;
+                } //alert(table_row_id_l)
+                // this.$inertia.post(myurl, {
+                //     params: {
+                //         table_row_id: table_row_id_l,
+                //         table_name: this.comment_table,
+                //         column_name: this.comment_column,
+                //         comment_status: 0,
+                //         comment: this.comment,
+                //     }
+                // });
+                // table_row_id: table_row_id_l,
+                //         table_name: this.comment_table,
+                //         column_name: this.comment_column,
+                //         comment_status: 0,
+                //         comment: this.comment,
+
+
+                payload = {
+                  table_row_id: table_row_id_l,
+                  table_name: _this3.comment_table,
+                  column_name: _this3.comment_column,
+                  comment_status: 0,
+                  comment: _this3.comment
+                };
+
+                if (['rationale', 'objective', 'beneficiaries'].includes(_this3.comment_column)) {
+                  payload.selected_text = _this3.selectedText;
+                  payload.start_index = _this3.selectedStart;
+                  payload.end_index = _this3.selectedEnd;
+                  payload.context_before = _this3.contextBefore;
+                  payload.context_after = _this3.contextAfter;
+                }
+
+                console.log(payload); // alert(this.selectedStart+ " Selected Start");
+
+                console.log("selectedText: " + _this3.selectedText);
+                console.log("selectedStart: " + _this3.selectedStart);
+                console.log("selectedEnd: " + _this3.selectedEnd);
+                console.log("contextBefore: " + _this3.contextBefore);
+                console.log("contextAfter: " + _this3.contextAfter);
+                _context.next = 22;
+                return _this3.$nextTick();
+
+              case 22:
+                _this3.$inertia.post('/revision-plan-comments/store', payload);
+
+                _this3.closeCommentModal();
+
+                setTimeout(function () {
+                  _this3.comment = "";
+                }, 1000); // 1000 milliseconds = 1 second
+
+              case 25:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    // COMMENTS FOR RATIONALE, TARGET BENEFICIARIES, OBJECTIVES
+    // Detect user highlighted text
+    handleSelection: function handleSelection(column) {
+      // this.removeHighlights('rationale');
+      // this.removeHighlights('objective');
+      // this.removeHighlights('beneficiaries');
+      var text = window.getSelection().toString().trim();
+      if (!text) return; // ❗ New validation: minimum 4 characters
+
+      if (text.length < 4) {
+        alert("Selected text must be at least 4 characters long.");
+        return;
+      }
+
+      this.highlightSelection(); // ⬅️ TEMPORARY HIGHLIGHT
+      // Only handle fuzzy matching for specific columns
+
+      if (!['rationale', 'objective', 'beneficiaries'].includes(column)) return;
+      this.selectedText = text;
+      this.selectedColumn = column; // Compute start and end index
+
+      var fullText = this.paps[column] || "";
+      var startIndex = fullText.indexOf(text);
+      var endIndex = startIndex + text.length; // Compute context (30 chars before and after)
+
+      var contextBefore = fullText.substring(Math.max(0, startIndex - 30), startIndex);
+      var contextAfter = fullText.substring(endIndex, Math.min(fullText.length, endIndex + 30));
+      this.selectedStart = startIndex;
+      this.selectedEnd = endIndex;
+      this.contextBefore = contextBefore;
+      this.contextAfter = contextAfter; //
+      // console.log("Selected text:", text);
+
+      if (column === 'rationale') {
+        this.handleClick('Rationale', 'rationale', this.selectedText, 'rationale', 'revision_plans', this.paps, this.paps.comments);
+      }
+
+      if (column === 'objective') {
+        this.handleClick('Objective', 'objective', this.selectedText, 'objective', 'revision_plans', this.paps, this.paps.comments);
+      }
+
+      if (column === 'beneficiaries') {
+        this.handleClick('Beneficiaries', 'beneficiaries', this.selectedText, 'beneficiaries', 'revision_plans', this.paps, this.paps.comments);
+      } // this.showComments=true;
+      // this.show_comment_modal = false;
+      // beneficiaries
+
+    },
+    // Save comment to backend
+    saveCommentNew: function saveCommentNew() {
+      this.$inertia.post('/revision-plan-comment', {
+        table_row_id: this.paps.id,
+        table_name: "revision_plans",
+        column_name: this.selectedColumn,
+        comment: this.newComment,
+        selected_text: this.selectedText
+      });
+      this.showModal = false;
+      this.newComment = "";
+    },
+    renderedText: function renderedText(column) {
+      // .filter(c => c.column_name === column)
+      return this.highlightedTextGlobal(this.all_comments, this.paps[column], // your text
+      column);
+    },
+    // Re-render Comments on Save
+    applyAllHighlights: function applyAllHighlights() {
+      var _this4 = this;
+
+      var columns = ['rationale', 'beneficiaries', 'objective'];
+      columns.forEach(function (column) {
+        var el = _this4.$refs["".concat(column, "El")];
+
+        if (!el || !_this4.paps[column]) return;
+        var instance = new Mark(el); // 🔴 MUST remove old highlights first
+
+        instance.unmark({
+          done: function done() {
+            _this4.highlightWithComments(_this4.paps[column], _this4.all_comments, column, el);
+          }
+        });
       });
     },
-    deep: true
-  }
-}), _defineProperty(_components$props$com, "methods", {
-  openTab: function openTab(tab_name) {
-    this.open_tab = tab_name;
-  },
-  isOne: function isOne() {// var mooe=this.b_mooe.length;
-    // var co=this.b_capital.length;
-    // var ps=this.b_ps.length;
-    // var has=0;
-    // if(mooe>0){
-    //     has+=1;
-    // }
-    // if(ps>0){        has+=1;
-    // }
-    // if(co>0){
-    //     has+=1;
-    // }
-    // this.has=has;
-  },
-  getBudgetTotal: function getBudgetTotal() {
-    var total = parseFloat(this.s_cap_gad) + parseFloat(this.s_cap_non);
-    total = total + parseFloat(this.s_mooe_gad) + parseFloat(this.s_mooe_non);
-    total = total + parseFloat(this.s_ps_gad) + parseFloat(this.s_ps_non);
-    return this.format_number_conv(total, 2, true);
-  },
-  showBudgetTable: function showBudgetTable() {
-    var sb = false; // if (this.mooe_gad.length > 0 || this.mooe_non.length > 0 ||
-    //     this.cap_gad.length > 0 || this.cap_non.length > 0 ||
-    //     this.ps_gad.length > 0 || this.ps_non.length > 0
-    // ) {
-    //     sb = true;
-    // }
+    // DEEPSEEK FUZZY MATCHING
+    getHighlightedText: function getHighlightedText(field) {
+      return this.highlightCommentedText(this.paps[field], this.all_comments, 'paps', field, this.paps.id);
+    },
+    // Highlight commented text
+    highlightedText: function highlightedText(column) {
+      var text = this.paps[column];
+      console.log(text);
+      var result = "";
+      var cursor = 0;
+      var items = this.all_comments.filter(function (c) {
+        return c.column_name === column;
+      }).sort(function (a, b) {
+        return a.start_index - b.start_index;
+      });
+      items.forEach(function (c) {
+        result += text.slice(cursor, c.start_index); // If status = 1, keep normal text style
 
-    if (this.maintenanceOperating.length > 0 || this.capitalOutlay.length > 0 || this.personnelServices.length > 0) {
-      sb = true;
-    }
+        var style = c.comment_status === '1' ? "" : "color:#fa7602; font-weight:bold;";
+        result += "<span style=\"".concat(style, "\" id=\"").concat(c.id, "_").concat(c.table_name, "_").concat(c.column_name, "\">\n                    ").concat(text.slice(c.start_index, c.end_index), "</span>");
+        cursor = c.end_index;
+      });
+      result += text.slice(cursor);
+      return result;
+    },
+    // END OF COMMENTS **********************************************************************************************
+    submitAction: function submitAction(type, comment_id, index) {
+      var _this5 = this;
 
-    return sb;
-  },
-  calculateTotals: function calculateTotals(revs_is_strat_based) {
-    var ps_total = 0;
-    var mooe_total = 0;
-    var co_total = 0;
-    var fe_total = 0;
-    this.implementation.forEach(function (strategy) {
-      if (revs_is_strat_based == 1) {
-        // Sum from the main strategy level
-        ps_total += parseFloat(strategy.ps_total) || 0;
-        mooe_total += parseFloat(strategy.mooe_total) || 0;
-        co_total += parseFloat(strategy.co_total) || 0;
-        fe_total += parseFloat(strategy.fe_total) || 0;
-      } else {
-        // Sum from the activity child table
-        if (Array.isArray(strategy.activity)) {
-          strategy.activity.forEach(function (activity) {
-            ps_total += parseFloat(activity.ps_total) || 0;
-            mooe_total += parseFloat(activity.mooe_total) || 0;
-            co_total += parseFloat(activity.co_total) || 0;
-            fe_total += parseFloat(activity.fe_total) || 0;
-          });
-        }
+      var actionText = {
+        "delete": "delete this comment",
+        reset: "reset the status of this comment to unresolved",
+        resolve: "mark this comment as resolved"
+      };
+
+      if (!confirm("Are you sure you want to ".concat(actionText[type], "?"))) {
+        return; // User cancelled
       }
-    });
-    this.v_imp_ps = ps_total;
-    this.v_imp_mooe = mooe_total;
-    this.v_imp_co = co_total;
-    this.v_imp_fe = fe_total;
-    return {
-      ps_total: ps_total,
-      mooe_total: mooe_total,
-      co_total: co_total,
-      fe_total: fe_total
-    };
-  },
-  can_view_comment: function can_view_comment() {
-    var can_comment_here = false;
 
-    if (this.auth.user.department_code == '04') {
-      can_comment_here = true;
-    }
+      var myurl = "/revision-plan-comments/action/done";
+      this.$inertia.post(myurl, {
+        params: {
+          type: type,
+          id: comment_id
+        }
+      }, {
+        preserveScroll: true,
+        onSuccess: function onSuccess() {
+          if (type === 'delete') {
+            _this5.comments.splice(index, 1); // alert("Comment deleted successfully.");
 
-    return can_comment_here;
-  },
-  //COMMENTS **************************************************************************************************
-  has_comment: function has_comment(section, subtitle, data, column, table, obj, comments_obj) {
-    var has_comm = false;
-    console.log("comments object ************");
-    console.log(comments_obj);
-    console.trace(); // if(this.auth.user.department_code==='04'){
-    //     has_comm=false
-    // }else{
-
-    var count = Array.isArray(comments_obj) ? comments_obj.filter(function (comment) {
-      return comment.table_name === table && comment.column_name === column && comment.comment_status === "0";
-    }).length : 0;
-
-    if (count > 0) {
-      has_comm = true;
-    } // }
-
-
-    return has_comm;
-  },
-  handleClick: function handleClick(section, subtitle, data, column, table, obj, comments_obj) {
-    this.comment_section = section;
-    this.comment_subtitle = subtitle;
-    this.comment_data = data;
-    this.comment_column = column;
-    this.comment_table = table;
-    this.comment_reference_object = obj; // this.comments = comments_obj;
-
-    this.comments = comments_obj.filter(function (comment) {
-      return comment.table_name === table && comment.column_name === column;
-    });
-    this.show_comment_modal = true;
-    this.showComments = false;
-  },
-  closeCommentModal: function closeCommentModal() {
-    this.show_comment_modal = false;
-    this.removeHighlights();
-  },
-  saveComment: function saveComment() {
-    var _this4 = this;
-
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      var myurl, table_row_id_l, payload;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              // Logic to save the comment
-              // This is just a placeholder, implement your actual saving logic here
-              myurl = "/revision-plan-comments/store"; // await axios
-
-              table_row_id_l = 0; // console.log(this.comment_table)
-
-              if (_this4.comment_table === 'revision_plans') {
-                table_row_id_l = _this4.comment_reference_object.id;
-              }
-
-              if (_this4.comment_table === 'strategy_projects') {
-                table_row_id_l = _this4.comment_reference_object.strategy_id;
-              }
-
-              if (_this4.comment_table === 'activity_projects') {
-                table_row_id_l = _this4.comment_reference_object.activity_id;
-              }
-
-              if (_this4.comment_table === 'budget_requirements') {
-                table_row_id_l = _this4.comment_reference_object.id; // alert(table_row_id_l)
-                // console.log(this.comment_reference_object)
-              }
-
-              if (_this4.comment_table === 'team_plans') {
-                table_row_id_l = _this4.comment_reference_object.id;
-              }
-
-              if (_this4.comment_table === 'monitoring_and_evaluations') {
-                table_row_id_l = _this4.comment_reference_object.id;
-              }
-
-              if (_this4.comment_table === 'risk_manangements') {
-                table_row_id_l = _this4.comment_reference_object.id;
-              }
-
-              if (_this4.comment_table === 'expected_revised_outputs') {
-                table_row_id_l = _this4.comment_reference_object.id;
-              }
-
-              if (_this4.comment_table === 'expected_revised_outcomes') {
-                table_row_id_l = _this4.comment_reference_object.id;
-              }
-
-              if (_this4.comment_table === 'signatories') {
-                table_row_id_l = _this4.comment_reference_object.id;
-              } //alert(table_row_id_l)
-              // this.$inertia.post(myurl, {
-              //     params: {
-              //         table_row_id: table_row_id_l,
-              //         table_name: this.comment_table,
-              //         column_name: this.comment_column,
-              //         comment_status: 0,
-              //         comment: this.comment,
-              //     }
-              // });
-              // table_row_id: table_row_id_l,
-              //         table_name: this.comment_table,
-              //         column_name: this.comment_column,
-              //         comment_status: 0,
-              //         comment: this.comment,
-
-
-              payload = {
-                table_row_id: table_row_id_l,
-                table_name: _this4.comment_table,
-                column_name: _this4.comment_column,
-                comment_status: 0,
-                comment: _this4.comment
-              };
-
-              if (['rationale', 'objective', 'beneficiaries'].includes(_this4.comment_column)) {
-                payload.selected_text = _this4.selectedText;
-                payload.start_index = _this4.selectedStart;
-                payload.end_index = _this4.selectedEnd;
-                payload.context_before = _this4.contextBefore;
-                payload.context_after = _this4.contextAfter;
-              }
-
-              console.log(payload);
-              alert(_this4.selectedStart + " Selected Start");
-              console.log("selectedText: " + _this4.selectedText);
-              console.log("selectedStart: " + _this4.selectedStart);
-              console.log("selectedEnd: " + _this4.selectedEnd);
-              console.log("contextBefore: " + _this4.contextBefore);
-              console.log("contextAfter: " + _this4.contextAfter);
-              _context.next = 23;
-              return _this4.$nextTick();
-
-            case 23:
-              _this4.$inertia.post('/revision-plan-comments/store', payload);
-
-              _this4.closeCommentModal();
-
-              setTimeout(function () {
-                _this4.comment = "";
-              }, 1000); // 1000 milliseconds = 1 second
-
-            case 26:
-            case "end":
-              return _context.stop();
+          } else if (type === 'reset') {
+            _this5.comments[index].comment_status = '0'; // alert("Comment status reset to unresolved.");
+          } else if (type === 'resolve') {
+            _this5.comments[index].comment_status = '1'; // alert("Comment resolved successfully.");
           }
         }
-      }, _callee);
-    }))();
-  },
-  // COMMENTS FOR RATIONALE, TARGET BENEFICIARIES, OBJECTIVES
-  // Detect user highlighted text
-  handleSelection: function handleSelection(column) {
-    // this.removeHighlights('rationale');
-    // this.removeHighlights('objective');
-    // this.removeHighlights('beneficiaries');
-    var text = window.getSelection().toString().trim();
-    if (!text) return; // ❗ New validation: minimum 4 characters
-
-    if (text.length < 4) {
-      alert("Selected text must be at least 4 characters long.");
-      return;
-    }
-
-    this.highlightSelection(); // ⬅️ TEMPORARY HIGHLIGHT
-    // Only handle fuzzy matching for specific columns
-
-    if (!['rationale', 'objective', 'beneficiaries'].includes(column)) return;
-    this.selectedText = text;
-    this.selectedColumn = column; // Compute start and end index
-
-    var fullText = this.paps[column] || "";
-    var startIndex = fullText.indexOf(text);
-    var endIndex = startIndex + text.length; // Compute context (30 chars before and after)
-
-    var contextBefore = fullText.substring(Math.max(0, startIndex - 30), startIndex);
-    var contextAfter = fullText.substring(endIndex, Math.min(fullText.length, endIndex + 30));
-    this.selectedStart = startIndex;
-    this.selectedEnd = endIndex;
-    this.contextBefore = contextBefore;
-    this.contextAfter = contextAfter; //
-    // console.log("Selected text:", text);
-
-    if (column === 'rationale') {
-      this.handleClick('Rationale', 'rationale', this.selectedText, 'rationale', 'revision_plans', this.paps, this.paps.comments);
-    }
-
-    if (column === 'objective') {
-      this.handleClick('Objective', 'objective', this.selectedText, 'objective', 'revision_plans', this.paps, this.paps.comments);
-    }
-
-    if (column === 'beneficiaries') {
-      this.handleClick('Beneficiaries', 'beneficiaries', this.selectedText, 'beneficiaries', 'revision_plans', this.paps, this.paps.comments);
-    } // this.showComments=true;
-    // this.show_comment_modal = false;
-    // beneficiaries
-
-  },
-  // Save comment to backend
-  saveCommentNew: function saveCommentNew() {
-    this.$inertia.post('/revision-plan-comment', {
-      table_row_id: this.paps.id,
-      table_name: "revision_plans",
-      column_name: this.selectedColumn,
-      comment: this.newComment,
-      selected_text: this.selectedText
-    });
-    this.showModal = false;
-    this.newComment = "";
-  },
-  renderedText: function renderedText(column) {
-    // .filter(c => c.column_name === column)
-    return this.highlightedTextGlobal(this.all_comments, this.paps[column], // your text
-    column);
-  },
-  // Re-render Comments on Save
-  applyAllHighlights: function applyAllHighlights() {
-    var _this5 = this;
-
-    var columns = ['rationale', 'beneficiaries', 'objective'];
-    columns.forEach(function (column) {
-      var el = _this5.$refs["".concat(column, "El")];
-
-      if (!el || !_this5.paps[column]) return;
-      var instance = new Mark(el); // 🔴 MUST remove old highlights first
-
-      instance.unmark({
-        done: function done() {
-          _this5.highlightWithComments(_this5.paps[column], _this5.all_comments, column, el);
-        }
       });
-    });
-  },
-  // DEEPSEEK FUZZY MATCHING
-  getHighlightedText: function getHighlightedText(field) {
-    return this.highlightCommentedText(this.paps[field], this.all_comments, 'paps', field, this.paps.id);
-  },
-  // Highlight commented text
-  highlightedText: function highlightedText(column) {
-    var text = this.paps[column];
-    console.log(text);
-    var result = "";
-    var cursor = 0;
-    var items = this.all_comments.filter(function (c) {
-      return c.column_name === column;
-    }).sort(function (a, b) {
-      return a.start_index - b.start_index;
-    });
-    items.forEach(function (c) {
-      result += text.slice(cursor, c.start_index); // If status = 1, keep normal text style
+    },
+    getPairedOutputs: function getPairedOutputs(activityProject) {
+      var output = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.expected_output) || [];
+      var outcome = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.expected_outcome) || [];
+      var max_output = Math.max(output.length);
+      var max_outcome = Math.max(outcome.length);
+      var q1 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q1) || 0;
+      var q2 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q2) || 0;
+      var q3 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q3) || 0;
+      var q4 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q4) || 0;
+      var quant = parseFloat(q1) + parseFloat(q2) + parseFloat(q3) + parseFloat(q4);
+      var rr1 = Array.from({
+        length: max_output
+      }, function (_, i) {
+        var _output$i, _output$i2, _output$i3, _output$i4, _output$i5, _output$i6, _output$i7, _output$i8;
 
-      var style = c.comment_status === '1' ? "" : "color:#fa7602; font-weight:bold;";
-      result += "<span style=\"".concat(style, "\" id=\"").concat(c.id, "_").concat(c.table_name, "_").concat(c.column_name, "\">\n                    ").concat(text.slice(c.start_index, c.end_index), "</span>");
-      cursor = c.end_index;
-    });
-    result += text.slice(cursor);
-    return result;
-  },
-  // END OF COMMENTS **********************************************************************************************
-  submitAction: function submitAction(type, comment_id, index) {
-    var _this6 = this;
+        return {
+          id: ((_output$i = output[i]) === null || _output$i === void 0 ? void 0 : _output$i.id) || '',
+          target_indicator: ((_output$i2 = output[i]) === null || _output$i2 === void 0 ? void 0 : _output$i2.target_indicator) || '',
+          outcome_description: '',
+          output_description: ((_output$i3 = output[i]) === null || _output$i3 === void 0 ? void 0 : _output$i3.description) || '',
+          table: 'expected_revised_outputs',
+          quantity: parseFloat(((_output$i4 = output[i]) === null || _output$i4 === void 0 ? void 0 : _output$i4.physical_q1) || 0) + parseFloat(((_output$i5 = output[i]) === null || _output$i5 === void 0 ? void 0 : _output$i5.physical_q2) || 0) + parseFloat(((_output$i6 = output[i]) === null || _output$i6 === void 0 ? void 0 : _output$i6.physical_q3) || 0) + parseFloat(((_output$i7 = output[i]) === null || _output$i7 === void 0 ? void 0 : _output$i7.physical_q4) || 0),
+          comments: ((_output$i8 = output[i]) === null || _output$i8 === void 0 ? void 0 : _output$i8.comments) || []
+        };
+      }); // { length: max },
 
-    var actionText = {
-      "delete": "delete this comment",
-      reset: "reset the status of this comment to unresolved",
-      resolve: "mark this comment as resolved"
-    };
+      var rr2 = Array.from({
+        length: max_outcome
+      }, function (_, i) {
+        var _outcome$i, _outcome$i2, _outcome$i3;
 
-    if (!confirm("Are you sure you want to ".concat(actionText[type], "?"))) {
-      return; // User cancelled
-    }
+        return {
+          id: ((_outcome$i = outcome[i]) === null || _outcome$i === void 0 ? void 0 : _outcome$i.id) || '',
+          target_indicator: '',
+          outcome_description: ((_outcome$i2 = outcome[i]) === null || _outcome$i2 === void 0 ? void 0 : _outcome$i2.description) || '',
+          output_description: '',
+          table: 'expected_revised_outcomes',
+          quantity: 0,
+          comments: ((_outcome$i3 = outcome[i]) === null || _outcome$i3 === void 0 ? void 0 : _outcome$i3.comments) || []
+        };
+      });
+      return rr1.concat(rr2);
+    },
+    updateComment: function updateComment(id, comment, index) {
+      var _this6 = this;
 
-    var myurl = "/revision-plan-comments/action/done";
-    this.$inertia.post(myurl, {
-      params: {
-        type: type,
-        id: comment_id
-      }
-    }, {
-      preserveScroll: true,
-      onSuccess: function onSuccess() {
-        if (type === 'delete') {
-          _this6.comments.splice(index, 1); // alert("Comment deleted successfully.");
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var myurl;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                // const payload = {
+                //         id: id,
+                //         // strategy_id: this.form.localData[strategyIndex].id,
+                //         reply: reply,
+                //         type: "update",
+                //     };
+                // Clear existing timeout to prevent multiple calls
+                // clearTimeout(this.timeouts[`activity_${strategyIndex}_${activityIndex}`]);
+                myurl = "/revision-plan-comments/" + id;
 
-        } else if (type === 'reset') {
-          _this6.comments[index].comment_status = '0'; // alert("Comment status reset to unresolved.");
-        } else if (type === 'resolve') {
-          _this6.comments[index].comment_status = '1'; // alert("Comment resolved successfully.");
-        }
-      }
-    });
-  },
-  getPairedOutputs: function getPairedOutputs(activityProject) {
-    var output = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.expected_output) || [];
-    var outcome = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.expected_outcome) || [];
-    var max_output = Math.max(output.length);
-    var max_outcome = Math.max(outcome.length);
-    var q1 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q1) || 0;
-    var q2 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q2) || 0;
-    var q3 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q3) || 0;
-    var q4 = (activityProject === null || activityProject === void 0 ? void 0 : activityProject.physical_q4) || 0;
-    var quant = parseFloat(q1) + parseFloat(q2) + parseFloat(q3) + parseFloat(q4);
-    var rr1 = Array.from({
-      length: max_output
-    }, function (_, i) {
-      var _output$i, _output$i2, _output$i3, _output$i4, _output$i5, _output$i6, _output$i7, _output$i8;
+                if (_this6.reply_concat.trim()) {
+                  _context2.next = 3;
+                  break;
+                }
 
-      return {
-        id: ((_output$i = output[i]) === null || _output$i === void 0 ? void 0 : _output$i.id) || '',
-        target_indicator: ((_output$i2 = output[i]) === null || _output$i2 === void 0 ? void 0 : _output$i2.target_indicator) || '',
-        outcome_description: '',
-        output_description: ((_output$i3 = output[i]) === null || _output$i3 === void 0 ? void 0 : _output$i3.description) || '',
-        table: 'expected_revised_outputs',
-        quantity: parseFloat(((_output$i4 = output[i]) === null || _output$i4 === void 0 ? void 0 : _output$i4.physical_q1) || 0) + parseFloat(((_output$i5 = output[i]) === null || _output$i5 === void 0 ? void 0 : _output$i5.physical_q2) || 0) + parseFloat(((_output$i6 = output[i]) === null || _output$i6 === void 0 ? void 0 : _output$i6.physical_q3) || 0) + parseFloat(((_output$i7 = output[i]) === null || _output$i7 === void 0 ? void 0 : _output$i7.physical_q4) || 0),
-        comments: ((_output$i8 = output[i]) === null || _output$i8 === void 0 ? void 0 : _output$i8.comments) || []
-      };
-    }); // { length: max },
+                return _context2.abrupt("return");
 
-    var rr2 = Array.from({
-      length: max_outcome
-    }, function (_, i) {
-      var _outcome$i, _outcome$i2, _outcome$i3;
-
-      return {
-        id: ((_outcome$i = outcome[i]) === null || _outcome$i === void 0 ? void 0 : _outcome$i.id) || '',
-        target_indicator: '',
-        outcome_description: ((_outcome$i2 = outcome[i]) === null || _outcome$i2 === void 0 ? void 0 : _outcome$i2.description) || '',
-        output_description: '',
-        table: 'expected_revised_outcomes',
-        quantity: 0,
-        comments: ((_outcome$i3 = outcome[i]) === null || _outcome$i3 === void 0 ? void 0 : _outcome$i3.comments) || []
-      };
-    });
-    return rr1.concat(rr2);
-  },
-  updateComment: function updateComment(id, comment, index) {
-    var _this7 = this;
-
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-      var myurl;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              // const payload = {
-              //         id: id,
-              //         // strategy_id: this.form.localData[strategyIndex].id,
-              //         reply: reply,
-              //         type: "update",
-              //     };
-              // Clear existing timeout to prevent multiple calls
-              // clearTimeout(this.timeouts[`activity_${strategyIndex}_${activityIndex}`]);
-              myurl = "/revision-plan-comments/" + id;
-
-              if (_this7.reply_concat.trim()) {
-                _context2.next = 3;
-                break;
-              }
-
-              return _context2.abrupt("return");
-
-            case 3:
-              try {
-                _this7.$inertia.patch(myurl, {
-                  params: {
-                    reply: _this7.reply_concat,
-                    id: id
-                  }
-                }, {
-                  preserveScroll: true,
-                  onSuccess: function onSuccess() {
-                    // $uname . ' replied: ' . $reply . '<br>';
-                    var comment_init = "";
-
-                    if (_this7.comments[index].reply) {
-                      comment_init = _this7.comments[index].reply;
+              case 3:
+                try {
+                  _this6.$inertia.patch(myurl, {
+                    params: {
+                      reply: _this6.reply_concat,
+                      id: id
                     }
+                  }, {
+                    preserveScroll: true,
+                    onSuccess: function onSuccess() {
+                      // $uname . ' replied: ' . $reply . '<br>';
+                      var comment_init = "";
 
-                    _this7.comments[index].reply = comment_init + " <b>" + _this7.auth.user.FullName + "</b> replied: <i>" + _this7.reply_concat + "</i> <br><br>";
-                    _this7.comments[index].show_comment_box = false; // Hide the comment box after replying
+                      if (_this6.comments[index].reply) {
+                        comment_init = _this6.comments[index].reply;
+                      }
 
-                    _this7.reply_concat = ""; // Clear the reply input after saving
+                      _this6.comments[index].reply = comment_init + " <b>" + _this6.auth.user.FullName + "</b> replied: <i>" + _this6.reply_concat + "</i> <br><br>";
+                      _this6.comments[index].show_comment_box = false; // Hide the comment box after replying
 
-                    _this7.is_replying = false; // Reset the replying state
-                  }
-                }); // console.log(payload);
+                      _this6.reply_concat = ""; // Clear the reply input after saving
+
+                      _this6.is_replying = false; // Reset the replying state
+                    }
+                  }); // console.log(payload);
 
 
-                _this7.unsaved = false; // Reset unsaved flag after successful save
-              } catch (error) {
-                console.error('Error updating comment:', error);
-              }
+                  _this6.unsaved = false; // Reset unsaved flag after successful save
+                } catch (error) {
+                  console.error('Error updating comment:', error);
+                }
 
-            case 4:
-            case "end":
-              return _context2.stop();
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
           }
-        }
-      }, _callee2);
-    }))();
-  },
-  // async saveComment(payload) {
-  //     // alert("naabiot");
-  //     try {
-  //         const response = await axios.post(`/activities-project/r/create`, payload);
-  //         console.log(response.data);
-  //         // this.refreshData();
-  //     } catch (error) {
-  //         console.error('Error creating activity:', error);
-  //     }
-  // },
-  setUnsaved: function setUnsaved(status) {
-    this.unsaved = status;
-  },
-  showCommentBox: function showCommentBox(index) {
-    // Toggle the show_comment_box property for the comment at the given index
-    if (this.is_replying == false || this.reply_index == index) {
-      this.comments[index].show_comment_box = !this.comments[index].show_comment_box;
-      this.reply_index = index; // Set the reply index to the current comment
+        }, _callee2);
+      }))();
+    },
+    // async saveComment(payload) {
+    //     // alert("naabiot");
+    //     try {
+    //         const response = await axios.post(`/activities-project/r/create`, payload);
+    //         console.log(response.data);
+    //         // this.refreshData();
+    //     } catch (error) {
+    //         console.error('Error creating activity:', error);
+    //     }
+    // },
+    setUnsaved: function setUnsaved(status) {
+      this.unsaved = status;
+    },
+    showCommentBox: function showCommentBox(index) {
+      // Toggle the show_comment_box property for the comment at the given index
+      if (this.is_replying == false || this.reply_index == index) {
+        this.comments[index].show_comment_box = !this.comments[index].show_comment_box;
+        this.reply_index = index; // Set the reply index to the current comment
 
-      this.reply_concat = ""; // Clear the reply input when showing the comment box
+        this.reply_concat = ""; // Clear the reply input when showing the comment box
 
-      this.is_replying = !this.is_replying; // Set replying state to true
-    }
-  },
-  toggleShowCommentPanel: function toggleShowCommentPanel() {
-    this.showComments = !this.showComments;
-    this.show_comment_modal = false;
-  },
+        this.is_replying = !this.is_replying; // Set replying state to true
+      }
+    },
+    toggleShowCommentPanel: function toggleShowCommentPanel() {
+      this.showComments = !this.showComments;
+      this.show_comment_modal = false;
+    },
 
-  /*scrollToSection(target) {
-      // const el = document.getElementById(target);
-      // alert(target);
-      // if (el) {
-      //     el.scrollIntoView({
-      //         behavior: "smooth",
-      //         block: "start"
-      //     });
-      // }
-      const el = document.getElementById(target);
-      if (!el) return;
-       const navbarHeight = 90; // adjust to your real navbar height
-       const topPos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-       window.scrollTo({
-          top: topPos,
-          behavior: "smooth"
-      });
-  }*/
-  scrollToSection: function scrollToSection(target) {
-    var el = document.getElementById(target);
-    if (!el) return; // alert(target);
+    /*scrollToSection(target) {
+        // const el = document.getElementById(target);
+        // alert(target);
+        // if (el) {
+        //     el.scrollIntoView({
+        //         behavior: "smooth",
+        //         block: "start"
+        //     });
+        // }
+        const el = document.getElementById(target);
+        if (!el) return;
+         const navbarHeight = 90; // adjust to your real navbar height
+         const topPos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+         window.scrollTo({
+            top: topPos,
+            behavior: "smooth"
+        });
+    }*/
+    scrollToSection: function scrollToSection(target) {
+      var el = document.getElementById(target);
+      if (!el) return; // alert(target);
 
-    var navbarHeight = 90;
-    var targetPos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-    window.scrollTo({
-      top: targetPos,
-      behavior: "smooth"
-    }); // Highlight effect
+      var navbarHeight = 90;
+      var targetPos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+      window.scrollTo({
+        top: targetPos,
+        behavior: "smooth"
+      }); // Highlight effect
 
-    el.classList.add("highlight-target");
-    setTimeout(function () {
-      return el.classList.remove("highlight-target");
-    }, 2000);
-    this.showArrow(el);
-  },
-  showArrow: function showArrow(el) {
-    // Remove previous arrow
-    var oldArrow = document.querySelector(".jump-arrow");
-    if (oldArrow) oldArrow.remove(); // Create container div
-
-    var arrow = document.createElement("div");
-    arrow.classList.add("jump-arrow");
-    arrow.innerHTML = "\n                <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" fill=\"#00ffc3\" class=\"bi bi-arrow-right-circle-fill\" viewBox=\"0 0 16 16\">\n                    <path d=\"M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z\"/>\n                </svg>\n            ";
-    document.body.appendChild(arrow); // Get target element position
-
-    var rect = el.getBoundingClientRect();
-    var scrollTop = window.scrollY || window.pageYOffset; // Position arrow at the **top of the target element**
-
-    var arrowX = rect.left - 40; // offset left from element
-
-    var arrowY = scrollTop + rect.top; // align with element top
-
-    arrow.style.position = "absolute";
-    arrow.style.left = arrowX + "px";
-    arrow.style.top = arrowY + "px";
-    arrow.style.zIndex = 9999;
-    arrow.style.transition = "opacity 0.3s"; // Fade out after 2.5 seconds
-
-    setTimeout(function () {
-      arrow.style.opacity = 0;
+      el.classList.add("highlight-target");
       setTimeout(function () {
-        return arrow.remove();
-      }, 500);
-    }, 2500);
-  },
-  //BUDGETARY
-  formatCategory: function formatCategory(key) {
-    var map = {
-      maintenanceOperating: 'Maintenance, Operating, and Other Expenses',
-      personnelServices: 'Personnel Services',
-      financialExpenses: 'Financial Expenses',
-      capitalOutlay: 'Capital Outlay'
-    };
-    return map[key] || key;
-  },
-  hasRows: function hasRows(rows) {
-    return rows && rows.length > 0;
-  },
-  hasAnyRows: function hasAnyRows(gadGroupsForCategory) {
-    return Object.values(gadGroupsForCategory).some(function (r) {
-      return r.length > 0;
-    });
-  } //RATIONALE COMMENTS
-  // onHighlight() {
-  //     const data = this.getHighlightIndexes();
-  //     if (data) {
-  //         alert("calculating text range selected: start="+data.start+
-  //             "; end="+data.end +
-  //             "; selected:" + data.selected
-  //         )
-  //         console.log("Start index:", data.start);
-  //         console.log("End index:", data.end);
-  //         console.log("Selected text:", data.selected);
-  //     }
-  // },
-  // getHighlightIndexes() {
-  //     const selection = window.getSelection();
-  //     if (!selection || selection.rangeCount === 0) {
-  //         return null;
-  //     }
-  //     const range = selection.getRangeAt(0);
-  //     const selectedText = selection.toString();
-  //     if (!selectedText) {
-  //         return null;
-  //     }
-  //     // Get the full text (flattened) from the div
-  //     const container = this.$refs.rationaleDiv;
-  //     const fullText = container.innerText;
-  //     // Build a Range to compute index relative to the container
-  //     const preRange = document.createRange();
-  //     preRange.selectNodeContents(container);
-  //     preRange.setEnd(range.startContainer, range.startOffset);
-  //     const startIndex = preRange.toString().length;
-  //     const endIndex = startIndex + selectedText.length;
-  //     return {
-  //         start: startIndex,
-  //         end: endIndex,
-  //         selected: selectedText
-  //     };
-  // },
-  // printDiv() {
-  //     const div = this.$refs.printableDiv;
-  //     if (!div) return;
-  //     const divContents = div.innerHTML;
-  //     // Get all stylesheets from the main page
-  //     let styles = '';
-  //     Array.from(document.styleSheets).forEach((styleSheet) => {
-  //         try {
-  //         if (styleSheet.href) {
-  //             // External stylesheet
-  //             styles += `<link rel="stylesheet" href="${styleSheet.href}">`;
-  //         } else if (styleSheet.cssRules) {
-  //             // Inline style
-  //             let css = Array.from(styleSheet.cssRules)
-  //             .map(rule => rule.cssText)
-  //             .join(' ');
-  //             styles += `<style>${css}</style>`;
-  //         }
-  //         } catch (e) {
-  //         // ignore cross-origin stylesheets
-  //         }
-  //     });
-  //     const printWindow = window.open('', '', 'height=800,width=1000');
-  //     printWindow.document.write('<html><head><title>Print Preview</title>');
-  //     printWindow.document.write(styles); // include styles
-  //     printWindow.document.write('</head><body>');
-  //     printWindow.document.write(divContents);
-  //     printWindow.document.write('</body></html>');
-  //     printWindow.document.close();
-  //     printWindow.focus();
-  //     printWindow.print();
-  //     printWindow.close();
-  // }
+        return el.classList.remove("highlight-target");
+      }, 2000);
+      this.showArrow(el);
+    },
+    showArrow: function showArrow(el) {
+      // Remove previous arrow
+      var oldArrow = document.querySelector(".jump-arrow");
+      if (oldArrow) oldArrow.remove(); // Create container div
 
-}), _components$props$com);
+      var arrow = document.createElement("div");
+      arrow.classList.add("jump-arrow");
+      arrow.innerHTML = "\n                <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" fill=\"#00ffc3\" class=\"bi bi-arrow-right-circle-fill\" viewBox=\"0 0 16 16\">\n                    <path d=\"M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z\"/>\n                </svg>\n            ";
+      document.body.appendChild(arrow); // Get target element position
+
+      var rect = el.getBoundingClientRect();
+      var scrollTop = window.scrollY || window.pageYOffset; // Position arrow at the **top of the target element**
+
+      var arrowX = rect.left - 40; // offset left from element
+
+      var arrowY = scrollTop + rect.top; // align with element top
+
+      arrow.style.position = "absolute";
+      arrow.style.left = arrowX + "px";
+      arrow.style.top = arrowY + "px";
+      arrow.style.zIndex = 9999;
+      arrow.style.transition = "opacity 0.3s"; // Fade out after 2.5 seconds
+
+      setTimeout(function () {
+        arrow.style.opacity = 0;
+        setTimeout(function () {
+          return arrow.remove();
+        }, 500);
+      }, 2500);
+    },
+    //BUDGETARY
+    formatCategory: function formatCategory(key) {
+      var map = {
+        maintenanceOperating: 'Maintenance, Operating, and Other Expenses',
+        personnelServices: 'Personnel Services',
+        financialExpenses: 'Financial Expenses',
+        capitalOutlay: 'Capital Outlay'
+      };
+      return map[key] || key;
+    },
+    hasRows: function hasRows(rows) {
+      return rows && rows.length > 0;
+    },
+    hasAnyRows: function hasAnyRows(gadGroupsForCategory) {
+      return Object.values(gadGroupsForCategory).some(function (r) {
+        return r.length > 0;
+      });
+    } //RATIONALE COMMENTS
+    // onHighlight() {
+    //     const data = this.getHighlightIndexes();
+    //     if (data) {
+    //         alert("calculating text range selected: start="+data.start+
+    //             "; end="+data.end +
+    //             "; selected:" + data.selected
+    //         )
+    //         console.log("Start index:", data.start);
+    //         console.log("End index:", data.end);
+    //         console.log("Selected text:", data.selected);
+    //     }
+    // },
+    // getHighlightIndexes() {
+    //     const selection = window.getSelection();
+    //     if (!selection || selection.rangeCount === 0) {
+    //         return null;
+    //     }
+    //     const range = selection.getRangeAt(0);
+    //     const selectedText = selection.toString();
+    //     if (!selectedText) {
+    //         return null;
+    //     }
+    //     // Get the full text (flattened) from the div
+    //     const container = this.$refs.rationaleDiv;
+    //     const fullText = container.innerText;
+    //     // Build a Range to compute index relative to the container
+    //     const preRange = document.createRange();
+    //     preRange.selectNodeContents(container);
+    //     preRange.setEnd(range.startContainer, range.startOffset);
+    //     const startIndex = preRange.toString().length;
+    //     const endIndex = startIndex + selectedText.length;
+    //     return {
+    //         start: startIndex,
+    //         end: endIndex,
+    //         selected: selectedText
+    //     };
+    // },
+    // printDiv() {
+    //     const div = this.$refs.printableDiv;
+    //     if (!div) return;
+    //     const divContents = div.innerHTML;
+    //     // Get all stylesheets from the main page
+    //     let styles = '';
+    //     Array.from(document.styleSheets).forEach((styleSheet) => {
+    //         try {
+    //         if (styleSheet.href) {
+    //             // External stylesheet
+    //             styles += `<link rel="stylesheet" href="${styleSheet.href}">`;
+    //         } else if (styleSheet.cssRules) {
+    //             // Inline style
+    //             let css = Array.from(styleSheet.cssRules)
+    //             .map(rule => rule.cssText)
+    //             .join(' ');
+    //             styles += `<style>${css}</style>`;
+    //         }
+    //         } catch (e) {
+    //         // ignore cross-origin stylesheets
+    //         }
+    //     });
+    //     const printWindow = window.open('', '', 'height=800,width=1000');
+    //     printWindow.document.write('<html><head><title>Print Preview</title>');
+    //     printWindow.document.write(styles); // include styles
+    //     printWindow.document.write('</head><body>');
+    //     printWindow.document.write(divContents);
+    //     printWindow.document.write('</body></html>');
+    //     printWindow.document.close();
+    //     printWindow.focus();
+    //     printWindow.print();
+    //     printWindow.close();
+    // }
+
+  }
+});
 
 /***/ }),
 
@@ -2574,27 +2570,35 @@ var _hoisted_402 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 /* HOISTED */
 );
 
-var _hoisted_403 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_403 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Context After", -1
+/* HOISTED */
+);
+
+var _hoisted_404 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Context Before", -1
+/* HOISTED */
+);
+
+var _hoisted_405 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "d-flex justify-content-center"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_404 = {
+var _hoisted_406 = {
   key: 2,
   "class": "fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center"
 };
-var _hoisted_405 = {
+var _hoisted_407 = {
   "class": "bg-white p-4 rounded w-1/3 shadow-lg"
 };
 
-var _hoisted_406 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+var _hoisted_408 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
   "class": "font-bold mb-2"
 }, "Add Comment", -1
 /* HOISTED */
 );
 
-var _hoisted_407 = {
+var _hoisted_409 = {
   "class": "text-right mt-3"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -3122,7 +3126,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
   /* CLASS */
-  )]), _hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_70, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.objective\" style=\"white-space: pre-line\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p  ref=\"objective\"\n                                v-html=\"highlightedText('objective')\"\n                                @mouseup=\"handleSelection('objective')\"\n                                class=\"cursor-text\"></p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ highlightedText('objective') }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.objective\"\n                                style=\"white-space: pre-line\"\n                                ref=\"rationaleDiv\"\n                                @mouseup=\"onHighlight\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  )]), _hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_70, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.objective\" style=\"white-space: pre-line\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p  ref=\"objective\"\n                                v-html=\"highlightedText('objective')\"\n                                @mouseup=\"handleSelection('objective')\"\n                                class=\"cursor-text\"></p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ highlightedText('objective') }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.objective\"\n                                style=\"white-space: pre-line\"\n                                ref=\"rationaleDiv\"\n                                @mouseup=\"onHighlight\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.paps.objective) + " ", 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     ref: "objectiveEl",
     onMouseup: _cache[34] || (_cache[34] = function ($event) {
       return $options.handleSelection('objective');
@@ -4541,7 +4547,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[54] || (_cache[54] = function ($event) {
       return $options.openTab('Navigation');
     })
-  }, "Navigation", 2
+  }, "Sections", 2
   /* CLASS */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["button", {
@@ -4727,14 +4733,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_402, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_table), 1
   /* TEXT */
-  )])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <CommentModal v-if=\"show_comment_modal\" @close-modal-event=\"closeCommentModal\" title=\"COMMENTS\">\n            <div class=\"d-flex justify-content-center\">\n\n            </div>\n            <div>\n                <span v-if=\"auth.user.department_code==='04'\">\n                    <div>\n                        <textarea class=\"form-control\" rows=\"5\" v-model=\"comment\"\n                            placeholder=\"Write your comment here...\"></textarea>\n                    </div>\n                    <div>\n                        <button class=\"btn btn-primary mt-2 text-white\" @click=\"saveComment()\">\n                            Submit Comment\n                        </button>\n                    </div>\n                </span>\n\n                <div><b>Section: </b>{{ comment_section }}</div>\n                <div><b>Subtitle:</b> <span v-html=\"comment_subtitle\"></span></div>\n                <div><b>Data:</b> <span v-html=\"comment_data\"></span></div>\n                <div><b>Column:</b> {{ comment_column }}\n                    <span v-if=\"comment_column=='Person Affected'\">Preventive Measures</span>\n                    <span v-else-if=\"comment_column=='Management'\">Mechanisms to monitor</span>\n                    <span v-else>{{ comment_colun }}</span>\n                </div>\n                <div><b>Table:</b> {{ comment_table }}</div>\n\n\n                <div class=\"col-9\">\n                    <table class=\"table table-hover table-bordered border-dark\">\n                        <thead>\n                            <tr>\n                                <th class=\"bg-secondary text-white\">Comment</th>\n                                <th class=\"bg-secondary text-white\">Status&nbsp;&nbsp;</th>\n                                <th class=\"bg-secondary text-white\" v-if=\"auth.user.department_code==='04'\">Actions&nbsp;&nbsp;</th>\n\n\n                                <th class=\"bg-secondary text-white\">Date</th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            <tr v-for=\"(comment,index) in comments\">\n                                <td>\n                                    <h6 v-if=\"comment.user\">{{ comment.user.FullName }}&nbsp;commented:&nbsp;&nbsp;</h6>\n                                    <h5 class=\"bg-white p-3 rounded border\"><i>{{ comment.comment}}</i></h5>\n                                    <br>\n                                    <div v-html=\"comment.reply\"></div>\n                                    <button class=\"btn btn-link p-0\" v-if=\"comment.show_comment_box==false\" @click=\"showCommentBox(index)\">reply</button>\n                                    <textarea class=\"form-control\"\n                                        type=\"text\"\n                                        v-if=\"comment.show_comment_box\"\n                                        v-model=\"reply_concat\"\n                                    >\n                                    </textarea>\n                                    <button :disabled=\"!reply_concat || reply_concat.trim() === ''\" class=\"btn btn-primary text-white\" v-if=\"comment.show_comment_box\" @click=\"updateComment(comment.id, comment, index)\" >Send</button>\n                                    <button class=\"btn btn-danger text-white\" v-if=\"comment.show_comment_box\" @click=\"showCommentBox(index)\">Cancel</button>\n                                </td>\n                                <td :style=\"{ backgroundColor: comment.comment_status === '0' ? '#fecaca' : '#bbf7d0',\n                                    color: comment.comment_status === '0' ? '#991b1b' : '#065f46' }\" class=\"px-2 py-1 rounded\">\n                                    <b>{{ comment.comment_status === '0' ? 'Unresolved' : 'OK' }}</b>\n                                </td>\n                                <td v-if=\"auth.user.department_code==='04'\">\n                                    <div >\n                                        <button class=\"btn btn-success text-white\"\n                                        @click=\"submitAction('resolve', comment.id, index)\"\n                                        title=\"Mark comment as Resolved\">\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-check-circle\" viewBox=\"0 0 16 16\">\n                                                <path d=\"M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16\"/>\n                                                <path d=\"m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                        <button class=\"btn btn-primary text-white\"\n                                        @click=\"submitAction('reset', comment.id, index)\"\n                                        title=\"Reset to Unresolved\">\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-counterclockwise\" viewBox=\"0 0 16 16\">\n                                                <path fill-rule=\"evenodd\" d=\"M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z\"/>\n                                                <path d=\"M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                        <button class=\"btn btn-danger text-white\"\n                                        @click=\"submitAction('delete', comment.id, index)\"\n                                        title=\"Delete this comment\"\n                                        >\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-trash-fill\" viewBox=\"0 0 16 16\">\n                                                <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                    </div>\n                                </td>\n\n\n                                <td>{{ formatDate(comment.created_at) }}</td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n\n            </div>\n            <br>\n        </CommentModal> "), _hoisted_403, $data.showModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_404, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_405, [_hoisted_406, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_403, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(": " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.contextAfter), 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_404, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(": " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.contextBefore), 1
+  /* TEXT */
+  )])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <CommentModal v-if=\"show_comment_modal\" @close-modal-event=\"closeCommentModal\" title=\"COMMENTS\">\n            <div class=\"d-flex justify-content-center\">\n\n            </div>\n            <div>\n                <span v-if=\"auth.user.department_code==='04'\">\n                    <div>\n                        <textarea class=\"form-control\" rows=\"5\" v-model=\"comment\"\n                            placeholder=\"Write your comment here...\"></textarea>\n                    </div>\n                    <div>\n                        <button class=\"btn btn-primary mt-2 text-white\" @click=\"saveComment()\">\n                            Submit Comment\n                        </button>\n                    </div>\n                </span>\n\n                <div><b>Section: </b>{{ comment_section }}</div>\n                <div><b>Subtitle:</b> <span v-html=\"comment_subtitle\"></span></div>\n                <div><b>Data:</b> <span v-html=\"comment_data\"></span></div>\n                <div><b>Column:</b> {{ comment_column }}\n                    <span v-if=\"comment_column=='Person Affected'\">Preventive Measures</span>\n                    <span v-else-if=\"comment_column=='Management'\">Mechanisms to monitor</span>\n                    <span v-else>{{ comment_colun }}</span>\n                </div>\n                <div><b>Table:</b> {{ comment_table }}</div>\n\n\n                <div class=\"col-9\">\n                    <table class=\"table table-hover table-bordered border-dark\">\n                        <thead>\n                            <tr>\n                                <th class=\"bg-secondary text-white\">Comment</th>\n                                <th class=\"bg-secondary text-white\">Status&nbsp;&nbsp;</th>\n                                <th class=\"bg-secondary text-white\" v-if=\"auth.user.department_code==='04'\">Actions&nbsp;&nbsp;</th>\n\n\n                                <th class=\"bg-secondary text-white\">Date</th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            <tr v-for=\"(comment,index) in comments\">\n                                <td>\n                                    <h6 v-if=\"comment.user\">{{ comment.user.FullName }}&nbsp;commented:&nbsp;&nbsp;</h6>\n                                    <h5 class=\"bg-white p-3 rounded border\"><i>{{ comment.comment}}</i></h5>\n                                    <br>\n                                    <div v-html=\"comment.reply\"></div>\n                                    <button class=\"btn btn-link p-0\" v-if=\"comment.show_comment_box==false\" @click=\"showCommentBox(index)\">reply</button>\n                                    <textarea class=\"form-control\"\n                                        type=\"text\"\n                                        v-if=\"comment.show_comment_box\"\n                                        v-model=\"reply_concat\"\n                                    >\n                                    </textarea>\n                                    <button :disabled=\"!reply_concat || reply_concat.trim() === ''\" class=\"btn btn-primary text-white\" v-if=\"comment.show_comment_box\" @click=\"updateComment(comment.id, comment, index)\" >Send</button>\n                                    <button class=\"btn btn-danger text-white\" v-if=\"comment.show_comment_box\" @click=\"showCommentBox(index)\">Cancel</button>\n                                </td>\n                                <td :style=\"{ backgroundColor: comment.comment_status === '0' ? '#fecaca' : '#bbf7d0',\n                                    color: comment.comment_status === '0' ? '#991b1b' : '#065f46' }\" class=\"px-2 py-1 rounded\">\n                                    <b>{{ comment.comment_status === '0' ? 'Unresolved' : 'OK' }}</b>\n                                </td>\n                                <td v-if=\"auth.user.department_code==='04'\">\n                                    <div >\n                                        <button class=\"btn btn-success text-white\"\n                                        @click=\"submitAction('resolve', comment.id, index)\"\n                                        title=\"Mark comment as Resolved\">\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-check-circle\" viewBox=\"0 0 16 16\">\n                                                <path d=\"M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16\"/>\n                                                <path d=\"m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                        <button class=\"btn btn-primary text-white\"\n                                        @click=\"submitAction('reset', comment.id, index)\"\n                                        title=\"Reset to Unresolved\">\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-counterclockwise\" viewBox=\"0 0 16 16\">\n                                                <path fill-rule=\"evenodd\" d=\"M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z\"/>\n                                                <path d=\"M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                        <button class=\"btn btn-danger text-white\"\n                                        @click=\"submitAction('delete', comment.id, index)\"\n                                        title=\"Delete this comment\"\n                                        >\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-trash-fill\" viewBox=\"0 0 16 16\">\n                                                <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                    </div>\n                                </td>\n\n\n                                <td>{{ formatDate(comment.created_at) }}</td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n\n            </div>\n            <br>\n        </CommentModal> "), _hoisted_405, $data.showModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_406, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_407, [_hoisted_408, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     "onUpdate:modelValue": _cache[70] || (_cache[70] = function ($event) {
       return $data.newComment = $event;
     }),
     "class": "w-full border p-2 rounded"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newComment]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_407, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newComment]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_409, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[71] || (_cache[71] = function ($event) {
       return $data.showModal = false;
     }),

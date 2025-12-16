@@ -407,6 +407,7 @@
                                 style="white-space: pre-line"
                                 ref="rationaleDiv"
                                 @mouseup="onHighlight"></div> -->
+                            {{ paps.objective }}
                             <div ref="objectiveEl"
                                 @mouseup="handleSelection('objective')"
                                 v-html="paps.objective"
@@ -441,9 +442,9 @@
                     <div class="bgc-white p-20 bd">
                         <!-- <div v-html="paps.beneficiaries" style="white-space: pre-line"></div> -->
                         <div ref="beneficiariesEl"
-                                @mouseup="handleSelection('beneficiaries')"
-                                v-html="paps.beneficiaries"
-                            ></div>
+                            @mouseup="handleSelection('beneficiaries')"
+                            v-html="paps.beneficiaries"
+                        ></div>
                         <!-- <p  ref="beneficiaries"
                             v-html="highlightedText('beneficiaries')"
                             @mouseup="handleSelection('beneficiaries')"
@@ -2700,7 +2701,7 @@
                         </button>
                     </div>
                     <div class="tab">
-                        <button class="button" :class="{ active: open_tab === 'Navigation' }" @click="openTab('Navigation')">Navigation</button>
+                        <button class="button" :class="{ active: open_tab === 'Navigation' }" @click="openTab('Navigation')">Sections</button>
                         <button class="button" :class="{ active: open_tab === 'Comments' }" @click="openTab('Comments')">Comments
                             <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
                                 <b>
@@ -2993,6 +2994,8 @@
                             <span v-else>{{ comment_column }}</span>
                         </div>
                         <div><b>Table:</b> {{ comment_table }}</div>
+                        <div><b>Context After</b>: {{ contextAfter}}</div>
+                        <div><b>Context Before</b>: {{ contextBefore}}</div>
                     </div>
                 </span>
             </div>
@@ -3312,7 +3315,7 @@ export default {
         all_comments: {
             handler() {
                 this.$nextTick(() => {
-                    this.applyRationaleHighlights()
+                    this.applyAllHighlights()
                 })
             },
             deep: true
@@ -3380,16 +3383,16 @@ export default {
     beforeUnmount() {
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
     },
-    watch: {
-        all_comments: {
-            handler() {
-                this.$nextTick(() => {
-                    this.applyAllHighlights()
-                })
-            },
-            deep: true
-        }
-    },
+    // watch: {
+    //     all_comments: {
+    //         handler() {
+    //             this.$nextTick(() => {
+    //                 this.applyAllHighlights()
+    //             })
+    //         },
+    //         deep: true
+    //     }
+    // },
     methods: {
         openTab(tab_name){
             this.open_tab=tab_name

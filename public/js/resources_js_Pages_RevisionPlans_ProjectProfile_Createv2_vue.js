@@ -6802,7 +6802,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "class": "form-control"
         }, null, 8
         /* PROPS */
-        , _hoisted_471), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, act.description]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        , _hoisted_471), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, act.description]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
           "onUpdate:modelValue": function onUpdateModelValue($event) {
             return act.gad_issue = $event;
           },

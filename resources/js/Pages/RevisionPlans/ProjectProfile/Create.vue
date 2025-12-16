@@ -32,7 +32,7 @@
         <!-- {{ form }}
         {{ selPaps }} -->
 
-        <div class="col-md-12">
+        <div class="col-md-9">
 
                 <input type="hidden" required>
                 <div class="d-none">

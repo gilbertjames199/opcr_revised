@@ -596,7 +596,6 @@
                                                 <td :class="{
                                                     'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
                                                 }" :id="act.activity_id + '_activity_projects_activities'">
-
                                                     <textarea
                                                         class="form-control transparent-bg "
                                                         v-model="act.description"
@@ -2435,7 +2434,7 @@
                 <tr v-for="(act, index) in activities" :key="index">
 
                     <td><textarea v-model="act.description" class="form-control" ></textarea></td>
-                    <td><input v-model="act.gad_issue" class="form-control" /></td>
+                    <td><textarea v-model="act.gad_issue" class="form-control" ></textarea></td>
 
 
                     <td><input v-model="act.date_from" type="date" class="form-control" /><p>to</p>

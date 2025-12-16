@@ -5,7 +5,7 @@
     <div class="row gap-10 masonry pos-r">
     <div class="row gap-5">
         <!--class="peers fxw-nw jc-sb ai-c"-->
-        <h4>GAD V2</h4>
+        <h6>v2</h6>
         <div class="peers fxw-nw jc-sb ai-c justify-content-end" v-if="src !== 'budget'">
             <Link v-if="paps.scope === 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
                             ? `/revision/general/administration/services/${paps.FFUNCCOD}/plan`:`/revision_plans`">
@@ -346,10 +346,14 @@
                         </section>
                         <br>
                         <div class="bgc-white p-20 bd" >
-                            <div v-html="paps.rationale"
+                            <!-- <div v-html="paps.rationale"
                                 style="white-space: pre-line"
                                 ref="rationaleDiv"
-                                @mouseup="onHighlight"></div>
+                                @mouseup="onHighlight"></div> -->
+                            <div ref="rationaleEl"
+                                @mouseup="handleSelection('rationale')"
+                                v-html="paps.rationale"
+                            ></div>
                         </div>
                         <br>
                      </span>
@@ -379,7 +383,11 @@
 
                         <br>
                         <div  class="bgc-white p-20 bd">
-                            <div v-html="paps.objective" style="white-space: pre-line"></div>
+                            <!-- <div v-html="paps.objective" style="white-space: pre-line"></div> -->
+                             <div ref="objectiveEl"
+                                @mouseup="handleSelection('objective')"
+                                v-html="paps.objective"
+                            ></div>
                         </div>
                         <br>
                     </span>
@@ -406,11 +414,15 @@
                                 </button>
                             </h3>
                         </section>
-                    <br>
-                    <div class="bgc-white p-20 bd">
-                        <div v-html="paps.beneficiaries" style="white-space: pre-line"></div>
-                    </div>
-                    <br>
+                        <br>
+                        <div class="bgc-white p-20 bd">
+                            <!-- <div v-html="paps.beneficiaries" style="white-space: pre-line"></div> -->
+                            <div ref="beneficiariesEl"
+                                @mouseup="handleSelection('beneficiaries')"
+                                v-html="paps.beneficiaries"
+                            ></div>
+                        </div>
+                        <br>
                     </span>
 
                     <!--IMPLEMENTATION PLAN-->
@@ -2541,6 +2553,7 @@
                 </div>
             </div>
         </div>
+        <!-- NAVIGATION -COMMENTS/SECTIONS -->
         <div class="col-3">
             <div class="sticky-comments" v-if="!showComments">
                     <button class="close-btn text-danger" @click="toggleShowCommentPanel">
@@ -2564,7 +2577,7 @@
                         </button>
                     </div>
                     <div class="tab">
-                        <button class="button" :class="{ active: open_tab === 'Navigation' }" @click="openTab('Navigation')">Navigation</button>
+                        <button class="button" :class="{ active: open_tab === 'Navigation' }" @click="openTab('Navigation')">Sections</button>
                             <button class="button" :class="{ active: open_tab === 'Comments' }" @click="openTab('Comments')">Comments
                             <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
                                 <b>
@@ -2592,41 +2605,42 @@
                                 <ul class="list-unstyled">
                                     <li v-for="(comment, index) in unresolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
 
-                                            <table style="border-collapse: collapse; border: none !important;">
-                                                <tr style="border: none !important; vertical-align: top;">
-                                                    <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                        <button class="btn p-0 border-0 bg-transparent"
-                                                            @click="submitAction('delete', comment.id, index)"
-                                                            title="Delete this comment"
-                                                        >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
-                                                                class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
-                                                            </svg>&nbsp;&nbsp;&nbsp;
-                                                        </button>
+                                        <table style="border-collapse: collapse; border: none !important;">
+                                            <tr style="border: none !important; vertical-align: top;">
+                                                <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                    <button class="btn p-0 border-0 bg-transparent"
+                                                        @click="submitAction('delete', comment.id, index)"
+                                                        title="Delete this comment"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                                            class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                                        </svg>&nbsp;&nbsp;&nbsp;
+                                                    </button>
 
-                                                    </td>
-                                                    <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                        <span
-                                                            class="clickable-comment"
-                                                            @click="scrollToSection(
-                                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                                    ? comment.column_name
-                                                                    : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                            )"
-                                                            :class="'comment-rejected'"
-                                                        >
-                                                            {{ comment.comment }}
-                                                                                <!-- {{
-                                                                        ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                                            ? comment.column_name
-                                                                            : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
-                                                                    }} -->
-                                                        </span>
-                                                        <div v-html="comment.reply"></div>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                                </td>
+                                                <!-- comment.column_name -->
+                                                <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                    <span
+                                                        class="clickable-comment"
+                                                        @click="scrollToSection(
+                                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                        )"
+                                                        :class="'comment-rejected'"
+                                                    >
+                                                        {{ comment.comment }}
+                                                                            <!-- {{
+                                                                    ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                        ? comment.column_name
+                                                                        : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
+                                                                }} -->
+                                                    </span>
+                                                    <div v-html="comment.reply"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
 
 
                                         <!-- Action Buttons -->
@@ -2668,11 +2682,13 @@
 
                                 <ul class="list-unstyled">
                                     <li v-for="(comment, index) in resolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
+
+                                        <!-- comment.column_name -->
                                         <span
                                             class="clickable-comment"
                                             @click="scrollToSection(
                                                 ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                    ? comment.column_name
+                                                    ? `${comment.id}_${comment.table_name}_${comment.column_name}`
                                                     : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                             )"
                                             :class="'comment-approved'"
@@ -2821,9 +2837,42 @@
 
             </div>
         </div>
-        <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
+        <!-- COMMENTING ******************************************************************************************************* -->
+        <div class="col-3">
+            <div class="p-20 bd sticky-comments" v-if="show_comment_modal" style="background: rgba(255, 255, 255, 0.7);">
+                <div class="d-flex justify-content-end">
+                    <button class="close-btn text-danger" @click="closeCommentModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                    </button>
+                </div>
+                <span v-if="auth.user.department_code==='04'">
+                    <div>
+                        <textarea class="form-control" rows="5" v-model="comment"
+                            placeholder="Write your comment here..."></textarea>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary mt-2 text-white" @click="saveComment()">
+                            Submit Comment
+                        </button>
+                    </div>
+                    <div>
+                        <div><b>Section: </b>{{ comment_section }}</div>
+                        <div><b>Subtitle:</b> <span v-html="comment_subtitle"></span></div>
+                        <div><b>Data:</b> <span v-html="comment_data"></span></div>
+                        <div><b>Column:</b> {{ comment_column }}
+                            <span v-if="comment_column=='Person Affected'">Preventive Measures</span>
+                            <span v-else-if="comment_column=='Management'">Mechanisms to monitor</span>
+                            <span v-else>{{ comment_column }}</span>
+                        </div>
+                        <div><b>Table:</b> {{ comment_table }}</div>
+                    </div>
+                </span>
+            </div>
+        </div>
+        <!-- <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
             <div class="d-flex justify-content-center">
-                <!-- {{ comment_reference_object }} -->
             </div>
             <div>
                 <span v-if="auth.user.department_code==='04'">
@@ -2847,7 +2896,6 @@
                     <span v-else>{{ comment_colun }}</span>
                 </div>
                 <div><b>Table:</b> {{ comment_table }}</div>
-                <!-- <div>Reference Object: {{ comment_reference_object.id }}</div> -->
 
                 <div class="col-9">
                     <table class="table table-hover table-bordered border-dark">
@@ -2856,8 +2904,8 @@
                                 <th class="bg-secondary text-white">Comment</th>
                                 <th class="bg-secondary text-white">Status&nbsp;&nbsp;</th>
                                 <th class="bg-secondary text-white" v-if="auth.user.department_code==='04'">Actions&nbsp;&nbsp;</th>
-                                <!-- <th class="bg-secondary text-white" v-if="auth.user.department_code==='04'">Actions&nbsp;&nbsp;</th> -->
-                                <!-- <th class="bg-secondary text-white">Comment by&nbsp;&nbsp;</th> -->
+                                <th class="bg-secondary text-white" v-if="auth.user.department_code==='04'">Actions&nbsp;&nbsp;</th>
+                                <th class="bg-secondary text-white">Comment by&nbsp;&nbsp;</th>
 
                                 <th class="bg-secondary text-white">Date</th>
                             </tr>
@@ -2911,10 +2959,10 @@
                                         </button>&nbsp;
                                     </div>
                                 </td>
-                                <!-- <td>
+                                <td>
                                     <span v-if="comment.user">{{ comment.user.FullName }}</span>
                                     <span v-else>Not recorded</span>
-                                </td> -->
+                                </td>
 
                                 <td>{{ formatDate(comment.created_at) }}</td>
                             </tr>
@@ -2924,7 +2972,7 @@
 
             </div>
             <br>
-        </CommentModal>
+        </CommentModal> -->
         <div class="d-flex justify-content-center">
 
         </div>
@@ -3092,6 +3140,14 @@ export default {
                 }
             );
         }, 300),
+        all_comments: {
+            handler() {
+                this.$nextTick(() => {
+                    this.applyAllHighlights()
+                })
+            },
+            deep: true
+        }
     },
     data() {
         return {
@@ -3134,12 +3190,23 @@ export default {
         this.tot_gad = parseFloat(this.s_cap_gad) + parseFloat(this.s_mooe_gad) + parseFloat(this.s_ps_gad) + parseFloat(this.s_fe_gad);
         this.tot_non = parseFloat(this.s_cap_non) + parseFloat(this.s_mooe_non) + parseFloat(this.s_ps_non) + parseFloat(this.s_fe_non);
         this.grand_total = this.tot_gad + this.tot_non;
+
+        this.applyAllHighlights()
     },
 
     beforeUnmount() {
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
     },
-    watch: {},
+    // watch: {
+    //     all_comments: {
+    //         handler() {
+    //             this.$nextTick(() => {
+    //                 this.applyRationaleHighlights()
+    //             })
+    //         },
+    //         deep: true
+    //     }
+    // },
     methods: {
         openTab(tab_name){
             this.open_tab=tab_name
@@ -3256,12 +3323,14 @@ export default {
             this.comments = comments_obj.filter(comment =>
                 comment.table_name === table && comment.column_name === column
             );
+            this.showComments=false;
             this.show_comment_modal = true;
         },
         closeCommentModal() {
             this.show_comment_modal = false;
+            this.removeHighlights();
         },
-        saveComment() {
+        async saveComment() {
             // Logic to save the comment
             // This is just a placeholder, implement your actual saving logic here
             var myurl = "/revision-plan-comments/store";
@@ -3303,19 +3372,100 @@ export default {
                 table_row_id_l = this.comment_reference_object.id
             }
             //alert(table_row_id_l)
-            this.$inertia.post(myurl, {
-                params: {
-                    table_row_id: table_row_id_l,
-                    table_name: this.comment_table,
-                    column_name: this.comment_column,
-                    comment_status: 0,
-                    comment: this.comment,
-                }
-            });
+            let payload = {
+                table_row_id: table_row_id_l,
+                table_name: this.comment_table,
+                column_name: this.comment_column,
+                comment_status: 0,
+                comment: this.comment,
+            };
+
+            if(['rationale', 'objective', 'beneficiaries'].includes(this.comment_column)) {
+                payload.selected_text = this.selectedText;
+                payload.start_index = this.selectedStart;
+                payload.end_index = this.selectedEnd;
+                payload.context_before = this.contextBefore;
+                payload.context_after = this.contextAfter;
+            }
+            await this.$nextTick();
+            this.$inertia.post('/revision-plan-comments/store', payload);
             this.closeCommentModal();
-                        setTimeout(() => {
+            setTimeout(() => {
                 this.comment = "";
             }, 1000); // 1000 milliseconds = 1 second
+        },
+        // COMMENTS FOR RATIONALE, TARGET BENEFICIARIES, OBJECTIVES
+        // Detect user highlighted text
+        handleSelection(column) {
+            // this.removeHighlights('rationale');
+            // this.removeHighlights('objective');
+            // this.removeHighlights('beneficiaries');
+            const text = window.getSelection().toString().trim();
+            if (!text) return;
+
+            // ❗ New validation: minimum 4 characters
+            if (text.length < 4) {
+                alert("Selected text must be at least 4 characters long.");
+                return;
+            }
+
+            this.highlightSelection(); // ⬅️ TEMPORARY HIGHLIGHT
+             // Only handle fuzzy matching for specific columns
+            if (!['rationale', 'objective', 'beneficiaries'].includes(column)) return;
+
+            this.selectedText = text;
+            this.selectedColumn = column;
+
+            // Compute start and end index
+            const fullText = this.paps[column] || "";
+            const startIndex = fullText.indexOf(text);
+            const endIndex = startIndex + text.length;
+
+            // Compute context (30 chars before and after)
+            const contextBefore = fullText.substring(Math.max(0, startIndex - 30), startIndex);
+            const contextAfter = fullText.substring(endIndex, Math.min(fullText.length, endIndex + 30));
+
+            this.selectedStart = startIndex;
+            this.selectedEnd = endIndex;
+            this.contextBefore = contextBefore;
+            this.contextAfter = contextAfter;
+            //
+            // console.log("Selected text:", text);
+            if(column==='rationale'){
+                this.handleClick('Rationale','rationale',this.selectedText,'rationale','revision_plans', this.paps, this.paps.comments)
+            }
+            if(column==='objective'){
+                this.handleClick('Objective','objective',this.selectedText,'objective','revision_plans', this.paps, this.paps.comments)
+            }
+            if(column==='beneficiaries'){
+                this.handleClick('Beneficiaries','beneficiaries',this.selectedText,'beneficiaries','revision_plans', this.paps, this.paps.comments)
+            }
+            // this.showComments=true;
+            // this.show_comment_modal = false;
+            // beneficiaries
+        },
+        // Re-render Comments on Save
+        applyAllHighlights() {
+            const columns = ['rationale', 'beneficiaries', 'objective']
+
+            columns.forEach(column => {
+                const el = this.$refs[`${column}El`]
+                if (!el || !this.paps[column]) return
+
+                const instance = new Mark(el)
+
+                // 🔴 MUST remove old highlights first
+                instance.unmark({
+                    done: () => {
+                        this.highlightWithComments(
+                            this.paps[column],
+                            this.all_comments,
+                            column,
+                            el
+                        )
+                    }
+                })
+            })
         },
         submitAction(type, comment_id, index){
             let actionText = {
