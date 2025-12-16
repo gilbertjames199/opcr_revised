@@ -3586,7 +3586,7 @@ export default {
                 payload.context_after = this.contextAfter;
             }
             console.log(payload);
-            alert(this.selectedStart+ " Selected Start");
+            // alert(this.selectedStart+ " Selected Start");
             console.log("selectedText: "+this.selectedText);
 
             console.log("selectedStart: "+this.selectedStart);
