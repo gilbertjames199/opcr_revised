@@ -746,7 +746,7 @@ createInertiaApp({
 
                             instance.mark(pattern, {
                                 separateWordSearch: false,
-                                accuracy: "partially",
+                                accuracy: "exactly",
                                 acrossElements: true,
                                 each: el => {
                                     // el.style.backgroundColor = bgColor
@@ -765,7 +765,7 @@ createInertiaApp({
                              */
                             instance.mark(selected_text, {
                                 separateWordSearch: false,
-                                accuracy: "partially",
+                                accuracy: "exactly",
                                 acrossElements: true,
                                 each: el => {
                                     // el.style.backgroundColor = bgColor
