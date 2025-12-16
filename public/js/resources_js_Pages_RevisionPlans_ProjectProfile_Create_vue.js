@@ -340,8 +340,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     this.$nextTick(function () {
-      setTimeout(function () {
-        applyAllQuillHighlights();
+      setTimeout(function () {// applyAllQuillHighlights();
+        // this.focusComment();
       }, 50);
     });
     window.addEventListener('beforeunload', this.handleBeforeUnload);
@@ -474,6 +474,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         done: function done() {
           _this4.highlightWithComments(_this4.form[column], _this4.all_comments, column, containerEl);
         }
+      });
+    },
+    focusComment: function focusComment(comment) {
+      var _map$comment$column_n;
+
+      var map = {
+        rationale: this.$refs.rationaleQuill,
+        objective: this.$refs.objectiveQuill,
+        beneficiaries: this.$refs.beneficiariesQuill
+      };
+      var ref = (_map$comment$column_n = map[comment.column_name]) !== null && _map$comment$column_n !== void 0 ? _map$comment$column_n : this.$refs.rationaleQuill;
+      if (!ref) return;
+      var quill = ref.getQuill();
+      this.highlightQuillComment({
+        quill: quill,
+        comment: comment
+      });
+    },
+    onCommentClick: function onCommentClick(comment) {
+      this.highlightQuillComment({
+        quillRef: this.$refs.objectiveQuill,
+        comment: comment,
+        columnName: comment.column_name
       });
     },
     //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
@@ -756,7 +779,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     // TARGETED GUIDES
-    scrollToSection: function scrollToSection(target) {
+    scrollToSection: function scrollToSection(target, comment, column) {
       var el = document.getElementById(target);
       if (!el) return; // alert(target);
 
@@ -765,7 +788,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       window.scrollTo({
         top: targetPos,
         behavior: "smooth"
-      }); // Highlight effect
+      }); // FOr Quill
+
+      alert(column);
+      console.log(comment); // if(['rationale', 'objective', 'beneficiaries'].includes(column)){
+      //     setTimeout(() => {
+      //         // this.focusComment(comment);
+      //         alert('focusing comment now...');
+      //         onCommentClick(comment);
+      //     }, 800); // Adjust delay as needed
+      // }
+      // this.focusComment(comment);
+      // Highlight effect
 
       el.classList.add("highlight-target");
       setTimeout(function () {
@@ -6585,7 +6619,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["clickable-comment", comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected']),
       onClick: function onClick($event) {
-        return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? "".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name) : ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name) ? "".concat(comment.table_row_id, "_").concat(comment.table_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
+        return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? "".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name) : ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name) ? "".concat(comment.table_row_id, "_").concat(comment.table_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name), comment, comment.column_name);
       },
       style: {
         "cursor": "pointer"

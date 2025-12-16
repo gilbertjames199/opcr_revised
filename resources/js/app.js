@@ -907,7 +907,69 @@ createInertiaApp({
 
                         return fragments.join('');
                     },
+                    // QUILL COMMENTS - Fuzzy Matching **************************************************************************************************
+                    highlightQuillComment({quillRef,comment,columnName}) {
+                        if (!quillRef?.getQuill) return;
 
+                        const quill = quillRef.getQuill();
+                        const text = quill.getText();
+
+                        let start = comment.start_index;
+                        let length = comment.end_index - comment.start_index;
+
+                        // 1️⃣ First attempt: direct index
+                        if (
+                            start >= 0 &&
+                            start + length <= text.length &&
+                            text.substring(start, start + length) === comment.selected_text
+                        ) {
+                            this.applyQuillHighlight(quill, start, length);
+                            return;
+                        }
+
+                        // 2️⃣ Fallback: fuzzy match using context
+                        const index = this.findTextByContext(
+                            text,
+                            comment.selected_text,
+                            comment.context_before,
+                            comment.context_after
+                        );
+
+                        if (index !== -1) {
+                            this.applyQuillHighlight(quill, index, comment.selected_text.length);
+                        } else if (columnName !== 'rationale') {
+                            // 3️⃣ Fallback to rationale column
+                            this.$emit('highlight-fallback-rationale', comment);
+                        }
+                    },
+                    applyQuillHighlight(quill, index, length) {
+                        quill.setSelection(index, length, 'silent');
+
+                        quill.formatText(index, length, {
+                            background: '#46ff18ff'
+                        }, 'silent');
+
+                        quill.scrollIntoView();
+
+                        // Remove highlight after animation
+                        setTimeout(() => {
+                            quill.formatText(index, length, {
+                                background: false
+                            }, 'silent');
+                        }, 2000);
+                    },
+                    findTextByContext(text, selected, before, after) {
+                        const dmp = new DiffMatchPatch();
+
+                        const searchBase = `${before}${selected}${after}`;
+                        const patch = dmp.patch_make(searchBase, text);
+                        const result = dmp.patch_apply(patch, text);
+
+                        if (!result[1].includes(true)) return -1;
+
+                        const idx = text.indexOf(selected);
+                        return idx !== -1 ? idx : -1;
+                    },
                     // Levenshtein distance (classic)
                     // levenshtein(a, b) {
                     //     if (!a || !b) return (a === b) ? 0 : Math.max(a.length, b.length);

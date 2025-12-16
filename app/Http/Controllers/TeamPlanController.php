@@ -357,7 +357,27 @@ class TeamPlanController extends Controller
 
         $empty = [];
 
-        $data = TeamPlan::where('revision_plan_id', $request->revision_plan_id)->get();
+        $data = TeamPlan::with('userEmployee')
+                ->where('revision_plan_id', $request->revision_plan_id)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'revision_plan_id' => $item->revision_plan_id,
+                        'implementing_team_id' => $item->implementing_team_id,
+                        'role' => $item->role,
+                        'empl_id' => $item->empl_id,
+                        'name' => $item->name ?: optional($item->userEmployee)->employee_name ?: '',
+                        'competency' => $item->competency,
+                        'position' => $item->position ?: optional($item->userEmployee)->position_long_title ?: '',
+                        'with_gad_training' => $item->with_gad_training,
+                        'specify_GAD_training' => $item->specify_GAD_training,
+                        'gender' => $item->gender ?: optional($item->userEmployee)->gender ?: '',
+                        'status' => $item->status ?: optional($item->userEmployee)->employment_type_descr,
+                        'created_at' => $item->created_at,
+                        'updated_at' => $item->updated_at,
+                    ];
+                });
 
         if ($data->isEmpty()) {
             return $empty;

@@ -2079,7 +2079,9 @@
                                                         ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
                                                             ? `${comment.table_row_id}_${comment.table_name}`
                                                             : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                    )
+                                                    ),
+                                                comment,
+                                                comment.column_name
 
                                             )"
                                             :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
@@ -3298,7 +3300,8 @@ export default {
     mounted() {
         this.$nextTick(() => {
             setTimeout(() => {
-                applyAllQuillHighlights();
+                // applyAllQuillHighlights();
+                // this.focusComment();
             }, 50)
         })
 
@@ -3442,6 +3445,30 @@ export default {
                     )
                 }
             })
+        },
+        focusComment(comment) {
+            const map = {
+            rationale: this.$refs.rationaleQuill,
+            objective: this.$refs.objectiveQuill,
+            beneficiaries: this.$refs.beneficiariesQuill
+            }
+
+            const ref =
+            map[comment.column_name] ??
+            this.$refs.rationaleQuill
+
+            if (!ref) return
+
+            const quill = ref.getQuill()
+
+            this.highlightQuillComment({ quill, comment })
+        },
+        onCommentClick(comment) {
+            this.highlightQuillComment({
+                quillRef: this.$refs.objectiveQuill,
+                comment,
+                columnName: comment.column_name
+            });
         },
         //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
         //alert(this.form.target_qty);
@@ -3683,7 +3710,7 @@ export default {
             });
         },
         // TARGETED GUIDES
-        scrollToSection(target) {
+        scrollToSection(target, comment, column) {
             const el = document.getElementById(target);
             if (!el) return;
             // alert(target);
@@ -3694,7 +3721,17 @@ export default {
                 top: targetPos,
                 behavior: "smooth"
             });
-
+            // FOr Quill
+            alert(column);
+            console.log(comment);
+            // if(['rationale', 'objective', 'beneficiaries'].includes(column)){
+            //     setTimeout(() => {
+            //         // this.focusComment(comment);
+            //         alert('focusing comment now...');
+            //         onCommentClick(comment);
+            //     }, 800); // Adjust delay as needed
+            // }
+            // this.focusComment(comment);
             // Highlight effect
             el.classList.add("highlight-target");
             setTimeout(() => el.classList.remove("highlight-target"), 2000);
