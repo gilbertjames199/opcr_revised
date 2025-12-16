@@ -1036,7 +1036,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Print Workplan")];
+        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Print Comprehensive Workplan")];
       }),
       _: 2
       /* DYNAMIC */

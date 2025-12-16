@@ -390,7 +390,32 @@
                         </section>
                         <br>
                         <div class="bgc-white p-20 bd" >
-                            <QuillEditor theme="snow" v-model:content="form.rationale" contentType="html"
+                            <!-- Toolbar -->
+                            <div
+                                v-show="briefRationale"
+                                class="ql-container ql-snow"
+                                style="pointer-events: none;"
+                            >
+                                <div class="ql-toolbar ql-snow">
+                                    <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                    </span>
+                                </div>
+                                <div class="ql-editor" ref="rationaleEl"
+                                v-html="editData.rationale"
+                            ></div>
+                            </div>
+
+                            <QuillEditor theme="snow" v-model:content="form.rationale" contentType="html" v-if="!briefRationale"
                              @update:content="val => updateRevisionPlans('revision_plans', 'rationale', form.id, val)"
                             ref="rationaleQuill"
                         />
@@ -422,7 +447,33 @@
 
                         <br>
                         <div  class="bgc-white p-20 bd">
+                            <div
+                                v-show="briefObjective"
+                                class="ql-container ql-snow"
+                                style="pointer-events: none;"
+                            >
+                                <div class="ql-toolbar ql-snow">
+                                    <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                    </span>
+                                </div>
+                                <div ref="objectiveEl"
+                                    class="ql-editor"
+                                    v-html="editData.objective"
+                                ></div>
+                            </div>
+
                             <QuillEditor theme="snow" v-model:content="form.objective" contentType="html" ref="rationaleQuill"
+                            v-if="!briefObjective"
                             @update:content="val => updateRevisionPlans('revision_plans', 'objective', form.id, val)"
                             toolbar="essential" />
                         </div>
@@ -452,7 +503,34 @@
                         </section>
                     <br>
                     <div class="bgc-white p-20 bd">
+                        <div
+                            v-show="briefBeneficiaries"
+                            class="ql-container ql-snow"
+                            style="pointer-events: none;"
+                        >
+                            <div class="ql-toolbar ql-snow">
+                                <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                </span>
+                                <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                                </span>
+                                <span class="ql-formats">
+                                <button class="ql-link"></button>
+                                </span>
+                            </div>
+                            <div ref="beneficiariesEl"
+                                class="ql-editor"
+                                v-show="briefBeneficiaries"
+                                v-html="editData.beneficiaries"
+                            ></div>
+                        </div>
+
                         <QuillEditor theme="snow" v-model:content="form.beneficiaries" contentType="html" ref="objectiveQuill"
+                            v-if="!briefBeneficiaries"
                              @update:content="val => updateRevisionPlans('revision_plans', 'beneficiaries', form.id, val)"
                             toolbar="essential" />
                     </div>
@@ -3128,6 +3206,11 @@ export default {
             expected_outcomes_current: [],
             expected_outcomes_new: [],
 
+            // SHOWING VHTML OVERLAYS
+            briefRationale: false,
+            briefObjective: false,
+            briefBeneficiaries: false,
+
         };
     },
     computed: {
@@ -3381,7 +3464,7 @@ export default {
 
 
 
-
+        this.applyAllHighlights()
 
         //TEXTAREA -Set Sizes ***********************************************************************************************************
         // const applyAutosize = (el) => {
@@ -3410,13 +3493,21 @@ export default {
         all_comments: {
             handler() {
                 this.$nextTick(() => {
-                    setTimeout(() => {
-                        this.applyAllQuillHighlights()
-                    }, 50)
+                    this.applyAllHighlights()
                 })
             },
             deep: true
         }
+        // all_comments: {
+        //     handler() {
+        //         this.$nextTick(() => {
+        //             setTimeout(() => {
+        //                 this.applyAllQuillHighlights()
+        //             }, 50)
+        //         })
+        //     },
+        //     deep: true
+        // }
     },
     methods: {
         applyAllQuillHighlights() {
@@ -3677,6 +3768,29 @@ export default {
                 this.comment = "";
             }, 1000); // 1000 milliseconds = 1 second
         },
+        applyAllHighlights() {
+            // alert("Applying all highlights...");
+            const columns = ['rationale', 'beneficiaries', 'objective']
+
+            columns.forEach(column => {
+                const el = this.$refs[`${column}El`]
+                if (!el || !this.editData[column]) return
+
+                const instance = new Mark(el)
+                // alert("Applying highlights for column:"+column);
+                // 🔴 MUST remove old highlights first
+                instance.unmark({
+                    done: () => {
+                        this.highlightWithComments(
+                            this.editData[column],
+                            this.all_comments,
+                            column,
+                            el
+                        )
+                    }
+                })
+            })
+        },
         submitAction(type, comment_id, index){
             let actionText = {
                 delete: "delete this comment",
@@ -3722,16 +3836,18 @@ export default {
                 behavior: "smooth"
             });
             // FOr Quill
-            alert(column);
-            console.log(comment);
-            // if(['rationale', 'objective', 'beneficiaries'].includes(column)){
-            //     setTimeout(() => {
-            //         // this.focusComment(comment);
-            //         alert('focusing comment now...');
-            //         onCommentClick(comment);
-            //     }, 800); // Adjust delay as needed
-            // }
-            // this.focusComment(comment);
+            if(['rationale', 'objective', 'beneficiaries'].includes(column)){
+                const flagMap = {
+                    rationale: 'briefRationale',
+                    objective: 'briefObjective',
+                    beneficiaries: 'briefBeneficiaries'
+                };
+
+                this[flagMap[column]] = true;
+                setTimeout(() => {
+                    this[flagMap[column]] = false;
+                }, 2000); // Adjust delay as needed
+            }
             // Highlight effect
             el.classList.add("highlight-target");
             setTimeout(() => el.classList.remove("highlight-target"), 2000);
@@ -4662,6 +4778,11 @@ table {
     50% { color: #f8d823; } /* paler red */
 }
 
+/* HIDING QUILL EDITOR */
+/* Hide only the .ql-editor inside this wrapper */
+:deep([ref="beneficiariesEditorWrapper"]) .ql-editor {
+  display: none;
+}
 /* .jump-arrow {
     position: absolute;
     width: 0;

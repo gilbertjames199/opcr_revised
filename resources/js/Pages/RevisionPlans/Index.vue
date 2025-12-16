@@ -258,7 +258,7 @@
                                             <li><Link class="dropdown-item" :href="`/EvaluationMechanismTool/${dat.id}`">Monitoring and Evaluation</Link></li>
                                             <li><Link class="dropdown-item" :href="`/RiskManagement/${dat.id}`">Risk Management</Link></li>
                                             <li><Link class="dropdown-item" :href="`/Signatories/${dat.id}`">Signatories</Link></li>
-                                            <li><Button class="dropdown-item" @click="setLinkModal(dat.id)">Print Workplan</Button></li>
+                                            <li><Button class="dropdown-item" @click="setLinkModal(dat.id)">Print Comprehensive Workplan</Button></li>
                                             <li>
                                                 <Button class="dropdown-item" @click="openPrintProfile(dat.id)">
                                                     Print Project
