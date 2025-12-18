@@ -850,6 +850,7 @@ createInertiaApp({
                         const instance = new Mark(containerEl)
 
                         const filtered = comments.filter(c => c.column_name === columnName)
+                        let finalText = rawText; // start from the original text
 
                         filtered.forEach(comment => {
                             const {
@@ -859,7 +860,9 @@ createInertiaApp({
                                 id,
                                 table_name,
                                 column_name,
-                                comment_status
+                                comment_status,
+                                start_index,
+                                end_index
                             } = comment
                             // const bgColor = comment_status === '0'
                             //     ?   '#ff7112ff'  // ✔ approved (example: light orange / yellow)
@@ -867,6 +870,8 @@ createInertiaApp({
                             const fontColor = comment_status === '0'
                                 ? '#ff0000'   // red text for approved
                                 : null        // keep default text color
+
+                            let matched = false
                             /**
                              * Step 1: Try exact context match
                              */
@@ -877,6 +882,7 @@ createInertiaApp({
                                 accuracy: "partially",
                                 acrossElements: true,
                                 each: el => {
+                                    matched = true
                                     // el.style.backgroundColor = bgColor
                                     if (fontColor) {
                                         el.style.color = fontColor
@@ -888,6 +894,11 @@ createInertiaApp({
                                     )
                                 }
                             })
+                            // if(column_name==='rationale'){
+                            //     alert(column_name+" 1: "+matched)
+                            // }
+
+                            if (matched) return
 
                             /**
                              * Step 2: If exact context fails, fallback to diff-based match
@@ -897,6 +908,7 @@ createInertiaApp({
                                 accuracy: "partially",
                                 acrossElements: true,
                                 each: el => {
+                                    matched = true
                                     // el.style.backgroundColor = bgColor
                                     if (fontColor) {
                                         el.style.color = fontColor
@@ -908,6 +920,232 @@ createInertiaApp({
                                     )
                                 }
                             })
+                            // if(column_name==='rationale'){
+                            //     alert(column_name+" 2: "+matched)
+                            // }
+                            if (matched) return
+                            /**
+                             * Step 3: Index-based fallback (context + stored indexes)
+                             */
+                            const sourceText = rawText
+                            const extractedText = sourceText.substring(start_index, end_index).trim()
+                            // alert("begin: "+begin +" end: "+end+  " extractedText "+extractedText)
+                            // alert("start_index: "+start_index +" end_index: "+end_index+  " extractedText "+extractedText)
+                            // 7️⃣ Mark extracted text
+                            const naa="sadasdsadsdasd";
+                            if (extractedText) {
+                                // alert("extractedText: "+extractedText)
+                                // alert(el);
+                                // exactly
+                                instance.mark(extractedText, {
+                                    separateWordSearch: false,
+                                    accuracy: "partially",
+                                    acrossElements: true,
+                                    each: el => {
+                                        matched = true
+                                        naa="nakita na";
+                                        // el.style.backgroundColor = bgColor
+                                        if (fontColor) {
+                                            el.style.color = fontColor
+                                        }
+                                        el.style.backgroundColor = "white"
+                                        el.setAttribute(
+                                            "id",
+                                            `${id}_${table_name}_${column_name}`
+                                        )
+                                    }
+                                })
+                            }
+                            // alert("last: "+naa)
+                            // const sourceText = rawText
+
+                            // let begin = -1
+                            // let end = -1
+
+                            // // 1️⃣ Find context_before → last index
+                            // if (context_before) {
+                            //     const idx = sourceText.lastIndexOf(context_before)
+                            //     if (idx !== -1) {
+                            //         begin = idx + context_before.length
+                            //     }
+                            // }
+
+                            // // 2️⃣ Fallback to start_index
+                            // if (begin === -1 && Number.isInteger(start_index)) {
+                            //     begin = start_index
+                            // }
+
+                            // // 3️⃣ Find context_after → first index
+                            // if (context_after) {
+                            //     const idx = sourceText.indexOf(context_after, begin !== -1 ? begin : 0)
+                            //     if (idx !== -1) {
+                            //         end = idx
+                            //     }
+                            // }
+
+                            // // 4️⃣ Fallback to end_index
+                            // if (end === -1 && Number.isInteger(end_index)) {
+                            //     end = end_index
+                            // }
+
+                            // // 5️⃣ Ensure valid range
+                            // if (begin !== -1 && end !== -1) {
+                            //     // alert("begin: "+begin +" end: "+end)
+                            //     if (begin >= end) {
+                            //         end = begin + 1
+                            //     }
+
+                            //     // 6️⃣ Extract text
+                            //     const extractedText = sourceText.substring(start_index, end_index).trim()
+                            //     // alert("begin: "+begin +" end: "+end+  " extractedText "+extractedText)
+                            //     alert("start_index: "+start_index +" end_index: "+end_index+  " extractedText "+extractedText)
+                            //     // 7️⃣ Mark extracted text
+                            //     if (extractedText) {
+                            //         instance.mark(extractedText, {
+                            //             separateWordSearch: false,
+                            //             accuracy: "partially",
+                            //             acrossElements: true,
+                            //             each: el => {
+                            //                 if (fontColor) {
+                            //                     el.style.color = fontColor
+                            //                 }
+                            //                 el.style.backgroundColor = "white"
+                            //                 el.setAttribute(
+                            //                     "id",
+                            //                     `${id}_${table_name}_${column_name}`
+                            //                 )
+                            //             }
+                            //         })
+                            //     }
+                            // }
+                            // if (matched) return
+
+                            /** STEP 3 — DiffMatchPatch fallback */
+                            // const diffs = dmp.diff_main(rawText, selected_text)
+                            // dmp.diff_cleanupSemantic(diffs)
+
+                            // let bestMatch = ''
+                            // let maxLen = 0
+
+                            // diffs.forEach(([op, text]) => {
+                            //     if (op === 0 && text.length > maxLen) {
+                            //         bestMatch = text
+                            //         maxLen = text.length
+                            //     }
+                            // })
+                            // console.log("bestMatch: "+bestMatch)
+                            // if (!bestMatch) return
+
+                            // instance.mark(bestMatch, {
+                            //     separateWordSearch: false,
+                            //     accuracy: 'partially',
+                            //     acrossElements: true,
+                            //     each: el => {
+                            //         if (fontColor) el.style.color = fontColor
+                            //         el.style.backgroundColor = 'white'
+                            //         el.id = `${id}_${table_name}_${column_name}`
+                            //     }
+                            // })
+
+                            // Step 3: Context-based fallback (manual slice)
+                            // let start = finalText.indexOf(context_before);
+                            // if (start !== -1) start += context_before.length;
+                            // else if (typeof start_index === 'number') start = start_index;
+                            // else start = 0;
+
+                            // let end = finalText.indexOf(context_after, start);
+                            // if (end === -1 && typeof end_index === 'number') end = end_index;
+                            // else if (end === -1) end = finalText.length;
+
+                            // if (end > start) {
+                            //     const before = finalText.slice(0, start);
+                            //     const middle = finalText.slice(start, end) || (selected_text || '[comment]');
+                            //     const after = finalText.slice(end);
+
+                            //     finalText = before +
+                            //         `<span id="${id}_${table_name}_${column_name}" style="background-color:white;color:${fontColor};">${middle}</span>` +
+                            //         after;
+                            //     console.log("before: "+before)
+                            //     console.log("middle: "+middle)
+                            //     console.log("after: "+after)
+                            //     return;
+                            // }
+
+                            // Step 4: Absolute fallback — insert at beginning
+                            // finalText =
+                            //     `<span id="${id}_${table_name}_${column_name}" style="background-color:white;color:${fontColor};">${selected_text || '[comment]'}</span>` +
+                            //     finalText;
+                            // --------------------------------------------
+                            // STEP 3: FINAL FALLBACK — manual span injection
+                            // ONLY if Mark.js did NOT create highlights
+                            // --------------------------------------------
+                            // const existing = containerEl.querySelectorAll(
+                            //     `span[id="${id}_${table_name}_${column_name}"]`
+                            // )
+                            // if (!existing.length) {
+                            //     let text = containerEl.innerHTML
+                            //     let start = -1
+                            //     let end = -1
+
+                            //     // 1️⃣ Try using context_before
+                            //     if (context_before) {
+                            //         const beforeMatch = new RegExp(escapeRegex(context_before))
+                            //         const beforeResult = beforeMatch.exec(text)
+
+                            //         if (beforeResult) {
+                            //             start = beforeResult.index + beforeResult[0].length
+                            //         }
+                            //     }
+
+                            //     // 2️⃣ Try using context_after
+                            //     if (context_after) {
+                            //         const afterMatch = new RegExp(escapeRegex(context_after))
+                            //         const afterResult = afterMatch.exec(text)
+
+                            //         if (afterResult) {
+                            //             end = afterResult.index
+                            //         }
+                            //     }
+
+                            //     // 3️⃣ Fallback to stored indexes
+                            //     if (start === -1 && typeof start_index === 'number') {
+                            //         start = start_index
+                            //     }
+
+                            //     if (end === -1 && typeof end_index === 'number') {
+                            //         end = end_index
+                            //     }
+
+                            //     // 4️⃣ Inject span ONLY if indexes are valid
+                            //     if (start !== -1 && end !== -1 && end > start) {
+                            //         const before = text.slice(0, start)
+                            //         const middle = text.slice(start, end)
+                            //         const after = text.slice(end)
+
+                            //         const spanStart = `<span id="${id}_${table_name}_${column_name}" style="background-color:white;color:red;">`
+                            //         const spanEnd = `</span>`
+
+                            //         containerEl.innerHTML =
+                            //             before + spanStart + middle + spanEnd + after
+                            //     }
+
+                            //     const stillNotFound = containerEl.querySelectorAll(
+                            //         `span[id="${id}_${table_name}_${column_name}"]`
+                            //     )
+
+                            //     if (!stillNotFound.length) {
+                            //         const spanStart = `<span id="${id}_${table_name}_${column_name}" style="background-color:white;color:red;">`
+                            //         const spanEnd = `</span>`
+
+                            //         containerEl.innerHTML =
+                            //             spanStart +
+                            //             (selected_text || '[comment]') +
+                            //             spanEnd +
+                            //             containerEl.innerHTML
+                            //     }
+                            //     console.log("start"+start);
+                            //     console.log("end: "+ned)
+                            // }
                         })
                     },
                     renderCommentedText(text, comments, columnName) {

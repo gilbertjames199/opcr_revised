@@ -363,6 +363,7 @@
                             <!-- <p v-html="renderCommentedText(paps.rationale, all_comments, 'rationale')"
                                 @mouseup="handleSelection('rationale')"
                             ></p> -->
+                            <!-- {{ paps.rationale }} -->
                             <div ref="rationaleEl"
                                 @mouseup="handleSelection('rationale')"
                                 v-html="paps.rationale"
@@ -407,7 +408,7 @@
                                 style="white-space: pre-line"
                                 ref="rationaleDiv"
                                 @mouseup="onHighlight"></div> -->
-                            {{ paps.objective }}
+                            <!-- {{ paps.objective }} -->
                             <div ref="objectiveEl"
                                 @mouseup="handleSelection('objective')"
                                 v-html="paps.objective"
@@ -2678,294 +2679,315 @@
             </div>
         </div>
         <!-- NAVIGATION AND COMMENTS******************************************************************************************* -->
-        <div class="col-3">
-            <div class="sticky-comments" v-if="!showComments">
-                    <button class="close-btn text-danger" @click="toggleShowCommentPanel">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
-                        </svg>&nbsp;
-                        <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
-                            <b>
-                                {{ countUnresolvedComments }} unresolved {{ countUnresolvedComments > 1 ? 'updates' : 'update' }} — click to review
-                            </b>
-                        </span>
-                    </button>
+        <div >
+            <div class="sticky-comments  draggable-panel" v-if="!showComments">
+                <button class="close-btn text-danger" @click="toggleShowCommentPanel">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+                    </svg>&nbsp;
+                    <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
+                        <b>
+                            {{ countUnresolvedComments }} unresolved {{ countUnresolvedComments > 1 ? 'updates' : 'update' }} — click to review
+                        </b>
+                    </span>
+                </button>
             </div>
             <!-- p-20  -->
-            <div class="p-20 bd sticky-comments" v-if="showComments" style="background: rgba(255, 255, 255, 0.7);">
-                    <div class="d-flex justify-content-end">
-                        <button class="close-btn text-danger" @click="toggleShowCommentPanel">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="tab">
-                        <button class="button" :class="{ active: open_tab === 'Navigation' }" @click="openTab('Navigation')">Sections</button>
-                        <button class="button" :class="{ active: open_tab === 'Comments' }" @click="openTab('Comments')">Comments
-                            <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
-                                <b>
-                                    ({{ countUnresolvedComments }} unresolved)
-                                </b>
-                            </span>
-                        </button>
-                    </div>
-                    <div v-if="open_tab==='Comments'">
-                        <div class="comments-header">
-                            <h4>COMMENTS ...</h4>
-                        </div>
-                        <div><i>Click a comment and follow the arrow</i></div>
-                        <hr>
 
-                        <hr>
-                        <div class="scrollable-text" style="background: rgba(255, 255, 255, 0.7);">
-                            <!--********************************************************************************************************-->
-                            <!-- 🔴 UNRESOLVED COMMENTS -->
-                            <div v-if="unresolvedComments.length > 0">
-                                <div class="p-2 mb-2" style="background:#ffe5e5; border-radius:4px;">
-
-                                    <strong>Unresolved Comments</strong>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li v-for="(comment, index) in unresolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
-
-                                            <table style="border-collapse: collapse; border: none !important;">
-                                                <tr style="border: none !important; vertical-align: top;">
-                                                    <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                        <button class="btn p-0 border-0 bg-transparent"
-                                                            @click="submitAction('delete', comment.id, index)"
-                                                            title="Delete this comment"
-                                                        >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
-                                                                class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
-                                                            </svg>&nbsp;&nbsp;&nbsp;
-                                                        </button>
-
-                                                    </td>
-                                                    <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                        <span
-                                                            class="clickable-comment"
-                                                            @click="scrollToSection(
-                                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                                    ? `${comment.id}_${comment.table_name}_${comment.column_name}`
-                                                                    : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                            )"
-                                                            :class="'comment-rejected'"
-                                                            :title="['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                                ? comment.selected_text
-                                                                : ''"
-                                                        >
-                                                        <!-- Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                    ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                    : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
-                                                            {{ comment.comment }}
-                                                                                <!-- {{
-                                                                        ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                                            ? comment.column_name
-                                                                            : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
-                                                                    }} -->
-                                                        </span>
-                                                        <div v-html="comment.reply"></div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-
-
-                                        <!-- Action Buttons -->
-                                        <div class="text-end" v-if="auth.user.department_code==='04'">
-                                            <button class="btn btn-success btn-sm text-white"
-                                                @click="submitAction('resolve', comment.id, index)"
-                                                title="Mark comment as Resolved">
-                                                <!-- <i class="bi bi-check-circle"></i> -->
-                                                 resolve
-                                            </button>
-
-                                            <!-- <button class="btn btn-primary btn-sm text-white"
-                                                @click="submitAction('reset', comment.id, index)"
-                                                title="Reset to Unresolved">
-                                                <i class="bi bi-arrow-counterclockwise"></i>
-                                                 reset
-                                            </button> -->
-
-                                            <button class="btn btn-danger btn-sm text-white"
-                                                @click="submitAction('delete', comment.id, index)"
-                                                title="Delete this comment">
-                                                <!-- <i class="bi bi-trash-fill"></i>-->
-                                                 delete
-                                            </button>
-                                        </div>
-
-                                    </li>
-                                </ul>
-                            </div>
-                            <!--END OF UNRESOLVED-->
-
-
-
-                            <!-- 🟢 RESOLVED COMMENTS -->
-                             <div v-if="resolvedComments.length > 0">
-                                <div class="p-2 mt-4 mb-2" style="background:#e8ffe8; border-radius:4px;">
-                                    <strong>Resolved Comments</strong>
-                                </div>
-
-                                <ul class="list-unstyled">
-                                    <li v-for="(comment, index) in resolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
-                                        <span
-                                            class="clickable-comment"
-                                            @click="scrollToSection(
-                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                    ? `${comment.id}_${comment.table_name}_${comment.column_name}`
-                                                    : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                            )"
-                                            :class="'comment-approved'"
-                                        >
-                                            <table style="border-collapse: collapse; border: none !important;">
-                                                <tr style="border: none !important; vertical-align: top;">
-                                                    <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                        <!-- RESOLVED ICON -->
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                                            class="bi bi-check-square-fill" viewBox="0 0 16 16">
-                                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
-                                                        </svg>&nbsp;&nbsp;&nbsp;
-                                                    </td>
-                                                    <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                        {{ comment.comment }}
-                                                    </td>
-                                                </tr>
-                                            </table>
-
-
-                                        </span>
-                                        <div class="text-end" v-if="auth.user.department_code==='04'">
-                                            <!-- <button class="btn btn-success btn-sm text-white"
-                                                @click="submitAction('resolve', comment.id, index)"
-                                                title="Mark comment as Resolved">
-                                                <i class="bi bi-check-circle"></i>
-                                                 resolve
-                                            </button> -->
-
-                                            <button class="btn btn-primary btn-sm text-white"
-                                                @click="submitAction('reset', comment.id, index)"
-                                                title="Reset to Unresolved">
-                                                <i class="bi bi-arrow-counterclockwise"></i>
-                                                 reset
-                                            </button>
-
-                                            <button class="btn btn-danger btn-sm text-white"
-                                                @click="submitAction('delete', comment.id, index)"
-                                                title="Delete this comment">
-                                                <!-- <i class="bi bi-trash-fill"></i>-->
-                                                 delete
-                                            </button>
-                                        </div>
-
-                                    </li>
-                                </ul>
-                             </div>
-                             <!--END OF RESOLVED-->
-
-                            <!-- {{ ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                        ? comment.column_name
-                                            : (
-                                            ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
-                                                ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                        )  }} -->
-                        </div>
-                    </div>
-                    <div v-if="open_tab==='Navigation'">
-                        <div class="comments-header">
-                            <h4>NAVIGATION ...</h4>
-
-                        </div>
-                        <div class="scrollable-text" style="background: rgba(255, 255, 255, 0.7); cursor: pointer;" >
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue" >
-                                    <span class="clickable-comment"  @click="scrollToSection('revision_plans')">
-                                        I.      Title
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('rationale')">
-                                        II.     Rationale
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('objective')">
-                                        III.    Objectives
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('beneficiaries')">
-                                        IV.     Target Beneficiaries
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('implementation_workplan')">
-                                        V.      Implementation Schedule/Workplan
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('budgetary_requirements')">
-                                        VI.     Estimated Cost/Budgetary Requirements
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('implementing_team')">
-                                        VII.    Implementing Team
-                                    </span>
-                                </li>
-                            </ul>
-                            <!-- partnership_sustainability -->
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('partnership_sustainability')">
-                                        VIII.   Partnership and Sustainability
-                                    </span>
-                                </li>
-                            </ul>
-
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('monitoring_evaluation')">
-                                        XI.     Monitoring and Evaluation
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('risk_management')">
-                                        X.      Risk Management
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('signatories')">
-                                        XI.     Signatories
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-            </div>
         </div>
+        <SmallModalComments v-model="showComments" title="NAVIGATION PANEL">
+            <!-- <p>This can be anything.</p>
+            <button class="btn btn-sm btn-primary">Save</button> -->
+            <div class="tab">
+                <button class="button" :class="{ active: open_tab === 'Navigation' }" @click="openTab('Navigation')">Sections</button>
+                <button class="button" :class="{ active: open_tab === 'Comments' }" @click="openTab('Comments')">Comments
+                    <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
+                        <b>
+                            ({{ countUnresolvedComments }} unresolved)
+                        </b>
+                    </span>
+                </button>
+            </div>
+            <div v-if="open_tab==='Comments'">
+                <div class="comments-header">
+                    <h4>COMMENTS ...</h4>
+                </div>
+                <div><i>Click a comment and follow the arrow</i></div>
+                <hr>
+
+                <hr>
+                <div class="scrollable-text" style="background: rgba(255, 255, 255, 0.7);">
+                    <!--********************************************************************************************************-->
+                    <!-- 🔴 UNRESOLVED COMMENTS -->
+                    <div v-if="unresolvedComments.length > 0">
+                        <div class="p-2 mb-2" style="background:#ffe5e5; border-radius:4px;">
+
+                            <strong>Unresolved Comments</strong>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li v-for="(comment, index) in unresolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
+
+                                    <table style="border-collapse: collapse; border: none !important;">
+                                        <tr style="border: none !important; vertical-align: top;">
+                                            <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                <button class="btn p-0 border-0 bg-transparent"
+                                                    @click="submitAction('delete', comment.id, index)"
+                                                    title="Delete this comment"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                                        class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                                    </svg>&nbsp;&nbsp;&nbsp;
+                                                </button>
+
+                                            </td>
+                                            <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                <span
+                                                    class="clickable-comment"
+                                                    @click="scrollToSection(
+                                                        ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                            ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                    )"
+                                                    :class="'comment-rejected'"
+                                                    :title="['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                        ? comment.selected_text
+                                                        : ''"
+                                                >
+                                                <!-- Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                            ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
+                                                    {{ comment.comment }}
+                                                                        <!-- {{
+                                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                    ? comment.column_name
+                                                                    : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
+                                                            }} -->
+                                                </span>
+                                                <div v-html="comment.reply"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                <!-- Action Buttons -->
+                                <div class="text-end" v-if="auth.user.department_code==='04'">
+                                    <button class="btn btn-success btn-sm text-white"
+                                        @click="submitAction('resolve', comment.id, index)"
+                                        title="Mark comment as Resolved">
+                                        <!-- <i class="bi bi-check-circle"></i> -->
+                                            resolve
+                                    </button>
+
+                                    <!-- <button class="btn btn-primary btn-sm text-white"
+                                        @click="submitAction('reset', comment.id, index)"
+                                        title="Reset to Unresolved">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                            reset
+                                    </button> -->
+
+                                    <button class="btn btn-danger btn-sm text-white"
+                                        @click="submitAction('delete', comment.id, index)"
+                                        title="Delete this comment">
+                                        <!-- <i class="bi bi-trash-fill"></i>-->
+                                            delete
+                                    </button>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <!--END OF UNRESOLVED-->
+
+
+
+                    <!-- 🟢 RESOLVED COMMENTS -->
+                        <div v-if="resolvedComments.length > 0">
+                        <div class="p-2 mt-4 mb-2" style="background:#e8ffe8; border-radius:4px;">
+                            <strong>Resolved Comments</strong>
+                        </div>
+
+                        <ul class="list-unstyled">
+                            <li v-for="(comment, index) in resolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
+                                <span
+                                    class="clickable-comment"
+                                    @click="scrollToSection(
+                                        ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                            ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                    )"
+                                    :class="'comment-approved'"
+                                >
+                                    <table style="border-collapse: collapse; border: none !important;">
+                                        <tr style="border: none !important; vertical-align: top;">
+                                            <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                <!-- RESOLVED ICON -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                    class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+                                                </svg>&nbsp;&nbsp;&nbsp;
+                                            </td>
+                                            <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                {{ comment.comment }}
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </span>
+                                <div class="text-end" v-if="auth.user.department_code==='04'">
+                                    <!-- <button class="btn btn-success btn-sm text-white"
+                                        @click="submitAction('resolve', comment.id, index)"
+                                        title="Mark comment as Resolved">
+                                        <i class="bi bi-check-circle"></i>
+                                            resolve
+                                    </button> -->
+
+                                    <button class="btn btn-primary btn-sm text-white"
+                                        @click="submitAction('reset', comment.id, index)"
+                                        title="Reset to Unresolved">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                            reset
+                                    </button>
+
+                                    <button class="btn btn-danger btn-sm text-white"
+                                        @click="submitAction('delete', comment.id, index)"
+                                        title="Delete this comment">
+                                        <!-- <i class="bi bi-trash-fill"></i>-->
+                                            delete
+                                    </button>
+                                </div>
+
+                            </li>
+                        </ul>
+                        </div>
+                        <!--END OF RESOLVED-->
+
+                    <!-- {{ ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                ? comment.column_name
+                                    : (
+                                    ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
+                                        ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                        : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                )  }} -->
+                </div>
+            </div>
+            <div v-if="open_tab==='Navigation'">
+                <div class="comments-header">
+                    <h4>NAVIGATION ...</h4>
+
+                </div>
+                <div class="scrollable-text" style="background: rgba(255, 255, 255, 0.7); cursor: pointer;" >
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue" >
+                            <span class="clickable-comment"  @click="scrollToSection('revision_plans')">
+                                I.      Title
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('rationale')">
+                                II.     Rationale
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('objective')">
+                                III.    Objectives
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('beneficiaries')">
+                                IV.     Target Beneficiaries
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('implementation_workplan')">
+                                V.      Implementation Schedule/Workplan
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('budgetary_requirements')">
+                                VI.     Estimated Cost/Budgetary Requirements
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('implementing_team')">
+                                VII.    Implementing Team
+                            </span>
+                        </li>
+                    </ul>
+                    <!-- partnership_sustainability -->
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('partnership_sustainability')">
+                                VIII.   Partnership and Sustainability
+                            </span>
+                        </li>
+                    </ul>
+
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('monitoring_evaluation')">
+                                XI.     Monitoring and Evaluation
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('risk_management')">
+                                X.      Risk Management
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('signatories')">
+                                XI.     Signatories
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </SmallModalComments>
         <!-- COMMENTING ******************************************************************************************************* -->
-        <div class="col-3">
+        <SmallModalCommentActions v-model="show_comment_modal" title="COMMENTS">
+            <span v-if="auth.user.department_code==='04'">
+                <div>
+                    <textarea class="form-control" rows="5" v-model="comment"
+                        placeholder="Write your comment here..."></textarea>
+                </div>
+                <div>
+                    <button class="btn btn-primary mt-2 text-white" @click="saveComment()">
+                        Submit Comment
+                    </button>
+                </div>
+                <div>
+                    <div><b>Section: </b>{{ comment_section }}</div>
+                    <div><b>Subtitle:</b> <span v-html="comment_subtitle"></span></div>
+                    <div><b>Data:</b> <span v-html="comment_data"></span></div>
+                    <div><b>Column:</b> {{ comment_column }}
+                        <span v-if="comment_column=='Person Affected'">Preventive Measures</span>
+                        <span v-else-if="comment_column=='Management'">Mechanisms to monitor</span>
+                        <span v-else>{{ comment_column }}</span>
+                    </div>
+                    <div><b>Table:</b> {{ comment_table }}</div>
+                    <div><b>Context After</b>: {{ contextAfter}}</div>
+                    <div><b>Context Before</b>: {{ contextBefore}}</div>
+                </div>
+            </span>
+        </SmallModalCommentActions>
+        <!-- <div class="col-3">
             <div class="p-20 bd sticky-comments" v-if="show_comment_modal" style="background: rgba(255, 255, 255, 0.7);">
                 <div class="d-flex justify-content-end">
                     <button class="close-btn text-danger" @click="closeCommentModal">
@@ -2999,7 +3021,9 @@
                     </div>
                 </span>
             </div>
-        </div>
+        </div> -->
+
+
         <!-- <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
             <div class="d-flex justify-content-center">
 
@@ -3107,13 +3131,7 @@
 
         <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
             <div class="bg-white p-4 rounded w-1/3 shadow-lg">
-                <h3 class="font-bold mb-2">Add Comment</h3>
-                <textarea v-model="newComment" class="w-full border p-2 rounded"></textarea>
 
-                <div class="text-right mt-3">
-                    <button @click="showModal=false" class="px-3 py-1 bg-gray-400 text-white rounded mr-2">Cancel</button>
-                    <button @click="saveComment" class="px-3 py-1 bg-blue-600 text-white rounded">Save</button>
-                </div>
             </div>
         </div>
         <!-- {{paps}} -->
@@ -3130,9 +3148,10 @@
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import CommentModal from "@/Shared/ModalDynamicTitle";
-
+import SmallModalComments from "@/Shared/SmallModal";
+import SmallModalCommentActions from "@/Shared/SmallModal";
 export default {
-    components: { Filtering, Pagination, CommentModal },
+    components: { Filtering, Pagination, CommentModal, SmallModalComments, SmallModalCommentActions },
     props: {
         auth: Object,
         paps: Object,
@@ -3356,6 +3375,8 @@ export default {
 
             // Rationale, Beneficiaries, Objectives (RBO) Commenting
             commentingForRBO: true,
+
+
         }
     },
     mounted() {
@@ -3378,6 +3399,7 @@ export default {
         //     this.$refs.rationaleEl
         // );
         this.applyAllHighlights()
+        this.initDrag()
     },
 
     beforeUnmount() {
@@ -3964,7 +3986,46 @@ export default {
             return Object.values(gadGroupsForCategory).some(r => r.length > 0);
         },
 
+        initDrag() {
+            const panel = this.$refs.draggablePanel
+            const handle = this.$refs.dragHandle
+            if (!panel || !handle) return
 
+            let isDragging = false
+            let startX = 0
+            let startY = 0
+            let startTop = 0
+            let startLeft = 0
+
+            handle.addEventListener('mousedown', (e) => {
+                isDragging = true
+                document.body.classList.add('dragging')
+
+                startX = e.clientX
+                startY = e.clientY
+
+                const rect = panel.getBoundingClientRect()
+                startTop = rect.top
+                startLeft = rect.left
+
+                panel.style.right = 'auto'
+            })
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return
+
+                const dx = e.clientX - startX
+                const dy = e.clientY - startY
+
+                panel.style.top = `${startTop + dy}px`
+                panel.style.left = `${startLeft + dx}px`
+            })
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false
+                document.body.classList.remove('dragging')
+            })
+        }
         //RATIONALE COMMENTS
         // onHighlight() {
         //     const data = this.getHighlightIndexes();
@@ -4128,6 +4189,10 @@ table {
     justify-content: space-between; /* Push h4 left and button right */
     align-items: center;            /* Vertical alignment */
     margin-bottom: 10px;            /* Space below the header */
+
+    width: 100%;              /* 🔴 REQUIRED */
+    cursor: move;
+    user-select: none;
 }
 
 .sticky-comments .close-btn {
@@ -4198,4 +4263,6 @@ table {
   margin-left: 2px;
   vertical-align: super;
 }
+
+
 </style>

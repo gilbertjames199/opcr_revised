@@ -92,7 +92,7 @@ class RevisionPlanController extends Controller
         if ($paps_type === "GAS") {
             return redirect('/revision/general/administration/services/' . $FFUNCCOD . '/plan');
         } else if ($idpaps == "0") {
-
+            // dd($idpaps);
             $sharedPaps = SharedProgramAndProject::where('destination_department_code', $dept_id)->get()->pluck('idpaps');
 
             $popsp_agency = PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
@@ -480,6 +480,7 @@ class RevisionPlanController extends Controller
                     'imp_amount' => $imp_amount,
                     'status' => $item->status,
                     'number_of_clones' => $item->clonedVersions->count(),
+                    'return_request_status'=>$item->return_request_status
                     // 'paps'=>$item->paps
                 ];
             });
@@ -1610,7 +1611,8 @@ class RevisionPlanController extends Controller
                     'version' => $item->version,
                     'budget_sum' => $budgetary_requirement,
                     'imp_amount' => $imp_amount,
-                    'status' => $item->status
+                    'status' => $item->status,
+                    'return_request_status'=>$item->return_request_status
                     // 'paps'=>$item->paps
                 ];
             });
@@ -2199,9 +2201,9 @@ class RevisionPlanController extends Controller
                     ->groupBy('revision_plan_id')
                     ->havingRaw('SUM(amount) > 0');
             })
-
             ->when($request->source == 'rev_app', function ($query) {
-                $query->where('status', '>=', '0');
+                $query->where('status', '=', '0')
+                ->orWhere('return_request_status','0');
             })
             ->when($request->FFUNCCOD, function ($query) use ($request) {
                 $query->whereHas('paps', function ($query_inner) use ($request) {

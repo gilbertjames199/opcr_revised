@@ -54,11 +54,16 @@ class ProjectProfileTrackingController extends Controller
         $typpe = $revplan->type == "p" ? "Project Profie" : "Project Design";
         // Update the status
         // dd($request);
-        if($request->column=='gad_status'){
-            $revplan->gad_status = $new_status;
+        if($new_status=="5"){
+            $revplan->return_request_status=0;
         }else{
-            $revplan->status = $new_status;
+            if($request->column=='gad_status'){
+                $revplan->gad_status = $new_status;
+            }else{
+                $revplan->status = $new_status;
+            }
         }
+
         $revplan->save();
         RevisionPlanDocuments::where('revision_plan_id', $id)
             ->update(['return_executed' => 1]);
@@ -85,7 +90,7 @@ class ProjectProfileTrackingController extends Controller
         //         ->with('message','Project Profile '.$actionText.' successfully.');
         // }
         // Submit (0) OR Recall (-1) → go back to same page
-        if ($new_status == 0 || $new_status == -1) {
+        if ($new_status == 0 || $new_status == -1 || $new_status=="5") {
             return redirect()->back()
                 ->with('message', $type . " {$actionText} successfully.");
         }

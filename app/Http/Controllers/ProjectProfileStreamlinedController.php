@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\ActivityProject;
+use App\Models\CurrentAipYear;
 use App\Models\BudgetRequirement;
 use App\Models\ClimateChangeExpenditureTagging;
 use App\Models\HGDG_Checklist;
@@ -218,7 +219,8 @@ class ProjectProfileStreamlinedController extends Controller
     }
     public function getCurrentAipYear()
     {
-        return CurrentAipYear::first()->year();
+        // dd(CurrentAipYear::first());;
+        return CurrentAipYear::first()->year_period;
     }
     function getAllRevisionPlanComments(int $revisionPlanId)
     {

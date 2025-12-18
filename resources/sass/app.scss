@@ -266,13 +266,33 @@ hr {
 }
 
 // DRAGGABLE PANELS
+/* Generic draggable panel */
 .draggable-panel {
     position: fixed;
-    top: 100px;
-    right: 20px;
-    cursor: move;
-    z-index: 9999;
+    top: 80px;
+    right: 0;
+    width: 25%;
+    z-index: 1050;
+    cursor: default;
 }
+
+/* Drag handle */
+.drag-handle {
+    cursor: move;
+    user-select: none;
+}
+
+/* Prevent text selection while dragging */
+body.dragging {
+    user-select: none;
+}
+// .draggable-panel {
+//     position: fixed;
+//     top: 100px;
+//     right: 20px;
+//     cursor: move;
+//     z-index: 9999;
+// }
 
 .noselect {
     user-select: none;
@@ -285,4 +305,5 @@ hr {
   min-width: 150px; /* optional minimum */
   max-width: 400px; /* optional maximum */
 }
+
 

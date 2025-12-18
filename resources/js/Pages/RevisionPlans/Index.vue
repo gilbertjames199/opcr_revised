@@ -233,6 +233,24 @@
                                     >
                                         Generate SIP Profile
                                     </button>
+
+                                    <!-- Request for Return/Justification  -->
+                                    <!-- dat.return_request_status: {{ dat.return_request_status }} -->
+                                    <button
+                                        v-if="['1','2'].includes(dat.status) && dat.return_request_status=='-1'"
+                                        @click="returnWithAmmendments(dat, 7)"
+                                        :style="{
+                                        padding: '4px 10px',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        backgroundColor: 'red',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold'
+                                        }"
+                                    >
+                                        Approve Return Request
+                                    </button>
                                     <!-- {{ dat.number_of_clones }} -->
                                 </td>
                                 <!-- VERSIONS -->
@@ -343,6 +361,220 @@
 
             <!-- {{ppa_link}} -->
         </ProjectPrintModal>
+        <ReturnWithAmmendmentsModal v-if="ReturnWithAmmendmentsModalVisible" @close-modal-event="hideReturnWithAmmendmentsModal" title="REQUEST FOR RETURN">
+            <div class="peers mb-12">
+                <table class="table">
+                    <tr>
+                        <td><h6>PROJECT TITLE: </h6></td>
+                        <td><u>{{selected_plan.project_title }}</u></td>
+                        <td><h6>OFFICE: </h6></td>
+                        <td><u>{{selected_plan.FFUNCTION }}</u></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="col-md-5">
+                            <!-- Warnings -->
+                            <!-- <div v-if="show_warnings">
+                                <div v-if="!isWithinLimit()" class="text-danger mt-2">
+                                ❌ Total file size must not exceed 10 MB.
+                                </div>
+                                <div v-if="!isWithinCount()" class="text-danger mt-2">
+                                ❌ You can only upload a maximum of 2 files.
+                                </div>
+                            </div> -->
+
+                            <!-- :disabled="!(isWithinLimit() && isWithinCount())" -->
+                            <input
+                                type="file"
+                                multiple
+                                @change="handleFiles"
+                                accept="application/pdf"
+                                ref="fileInput"
+                            />
+                            <!-- :disabled="!(isWithinLimit() && isWithinCount())" -->
+                            <div>
+                                <button type="button" @click="uploadFiles" class="btn btn-primary text-white" >Upload</button>
+                                <button type="button" @click="cancelFiles" class="btn btn-danger text-white">Cancel </button>
+                            </div>
+                            <p>
+
+                                <div v-if="files.length>0">
+                                    <h3>Selected Files (Pending Upload)</h3>
+                                    <table >
+                                        <thead>
+                                            <th></th>
+                                            <th>File Name</th>
+                                            <th>File Type</th>
+                                            <th>File Size</th>
+                                        </thead>
+                                        <tr v-for="(file, index) in files" :key="index">
+                                            <td>
+                                                <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
+                                            </td>
+                                            <td>{{ file.name }}&nbsp;</td>
+                                            <td>{{ file.name.split('.').pop() }}&nbsp;</td>
+                                            <td>{{ formatFileSize(file.size) }}&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </p>
+                        </div>
+
+                        </td>
+                        <td colspan="2">
+                            <div class="col-md-7">
+                            <div class="peers">
+                                <h5>Justification Letters Uploaded</h5>&nbsp;
+                                <button
+                                    @click="deleteFiles"
+                                    class="btn btn-danger btn-sm mL-2 text-white"
+                                    :disabled="!file_ids.length"
+                                    >
+                                    Delete Selected
+                                </button>
+                            </div>
+                            <!-- <button @click="previewFile(file)" class="btn btn-primary text-white">Preview</button>&nbsp; -->
+                            <!-- /files/proxy-download -->
+                            <!-- target="_blank" rel="noopener noreferrer" -->
+                            <!-- <a :href="`http://122.53.120.18:8067/images/${file.filename}`" class="btn btn-success">Download</a>&nbsp; -->
+                            <!-- http://122.53.120.18:8067/images/{{file.filename}} - /file-upload/download/ -->
+                            <!-- <p> http://192.168.80.89:8073//file-upload/download/{{file.id}}</p> -->
+                            <table name="tabel" class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                    <th>
+                                        <input
+                                        type="checkbox"
+                                        :checked="allSelected"
+                                        v-model="allSelected"
+                                        @change="toggleSelectAll($event)"
+                                        />
+                                    </th>
+                                    <th></th>
+                                    <th>File Name</th>
+                                    <th>File Size</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                    <th>Return No.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="file in docs" :key="file.id">
+                                        <td>
+                                            <input
+                                            type="checkbox"
+                                            :value="file.id"
+                                            @change="toggleFileSelection(file.id, $event)"
+                                            v-model="file_ids"
+                                            />
+
+                                            <!-- {{ file }} -->
+                                        </td>
+                                        <!-- <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> -->
+                                        <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/></td>
+                                        <td>{{ file.filename }} </td>
+                                        <td>{{ format_number((file.file_size/1024),2,true) }} KB </td>
+                                        <th
+                                            :style="{
+                                                backgroundColor: file.return_executed === '0' ? '#d4f8d4' : '#f8d4d4'
+                                            }"
+                                        >
+                                            {{ file.return_executed === "0" ? 'New' : 'Used' }}
+                                        </th>
+                                        <td>
+                                            <button
+                                                @click="previewFile(file)"
+                                                class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
+                                                title="Preview"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="blue"
+                                                    class="bi bi-eye-fill"
+                                                    viewBox="0 0 16 16"
+                                                >
+                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                                </svg>
+                                            </button>&nbsp;
+                                            <!-- download -->
+                                            <a
+                                                :href="`/movs/download/${file.id}`"
+
+                                                class="inline-flex items-center"
+                                                title="Download"
+                                                target="_blank"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="green"
+                                                    class="bi bi-cloud-arrow-down-fill"
+                                                    viewBox="0 0 16 16"
+                                                >
+                                                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
+                                                </svg>
+                                            </a>&nbsp;
+
+                                            <!-- <button
+                                                @click="deleteFile(file.id)"
+                                                class="p-1 rounded-full bg-transparent hover:bg-red-100 border-0"
+                                                data-toggle="tooltip"
+                                                title="Delete"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="red"
+                                                    class="bi bi-trash-fill"
+                                                    viewBox="0 0 16 16"
+                                                >
+                                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                                </svg>
+                                            </button> -->
+
+                                        </td>
+                                        <td>0{{  file.return_batch }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-hover ">
+                                <tr>
+                                    <td>Remarks:</td>
+                                    <td><textarea class="form-control" v-model="remarks"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button
+                                                @click="returnWithAmmendmentsActual()"
+                                                :style="{
+                                                padding: '4px 10px',
+                                                border: 'none',
+                                                borderRadius: '4px',
+                                                backgroundColor: 'red',
+                                                color: 'white',
+                                                cursor: 'pointer',
+                                                fontWeight: 'bold'
+                                                }"
+                                            >
+                                                REQUEST FOR RETURN
+                                            </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        </td>
+                    </tr>
+
+                </table>
+
+
+             </div>
+        </ReturnWithAmmendmentsModal>
     </div>
     <!-- src: {{source}} fdfsdf -->
 </template>
@@ -354,6 +586,7 @@ import SIPModal from "@/Shared/ModalDynamicTitle";
 import ProjectPrintModal from "@/Shared/ModalDynamicTitle";
 import { Inertia } from '@inertiajs/inertia';
 import WorkPlanModal from "@/Shared/ModalDynamicTitle";
+import ReturnWithAmmendmentsModal from "@/Shared/ModalDynamicTitle";
 
 export default {
     props: {
@@ -387,11 +620,30 @@ export default {
 
             // /Project id
             rev_plan_id: 0,
-            ppa_link: ""
+            ppa_link: "",
+
+            // RETURN REQUEST**********************
+            //For Project Design
+            ReturnWithAmmendmentsModalVisible: false,
+            //Justification Uploads
+            file: null,
+            files: [],
+            file_ids: [],
+            current_filepath: null,
+            allSelected: false,
+            selected_plan: [],
+            selected_status: 0,
+            selected_label: '',
+            docs: [],
+            remarks: '',
+            //Document Display
+            displaySideModal: false,
+            showImageModal: false,
+            // END OF RETURN REQUEST***************
         }
     },
     components: {
-        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal
+        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal, ReturnWithAmmendmentsModal
     },
     watch: {
         search: _.debounce(function (value) {
@@ -652,7 +904,370 @@ export default {
             var params ='&id='+rev_plan_id_p
             // console.log(params);
             this.ppa_link = linkt+jasper_ip+jasper_link+params;
-        }
+        },
+
+        //Return with Ammendments/PROJECT DESIGN
+        toggleReturnWithAmmendmentsModal(){
+            this.ReturnWithAmmendmentsModalVisible=true
+        },
+        hideReturnWithAmmendmentsModal(){
+            this.ReturnWithAmmendmentsModalVisible=false
+        },
+        async returnWithAmmendments(revision_plan, newStatus){
+            const actions = {
+                0: "Submit",
+                "-1": "Recall",
+                1: "Review",
+                2: "Approve",
+                "-2": "Return",
+                5: "Request for Return"
+            };
+
+            const actionLabel = actions[newStatus];
+            const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+            const actionlabelcomplete = actionLabel + ' ' + typeLabel;
+            this.selected_label=actionlabelcomplete
+            this.selected_plan = revision_plan
+            this.selected_status = newStatus
+
+            // this.opcr_rating_id=id;
+            let url = '/revison_plan_documents/' + revision_plan.id;
+            // let url = '/monthly-details/monthly/accomplishments/object/' + empl_id + '/' + sem + '/' + e_year + '/' + idsemestral + '/' + my_month;
+            // alert(empl_id);
+            await axios.get(url).then((response) => {
+                this.docs = response.data;
+            }).finally(() => {
+                this.isLoading = false;
+            });
+            this.toggleReturnWithAmmendmentsModal()
+        },
+        formatFileSize(size) {
+            if (size < 1024) return size + ' B';
+            else if (size < 1024 * 1024) return (size / 1024).toFixed(2) + ' KB';
+            else return (size / (1024 * 1024)).toFixed(2) + ' MB';
+        },
+        isWithinCount() {
+            return (this.files.length + this.movs.length) <= 2;
+        },
+        isWithinLimit() {
+            const maxSize = 10 * 1024 * 1024; // 10 MB in bytes
+
+            // Sum size of selected files
+            const newFilesSize = this.files.reduce((sum, f) => parseFloat(sum) + parseFloat(f.size), 0);
+
+            // Sum size of already uploaded movs
+            const existingFilesSize = this.movs.reduce((sum, f) => parseFloat(sum) + parseFloat(f.file_size), 0);
+
+            const totalSize = parseFloat(newFilesSize) + parseFloat(existingFilesSize);
+            console.log("newFilesSize: "+newFilesSize);
+            console.log("existingFilesSize: "+existingFilesSize);
+            console.log("totalSize: "+totalSize);
+            console.log("maxSize: "+maxSize);
+            return totalSize <= maxSize;
+        },
+        async uploadFiles() {
+            if (this.files && this.files.length < 1) {
+                alert("No file chosen.")
+                return
+            }
+            if (!confirm("Are you sure you want to upload selected files?")) {
+                return;
+            }
+            this.show_warnings=true;
+            let formData = new FormData();
+
+            // Single file (optional)
+            if (this.file) {
+                formData.append("file", this.file);
+            }
+
+            // Multiple files
+            if (this.files && this.files.length > 0) {
+                // this.files.forEach((f, i) => {
+                //     formData.append("files[]", f); // use files[] so Laravel can treat it as an array
+                // });
+                this.files.forEach((f) => {
+                    formData.append("files[]", f);
+                });
+            }
+            // `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
+            // /update/{id}/{type}/{new_status}/upload/justification
+            await axios.post(
+                `/status/revision/update/${this.selected_plan.id}/${this.selected_label}/${this.selected_status}/upload/justification`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+            )
+            .then(response => {
+                console.log("Upload success:", response.data);
+                this.returnWithAmmendments(this.selected_plan, this.selected_status);
+                this.files=[]
+            })
+            .finally(response=> {
+                this.cancelFiles();
+            })
+            .catch(error => {
+                console.error("Upload error:", error.response?.data || error);
+            });
+        },
+        cancelFiles() {
+            // this.show_warnings=false;
+            this.files = [];                  // Clear the files array
+            this.$refs.fileInput.value = null;    // Reset the file input visually
+        },
+        handleFiles(event) {
+            const filesArray = Array.from(event.target.files);
+
+            // Filter only PDF files AND size <= 1 MB
+            const pdfFiles = filesArray.filter(file => {
+                const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+                const isSmallEnough = file.size <= 1024 * 1024; // 1 MB in bytes
+                return isPdf && isSmallEnough;
+            });
+
+            // Alert user for invalid files
+            if (pdfFiles.length !== filesArray.length) {
+                alert("Only PDF files under 1 MB are allowed! Invalid files will be ignored.");
+            }
+
+            this.files = pdfFiles;
+
+            console.log("Selected PDF files under 1 MB:", this.files);
+
+            // Optional: reset input if no valid files
+            if (this.files.length === 0) {
+                this.$refs.fileInput.value = null;
+            }
+
+
+            //**********ORIGINAL UNCHANGED */
+            // this.form.files = Array.from(event.target.files); // Store selected files
+            // const filesArray = Array.from(event.target.files);
+            console.log(filesArray); // check if files are here
+            this.files = Array.from(event.target.files);
+            console.log(this.files); // check if files are here
+        },
+        //ICON
+        getFileIcon(file) {
+            if (!file?.file_type) {
+                return '/images/icons/file.png'; // default if missing type
+            }
+
+            const type = file.file_type.toLowerCase();
+            const excelTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xlt', 'xltx', 'xltm'];
+            const wordTypes = ['doc', 'docx', 'dot', 'dotx', 'dotm'];
+            const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const pptTypes = ['ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'];
+            const multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];
+
+            if (excelTypes.includes(type)) {
+                return '/images/icons/excel.png';
+            }
+            else if (type === 'pdf') {
+                return '/images/icons/pdf.png';
+            }
+            else if (wordTypes.includes(type)) {
+                return '/images/icons/word.png';
+            }
+            else if (pptTypes.includes(type)) {
+                return '/images/icons/ppt.png';
+            }
+            else if (multimediaTypes.includes(type)) {
+                return '/images/icons/video.png';
+            }
+            else if (imageTypes.includes(type)) {
+                if(this.disk==='public'){
+                    return window.location.origin + "/storage/" + file.filepath;
+                }else{
+                    // return `http://122.53.120.18:8067/images/${file.filepath}`;
+                    return `/images/icons/images.png`;
+                }
+
+            }
+            else {
+                return '/images/icons/file.png'; // default icon
+            }
+        },
+        // FOIR PREVIEWS
+        previewFile(file) {
+            const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];
+            // alert("previewFile " + this.disk + " "+file.file_type)
+            // console.log(this.fileBaseUrl)
+            this.current_filepath = file.filepath
+            if(this.disk==='public'){
+                // alert("PUBLIC")
+                this.view_link = window.location.origin + "/storage/" + file.filepath;
+                if (imageTypes.includes(file.file_type?.toLowerCase()) || multimediaTypes.includes(file.file_type?.toLowerCase())) {
+                    // Directly open images in a new tab
+                    // this.openImageModal()
+                    // this.displaySideModal = true
+                    window.open(this.view_link, '_blank');
+                    //
+                    return;
+                }
+
+                if (this.isPreviewable(file.file_type)) {
+                    this.displaySideModal = true
+                    this.file_extension = file.file_type
+                    // this.view_link = "http://122.53.120.18:8067/images/"+file.filepath
+                    // window.open(file.file_url, '_blank')
+                } else {
+                    alert('This file type cannot be previewed.')
+                }
+
+            }else{
+
+                if (imageTypes.includes(file.file_type?.toLowerCase()) || multimediaTypes.includes(file.file_type?.toLowerCase())) {
+                    // Directly open images in a new tab
+                    window.open(`http://122.53.120.18:8067/images/${file.filepath}`, '_blank');
+                    return;
+                }
+
+                if (this.isPreviewable(file.file_type)) {
+                    // this.displaySideModal = true
+                    this.view_link = "http://122.53.120.18:8067/images/"+file.filepath
+                    window.open(this.view_link, '_blank');
+                    this.file_extension = file.file_type
+
+                    // window.open(file.file_url, '_blank')
+                } else {
+                    alert('This file type cannot be previewed.')
+                }
+            }
+
+        },
+        // TOGGLE SELECT
+        toggleSelectAll(event) {
+            if (event.target.checked) {
+                // Add all file IDs
+                this.file_ids = this.docs.map(file => file.id);
+            } else {
+                // Remove all file IDs
+                this.file_ids = [];
+            }
+        },
+        // DELETE MULTIPLE
+        toggleFileSelection(fileId, event) {
+            if (event.target.checked) {
+                if (!this.file_ids.includes(fileId)) {
+                    this.file_ids.push(fileId);
+                }
+            } else {
+                this.file_ids = this.file_ids.filter(id => id !== fileId);
+            }
+        },
+        async deleteFile(id) {
+            var ids=[];
+            if (confirm('Are you sure you want to delete this file?')) {
+                ids.push(id);
+                await axios.delete("/revison_plan_documents/delete-multiple/many", {
+                        data: { file_ids: ids }
+                    }).then(response => {
+                        console.log("Files deleted successfully", response.data);
+                        // this.showModalMOV(this.opcr_rating_id);
+                    })
+                    .catch(error => {
+                        console.error("Failed to delete files", error.response?.data || error);
+                    });
+            }
+
+
+        },
+
+        async deleteFiles() {
+            // alert("/movs/delete-multiple/many")
+            if (!this.file_ids.length) {
+                alert("No files selected for deletion");
+                return;
+            }
+
+            if (!confirm("Are you sure you want to delete selected files?")) {
+                return;
+            }
+
+            try {
+                await axios.delete("/revison_plan_documents/delete-multiple/many", {
+                    data: { file_ids: this.file_ids }
+                }).then(response => {
+                    console.log("Files deleted successfully", response.data);
+                    this.returnWithAmmendments(this.selected_plan, this.selected_status);
+                }).finally(response=>{
+                    this.file_ids = [];
+                    this.allSelected=false;
+                })
+                .catch(error => {
+                    console.error("Failed to delete files", error.response?.data || error);
+                });
+            } catch (error) {
+                console.error(error);
+                alert("Failed to delete files");
+            }
+        },
+
+        returnWithAmmendmentsActual(){
+            // const unexecuted = this.docs.filter(doc => doc.return_executed === "0");
+            const unexecuted = this.docs.filter(doc => doc.return_executed == 0);
+
+            var confirm_message="";
+            // if (unexecuted.length < 1) {
+            //     alert("You need to attach a new justification letter!.");
+            //     return;
+            // }
+
+            // 2. Validate: remarks must not be empty
+            if (!this.remarks || this.remarks.trim() === '') {
+                alert("Remarks are required before returning the plan.");
+                return;
+            }
+
+            // 3. Confirm action
+            confirm_message = `Are you sure you want to ${this.selected_label}?`;
+
+            if (!confirm(confirm_message)) {
+                return;
+            }
+            confirm_message = `Are you sure you want to ${this.selected_label}?`;
+
+            if (!confirm(confirm_message)) {
+                return;
+            }
+
+            // Call the original method again and pass stored parameters
+            this.statusAction(this.selected_plan, this.selected_status);
+            this.ReturnWithAmmendmentsModalVisible=false;
+
+        },
+        statusAction(revision_plan, newStatus, column) {
+            const actions = {
+                0: "Submit",
+                "-1": "Recall",
+                1: "Review",
+                2: "Approve",
+                "-2": "Return",
+                5: "Request for Return"
+            };
+            const actionLabel = actions[newStatus];
+            const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+
+            const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+            const actionlabelcomplete = actionLabel + ' ' + typeLabel;
+            if (!confirm(confirmMessage)) return;
+
+            Inertia.post(
+                `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
+                {
+                    remarks: this.remarks,   // ← SEND IT HERE
+                    column: column
+                },
+                {
+                    preserveScroll: true
+                }
+            );
+        },
     }
 };
 </script>

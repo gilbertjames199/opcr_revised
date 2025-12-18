@@ -553,6 +553,7 @@
                                         Generate Project Design
                                     </button>
                                 </td>
+                                <!-- Return -->
                                 <td v-if="my_source=='rev_app'">
                                     <button
                                         v-if="['0'].includes(dat.status)"
@@ -1767,7 +1768,8 @@ export default {
                 "-1": "Recall",
                 1: "Review",
                 2: "Approve",
-                "-2": "Return"
+                "-2": "Return",
+                5: "Request for Return"
             };
             const actionLabel = actions[newStatus];
             const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
