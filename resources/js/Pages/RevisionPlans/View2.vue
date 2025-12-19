@@ -354,6 +354,7 @@
                                 @mouseup="handleSelection('rationale')"
                                 v-html="paps.rationale"
                             ></div>
+
                         </div>
                         <br>
                      </span>

@@ -53,7 +53,7 @@ export default {
         },
         width: {
             type: Number,
-            default: 500 // roughly Bootstrap col-3
+            default: 350 // roughly Bootstrap col-3
         }
     },
 
@@ -64,7 +64,7 @@ export default {
             posY: 50,
             modalWidth: this.width,
             // modalWidth: Math.min(Math.max(baseWidth, 260), 420),
-            modalHeight: 700,
+            modalHeight: 450,
             dragging: false,
             resizing: false,
             resizeDir: null,
@@ -130,8 +130,8 @@ export default {
             this.startY = e.clientY
         },
         onMouseMove(e) {
-            const MIN_SIZE_WIDTH = 200
-            const MIN_SIZE_HEIGHT = 370
+            const MIN_SIZE_WIDTH = 330
+            const MIN_SIZE_HEIGHT = 450
             if (this.resizing && e.buttons !== 1) {
                 this.onMouseUp()
                 return

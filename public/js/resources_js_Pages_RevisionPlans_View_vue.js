@@ -239,11 +239,19 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
       },
       deep: true
     },
-    show_comment_modal: {
-      handler: function handler() {
-        this.$nextTick(function () {});
-      }
-    }
+    show_comment_modal: function show_comment_modal(value) {
+      var _this3 = this;
+
+      this.$nextTick(function () {
+        if (value == false) {
+          _this3.removeHighlights();
+        }
+      });
+    } // {
+    //     handler(){
+    //     }
+    // }
+
   },
   data: function data() {
     return {
@@ -437,7 +445,7 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
       this.removeHighlights();
     },
     saveComment: function saveComment() {
-      var _this3 = this;
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var myurl, table_row_id_l, payload;
@@ -451,45 +459,45 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
 
                 table_row_id_l = 0; // console.log(this.comment_table)
 
-                if (_this3.comment_table === 'revision_plans') {
-                  table_row_id_l = _this3.comment_reference_object.id;
+                if (_this4.comment_table === 'revision_plans') {
+                  table_row_id_l = _this4.comment_reference_object.id;
                 }
 
-                if (_this3.comment_table === 'strategy_projects') {
-                  table_row_id_l = _this3.comment_reference_object.strategy_id;
+                if (_this4.comment_table === 'strategy_projects') {
+                  table_row_id_l = _this4.comment_reference_object.strategy_id;
                 }
 
-                if (_this3.comment_table === 'activity_projects') {
-                  table_row_id_l = _this3.comment_reference_object.activity_id;
+                if (_this4.comment_table === 'activity_projects') {
+                  table_row_id_l = _this4.comment_reference_object.activity_id;
                 }
 
-                if (_this3.comment_table === 'budget_requirements') {
-                  table_row_id_l = _this3.comment_reference_object.id; // alert(table_row_id_l)
+                if (_this4.comment_table === 'budget_requirements') {
+                  table_row_id_l = _this4.comment_reference_object.id; // alert(table_row_id_l)
                   // console.log(this.comment_reference_object)
                 }
 
-                if (_this3.comment_table === 'team_plans') {
-                  table_row_id_l = _this3.comment_reference_object.id;
+                if (_this4.comment_table === 'team_plans') {
+                  table_row_id_l = _this4.comment_reference_object.id;
                 }
 
-                if (_this3.comment_table === 'monitoring_and_evaluations') {
-                  table_row_id_l = _this3.comment_reference_object.id;
+                if (_this4.comment_table === 'monitoring_and_evaluations') {
+                  table_row_id_l = _this4.comment_reference_object.id;
                 }
 
-                if (_this3.comment_table === 'risk_manangements') {
-                  table_row_id_l = _this3.comment_reference_object.id;
+                if (_this4.comment_table === 'risk_manangements') {
+                  table_row_id_l = _this4.comment_reference_object.id;
                 }
 
-                if (_this3.comment_table === 'expected_revised_outputs') {
-                  table_row_id_l = _this3.comment_reference_object.id;
+                if (_this4.comment_table === 'expected_revised_outputs') {
+                  table_row_id_l = _this4.comment_reference_object.id;
                 }
 
-                if (_this3.comment_table === 'expected_revised_outcomes') {
-                  table_row_id_l = _this3.comment_reference_object.id;
+                if (_this4.comment_table === 'expected_revised_outcomes') {
+                  table_row_id_l = _this4.comment_reference_object.id;
                 }
 
-                if (_this3.comment_table === 'signatories') {
-                  table_row_id_l = _this3.comment_reference_object.id;
+                if (_this4.comment_table === 'signatories') {
+                  table_row_id_l = _this4.comment_reference_object.id;
                 } //alert(table_row_id_l)
                 // this.$inertia.post(myurl, {
                 //     params: {
@@ -509,37 +517,37 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
 
                 payload = {
                   table_row_id: table_row_id_l,
-                  table_name: _this3.comment_table,
-                  column_name: _this3.comment_column,
+                  table_name: _this4.comment_table,
+                  column_name: _this4.comment_column,
                   comment_status: 0,
-                  comment: _this3.comment
+                  comment: _this4.comment
                 };
 
-                if (['rationale', 'objective', 'beneficiaries'].includes(_this3.comment_column)) {
-                  payload.selected_text = _this3.selectedText;
-                  payload.start_index = _this3.selectedStart;
-                  payload.end_index = _this3.selectedEnd;
-                  payload.context_before = _this3.contextBefore;
-                  payload.context_after = _this3.contextAfter;
+                if (['rationale', 'objective', 'beneficiaries'].includes(_this4.comment_column)) {
+                  payload.selected_text = _this4.selectedText;
+                  payload.start_index = _this4.selectedStart;
+                  payload.end_index = _this4.selectedEnd;
+                  payload.context_before = _this4.contextBefore;
+                  payload.context_after = _this4.contextAfter;
                 }
 
                 console.log(payload); // alert(this.selectedStart+ " Selected Start");
 
-                console.log("selectedText: " + _this3.selectedText);
-                console.log("selectedStart: " + _this3.selectedStart);
-                console.log("selectedEnd: " + _this3.selectedEnd);
-                console.log("contextBefore: " + _this3.contextBefore);
-                console.log("contextAfter: " + _this3.contextAfter);
+                console.log("selectedText: " + _this4.selectedText);
+                console.log("selectedStart: " + _this4.selectedStart);
+                console.log("selectedEnd: " + _this4.selectedEnd);
+                console.log("contextBefore: " + _this4.contextBefore);
+                console.log("contextAfter: " + _this4.contextAfter);
                 _context.next = 22;
-                return _this3.$nextTick();
+                return _this4.$nextTick();
 
               case 22:
-                _this3.$inertia.post('/revision-plan-comments/store', payload);
+                _this4.$inertia.post('/revision-plan-comments/store', payload);
 
-                _this3.closeCommentModal();
+                _this4.closeCommentModal();
 
                 setTimeout(function () {
-                  _this3.comment = "";
+                  _this4.comment = "";
                 }, 1000); // 1000 milliseconds = 1 second
 
               case 25:
@@ -576,12 +584,28 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
       var endIndex = startIndex + text.length; // Compute context (30 chars before and after)
 
       var contextBefore = fullText.substring(Math.max(0, startIndex - 30), startIndex);
-      var contextAfter = fullText.substring(endIndex, Math.min(fullText.length, endIndex + 30));
-      this.selectedStart = startIndex;
-      this.selectedEnd = endIndex;
+      var contextAfter = fullText.substring(endIndex, Math.min(fullText.length, endIndex + 30)); // this.selectedStart = startIndex;
+      // this.selectedEnd = endIndex;
+
+      var start = startIndex;
+      var end = endIndex; // normalize selection direction
+
+      if (start > end) {
+        var _ref = [end, start];
+        start = _ref[0];
+        end = _ref[1];
+      }
+
+      this.selectedStart = start;
+      this.selectedEnd = end;
       this.contextBefore = contextBefore;
-      this.contextAfter = contextAfter; //
+      this.contextAfter = contextAfter;
+
+      if (this.selectedStart === -1 || this.selectedEnd === -1) {
+        return;
+      } //
       // console.log("Selected text:", text);
+
 
       if (column === 'rationale') {
         this.handleClick('Rationale', 'rationale', this.selectedText, 'rationale', 'revision_plans', this.paps, this.paps.comments);
@@ -617,18 +641,18 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
     },
     // Re-render Comments on Save
     applyAllHighlights: function applyAllHighlights() {
-      var _this4 = this;
+      var _this5 = this;
 
       var columns = ['rationale', 'beneficiaries', 'objective'];
       columns.forEach(function (column) {
-        var el = _this4.$refs["".concat(column, "El")];
+        var el = _this5.$refs["".concat(column, "El")];
 
-        if (!el || !_this4.paps[column]) return;
+        if (!el || !_this5.paps[column]) return;
         var instance = new Mark(el); // 🔴 MUST remove old highlights first
 
         instance.unmark({
           done: function done() {
-            _this4.highlightWithComments(_this4.paps[column], _this4.all_comments, column, el);
+            _this5.highlightWithComments(_this5.paps[column], _this5.all_comments, column, el);
           }
         });
       });
@@ -660,7 +684,7 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
     },
     // END OF COMMENTS **********************************************************************************************
     submitAction: function submitAction(type, comment_id, index) {
-      var _this5 = this;
+      var _this6 = this;
 
       var actionText = {
         "delete": "delete this comment",
@@ -682,12 +706,12 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
         preserveScroll: true,
         onSuccess: function onSuccess() {
           if (type === 'delete') {
-            _this5.comments.splice(index, 1); // alert("Comment deleted successfully.");
+            _this6.comments.splice(index, 1); // alert("Comment deleted successfully.");
 
           } else if (type === 'reset') {
-            _this5.comments[index].comment_status = '0'; // alert("Comment status reset to unresolved.");
+            _this6.comments[index].comment_status = '0'; // alert("Comment status reset to unresolved.");
           } else if (type === 'resolve') {
-            _this5.comments[index].comment_status = '1'; // alert("Comment resolved successfully.");
+            _this6.comments[index].comment_status = '1'; // alert("Comment resolved successfully.");
           }
         }
       });
@@ -736,7 +760,7 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
       return rr1.concat(rr2);
     },
     updateComment: function updateComment(id, comment, index) {
-      var _this6 = this;
+      var _this7 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var myurl;
@@ -754,7 +778,7 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
                 // clearTimeout(this.timeouts[`activity_${strategyIndex}_${activityIndex}`]);
                 myurl = "/revision-plan-comments/" + id;
 
-                if (_this6.reply_concat.trim()) {
+                if (_this7.reply_concat.trim()) {
                   _context2.next = 3;
                   break;
                 }
@@ -763,9 +787,9 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
 
               case 3:
                 try {
-                  _this6.$inertia.patch(myurl, {
+                  _this7.$inertia.patch(myurl, {
                     params: {
-                      reply: _this6.reply_concat,
+                      reply: _this7.reply_concat,
                       id: id
                     }
                   }, {
@@ -774,21 +798,21 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
                       // $uname . ' replied: ' . $reply . '<br>';
                       var comment_init = "";
 
-                      if (_this6.comments[index].reply) {
-                        comment_init = _this6.comments[index].reply;
+                      if (_this7.comments[index].reply) {
+                        comment_init = _this7.comments[index].reply;
                       }
 
-                      _this6.comments[index].reply = comment_init + " <b>" + _this6.auth.user.FullName + "</b> replied: <i>" + _this6.reply_concat + "</i> <br><br>";
-                      _this6.comments[index].show_comment_box = false; // Hide the comment box after replying
+                      _this7.comments[index].reply = comment_init + " <b>" + _this7.auth.user.FullName + "</b> replied: <i>" + _this7.reply_concat + "</i> <br><br>";
+                      _this7.comments[index].show_comment_box = false; // Hide the comment box after replying
 
-                      _this6.reply_concat = ""; // Clear the reply input after saving
+                      _this7.reply_concat = ""; // Clear the reply input after saving
 
-                      _this6.is_replying = false; // Reset the replying state
+                      _this7.is_replying = false; // Reset the replying state
                     }
                   }); // console.log(payload);
 
 
-                  _this6.unsaved = false; // Reset unsaved flag after successful save
+                  _this7.unsaved = false; // Reset unsaved flag after successful save
                 } catch (error) {
                   console.error('Error updating comment:', error);
                 }
@@ -1176,7 +1200,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     width: {
       type: Number,
-      "default": 500 // roughly Bootstrap col-3
+      "default": 350 // roughly Bootstrap col-3
 
     }
   },
@@ -1187,7 +1211,7 @@ __webpack_require__.r(__webpack_exports__);
       posY: 50,
       modalWidth: this.width,
       // modalWidth: Math.min(Math.max(baseWidth, 260), 420),
-      modalHeight: 700,
+      modalHeight: 450,
       dragging: false,
       resizing: false,
       resizeDir: null,
@@ -1246,8 +1270,8 @@ __webpack_require__.r(__webpack_exports__);
       this.startY = e.clientY;
     },
     onMouseMove: function onMouseMove(e) {
-      var MIN_SIZE_WIDTH = 200;
-      var MIN_SIZE_HEIGHT = 370;
+      var MIN_SIZE_WIDTH = 330;
+      var MIN_SIZE_HEIGHT = 450;
 
       if (this.resizing && e.buttons !== 1) {
         this.onMouseUp();
@@ -2805,24 +2829,32 @@ var _hoisted_394 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 /* HOISTED */
 );
 
-var _hoisted_395 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_395 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Index Start", -1
+/* HOISTED */
+);
+
+var _hoisted_396 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Index End", -1
+/* HOISTED */
+);
+
+var _hoisted_397 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "d-flex justify-content-center"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_396 = {
+var _hoisted_398 = {
   key: 2,
   "class": "fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center"
 };
 
-var _hoisted_397 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_399 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "bg-white p-4 rounded w-1/3 shadow-lg"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_398 = [_hoisted_397];
+var _hoisted_400 = [_hoisted_399];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _$props$paps$checklis, _$props$paps$checklis2;
 
@@ -3311,8 +3343,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
   /* CLASS */
-  )]), _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p ref=\"rationale\"\n                                v-html=\"renderedText('rationale')\"\n                                @mouseup=\"handleSelection('rationale')\"\n                                class=\"cursor-text\"></p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ highlightedText('rationale') }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.rationale\"\n                                style=\"white-space: pre-line\"\n                                ref=\"rationaleDiv\"\n                                @mouseup=\"onHighlight\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ renderCommentedText(paps.rationale, all_comments, 'rationale') }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p v-html=\"renderCommentedText(paps.rationale, all_comments, 'rationale')\"\n                                @mouseup=\"handleSelection('rationale')\"\n                            ></p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ paps.rationale }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    ref: "rationaleEl",
+  )]), _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p ref=\"rationale\"\n                                v-html=\"renderedText('rationale')\"\n                                @mouseup=\"handleSelection('rationale')\"\n                                class=\"cursor-text\"></p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ highlightedText('rationale') }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.rationale\"\n                                style=\"white-space: pre-line\"\n                                ref=\"rationaleDiv\"\n                                @mouseup=\"onHighlight\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ renderCommentedText(paps.rationale, all_comments, 'rationale') }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p v-html=\"renderCommentedText(paps.rationale, all_comments, 'rationale')\"\n                                @mouseup=\"handleSelection('rationale')\"\n                            ></p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.paps.rationale) + " ", 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div ref=\"rationaleEl\"\n                                @mouseup=\"handleSelection('rationale')\"\n                                v-html=\"paps.rationale\"\n                            ></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     onMouseup: _cache[31] || (_cache[31] = function ($event) {
       return $options.handleSelection('rationale');
     }),
@@ -4805,10 +4838,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         , _hoisted_337)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_339, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
           "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["clickable-comment", 'comment-rejected']),
           onClick: function onClick($event) {
-            return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? _ctx.resolvePapsTargetId($props.paps, comment.column_name, comment) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
+            return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? "".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
           },
           title: ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? comment.selected_text : ''
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                            ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\n                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment) + " ", 1
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                            ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\n                                            resolvePapsTargetId(paps, comment.column_name, comment)\n                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment) + " ", 1
+        /* TEXT */
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.id) + "_" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.table_name) + "_" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.column_name), 1
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>\n                                                    <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{\n                                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                                                    ? comment.column_name\n                                                                    : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)\n                                                            }} ")], 8
         /* PROPS */
@@ -4974,6 +5009,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* TEXT */
       )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_394, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(": " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.contextBefore), 1
       /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_395, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(": " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.selectedStart), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_396, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(": " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.selectedEnd), 1
+      /* TEXT */
       )])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),
     _: 1
@@ -4981,7 +5020,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-3\">\n            <div class=\"p-20 bd sticky-comments\" v-if=\"show_comment_modal\" style=\"background: rgba(255, 255, 255, 0.7);\">\n                <div class=\"d-flex justify-content-end\">\n                    <button class=\"close-btn text-danger\" @click=\"closeCommentModal\">\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-x-lg\" viewBox=\"0 0 16 16\">\n                            <path d=\"M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z\"/>\n                        </svg>\n                    </button>\n                </div>\n                <span v-if=\"auth.user.department_code==='04'\">\n                    <div>\n                        <textarea class=\"form-control\" rows=\"5\" v-model=\"comment\"\n                            placeholder=\"Write your comment here...\"></textarea>\n                    </div>\n                    <div>\n                        <button class=\"btn btn-primary mt-2 text-white\" @click=\"saveComment()\">\n                            Submit Comment\n                        </button>\n                    </div>\n                    <div>\n                        <div><b>Section: </b>{{ comment_section }}</div>\n                        <div><b>Subtitle:</b> <span v-html=\"comment_subtitle\"></span></div>\n                        <div><b>Data:</b> <span v-html=\"comment_data\"></span></div>\n                        <div><b>Column:</b> {{ comment_column }}\n                            <span v-if=\"comment_column=='Person Affected'\">Preventive Measures</span>\n                            <span v-else-if=\"comment_column=='Management'\">Mechanisms to monitor</span>\n                            <span v-else>{{ comment_column }}</span>\n                        </div>\n                        <div><b>Table:</b> {{ comment_table }}</div>\n                        <div><b>Context After</b>: {{ contextAfter}}</div>\n                        <div><b>Context Before</b>: {{ contextBefore}}</div>\n                    </div>\n                </span>\n            </div>\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <CommentModal v-if=\"show_comment_modal\" @close-modal-event=\"closeCommentModal\" title=\"COMMENTS\">\n            <div class=\"d-flex justify-content-center\">\n\n            </div>\n            <div>\n                <span v-if=\"auth.user.department_code==='04'\">\n                    <div>\n                        <textarea class=\"form-control\" rows=\"5\" v-model=\"comment\"\n                            placeholder=\"Write your comment here...\"></textarea>\n                    </div>\n                    <div>\n                        <button class=\"btn btn-primary mt-2 text-white\" @click=\"saveComment()\">\n                            Submit Comment\n                        </button>\n                    </div>\n                </span>\n\n                <div><b>Section: </b>{{ comment_section }}</div>\n                <div><b>Subtitle:</b> <span v-html=\"comment_subtitle\"></span></div>\n                <div><b>Data:</b> <span v-html=\"comment_data\"></span></div>\n                <div><b>Column:</b> {{ comment_column }}\n                    <span v-if=\"comment_column=='Person Affected'\">Preventive Measures</span>\n                    <span v-else-if=\"comment_column=='Management'\">Mechanisms to monitor</span>\n                    <span v-else>{{ comment_colun }}</span>\n                </div>\n                <div><b>Table:</b> {{ comment_table }}</div>\n\n\n                <div class=\"col-9\">\n                    <table class=\"table table-hover table-bordered border-dark\">\n                        <thead>\n                            <tr>\n                                <th class=\"bg-secondary text-white\">Comment</th>\n                                <th class=\"bg-secondary text-white\">Status&nbsp;&nbsp;</th>\n                                <th class=\"bg-secondary text-white\" v-if=\"auth.user.department_code==='04'\">Actions&nbsp;&nbsp;</th>\n\n\n                                <th class=\"bg-secondary text-white\">Date</th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            <tr v-for=\"(comment,index) in comments\">\n                                <td>\n                                    <h6 v-if=\"comment.user\">{{ comment.user.FullName }}&nbsp;commented:&nbsp;&nbsp;</h6>\n                                    <h5 class=\"bg-white p-3 rounded border\"><i>{{ comment.comment}}</i></h5>\n                                    <br>\n                                    <div v-html=\"comment.reply\"></div>\n                                    <button class=\"btn btn-link p-0\" v-if=\"comment.show_comment_box==false\" @click=\"showCommentBox(index)\">reply</button>\n                                    <textarea class=\"form-control\"\n                                        type=\"text\"\n                                        v-if=\"comment.show_comment_box\"\n                                        v-model=\"reply_concat\"\n                                    >\n                                    </textarea>\n                                    <button :disabled=\"!reply_concat || reply_concat.trim() === ''\" class=\"btn btn-primary text-white\" v-if=\"comment.show_comment_box\" @click=\"updateComment(comment.id, comment, index)\" >Send</button>\n                                    <button class=\"btn btn-danger text-white\" v-if=\"comment.show_comment_box\" @click=\"showCommentBox(index)\">Cancel</button>\n                                </td>\n                                <td :style=\"{ backgroundColor: comment.comment_status === '0' ? '#fecaca' : '#bbf7d0',\n                                    color: comment.comment_status === '0' ? '#991b1b' : '#065f46' }\" class=\"px-2 py-1 rounded\">\n                                    <b>{{ comment.comment_status === '0' ? 'Unresolved' : 'OK' }}</b>\n                                </td>\n                                <td v-if=\"auth.user.department_code==='04'\">\n                                    <div >\n                                        <button class=\"btn btn-success text-white\"\n                                        @click=\"submitAction('resolve', comment.id, index)\"\n                                        title=\"Mark comment as Resolved\">\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-check-circle\" viewBox=\"0 0 16 16\">\n                                                <path d=\"M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16\"/>\n                                                <path d=\"m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                        <button class=\"btn btn-primary text-white\"\n                                        @click=\"submitAction('reset', comment.id, index)\"\n                                        title=\"Reset to Unresolved\">\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-counterclockwise\" viewBox=\"0 0 16 16\">\n                                                <path fill-rule=\"evenodd\" d=\"M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z\"/>\n                                                <path d=\"M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                        <button class=\"btn btn-danger text-white\"\n                                        @click=\"submitAction('delete', comment.id, index)\"\n                                        title=\"Delete this comment\"\n                                        >\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-trash-fill\" viewBox=\"0 0 16 16\">\n                                                <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                    </div>\n                                </td>\n\n\n                                <td>{{ formatDate(comment.created_at) }}</td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n\n            </div>\n            <br>\n        </CommentModal> "), _hoisted_395, $data.showModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_396, _hoisted_398)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{paps}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ department_code_project }}\n        {{ department_code_user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }}\n        {{ paps.is_strategy_based }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ all_comments }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Sa class=\"row gap-10\" ni")])], 64
+  , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-3\">\n            <div class=\"p-20 bd sticky-comments\" v-if=\"show_comment_modal\" style=\"background: rgba(255, 255, 255, 0.7);\">\n                <div class=\"d-flex justify-content-end\">\n                    <button class=\"close-btn text-danger\" @click=\"closeCommentModal\">\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-x-lg\" viewBox=\"0 0 16 16\">\n                            <path d=\"M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z\"/>\n                        </svg>\n                    </button>\n                </div>\n                <span v-if=\"auth.user.department_code==='04'\">\n                    <div>\n                        <textarea class=\"form-control\" rows=\"5\" v-model=\"comment\"\n                            placeholder=\"Write your comment here...\"></textarea>\n                    </div>\n                    <div>\n                        <button class=\"btn btn-primary mt-2 text-white\" @click=\"saveComment()\">\n                            Submit Comment\n                        </button>\n                    </div>\n                    <div>\n                        <div><b>Section: </b>{{ comment_section }}</div>\n                        <div><b>Subtitle:</b> <span v-html=\"comment_subtitle\"></span></div>\n                        <div><b>Data:</b> <span v-html=\"comment_data\"></span></div>\n                        <div><b>Column:</b> {{ comment_column }}\n                            <span v-if=\"comment_column=='Person Affected'\">Preventive Measures</span>\n                            <span v-else-if=\"comment_column=='Management'\">Mechanisms to monitor</span>\n                            <span v-else>{{ comment_column }}</span>\n                        </div>\n                        <div><b>Table:</b> {{ comment_table }}</div>\n                        <div><b>Context After</b>: {{ contextAfter}}</div>\n                        <div><b>Context Before</b>: {{ contextBefore}}</div>\n                    </div>\n                </span>\n            </div>\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <CommentModal v-if=\"show_comment_modal\" @close-modal-event=\"closeCommentModal\" title=\"COMMENTS\">\n            <div class=\"d-flex justify-content-center\">\n\n            </div>\n            <div>\n                <span v-if=\"auth.user.department_code==='04'\">\n                    <div>\n                        <textarea class=\"form-control\" rows=\"5\" v-model=\"comment\"\n                            placeholder=\"Write your comment here...\"></textarea>\n                    </div>\n                    <div>\n                        <button class=\"btn btn-primary mt-2 text-white\" @click=\"saveComment()\">\n                            Submit Comment\n                        </button>\n                    </div>\n                </span>\n\n                <div><b>Section: </b>{{ comment_section }}</div>\n                <div><b>Subtitle:</b> <span v-html=\"comment_subtitle\"></span></div>\n                <div><b>Data:</b> <span v-html=\"comment_data\"></span></div>\n                <div><b>Column:</b> {{ comment_column }}\n                    <span v-if=\"comment_column=='Person Affected'\">Preventive Measures</span>\n                    <span v-else-if=\"comment_column=='Management'\">Mechanisms to monitor</span>\n                    <span v-else>{{ comment_colun }}</span>\n                </div>\n                <div><b>Table:</b> {{ comment_table }}</div>\n\n\n                <div class=\"col-9\">\n                    <table class=\"table table-hover table-bordered border-dark\">\n                        <thead>\n                            <tr>\n                                <th class=\"bg-secondary text-white\">Comment</th>\n                                <th class=\"bg-secondary text-white\">Status&nbsp;&nbsp;</th>\n                                <th class=\"bg-secondary text-white\" v-if=\"auth.user.department_code==='04'\">Actions&nbsp;&nbsp;</th>\n\n\n                                <th class=\"bg-secondary text-white\">Date</th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            <tr v-for=\"(comment,index) in comments\">\n                                <td>\n                                    <h6 v-if=\"comment.user\">{{ comment.user.FullName }}&nbsp;commented:&nbsp;&nbsp;</h6>\n                                    <h5 class=\"bg-white p-3 rounded border\"><i>{{ comment.comment}}</i></h5>\n                                    <br>\n                                    <div v-html=\"comment.reply\"></div>\n                                    <button class=\"btn btn-link p-0\" v-if=\"comment.show_comment_box==false\" @click=\"showCommentBox(index)\">reply</button>\n                                    <textarea class=\"form-control\"\n                                        type=\"text\"\n                                        v-if=\"comment.show_comment_box\"\n                                        v-model=\"reply_concat\"\n                                    >\n                                    </textarea>\n                                    <button :disabled=\"!reply_concat || reply_concat.trim() === ''\" class=\"btn btn-primary text-white\" v-if=\"comment.show_comment_box\" @click=\"updateComment(comment.id, comment, index)\" >Send</button>\n                                    <button class=\"btn btn-danger text-white\" v-if=\"comment.show_comment_box\" @click=\"showCommentBox(index)\">Cancel</button>\n                                </td>\n                                <td :style=\"{ backgroundColor: comment.comment_status === '0' ? '#fecaca' : '#bbf7d0',\n                                    color: comment.comment_status === '0' ? '#991b1b' : '#065f46' }\" class=\"px-2 py-1 rounded\">\n                                    <b>{{ comment.comment_status === '0' ? 'Unresolved' : 'OK' }}</b>\n                                </td>\n                                <td v-if=\"auth.user.department_code==='04'\">\n                                    <div >\n                                        <button class=\"btn btn-success text-white\"\n                                        @click=\"submitAction('resolve', comment.id, index)\"\n                                        title=\"Mark comment as Resolved\">\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-check-circle\" viewBox=\"0 0 16 16\">\n                                                <path d=\"M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16\"/>\n                                                <path d=\"m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                        <button class=\"btn btn-primary text-white\"\n                                        @click=\"submitAction('reset', comment.id, index)\"\n                                        title=\"Reset to Unresolved\">\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-counterclockwise\" viewBox=\"0 0 16 16\">\n                                                <path fill-rule=\"evenodd\" d=\"M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z\"/>\n                                                <path d=\"M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                        <button class=\"btn btn-danger text-white\"\n                                        @click=\"submitAction('delete', comment.id, index)\"\n                                        title=\"Delete this comment\"\n                                        >\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-trash-fill\" viewBox=\"0 0 16 16\">\n                                                <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\n                                            </svg>\n                                        </button>&nbsp;\n                                    </div>\n                                </td>\n\n\n                                <td>{{ formatDate(comment.created_at) }}</td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n\n            </div>\n            <br>\n        </CommentModal> "), _hoisted_397, $data.showModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_398, _hoisted_400)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{paps}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ department_code_project }}\n        {{ department_code_user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }}\n        {{ paps.is_strategy_based }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ all_comments }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Sa class=\"row gap-10\" ni")])], 64
   /* STABLE_FRAGMENT */
   );
 }

@@ -363,12 +363,17 @@
                             <!-- <p v-html="renderCommentedText(paps.rationale, all_comments, 'rationale')"
                                 @mouseup="handleSelection('rationale')"
                             ></p> -->
-                            <!-- {{ paps.rationale }} -->
+                            {{ paps.rationale }}
 
-                            <div ref="rationaleEl"
+                            <!-- <div ref="rationaleEl"
+                                @mouseup="handleSelection('rationale')"
+                                v-html="paps.rationale"
+                            ></div> -->
+                            <div
                                 @mouseup="handleSelection('rationale')"
                                 v-html="paps.rationale"
                             ></div>
+
                         </div>
                         <br>
                     </span>
@@ -2747,7 +2752,7 @@
                                                     class="clickable-comment"
                                                     @click="scrollToSection(
                                                         ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                            ? resolvePapsTargetId(paps, comment.column_name, comment)
+                                                            ? `${comment.id}_${comment.table_name}_${comment.column_name}`
                                                             : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                     )"
                                                     :class="'comment-rejected'"
@@ -2757,8 +2762,10 @@
                                                 >
                                                 <!-- Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                             ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                            resolvePapsTargetId(paps, comment.column_name, comment)
                                             : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
                                                     {{ comment.comment }}
+                                                    <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
                                                     <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
                                                     <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p> -->
                                                                         <!-- {{
@@ -2988,6 +2995,8 @@
                     <div><b>Table:</b> {{ comment_table }}</div>
                     <div><b>Context After</b>: {{ contextAfter}}</div>
                     <div><b>Context Before</b>: {{ contextBefore}}</div>
+                    <div><b>Index Start</b>: {{ selectedStart }}</div>
+                    <div><b>Index End</b>: {{ selectedEnd }}</div>
                 </div>
             </span>
         </SmallModalCommentActions>
@@ -3343,13 +3352,19 @@ export default {
             },
             deep: true
         },
-        show_comment_modal: {
-            handler(){
-                this.$nextTick(() =>{
+        show_comment_modal: (function(value){
+            this.$nextTick(() =>{
+                    if(value==false){
+                        this.removeHighlights();
+                    }
 
                 })
-            }
-        }
+        })
+        // {
+        //     handler(){
+
+        //     }
+        // }
     },
     data() {
         return {
@@ -3667,10 +3682,23 @@ export default {
             const contextBefore = fullText.substring(Math.max(0, startIndex - 30), startIndex);
             const contextAfter = fullText.substring(endIndex, Math.min(fullText.length, endIndex + 30));
 
-            this.selectedStart = startIndex;
-            this.selectedEnd = endIndex;
+            // this.selectedStart = startIndex;
+            // this.selectedEnd = endIndex;
+            let start = startIndex
+            let end   = endIndex
+
+            // normalize selection direction
+            if (start > end) {
+            [start, end] = [end, start]
+            }
+
+            this.selectedStart = start
+            this.selectedEnd   = end
             this.contextBefore = contextBefore;
             this.contextAfter = contextAfter;
+            if (this.selectedStart === -1 || this.selectedEnd === -1) {
+                return
+            }
             //
             // console.log("Selected text:", text);
             if(column==='rationale'){

@@ -43,6 +43,11 @@ class RevisionPlanCommentController extends Controller
             $comment->context_after = $request->input('context_after');
         }
         $comment->save();
+        $this->insert_tags($request, $comment, $request->input('column_name'),
+             $request->input('start_index'),
+             $request->input('end_index'),
+             $request->input('table_row_id')
+        );
         // if(in_array($request->input('column_name'), ['rationale', 'objective', 'beneficiaries'])){
         //     $this->tagCommentInText(
         //     $comment->id,
@@ -56,7 +61,37 @@ class RevisionPlanCommentController extends Controller
         return back()->with('success', 'Comment added successfully.');
         // $request->params['comment']
     }
+    private function insert_tags(Request $request, $comment, $column_name, $start_index, $end_index, $table_row_id){
+        $plan = RevisionPlan::findOrFail($table_row_id);
 
+        $column = $column_name;
+        $text   = $plan->$column;
+
+        $start = (int) $start_index;
+        $end   = (int) $end_index;
+
+        $length = $end - $start;
+        $extracted = mb_substr($text, $start, $length);
+
+        if ($extracted !== $request->selected_text) {
+            abort(409, 'Selected text no longer matches. Please reselect.');
+        }
+        // ${comment.id}_${comment.table_name}_${comment.column_name}
+        $spanId = "{$comment->id}_revision_plans_{$column}";
+        // 'data-comment-id="'.$comment->id.'" '.
+        $wrapped =
+            '<span id="'.$spanId.'" '.
+            'style="color:red;font-weight:bold"
+            contenteditable="false"
+            >'.
+            e($extracted).
+            '</span>';
+        $before = mb_substr($text, 0, $start);
+        $after  = mb_substr($text, $end);
+
+        $plan->$column = $before . $wrapped . $after;
+        $plan->save();
+    }
     public static function tagCommentInText($commentId, $tableName, $rowId, $columnName)
     {
         // 1️⃣ Get the comment
@@ -133,7 +168,27 @@ class RevisionPlanCommentController extends Controller
     }
     public function destroyComment($id)
     {
-        RevisionPlanComment::find($id)->delete();
+        $comment =RevisionPlanComment::find($id);
+        $this->destroy_tags($comment);
+        $comment->delete();
+    }
+
+    public function destroy_tags($comment)
+    {
+        // dd($comment);
+        $plan = RevisionPlan::findOrFail($comment->table_row_id);
+        $column = $comment->column_name;
+
+        $spanId = "{$comment->id}_revision_plans_{$column}";
+
+        $plan->$column = preg_replace(
+            '/<span[^>]*id="'.preg_quote($spanId, '/').'"[^>]*>(.*?)<\/span>/si',
+            '$1',
+            $plan->$column
+        );
+
+        $plan->save();
+        $comment->delete();
     }
     public function updateStatus($id, $stat)
     {

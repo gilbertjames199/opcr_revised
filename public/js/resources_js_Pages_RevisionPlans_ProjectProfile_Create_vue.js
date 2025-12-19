@@ -2019,7 +2019,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     width: {
       type: Number,
-      "default": 500 // roughly Bootstrap col-3
+      "default": 350 // roughly Bootstrap col-3
 
     }
   },
@@ -2030,7 +2030,7 @@ __webpack_require__.r(__webpack_exports__);
       posY: 50,
       modalWidth: this.width,
       // modalWidth: Math.min(Math.max(baseWidth, 260), 420),
-      modalHeight: 700,
+      modalHeight: 450,
       dragging: false,
       resizing: false,
       resizeDir: null,
@@ -2089,8 +2089,8 @@ __webpack_require__.r(__webpack_exports__);
       this.startY = e.clientY;
     },
     onMouseMove: function onMouseMove(e) {
-      var MIN_SIZE_WIDTH = 200;
-      var MIN_SIZE_HEIGHT = 370;
+      var MIN_SIZE_WIDTH = 330;
+      var MIN_SIZE_HEIGHT = 450;
 
       if (this.resizing && e.buttons !== 1) {
         this.onMouseUp();
