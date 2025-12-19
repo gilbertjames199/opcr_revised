@@ -843,7 +843,16 @@ createInertiaApp({
                         })
                     },
 
+                    cleanPartialHtmlEdges(text) {
+                        if (!text) return text
 
+                        return text
+                            // remove unfinished opening/closing tag fragments at START
+                            .replace(/^\s*(<\/?[a-zA-Z][^>]*$|^[^<]*>)/g, '')
+                            // remove unfinished opening/closing tag fragments at END
+                            .replace(/(<\/?[a-zA-Z][^>]*$|<[^>]*$)\s*$/g, '')
+                            .trim()
+                    },
                     highlightWithComments(rawText, comments, columnName, containerEl) {
                         if (!rawText || !comments?.length) return
 
@@ -927,17 +936,20 @@ createInertiaApp({
                             /**
                              * Step 3: Index-based fallback (context + stored indexes)
                              */
+
                             const sourceText = rawText
                             const extractedText = sourceText.substring(start_index, end_index).trim()
+                            const cleanedText = this.cleanPartialHtmlEdges(extractedText)
                             // alert("begin: "+begin +" end: "+end+  " extractedText "+extractedText)
                             // alert("start_index: "+start_index +" end_index: "+end_index+  " extractedText "+extractedText)
                             // 7️⃣ Mark extracted text
                             const naa="sadasdsadsdasd";
-                            if (extractedText) {
+                            if (cleanedText) {
                                 // alert("extractedText: "+extractedText)
+                                // alert("cleaned text: "+cleanedText)
                                 // alert(el);
                                 // exactly
-                                instance.mark(extractedText, {
+                                instance.mark(cleanedText, {
                                     separateWordSearch: false,
                                     accuracy: "partially",
                                     acrossElements: true,
@@ -956,7 +968,38 @@ createInertiaApp({
                                     }
                                 })
                             }
+
+                            if (matched) return
+                            // /STEP 4: Just mark anything to help user know that the comment is under rationale, objectives, and expected outputs
+                            // 1️⃣ Strip HTML tags
+                            // const plainText = rawText
+                            //     .replace(/<[^>]*>/g, ' ')   // remove HTML
+                            //     .replace(/\s+/g, ' ')       // normalize spaces
+                            //     .trim()
+
+                            // 2️⃣ Get first word
+                            // const firstWord = plainText.split(' ')[0]
+                            // instance.mark('the', {
+                            //         separateWordSearch: false,
+                            //         accuracy: "exactly",
+                            //         acrossElements: true,
+                            //         each: el => {
+                            //             matched = true
+                            //             naa="nakita na";
+                            //             // el.style.backgroundColor = bgColor
+                            //             if (fontColor) {
+                            //                 el.style.color = fontColor
+                            //             }
+                            //             el.style.backgroundColor = "white"
+                            //             el.setAttribute(
+                            //                 "id",
+                            //                 `${id}_${table_name}_${column_name}`
+                            //             )
+                            //         }
+                            //     })
+                            // alert("matched: "+matched)
                             // alert("last: "+naa)
+                            // alert("comment: "+comment.comment)
                             // const sourceText = rawText
 
                             // let begin = -1
@@ -1226,7 +1269,30 @@ createInertiaApp({
                         return result;
                     },
 
+                    // MATCHING FOR RATIONALE, OBJECTIVES, BENEFICIARIES
+                    resolvePapsTargetId(paps, columnName, comment) {
+                        /// columns that belong to paps text fields
+                        const papsColumns = ['beneficiaries', 'objective', 'rationale']
 
+                        // fallback for non-paps columns
+                        if (!papsColumns.includes(columnName)) {
+                            return `${comment.table_row_id}_${comment.table_name}_${columnName}`
+                        }
+
+                        // full candidate ID
+                        const fullId = `${comment.id}_${comment.table_name}_${columnName}`
+
+                        // get paps column content safely
+                        const columnText = String(paps?.[columnName] ?? '')
+
+                        // check if comment.comment exists exactly within the paps column text
+                        if (comment.comment && columnText.includes(comment.comment)) {
+                            return fullId
+                        }
+
+                        // fallback to column name only
+                        return columnName
+                    },
                     escapeHtml(str) {
                         if (!str) return '';
                         return str.replace(/&/g, "&amp;")

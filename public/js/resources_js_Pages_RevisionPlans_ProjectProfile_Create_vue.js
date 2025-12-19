@@ -6932,7 +6932,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
           "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["clickable-comment", comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected']),
           onClick: function onClick($event) {
-            return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? "".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name) : ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name) ? "".concat(comment.table_row_id, "_").concat(comment.table_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name), comment, comment.column_name);
+            return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? _ctx.resolvePapsTargetId($props.editData, comment.column_name, comment) : ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name) ? "".concat(comment.table_row_id, "_").concat(comment.table_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name), comment, comment.column_name);
           },
           style: {
             "cursor": "pointer"

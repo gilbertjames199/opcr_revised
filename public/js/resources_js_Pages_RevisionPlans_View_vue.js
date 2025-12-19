@@ -238,6 +238,11 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
         });
       },
       deep: true
+    },
+    show_comment_modal: {
+      handler: function handler() {
+        this.$nextTick(function () {});
+      }
     }
   },
   data: function data() {
@@ -4800,12 +4805,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         , _hoisted_337)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_339, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
           "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["clickable-comment", 'comment-rejected']),
           onClick: function onClick($event) {
-            return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? "".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
+            return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? _ctx.resolvePapsTargetId($props.paps, comment.column_name, comment) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
           },
           title: ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? comment.selected_text : ''
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                            ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\n                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment) + " ", 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{\n                                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                                                    ? comment.column_name\n                                                                    : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)\n                                                            }} ")], 8
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>\n                                                    <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{\n                                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\n                                                                    ? comment.column_name\n                                                                    : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)\n                                                            }} ")], 8
         /* PROPS */
         , _hoisted_340), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
           innerHTML: comment.reply
@@ -4837,10 +4842,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           style: {
             "cursor": "pointer"
           }
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" `${comment.id}_${comment.table_name}_${comment.column_name}` "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
           "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["clickable-comment", 'comment-approved']),
           onClick: function onClick($event) {
-            return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? "".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
+            return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? _ctx.resolvePapsTargetId($props.paps, comment.column_name, comment) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
           }
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_349, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_350, [_hoisted_351, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_352, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment), 1
         /* TEXT */

@@ -364,6 +364,7 @@
                                 @mouseup="handleSelection('rationale')"
                             ></p> -->
                             <!-- {{ paps.rationale }} -->
+
                             <div ref="rationaleEl"
                                 @mouseup="handleSelection('rationale')"
                                 v-html="paps.rationale"
@@ -2746,7 +2747,7 @@
                                                     class="clickable-comment"
                                                     @click="scrollToSection(
                                                         ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                            ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                                            ? resolvePapsTargetId(paps, comment.column_name, comment)
                                                             : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                     )"
                                                     :class="'comment-rejected'"
@@ -2758,6 +2759,8 @@
                                             ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                             : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
                                                     {{ comment.comment }}
+                                                    <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
+                                                    <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p> -->
                                                                         <!-- {{
                                                                 ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                                     ? comment.column_name
@@ -2809,11 +2812,12 @@
 
                         <ul class="list-unstyled">
                             <li v-for="(comment, index) in resolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
+                                <!-- `${comment.id}_${comment.table_name}_${comment.column_name}` -->
                                 <span
                                     class="clickable-comment"
                                     @click="scrollToSection(
                                         ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                            ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                            ? resolvePapsTargetId(paps, comment.column_name, comment)
                                             : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                     )"
                                     :class="'comment-approved'"
@@ -3338,6 +3342,13 @@ export default {
                 })
             },
             deep: true
+        },
+        show_comment_modal: {
+            handler(){
+                this.$nextTick(() =>{
+
+                })
+            }
         }
     },
     data() {

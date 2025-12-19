@@ -2145,7 +2145,7 @@
                                 class="clickable-comment"
                                 @click="scrollToSection(
                                     ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                        ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                        ? resolvePapsTargetId(editData, comment.column_name, comment)
                                             : (
                                             ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
                                                 ? `${comment.table_row_id}_${comment.table_name}`
