@@ -833,6 +833,7 @@ class OpcrTargetController extends Controller
             ->whereHas('paps')
             ->get()
             ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD) {
+                // dd($item->opcrList->year);
                 $mfo_desc = "";
                 $paps_desc = "";
                 $success_indicator = "";
@@ -846,19 +847,74 @@ class OpcrTargetController extends Controller
                 $efficiency3 = "";
                 $timeliness = "";
                 $monitoring = "";
+                $approver = '';
+                $pos = '';
+                if($item->opcrList){
+                    if($item->opcrList->year){
+                        $semester = $sem; // "First Semester" or "Second Semester"
 
-                $approver = 'Engr. Raul G. Mabanglo';
-                $pos = 'Governor';
-                // $FFUNCCOD = $item->FFUNCCOD;
-                // dd($FFUNCCOD);
-                if ($FFUNCCOD == '1021') {
-                    $approver = 'Dorothy M. Gonzaga';
-                    $pos = 'Vice Governor';
+                        $semValue = $semester === 'Second Semester' ? 2 : 1;
+                        // Inputs
+                        // dd($year, $semValue, $FFUNCCOD);
+                        // Default values
+                        // ===============================
+                        // TERM DETERMINATION
+                        // ===============================
+
+                        // Term 1: Second Semester 2022 → First Semester 2025
+                        if (
+                            ($year > 2022 || ($year == 2022 && $semValue == 2)) &&
+                            ($year < 2025 || ($year == 2025 && $semValue == 1))
+                        ) {
+
+                            $approver = 'Dorothy M. Gonzaga';
+                            $pos = 'Governor';
+                            if (in_array($FFUNCCOD, ['1021', '1016'])) {
+                                $approver = 'Tyron L. Uy';
+                                $pos = 'Vice Governor';
+                            }
+                        }
+
+                        // Term 2: Second Semester 2025 → First Semester 2028
+                        elseif (
+                            ($year > 2025 || ($year == 2025 && $semValue == 2)) &&
+                            ($year < 2028 || ($year == 2028 && $semValue == 1))
+                        ) {
+                            $approver = 'Engr. Raul G. Mabanglo';
+                            $pos = 'Governor';
+
+                            if (in_array($FFUNCCOD, ['1021', '1016'])) {
+                                $approver = 'Dorothy M. Gonzaga';
+                                $pos = 'Vice Governor';
+                            }
+                        }
+
+                        // Term 3: Second Semester 2028 → First Semester 2031
+                        elseif (
+                            ($year > 2028 || ($year == 2028 && $semValue == 2)) &&
+                            ($year < 2031 || ($year == 2031 && $semValue == 1))
+                        ) {
+                            $approver = '-';
+                            $pos = 'Governor';
+                            if (in_array($FFUNCCOD, ['1021', '1016'])) {
+                                $approver = '--';
+                                $pos = 'Vice Governor';
+                            }
+                        }
+                    }
                 }
-                if ($FFUNCCOD == '1016') {
-                    $approver = 'Dorothy M. Gonzaga';
-                    $pos = 'Vice Governor';
-                }
+                // $approver = 'Engr. Raul G. Mabanglo';
+                // $pos = 'Governor';
+                // // $FFUNCCOD = $item->FFUNCCOD;
+                // // dd($FFUNCCOD);
+                // if ($FFUNCCOD == '1021') {
+                //     $approver = 'Dorothy M. Gonzaga';
+                //     $pos = 'Vice Governor';
+                // }
+                // if ($FFUNCCOD == '1016') {
+                //     $approver = 'Dorothy M. Gonzaga';
+                //     $pos = 'Vice Governor';
+                // }
                 // dd($item->paps->opcr_standard[0]);
                 if ($item->paps) {
                     $paps_desc = $item->paps->paps_desc;
