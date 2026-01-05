@@ -3648,7 +3648,8 @@ class RevisionPlanController extends Controller
         // Determine the year
         $year = $request->has('year')
             ? $request->year
-            : date('Y') + 1;
+            : date('Y');
+            // mao ni dapat, temporary lang na sa taas: date('Y') + 1
         // dd($year);
         // dd($budget_controller);
         $data = RevisionPlan::with(['budget', 'paps', 'paps.office'])
