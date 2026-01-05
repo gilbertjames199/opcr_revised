@@ -1010,19 +1010,19 @@ class OfficePerformanceCommitmentRatingController extends Controller
             }
 
             // ASSISTANT PG HEAD
-            $assistant =UserEmployees::where('department_code', $office_id)
-                ->where('active_status', 'ACTIVE')
-                ->where('salary_grade','24')
-                ->first();
-            if($assistant){
-                $assistant_pg = $assistant->first_name." ".$assistant->middle_name[0].". ".$assistant->last_name;
-                if($assistant->suffix_name){
-                    $assistant_pg = $assistant_pg.', '.$assistant->suffix_name;
-                }
-                if($assistant->postfix_name){
-                    $assistant_pg = $assistant_pg.', '.$assistant->postfix_name;
-                }
-            }
+            // $assistant =UserEmployees::where('department_code', $office_id)
+            //     ->where('active_status', 'ACTIVE')
+            //     ->where('salary_grade','24')
+            //     ->first();
+            // if($assistant){
+            //     $assistant_pg = $assistant->first_name." ".$assistant->middle_name[0].". ".$assistant->last_name;
+            //     if($assistant->suffix_name){
+            //         $assistant_pg = $assistant_pg.', '.$assistant->suffix_name;
+            //     }
+            //     if($assistant->postfix_name){
+            //         $assistant_pg = $assistant_pg.', '.$assistant->postfix_name;
+            //     }
+            // }
 
         }
         //Get OPCR Date
