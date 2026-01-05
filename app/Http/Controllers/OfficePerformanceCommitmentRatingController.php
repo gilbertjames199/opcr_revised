@@ -986,9 +986,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $post = "";
 
 
-        $assistant_head = "";
-        $assistant_suff = "";
-        $assistant_post = "";
+        // $assistant_head = "";
+        // $assistant_suff = "";
+        // $assistant_post = "";
+        $assistant_pg = "";
         //Department Head
         $dept_head = "";
         if ($FFUNCCOD) {
@@ -1013,13 +1014,16 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 ->where('active_status', 'ACTIVE')
                 ->where('salary_grade','24')
                 ->first();
-            $assistant_pg = $assistant->first_name." ".$assistant->middle_name[0].". ".$assistant->last_name;
-            if($assistant->suffix_name){
-                $assistant_pg = $assistant_pg.', '.$assistant->suffix_name;
+            if($assistant){
+                $assistant_pg = $assistant->first_name." ".$assistant->middle_name[0].". ".$assistant->last_name;
+                if($assistant->suffix_name){
+                    $assistant_pg = $assistant_pg.', '.$assistant->suffix_name;
+                }
+                if($assistant->postfix_name){
+                    $assistant_pg = $assistant_pg.', '.$assistant->postfix_name;
+                }
             }
-            if($assistant->postfix_name){
-                $assistant_pg = $assistant_pg.', '.$assistant->postfix_name;
-            }
+
         }
         //Get OPCR Date
         $opcr_date = "";
