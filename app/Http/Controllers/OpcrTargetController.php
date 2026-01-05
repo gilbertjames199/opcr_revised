@@ -847,16 +847,16 @@ class OpcrTargetController extends Controller
                 $timeliness = "";
                 $monitoring = "";
 
-                $approver = 'Dorothy Montejo Gonzaga';
+                $approver = 'Engr. Raul G. Mabanglo';
                 $pos = 'Governor';
                 // $FFUNCCOD = $item->FFUNCCOD;
                 // dd($FFUNCCOD);
                 if ($FFUNCCOD == '1021') {
-                    $approver = 'Jayvee Tyron L. Uy';
+                    $approver = 'Dorothy M. Gonzaga';
                     $pos = 'Vice Governor';
                 }
                 if ($FFUNCCOD == '1016') {
-                    $approver = 'Jayvee Tyron L. Uy';
+                    $approver = 'Dorothy M. Gonzaga';
                     $pos = 'Vice Governor';
                 }
                 // dd($item->paps->opcr_standard[0]);

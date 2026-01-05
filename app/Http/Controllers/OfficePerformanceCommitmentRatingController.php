@@ -1032,6 +1032,14 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     if($ap_head){
                         $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
                         $ap_head->last_name;
+                        $ap_suffix = $ap_head->suffix_name;
+                        $ap_post = $ap_head->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
+                        }
                     }
 
                 }
