@@ -984,6 +984,11 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $dept_head = "";
         $suff = "";
         $post = "";
+
+
+        $assistant_head = "";
+        $assistant_suff = "";
+        $assistant_post = "";
         //Department Head
         $dept_head = "";
         if ($FFUNCCOD) {
@@ -992,6 +997,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $employee = UserEmployees::where('empl_id', $empl_id)->first();
             $dept_head = $employee->first_name . ' ' . $employee->middle_name[0] . '. ' .
                 $employee->last_name;
+
             $suff = $employee->suffix_name;
 
             if ($suff) {
@@ -1000,6 +1006,19 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $post = $employee->postfix_name;
             if ($post) {
                 $dept_head = $dept_head . ', ' . $post;
+            }
+
+            // ASSISTANT PG HEAD
+            $assistant =UserEmployees::where('department_code', $office_id)
+                ->where('active_status', 'ACTIVE')
+                ->where('salary_grade','24')
+                ->first();
+            $assistant_pg = $assistant->first_name." ".$assistant->middle_name[0].". ".$assistant->last_name;
+            if($assistant->suffix_name){
+                $assistant_pg = $assistant_pg.', '.$assistant->suffix_name;
+            }
+            if($assistant->postfix_name){
+                $assistant_pg = $assistant_pg.', '.$assistant->postfix_name;
             }
         }
         //Get OPCR Date
@@ -1018,6 +1037,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $opcr_date = $start . " to " . $end;
             $opcr_date = Str::upper($opcr_date);
         }
+        // dd($my_opcr,"myopcr");
         //Carbon Date
         $date_now = Carbon::now()->format('F d, Y');
         //TOTAL, SUM, AVERAGE
@@ -1098,7 +1118,24 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->orderBy('PAPS.id', 'asc')
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
-            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1, $pmt_chair, $average) {
+            ->map(function ($item) use ($opcr_id,
+                    $FFUNCCOD,
+                    $total,
+                    $ave,
+                    $dept_head,
+                    $opcr_date,
+                    $mooe,
+                    $ps,
+                    $date_now,
+                    $approver,
+                    $pos,
+                    $isPA1,
+                    $pmt_chair,
+                    $average,
+                    $assistant_pg,
+                    $my_opcr
+            ) {
+                // dd($item,"item");
                 $efficiency1 = $item->efficiency1;
                 $performance_measure = $item->performance_measure;
                 $timeliness = $item->timeliness;
@@ -1196,6 +1233,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 if ($item->id = 684) {
                     // dd($item);
                 }
+                // dd($assistant_pg, $my_opcr->assistant_pg_head,"assistant pg");
                 return [
                     "id" => $item->id,
                     "success_indicator_id" => $item->success_indicator_id,
@@ -1217,6 +1255,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "total" => $total,
                     "ave" => $ave,
                     "dept_head" => $dept_head,
+                    "assistant_head" => $my_opcr->assistant_pg_head ?? $assistant_pg ?? null,
                     "opcr_date" => $opcr_date,
                     "opcr_id" => $opcr_id,
                     "mooe" => $mooe,
