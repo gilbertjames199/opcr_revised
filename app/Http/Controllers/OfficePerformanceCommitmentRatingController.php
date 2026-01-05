@@ -1029,8 +1029,11 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $ap_head = UserEmployees::where('department_code',$office_id)
                         ->where('salary_grade','24')
                         ->first();
-                    $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
+                    if($ap_head){
+                        $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
                         $ap_head->last_name;
+                    }
+
                 }
 
             }
