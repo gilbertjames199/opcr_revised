@@ -965,7 +965,15 @@ class RevisionPlanController extends Controller
             ->get();
         //RISK MANAGEEMNT
         $risks = Risk_manangement::with(['comments', 'comments.user'])->where('revision_plan_id', $id)->get();
+
+        $type=($paps)?$paps->type:'';
         $signatories = Signatory::with(['comments'])->where('revision_plan_id', $id)
+            ->when($type === 'p', function ($query) {
+                $query->whereNotIn('acted', [
+                    'As to AIP Inclusion',
+                    'As to AIP Appropriation',
+                ]);
+            })
             ->orderByRaw("FIELD(acted, 'Prepared', 'Reviewed', 'Noted', 'Recommending Approval','Approved','As to AIP Inclusion','As to AIP Appropriation')")
             ->get();
         // dd($signatories);
