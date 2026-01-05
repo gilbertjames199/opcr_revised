@@ -972,7 +972,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // dd($opcr_id);
     }
     //PRINT ACCOMPLISHMENTS
-    //PRINT ACCOMPLISHMENTS
     public function print_accomplishment(Request $request)
     {
         $opcr_id = $request->opcr_id;
@@ -982,11 +981,12 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $mooe = "0.00";
         $ps = "0.00";
         $empl_id = "";
+        //Department Head
         $dept_head = "";
         $suff = "";
         $post = "";
-        //Department Head
-        $dept_head = "";
+        // Assistant PG Head
+        $assistant_pg_head = "";
         if ($FFUNCCOD) {
             $office_id = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->department_code;
             $empl_id = Office::where('id', $office_id)->first()->empl_id;
@@ -1002,6 +1002,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             if ($post) {
                 $dept_head = $dept_head . ', ' . $post;
             }
+
+
         }
         //Get OPCR Date
         $opcr_date = "";
@@ -1018,6 +1020,20 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $end = $dateEnd->format('F Y');
             $opcr_date = $start . " to " . $end;
             $opcr_date = Str::upper($opcr_date);
+            if($my_opcr){
+                if($my_opcr->assistant_pg_head){
+                    // ASSISTANT PG HEAD
+                    $assistant_pg = $my_opcr->assistant_pg_head;
+                }else{
+                    // ASSISTANT PG HEAD
+                    $ap_head = UserEmployees::where('department_code',$office_id)
+                        ->where('salary_grade','24')
+                        ->first();
+                    $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
+                        $ap_head->last_name;
+                }
+
+            }
         }
         //Carbon Date
         $date_now = Carbon::now()->format('F d, Y');
