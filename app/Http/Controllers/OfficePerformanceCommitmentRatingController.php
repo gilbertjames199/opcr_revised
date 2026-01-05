@@ -1122,24 +1122,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->orderBy('PAPS.id', 'asc')
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
-            ->map(function ($item) use ($opcr_id,
-                    $FFUNCCOD,
-                    $total,
-                    $ave,
-                    $dept_head,
-                    $opcr_date,
-                    $mooe,
-                    $ps,
-                    $date_now,
-                    $approver,
-                    $pos,
-                    $isPA1,
-                    $pmt_chair,
-                    $average,
-                    $assistant_pg,
-                    $my_opcr
-            ) {
+            ->map(function ($item) use ($opcr_id,$FFUNCCOD,$total,$ave,$dept_head,$opcr_date,$mooe,$ps,$date_now,$approver,$pos,$isPA1,$pmt_chair,$average) {
                 // dd($item,"item");
+                // $my_opcr
                 $efficiency1 = $item->efficiency1;
                 $performance_measure = $item->performance_measure;
                 $timeliness = $item->timeliness;
