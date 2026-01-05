@@ -972,6 +972,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // dd($opcr_id);
     }
     //PRINT ACCOMPLISHMENTS
+    //PRINT ACCOMPLISHMENTS
     public function print_accomplishment(Request $request)
     {
         $opcr_id = $request->opcr_id;
@@ -984,12 +985,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $dept_head = "";
         $suff = "";
         $post = "";
-
-
-        // $assistant_head = "";
-        // $assistant_suff = "";
-        // $assistant_post = "";
-        $assistant_pg = "";
         //Department Head
         $dept_head = "";
         if ($FFUNCCOD) {
@@ -998,7 +993,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $employee = UserEmployees::where('empl_id', $empl_id)->first();
             $dept_head = $employee->first_name . ' ' . $employee->middle_name[0] . '. ' .
                 $employee->last_name;
-
             $suff = $employee->suffix_name;
 
             if ($suff) {
@@ -1008,22 +1002,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
             if ($post) {
                 $dept_head = $dept_head . ', ' . $post;
             }
-
-            // ASSISTANT PG HEAD
-            // $assistant =UserEmployees::where('department_code', $office_id)
-            //     ->where('active_status', 'ACTIVE')
-            //     ->where('salary_grade','24')
-            //     ->first();
-            // if($assistant){
-            //     $assistant_pg = $assistant->first_name." ".$assistant->middle_name[0].". ".$assistant->last_name;
-            //     if($assistant->suffix_name){
-            //         $assistant_pg = $assistant_pg.', '.$assistant->suffix_name;
-            //     }
-            //     if($assistant->postfix_name){
-            //         $assistant_pg = $assistant_pg.', '.$assistant->postfix_name;
-            //     }
-            // }
-
         }
         //Get OPCR Date
         $opcr_date = "";
@@ -1041,7 +1019,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $opcr_date = $start . " to " . $end;
             $opcr_date = Str::upper($opcr_date);
         }
-        // dd($my_opcr,"myopcr");
         //Carbon Date
         $date_now = Carbon::now()->format('F d, Y');
         //TOTAL, SUM, AVERAGE
@@ -1122,9 +1099,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->orderBy('PAPS.id', 'asc')
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
-            ->map(function ($item) use ($opcr_id,$FFUNCCOD,$total,$ave,$dept_head,$opcr_date,$mooe,$ps,$date_now,$approver,$pos,$isPA1,$pmt_chair,$average) {
-                // dd($item,"item");
-                // $my_opcr
+            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1, $pmt_chair, $average) {
                 $efficiency1 = $item->efficiency1;
                 $performance_measure = $item->performance_measure;
                 $timeliness = $item->timeliness;
@@ -1222,7 +1197,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 if ($item->id = 684) {
                     // dd($item);
                 }
-                // dd($assistant_pg, $my_opcr->assistant_pg_head,"assistant pg");
                 return [
                     "id" => $item->id,
                     "success_indicator_id" => $item->success_indicator_id,
@@ -1244,7 +1218,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "total" => $total,
                     "ave" => $ave,
                     "dept_head" => $dept_head,
-                    // "assistant_head" => $my_opcr->assistant_pg_head ?? $assistant_pg ?? null,
                     "opcr_date" => $opcr_date,
                     "opcr_id" => $opcr_id,
                     "mooe" => $mooe,
@@ -1303,6 +1276,337 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
 
     }
+    // public function print_accomplishment(Request $request)
+    // {
+    //     $opcr_id = $request->opcr_id;
+    //     $FFUNCCOD = $request->FFUNCCOD;
+    //     //REVISION PLAN ID
+
+    //     $mooe = "0.00";
+    //     $ps = "0.00";
+    //     $empl_id = "";
+    //     $dept_head = "";
+    //     $suff = "";
+    //     $post = "";
+
+
+    //     // $assistant_head = "";
+    //     // $assistant_suff = "";
+    //     // $assistant_post = "";
+    //     $assistant_pg = "";
+    //     //Department Head
+    //     $dept_head = "";
+    //     if ($FFUNCCOD) {
+    //         $office_id = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->department_code;
+    //         $empl_id = Office::where('id', $office_id)->first()->empl_id;
+    //         $employee = UserEmployees::where('empl_id', $empl_id)->first();
+    //         $dept_head = $employee->first_name . ' ' . $employee->middle_name[0] . '. ' .
+    //             $employee->last_name;
+
+    //         $suff = $employee->suffix_name;
+
+    //         if ($suff) {
+    //             $dept_head = $dept_head . ', ' . $suff;
+    //         }
+    //         $post = $employee->postfix_name;
+    //         if ($post) {
+    //             $dept_head = $dept_head . ', ' . $post;
+    //         }
+
+    //         // ASSISTANT PG HEAD
+    //         // $assistant =UserEmployees::where('department_code', $office_id)
+    //         //     ->where('active_status', 'ACTIVE')
+    //         //     ->where('salary_grade','24')
+    //         //     ->first();
+    //         // if($assistant){
+    //         //     $assistant_pg = $assistant->first_name." ".$assistant->middle_name[0].". ".$assistant->last_name;
+    //         //     if($assistant->suffix_name){
+    //         //         $assistant_pg = $assistant_pg.', '.$assistant->suffix_name;
+    //         //     }
+    //         //     if($assistant->postfix_name){
+    //         //         $assistant_pg = $assistant_pg.', '.$assistant->postfix_name;
+    //         //     }
+    //         // }
+
+    //     }
+    //     //Get OPCR Date
+    //     $opcr_date = "";
+    //     $dateStart = "";
+    //     $dateEnd = "";
+    //     $start = "";
+    //     $end = "";
+    //     if ($opcr_id) {
+    //         $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+    //         // dd($opcr_id);
+    //         $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+    //         $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+    //         $start = $dateStart->format('F');
+    //         $end = $dateEnd->format('F Y');
+    //         $opcr_date = $start . " to " . $end;
+    //         $opcr_date = Str::upper($opcr_date);
+    //     }
+    //     // dd($my_opcr,"myopcr");
+    //     //Carbon Date
+    //     $date_now = Carbon::now()->format('F d, Y');
+    //     //TOTAL, SUM, AVERAGE
+    //     // $averageSum = OfficePerformanceCommitmentRating::selectRaw('SUM((rating_q + rating_e + rating_t) / 3) AS average_sum')
+    //     //     ->where('opcr_id', $opcr_id)
+    //     //     ->first()->average_sum;
+    //     // $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+    //     // if ($count < 1) {
+    //     //     $count = 1;
+    //     // };
+    //     // $total = number_format($averageSum, 2);
+    //     // $ave_pre = $total / $count;
+    //     // $ave = number_format($ave_pre, 2);
+    //     $total = number_format($request->total, 2);
+    //     $ave = number_format($request->average, 2);
+    //     $pmt_chair = "Ivan Kleb N. Ulgasan, CESE";
+    //     // dd($total);
+    //     // dd("asasasasas");
+    //     $approver = 'Engr. Raul G. Mabanglo';
+    //     $pos = 'Governor';
+    //     $isPA1 = $this->isPA($opcr_date, 'PA 1');
+    //     $average = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)
+    //         ->selectRaw("
+    //             ROUND(
+    //                 AVG(
+    //                     (COALESCE(rating_q, 0) + COALESCE(rating_e, 0) + COALESCE(rating_t, 0)) /
+    //                     NULLIF(
+    //                         (rating_q IS NOT NULL) +
+    //                         (rating_e IS NOT NULL) +
+    //                         (rating_t IS NOT NULL),
+    //                         0
+    //                     )
+    //                 ),
+    //                 2
+    //             ) AS average_rating
+    //         ")
+    //         ->value('average_rating');
+    //     $data = $this->model->select(
+    //         'office_performance_commitment_ratings.id',
+    //         'office_performance_commitment_ratings.success_indicator_id',
+    //         'office_performance_commitment_ratings.accomplishments',
+    //         'office_performance_commitment_ratings.rating_q',
+    //         'office_performance_commitment_ratings.rating_e',
+    //         'office_performance_commitment_ratings.rating_t',
+    //         'office_performance_commitment_ratings.remarks',
+    //         'office_performance_commitment_ratings.FFUNCCOD',
+    //         'office_performance_commitment_ratings.opcr_id',
+    //         'SU.success_indicator',
+    //         // 'off.office_accountable',
+    //         'PAPS.paps_desc',
+    //         'mfo.mfo_desc',
+    //         'mfo.created_at',
+    //         'opcr_targets.quantity',
+    //         'PAPS.id AS idpaps',
+    //         'mfo.from_excel',
+    //         'mfo.id AS mfo_idmfo',
+    //         'PAPS.idmfo AS paps_idmfo',
+    //         'opcr_targets.target_success_indicator AS target_success_indicator',
+    //         'opcr_targets.quantity_unit',
+    //         'os.performance_measure',
+    //         'os.efficiency1',
+    //         'os.timeliness',
+    //         'os.prescribed_period',
+    //         'os.office_accountable'
+    //     )
+    //         ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
+    //         ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'office_performance_commitment_ratings.id_paps')
+    //         ->leftjoin('opcr_standards AS os', 'os.idpaps', 'PAPS.id')
+    //         ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
+    //         ->join('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
+    //         // ->join('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
+    //         ->leftjoin('opcr_targets', 'opcr_targets.id', 'office_performance_commitment_ratings.id_opcr_target')
+    //         ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
+    //         ->where('opcr_targets.is_included', '1')
+    //         ->whereNull('mfo.from_excel')
+    //         ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
+    //         ->orderBy('mfo.id', 'asc')
+    //         ->orderBy('PAPS.id', 'asc')
+    //         ->groupBy('office_performance_commitment_ratings.id')
+    //         ->get()
+    //         ->map(function ($item) use ($opcr_id,$FFUNCCOD,$total,$ave,$dept_head,$opcr_date,$mooe,$ps,$date_now,$approver,$pos,$isPA1,$pmt_chair,$average) {
+    //             // dd($item,"item");
+    //             // $my_opcr
+    //             $efficiency1 = $item->efficiency1;
+    //             $performance_measure = $item->performance_measure;
+    //             $timeliness = $item->timeliness;
+    //             $prescribed_period = $item->prescribed_period;
+    //             $paps_desc = $item->paps_desc;
+    //             $office_accountable = $item->office_accountable;
+    //             if ($efficiency1 === 'No' && $timeliness === 'No') {
+    //                 $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency";
+    //             } elseif ($efficiency1 === 'Yes') {
+    //                 $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency within {$prescribed_period}";
+    //             } else {
+    //                 $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
+    //             }
+    //             $approver = 'Engr. Raul G. Mabanglo';
+    //             // true
+    //             if ($isPA1) {
+    //                 $approver = 'Dorothy Montejo Gonzaga';
+    //                 $pmt_chair = 'Lewis Jake G. Caiman, CPA';
+    //             }
+    //             $pos = 'Governor';
+    //             if ($FFUNCCOD == '1021') {
+    //                 $approver = 'Dorothy Montejo Gonzaga';
+    //                 $pos = 'Vice Governor';
+    //                 if ($isPA1) {
+    //                     $approver = 'Jayvee Tyron L. Uy';
+    //                 }
+    //             }
+    //             if ($FFUNCCOD == '1016') {
+    //                 $approver = 'Dorothy Montejo Gonzaga';
+    //                 $pos = 'Vice Governor';
+    //                 if ($isPA1) {
+    //                     $approver = 'Jayvee Tyron L. Uy';
+    //                 }
+    //             }
+
+    //             // dd($isPA1);
+    //             $var_q = $item->rating_q;
+    //             $var_e = $item->rating_e;
+    //             $var_t = $item->rating_t;
+
+
+    //             $div = 3;
+    //             // if (floatval($var_q) <= 0) {
+    //             //     $div = $div - 1;
+    //             // }
+    //             // if (floatval($var_e) <= 0) {
+    //             //     $div = $div - 1;
+    //             // }
+    //             // if (floatval($var_t) <= 0) {
+    //             //     $div = $div - 1;
+    //             // }
+    //             try {
+    //                 if (intval($var_q) < 1) {
+    //                     $div = $div - 1;
+    //                 }
+    //             } catch (Exception $e) {
+    //                 $div = $div - 1;
+    //             }
+    //             try {
+    //                 if (intval($var_e) < 1) {
+    //                     $div = $div - 1;
+    //                 }
+    //             } catch (Exception $e) {
+    //                 $div = $div - 1;
+    //             }
+    //             try {
+    //                 if (intval($var_t) < 1) {
+    //                     $div = $div - 1;
+    //                 }
+    //             } catch (Exception $e) {
+    //                 $div = $div - 1;
+    //             }
+    //             $sum = $var_q + $var_e + $var_t;
+    //             $ave_qet = 0;
+    //             if ($div > 0) {
+    //                 $ave_qet = $sum / $div;
+    //                 $ave_qet = number_format(floatval($ave_qet), 2);
+    //             }
+    //             $adj = "Outstanding";
+    //             if ($average >= 4.51) {
+    //                 $adj = "Outstanding";
+    //             } else if ($average >= 3.51) {
+    //                 $adj = "Very Satisfactory";
+    //             } else if ($average >= 2.51) {
+    //                 $adj = "Satisfactory";
+    //             } else if ($average >= 1.51) {
+    //                 $adj = "Unsatisfactory";
+    //             } else {
+    //                 $adj = "Poor";
+    //             }
+    //             // $quant = OpcrTarget::where()
+
+    //             // dd("average: " . $ave);
+    //             // dd($item->id);
+    //             if ($item->id = 684) {
+    //                 // dd($item);
+    //             }
+    //             // dd($assistant_pg, $my_opcr->assistant_pg_head,"assistant pg");
+    //             return [
+    //                 "id" => $item->id,
+    //                 "success_indicator_id" => $item->success_indicator_id,
+    //                 "accomplishments" => $item->accomplishments,
+    //                 "rating_q" => $item->rating_q,
+    //                 "rating_e" => $item->rating_e,
+    //                 "rating_t" => $item->rating_t,
+    //                 "remarks" => $item->remarks,
+    //                 "FFUNCCOD" => $item->FFUNCCOD,
+    //                 "idpaps" => $item->idpaps,
+    //                 "opcr_id" => $item->opcr_id,
+    //                 "success_indicator" => $item->success_indicator,
+    //                 "office_accountable" => $office_accountable,
+    //                 "paps_desc" => $item->paps_desc,
+    //                 "quantity" => $item->quantity . ' ' . $item->quantity_unit,
+    //                 // "quantity_unit" => $item->quantity_unit,
+    //                 "mfo_desc" => $item->mfo_desc,
+    //                 "created_at" => $item->created_at,
+    //                 "total" => $total,
+    //                 "ave" => $ave,
+    //                 "dept_head" => $dept_head,
+    //                 // "assistant_head" => $my_opcr->assistant_pg_head ?? $assistant_pg ?? null,
+    //                 "opcr_date" => $opcr_date,
+    //                 "opcr_id" => $opcr_id,
+    //                 "mooe" => $mooe,
+    //                 "ps" => $ps,
+    //                 "FFUNCCOD" => $FFUNCCOD,
+    //                 "date_now" => $date_now,
+    //                 "approver" => $approver,
+    //                 "position" => $pos,
+    //                 "ave_qet" => $ave_qet,
+    //                 "target_success_indicator" => $su,
+    //                 "adjectival" => $adj,
+    //                 "pmt_chair" => $pmt_chair,
+    //                 "overall_average" => $average,
+    //                 // "office_accountable" => $office_accountable
+    //                 // "from_excel" => $item->from_excel,
+    //                 // "mfo_idmfo" => $item->mfo_idmfo,
+    //                 // "paps_idmfo" => $item->paps_idmfo
+    //             ];
+    //         });
+    //     // dd(count($data));
+    //     // dd($data);
+    //     if ($data->isEmpty()) {
+    //         $data = collect([[
+    //             "id" => null,
+    //             "success_indicator_id" => 0,
+    //             "accomplishments" => null,
+    //             "rating_q" => null,
+    //             "rating_e" => null,
+    //             "rating_t" => null,
+    //             "remarks" => null,
+    //             "FFUNCCOD" => $FFUNCCOD,
+    //             "idpaps" => null,
+    //             "opcr_id" => $opcr_id,
+    //             "success_indicator" => null,
+    //             "office_accountable" => null,
+    //             "paps_desc" => " ",
+    //             "quantity" => null,
+    //             "mfo_desc" => " ",
+    //             "created_at" => null,
+    //             "total" => null,
+    //             "ave" => null,
+    //             "dept_head" => null,
+    //             "opcr_date" => $opcr_date,
+    //             "mooe" => null,
+    //             "ps" => null,
+    //             "date_now" => now()->format('F d, Y'), // or fixed "June 25, 2025"
+    //             "approver" => "Engr Raul G. Mabanglo",
+    //             "position" => "Governor",
+    //             "ave_qet" => null,
+    //             "target_success_indicator" => null,
+    //             "adjectival" => null
+    //         ]]);
+    //     }
+    //     return $data;
+    //     //********************************************** */
+
+
+    // }
     public function isPA($opcr_date, $type)
     {
         if (!$opcr_date || !$type) {
