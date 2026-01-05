@@ -1023,7 +1023,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             if($my_opcr){
                 if($my_opcr->assistant_pg_head){
                     // ASSISTANT PG HEAD
-                    $assistant_pg = $my_opcr->assistant_pg_head;
+                    $assistant_pg_head = $my_opcr->assistant_pg_head;
                 }else{
                     // ASSISTANT PG HEAD
                     $ap_head = UserEmployees::where('department_code',$office_id)
@@ -1115,7 +1115,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->orderBy('PAPS.id', 'asc')
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
-            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1, $pmt_chair, $average) {
+            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1, $pmt_chair, $average, $assistant_pg_head) {
                 $efficiency1 = $item->efficiency1;
                 $performance_measure = $item->performance_measure;
                 $timeliness = $item->timeliness;
@@ -1234,6 +1234,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "total" => $total,
                     "ave" => $ave,
                     "dept_head" => $dept_head,
+                    "assistant_pg_head" => $assistant_pg_head,
                     "opcr_date" => $opcr_date,
                     "opcr_id" => $opcr_id,
                     "mooe" => $mooe,
@@ -1247,6 +1248,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "adjectival" => $adj,
                     "pmt_chair" => $pmt_chair,
                     "overall_average" => $average,
+
                     // "office_accountable" => $office_accountable
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
