@@ -172,7 +172,12 @@ class RevisionPlanCommentController extends Controller
     public function destroyComment($id)
     {
         $comment =RevisionPlanComment::find($id);
-        $this->destroy_tags($comment);
+        $table_column = $comment->column_name;
+        // dd($comment);
+        if(in_array($table_column, ['rationale', 'objective', 'beneficiaries'])){
+            $this->destroy_tags($comment);
+        }
+        // $this->destroy_tags($comment);
         $comment->delete();
     }
 
