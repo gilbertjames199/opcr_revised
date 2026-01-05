@@ -2101,6 +2101,8 @@
                     </div>
                 </div>
 
+                {{editData}}
+
         </div>
         <div class="col-3">
             <!-- ALL YOUR EXISTING COMMENT PANEL HTML HERE -->

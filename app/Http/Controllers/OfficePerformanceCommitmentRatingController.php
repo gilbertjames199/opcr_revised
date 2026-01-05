@@ -1039,6 +1039,19 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $approver = 'Engr. Raul G. Mabanglo';
         $pos = 'Governor';
         $isPA1 = $this->isPA($opcr_date, 'PA 1');
+        $average = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)
+            ->selectRaw("
+                AVG(
+                    (COALESCE(rating_q, 0) + COALESCE(rating_e, 0) + COALESCE(rating_t, 0)) /
+                    NULLIF(
+                        (rating_q IS NOT NULL) +
+                        (rating_e IS NOT NULL) +
+                        (rating_t IS NOT NULL),
+                        0
+                    )
+                ) AS average_rating
+            ")
+            ->value('average_rating');
         $data = $this->model->select(
             'office_performance_commitment_ratings.id',
             'office_performance_commitment_ratings.success_indicator_id',
@@ -1082,7 +1095,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->orderBy('PAPS.id', 'asc')
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
-            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1, $pmt_chair) {
+            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1, $pmt_chair, $average) {
                 $efficiency1 = $item->efficiency1;
                 $performance_measure = $item->performance_measure;
                 $timeliness = $item->timeliness;
@@ -1162,13 +1175,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $ave_qet = number_format(floatval($ave_qet), 2);
                 }
                 $adj = "Outstanding";
-                if ($ave >= 4.51) {
+                if ($average >= 4.51) {
                     $adj = "Outstanding";
-                } else if ($ave >= 3.51) {
+                } else if ($average >= 3.51) {
                     $adj = "Very Satisfactory";
-                } else if ($ave >= 2.51) {
+                } else if ($average >= 2.51) {
                     $adj = "Satisfactory";
-                } else if ($ave >= 1.51) {
+                } else if ($average >= 1.51) {
                     $adj = "Unsatisfactory";
                 } else {
                     $adj = "Poor";
@@ -1209,7 +1222,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "date_now" => $date_now,
                     "approver" => $approver,
                     "position" => $pos,
-                    "ave_qet" => $ave_qet,
+                    "ave_qet" => $average,
                     "target_success_indicator" => $su,
                     "adjectival" => $adj,
                     "pmt_chair" => $pmt_chair
@@ -1220,6 +1233,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 ];
             });
         // dd(count($data));
+        // dd($data);
         if ($data->isEmpty()) {
             $data = collect([[
                 "id" => null,
@@ -1245,7 +1259,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 "mooe" => null,
                 "ps" => null,
                 "date_now" => now()->format('F d, Y'), // or fixed "June 25, 2025"
-                "approver" => "Dorothy Montejo Gonzaga",
+                "approver" => "Engr Raul G. Mabanglo",
                 "position" => "Governor",
                 "ave_qet" => null,
                 "target_success_indicator" => null,

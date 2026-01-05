@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
 use App\Models\RevisionPlan;
 use Illuminate\Http\Request;
@@ -8,39 +8,33 @@ use App\Models\CashDisbursementForecast;
 use App\Models\BudgetRequirement;
 use App\Models\CashDisbursementForecastAccount;
 use App\Models\CurrentAipYear;
-use App\Services\ProjectDesignService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class ProjectDesignController extends Controller
+class ProjectDesignService
 {
-    //
-    protected $revision_plans;
-    protected $service;
-    public function __construct(RevisionPlanController $revision_plans, ProjectDesignService $service)
-    {
-        $this->revision_plans = $revision_plans;
-        $this->service = $service;
-    }
+    // protected $service;
+    // public function __construct(ProjectDesignService $service)
+    // {
+    //     $this->service = $service;
+    // }
+    // public function generate(int $id)
+    // {
+    //     // move the logic from generateProjectDesign() here
+    //     $this->generateProjectDesign($id);
+    // }
 
-    public function generateProjectDesign(Request $request, $id)
+    public function generate($id)
     {
+        // TYPE EXAMPLE:
+        // 1.) return request ->this should generate a return request amount
         // dd($request->input('type'));
         // 1️⃣ Check if a project design already exists
         $current_year = CurrentAipYear::first()->year;
-        $existing = RevisionPlan::where('reference_profile_id', $id)
-            ->where('type', $request->input('type'))
-            ->whereYear('date_start', $current_year)
-            ->first();
 
-        if ($existing) {
-            return redirect()->back()->with(
-                'error',
-                'A project design has already been generated for this project.'
-            );
-        }
 
         // 2️⃣ Proceed with cloning
-        $result = $this->cloneRevisionPlan($id, $request->input('type'));
+        $result = $this->cloneRevisionPlan($id);
 
         if (isset($result['error'])) {
             return redirect()->back()->with('error', $result['error']);
@@ -53,7 +47,7 @@ class ProjectDesignController extends Controller
     // {
     //     return $this->service->generate($id);
     // }
-    public function cloneRevisionPlan($id, $type)
+    public function cloneRevisionPlan($id)
     {
         DB::beginTransaction();
 
@@ -73,6 +67,15 @@ class ProjectDesignController extends Controller
                 'cashDisbursementForecasts',
                 'cashDisbursementForecasts.cashDisbursementForecastAccount'
             ])->findOrFail($id);
+            // GET SUM
+            $implementationPlansTotal = $rev_plan->activityProject->sum(function ($ap) {
+                return
+                    $ap->ps_q1 + $ap->ps_q2 + $ap->ps_q3 + $ap->ps_q4 +
+                    $ap->mooe_q1 + $ap->mooe_q2 + $ap->mooe_q3 + $ap->mooe_q4 +
+                    $ap->co_q1 + $ap->co_q2 + $ap->co_q3 + $ap->co_q4 +
+                    $ap->fe_q1 + $ap->fe_q2 + $ap->fe_q3 + $ap->fe_q4;
+            });
+            $budgetaryRequirementsTotal = $rev_plan->budget->sum('amount');
 
             // -----------------------------------------------------------
             // 1) CLONE MAIN REVISION PLAN
@@ -83,14 +86,24 @@ class ProjectDesignController extends Controller
                 'updated_at'
             ]);
 
-            $new_plan->type = $type;
+            $new_plan->type = $rev_plan->type;
             $new_plan->status = "-1";
-            $new_plan->gad_version = "2";
+            $year = Carbon::parse($rev_plan->date_start)->year;
+
+            // conditional gad_version
+            if ($year < 2027) {
+                $new_plan->gad_version = "1";
+            } else {
+                $new_plan->gad_version = "2";
+            }
             $new_plan->reference_profile_id = $rev_plan->id;
             $new_plan->created_at = now();
             $new_plan->updated_at = now();
             $new_plan->version = (int)$rev_plan->version + 1; // optional
             $new_plan->final = 0;
+            $new_plan->budgetary_requirements_total = $budgetaryRequirementsTotal;
+            $new_plan->implementation_plans_total = $implementationPlansTotal;
+            $new_plan->return_request_type = "0";
             $new_plan->save();
 
             // Mapping arrays for child IDs

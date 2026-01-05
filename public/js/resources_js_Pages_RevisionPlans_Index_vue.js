@@ -80,6 +80,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       selected_label: '',
       docs: [],
       remarks: '',
+      return_request_type: '',
       //Document Display
       displaySideModal: false,
       showImageModal: false // END OF RETURN REQUEST***************
@@ -730,20 +731,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (!this.remarks || this.remarks.trim() === '') {
         alert("Remarks are required before returning the plan.");
         return;
-      } // 3. Confirm action
-
-
-      confirm_message = "Are you sure you want to ".concat(this.selected_label, "?");
-
-      if (!confirm(confirm_message)) {
-        return;
       }
 
-      confirm_message = "Are you sure you want to ".concat(this.selected_label, "?");
-
-      if (!confirm(confirm_message)) {
+      if (!this.return_request_type || this.return_request_type.trim() == '') {
+        alert("You have to select a return type!");
         return;
-      } // Call the original method again and pass stored parameters
+      } // 3. Confirm action
+      // confirm_message = `Are you sure you want to ${this.selected_label}?`;
+      // if (!confirm(confirm_message)) {
+      //     return;
+      // }
+      //confirm_message = `Are you sure you want to ${this.selected_label}?`;
+      //if (!confirm(confirm_message)) {
+      //   return;
+      //}
+      // Call the original method again and pass stored parameters
+      // alert(this.selected_status);
 
 
       this.statusAction(this.selected_plan, this.selected_status);
@@ -756,8 +759,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         1: "Review",
         2: "Approve",
         "-2": "Return",
-        5: "Request for Return"
-      };
+        5: "request for the return of the"
+      }; // alert(revision_plan.type)
+
       var actionLabel = actions[newStatus];
       var typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
       var confirmMessage = "Are you sure you want to ".concat(actionLabel, " the ").concat(typeLabel, " entitled \"").concat(revision_plan.project_title, "\"?");
@@ -766,7 +770,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_5__.Inertia.post("/status/revision/update/".concat(revision_plan.id, "/").concat(actionlabelcomplete, "/").concat(newStatus), {
         remarks: this.remarks,
         // ← SEND IT HERE
-        column: column
+        column: column,
+        return_request_type: this.return_request_type
       }, {
         preserveScroll: true
       });
@@ -1334,6 +1339,26 @@ var _hoisted_85 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 var _hoisted_86 = {
   colspan: "2"
 };
+
+var _hoisted_87 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_88 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+  value: "a"
+}, " Administrative Order (New strategies/activities/ not included in approved project profile) ", -1
+/* HOISTED */
+);
+
+var _hoisted_89 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, " Appropriation Ordinance ", -1
+/* HOISTED */
+);
+
+var _hoisted_90 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "Justification", -1
+/* HOISTED */
+);
+
+var _hoisted_91 = [_hoisted_87, _hoisted_88, _hoisted_89, _hoisted_90];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -1360,7 +1385,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<p style=\"text-align: justify;\">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.\n    </p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [$props.source === 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_5, "SIP Profile")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_6, "PPA Profile "))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<p style=\"text-align: justify;\">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.\r\n    </p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [$props.source === 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_5, "SIP Profile")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_6, "PPA Profile "))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/paps/direct"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -1478,9 +1503,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         borderRadius: '4px',
         color: 'white',
         fontWeight: 'bold',
-        backgroundColor: dat.status == '-2' ? 'red' : dat.status == '-1' ? 'gray' : dat.status == '0' ? 'orange' : dat.status == '1' ? 'blue' : dat.status == '2' ? 'green' : 'black'
+        backgroundColor: dat.status == '-2' ? 'red' : dat.status == '-1' ? 'gray' : dat.status == '0' ? 'orange' : dat.status == '1' ? 'blue' : dat.status == '2' ? 'green' : dat.status == '7' ? 'red' : 'black'
       })
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.status == '-2' ? 'Returned' : dat.status == '-1' ? 'Saved' : dat.status == '0' ? 'Submitted' : dat.status == '1' ? 'Reviewed' : dat.status == '2' ? 'Approved' : 'Unknown'), 5
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.status == '-2' ? 'Returned' : dat.status == '-1' ? 'Saved' : dat.status == '0' ? 'Submitted' : dat.status == '1' ? 'Reviewed' : dat.status == '2' ? 'Approved' : dat.status == '7' ? 'Request for Return' : 'Unknown'), 5
     /* TEXT, STYLE */
     )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" VIEW "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "btn btn-primary btn-sm",
@@ -1605,7 +1630,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_33)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Request for Return/Justification  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" dat.return_request_status: {{ dat.return_request_status }} "), ['1', '2'].includes(dat.status) && dat.return_request_status == '-1' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 4,
       onClick: function onClick($event) {
-        return $options.returnWithAmmendments(dat, 7);
+        return $options.returnWithAmmendments(dat, 5);
       },
       style: {
         padding: '4px 10px',
@@ -1616,7 +1641,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         cursor: 'pointer',
         fontWeight: 'bold'
       }
-    }, " Approve Return Request ", 8
+    }, " Request for return ", 8
     /* PROPS */
     , _hoisted_34)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dat.number_of_clones }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" VERSIONS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.version), 1
     /* TEXT */
@@ -1770,7 +1795,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, null, 8
       /* PROPS */
-      , _hoisted_45)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link :href=\"aip_printLink_excel\" class=\"btn btn-primary text-white\">\n                    Export to Excel\n                </Link> {{ aip_printLink_excel }}\n                <br>\n                {{ aip_printLink }}<br>\n            <button @click=\"exportUsers\" class=\"btn btn-primary text-white\">\n                    Export to Excel\n            </button> ")];
+      , _hoisted_45)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link :href=\"aip_printLink_excel\" class=\"btn btn-primary text-white\">\r\n                    Export to Excel\r\n                </Link> {{ aip_printLink_excel }}\r\n                <br>\r\n                {{ aip_printLink }}<br>\r\n            <button @click=\"exportUsers\" class=\"btn btn-primary text-white\">\r\n                    Export to Excel\r\n            </button> ")];
     }),
     _: 1
     /* STABLE */
@@ -1873,7 +1898,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* TEXT */
       )]), _hoisted_56, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("u", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.selected_plan.FFUNCTION), 1
       /* TEXT */
-      )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Warnings "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-if=\"show_warnings\">\n                                <div v-if=\"!isWithinLimit()\" class=\"text-danger mt-2\">\n                                ❌ Total file size must not exceed 10 MB.\n                                </div>\n                                <div v-if=\"!isWithinCount()\" class=\"text-danger mt-2\">\n                                ❌ You can only upload a maximum of 2 files.\n                                </div>\n                            </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" :disabled=\"!(isWithinLimit() && isWithinCount())\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Warnings "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-if=\"show_warnings\">\r\n                                <div v-if=\"!isWithinLimit()\" class=\"text-danger mt-2\">\r\n                                ❌ Total file size must not exceed 10 MB.\r\n                                </div>\r\n                                <div v-if=\"!isWithinCount()\" class=\"text-danger mt-2\">\r\n                                ❌ You can only upload a maximum of 2 files.\r\n                                </div>\r\n                            </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" :disabled=\"!(isWithinLimit() && isWithinCount())\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         type: "file",
         multiple: "",
         onChange: _cache[11] || (_cache[11] = function () {
@@ -1985,7 +2010,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           target: "_blank"
         }, _hoisted_83, 8
         /* PROPS */
-        , _hoisted_81), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\n                                                @click=\"deleteFile(file.id)\"\n                                                class=\"p-1 rounded-full bg-transparent hover:bg-red-100 border-0\"\n                                                data-toggle=\"tooltip\"\n                                                title=\"Delete\"\n                                            >\n                                                <svg\n                                                    xmlns=\"http://www.w3.org/2000/svg\"\n                                                    width=\"20\"\n                                                    height=\"20\"\n                                                    fill=\"red\"\n                                                    class=\"bi bi-trash-fill\"\n                                                    viewBox=\"0 0 16 16\"\n                                                >\n                                                    <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\n                                                </svg>\n                                            </button> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "0" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(file.return_batch), 1
+        , _hoisted_81), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\r\n                                                @click=\"deleteFile(file.id)\"\r\n                                                class=\"p-1 rounded-full bg-transparent hover:bg-red-100 border-0\"\r\n                                                data-toggle=\"tooltip\"\r\n                                                title=\"Delete\"\r\n                                            >\r\n                                                <svg\r\n                                                    xmlns=\"http://www.w3.org/2000/svg\"\r\n                                                    width=\"20\"\r\n                                                    height=\"20\"\r\n                                                    fill=\"red\"\r\n                                                    class=\"bi bi-trash-fill\"\r\n                                                    viewBox=\"0 0 16 16\"\r\n                                                >\r\n                                                    <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\r\n                                                </svg>\r\n                                            </button> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "0" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(file.return_batch), 1
         /* TEXT */
         )]);
       }), 128
@@ -1997,8 +2022,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.remarks]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_86, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-        onClick: _cache[19] || (_cache[19] = function ($event) {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.remarks]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_86, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Type: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+        "onUpdate:modelValue": _cache[19] || (_cache[19] = function ($event) {
+          return $data.return_request_type = $event;
+        })
+      }, _hoisted_91, 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.return_request_type]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        onClick: _cache[20] || (_cache[20] = function ($event) {
           return $options.returnWithAmmendmentsActual();
         }),
         style: {
@@ -2368,7 +2399,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\n                text-align:center;\n}\n.col-centered {\n                display:inline-block;\n                float:none;\n                text-align:left;\n                margin-right:-4px;\n}\n.pos{\n                position: top;\n                top: 240px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\r\n                text-align:center;\n}\n.col-centered {\r\n                display:inline-block;\r\n                float:none;\r\n                text-align:left;\r\n                margin-right:-4px;\n}\n.pos{\r\n                position: top;\r\n                top: 240px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

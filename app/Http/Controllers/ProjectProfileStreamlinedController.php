@@ -35,15 +35,20 @@ class ProjectProfileStreamlinedController extends Controller
 
     public function streamlined_create(Request $request, $idpaps)
     {
+        // SET PAPS ID
         $id = $idpaps;
         $source = null;
         // dd($idpaps);
-        // dd("yey");
         // dd($idpaps);
+
+        // SET PAPS VALUE
         $paps = ProgramAndProject::with('MFO')->where('id', $id)->get();
         $paps0 = $paps->first();
+
+        // SET OFFICE OBJECT
         $office = Office::where('department_code', $paps0->department_code)->first();
         // dd($office);
+        // SET USER DEPARTMENT CODE
         $dept_code = auth()->user()->department_code;
         $paps_all = [];
         // FOR BUDGETARY REQUIREMENTS
@@ -73,6 +78,8 @@ class ProjectProfileStreamlinedController extends Controller
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
 
         // dd($max_id);
+
+        // SET DUPLICATE DATA
         $duplicate = [];
         if ($request->source == 'direct') {
             $source = $request->source;
@@ -80,17 +87,25 @@ class ProjectProfileStreamlinedController extends Controller
         } else {
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $max_id)->first();
         }
+
+        // HGDG Checklist
         $hgdg = HGDG_Checklist::get();
+
+        // CHART OF ACCOUNTS --used in budgetary requirements
         $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($duplicate);
+
+        // CHECK FOR STATUS if submitted, return if error if true
         if ($duplicate) {
             if (intval($duplicate->status) >= 0) {
                 return redirect()->back()->with('error', 'Project profile already submitted');
             }
         }
 
+        // GET ALL POPSP AGENCIES
         $popsp_agencies = PopspAgency::all();
 
+        // IF LESS THAN 1 ANG COUNT
         if ($count < 1) {
             // dd()
             $firstDayNextYear = now()->addYear()->startOfYear()->format('Y-m-d');
@@ -131,7 +146,7 @@ class ProjectProfileStreamlinedController extends Controller
             $rev_plan_firstgenerate->risk_management = '';
             $rev_plan_firstgenerate->version = 1;
             $rev_plan_firstgenerate->gad_version = ($request->source === 'sip' || $this->getCurrentAipYear() != 2026) ? 2 : 1;
-            $rev_plan_firstgenerate->type = $request->source=='sip'?'sip':'p';
+            $rev_plan_firstgenerate->type = $request->source == 'sip' ? 'sip' : 'p';
             $rev_plan_firstgenerate->final = 0;
             $rev_plan_firstgenerate->supplemental = 0;
             $rev_plan_firstgenerate->user_id = auth()->user()->recid;
@@ -144,13 +159,15 @@ class ProjectProfileStreamlinedController extends Controller
         } else {
             $editData = $duplicate;
         }
-        // dd($editData->idpaps, $idpaps);
-        if($editData->idpaps != $idpaps){
+
+        // CHECK FOR MISMATCH
+        if ($editData->idpaps != $idpaps) {
             return redirect()->back()->with('error', 'Mismatch in Program and Project data. Please try again.');
         }
         $budgetRequirements = [];
 
-        $ccet_codes =ClimateChangeExpenditureTagging::where('id','<>',1)->get();
+        // SET CCET CODES
+        $ccet_codes = ClimateChangeExpenditureTagging::where('id', '<>', 1)->get();
         // dd($ccet_codes);
         // dd($id, $hgdg, $paps, $request->source, $office, $all_comments, $editData);
         if (isset($editData)) {
@@ -172,7 +189,10 @@ class ProjectProfileStreamlinedController extends Controller
         // dd($all_comments);
         // dd($acc);
         // dd($editData);
-        $view_returned = $editData->gad_version=='1'?'RevisionPlans/ProjectProfile/Create':'RevisionPlans/ProjectProfile/Createv2';
+
+
+        // RETURN create vue based on gad version
+        $view_returned = $editData->gad_version == '1' ? 'RevisionPlans/ProjectProfile/Create' : 'RevisionPlans/ProjectProfile/Createv2';
         $implementation = $this->getImplementationPlan($editData->id, $editData, $paps0->id);
         // return $implementation;
         // dd($this->signatories($editData->id));
@@ -308,7 +328,7 @@ class ProjectProfileStreamlinedController extends Controller
 
         // Signatories
         $signatories = Signatory::where('revision_plan_id', $revisionPlanId)->pluck('id');
-        $signatoryComments = RevisionPlanComment::where('table_name','signatories')
+        $signatoryComments = RevisionPlanComment::where('table_name', 'signatories')
             ->whereIn('table_row_id', $signatories);
 
         // 9️⃣ Merge all queries using union
