@@ -43,11 +43,14 @@ class RevisionPlanCommentController extends Controller
             $comment->context_after = $request->input('context_after');
         }
         $comment->save();
-        $this->insert_tags($request, $comment, $request->input('column_name'),
+        if(in_array($request->input('column_name'), ['rationale', 'objective', 'beneficiaries'])){
+            $this->insert_tags($request, $comment, $request->input('column_name'),
              $request->input('start_index'),
              $request->input('end_index'),
              $request->input('table_row_id')
-        );
+            );
+        }
+
         // if(in_array($request->input('column_name'), ['rationale', 'objective', 'beneficiaries'])){
         //     $this->tagCommentInText(
         //     $comment->id,

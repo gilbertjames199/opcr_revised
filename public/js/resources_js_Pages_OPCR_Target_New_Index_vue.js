@@ -66,8 +66,8 @@ __webpack_require__.r(__webpack_exports__);
       return count;
     },
     viewlink: function viewlink() {
-      var linkt = "https://";
-      var jasper_ip = "paps.dvodeoro.ph/"; // var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Ftarget%2FOPCR_TARGET&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR%2Ftarget&decorate=no&output=pdf';
+      var linkt = "https://"; // var jasper_ip = "paps.dvodeoro.ph/";
+      // var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&reportUnit=%2Freports%2Fplanning_system%2FOPCR%2Ftarget%2FOPCR_TARGET&standAlone=true&ParentFolderUri=%2Freports%2Fplanning_system%2FOPCR%2Ftarget&decorate=no&output=pdf';
       // var params = '&total=' + this.total + '&ave=' + this.ave + '&dept_head=' + this.dept_head +
       //     '&opcr_date=' + this.opcr_date + '&mooe=' + this.mooe + '&ps=' + this.ps +
       //     '&FFUNCCOD=' + this.FFUNCCOD + '&opcr_id=' + this.opcr_list_id;
@@ -78,7 +78,7 @@ __webpack_require__.r(__webpack_exports__);
       //     '&FFUNCCOD=' + this.FFUNCCOD + '&opcr_id=' + this.opcr_list_id;
 
       var params = '&idopcr=' + this.opcr_list_id;
-      var linkl = linkt + jasper_ip + jasper_link + params;
+      var linkl = linkt + this.jasper_ip + jasper_link + params;
       return linkl;
     },
     showModal: function showModal(FFUNCCOD, total, ave, dept_head, opcr_date, mooe, ps, id) {
@@ -446,7 +446,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       style: {
         "vertical-align": "middle"
       }
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dat.paps_desc }}\r\n                                    {{ dat.allotted }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dat.allotted }} "), dat.allotted != '0.00' && dat.allotted != undefined ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dat.paps_desc }}\n                                    {{ dat.allotted }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dat.allotted }} "), dat.allotted != '0.00' && dat.allotted != undefined ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
       key: 0,
       href: "/opcrbudgeting/edit/".concat(dat.opcr_target_budget_id)
     }, {
@@ -753,7 +753,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\r\n    text-align: center;\n}\n.col-centered {\r\n    display: inline-block;\r\n    float: none;\r\n    text-align: left;\r\n    margin-right: -4px;\n}\n.pos {\r\n    position: top;\r\n    top: 240px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.row-centered {\n    text-align: center;\n}\n.col-centered {\n    display: inline-block;\n    float: none;\n    text-align: left;\n    margin-right: -4px;\n}\n.pos {\n    position: top;\n    top: 240px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

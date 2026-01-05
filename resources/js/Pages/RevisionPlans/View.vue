@@ -363,7 +363,7 @@
                             <!-- <p v-html="renderCommentedText(paps.rationale, all_comments, 'rationale')"
                                 @mouseup="handleSelection('rationale')"
                             ></p> -->
-                            {{ paps.rationale }}
+                            <!-- {{ paps.rationale }} -->
 
                             <!-- <div ref="rationaleEl"
                                 @mouseup="handleSelection('rationale')"
@@ -2765,7 +2765,7 @@
                                             resolvePapsTargetId(paps, comment.column_name, comment)
                                             : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
                                                     {{ comment.comment }}
-                                                    <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
+                                                    <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p> -->
                                                     <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
                                                     <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p> -->
                                                                         <!-- {{
@@ -3637,7 +3637,7 @@ export default {
                 payload.context_after = this.contextAfter;
             }
             console.log(payload);
-            // alert(this.selectedStart+ " Selected Start");
+            alert(this.selectedStart+ " Selected Start");
             console.log("selectedText: "+this.selectedText);
 
             console.log("selectedStart: "+this.selectedStart);

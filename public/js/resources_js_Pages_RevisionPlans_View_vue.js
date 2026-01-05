@@ -531,17 +531,17 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
                   payload.context_after = _this4.contextAfter;
                 }
 
-                console.log(payload); // alert(this.selectedStart+ " Selected Start");
-
+                console.log(payload);
+                alert(_this4.selectedStart + " Selected Start");
                 console.log("selectedText: " + _this4.selectedText);
                 console.log("selectedStart: " + _this4.selectedStart);
                 console.log("selectedEnd: " + _this4.selectedEnd);
                 console.log("contextBefore: " + _this4.contextBefore);
                 console.log("contextAfter: " + _this4.contextAfter);
-                _context.next = 22;
+                _context.next = 23;
                 return _this4.$nextTick();
 
-              case 22:
+              case 23:
                 _this4.$inertia.post('/revision-plan-comments/store', payload);
 
                 _this4.closeCommentModal();
@@ -550,7 +550,7 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
                   _this4.comment = "";
                 }, 1000); // 1000 milliseconds = 1 second
 
-              case 25:
+              case 26:
               case "end":
                 return _context.stop();
             }
@@ -3343,9 +3343,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
   /* CLASS */
-  )]), _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p ref=\"rationale\"\n                                v-html=\"renderedText('rationale')\"\n                                @mouseup=\"handleSelection('rationale')\"\n                                class=\"cursor-text\"></p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ highlightedText('rationale') }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.rationale\"\n                                style=\"white-space: pre-line\"\n                                ref=\"rationaleDiv\"\n                                @mouseup=\"onHighlight\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ renderCommentedText(paps.rationale, all_comments, 'rationale') }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p v-html=\"renderCommentedText(paps.rationale, all_comments, 'rationale')\"\n                                @mouseup=\"handleSelection('rationale')\"\n                            ></p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.paps.rationale) + " ", 1
-  /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div ref=\"rationaleEl\"\n                                @mouseup=\"handleSelection('rationale')\"\n                                v-html=\"paps.rationale\"\n                            ></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  )]), _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p ref=\"rationale\"\n                                v-html=\"renderedText('rationale')\"\n                                @mouseup=\"handleSelection('rationale')\"\n                                class=\"cursor-text\"></p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ highlightedText('rationale') }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.rationale\"\n                                style=\"white-space: pre-line\"\n                                ref=\"rationaleDiv\"\n                                @mouseup=\"onHighlight\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ renderCommentedText(paps.rationale, all_comments, 'rationale') }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p v-html=\"renderCommentedText(paps.rationale, all_comments, 'rationale')\"\n                                @mouseup=\"handleSelection('rationale')\"\n                            ></p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ paps.rationale }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div ref=\"rationaleEl\"\n                                @mouseup=\"handleSelection('rationale')\"\n                                v-html=\"paps.rationale\"\n                            ></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     onMouseup: _cache[31] || (_cache[31] = function ($event) {
       return $options.handleSelection('rationale');
     }),
