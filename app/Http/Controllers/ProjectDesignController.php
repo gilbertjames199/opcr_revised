@@ -8,26 +8,29 @@ use App\Models\CashDisbursementForecast;
 use App\Models\BudgetRequirement;
 use App\Models\CashDisbursementForecastAccount;
 use App\Models\CurrentAipYear;
+use App\Services\ProjectDesignService;
 use Illuminate\Support\Facades\DB;
 
 class ProjectDesignController extends Controller
 {
     //
     protected $revision_plans;
-    public function __construct(RevisionPlanController $revision_plans)
+    protected $service;
+    public function __construct(RevisionPlanController $revision_plans, ProjectDesignService $service)
     {
         $this->revision_plans = $revision_plans;
+        $this->service = $service;
     }
 
     public function generateProjectDesign(Request $request, $id)
     {
         // dd($request->input('type'));
         // 1️⃣ Check if a project design already exists
-        $current_year =CurrentAipYear::first()->year;
+        $current_year = CurrentAipYear::first()->year;
         $existing = RevisionPlan::where('reference_profile_id', $id)
-                ->where('type', $request->input('type'))
-                ->whereYear('date_start', $current_year)
-                ->first();
+            ->where('type', $request->input('type'))
+            ->whereYear('date_start', $current_year)
+            ->first();
 
         if ($existing) {
             return redirect()->back()->with(
@@ -45,6 +48,11 @@ class ProjectDesignController extends Controller
 
         return redirect()->back()->with('message', $result['message']);
     }
+
+    // public function useProjectDesignService($id)
+    // {
+    //     return $this->service->generate($id);
+    // }
     public function cloneRevisionPlan($id, $type)
     {
         DB::beginTransaction();
@@ -223,7 +231,7 @@ class ProjectDesignController extends Controller
 
             // -----------------------------------------------------------
             // CLONE CASH DISBURSEMENT FORECAST
-            if($rev_plan->type!='p'){
+            if ($rev_plan->type != 'p') {
                 $this->generateCDF($new_plan, $rev_plan);
             }
             DB::commit();
@@ -239,7 +247,8 @@ class ProjectDesignController extends Controller
             ];
         }
     }
-    protected function generateCDF($new_plan, $rev_plan){
+    protected function generateCDF($new_plan, $rev_plan)
+    {
         $newCDF  = CashDisbursementForecast::create([
             'revision_plan_id' => $new_plan->id,
             'version' => 1,
@@ -258,10 +267,18 @@ class ProjectDesignController extends Controller
                 CashDisbursementForecastAccount::create([
                     'budget_requirement_id'            => $br->id,
                     'cash_disbursement_forecast_id'    => $newCDF->id,
-                    'january'   => 0, 'february' => 0, 'march'    => 0,
-                    'april'     => 0, 'may'      => 0, 'june'     => 0,
-                    'july'      => 0, 'august'   => 0, 'september'=> 0,
-                    'october'   => 0, 'november' => 0, 'december' => 0
+                    'january'   => 0,
+                    'february' => 0,
+                    'march'    => 0,
+                    'april'     => 0,
+                    'may'      => 0,
+                    'june'     => 0,
+                    'july'      => 0,
+                    'august'   => 0,
+                    'september' => 0,
+                    'october'   => 0,
+                    'november' => 0,
+                    'december' => 0
                 ]);
             }
         }

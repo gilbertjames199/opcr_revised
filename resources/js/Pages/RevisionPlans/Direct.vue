@@ -491,8 +491,11 @@
                                 <!-- Review/Approve -->
                                 <td v-if="my_source=='rev_app'">
                                     <!-- Review -->
-                                    <!-- {{ dat.budget_sum }}, {{ dat.imp_amount }} {{  dat.comments_count }} -->
-                                      <!-- {{ dat.status }} -gad status: {{ dat.gad_status }} -->
+                                     {{ dat.id }}<br>
+                                    {{ dat.budget_sum }}, {{ dat.imp_amount }} {{  dat.comments_count }}
+                                    sttus:  {{ dat.status }} -gad status: {{ dat.gad_status }}
+                                    --return_request_status: {{ dat.return_request_status }} <br>
+                                     <!-- -{{ dat }} -->
                                     <button
                                         v-if="dat.gad_status=='0'"
                                         @click="statusAction(dat, 1, 'gad_status')"
@@ -510,7 +513,13 @@
                                     >
                                         GAD Review
                                     </button>
-                                    <!-- canReviewApproveGAD: {{ canReviewApproveGAD() }} -->
+                                    <!-- {{ reviewers }}
+                                    reviewers
+                                    {{ auth.user.recid }}
+                                    canReviewApproveGAD: {{ canReviewApproveGAD() }}<br>
+                                    comments count: {{ dat.comments_count }}<br>
+                                    imp_amount: {{ Math.round(parseFloat(dat.imp_amount)) }} <br>
+                                    budget_sum: {{ Math.round(parseFloat(dat.budget_sum)) }} <br> -->
                                     <button
                                         v-if="dat.status == '0' && dat.gad_status=='1'"
                                         :disabled="canReviewApproveGAD() ||
@@ -570,8 +579,22 @@
                                     >
                                         Return
                                     </button>
-
                                     <button
+                                        v-if="['0'].includes(dat.return_request_status)"
+                                        @click="statusAction(dat, 7)"
+                                        :style="{
+                                        padding: '4px 10px',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        backgroundColor: 'red',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold'
+                                        }"
+                                    >
+                                        Approve Return Request
+                                    </button>
+                                    <!-- <button
                                         v-if="['1','2'].includes(dat.status)"
                                         @click="returnWithAmmendments(dat, -2)"
                                         :style="{
@@ -585,8 +608,9 @@
                                         }"
                                     >
                                         Return with Ammendments
-                                    </button>
+                                    </button> -->
                                 </td>
+                                <!-- BUDGET********************************************** -->
                                 <td v-if="my_source=='budget'">
                                      <button
                                         class="btn btn-primary btn-sm text-white"
@@ -683,9 +707,6 @@
             <br>
         </IppListModal>
         <ReturnWithAmmendmentsModal v-if="ReturnWithAmmendmentsModalVisible" @close-modal-event="hideReturnWithAmmendmentsModal" title="RETURN WITH AMMENDMENTS">
-
-
-
             <div class="peers mb-12">
                 <table class="table">
                     <tr>
@@ -895,7 +916,7 @@
                 </table>
 
 
-             </div>
+            </div>
         </ReturnWithAmmendmentsModal>
         <SideModal v-if="displaySideModal"  @close-modal-event="displaySideModal = false" style="z-index: 9999;  ">
             <h2 class="text-lg font-semibold">Preview SideModal</h2>
@@ -968,7 +989,8 @@
         </SideModal>
         <!-- {{ my_source }} -->
     </div>
-    <!-- {{ auth }} -->
+    <!-- uccrent user: {{ current_user_id }} <br>
+    {{ auth }} -->
     <!-- {{ ooe_description }}
     {{ ooe_id }} -->
 </template>
@@ -1015,7 +1037,8 @@ export default {
         fileBaseUrl: String,
         disk: String,
         // HAS COMMENTS
-        has_comments: String
+        has_comments: String,
+        reviewers: Object
     },
     data() {
         return{
@@ -1110,6 +1133,9 @@ export default {
             // YEAR PERIOD SELECTED
             year_period: 0,
             gad_reviewers: [684, 545],
+            reviewers: [681,685],
+            approvers: [682],
+            current_user_id: '',
         }
     },
     computed: {
@@ -1193,7 +1219,7 @@ export default {
     },
     mounted() {
         this.setCurrentYear()
-
+        this.current_user_id=this.auth.user.recid
         //FOR FILE UPLOADS
         if (localStorage.getItem('reloaded')) {
             // The page was just reloaded. Clear the value from local storage
@@ -1769,7 +1795,8 @@ export default {
                 1: "Review",
                 2: "Approve",
                 "-2": "Return",
-                5: "Request for Return"
+                5: "Request for Return",
+                7: "Approve the request for return for"
             };
             const actionLabel = actions[newStatus];
             const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
@@ -2149,8 +2176,8 @@ export default {
         // GAD Reviewers
         canReviewApproveGAD(){
             const reviewers = this.gad_reviewers ?? [];
-            const userId = this.$page.props.auth.user.recid;
-
+            const userId = this.auth.user.recid;
+            // alert(userId);
             return reviewers.includes(userId);
         }
 

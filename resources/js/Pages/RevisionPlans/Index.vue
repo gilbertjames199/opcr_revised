@@ -103,6 +103,7 @@
                                             dat.status == '0'  ? 'orange' :
                                             dat.status == '1'  ? 'blue' :
                                             dat.status == '2'  ? 'green' :
+                                            dat.status == '7' ? 'red' :
                                             'black'
                                         }"
                                     >
@@ -112,6 +113,7 @@
                                         dat.status == '0'  ? 'Submitted' :
                                         dat.status == '1'  ? 'Reviewed' :
                                         dat.status == '2'  ? 'Approved' :
+                                        dat.status == '7'  ? 'Request for Return' :
                                         'Unknown'
                                         }}
                                     </span>
@@ -238,18 +240,18 @@
                                     <!-- dat.return_request_status: {{ dat.return_request_status }} -->
                                     <button
                                         v-if="['1','2'].includes(dat.status) && dat.return_request_status=='-1'"
-                                        @click="returnWithAmmendments(dat, 7)"
+                                        @click="returnWithAmmendments(dat, 5)"
                                         :style="{
-                                        padding: '4px 10px',
-                                        border: 'none',
-                                        borderRadius: '4px',
-                                        backgroundColor: 'red',
-                                        color: 'white',
-                                        cursor: 'pointer',
-                                        fontWeight: 'bold'
+                                            padding: '4px 10px',
+                                            border: 'none',
+                                            borderRadius: '4px',
+                                            backgroundColor: 'red',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold'
                                         }"
                                     >
-                                        Approve Return Request
+                                        Request for return
                                     </button>
                                     <!-- {{ dat.number_of_clones }} -->
                                 </td>
@@ -549,6 +551,19 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
+                                        <div>
+                                            Type:
+                                            <select v-model="return_request_type">
+                                                <option></option>
+                                                <option value="a">
+                                                    Administrative Order (New strategies/activities/ not included in approved project profile)
+                                                </option>
+                                                <option>
+                                                    Appropriation Ordinance
+                                                </option>
+                                                <option>Justification</option>
+                                            </select>
+                                        </div>
                                         <button
                                                 @click="returnWithAmmendmentsActual()"
                                                 :style="{
@@ -636,6 +651,7 @@ export default {
             selected_label: '',
             docs: [],
             remarks: '',
+            return_request_type: '',
             //Document Display
             displaySideModal: false,
             showImageModal: false,
@@ -1223,21 +1239,26 @@ export default {
                 alert("Remarks are required before returning the plan.");
                 return;
             }
-
+            if(!this.return_request_type || this.return_request_type.trim()==''){
+                alert("You have to select a return type!")
+                return;
+            }
             // 3. Confirm action
-            confirm_message = `Are you sure you want to ${this.selected_label}?`;
+            // confirm_message = `Are you sure you want to ${this.selected_label}?`;
 
-            if (!confirm(confirm_message)) {
-                return;
-            }
-            confirm_message = `Are you sure you want to ${this.selected_label}?`;
+            // if (!confirm(confirm_message)) {
+            //     return;
+            // }
+            //confirm_message = `Are you sure you want to ${this.selected_label}?`;
 
-            if (!confirm(confirm_message)) {
-                return;
-            }
+            //if (!confirm(confirm_message)) {
+            //   return;
+            //}
 
             // Call the original method again and pass stored parameters
+            // alert(this.selected_status);
             this.statusAction(this.selected_plan, this.selected_status);
+
             this.ReturnWithAmmendmentsModalVisible=false;
 
         },
@@ -1248,8 +1269,9 @@ export default {
                 1: "Review",
                 2: "Approve",
                 "-2": "Return",
-                5: "Request for Return"
+                5: "request for the return of the"
             };
+            // alert(revision_plan.type)
             const actionLabel = actions[newStatus];
             const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
 
@@ -1261,7 +1283,8 @@ export default {
                 `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
                 {
                     remarks: this.remarks,   // ← SEND IT HERE
-                    column: column
+                    column: column,
+                    return_request_type: this.return_request_type
                 },
                 {
                     preserveScroll: true

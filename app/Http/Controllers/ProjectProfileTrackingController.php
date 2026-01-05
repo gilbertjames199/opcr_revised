@@ -12,6 +12,7 @@ use App\Models\RevisionPlan;
 use App\Models\RevisionPlanComment;
 use App\Models\RevisionPlanDocuments;
 use App\Models\User;
+use App\Services\ProjectDesignService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,16 +21,25 @@ use Illuminate\Support\Facades\DB;
 class ProjectProfileTrackingController extends Controller
 {
     protected $projectProfileTracking;
+    protected $service;
     protected $budget;
-    public function __construct(ProjectProfileTracking $projectProfileTracking, BudgetRequirement $budget)
+    public function __construct(ProjectProfileTracking $projectProfileTracking, BudgetRequirement $budget, ProjectDesignService $service)
     {
         $this->projectProfileTracking = $projectProfileTracking;
         $this->budget = $budget;
+        $this->service = $service;
     }
 
     public function status_update(Request $request, $id, $type, $new_status)
     {
-        // dd($id, $type, $new_status);
+        if ($new_status == "7") {
+            dd("seven jud siya:", $id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
+        }
+        // dd($id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
+        $rrt = "";
+        if ($request->return_request_type) {
+            $rrt = $request->return_request_type;
+        }
         $us = auth()->user();
         // dd($us);
         $revplan = RevisionPlan::where('id', $id)->first();
@@ -52,14 +62,17 @@ class ProjectProfileTrackingController extends Controller
             }
         }
         $typpe = $revplan->type == "p" ? "Project Profie" : "Project Design";
+
         // Update the status
-        // dd($request);
-        if($new_status=="5"){
-            $revplan->return_request_status=0;
-        }else{
-            if($request->column=='gad_status'){
+        if ($new_status == "5") {
+            $revplan->return_request_status = 0;
+        } else if ($new_status == "7") {
+            $revplan->return_request_status = "-1";
+            $this->service->generate($id);
+        } else {
+            if ($request->column == 'gad_status') {
                 $revplan->gad_status = $new_status;
-            }else{
+            } else {
                 $revplan->status = $new_status;
             }
         }
@@ -72,13 +85,15 @@ class ProjectProfileTrackingController extends Controller
             'action_type' => $type,
             'revision_plan_id' => $revplan->id,
             'remarks' => $request->remarks,
+            'return_request_type' => $rrt
         ]);
         // MESSAGE
         $actionWords = [
             0  => "Submitted",
             1  => "Reviewed",
             2  => "Approved",
-            -2 => "Returned"
+            -2 => "Returned",
+            5 => "Request for return sent"
         ];
 
         $actionText = $actionWords[$new_status] ?? "Updated";
@@ -90,7 +105,7 @@ class ProjectProfileTrackingController extends Controller
         //         ->with('message','Project Profile '.$actionText.' successfully.');
         // }
         // Submit (0) OR Recall (-1) → go back to same page
-        if ($new_status == 0 || $new_status == -1 || $new_status=="5") {
+        if ($new_status == 0 || $new_status == -1 || $new_status == "5") {
             return redirect()->back()
                 ->with('message', $type . " {$actionText} successfully.");
         }
