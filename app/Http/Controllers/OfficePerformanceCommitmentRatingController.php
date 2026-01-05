@@ -1225,10 +1225,11 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "date_now" => $date_now,
                     "approver" => $approver,
                     "position" => $pos,
-                    "ave_qet" => $average,
+                    "ave_qet" => $ave_qet,
                     "target_success_indicator" => $su,
                     "adjectival" => $adj,
-                    "pmt_chair" => $pmt_chair
+                    "pmt_chair" => $pmt_chair,
+                    "overall_average" => $average,
                     // "office_accountable" => $office_accountable
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
