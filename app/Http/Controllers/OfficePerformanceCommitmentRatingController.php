@@ -1259,7 +1259,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "total" => $total,
                     "ave" => $ave,
                     "dept_head" => $dept_head,
-                    "assistant_head" => $my_opcr->assistant_pg_head ?? $assistant_pg ?? null,
+                    // "assistant_head" => $my_opcr->assistant_pg_head ?? $assistant_pg ?? null,
                     "opcr_date" => $opcr_date,
                     "opcr_id" => $opcr_id,
                     "mooe" => $mooe,
