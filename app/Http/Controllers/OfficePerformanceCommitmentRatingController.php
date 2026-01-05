@@ -1041,14 +1041,17 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $isPA1 = $this->isPA($opcr_date, 'PA 1');
         $average = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)
             ->selectRaw("
-                AVG(
-                    (COALESCE(rating_q, 0) + COALESCE(rating_e, 0) + COALESCE(rating_t, 0)) /
-                    NULLIF(
-                        (rating_q IS NOT NULL) +
-                        (rating_e IS NOT NULL) +
-                        (rating_t IS NOT NULL),
-                        0
-                    )
+                ROUND(
+                    AVG(
+                        (COALESCE(rating_q, 0) + COALESCE(rating_e, 0) + COALESCE(rating_t, 0)) /
+                        NULLIF(
+                            (rating_q IS NOT NULL) +
+                            (rating_e IS NOT NULL) +
+                            (rating_t IS NOT NULL),
+                            0
+                        )
+                    ),
+                    2
                 ) AS average_rating
             ")
             ->value('average_rating');
