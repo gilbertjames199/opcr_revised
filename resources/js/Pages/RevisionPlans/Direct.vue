@@ -491,20 +491,22 @@
                                 <!-- Review/Approve -->
                                 <td v-if="my_source=='rev_app'">
                                     <!-- Review -->
-                                     {{ dat.id }}<br>
+                                     <!-- {{ dat.id }}<br>
                                     {{ dat.budget_sum }}, {{ dat.imp_amount }} {{  dat.comments_count }}
                                     sttus:  {{ dat.status }} -gad status: {{ dat.gad_status }}
-                                    --return_request_status: {{ dat.return_request_status }} <br>
+                                    --return_request_status: {{ dat.return_request_status }} <br> -->
                                      <!-- -{{ dat }} -->
+                                      <!-- :disabled="!canReviewApproveGAD()" -->
+                                       <!-- backgroundColor: canReviewApproveGAD() ? 'blue' : '#a0c4ff', -->
                                     <button
                                         v-if="dat.gad_status=='0'"
                                         @click="statusAction(dat, 1, 'gad_status')"
-                                        :disabled="!canReviewApproveGAD()"
+
                                         :style="{
                                         padding: '4px 10px',
                                         border: 'none',
                                         borderRadius: '4px',
-                                        backgroundColor: canReviewApproveGAD() ? 'blue' : '#a0c4ff',
+                                        backgroundColor: 'blue' ,
                                         color: 'white',
                                         cursor: 'pointer',
                                         fontWeight: 'bold',
@@ -520,20 +522,22 @@
                                     comments count: {{ dat.comments_count }}<br>
                                     imp_amount: {{ Math.round(parseFloat(dat.imp_amount)) }} <br>
                                     budget_sum: {{ Math.round(parseFloat(dat.budget_sum)) }} <br> -->
+                                    <!-- :disabled="canReviewApproveGAD() ||
+                                                    dat.comments_count > 0 ||
+                                                    Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum))" -->
+                                    <!-- backgroundColor: canReviewApproveGAD() ||
+                                                    dat.comments_count > 0 ||
+                                                    Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum))
+                                                    ? '#a0c4ff' : 'blue', -->
                                     <button
                                         v-if="dat.status == '0' && dat.gad_status=='1'"
-                                        :disabled="canReviewApproveGAD() ||
-                                                    dat.comments_count > 0 ||
-                                                    Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum))"
+
                                         @click="statusAction(dat, 1, 'status')"
                                         :style="{
                                             padding: '4px 10px',
                                             border: 'none',
                                             borderRadius: '4px',
-                                            backgroundColor: canReviewApproveGAD() ||
-                                                    dat.comments_count > 0 ||
-                                                    Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum))
-                                                    ? '#a0c4ff' : 'blue',
+                                            backgroundColor: 'blue',
                                             color: 'white',
                                             cursor: 'pointer',
                                             fontWeight: 'bold',

@@ -2140,6 +2140,8 @@ class RevisionPlanController extends Controller
         //         'You are not allowed to access the review process for Project Profiles/Designs.'
         //     );
         // }
+        $gad_reviewers = config('gad.reviewers');
+
         if (auth()->user()->popsp_agency) {
             return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
         }
@@ -2208,12 +2210,25 @@ class RevisionPlanController extends Controller
                     ->groupBy('revision_plan_id')
                     ->havingRaw('SUM(amount) > 0');
             })
-            ->when($request->source == 'rev_app', function ($query) {
+            ->when($request->source == 'rev_app', function ($query)use ($myid, $gad_reviewers)  {
 
                 $query->where(function ($q) {
                     $q->where('status', '0')
                         ->orWhere('status', '7')
                         ->orWhere('return_request_status', '0');
+                });
+
+                 // GAD visibility rules
+                $query->whereHas('paps', function ($q) use ($myid, $gad_reviewers) {
+
+                    if (in_array($myid, $gad_reviewers, true)) {
+                        // ✅ GAD reviewer → see ONLY gad_status = 0
+                        $q->where('gad_status', 0);
+                    } else {
+                        // ❌ Not a reviewer → see ONLY gad_status = 1
+                        $q->where('gad_status', 1);
+                    }
+
                 });
             })
             ->when($request->FFUNCCOD, function ($query) use ($request) {

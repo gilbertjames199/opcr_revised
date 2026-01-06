@@ -816,6 +816,35 @@ class OpcrTargetController extends Controller
         $suffix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->suffix_name ? ', ' . $opcr_sem->office->pgHead->suffix_name : '') : '') : '') : '';
         $postfix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '') : '';
         $pgHead = $first_name . ' ' . ($middle_name ? substr($middle_name, 0, 1) . '. ' : '') . $last_name . $suffix_name . $postfix_name;
+
+
+        // Assistant PG Head
+        $assistant_pg_head = "";
+        if($opcr_sem){
+            if($opcr_sem->assistant_pg_head){
+                // ASSISTANT PG HEAD
+                $assistant_pg_head = $opcr_sem->assistant_pg_head;
+            }else{
+                // ASSISTANT PG HEAD
+                $ap_head = UserEmployees::where('department_code',$opcr_sem->department_code)
+                    ->where('salary_grade','24')
+                    ->first();
+                if($ap_head){
+                    $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
+                    $ap_head->last_name;
+                    $ap_suffix = $ap_head->suffix_name;
+                    $ap_post = $ap_head->postfix_name;
+                    if ($ap_suffix) {
+                        $assistant_pg_head = $assistant_pg_head . ', ' . $ap_suffix;
+                    }
+                    if ($ap_post) {
+                        $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
+                    }
+                }
+
+            }
+
+        }
         // dd($opcr_sem);
         // OpcrTargetBudget
         $opcr_target = OpcrTarget::with([
@@ -832,7 +861,7 @@ class OpcrTargetController extends Controller
             ->where('is_included', '1')
             ->whereHas('paps')
             ->get()
-            ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD) {
+            ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD, $assistant_pg_head) {
                 // dd($item->opcrList->year);
                 $mfo_desc = "";
                 $paps_desc = "";
@@ -897,7 +926,7 @@ class OpcrTargetController extends Controller
                             $approver = '-';
                             $pos = 'Governor';
                             if (in_array($FFUNCCOD, ['1021', '1016'])) {
-                                $approver = '--';
+                                $approver = '-';
                                 $pos = 'Vice Governor';
                             }
                         }
@@ -966,6 +995,7 @@ class OpcrTargetController extends Controller
                     'idpaps' => $item->paps ? $item->paps->id : "",
                     'office' => $office,
                     'pgHead' => $pgHead,
+                    'assistant_pg_head'=>$assistant_pg_head,
                     'sem' => $sem,
                     'year' => $year,
                     'period' => $period,
