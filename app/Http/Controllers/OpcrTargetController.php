@@ -1023,6 +1023,7 @@ class OpcrTargetController extends Controller
                 'idpaps' => null,
                 'office' => $office,
                 'pgHead' => $pgHead,
+                'assistant_pg_head'=>$assistant_pg_head,
                 'sem' => $sem,
                 'year' => $year,
                 'period' => ($sem === 'First Semester')
