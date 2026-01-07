@@ -820,27 +820,87 @@ class OpcrTargetController extends Controller
 
         // Assistant PG Head
         $assistant_pg_head = "";
+        $assistant_pg_head_2 = "";
+        $assistant_pg_head_3 = "";
         if($opcr_sem){
             if($opcr_sem->assistant_pg_head){
                 // ASSISTANT PG HEAD
                 $assistant_pg_head = $opcr_sem->assistant_pg_head;
             }else{
                 // ASSISTANT PG HEAD
-                $ap_head = UserEmployees::where('department_code',$opcr_sem->department_code)
+                $ap_head=[];
+                $ap_head_1=[];
+                $ap_head_2=[];
+                $ap_head_3=[];
+                if($opcr_sem->department_code=='16'){
+                    $ap_head = UserEmployees::where('department_code',$opcr_sem->department_code)
+                    ->where('salary_grade','24')
+                    ->where('active_status','ACTIVE')
+                    ->get();
+
+                    // dd($ap_head[0],$ap_head[1],$ap_head[2]);
+                    $ap_head_1 = $ap_head[0];
+                    $ap_head_2 = $ap_head[1];
+                    $ap_head_3 = $ap_head[2];
+
+
+                    if($ap_head_1){
+                        $assistant_pg_head = $ap_head_1->first_name . ' ' . $ap_head_1->middle_name[0] . '. ' .
+                        $ap_head_1->last_name;
+                        $ap_suffix = $ap_head_1->suffix_name;
+                        $ap_post = $ap_head_1->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
+                        }
+                    }
+
+                    if($ap_head_2){
+                        $assistant_pg_head_2 = $ap_head_2->first_name . ' ' . $ap_head_2->middle_name[0] . '. ' .
+                        $ap_head_2->last_name;
+                        $ap_suffix = $ap_head_2->suffix_name;
+                        $ap_post = $ap_head_2->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head_2 = $assistant_pg_head_2 . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head_2 = $assistant_pg_head_2 . ', ' . $ap_post;
+                        }
+                    }
+
+                    if($ap_head_3){
+                        $assistant_pg_head_3 = $ap_head_3->first_name . ' ' . $ap_head_3->middle_name[0] . '. ' .
+                        $ap_head_3->last_name;
+                        $ap_suffix = $ap_head_3->suffix_name;
+                        $ap_post = $ap_head_3->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head_3 = $assistant_pg_head_3 . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head_3 = $assistant_pg_head_3 . ', ' . $ap_post;
+                        }
+                    }
+
+                }else{
+                    $ap_head = UserEmployees::where('department_code',$opcr_sem->department_code)
                     ->where('salary_grade','24')
                     ->first();
-                if($ap_head){
-                    $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
-                    $ap_head->last_name;
-                    $ap_suffix = $ap_head->suffix_name;
-                    $ap_post = $ap_head->postfix_name;
-                    if ($ap_suffix) {
-                        $assistant_pg_head = $assistant_pg_head . ', ' . $ap_suffix;
-                    }
-                    if ($ap_post) {
-                        $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
+                    if($ap_head){
+                        $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
+                        $ap_head->last_name;
+                        $ap_suffix = $ap_head->suffix_name;
+                        $ap_post = $ap_head->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
+                        }
                     }
                 }
+
 
             }
 
@@ -861,7 +921,7 @@ class OpcrTargetController extends Controller
             ->where('is_included', '1')
             ->whereHas('paps')
             ->get()
-            ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD, $assistant_pg_head) {
+            ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD, $assistant_pg_head, $assistant_pg_head_2, $assistant_pg_head_3) {
                 // dd($item->opcrList->year);
                 $mfo_desc = "";
                 $paps_desc = "";
@@ -996,6 +1056,8 @@ class OpcrTargetController extends Controller
                     'office' => $office,
                     'pgHead' => $pgHead,
                     'assistant_pg_head'=>$assistant_pg_head,
+                    'assistant_pg_head_2'=>$assistant_pg_head_2,
+                    'assistant_pg_head_3'=>$assistant_pg_head_3,
                     'sem' => $sem,
                     'year' => $year,
                     'period' => $period,
