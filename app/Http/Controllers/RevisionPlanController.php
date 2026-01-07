@@ -2608,6 +2608,7 @@ class RevisionPlanController extends Controller
         // ->
         // dd("dsdsdsdsd");
         $query = RevisionPlan::with(['paps', 'paps.office'])
+            ->where('status','1')
             // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
             // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
             // ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
