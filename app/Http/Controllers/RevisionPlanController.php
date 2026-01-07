@@ -2692,7 +2692,9 @@ class RevisionPlanController extends Controller
             'paps',
             'paps.office',
             'paps.office.office'
-        ])->get();
+        ])
+        ->where('status', '1')
+        ->get();
 
         foreach ($plans as $plan) {
             $strategy = optional(optional($plan)->strategyProject->first())->strategy;
