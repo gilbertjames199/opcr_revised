@@ -115,7 +115,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (size < 1024) return size + ' B';else if (size < 1024 * 1024) return (size / 1024).toFixed(2) + ' KB';else return (size / (1024 * 1024)).toFixed(2) + ' MB';
     },
     isWithinCount: function isWithinCount() {
-      return this.files.length + this.movs.length <= 2;
+      return this.files.length + this.movs.length <= 10;
     },
     isWithinLimit: function isWithinLimit() {
       var maxSize = 10 * 1024 * 1024; // 10 MB in bytes
