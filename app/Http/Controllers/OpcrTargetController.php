@@ -883,6 +883,45 @@ class OpcrTargetController extends Controller
                         }
                     }
 
+                }else if($opcr_sem->department_code=='11'){
+                    $ap_head = UserEmployees::where('department_code',$opcr_sem->department_code)
+                    ->where('salary_grade','24')
+                    ->where('active_status','ACTIVE')
+                    ->get();
+
+                    // dd($ap_head[0],$ap_head[1],$ap_head[2]);
+                    $ap_head_1 = $ap_head[0];
+                    $ap_head_2 = $ap_head[1];
+                    // $ap_head_3 = $ap_head[2];
+
+
+                    if($ap_head_1){
+                        $assistant_pg_head = $ap_head_1->first_name . ' ' . $ap_head_1->middle_name[0] . '. ' .
+                        $ap_head_1->last_name;
+                        $ap_suffix = $ap_head_1->suffix_name;
+                        $ap_post = $ap_head_1->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
+                        }
+                    }
+
+                    if($ap_head_2){
+                        $assistant_pg_head_2 = $ap_head_2->first_name . ' ' . $ap_head_2->middle_name[0] . '. ' .
+                        $ap_head_2->last_name;
+                        $ap_suffix = $ap_head_2->suffix_name;
+                        $ap_post = $ap_head_2->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head_2 = $assistant_pg_head_2 . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head_2 = $assistant_pg_head_2 . ', ' . $ap_post;
+                        }
+                    }
+
+
                 }else{
                     $ap_head = UserEmployees::where('department_code',$opcr_sem->department_code)
                     ->where('salary_grade','24')
