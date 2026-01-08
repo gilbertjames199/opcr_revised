@@ -1031,6 +1031,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     ->where('salary_grade','24')
                     ->where('active_status','ACTIVE')
                     ->get();
+                    // dd($opcr_id,$my_opcr,$ap_head);
                 if($my_opcr->assistant_pg_head){
                     // ASSISTANT PG HEAD
                     $assistant_pg_head = $my_opcr->assistant_pg_head;
@@ -1085,13 +1086,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
                 }
 
-                if($my_opcr->assistant_pg_head2){
+                if($my_opcr->assistant_pg_head_2){
                     // ASSISTANT PG HEAD 2
-                    $assistant_pg_head2 = $my_opcr->assistant_pg_head2;
+                    $assistant_pg_head2 = $my_opcr->assistant_pg_head_2;
                 }
-                if($my_opcr->assistant_pg_head3){
+                if($my_opcr->assistant_pg_head_3){
                     // ASSISTANT PG HEAD 3
-                    $assistant_pg_head3 = $my_opcr->assistant_pg_head3;
+                    $assistant_pg_head3 = $my_opcr->assistant_pg_head_3;
                 }
 
 
