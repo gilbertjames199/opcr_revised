@@ -943,6 +943,15 @@ class OpcrTargetController extends Controller
 
             }
 
+            if($opcr_sem->assistant_pg_head_2){
+                // ASSISTANT PG HEAD 2
+                $assistant_pg_head_2 = $opcr_sem->assistant_pg_head_2;
+            }
+            if($opcr_sem->assistant_pg_head_3){
+                // ASSISTANT PG HEAD 3
+                $assistant_pg_head_3 = $opcr_sem->assistant_pg_head_3;
+            }
+
         }
         // dd($opcr_sem);
         // OpcrTargetBudget
