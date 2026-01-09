@@ -271,6 +271,9 @@ class PAPController extends Controller
             $paps->research_agenda = $request->research_agenda;
             $paps->sector = $request->sector;
             $paps->subsector = $request->subsector;
+            $paps->source_of_funds = $request->source_of_funds;
+            $paps->source_others_specify = $request->source_others_specify;
+            $paps->funding_agency = $request->funding_agency;
             $paps->popsp = $request->popsp;
             $paps->focus_area = $request->focus_area;
             $paps->is_mother_program = $request->is_mother_program ?? '0';
@@ -329,6 +332,9 @@ class PAPController extends Controller
             'research_agenda',
             'sector',
             'subsector',
+            'source_of_funds',
+            'source_others_specify',
+            'funding_agency',
             'popsp',
             'focus_area',
             'is_mother_program',
@@ -382,6 +388,9 @@ class PAPController extends Controller
             'type' => $request->type,
             'chief_executive_agenda' => $request->chief_executive_agenda,
             'socio_economic_agenda' => $request->socio_economic_agenda,
+            'source_of_funds' => $request->source_of_funds,
+            'source_others_specify' => $request->source_others_specify,
+            'funding_agency' => $request->funding_agency,
             'sust_devt_goal' => $request->sust_devt_goal,
             'executive_legislative_agenda' => $request->executive_legislative_agenda,
             'research_agenda' => $request->research_agenda,
@@ -401,7 +410,7 @@ class PAPController extends Controller
     {
         $dept_code = auth()->user()->department_code;
         $data = $this->model::findOrFail($request->id);
-
+        // dd($request);
         // dd($request->chief_executive_agenda);
         // dd($request->aip_code);
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
@@ -419,6 +428,9 @@ class PAPController extends Controller
             'research_agenda' => $request->research_agenda,
             'sector' => $request->sector,
             'subsector' => $request->subsector,
+            'source_of_funds' => $request->source_of_funds,
+            'source_others_specify' => $request->source_others_specify,
+            'funding_agency' => $request->funding_agency,
             'popsp' => $request->popsp,
             'focus_area' => $request->focus_area,
             'is_mother_program' => $request->is_mother_program,
