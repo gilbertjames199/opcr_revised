@@ -1017,6 +1017,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
         $ap_head_2=[];
         $ap_head_3=[];
+        $my_opcr="";
         if ($opcr_id) {
             $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
             // dd($opcr_id);
@@ -1179,7 +1180,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
             ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1,
-            $pmt_chair, $average, $assistant_pg_head, $assistant_pg_head2, $assistant_pg_head3) {
+            $pmt_chair, $average, $assistant_pg_head, $assistant_pg_head2, $assistant_pg_head3, $my_opcr) {
                 // dd($item);
                 $efficiency1 = $item->efficiency1;
                 $performance_measure = $item->performance_measure;
