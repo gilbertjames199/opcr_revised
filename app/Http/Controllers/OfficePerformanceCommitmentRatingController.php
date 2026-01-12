@@ -1182,6 +1182,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1,
             $pmt_chair, $average, $assistant_pg_head, $assistant_pg_head2, $assistant_pg_head3, $my_opcr) {
                 // dd($item);
+                // dd($my_opcr);
                 $efficiency1 = $item->efficiency1;
                 $performance_measure = $item->performance_measure;
                 $timeliness = $item->timeliness;
