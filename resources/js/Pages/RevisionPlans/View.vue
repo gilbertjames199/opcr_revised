@@ -636,7 +636,7 @@
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
                                             }" :id="act.activity_id + '_activity_projects_activities'"><b>{{ act.description }} </b>
-                                                {{ act.activity_id}}
+                                                <!-- {{ act.activity_id}} -->
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)">*
                                                 </button>
