@@ -3792,7 +3792,20 @@ class RevisionPlanController extends Controller
             $revision = RevisionPlan::with(['paps', 'paps.office', 'budget', 'signatories'])->where('id', $request->id)->first();
             // dd($revision);
             $budget_total = $this->getTotalBudget($revision);
-            $activities = ActivityProject::with(['expected_output', 'expected_outcome'])->where('project_id', $revision->id)->get()
+            $activities = ActivityProject::with(['expected_output', 'expected_outcome',
+                    'activity',
+                    'activity.strat'
+                ])->where('project_id', $revision->id)
+                // Activity must exist and NOT be soft-deleted
+                ->whereHas('activity', function ($q) {
+                    $q->whereNull('deleted_at');
+                })
+
+                // Strategy must exist and NOT be soft-deleted
+                ->whereHas('activity.strat', function ($q) {
+                    $q->whereNull('deleted_at');
+                })
+                ->get()
                 ->map(function ($item) use ($revision, $budget_total) {
                     // dd($revision->paps->office->FFUNCTION);
                     // dd($revision->budget[0]->source);
