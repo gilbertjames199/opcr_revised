@@ -3562,9 +3562,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: act.activity_id + '_activity_projects_activities'
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.description), 1
       /* TEXT */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.activity_id) + " ", 1
-      /* TEXT */
-      ), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ act.activity_id}} "), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 0,
         "class": "superscript-btn",
         onClick: function onClick($event) {
