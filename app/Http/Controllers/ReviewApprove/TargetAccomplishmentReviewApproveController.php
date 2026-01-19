@@ -367,11 +367,12 @@ class TargetAccomplishmentReviewApproveController extends Controller
     public function index_rating(Request $request){
         // dd("rating");
         // dd(auth()->user());
+
+                // ->where('rating_status', '<', 1)
         $disk = app()->environment('production') ? 'custom_uploads' : 'public';
         if (auth()->user()->department_code == '04') {
             $data = $this->revapp
                 ->where('rating_status', '>', -1)
-                ->where('rating_status', '<', 1)
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
                 ->paginate(10);
