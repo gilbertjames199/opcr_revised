@@ -3988,6 +3988,7 @@ class RevisionPlanController extends Controller
             // 'strategy.activity.activityProject.expected_output',
             // 'strategy.activity.activityProject.expected_outcome'
         ])
+            ->whereHas('strategy')
             ->where('project_id', $request->id)
             ->get()
             ->map(function ($item) use ($request) {
