@@ -2722,7 +2722,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["href"]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ form }}\n        {{ selPaps }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  , ["href"]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ form }}\r\n        {{ selPaps }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.form.id = $event;
@@ -2789,7 +2789,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onChange: _cache[5] || (_cache[5] = function ($event) {
       return $options.updateRevisionPlans('revision_plans', 'project_title', $data.form.id, $data.form.project_title);
     })
-  }, "\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.project_title) + "\n                                    ", 545
+  }, "\r\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.project_title) + "\r\n                                    ", 545
   /* TEXT, HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.project_title]])], 10
   /* CLASS, PROPS */
@@ -2823,7 +2823,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onChange: _cache[10] || (_cache[10] = function ($event) {
       return $options.updateRevisionPlans('revision_plans', 'project_location', $data.form.id, $data.form.project_location);
     })
-  }, "\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.project_location) + "\n                                    ", 545
+  }, "\r\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.project_location) + "\r\n                                    ", 545
   /* TEXT, HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.project_location]])], 10
   /* CLASS, PROPS */
@@ -2919,7 +2919,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onChange: _cache[23] || (_cache[23] = function ($event) {
       return $options.updateRevisionPlans('revision_plans', 'beneficiary_male', $data.form.id, $data.form.beneficiary_male);
     })
-  }, "\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.beneficiary_male) + "\n                                    ", 545
+  }, "\r\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.beneficiary_male) + "\r\n                                    ", 545
   /* TEXT, HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.beneficiary_male]])], 10
   /* CLASS, PROPS */
@@ -2953,7 +2953,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onChange: _cache[28] || (_cache[28] = function ($event) {
       return $options.updateRevisionPlans('revision_plans', 'beneficiary_female', $data.form.id, $data.form.beneficiary_female);
     })
-  }, "\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.beneficiary_female) + "\n                                    ", 545
+  }, "\r\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.beneficiary_female) + "\r\n                                    ", 545
   /* TEXT, HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.beneficiary_female]])], 10
   /* CLASS, PROPS */
@@ -3009,7 +3009,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onChange: _cache[35] || (_cache[35] = function ($event) {
       return $options.updateRevisionPlans('revision_plans', 'baseline_male', $data.form.id, $data.form.baseline_male);
     })
-  }, "\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.baseline_male) + "\n                                    ", 545
+  }, "\r\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.baseline_male) + "\r\n                                    ", 545
   /* TEXT, HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.baseline_male]])], 10
   /* CLASS, PROPS */
@@ -3043,7 +3043,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onChange: _cache[40] || (_cache[40] = function ($event) {
       return $options.updateRevisionPlans('revision_plans', 'baseline_female', $data.form.id, $data.form.baseline_female);
     })
-  }, "\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.baseline_female) + "\n                                    ", 545
+  }, "\r\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.baseline_female) + "\r\n                                    ", 545
   /* TEXT, HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.baseline_female]])], 10
   /* CLASS, PROPS */
@@ -3077,11 +3077,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onChange: _cache[45] || (_cache[45] = function ($event) {
       return $options.updateRevisionPlans('revision_plans', 'data_source', $data.form.id, $data.form.data_source);
     })
-  }, "\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.data_source) + "\n                                    ", 545
+  }, "\r\n                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.data_source) + "\r\n                                    ", 545
   /* TEXT, HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.data_source]])], 10
   /* CLASS, PROPS */
-  , _hoisted_44), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th colspan=\"1\">Total</th>\n                                <td colspan=\"1\" :class=\"{\n                                    'text-danger': has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\n                                }\">{{ format_number_conv(paps.baseline_male + paps.baseline_female, 0, true) }}\n                                    <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\n                                        @click=\"handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\">*\n                                    </button>\n                                    <button v-if=\"has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\" class=\"superscript-btn\"\n                                        @click=\"handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\">*\n                                    </button>\n                                </td> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("PROJECT COST*******************************************************************************************************************"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_45, _hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  , _hoisted_44), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th colspan=\"1\">Total</th>\r\n                                <td colspan=\"1\" :class=\"{\r\n                                    'text-danger': has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\r\n                                }\">{{ format_number_conv(paps.baseline_male + paps.baseline_female, 0, true) }}\r\n                                    <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                        @click=\"handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\">*\r\n                                    </button>\r\n                                    <button v-if=\"has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\" class=\"superscript-btn\"\r\n                                        @click=\"handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\">*\r\n                                    </button>\r\n                                </td> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("PROJECT COST*******************************************************************************************************************"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_45, _hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "2",
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-end", {
       'text-danger': $options.has_comment('Title', 'Amount', _ctx.imp_amount, 'amount', 'revision_plans', $data.paps, $data.paps.comments)
@@ -3391,7 +3391,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onChange: function onChange($event) {
         return $options.updateRevisionPlans('strategies', 'description', dat.id, dat.description);
       }
-    }, "\n                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.description) + "\n                                            ", 41
+    }, "\r\n                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.description) + "\r\n                                            ", 41
     /* TEXT, PROPS, HYDRATE_EVENTS */
     , _hoisted_75), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, dat.description]])], 2
     /* CLASS */
@@ -3461,7 +3461,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onChange: function onChange($event) {
         return $options.updateRevisionPlans('strategies', 'description', dat.id, dat.description);
       }
-    }, "\n                                                        " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.description) + "\n                                                ", 41
+    }, "\r\n                                                        " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.description) + "\r\n                                                ", 41
     /* TEXT, PROPS, HYDRATE_EVENTS */
     , _hoisted_95), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, dat.description]])])]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
@@ -3522,7 +3522,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onChange: function onChange($event) {
           return $options.updateRevisionPlans('activities', 'description', act.id, act.description);
         }
-      }, "\n                                                        " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.description) + "\n                                                ", 41
+      }, "\r\n                                                        " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.description) + "\r\n                                                ", 41
       /* TEXT, PROPS, HYDRATE_EVENTS */
       , _hoisted_101), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, act.description]]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 0,
@@ -3603,7 +3603,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onChange: function onChange($event) {
             return $options.updateRevisionPlans('activity_projects', 'gad_issue', act.activity_id, act.gad_issue);
           }
-        }, "\n                                                                                " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.gad_issue) + "\n                                                                        ", 41
+        }, "\r\n                                                                                " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.gad_issue) + "\r\n                                                                        ", 41
         /* TEXT, PROPS, HYDRATE_EVENTS */
         , _hoisted_116), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, act.gad_issue]]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 0,
@@ -3781,7 +3781,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onChange: function onChange($event) {
           return $options.updateRevisionPlans('activity_projects', 'gad_issue', act.activity_id, act.gad_issue);
         }
-      }, "\n                                                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.gad_issue) + "\n                                                                            ", 41
+      }, "\r\n                                                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.gad_issue) + "\r\n                                                                            ", 41
       /* TEXT, PROPS, HYDRATE_EVENTS */
       , _hoisted_142), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, act.gad_issue]]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 0,
@@ -4250,7 +4250,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onChange: function onChange($event) {
           return $options.updateRevisionPlans('activity_projects', 'ccet_code', act.activity_id, act.ccet_code);
         }
-      }, "\n                                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.ccet_code) + "\n                                                    ", 41
+      }, "\r\n                                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.ccet_code) + "\r\n                                                    ", 41
       /* TEXT, PROPS, HYDRATE_EVENTS */
       , _hoisted_195), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, act.ccet_code]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
@@ -4287,7 +4287,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onChange: function onChange($event) {
           return $options.updateRevisionPlans('activity_projects', 'responsible', act.activity_id, act.responsible);
         }
-      }, "\n                                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.ccet_code) + "\n                                                    ", 41
+      }, "\r\n                                                            " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.ccet_code) + "\r\n                                                    ", 41
       /* TEXT, PROPS, HYDRATE_EVENTS */
       , _hoisted_200), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, act.responsible]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
@@ -4486,7 +4486,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onChange: function onChange($event) {
             return $options.updateRevisionPlans('budget_requirements', 'particulars', row.id, row.particulars);
           }
-        }, "\n                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.particulars) + "\n                                            ", 41
+        }, "\r\n                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.particulars) + "\r\n                                            ", 41
         /* TEXT, PROPS, HYDRATE_EVENTS */
         , _hoisted_226), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.particulars]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
           "class": "form-control transparent-bg",
@@ -4500,7 +4500,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onChange: function onChange($event) {
             return $options.updateRevisionPlans('budget_requirements', 'account_code', row.id, row.account_code);
           }
-        }, "\n                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.account_code) + "\n                                            ", 41
+        }, "\r\n                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.account_code) + "\r\n                                            ", 41
         /* TEXT, PROPS, HYDRATE_EVENTS */
         , _hoisted_227), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.account_code]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
           "class": "form-control transparent-bg",
@@ -4514,7 +4514,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onChange: function onChange($event) {
             return $options.updateRevisionPlans('budget_requirements', 'amount', row.id, row.amount);
           }
-        }, "\n                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.amount) + "\n                                            ", 41
+        }, "\r\n                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.amount) + "\r\n                                            ", 41
         /* TEXT, PROPS, HYDRATE_EVENTS */
         , _hoisted_228), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.amount]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
           "class": "form-control transparent-bg",
@@ -4528,7 +4528,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onChange: function onChange($event) {
             return $options.updateRevisionPlans('budget_requirements', 'source', row.id, row.source);
           }
-        }, "\n                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.source) + "\n                                            ", 41
+        }, "\r\n                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.source) + "\r\n                                            ", 41
         /* TEXT, PROPS, HYDRATE_EVENTS */
         , _hoisted_229), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.source]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" EDIT "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
           "class": "btn btn-primary btn-sm text-white",
@@ -4779,7 +4779,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onChange: function onChange($event) {
         return $options.updateRevisionPlans('monitoring_and_evaluations', 'evaluation_mechanism_tool', monitor.id, monitor.evaluation_mechanism_tool);
       }
-    }, "\n                                                " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(monitor.evaluation_mechanism_tool) + "\n                                        ", 41
+    }, "\r\n                                                " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(monitor.evaluation_mechanism_tool) + "\r\n                                        ", 41
     /* TEXT, PROPS, HYDRATE_EVENTS */
     , _hoisted_260), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, monitor.evaluation_mechanism_tool]]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
@@ -4816,7 +4816,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onChange: function onChange($event) {
         return $options.updateRevisionPlans('monitoring_and_evaluations', 'opr', monitor.id, monitor.opr);
       }
-    }, "\n                                                " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(monitor.opr) + "\n                                        ", 41
+    }, "\r\n                                                " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(monitor.opr) + "\r\n                                        ", 41
     /* TEXT, PROPS, HYDRATE_EVENTS */
     , _hoisted_264), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, monitor.opr]]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
@@ -4853,7 +4853,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onChange: function onChange($event) {
         return $options.updateRevisionPlans('monitoring_and_evaluations', 'target_beneficiaries', monitor.id, monitor.target_beneficiaries);
       }
-    }, "\n                                                " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(monitor.target_beneficiaries) + "\n                                        ", 41
+    }, "\r\n                                                " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(monitor.target_beneficiaries) + "\r\n                                        ", 41
     /* TEXT, PROPS, HYDRATE_EVENTS */
     , _hoisted_268), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, monitor.target_beneficiaries]]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
@@ -5093,7 +5093,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ), _hoisted_303, _hoisted_304, _hoisted_305, _hoisted_306]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <form @submit.prevent=\"submit()\">\n                <div>\n                    <label for=\"\">PROJECT TITLE</label>\n                    <input type=\"text\" v-model=\"form.project_title\" class=\"form-control\" autocomplete=\"chrome-off\">\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.project_title\">{{ form.errors.project_title }}</div>\n\n                    <label for=\"\">AIP Code</label>\n                    <input type=\"text\" v-model=\"form.aip_code\" class=\"form-control\" autocomplete=\"chrome-off\">\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.aip_code\">{{ form.errors.aip_code }}</div>\n\n                    <label for=\"\">PROJECT LOCATION</label>\n                    <input type=\"text\" v-model=\"form.project_location\" class=\"form-control\" autocomplete=\"chrome-off\">\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.project_location\">{{ form.errors.project_location }}</div>\n\n                    <label for=\"\">LIST OF LGUs COVERED</label>\n                    <input type=\"text\" v-model=\"form.list_of_lgu_covered\" class=\"form-control\" autocomplete=\"chrome-off\">\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.list_of_lgu_covered\">{{ form.errors.list_of_lgu_covered }}\n                    </div>\n\n                    <hr style=\"background-color: black !important; border:1px; height: 1px;\">\n                    IMPLEMENTATION SCHEDULE<br>\n                    <label for=\"\">START</label>\n                    <input type=\"date\" v-model=\"form.date_start\" class=\"form-control\" autocomplete=\"chrome-off\">\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.date_start\">{{ form.errors.date_start }}</div>\n\n                    <label for=\"\">END</label>\n                    <input type=\"date\" v-model=\"form.date_end\" class=\"form-control\" autocomplete=\"chrome-off\">\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.date_end\">{{ form.errors.date_end }}</div>\n                    <hr style=\"background-color: black !important; border:1px; height: 1px;\">\n\n                    INTENDED BENEFICIARIES<br>\n                    <div class=\"peers\">\n                        <div class=\"peer mR-10\">\n                            <label for=\"\">MALE</label>\n                            <input type=\"number\" v-model=\"form.beneficiary_male\" class=\"form-control\" autocomplete=\"chrome-off\" @change=\"setIntendedTotal\">\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.beneficiary_male\">{{ form.errors.beneficiary_male }}</div>\n                        </div>\n                        <div class=\"peer mR-10\">\n                            <label for=\"\">FEMALE</label>\n                            <input type=\"number\" v-model=\"form.beneficiary_female\" class=\"form-control\" autocomplete=\"chrome-off\" @change=\"setIntendedTotal\">\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.beneficiary_female\">{{ form.errors.beneficiary_female }}</div>\n                        </div>\n                        <div class=\"peer mR-10\">\n                            <label for=\"\">TOTAL</label>\n                            <input type=\"number\" v-model=\"total_intended\" class=\"form-control\" autocomplete=\"chrome-off\">\n                        </div>\n                    </div>\n                    <hr style=\"background-color: black !important; border:1px; height: 1px;\">\n                    BASELINE DISAGGREGATED DATA<br>\n                    <div class=\"peers\">\n                        <div class=\"peer mR-10\">\n                            <label for=\"\">MALE</label>\n                            <input type=\"number\" v-model=\"form.baseline_male\" class=\"form-control\" autocomplete=\"chrome-off\" @change=\"setTotal\">\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.baseline_male\">{{ form.errors.baseline_male }}</div>\n                        </div>\n\n                        <div class=\"peer mR-10\">\n                            <label for=\"\">FEMALE</label>\n                            <input type=\"number\" v-model=\"form.baseline_female\" class=\"form-control\" autocomplete=\"chrome-off\" @change=\"setTotal\">\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.baseline_female\">{{ form.errors.baseline_female }}</div>\n                        </div>\n                        <div class=\"peer mR-10\">\n                            <label for=\"\">TOTAL</label>\n                            <input type=\"number\" v-model=\"form.baseline_total\" class=\"form-control\" autocomplete=\"chrome-off\" >\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.baseline_total\">{{ form.errors.baseline_total }}</div>\n\n                        </div>\n                    </div>\n\n                    DATA SOURCE<br>\n                    <div class=\"peers\">\n\n                        <div class=\"peer mR-10\">\n\n                            <input type=\"text\" v-model=\"form.data_source\" class=\"form-control\" autocomplete=\"chrome-off\" >\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.data_source\">{{ form.errors.data_source }}</div>\n\n                        </div>\n                    </div>\n\n                    <hr style=\"background-color: black !important; border:1px; height: 1px;\">\n\n\n                    <label for=\"\">RATIONALE</label>\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.rationale\" @input=\"limitWords\" contentType=\"html\"\n                        toolbar=\"essential\" />\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.baseline_total\">{{ form.errors.baseline_total }}</div>\n\n                    <label for=\"\">OBJECTIVES</label>\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.objective\" contentType=\"html\" toolbar=\"essential\" />\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.objective\">{{ form.errors.objective }}</div>\n\n                    <label for=\"\">BENEFICIARIES</label>\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.beneficiaries\" contentType=\"html\" toolbar=\"essential\" />\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.beneficiaries\">{{ form.errors.beneficiaries }}</div>\n\n                    <label for=\"\">IMPLEMENTING TEAM</label>\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.implementing_team\" contentType=\"html\" toolbar=\"essential\" />\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.implementing_team\">{{ form.errors.implementing_team }}</div>\n\n                    <label for=\"\">PARTNERSHIPS AND SUSTAINABILITY</label>\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.partnership\" contentType=\"html\" toolbar=\"essential\" />\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.partnership\">{{ form.errors.partnership }}</div>\n\n                    <label for=\"\">MONITORING AND EVALUATION</label>\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.monitoring\" contentType=\"html\" toolbar=\"essential\" />\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.monitoring\">{{ form.errors.monitoring }}</div>\n\n                    <label for=\"\">RISK MANAGEMENT</label>\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.risk_management\" contentType=\"html\" toolbar=\"essential\"\n                    />\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.risk_management\">{{ form.errors.risk_management }}</div>\n\n\n\n                    <input type=\"hidden\" v-model=\"form.id\" class=\"form-control\" autocomplete=\"chrome-off\">\n\n                    <button type=\"button\" class=\"btn btn-primary mt-3 text-white\" @click=\"submit()\" :disabled=\"form.processing\">\n                        Save changes\n                    </button>\n                </div>\n\n            </form> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_307, [!$data.showComments ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_308, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <form @submit.prevent=\"submit()\">\r\n                <div>\r\n                    <label for=\"\">PROJECT TITLE</label>\r\n                    <input type=\"text\" v-model=\"form.project_title\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.project_title\">{{ form.errors.project_title }}</div>\r\n\r\n                    <label for=\"\">AIP Code</label>\r\n                    <input type=\"text\" v-model=\"form.aip_code\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.aip_code\">{{ form.errors.aip_code }}</div>\r\n\r\n                    <label for=\"\">PROJECT LOCATION</label>\r\n                    <input type=\"text\" v-model=\"form.project_location\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.project_location\">{{ form.errors.project_location }}</div>\r\n\r\n                    <label for=\"\">LIST OF LGUs COVERED</label>\r\n                    <input type=\"text\" v-model=\"form.list_of_lgu_covered\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.list_of_lgu_covered\">{{ form.errors.list_of_lgu_covered }}\r\n                    </div>\r\n\r\n                    <hr style=\"background-color: black !important; border:1px; height: 1px;\">\r\n                    IMPLEMENTATION SCHEDULE<br>\r\n                    <label for=\"\">START</label>\r\n                    <input type=\"date\" v-model=\"form.date_start\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.date_start\">{{ form.errors.date_start }}</div>\r\n\r\n                    <label for=\"\">END</label>\r\n                    <input type=\"date\" v-model=\"form.date_end\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.date_end\">{{ form.errors.date_end }}</div>\r\n                    <hr style=\"background-color: black !important; border:1px; height: 1px;\">\r\n\r\n                    INTENDED BENEFICIARIES<br>\r\n                    <div class=\"peers\">\r\n                        <div class=\"peer mR-10\">\r\n                            <label for=\"\">MALE</label>\r\n                            <input type=\"number\" v-model=\"form.beneficiary_male\" class=\"form-control\" autocomplete=\"chrome-off\" @change=\"setIntendedTotal\">\r\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.beneficiary_male\">{{ form.errors.beneficiary_male }}</div>\r\n                        </div>\r\n                        <div class=\"peer mR-10\">\r\n                            <label for=\"\">FEMALE</label>\r\n                            <input type=\"number\" v-model=\"form.beneficiary_female\" class=\"form-control\" autocomplete=\"chrome-off\" @change=\"setIntendedTotal\">\r\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.beneficiary_female\">{{ form.errors.beneficiary_female }}</div>\r\n                        </div>\r\n                        <div class=\"peer mR-10\">\r\n                            <label for=\"\">TOTAL</label>\r\n                            <input type=\"number\" v-model=\"total_intended\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                        </div>\r\n                    </div>\r\n                    <hr style=\"background-color: black !important; border:1px; height: 1px;\">\r\n                    BASELINE DISAGGREGATED DATA<br>\r\n                    <div class=\"peers\">\r\n                        <div class=\"peer mR-10\">\r\n                            <label for=\"\">MALE</label>\r\n                            <input type=\"number\" v-model=\"form.baseline_male\" class=\"form-control\" autocomplete=\"chrome-off\" @change=\"setTotal\">\r\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.baseline_male\">{{ form.errors.baseline_male }}</div>\r\n                        </div>\r\n\r\n                        <div class=\"peer mR-10\">\r\n                            <label for=\"\">FEMALE</label>\r\n                            <input type=\"number\" v-model=\"form.baseline_female\" class=\"form-control\" autocomplete=\"chrome-off\" @change=\"setTotal\">\r\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.baseline_female\">{{ form.errors.baseline_female }}</div>\r\n                        </div>\r\n                        <div class=\"peer mR-10\">\r\n                            <label for=\"\">TOTAL</label>\r\n                            <input type=\"number\" v-model=\"form.baseline_total\" class=\"form-control\" autocomplete=\"chrome-off\" >\r\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.baseline_total\">{{ form.errors.baseline_total }}</div>\r\n\r\n                        </div>\r\n                    </div>\r\n\r\n                    DATA SOURCE<br>\r\n                    <div class=\"peers\">\r\n\r\n                        <div class=\"peer mR-10\">\r\n\r\n                            <input type=\"text\" v-model=\"form.data_source\" class=\"form-control\" autocomplete=\"chrome-off\" >\r\n                            <div class=\"fs-6 c-red-500\" v-if=\"form.errors.data_source\">{{ form.errors.data_source }}</div>\r\n\r\n                        </div>\r\n                    </div>\r\n\r\n                    <hr style=\"background-color: black !important; border:1px; height: 1px;\">\r\n\r\n\r\n                    <label for=\"\">RATIONALE</label>\r\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.rationale\" @input=\"limitWords\" contentType=\"html\"\r\n                        toolbar=\"essential\" />\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.baseline_total\">{{ form.errors.baseline_total }}</div>\r\n\r\n                    <label for=\"\">OBJECTIVES</label>\r\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.objective\" contentType=\"html\" toolbar=\"essential\" />\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.objective\">{{ form.errors.objective }}</div>\r\n\r\n                    <label for=\"\">BENEFICIARIES</label>\r\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.beneficiaries\" contentType=\"html\" toolbar=\"essential\" />\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.beneficiaries\">{{ form.errors.beneficiaries }}</div>\r\n\r\n                    <label for=\"\">IMPLEMENTING TEAM</label>\r\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.implementing_team\" contentType=\"html\" toolbar=\"essential\" />\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.implementing_team\">{{ form.errors.implementing_team }}</div>\r\n\r\n                    <label for=\"\">PARTNERSHIPS AND SUSTAINABILITY</label>\r\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.partnership\" contentType=\"html\" toolbar=\"essential\" />\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.partnership\">{{ form.errors.partnership }}</div>\r\n\r\n                    <label for=\"\">MONITORING AND EVALUATION</label>\r\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.monitoring\" contentType=\"html\" toolbar=\"essential\" />\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.monitoring\">{{ form.errors.monitoring }}</div>\r\n\r\n                    <label for=\"\">RISK MANAGEMENT</label>\r\n                    <QuillEditor theme=\"snow\" v-model:content=\"form.risk_management\" contentType=\"html\" toolbar=\"essential\"\r\n                    />\r\n                    <div class=\"fs-6 c-red-500\" v-if=\"form.errors.risk_management\">{{ form.errors.risk_management }}</div>\r\n\r\n\r\n\r\n                    <input type=\"hidden\" v-model=\"form.id\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n\r\n                    <button type=\"button\" class=\"btn btn-primary mt-3 text-white\" @click=\"submit()\" :disabled=\"form.processing\">\r\n                        Save changes\r\n                    </button>\r\n                </div>\r\n\r\n            </form> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_307, [!$data.showComments ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_308, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "close-btn text-danger",
     onClick: _cache[123] || (_cache[123] = function () {
       return $options.toggleShowCommentPanel && $options.toggleShowCommentPanel.apply($options, arguments);
@@ -5246,7 +5246,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "onUpdate:modelValue": _cache[140] || (_cache[140] = function ($event) {
             return $data.reply_concat = $event;
           })
-        }, "\n                                    ", 512
+        }, "\r\n                                    ", 512
         /* NEED_PATCH */
         )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.reply_concat]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), comment.show_comment_box ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 3,
@@ -5299,7 +5299,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           title: "Delete this comment"
         }, _hoisted_381, 8
         /* PROPS */
-        , _hoisted_379), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>\n                                    <span v-if=\"comment.user\">{{ comment.user.FullName }}</span>\n                                    <span v-else>Not recorded</span>\n                                </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatDate(comment.created_at)), 1
+        , _hoisted_379), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>\r\n                                    <span v-if=\"comment.user\">{{ comment.user.FullName }}</span>\r\n                                    <span v-else>Not recorded</span>\r\n                                </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatDate(comment.created_at)), 1
         /* TEXT */
         )]);
       }), 256
@@ -5733,7 +5733,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "onUpdate:modelValue": function onUpdateModelValue($event) {
             return row.possible_risk = $event;
           }
-        }, "\n                        ", 8
+        }, "\r\n                        ", 8
         /* PROPS */
         , _hoisted_442), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.possible_risk]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
           type: "text",
@@ -5748,7 +5748,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "onUpdate:modelValue": function onUpdateModelValue($event) {
             return row.management = $event;
           }
-        }, "\n                        ", 8
+        }, "\r\n                        ", 8
         /* PROPS */
         , _hoisted_444), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.management]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_445, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
           "class": "btn btn-danger",
@@ -6203,7 +6203,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ntd, th {\n  border: 1px solid #000 !important;\n}\ntable {\n  border-collapse: collapse !important;\n}\n.th {\n    background-color: #929292 !important;\n}\n.superscript-btn {\n  /* font-size: 0.6em; */\n  /* vertical-align: super; */\n  border: none;\n  background: none;\n  padding: 0;\n  margin-left: 4px;\n  cursor: pointer;\n  color: #df280c;\n}\n.action-btn {\n  width: 100%;\n}\n.no-border-table td,\n.no-border-table th {\n  border: none !important;\n}\n.no-border-table {\n  border-collapse: collapse !important;\n}\n.signatory-grid {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem; /* space between cards */\n}\n.signatory-card {\n  flex: 0 0 calc(50% - 0.5rem); /* 2 per row with spacing */\n  border: 0px solid #ccc;\n  padding: 1rem;\n  border-radius: 8px;\n}\n.sticky-comments {\n    position: fixed;\n    top: 70px;\n    right: 20px;\n    width: 450px;\n    z-index: 10;\n}\n.scrollable-text {\n    height: 300px;           /*define the height you want*/\n    overflow-y: auto;        /*vertical scrollbar if content exceeds height*/\n    /*padding: 0px;           optional padding*/\n    /*border: 1px solid #ccc;  optional border*/\n    background-color: #fff;  /*optional background*/\n    /*line-height: 1.6;        improve readability*/\n}\n.sticky-comments .comments-header {\n    display: flex;\n    justify-content: space-between; /* Push h4 left and button right */\n    align-items: center;            /* Vertical alignment */\n    margin-bottom: 10px;            /* Space below the header */\n}\n.sticky-comments .close-btn {\n    background: transparent;\n    border: none;\n    font-size: 20px;\n    cursor: pointer;\n    line-height: 1;\n    padding: 0;\n    color: #333;\n}\n.highlight-target {\n    -webkit-animation: highlightFlash 2s ease-out;\n            animation: highlightFlash 2s ease-out;\n}\n@-webkit-keyframes highlightFlash {\n0% { background-color: #c1fb3a;\n}\n100% { background-color: transparent;\n}\n}\n@keyframes highlightFlash {\n0% { background-color: #c1fb3a;\n}\n100% { background-color: transparent;\n}\n}\n.comment-approved {\n    color: darkgreen;\n    padding: 3px 6px;\n    border-radius: 4px;\n    transition: color .2s;\n}\n.comment-approved:hover {\n    color: #00AEEF; /* sky blue */\n}\n.comment-rejected {\n    color: red;\n    padding: 3px 6px;\n    border-radius: 4px;\n    transition: color .2s;\n}\n.comment-rejected:hover {\n    color: #CC7722; /* golden ochre */\n}\n.transparent-bg {\n    background-color: transparent !important;\n}\n/* TAB DESIGN *******************************************************************************************************************/\n/* Style the tab */\n/* .tab {\n  overflow: hidden;\n  border: 1px solid #ccc;\n  background-color: #f1f1f1;\n  color: #000 !important\n} */\n\n/* Style the buttons that are used to open the tab content */\n/* .tab button {\n  background-color: inherit;\n  color: red;\n  float: left;\n  border: none;\n  outline: none;\n  cursor: pointer;\n  padding: 14px 16px;\n  transition: 0.3s;\n}\n\n/* Change background color of buttons on hover */\n/* .tab button:hover {\n  background-color: #ddd;\n} */\n\n/* Create an active/current tablink class */\n/* .tab button.active {\n  background-color: #ccc;\n  color: #df280c\n} */\n\n/* Style the tab content */\n/*.tabcontent {\n  display: none;\n  padding: 6px 12px;\n  border: 1px solid #ccc;\n  border-top: none;\n}\n\n.tablinks {\n    color: red;\n\n} */\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ntd, th {\r\n  border: 1px solid #000 !important;\n}\ntable {\r\n  border-collapse: collapse !important;\n}\n.th {\r\n    background-color: #929292 !important;\n}\n.superscript-btn {\r\n  /* font-size: 0.6em; */\r\n  /* vertical-align: super; */\r\n  border: none;\r\n  background: none;\r\n  padding: 0;\r\n  margin-left: 4px;\r\n  cursor: pointer;\r\n  color: #df280c;\n}\n.action-btn {\r\n  width: 100%;\n}\n.no-border-table td,\r\n.no-border-table th {\r\n  border: none !important;\n}\n.no-border-table {\r\n  border-collapse: collapse !important;\n}\n.signatory-grid {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  gap: 1rem; /* space between cards */\n}\n.signatory-card {\r\n  flex: 0 0 calc(50% - 0.5rem); /* 2 per row with spacing */\r\n  border: 0px solid #ccc;\r\n  padding: 1rem;\r\n  border-radius: 8px;\n}\n.sticky-comments {\r\n    position: fixed;\r\n    top: 70px;\r\n    right: 20px;\r\n    width: 450px;\r\n    z-index: 10;\n}\n.scrollable-text {\r\n    height: 300px;           /*define the height you want*/\r\n    overflow-y: auto;        /*vertical scrollbar if content exceeds height*/\r\n    /*padding: 0px;           optional padding*/\r\n    /*border: 1px solid #ccc;  optional border*/\r\n    background-color: #fff;  /*optional background*/\r\n    /*line-height: 1.6;        improve readability*/\n}\n.sticky-comments .comments-header {\r\n    display: flex;\r\n    justify-content: space-between; /* Push h4 left and button right */\r\n    align-items: center;            /* Vertical alignment */\r\n    margin-bottom: 10px;            /* Space below the header */\n}\n.sticky-comments .close-btn {\r\n    background: transparent;\r\n    border: none;\r\n    font-size: 20px;\r\n    cursor: pointer;\r\n    line-height: 1;\r\n    padding: 0;\r\n    color: #333;\n}\n.highlight-target {\r\n    -webkit-animation: highlightFlash 2s ease-out;\r\n            animation: highlightFlash 2s ease-out;\n}\n@-webkit-keyframes highlightFlash {\n0% { background-color: #c1fb3a;\n}\n100% { background-color: transparent;\n}\n}\n@keyframes highlightFlash {\n0% { background-color: #c1fb3a;\n}\n100% { background-color: transparent;\n}\n}\n.comment-approved {\r\n    color: darkgreen;\r\n    padding: 3px 6px;\r\n    border-radius: 4px;\r\n    transition: color .2s;\n}\n.comment-approved:hover {\r\n    color: #00AEEF; /* sky blue */\n}\n.comment-rejected {\r\n    color: red;\r\n    padding: 3px 6px;\r\n    border-radius: 4px;\r\n    transition: color .2s;\n}\n.comment-rejected:hover {\r\n    color: #CC7722; /* golden ochre */\n}\n.transparent-bg {\r\n    background-color: transparent !important;\n}\r\n/* TAB DESIGN *******************************************************************************************************************/\r\n/* Style the tab */\r\n/* .tab {\r\n  overflow: hidden;\r\n  border: 1px solid #ccc;\r\n  background-color: #f1f1f1;\r\n  color: #000 !important\r\n} */\r\n\r\n/* Style the buttons that are used to open the tab content */\r\n/* .tab button {\r\n  background-color: inherit;\r\n  color: red;\r\n  float: left;\r\n  border: none;\r\n  outline: none;\r\n  cursor: pointer;\r\n  padding: 14px 16px;\r\n  transition: 0.3s;\r\n}\r\n\r\n/* Change background color of buttons on hover */\r\n/* .tab button:hover {\r\n  background-color: #ddd;\r\n} */\r\n\r\n/* Create an active/current tablink class */\r\n/* .tab button.active {\r\n  background-color: #ccc;\r\n  color: #df280c\r\n} */\r\n\r\n/* Style the tab content */\r\n/*.tabcontent {\r\n  display: none;\r\n  padding: 6px 12px;\r\n  border: 1px solid #ccc;\r\n  border-top: none;\r\n}\r\n\r\n.tablinks {\r\n    color: red;\r\n\r\n} */\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -6408,7 +6408,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Create_vue_vue_type_template_id_296e597c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.vue?vue&type=template&id=296e597c */ "./resources/js/Pages/RevisionPlans/ProjectProfile/Create.vue?vue&type=template&id=296e597c");
 /* harmony import */ var _Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Create.vue?vue&type=script&lang=js */ "./resources/js/Pages/RevisionPlans/ProjectProfile/Create.vue?vue&type=script&lang=js");
 /* harmony import */ var _Create_vue_vue_type_style_index_0_id_296e597c_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Create.vue?vue&type=style&index=0&id=296e597c&lang=css */ "./resources/js/Pages/RevisionPlans/ProjectProfile/Create.vue?vue&type=style&index=0&id=296e597c&lang=css");
-/* harmony import */ var C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -6416,7 +6416,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_296e597c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/RevisionPlans/ProjectProfile/Create.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_296e597c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/RevisionPlans/ProjectProfile/Create.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -6438,7 +6438,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ModalDynamicTitle_vue_vue_type_template_id_0e4809fa_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ModalDynamicTitle.vue?vue&type=template&id=0e4809fa&scoped=true */ "./resources/js/Shared/ModalDynamicTitle.vue?vue&type=template&id=0e4809fa&scoped=true");
 /* harmony import */ var _ModalDynamicTitle_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalDynamicTitle.vue?vue&type=script&lang=js */ "./resources/js/Shared/ModalDynamicTitle.vue?vue&type=script&lang=js");
 /* harmony import */ var _ModalDynamicTitle_vue_vue_type_style_index_0_id_0e4809fa_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalDynamicTitle.vue?vue&type=style&index=0&id=0e4809fa&scoped=true&lang=css */ "./resources/js/Shared/ModalDynamicTitle.vue?vue&type=style&index=0&id=0e4809fa&scoped=true&lang=css");
-/* harmony import */ var C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -6446,7 +6446,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ModalDynamicTitle_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ModalDynamicTitle_vue_vue_type_template_id_0e4809fa_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-0e4809fa"],['__file',"resources/js/Shared/ModalDynamicTitle.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ModalDynamicTitle_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ModalDynamicTitle_vue_vue_type_template_id_0e4809fa_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-0e4809fa"],['__file',"resources/js/Shared/ModalDynamicTitle.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -6468,7 +6468,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ModalDynamicTitleSmall_vue_vue_type_template_id_5be881dd_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ModalDynamicTitleSmall.vue?vue&type=template&id=5be881dd&scoped=true */ "./resources/js/Shared/ModalDynamicTitleSmall.vue?vue&type=template&id=5be881dd&scoped=true");
 /* harmony import */ var _ModalDynamicTitleSmall_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalDynamicTitleSmall.vue?vue&type=script&lang=js */ "./resources/js/Shared/ModalDynamicTitleSmall.vue?vue&type=script&lang=js");
 /* harmony import */ var _ModalDynamicTitleSmall_vue_vue_type_style_index_0_id_5be881dd_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalDynamicTitleSmall.vue?vue&type=style&index=0&id=5be881dd&scoped=true&lang=css */ "./resources/js/Shared/ModalDynamicTitleSmall.vue?vue&type=style&index=0&id=5be881dd&scoped=true&lang=css");
-/* harmony import */ var C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -6476,7 +6476,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ModalDynamicTitleSmall_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ModalDynamicTitleSmall_vue_vue_type_template_id_5be881dd_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-5be881dd"],['__file',"resources/js/Shared/ModalDynamicTitleSmall.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ModalDynamicTitleSmall_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ModalDynamicTitleSmall_vue_vue_type_template_id_5be881dd_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-5be881dd"],['__file',"resources/js/Shared/ModalDynamicTitleSmall.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -6497,13 +6497,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _PlacesShared_vue_vue_type_template_id_ee3222a6__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PlacesShared.vue?vue&type=template&id=ee3222a6 */ "./resources/js/Shared/PlacesShared.vue?vue&type=template&id=ee3222a6");
 /* harmony import */ var _PlacesShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PlacesShared.vue?vue&type=script&lang=js */ "./resources/js/Shared/PlacesShared.vue?vue&type=script&lang=js");
-/* harmony import */ var C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PlacesShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PlacesShared_vue_vue_type_template_id_ee3222a6__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/PlacesShared.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PlacesShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PlacesShared_vue_vue_type_template_id_ee3222a6__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Shared/PlacesShared.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -6525,7 +6525,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _QuillEditorShared_vue_vue_type_template_id_4d40f6aa_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuillEditorShared.vue?vue&type=template&id=4d40f6aa&scoped=true */ "./resources/js/Shared/QuillEditorShared.vue?vue&type=template&id=4d40f6aa&scoped=true");
 /* harmony import */ var _QuillEditorShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./QuillEditorShared.vue?vue&type=script&lang=js */ "./resources/js/Shared/QuillEditorShared.vue?vue&type=script&lang=js");
 /* harmony import */ var _QuillEditorShared_vue_vue_type_style_index_0_id_4d40f6aa_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./QuillEditorShared.vue?vue&type=style&index=0&id=4d40f6aa&scoped=true&lang=css */ "./resources/js/Shared/QuillEditorShared.vue?vue&type=style&index=0&id=4d40f6aa&scoped=true&lang=css");
-/* harmony import */ var C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -6533,7 +6533,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_QuillEditorShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_QuillEditorShared_vue_vue_type_template_id_4d40f6aa_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-4d40f6aa"],['__file',"resources/js/Shared/QuillEditorShared.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_opcr_revised_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_QuillEditorShared_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_QuillEditorShared_vue_vue_type_template_id_4d40f6aa_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-4d40f6aa"],['__file',"resources/js/Shared/QuillEditorShared.vue"]])
 /* hot reload */
 if (false) {}
 
