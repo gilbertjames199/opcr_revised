@@ -385,7 +385,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ? 'http://122.53.120.18:8067/images/'
             : asset('storage/');
         $disk = app()->environment('production') ? 'custom_uploads' : 'public';
-            // dd($baseUrl);
+        // dd($baseUrl);
         // dd($rating_status);
         // dd($baseUrl);
         return inertia($component, [
@@ -401,7 +401,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'fileBaseUrl' => $baseUrl,
             'disk' => $disk,
             "rating_status" => $rating_status,
-            'list'=>$list,
+            'list' => $list,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -974,6 +974,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
     //PRINT ACCOMPLISHMENTS
     public function print_accomplishment(Request $request)
     {
+
         $opcr_id = $request->opcr_id;
         $FFUNCCOD = $request->FFUNCCOD;
         //REVISION PLAN ID
@@ -987,8 +988,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $post = "";
         // Assistant PG Head
         $assistant_pg_head = "";
-        $assistant_pg_head2="";
-        $assistant_pg_head3="";
+        $assistant_pg_head2 = "";
+        $assistant_pg_head3 = "";
 
         if ($FFUNCCOD) {
             $office_id = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->department_code;
@@ -1005,8 +1006,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
             if ($post) {
                 $dept_head = $dept_head . ', ' . $post;
             }
-
-
         }
         //Get OPCR Date
         $opcr_date = "";
@@ -1015,9 +1014,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $start = "";
         $end = "";
 
-        $ap_head_2=[];
-        $ap_head_3=[];
-        $my_opcr="";
+        $ap_head_2 = [];
+        $ap_head_3 = [];
+        $my_opcr = "";
         if ($opcr_id) {
             $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
             // dd($opcr_id);
@@ -1027,25 +1026,25 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $end = $dateEnd->format('F Y');
             $opcr_date = $start . " to " . $end;
             $opcr_date = Str::upper($opcr_date);
-            if($my_opcr){
-                $ap_head = UserEmployees::where('department_code',$my_opcr->department_code)
-                    ->where('salary_grade','24')
-                    ->where('active_status','ACTIVE')
+            if ($my_opcr) {
+                $ap_head = UserEmployees::where('department_code', $my_opcr->department_code)
+                    ->where('salary_grade', '24')
+                    ->where('active_status', 'ACTIVE')
                     ->get();
-                    // dd($opcr_id,$my_opcr,$ap_head);
-                if($my_opcr->assistant_pg_head){
+                // dd($opcr_id,$my_opcr,$ap_head);
+                if ($my_opcr->assistant_pg_head) {
                     // ASSISTANT PG HEAD
                     $assistant_pg_head = $my_opcr->assistant_pg_head;
-                }else{
+                } else {
                     // ASSISTANT PG HEAD
-                    $ap_head_m = UserEmployees::where('department_code',$office_id)
-                        ->where('salary_grade','24')
+                    $ap_head_m = UserEmployees::where('department_code', $office_id)
+                        ->where('salary_grade', '24')
                         ->get();
                     // dd($ap_head_m);
                     if(count($ap_head_m)>0){
                         $ap_head=$ap_head_m[0];
                         $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
-                        $ap_head->last_name;
+                            $ap_head->last_name;
                         $ap_suffix = $ap_head->suffix_name;
                         $ap_post = $ap_head->postfix_name;
                         if ($ap_suffix) {
@@ -1055,10 +1054,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
                             $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
                         }
 
-                        if($my_opcr->department_code=='17' || $my_opcr->department_code=='11'){
-                            $ap_head_2=$ap_head_m[1];
+                        if ($my_opcr->department_code == '17' || $my_opcr->department_code == '11') {
+                            $ap_head_2 = $ap_head_m[1];
                             $assistant_pg_head2 = $ap_head_2->first_name . ' ' . $ap_head_2->middle_name[0] . '. ' .
-                            $ap_head_2->last_name;
+                                $ap_head_2->last_name;
                             $ap2_suffix = $ap_head_2->suffix_name;
                             $ap2_post = $ap_head_2->postfix_name;
                             if ($ap2_suffix) {
@@ -1068,10 +1067,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
                                 $assistant_pg_head2 = $assistant_pg_head2 . ', ' . $ap2_post;
                             }
                         }
-                        if($my_opcr->department_code=='17'){
-                            $ap_head_3=$ap_head_m[2];
+                        if ($my_opcr->department_code == '17') {
+                            $ap_head_3 = $ap_head_m[2];
                             $assistant_pg_head3 = $ap_head_3->first_name . ' ' . $ap_head_3->middle_name[0] . '. ' .
-                            $ap_head_3->last_name;
+                                $ap_head_3->last_name;
                             $ap3_suffix = $ap_head_3->suffix_name;
                             $ap3_post = $ap_head_3->postfix_name;
                             if ($ap3_suffix) {
@@ -1080,23 +1079,18 @@ class OfficePerformanceCommitmentRatingController extends Controller
                             if ($ap3_post) {
                                 $assistant_pg_head3 = $assistant_pg_head3 . ', ' . $ap3_post;
                             }
-
                         }
                     }
-
-
                 }
 
-                if($my_opcr->assistant_pg_head_2){
+                if ($my_opcr->assistant_pg_head_2) {
                     // ASSISTANT PG HEAD 2
                     $assistant_pg_head2 = $my_opcr->assistant_pg_head_2;
                 }
-                if($my_opcr->assistant_pg_head_3){
+                if ($my_opcr->assistant_pg_head_3) {
                     // ASSISTANT PG HEAD 3
                     $assistant_pg_head3 = $my_opcr->assistant_pg_head_3;
                 }
-
-
             }
         }
         //Carbon Date
@@ -1179,8 +1173,26 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->orderBy('PAPS.id', 'asc')
             ->groupBy('office_performance_commitment_ratings.id')
             ->get()
-            ->map(function ($item) use ($opcr_id, $FFUNCCOD, $total, $ave, $dept_head, $opcr_date, $mooe, $ps, $date_now, $approver, $pos, $isPA1,
-            $pmt_chair, $average, $assistant_pg_head, $assistant_pg_head2, $assistant_pg_head3, $my_opcr) {
+            ->map(function ($item) use (
+                $opcr_id,
+                $FFUNCCOD,
+                $total,
+                $ave,
+                $dept_head,
+                $opcr_date,
+                $mooe,
+                $ps,
+                $date_now,
+                $approver,
+                $pos,
+                $isPA1,
+                $pmt_chair,
+                $average,
+                $assistant_pg_head,
+                $assistant_pg_head2,
+                $assistant_pg_head3,
+                $my_opcr
+            ) {
                 // dd($item);
                 // dd($my_opcr);
                 $efficiency1 = $item->efficiency1;
@@ -1262,13 +1274,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $ave_qet = number_format(floatval($ave_qet), 2);
                 }
                 $adj = "Outstanding";
-                if ($average >= 4.51) {
+                if ($ave >= 4.51) {
                     $adj = "Outstanding";
-                } else if ($average >= 3.51) {
+                } else if ($ave >= 3.51) {
                     $adj = "Very Satisfactory";
-                } else if ($average >= 2.51) {
+                } else if ($ave >= 2.51) {
                     $adj = "Satisfactory";
-                } else if ($average >= 1.51) {
+                } else if ($ave >= 1.51) {
                     $adj = "Unsatisfactory";
                 } else {
                     $adj = "Poor";
@@ -1301,7 +1313,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "total" => $total,
                     "ave" => $ave,
                     "dept_head" => $dept_head,
-                    "assistant_pg_head" => $my_opcr? ($my_opcr->assistant_pg_head? $my_opcr->assistant_pg_head :$assistant_pg_head): $assistant_pg_head,
+                    "assistant_pg_head" => $my_opcr ? ($my_opcr->assistant_pg_head ? $my_opcr->assistant_pg_head : $assistant_pg_head) : $assistant_pg_head,
                     "assistant_pg_head2" => $assistant_pg_head2,
                     "assistant_pg_head3" => $assistant_pg_head3,
                     "opcr_date" => $opcr_date,
@@ -1316,7 +1328,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "target_success_indicator" => $su,
                     "adjectival" => $adj,
                     "pmt_chair" => $pmt_chair,
-                    "overall_average" => $average,
+                    "overall_average" => $ave,
 
                     // "office_accountable" => $office_accountable
                     // "from_excel" => $item->from_excel,
