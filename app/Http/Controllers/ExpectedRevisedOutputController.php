@@ -6,6 +6,8 @@ use App\Models\ActivityProject;
 use App\Models\ExpectedRevisedOutput;
 use App\Models\StrategyProject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ExpectedRevisedOutputController extends Controller
 {
@@ -215,5 +217,52 @@ class ExpectedRevisedOutputController extends Controller
         $data->delete();
         //dd($request->raao_id);
         return redirect()->back()->with('deleted', 'Deleted Expected Output');
+    }
+    public function save_multiple(Request $request){
+        $expected_outputs = $request->input('expected_outputs', []);
+
+        if (empty($expected_outputs)) {
+            return redirect()->back()->with('error', 'No expected outputs provided.');
+        }
+        // dd($expected_outputs);
+        foreach ($expected_outputs as $row) {
+            ExpectedRevisedOutput::create([
+                'description'           => $row['description'] ?? null,
+                'strategy_id'           => $row['strategy_id'] ?? null,
+                'strategy_project_id'   => $row['strategy_project_id'] ?? null,
+                'activity_id'           => $row['activity_id'],
+                'activity_project_id'   => $row['activity_project_id'],
+                'is_strategy_outcome'   => $row['is_strategy_outcome'] ?? 0,
+                'project_id'            => $row['project_id'],
+                'target_indicator'      => $row['target_indicator'] ?? null,
+                'date_from'             => $row['date_from'] ?? null,
+                'date_to'               => $row['date_to'] ?? null,
+                'physical_q1'           => $row['physical_q1'] ?? 0,
+                'physical_q2'           => $row['physical_q2'] ?? 0,
+                'physical_q3'           => $row['physical_q3'] ?? 0,
+                'physical_q4'           => $row['physical_q4'] ?? 0,
+                'ps_q1'                 => $row['ps_q1'] ?? 0,
+                'ps_q2'                 => $row['ps_q2'] ?? 0,
+                'ps_q3'                 => $row['ps_q3'] ?? 0,
+                'ps_q4'                 => $row['ps_q4'] ?? 0,
+                'mooe_q1'               => $row['mooe_q1'] ?? 0,
+                'mooe_q2'               => $row['mooe_q2'] ?? 0,
+                'mooe_q3'               => $row['mooe_q3'] ?? 0,
+                'mooe_q4'               => $row['mooe_q4'] ?? 0,
+                'co_q1'                 => $row['co_q1'] ?? 0,
+                'co_q2'                 => $row['co_q2'] ?? 0,
+                'co_q3'                 => $row['co_q3'] ?? 0,
+                'co_q4'                 => $row['co_q4'] ?? 0,
+                'gad_issue'             => $row['gad_issue'] ?? null,
+                'ccet_code'             => $row['ccet_code'] ?? null,
+                'responsible'           => $row['responsible'] ?? null,
+                'is_active'             => $row['is_active'] ?? 1,
+                'is_strategy_output'    => $row['is_strategy_output'] ?? 0,
+                'created_at'            => now(),
+                'updated_at'            => now(),
+            ]);
+        }
+
+        return redirect()->back()->with('message', 'Expected outputs saved successfully!');
     }
 }

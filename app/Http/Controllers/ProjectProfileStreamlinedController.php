@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\ActivityProject;
+use App\Models\CurrentAipYear;
 use App\Models\BudgetRequirement;
+use App\Models\ClimateChangeExpenditureTagging;
 use App\Models\HGDG_Checklist;
 use App\Models\Monitoring_and_evaluation;
 use App\Models\Office;
@@ -32,15 +35,20 @@ class ProjectProfileStreamlinedController extends Controller
 
     public function streamlined_create(Request $request, $idpaps)
     {
+        // SET PAPS ID
         $id = $idpaps;
         $source = null;
         // dd($idpaps);
-        // dd("yey");
         // dd($idpaps);
+
+        // SET PAPS VALUE
         $paps = ProgramAndProject::with('MFO')->where('id', $id)->get();
         $paps0 = $paps->first();
+
+        // SET OFFICE OBJECT
         $office = Office::where('department_code', $paps0->department_code)->first();
         // dd($office);
+        // SET USER DEPARTMENT CODE
         $dept_code = auth()->user()->department_code;
         $paps_all = [];
         // FOR BUDGETARY REQUIREMENTS
@@ -65,23 +73,46 @@ class ProjectProfileStreamlinedController extends Controller
             // dd("wala si paps");
             // $all_paps = Progr
         }
-        $hgdg = HGDG_Checklist::get();
+
         $count = RevisionPlan::where('idpaps', $id)->count();
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
-        $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
+
         // dd($max_id);
-        $duplicate=[];
-        if($request->source=='direct'){
+
+        // SET DUPLICATE DATA
+        $duplicate = [];
+        if ($request->source == 'direct') {
             $source = $request->source;
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $request->idrevplan)->first();
-        }else{
+        } else {
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $max_id)->first();
         }
 
+        // HGDG Checklist
+        $hgdg = HGDG_Checklist::get();
+
+        // CHART OF ACCOUNTS --used in budgetary requirements
+        $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($duplicate);
+        // dd($request->source);
+        // CHECK FOR STATUS if submitted, return if error if true
+        if ($duplicate) {
+            if($request->source=="rev_app"){
+                // dd("here");
+            }else{
+                if (intval($duplicate->status) >= 0) {
+                    return redirect()->back()->with('error', 'Project profile already submitted');
+                }
+            }
+
+        }
+
+        // GET ALL POPSP AGENCIES
         $popsp_agencies = PopspAgency::all();
 
+        // IF LESS THAN 1 ANG COUNT
         if ($count < 1) {
+            // dd()
             $firstDayNextYear = now()->addYear()->startOfYear()->format('Y-m-d');
             $lastDayNextYear  = now()->addYear()->endOfYear()->format('Y-m-d');
             $rev_plan_firstgenerate = new RevisionPlan();
@@ -119,7 +150,8 @@ class ProjectProfileStreamlinedController extends Controller
             $rev_plan_firstgenerate->monitoring = '';
             $rev_plan_firstgenerate->risk_management = '';
             $rev_plan_firstgenerate->version = 1;
-            $rev_plan_firstgenerate->type = 'p';
+            $rev_plan_firstgenerate->gad_version = ($request->source === 'sip' || $this->getCurrentAipYear() != 2026) ? 2 : 1;
+            $rev_plan_firstgenerate->type = $request->source == 'sip' ? 'sip' : 'p';
             $rev_plan_firstgenerate->final = 0;
             $rev_plan_firstgenerate->supplemental = 0;
             $rev_plan_firstgenerate->user_id = auth()->user()->recid;
@@ -133,7 +165,15 @@ class ProjectProfileStreamlinedController extends Controller
             $editData = $duplicate;
         }
 
+        // CHECK FOR MISMATCH
+        if ($editData->idpaps != $idpaps) {
+            return redirect()->back()->with('error', 'Mismatch in Program and Project data. Please try again.');
+        }
         $budgetRequirements = [];
+
+        // SET CCET CODES
+        $ccet_codes = ClimateChangeExpenditureTagging::where('id', '<>', 1)->get();
+        // dd($ccet_codes);
         // dd($id, $hgdg, $paps, $request->source, $office, $all_comments, $editData);
         if (isset($editData)) {
             //ALL COMMENTS***************************************************************************************************
@@ -153,9 +193,17 @@ class ProjectProfileStreamlinedController extends Controller
         }
         // dd($all_comments);
         // dd($acc);
+        // dd($editData);
+
+
+        // RETURN create vue based on gad version
+        $view_returned = $editData->gad_version == '1' ? 'RevisionPlans/ProjectProfile/Create' : 'RevisionPlans/ProjectProfile/Createv2';
         $implementation = $this->getImplementationPlan($editData->id, $editData, $paps0->id);
-        // dd($implementation);
-        return inertia('RevisionPlans/ProjectProfile/Create', [
+        // return $implementation;
+        // dd($this->signatories($editData->id));
+        // <!-- dd($implementation); -->
+        // dd($request->source);
+        return inertia($view_returned, [
             "idpaps" => $id,
             "hgdgs" => $hgdg,
             "paps_specific" => $paps0,
@@ -182,18 +230,23 @@ class ProjectProfileStreamlinedController extends Controller
             // IMPLEMENTING TEAM
             "implementing_team" => $this->team_members($editData->id),
             // SIGNATORIES
-            "signatories" => $this->signatories($editData->id),
+            "signatoriesprops" => $this->signatories($editData->id),
             // RISK MANAGEMENT
             "risk_manangement" => $this->risk_management($editData->id),
             // SOURCE
-            "source"=>$source,
+            "source" => $request->source,
+            "ccet_codes" => $ccet_codes,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
             ],
         ]);
     }
-
+    public function getCurrentAipYear()
+    {
+        // dd(CurrentAipYear::first());;
+        return CurrentAipYear::first()->year_period;
+    }
     function getAllRevisionPlanComments(int $revisionPlanId)
     {
         // 1️⃣ Comments directly on revision_plans
@@ -278,8 +331,13 @@ class ProjectProfileStreamlinedController extends Controller
         $teamComments = RevisionPlanComment::where('table_name', 'team_plans')
             ->whereIn('table_row_id', $teamIds);
 
+        // Signatories
+        $signatories = Signatory::where('revision_plan_id', $revisionPlanId)->pluck('id');
+        $signatoryComments = RevisionPlanComment::where('table_name', 'signatories')
+            ->whereIn('table_row_id', $signatories);
+
         // 9️⃣ Merge all queries using union
-        $allComments = $revisionPlanComments
+        $unionQuery = $revisionPlanComments
             ->unionAll($activityComments)
             ->unionAll($activityOutcomeComments)
             ->unionAll($activityOutputComments)
@@ -290,6 +348,10 @@ class ProjectProfileStreamlinedController extends Controller
             ->unionAll($monitoringComments)
             ->unionAll($riskComments)
             ->unionAll($teamComments)
+            ->unionAll($signatoryComments);
+        $allComments = DB::table(DB::raw("({$unionQuery->toSql()}) as comments"))
+            ->mergeBindings($unionQuery->getQuery()) // important to merge bindings
+            ->orderBy('comment_status', 'asc')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -436,7 +498,7 @@ class ProjectProfileStreamlinedController extends Controller
         return BudgetRequirement::with(['comments' => function ($query) {
             $query->where('table_name', 'budget_requirements');
         }])
-            ->select('id', 'revision_plan_id', 'particulars', 'account_code', 'amount', 'proposed_budget', 'category', 'category_gad', 'source')
+            ->select('id', 'revision_plan_id', 'particulars', 'account_code', 'amount', 'proposed_budget', 'category', 'category_gad', 'source', 'sip_number')
             ->where('revision_plan_id', $id)
             ->orderBy('category') // optional: keep some order
             ->orderBy('category_gad')
@@ -565,6 +627,7 @@ class ProjectProfileStreamlinedController extends Controller
                 $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
                 // dd($co_total);
                 // dd($item->strategyProject[0]);
+
                 return [
                     "id" => $item->id,
                     "description" => $item->description,
@@ -626,9 +689,25 @@ class ProjectProfileStreamlinedController extends Controller
         if ($table == 'strategies') {
             $strat = Strategy::where('id', $id)->first();
             $strat->delete();
+
+            $strat_proj = StrategyProject::where('strategy_id', $id)->get();
+            foreach ($strat_proj as $proj) {
+                $proj->is_active = 0;
+                $proj->save();
+            }
+
+            $activities = Activity::where('strategy_id', $id)->get();
+            foreach ($activities as $act) {
+                ActivityProject::where('activity_id', $act->id)
+                    ->update(['is_active' => 0]);
+            }
         } else if ($table == 'activities') {
             $act = Activity::where('id', $id)->first();
             $act->delete();
+
+            $act_proj = ActivityProject::where('activity_id', $id)->first();
+            $act_proj->is_active = 0;
+            $act_proj->save();
         } else {
             // Delete the record
             $deleted = DB::table($table)
@@ -651,10 +730,11 @@ class ProjectProfileStreamlinedController extends Controller
                 // dd($item);
                 return [
                     "id" => $item->id,
-                    "name" => $item->userEmployee ? $item->userEmployee->employee_name : "",
-                    "gender" => $item->userEmployee ? $item->userEmployee->gender : "",
-                    "status" => $item->userEmployee ? $item->userEmployee->employment_type_descr : "",
-                    "position" => $item->userEmployee ? $item->userEmployee->position_long_title : "",
+                    "name" => $item->userEmployee ? $item->userEmployee->employee_name : $item->name,
+                    "gender" => $item->userEmployee ? $item->userEmployee->gender : $item->gender,
+                    "status" => $item->userEmployee ? $item->userEmployee->employment_type_descr : $item->status,
+                    "position" => $item->userEmployee ? $item->userEmployee->position_long_title : $item->position,
+                    "empl_id" => $item->userEmployee ? $item->userEmployee->empl_id : $item->empl_id,
                     "competency" => $item->competency,
                     "role" => $item->role,
                     "with_gad_training" => $item->with_gad_training,
@@ -672,8 +752,8 @@ class ProjectProfileStreamlinedController extends Controller
     }
     public function signatories($id)
     {
-        return Signatory::where('revision_plan_id', $id)
-            ->orderByRaw("FIELD(acted, 'Prepared', 'Reviewed', 'Noted', 'Approved')")
+        return Signatory::with(['comments'])->where('revision_plan_id', $id)
+            ->orderByRaw("FIELD(acted, 'Prepared', 'Reviewed', 'Noted', 'Recommending Approval','Approved','As to AIP Inclusion','As to AIP Appropriation')")
             ->get();
     }
     public function risk_management($id)

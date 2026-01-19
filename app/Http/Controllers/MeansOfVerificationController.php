@@ -124,7 +124,7 @@ class MeansOfVerificationController extends Controller
         $count = MeansOfVerification::where('opcr_id', $opcr_id)->count();
         $maxSize   = 1024 * 1024 * 10; // 1 GB in bytes
         // dd($count, $maxSize, auth()->user()->recid, auth()->id());
-        if(intval($count)>=2){
+        if(intval($count)>=10){
             // dd("greater than 2", $totalSize, $count, $opcr_id);
             return redirect()->back()->withErrors(['error' => 'You have reached the 2 files limit.']);
         }

@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Appropriation;
 use App\Models\BudgetRequirement;
 use App\Models\FFUNCCOD;
+use App\Models\MeansOfVerification;
 use App\Models\OOE;
 use App\Models\ProjectProfileTracking;
 use App\Models\RevisionPlan;
 use App\Models\RevisionPlanComment;
+use App\Models\RevisionPlanDocuments;
 use App\Models\User;
+use App\Services\ProjectDesignService;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,17 +21,26 @@ use Illuminate\Support\Facades\DB;
 class ProjectProfileTrackingController extends Controller
 {
     protected $projectProfileTracking;
+    protected $service;
     protected $budget;
-    public function __construct(ProjectProfileTracking $projectProfileTracking, BudgetRequirement $budget)
+    public function __construct(ProjectProfileTracking $projectProfileTracking, BudgetRequirement $budget, ProjectDesignService $service)
     {
         $this->projectProfileTracking = $projectProfileTracking;
         $this->budget = $budget;
+        $this->service = $service;
     }
 
     public function status_update(Request $request, $id, $type, $new_status)
     {
-        // dd($id, $type, $new_status);
-        $us=auth()->user();
+        if ($new_status == "7") {
+            dd("seven jud siya:", $id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
+        }
+        // dd($id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
+        $rrt = "";
+        if ($request->return_request_type) {
+            $rrt = $request->return_request_type;
+        }
+        $us = auth()->user();
         // dd($us);
         $revplan = RevisionPlan::where('id', $id)->first();
         if (!$revplan) {
@@ -38,33 +51,49 @@ class ProjectProfileTrackingController extends Controller
         if ($new_status == 0) {
             $idpaps = $revplan->idpaps;
 
-            // Check if any other revision plans of this idpaps are already submitted, reviewed, or approved
+            // Check if any other revision plans of this idpaps are already submitted, reviewed, or approved , '1', '2'
             $otherPlans = RevisionPlan::where('idpaps', $idpaps)
                 ->where('id', '!=', $id)
-                ->whereIn('status', ['0', '1', '2'])
+                ->whereIn('status', ['0'])
                 ->count();
 
             if ($otherPlans > 0) {
                 return redirect()->back()->with('error', 'Cannot submit this Revision Plan because other plans for this PAP are already submitted, reviewed, or approved.');
             }
         }
+        $typpe = $revplan->type == "p" ? "Project Profie" : "Project Design";
 
         // Update the status
-        $revplan->status = $new_status;
-        $revplan->save();
+        if ($new_status == "5") {
+            $revplan->return_request_status = 0;
+        } else if ($new_status == "7") {
+            $revplan->return_request_status = "-1";
+            $this->service->generate($id);
+        } else {
+            if ($request->column == 'gad_status') {
+                $revplan->gad_status = $new_status;
+            } else {
+                $revplan->status = $new_status;
+            }
+        }
 
+        $revplan->save();
+        RevisionPlanDocuments::where('revision_plan_id', $id)
+            ->update(['return_executed' => 1]);
         $this->projectProfileTracking->create([
             'action_by' => $us->recid,
             'action_type' => $type,
             'revision_plan_id' => $revplan->id,
             'remarks' => $request->remarks,
+            'return_request_type' => $rrt
         ]);
         // MESSAGE
         $actionWords = [
             0  => "Submitted",
             1  => "Reviewed",
             2  => "Approved",
-            -2 => "Returned"
+            -2 => "Returned",
+            5 => "Request for return sent"
         ];
 
         $actionText = $actionWords[$new_status] ?? "Updated";
@@ -76,14 +105,14 @@ class ProjectProfileTrackingController extends Controller
         //         ->with('message','Project Profile '.$actionText.' successfully.');
         // }
         // Submit (0) OR Recall (-1) → go back to same page
-        if ($new_status == 0 || $new_status == -1) {
+        if ($new_status == 0 || $new_status == -1 || $new_status == "5") {
             return redirect()->back()
-                ->with('message', "Revision Plan status {$actionText} successfully.");
+                ->with('message', $type . " {$actionText} successfully.");
         }
 
         // Review (1), Approve (2), Return (-2) → go to revision list
         return redirect('/revision_plans?source=rev_app')
-            ->with('message', "Project Profile {$actionText} successfully.");
+            ->with('message', $typpe . " {$actionText} successfully.");
     }
 
     public function index_ipp()
@@ -97,7 +126,7 @@ class ProjectProfileTrackingController extends Controller
         $dept_id = auth()->user()->department_code;
         $source = $request->source;
         // dd($dept_id);
-        if(auth()->user()->popsp_agency){
+        if (auth()->user()->popsp_agency) {
             return redirect('/forbidden')->with('error', 'You are not allowed to access this page');
         }
         if ($source != 'budget') {

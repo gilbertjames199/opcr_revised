@@ -16,4 +16,10 @@ class Signatory extends Model
         'acted',
         'revision_plan_id',
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(RevisionPlanComment::class, 'table_row_id', 'id');
+        // ->where('table_name', 'revision_plans');
+    }
 }

@@ -3,6 +3,7 @@
         <title>View PAPS</title>
     </Head>
     <div class="row gap-10 masonry pos-r">
+    <div class="row gap-5">
         <!--class="peers fxw-nw jc-sb ai-c"-->
         <div class="peers fxw-nw jc-sb ai-c justify-content-end" v-if="src !== 'budget'">
             <Link v-if="paps.scope === 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
@@ -16,7 +17,7 @@
                 </svg>
             </Link>
 
-            <Link v-if="paps.idmfo == 0 && paps.scope !== 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
+            <Link v-if="paps.idmfo == 0 && paps.scope !== 'GAS' && src !== 'rev_app'" :href="(src !== 'direct' || department_code_user === department_code_project)
                             ? `/revision/${paps.idpaps}`:`/revision_plans`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                     viewBox="0 0 16 16">
@@ -26,8 +27,19 @@
                         d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
                 </svg>
             </Link>
-            <Link v-if="paps.idpaps == 0 && paps.scope !== 'GAS'" :href="(src !== 'direct' || department_code_user === department_code_project)
+            <Link v-if="paps.idpaps == 0 && paps.scope !== 'GAS' " :href="(src !== 'direct' || department_code_user === department_code_project)
                             ? `/mforevision/${paps.idmfo}`:`/revision_plans`">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
+            </Link>
+            <!--REVApp-->
+            <!-- {{ paps }} -->
+            <Link v-if="paps.scope !== 'GAS' && src === 'rev_app'" :href="`/revision_plans?source=rev_app`">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                     viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -67,43 +79,50 @@
                 </svg>
             </Link>
         </div>
-        <div class="d-flex justify-content-center">
-            <img :src="getImagePath('logo.png')" alt="" class="img-fluid" style="width:100px; height:100px">
 
-        </div>
-        <div class="d-flex justify-content-center">
-            REPUBLIC OF THE PHILIPPINES <br>
-            PROVINCE OF DAVAO DE ORO
-        </div>
-        <div class="d-flex justify-content-center">
+        <div class="col-9">
+            <div class="d-flex justify-content-center">
+                <img :src="getImagePath('logo.png')" alt="" class="img-fluid" style="width:100px; height:100px">
 
-            <h3>
-                <Link>{{ office }}</Link>
-            </h3>
-        </div>
-        <div class="d-flex justify-content-center ">
-            <h4 class="fw-bold ">
-                <div v-if="paps.type === 'p'">PROJECT PROFILE</div>
-                <div v-else>PROJECT DESIGN</div>
-            </h4>
+            </div>
+            <div class="d-flex justify-content-center">
+                REPUBLIC OF THE PHILIPPINES <br>
+                PROVINCE OF DAVAO DE ORO
+            </div>
+            <div class="d-flex justify-content-center">
+
+                <h3>
+                    <Link>{{ office }}</Link>
+                </h3>
+            </div>
+            <div class="d-flex justify-content-center ">
+                <h4 class="fw-bold ">
+                    <div v-if="paps.type === 'p'">PROJECT PROFILE</div>
+                    <div v-else>PROJECT DESIGN</div>
+                </h4>
+            </div>
         </div>
 
-        <div class="col-12">
+
+        <div class="col-9">
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
                     <!--MAIN TABLE-->
-                    <h3>I.&nbsp;&nbsp;&nbsp;
-                        <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/revision/edit/${paps.id}`:null" target="_blank">
-                            Title</Link>
-                    </h3>
+                    <section id="revision_plans">
+                        <h3>I.&nbsp;&nbsp;&nbsp;
+                            <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
+                                ? `/revision/edit/${paps.id}`:null" target="_blank">
+                                Title</Link>
+                        </h3>
+                    </section>
                     <table name="tabel" class="table table-hover table-bordered border-dark">
                         <tbody>
+                            <!-- TITLE -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Title</th>
                                 <td colspan="6" :class="{
                                     'text-danger': has_comment('Title', paps.project_title, paps.project_title, 'project_title', 'revision_plans', paps, paps.comments)
-                                }">
+                                }" :id="paps.id+'_revision_plans_project_title'">
                                     {{ paps.project_title }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title',paps.project_title,paps.project_title,'project_title','revision_plans', paps, paps.comments)">*
@@ -115,11 +134,12 @@
 
                                 </td>
                             </tr>
+                            <!-- PROJECT LOCATION -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Project Location</th>
                                 <td colspan="6" :class="{
                                     'text-danger': has_comment('Title',paps.project_location,paps.project_location,'project_location','revision_plans', paps, paps.comments)
-                                }">{{ paps.project_location }}
+                                }" :id="paps.id+'_revision_plans_project_location'">{{ paps.project_location }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title',paps.project_location,paps.project_location,'project_location','revision_plans', paps, paps.comments)">*
                                     </button>
@@ -128,10 +148,12 @@
                                     </button>
                                 </td>
                             </tr>
+                            <!-- IMPLEMENTATION SCHEDULE -FROM-TO -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Implementation Schedule</th>
                                 <th colspan="1">Start</th>
-                                <td colspan="2" :class="{
+                                <td colspan="2" :id="paps.id+'_revision_plans_date_start'"
+                                :class="{
                                     'text-danger': has_comment('Title',paps.date_start,paps.date_start,'date_start','revision_plans', paps, paps.comments)
                                 }">{{ formatMonthYear(paps.date_start) }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
@@ -142,7 +164,8 @@
                                     </button>
                                 </td>
                                 <th colspan="1">End</th>
-                                <td colspan="2" :class="{
+                                <td colspan="2" :id="paps.id+'_revision_plans_date_end'"
+                                :class="{
                                     'text-danger': has_comment('Title',paps.date_end,paps.date_end,'date_end','revision_plans', paps, paps.comments)
                                 }"> {{ formatMonthYear(paps.date_end) }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
@@ -153,10 +176,11 @@
                                     </button>
                                 </td>
                             </tr>
+                            <!-- INTENDED BENEFICIARIES -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Intended Beneficiaries</th>
                                 <th colspan="1">Male</th>
-                                <td colspan="1" :class="{
+                                <td colspan="1" :id="paps.id+'_revision_plans_beneficiary_male'" :class="{
                                     'text-danger': has_comment('Title',paps.beneficiary_male,paps.beneficiary_male,'beneficiary_male','revision_plans', paps, paps.comments)
                                 }">{{ format_number_conv(paps.beneficiary_male, 0, true) }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
@@ -167,7 +191,7 @@
                                     </button>
                                 </td>
                                 <th colspan="1">Female</th>
-                                <td colspan="1" :class="{
+                                <td colspan="1" :id="paps.id+'_revision_plans_beneficiary_female'" :class="{
                                     'text-danger': has_comment('Title',paps.beneficiary_female,paps.beneficiary_female,'beneficiary_female','revision_plans', paps, paps.comments)
                                 }">{{ format_number_conv(paps.beneficiary_female, 0, true) }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
@@ -178,7 +202,7 @@
                                     </button>
                                 </td>
                                 <th colspan="1">Total</th>
-                                <td colspan="1" :class="{
+                                <td colspan="1" :id="paps.id+'_revision_plans_beneficiary_total'" :class="{
                                     'text-danger': has_comment('Title',format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true),'beneficiary_total','revision_plans', paps, paps.comments)
                                 }">
                                 {{ format_number_conv((paps.beneficiary_male + paps.beneficiary_female), 0, true) }}
@@ -190,10 +214,11 @@
                                     </button>
                                 </td>
                             </tr>
+                            <!-- BASELINE DISAGGREGATED DATA -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Baseline Disaggregated Data</th>
                                 <th colspan="1">Male</th>
-                                <td colspan="1" :class="{
+                                <td colspan="1" :id="paps.id+'_revision_plans_baseline_male'" :class="{
                                     'text-danger': has_comment('Title',paps.baseline_male,paps.baseline_male,'baseline_male','revision_plans', paps, paps.comments)
                                 }">{{ format_number_conv(paps.baseline_male, 0, true) }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
@@ -204,7 +229,7 @@
                                     </button>
                                 </td>
                                 <th colspan="1">Female</th>
-                                <td colspan="1" :class="{
+                                <td colspan="1" :id="paps.id+'_revision_plans_baseline_female'" :class="{
                                     'text-danger': has_comment('Title',paps.baseline_female,paps.baseline_female,'baseline_female','revision_plans', paps, paps.comments)
                                 }">{{ format_number_conv(paps.baseline_female, 0, true) }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
@@ -215,7 +240,7 @@
                                     </button>
                                 </td>
                                 <th colspan="1">Data Source</th>
-                                <td colspan="1" :class="{
+                                <td colspan="1" :id="paps.id+'_revision_plans_data_source'"  :class="{
                                     'text-danger': has_comment('Title',paps.data_source,paps.data_source,'data_source','revision_plans', paps, paps.comments)
                                 }">{{ paps.data_source }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
@@ -237,10 +262,11 @@
                                     </button>
                                 </td> -->
                             </tr>
+                            <!-- COST OF PROGRAM -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Cost of Program</th>
                                 <th colspan="1">Amount (Php)</th>
-                                <td colspan="2" class="text-end" :class="{
+                                <td colspan="2" class="text-end"  :id="paps.id+'_revision_plans_amount'" :class="{
                                     'text-danger': has_comment('Title','Amount',imp_amount,'amount','revision_plans', paps, paps.comments)
                                 }">{{ format_number_conv(imp_amount, 2, true) }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
@@ -251,9 +277,10 @@
                                     </button>
                                 </td>
                                 <th colspan="1">Attributed GAD Budget (Php) </th>
-                                <td colspan="2" class="text-end" :class="{
+                                <td colspan="2" :id="paps.id+'_revision_plans_attributed_amount'" class="text-end" :class="{
                                     'text-danger': has_comment('Title','GAD Attributed Amount',imp_amount,'attributed_amount','revision_plans', paps, paps.comments)
-                                }">{{ format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true) }}
+                                }"><span v-if="parseFloat(paps.hgdg_score)>4">{{ format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true) }}</span>
+                                    <span v-else>0.00</span>
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','GAD Attributed Amount',format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true),'attributed_amount','revision_plans', paps, paps.comments)">*
                                     </button>
@@ -262,9 +289,10 @@
                                     </button>
                                 </td>
                             </tr>
+                            <!-- HGDG CHECKLIST -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">HGDG Checklist</th>
-                                <td colspan="3" :class="{
+                                <td colspan="3" :id="paps.id+'_revision_plans_HGDG Checklist'" :class="{
                                     'text-danger': has_comment('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)
                                 }">GAD {{ paps.checklist.box_number }} {{ paps.checklist.sector }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
@@ -277,7 +305,7 @@
                                 <th class="bg-secondary text-white" colspan="1">
                                     <Link :href="`/HGDGScore/${paps.id}`" style="color:white">HGDG Score </Link>
                                 </th>
-                                <td colspan="2" :class="{
+                                <td colspan="2" :id="paps.id+'_revision_plans_hgdg_score'" :class="{
                                     'text-danger': has_comment('Title','HGDG Score',paps.hgdg_score,'hgdg_score','revision_plans', paps, paps.comments)
                                 }">{{ paps.hgdg_score }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
@@ -292,20 +320,27 @@
                         </tbody>
                     </table>
                     <!-- RATIONALE -->
+
                      <span v-if="paps.rationale">
-                        <h3 :class="{
-                                    'text-danger': has_comment('Rationale','rationale',paps.rationale,'rationale','revision_plans', paps, paps.comments)
-                                }">II. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/revision/edit/${paps.id}`:null" target="_blank">Rationale</Link>
-                            <button v-if="can_view_comment()" class="superscript-btn"
-                                @click="handleClick('Rationale','rationale',paps.rationale,'rationale','revision_plans', paps, paps.comments)">*
-                            </button>
-                            <button v-if="has_comment('Rationale','rationale',paps.rationale,'rationale','revision_plans', paps, paps.comments)" class="superscript-btn"
-                                @click="handleClick('Rationale','rationale',paps.rationale,'rationale','revision_plans', paps, paps.comments)">*
-                            </button>
-                        </h3>
+                        <section id="rationale">
+                            <h3 :class="{
+                                        'text-danger': has_comment('Rationale','rationale',paps.rationale,'rationale','revision_plans', paps, paps.comments)
+                                    }">II. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
+                                ? `/revision/edit/${paps.id}`:null" target="_blank" :class="{
+                                        'text-danger': has_comment('Rationale','rationale',paps.rationale,'rationale','revision_plans', paps, paps.comments)
+                                    }">
+                                    Rationale
+                                </Link>
+                                <button v-if="can_view_comment()" class="superscript-btn"
+                                    @click="handleClick('Rationale','rationale',paps.rationale,'rationale','revision_plans', paps, paps.comments)">*
+                                </button>
+                                <button v-if="has_comment('Rationale','rationale',paps.rationale,'rationale','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                    @click="handleClick('Rationale','rationale',paps.rationale,'rationale','revision_plans', paps, paps.comments)">*
+                                </button>
+                            </h3>
+                        </section>
                         <br>
-                        <div class="bgc-white p-20 bd">
+                        <div class="bgc-white p-20 bd" >
                             <div v-html="paps.rationale" style="white-space: pre-line"></div>
                         </div>
                         <br>
@@ -313,18 +348,27 @@
 
                     <!-- OBJECTIVES -->
                     <span v-if="paps.objective">
-                        <h3 :class="{
-                                    'text-danger': has_comment('Objectives','objective',paps.objective,'objective','revision_plans', paps, paps.comments)
-                                }"
-                        >III. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/revision/edit/${paps.id}`:null" target="_blank">Objectives</Link>
-                            <button v-if="can_view_comment()" class="superscript-btn"
-                                @click="handleClick('Objectives','objective',paps.objective,'objective','revision_plans', paps, paps.comments)">*
-                            </button>
-                            <button v-if="has_comment('Objectives','objective',paps.objective,'objective','revision_plans', paps, paps.comments)" class="superscript-btn"
-                                @click="handleClick('Objectives','objective',paps.objective,'objective','revision_plans', paps, paps.comments)">*
-                            </button>
-                        </h3>
+                        <section id="objective">
+                            <h3 :class="{
+                                        'text-danger': has_comment('Objectives','objective',paps.objective,'objective','revision_plans', paps, paps.comments)
+                                    }"
+                                >III.
+                                <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
+                                        ? `/revision/edit/${paps.id}`:null" target="_blank"
+                                        :class="{
+                                        'text-danger': has_comment('Objectives','objective',paps.objective,'objective','revision_plans', paps, paps.comments)
+                                    }">
+                                    Objectives
+                                </Link>
+                                <button v-if="can_view_comment()" class="superscript-btn"
+                                    @click="handleClick('Objectives','objective',paps.objective,'objective','revision_plans', paps, paps.comments)">*
+                                </button>
+                                <button v-if="has_comment('Objectives','objective',paps.objective,'objective','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                    @click="handleClick('Objectives','objective',paps.objective,'objective','revision_plans', paps, paps.comments)">*
+                                </button>
+                            </h3>
+                        </section>
+
                         <br>
                         <div  class="bgc-white p-20 bd">
                             <div v-html="paps.objective" style="white-space: pre-line"></div>
@@ -334,17 +378,26 @@
 
                     <!-- Target Beneficiaries -->
                     <span v-if="paps.beneficiaries" >
-                    <h3 :class="{
+                        <section id="beneficiaries">
+                            <h3 :class="{
                                     'text-danger': has_comment('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)
-                                }">IV. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/revision/edit/${paps.id}`:null" target="_blank">Target Beneficiaries</Link>
-                        <button v-if="can_view_comment()" class="superscript-btn"
-                            @click="handleClick('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)">*
-                        </button>
-                        <button v-if="has_comment('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)" class="superscript-btn"
-                            @click="handleClick('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)">*
-                        </button>
-                    </h3>
+                                    }">IV.
+                                    <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
+                                        ? `/revision/edit/${paps.id}`:null"
+                                        :class="{
+                                            'text-danger': has_comment('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)
+                                        }"
+                                        target="_blank">
+                                            Target Beneficiaries
+                                    </Link>
+                                <button v-if="can_view_comment()" class="superscript-btn"
+                                    @click="handleClick('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)">*
+                                </button>
+                                <button v-if="has_comment('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                    @click="handleClick('Beneficiaries','beneficiaries',paps.beneficiaries,'beneficiaries','revision_plans', paps, paps.comments)">*
+                                </button>
+                            </h3>
+                        </section>
                     <br>
                     <div class="bgc-white p-20 bd">
                         <div v-html="paps.beneficiaries" style="white-space: pre-line"></div>
@@ -427,7 +480,8 @@
                         </table>
                     </div> -->
                     <div v-if="implementation">
-                        <h3 >
+
+                        <h3 id="implementation_workplan">
                             <!-- /strategies-and-activities/${dat.id} -->
                             V.
                             <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
@@ -438,7 +492,7 @@
 
                         <table class="table table-hover table-bordered border-dark">
                             <thead>
-                                <tr class="bg-secondary text-white">
+                                <tr class="bg-secondary text-white" >
                                     <th style="width: 12%; text-align: center;">Strategies/Activities</th>
                                     <th style="width: 8%; text-align: center;" >Performance Target Indicators</th>
                                     <th style="width: 8%; text-align: center;" >Gender Issues to be Addressed</th>
@@ -455,16 +509,18 @@
                             </thead>
                             <tbody>
                                 <template v-for="(dat, index) in implementation" :key="dat.id">
-                                    <tr style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==1">
-                                        <td :class="{
+
+                                    <tr  style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==1">
+                                        <td  :class="{
                                             'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
-                                        }" ><b>{{ dat.description }}</b>
+                                        }" ><b>{{ dat.description }} </b>
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
                                             </button>
                                             <button v-if="has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
                                             </button>
+
                                         </td>
                                         <td :class="{
                                             'text-danger': has_comment('Implementation Plan','strategies',dat.description,'target_indicator','strategy_projects', dat, dat.comments)
@@ -506,7 +562,7 @@
                                         <td><span v-if="paps.is_strategy_based==1">{{ dat.ccet_code }}</span></td>
                                         <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
                                     </tr>
-                                    <tr style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
+                                    <tr :id="dat.id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
                                         <td :class="{
                                             'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
                                         }" colspan="12"><b>{{ dat.description }}</b>
@@ -519,11 +575,12 @@
                                         </td>
                                     </tr>
                                     <template v-if="dat.activity && paps.is_strategy_based==0">
-                                        <tr v-for="(act, subIndex) in dat.activity" :key="subIndex" style="height: 100%">
+                                        <tr  v-for="(act, subIndex) in dat.activity" :key="subIndex" style="height: 100%">
                                             <!-- DESCRIPTION -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
-                                            }"><b>{{ act.description }}</b>
+                                            }" :id="act.activity_id + '_activity_projects_activities'"><b>{{ act.description }}</b>
+
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)">*
                                                 </button>
@@ -624,23 +681,31 @@
                                                     v-if="getPairedOutputs(act.activityProject[0]) && getPairedOutputs(act.activityProject[0]).length">
                                                         <template v-for="(pair, i) in getPairedOutputs(act.activityProject[0])" :key="i" >
                                                             <tr style="height: 100%;">
-                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;">
-                                                                    <span v-if="paps.is_strategy_based==0 && pair.target_indicator">{{ pair.target_indicator }}
+                                                                <!-- Target Indicator -->
+                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="pair.id + '_expected_revised_outputs_target_indicator'">
+                                                                    <span v-if="paps.is_strategy_based==0 && pair.target_indicator"
+                                                                            :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator','expected_revised_outputs', pair, pair.comments) ||
+                                                                        has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator','expected_revised_outputs', pair, pair.comments)
+                                                                    }"
+                                                                    >{{ pair.target_indicator }}
                                                                         <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
+                                                                            @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
                                                                         </button>
-                                                                        <button v-if="has_comment('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
+                                                                        <button v-if="has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
                                                                         </button>
 
                                                                     </span>
                                                                     <br><br>
                                                                 </td>
                                                                 <!-- GAD Issue -->
-                                                                <td v-if="i === 0" class="align-top" :class="{
+                                                                <td v-if="i === 0" class="align-top" :id="act.activity_id + '_activity_projects_gad_issue'" :class="{
                                                                     'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
-                                                                }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
+                                                                }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length"
+
+                                                                >
                                                                     <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
                                                                             @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
@@ -655,9 +720,9 @@
                                                                 <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" v-if="i === 0" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
                                                                     'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
                                                                     has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
-                                                                }">
+                                                                }" >
                                                                     <span v-if="paps.is_strategy_based==0">
-                                                                        <span v-if="act.date_from">{{ formatMonthYear(act.date_from) }}
+                                                                        <span v-if="act.date_from" :id="act.activity_id + '_activity_projects_date_from'">{{ formatMonthYear(act.date_from) }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
                                                                             </button>
@@ -666,7 +731,7 @@
                                                                             </button>
                                                                         </span>
                                                                         <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                                        <span v-if="act.date_to">{{ formatMonthYear(act.date_to) }}
+                                                                        <span v-if="act.date_to" :id="dat.id + '_activity_projects_date_to'">{{ formatMonthYear(act.date_to) }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
                                                                             </button>
@@ -684,8 +749,8 @@
                                                                     <div :class="{
                                                                         'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
                                                                         has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)
-                                                                    }"
-                                                                    ><span v-if="pair.quantity>0"> {{ pair.quantity }}</span> {{ pair.output_description }}
+                                                                    }" :id="pair.id + '_expected_revised_outputs_output_description'"
+                                                                    ><span v-if="pair.quantity>0" > {{ pair.quantity }} </span> {{ pair.output_description }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
                                                                             </button>
@@ -697,7 +762,7 @@
                                                                     <div :class="{
                                                                         'text-danger': has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments) ||
                                                                         has_comment('Implementation Plan','outcome_description',pair.output_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)
-                                                                    }" v-if="pair.outcome_description"
+                                                                    }" v-if="pair.outcome_description" :id="pair.id + '_expected_revised_outcomes'"
                                                                     >
                                                                         {{ pair.outcome_description }}
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
@@ -721,7 +786,7 @@
                                                                 <!-- GAD Issue -->
                                                                 <td class="align-top" :class="{
                                                                     'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
-                                                                }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
+                                                                }" :id="act.activity_id + '_activity_projects_gad_issue'" style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
                                                                     <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
                                                                             @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
@@ -736,9 +801,9 @@
                                                                 <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
                                                                     'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
                                                                     has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
-                                                                }">
+                                                                }" >
                                                                     <span v-if="paps.is_strategy_based==0">
-                                                                        <span v-if="act.date_from">{{ formatMonthYear(act.date_from) }}
+                                                                        <span v-if="act.date_from" :id="act.activity_id + '_activity_projects_date_from'">{{ formatMonthYear(act.date_from) }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
                                                                             </button>
@@ -747,7 +812,7 @@
                                                                             </button>
                                                                         </span>
                                                                         <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                                        <span v-if="act.date_to">{{ formatMonthYear(act.date_to) }}
+                                                                        <span v-if="act.date_to" :id="act.activity_id + '_activity_projects_date_to'">{{ formatMonthYear(act.date_to) }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
                                                                             </button>
@@ -770,7 +835,7 @@
                                             <!-- PERSONNEL SERVICES -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)
-                                            }">
+                                            }" :id="act.activity_id + '_activity_projects_ps_total'">
                                                 <span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.ps_total),2,true) }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)">*
@@ -782,7 +847,7 @@
                                             <!-- MAINTENANCE, OPERATING, AND OTHER EXPENSES -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)
-                                            }">
+                                            }" :id="act.activity_id + '_activity_projects_mooe_total'">
                                                 <span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.mooe_total),2,true) }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)">*
@@ -794,7 +859,7 @@
                                             <!-- FINANCIAL EXPENSES -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)
-                                            }"><span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.fe_total),2,true) }}</span>
+                                            }" :id="act.activity_id + '_activity_projects_fe_total'"><span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.fe_total),2,true) }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)">*
                                                 </button>
@@ -805,7 +870,7 @@
                                             <!-- CAPITAL OUTLAY -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)
-                                            }"><span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.co_total),2,true) }}</span>
+                                            }" :id="act.activity_id + '_activity_projects_co_total'"><span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.co_total),2,true) }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)">*
                                                 </button>
@@ -814,12 +879,13 @@
                                                 </button>
                                             </td>
                                             <!-- TOTAL -->
-                                            <td><span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.ps_total) + parseFloat(act.mooe_total)+ parseFloat(act.co_total),2,true) }}</span>
+                                            <td>
+                                                <span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.ps_total) + parseFloat(act.mooe_total)+ parseFloat(act.co_total),2,true) }}</span>
                                             </td>
                                             <!-- CCET Code -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)
-                                            }"><span v-if="paps.is_strategy_based==0">{{ act.ccet_code }}</span>
+                                            }" :id="act.activity_id + '_activity_projects_ccet_code'"><span v-if="paps.is_strategy_based==0">{{ act.ccet_code }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)">*
                                                 </button>
@@ -830,7 +896,7 @@
                                             <!-- RESPONSIBLE INDIVIDUAL -->
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)
-                                            }"><span v-if="paps.is_strategy_based==0">{{ act.responsible }}</span>
+                                            }" :id="act.activity_id + '_activity_projects_responsible'"><span v-if="paps.is_strategy_based==0">{{ act.responsible }}</span>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
                                                     @click="handleClick('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)">*
                                                 </button>
@@ -1030,7 +1096,7 @@
                     <!--BUDGETARY REQUIREMENTS-->
                     <!-- v-if="b_mooe.length>0 || b_capital.length>0 || b_ps.length>0" -->
                     <div>
-                        <h3>
+                        <h3 id="budgetary_requirements">
                             VI. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
                             ? `/budget/${paps.id}`:null">
                                 Estimated Cost/Budgetary Requirements
@@ -1038,7 +1104,7 @@
                         </h3>
                         <!-- {{ capitalOutlay }}
                         showBudgetTable: {{ showBudgetTable() }} -->
-                        <table v-if="showBudgetTable()" class="table table-hover table-bordered border-dark">
+                        <!-- <table v-if="showBudgetTable()" class="table table-hover table-bordered border-dark">
                             <thead>
                                 <tr class="bg-secondary text-white">
                                     <th colspan="3">Particular</th>
@@ -1050,19 +1116,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- MOOE **************************************************************** -->
                                 <tr v-if="(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0"
 
                                 >
                                     <td colspan="8"><b>MAINTENANCE, OPERATING, AND OTHER EXPENSES</b></td>
                                 </tr>
                                 <tr v-if="(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0" v-for="mooe in maintenanceOperating">
-                                    <td></td>
-                                    <!-- MOOE -PARTICULARS -->
+                                    <td ></td>
+                                    MOOE -PARTICULARS
                                     <td colspan="2"
                                     :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.particulars,'particulars','budget_requirements', mooe, mooe.comments)
-                                            }"
+                                            }" :id="mooe.id + '_budget_requirements_particulars'"
                                     >{{ mooe.particulars }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.particulars,'particulars','budget_requirements', mooe, mooe.comments)">*
@@ -1071,10 +1136,10 @@
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.particulars,'particulars','budget_requirements', mooe, mooe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE -ACCOUNT CODE -->
+                                    MOOE -ACCOUNT CODE
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.account_code,'account_code','budget_requirements', mooe, mooe.comments)
-                                            }"
+                                            }" :id="mooe.id + '_budget_requirements_account_code'"
                                     >{{ mooe.account_code }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.account_code,'account_code','budget_requirements', mooe, mooe.comments)">*
@@ -1083,10 +1148,10 @@
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.account_code,'account_code','budget_requirements', mooe, mooe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE GAD Attirbuted -->
+                                    MOOE GAD Attirbuted
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.GAD_amount,'GAD_amount','budget_requirements', mooe, mooe.comments)
-                                            }">{{ format_number_conv(mooe.GAD_amount,2,true) }}
+                                            }" :id="mooe.id + '_budget_requirements_GAD_amount'">{{ format_number_conv(mooe.GAD_amount,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.GAD_amount,'GAD_amount','budget_requirements', mooe, mooe.comments)">*
                                         </button>
@@ -1094,10 +1159,10 @@
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.GAD_amount,'GAD_amount','budget_requirements', mooe, mooe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE NON-GAD -->
+                                     MOOE NON-GAD
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.NONGAD_amount,'NONGAD_amount','budget_requirements', mooe, mooe.comments)
-                                            }">
+                                            }" :id="mooe.id + '_budget_requirements_NONGAD_amount'">
                                         {{ format_number_conv(mooe.NONGAD_amount,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.NONGAD_amount,'NONGAD_amount','budget_requirements', mooe, mooe.comments)">*
@@ -1106,10 +1171,10 @@
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.NONGAD_amount,'NONGAD_amount','budget_requirements', mooe, mooe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE Total -->
+                                     MOOE Total
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.Total,'Total','budget_requirements', mooe, mooe.comments)
-                                            }">{{ format_number_conv(mooe.Total,2,true) }}
+                                            }" :id="mooe.id + '_budget_requirements_Total'">{{ format_number_conv(mooe.Total,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.Total,'Total','budget_requirements', mooe, mooe.comments)">*
                                         </button>
@@ -1117,10 +1182,10 @@
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.Total,'Total','budget_requirements', mooe, mooe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE Source -->
+                                    MOOE Source
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.Source,'Source','budget_requirements', mooe, mooe.comments)
-                                            }">{{ mooe.Source }}
+                                            }" :id="mooe.id + '_budget_requirements_Source'">{{ mooe.Source }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','MOOE',mooe.Source,'Source','budget_requirements', mooe, mooe.comments)">*
                                         </button>
@@ -1130,11 +1195,11 @@
                                     </td>
                                 </tr>
                                 <tr v-if="(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0">
-                                    <td></td>
+                                    <td ></td>
                                     <td colspan="3">
                                         SUB-TOTAL (MOOE)
                                     </td>
-                                    <!-- MOOE GAD ******************************************************************************************************************-->
+                                    MOOE GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements', format_number_conv(s_mooe_gad,2,true), format_number_conv(s_mooe_gad,2,true), 'budgetary_mooe_gad', 'revision_plans', paps, paps.comments)
                                     }">
@@ -1146,7 +1211,7 @@
                                             @click="handleClick('Budgetary Requirements',format_number_conv(s_mooe_gad,2,true),format_number_conv(s_mooe_gad,2,true),'budgetary_mooe_gad','revision_plans', paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE NON-GAD ******************************************************************************************************************-->
+                                    MOOE NON-GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)
                                     }">
@@ -1158,7 +1223,7 @@
                                             @click="handleClick('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- MOOE TOTAL ****************************************************************************************************************** -->
+                                    MOOE TOTAL ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements', format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true), format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true),
                                         'budgetary_mooe_total', 'revision_plans', paps, paps.comments)
@@ -1176,16 +1241,15 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <!-- PERSONNEL SERVICES ****************************************************** -->
                                  <tr v-if="(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0">
                                     <td colspan="8"><b>PERSONNEL SERVICES</b></td>
                                 </tr>
                                 <tr  v-if="(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0" v-for="ps in personnelServices">
-                                    <td></td>
-                                    <!-- PS Particulars -->
+                                    <td :id="ps.id + '_budget_requirements'"></td>
+                                    PS Particular
                                     <td colspan="2" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.particulars,'particulars','budget_requirements', ps, ps.comments)
-                                            }">{{ ps.particulars }}
+                                            }" :id="ps.id + '_budget_requirements_particulars'">{{ ps.particulars }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.particulars,'particulars','budget_requirements', ps, ps.comments)">*
                                         </button>
@@ -1193,10 +1257,10 @@
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.particulars,'particulars','budget_requirements', ps, ps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS Account Code -->
+                                    PS Account Code
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.account_code,'account_code','budget_requirements', ps, ps.comments)
-                                            }">{{ ps.account_code }}
+                                            }" :id="ps.id + '_budget_requirements_account_code'">{{ ps.account_code }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.account_code,'account_code','budget_requirements', ps, ps.comments)">*
                                         </button>
@@ -1204,10 +1268,10 @@
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.account_code,'account_code','budget_requirements', ps, ps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS GAD Amount -->
+                                     PS GAD Amount
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.GAD_amount,'GAD_amount','budget_requirements', ps, ps.comments)
-                                            }">{{ format_number_conv(ps.GAD_amount,2,true) }}
+                                            }" :id="ps.id + '_budget_requirements_GAD_amount'">{{ format_number_conv(ps.GAD_amount,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.GAD_amount,'GAD_amount','budget_requirements', ps, ps.comments)">*
                                         </button>
@@ -1215,10 +1279,10 @@
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.GAD_amount,'GAD_amount','budget_requirements', ps, ps.comments)">*
                                         </button>
                                     </td>
-                                    <!--  PS NONGAD Amount-->
+                                    PS NONGAD Amount
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.NONGAD_amount,'NONGAD_amount','budget_requirements', ps, ps.comments)
-                                            }">
+                                            }" :id="ps.id + '_budget_requirements_NONGAD_amount'">
                                         {{ format_number_conv(ps.NONGAD_amount,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.NONGAD_amount,'NONGAD_amount','budget_requirements', ps, ps.comments)">*
@@ -1227,10 +1291,10 @@
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.NONGAD_amount,'NONGAD_amount','budget_requirements', ps, ps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS Total -->
+                                     PS Total
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.Total,'Total','budget_requirements', ps, ps.comments)
-                                            }">{{ format_number_conv(ps.Total,2,true) }}
+                                            }" :id="ps.id + '_budget_requirements_Total'">{{ format_number_conv(ps.Total,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.Total,'Total','budget_requirements', ps, ps.comments)">*
                                         </button>
@@ -1238,10 +1302,10 @@
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.Total,'Total','budget_requirements', ps, ps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS Source -->
+                                     PS Source
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.Source,'Source','budget_requirements', ps, ps.comments)
-                                            }">{{ ps.Source }}
+                                            }" :id="ps.id + '_budget_requirements_Source'">{{ ps.Source }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Personnel Services',ps.Source,'Source','budget_requirements', ps, ps.comments)">*
                                         </button>
@@ -1251,9 +1315,9 @@
                                     </td>
                                 </tr>
                                 <tr v-if="(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0">
-                                    <td></td>
+                                    <td ></td>
                                     <td colspan="3">SUB-TOTAL (PS)</td>
-                                    <!-- PS GAD ******************************************************************************************************************-->
+                                     PS GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         format_number_conv(s_ps_gad,2,true),
@@ -1280,7 +1344,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS NON-GAD ******************************************************************************************************************-->
+                                    PS NON-GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         format_number_conv(s_ps_non,2,true),
@@ -1307,7 +1371,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- PS TOTAL ****************************************************************************************************************** -->
+                                    PS TOTAL ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),
@@ -1337,17 +1401,16 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <!-- FINANCIAL EXPENSES ****************************************************** -->
                                 <tr v-if="(parseFloat(s_fe_gad) + parseFloat(s_fe_non))>0">
                                     <td colspan="8"><b>FINANCIAL EXPENSES</b></td>
                                 </tr>
                                 <tr v-if="(parseFloat(s_fe_gad) + parseFloat(s_fe_non))>0" v-for="fe in financialExpenses">
-                                    <td></td>
-                                    <!-- Financial Expenses Particulars -->
+                                    <td :id="fe.id + '_budget_requirements'"></td>
+                                    Financial Expenses Particulars
 
                                     <td colspan="2" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.particulars,'particulars','budget_requirements', fe, fe.comments)
-                                            }">{{ fe.particulars }}
+                                            }" :id="fe.id + '_budget_requirements_particulars'">{{ fe.particulars }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.particulars,'particulars','budget_requirements', fe, fe.comments)">*
                                         </button>
@@ -1355,10 +1418,10 @@
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.particulars,'particulars','budget_requirements', fe, fe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Financial Expenses Account Code -->
+                                     Financial Expenses Account Code
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.account_code,'account_code','budget_requirements', fe, fe.comments)
-                                            }">{{ fe.account_code }}
+                                            }" :id="fe.id + '_budget_requirements_account_code'">{{ fe.account_code }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.account_code,'account_code','budget_requirements', fe, fe.comments)">*
                                         </button>
@@ -1366,10 +1429,10 @@
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.account_code,'account_code','budget_requirements', fe, fe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Financial Expenses GAD Attributed -->
+                                     Financial Expenses GAD Attributed
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.GAD_amount,'GAD_amount','budget_requirements', fe, fe.comments)
-                                            }">{{ format_number_conv(fe.GAD_amount,2,true) }}
+                                            }" :id="fe.id + '_budget_requirements_GAD_amount'">{{ format_number_conv(fe.GAD_amount,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.GAD_amount,'GAD_amount','budget_requirements', fe, fe.comments)">*
                                         </button>
@@ -1377,10 +1440,10 @@
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.GAD_amount,'GAD_amount','budget_requirements', fe, fe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Financial Expenses NON-GAD Amount -->
+                                     Financial Expenses NON-GAD Amount
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.NONGAD_amount,'NONGAD_amount','budget_requirements', fe, fe.comments)
-                                            }">{{ format_number_conv(fe.NONGAD_amount,2,true) }}
+                                            }" :id="fe.id + '_budget_requirements_NONGAD_amount'">{{ format_number_conv(fe.NONGAD_amount,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.NONGAD_amount,'NONGAD_amount','budget_requirements', fe, fe.comments)">*
                                         </button>
@@ -1388,10 +1451,10 @@
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.NONGAD_amount,'NONGAD_amount','budget_requirements', fe, fe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Financial Expenses Total -->
+                                    Financial Expenses Total
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.Total,'Total','budget_requirements', fe, fe.comments)
-                                            }">{{ format_number_conv(fe.Total,2,true) }}
+                                            }" :id="fe.id + '_budget_requirements_Total'">{{ format_number_conv(fe.Total,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.Total,'Total','budget_requirements', fe, fe.comments)">*
                                         </button>
@@ -1399,10 +1462,10 @@
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.Total,'Total','budget_requirements', fe, fe.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Financial Expenses Source -->
+                                    Financial Expenses Source
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.Source,'Source','budget_requirements', fe, fe.comments)
-                                            }">{{ fe.Source }}
+                                            }" :id="fe.id + '_budget_requirements_Source'">{{ fe.Source }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Financial Expenses',fe.Source,'Source','budget_requirements', fe, fe.comments)">*
                                         </button>
@@ -1412,9 +1475,9 @@
                                     </td>
                                 </tr>
                                 <tr v-if="(parseFloat(s_fe_gad) + parseFloat(s_fe_non))>0">
-                                    <td></td>
+                                    <td ></td>
                                     <td colspan="3">SUB-TOTAL (Financial Expenses)</td>
-                                    <!-- FE GAD ******************************************************************************************************************-->
+                                     FE GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         format_number_conv(s_fe_gad,2,true),
@@ -1442,7 +1505,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- FE NON-GAD ******************************************************************************************************************-->
+                                    FE NON-GAD ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         format_number_conv(s_fe_non,2,true),
@@ -1469,7 +1532,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- FE TOTAL ******************************************************************************************************************-->
+                                     FE TOTAL ******************************************************************************************************************
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                             'TOTAL FINANCIAL EXPENSES',
@@ -1498,16 +1561,15 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <!-- CAPITAL OUTLAY*********************************************************** -->
                                 <tr v-if="(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0">
                                     <td colspan="8"><b>CAPITAL OUTLAY</b></td>
                                 </tr>
                                 <tr v-if="(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0" v-for="cap in capitalOutlay">
-                                    <td></td>
-                                    <!-- Capital Outlay Particulars -->
+                                    <td ></td>
+                                     Capital Outlay Particulars
                                     <td colspan="2" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.particulars,'particulars','budget_requirements', cap, cap.comments)
-                                            }">{{ cap.particulars }}
+                                            }" :id="cap.id + '_budget_requirements_particulars'">{{ cap.particulars }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.particulars,'particulars','budget_requirements', cap, cap.comments)">*
                                         </button>
@@ -1515,10 +1577,10 @@
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.particulars,'particulars','budget_requirements', cap, cap.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Capital Outlay Account Code -->
+                                     Capital Outlay Account Code
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.account_code,'account_code','budget_requirements', cap, cap.comments)
-                                            }">{{ cap.account_code }}
+                                            }" :id="cap.id + '_budget_requirements_account_code'">{{ cap.account_code }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.account_code,'account_code','budget_requirements', cap, cap.comments)">*
                                         </button>
@@ -1526,10 +1588,10 @@
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.account_code,'account_code','budget_requirements', cap, cap.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Capital Outlay GAD Attributed -->
+                                     Capital Outlay GAD Attributed
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.GAD_amount,'GAD_amount','budget_requirements', cap, cap.comments)
-                                            }">{{ format_number_conv(cap.GAD_amount,2,true) }}
+                                            }" :id="cap.id + '_budget_requirements_GAD_amount'">{{ format_number_conv(cap.GAD_amount,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.GAD_amount,'GAD_amount','budget_requirements', cap, cap.comments)">*
                                         </button>
@@ -1537,10 +1599,10 @@
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.GAD_amount,'GAD_amount','budget_requirements', cap, cap.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Capital Outlay NON-GAD Amount -->
+                                     Capital Outlay NON-GAD Amount
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.NONGAD_amount,'NONGAD_amount','budget_requirements', cap, cap.comments)
-                                            }">{{ format_number_conv(cap.NONGAD_amount,2,true) }}
+                                            }" :id="cap.id + '_budget_requirements_NONGAD_amount'">{{ format_number_conv(cap.NONGAD_amount,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.NONGAD_amount,'NONGAD_amount','budget_requirements', cap, cap.comments)">*
                                         </button>
@@ -1548,10 +1610,10 @@
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.NONGAD_amount,'NONGAD_amount','budget_requirements', cap, cap.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Capital Outlay Total -->
+                                    Capital Outlay Total
                                     <td class="text-end" :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.Total,'Total','budget_requirements', cap, cap.comments)
-                                            }">{{ format_number_conv(cap.Total,2,true) }}
+                                            }" :id="cap.id + '_budget_requirements_Total'">{{ format_number_conv(cap.Total,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.Total,'Total','budget_requirements', cap, cap.comments)">*
                                         </button>
@@ -1559,10 +1621,10 @@
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.Total,'Total','budget_requirements', cap, cap.comments)">*
                                         </button>
                                     </td>
-                                    <!-- Capital Outlay Source -->
+                                     Capital Outlay Source
                                     <td :class="{
                                                 'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.Source,'Source','budget_requirements', cap, cap.comments)
-                                            }">{{ cap.Source }}
+                                            }" :id="cap.id + '_budget_requirements_Source'">{{ cap.Source }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements','Capital Outlay',cap.Source,'Source','budget_requirements', cap, cap.comments)">*
                                         </button>
@@ -1572,9 +1634,9 @@
                                     </td>
                                 </tr>
                                 <tr v-if="(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0">
-                                    <td></td>
+                                    <td ></td>
                                     <td colspan="3">SUB-TOTAL (Capital Outlay)</td>
-                                    <!-- CAPITAL OUTLAY GAD ******************************************************************************************************************-->
+                                    CAPITAL OUTLAY GAD ******************************************************************************************************************--
                                     <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         'Capital Outlay GAD -Total',
@@ -1601,7 +1663,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- CAPITAL OUTLAY NON-GAD ******************************************************************************************************************-->
+                                    -- CAPITAL OUTLAY NON-GAD ******************************************************************************************************************--
                                      <td class="text-end" :class="{
                                         'text-danger': has_comment('Budgetary Requirements',
                                         'Capital Outlay Non-GAD -Total',
@@ -1628,7 +1690,7 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                     <!-- CAPITAL OUTLAY TOTAL ******************************************************************************************************************-->
+                                     -- CAPITAL OUTLAY TOTAL ******************************************************************************************************************-
                                     <td class="text-end" :class="{
                                             'text-danger': has_comment('Budgetary Requirements',
                                             'Capital Outlay -Total',
@@ -1657,30 +1719,8 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <!-- CAPITAL OUTLAY*********************************************************** -->
-                                <!-- <tr>
-                                <td colspan="8"><b>CAPITAL OUTLAY</b></td>
-                                </tr>
-                                <tr v-for="cap in capitalOutlay">
-                                    <td></td>
-                                    <td colspan="2">{{ cap.particulars }}</td>
-                                    <td>{{ cap.account_code }}</td>
-                                    <td class="text-end">{{ format_number_conv(cap.GAD_amount,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(cap.NONGAD_amount,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(cap.Total,2,true) }}</td>
-                                    <td>{{ cap.Source }}</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td colspan="3">SUB-TOTAL (Capital Outlay)</td>
-                                    <td class="text-end">{{ format_number_conv(s_cap_gad,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(s_cap_non,2,true) }}</td>
-                                    <td class="text-end">{{ format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true) }}</td>
-                                    <td></td>
-                                </tr> -->
                                 <tr>
                                     <td colspan="4">TOTAL</td>
-                                    <!-- GAD TOTAL *********************************************************** -->
                                     <td class="text-end"
                                         :class="{
                                             'text-danger': has_comment('Budgetary Requirements',
@@ -1689,6 +1729,7 @@
                                             'gad_total', 'revision_plans',
                                             paps, paps.comments)
                                         }"
+                                        :id="paps.id + '_revision_plans_gad_total'"
                                     >{{  format_number_conv(tot_gad,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements',
@@ -1709,7 +1750,6 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- NON-GAD TOTAL *********************************************************** -->
                                     <td class="text-end"
                                         :class="{
                                             'text-danger': has_comment('Budgetary Requirements',
@@ -1718,6 +1758,7 @@
                                             'non_total', 'revision_plans',
                                             paps, paps.comments)
                                         }"
+                                        :id="paps.id + '_revision_plans_non_total'"
                                     >{{ format_number_conv(tot_non,2,true) }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Budgetary Requirements',
@@ -1738,7 +1779,6 @@
                                             paps, paps.comments)">*
                                         </button>
                                     </td>
-                                    <!-- GRAND TOTAL *********************************************************** -->
                                     <td class="text-end"
                                         :class="{
                                             'text-danger': has_comment('Budgetary Requirements',
@@ -1747,6 +1787,7 @@
                                             'grand_total', 'revision_plans',
                                             paps, paps.comments)
                                         }"
+                                        :id="paps.id + '_revision_plans_grand_total'"
                                     >{{ format_number_conv((parseFloat(s_cap_gad) + parseFloat(s_cap_non) + parseFloat(s_ps_gad)
                                     + parseFloat(s_ps_non) + parseFloat(s_mooe_gad) + parseFloat(s_mooe_non) + parseFloat(s_fe_gad) + parseFloat(s_fe_non))
                                     , 2,true)
@@ -1773,6 +1814,192 @@
                                     <td></td>
                                 </tr>
                             </tbody>
+                        </table> -->
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">Particulars</th>
+                                    <th>Account Code</th>
+                                    <th>Amount</th>
+                                    <th>Source</th>
+                                    <!-- <th>Edit</th> -->
+                                </tr>
+                            </thead>
+
+                            <tbody v-for="(gadGroups, category) in groupedBudget" :key="category">
+
+                                <!-- CATEGORY HEADER -->
+                                <tr v-if="hasAnyRows(gadGroups)" class="table-primary">
+                                    <td colspan="8" class="fw-bold text-uppercase">
+                                        {{ formatCategory(category) }}
+                                    </td>
+                                </tr>
+
+                                <!-- GAD + NON-GAD GROUPS -->
+                                <template v-for="(rows, gadType) in gadGroups" :key="gadType" >
+
+                                    <!-- SUB HEADER (GAD / NON-GAD) -->
+                                    <tr v-if="hasRows(rows)" class="table-secondary" >
+                                        <td></td>
+                                        <td colspan="7" class="fw-bold">
+                                            <div class="d-flex justify-content-between align-items-center w-100">
+                                                {{ gadType }}
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                    <!-- DATA ROWS -->
+                                     <tr v-if="hasRows(rows)"  v-for="row in rows" :key="row.id">
+                                        <td></td>
+                                        <td></td>
+                                        <!-- PARTICULARS -->
+                                        <td
+                                            :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_particulars'"
+                                        >
+                                            {{ row.particulars }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- ACCOUNT CODE -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_account_code'"
+                                        >
+                                            <!-- <textarea
+                                                class="form-control transparent-bg "
+                                                type="text"
+                                                v-model="row.account_code"
+                                                @input="setUnsaved(true)"
+                                                @change="updateRevisionPlans('budget_requirements', 'account_code', row.id, row.account_code)" disabled>
+                                                    {{ row.account_code }}
+                                            </textarea> -->
+                                            {{ row.account_code }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- AMOUNT -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Amount',row.amount,
+                                                    'amount','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_amount'">
+                                            {{ row.amount }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Amount',row.amount,
+                                                    'amount','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Amount',row.amount,
+                                                    'amount','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Amount',row.amount,
+                                                    'amount','budget_requirements', row, row.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- SOURCE OF FUND -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_source'">
+                                            <!-- <textarea
+                                                class="form-control transparent-bg "
+                                                type="text"
+                                                v-model="row.source"
+                                                @input="setUnsaved(true)"
+                                                @change="updateRevisionPlans('budget_requirements', 'source', row.id, row.source)">
+                                                    {{ row.source }}
+                                            </textarea> -->
+                                            {{ row.source }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
+                                        </td>
+
+                                        <!-- EDIT -->
+                                        <!-- <td>
+                                            <button class="btn btn-primary btn-sm text-white"
+                                                @click="showBudgetModal(form.id,gadType,category)">
+                                                ✏ Edit
+                                            </button>
+                                        </td> -->
+
+
+                                    </tr>
+
+                                    <!-- NO DATA ROW -->
+                                    <!-- <tr v-if="rows.length === 0">
+                                        <td colspan="8" class="text-center text-muted">
+                                            No entries under {{ gadType }} {{ formatCategory(category)  }}
+                                        </td>
+                                    </tr> -->
+
+                                    <!-- TOTAL ROW -->
+                                    <tr v-if="hasRows(rows)"  class="fw-bold bg-light">
+                                        <td></td>
+                                        <td colspan="2">TOTAL {{ gadType }}</td>
+                                        <td></td>
+                                        <td>
+                                            ₱ {{ budgetSum(category, gadType).toLocaleString() }}
+                                        </td>
+                                        <td colspan="3"></td>
+                                    </tr>
+                                </template>
+
+
+                            </tbody>
+                             <tr>
+                                <td colspan="4"><h4>TOTAL</h4></td>
+                                <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                <td colspan="3"></td>
+                            </tr>
+                            <!-- <tr>
+                                    <td colspan="4"><h4>TOTAL</h4></td>
+                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                    <td colspan="3"></td>
+                                </tr> -->
                         </table>
                         <!-- <table v-if="showBudgetTable()" class="table table-hover table-bordered border-dark">
                             <thead>
@@ -1968,10 +2195,15 @@
                         </div> -->
                         <br>
                     </div>
-                    <!--IMPLEMENTING TEAM-->
-                    <h3 v-if="team_members.length > 0 || paps.implementing_team !== null">
+                    <!--IMPLEMENTING TEAM v-if="team_members.length > 0 || paps.implementing_team !== null"-->
+                    <h3 id='implementing_team'>
                         VII. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/team/${paps.id}/revision/plan/team`:null">Implementing Team</Link>
+                            ? `/team/${paps.id}/revision/plan/team`:null"
+                        :class="{
+                            'text-danger': has_comment('Implementing Team','implementing team',paps.rationale,'implementing_team','revision_plans', paps, paps.comments)
+                        }"
+                        :id="paps.id + '_revision_plans_implementing_team'"
+                        >Implementing Team</Link>
 
                         <button v-if="can_view_comment()" class="superscript-btn"
                             @click="handleClick('Implementing Team','implementing team',paps.implementing_team,'implementing_team','revision_plans', paps, paps.comments)">*
@@ -2013,9 +2245,11 @@
                                     <td>{{ index+1 }}</td>
                                     <!-- Name -->
                                     <td
-                                    :class="{
+                                        :class="{
                                                 'text-danger': has_comment('Team Members','Name',team_member.name,'name','team_plans', team_member, team_member.comments)
-                                            }">{{ team_member.name }}
+                                            }"
+                                        :id="team_member.id + '_team_plans_name'"
+                                    >{{ team_member.name }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Team Plan','Name',team_member.name,'name','team_plans', team_member, team_member.comments)">*
                                         </button>
@@ -2028,7 +2262,8 @@
                                         {{ team_member.gender }}
                                      </td>
                                     <!-- Position -->
-                                    <td :class="{
+                                    <td :id="team_member.id + '_team_plans_position'"
+                                        :class="{
                                                 'text-danger': has_comment('Team Plan','Position',team_member.position,'position','team_plans', team_member, team_member.comments)
                                             }"
                                     >{{ team_member.position }}
@@ -2040,7 +2275,8 @@
                                         </button>
                                     </td>
                                     <!-- Employment Status -->
-                                    <td :class="{
+                                    <td :id="team_member.id + '_team_plans_status'"
+                                        :class="{
                                                 'text-danger': has_comment('Team Plan','status',team_member.status,'status','team_plans', team_member, team_member.comments)
                                             }">
                                             <span v-if="team_member.status==='Regular'">Permanent</span>
@@ -2075,7 +2311,7 @@
                                     </td> -->
                                     <td :class="{
                                                 'text-danger': has_comment('Team Plan','with_gad_training',team_member.with_gad_training,'with_gad_training','team_plans', team_member, team_member.comments)
-                                            }">
+                                            }" :id="team_member.id + '_team_plans_with_gad_training'" >
                                         {{ team_member.with_gad_training === '1' ?  team_member.specify_GAD_training  : 'No' }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Team Plan','with_gad_training',team_member.with_gad_training,'with_gad_training','team_plans', team_member, team_member.comments)">*
@@ -2099,7 +2335,7 @@
                     </div>
                     <br>
                     <!--PARTNERSHIP & SUSTAINABILITY-->
-                    <h3 v-if="paps.partnership !== null">
+                    <h3 id="partnership_sustainability" v-if="paps.partnership !== null">
                         VIII. <Link>Partnership and Sustainability</Link>
                     </h3>
                     <div align="justify" style="white-space: pre-line">
@@ -2108,7 +2344,7 @@
                     <br>
                     <br>
                     <!--MONITORING & EVALUATION-->
-                    <h3 v-if="monitors.length > 0 || paps.monitoring !== null">
+                    <h3 id="monitoring_evaluation" v-if="monitors.length > 0 || paps.monitoring !== null">
                         IX. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
                             ? `/EvaluationMechanismTool/${paps.id}`:null">Monitoring and Evaluation</Link>
                     </h3>
@@ -2132,7 +2368,7 @@
                                     <!-- M&E Evaluation Mechanism Tool -->
                                     <td :class="{
                                                 'text-danger': has_comment('Monitoring and Evaluation','Evaluation Mechanism Tool',monitor.evaluation_mechanism_tool,'evaluation_mechanism_tool','monitoring_and_evaluations', monitor, monitor.comments)
-                                    }">
+                                    }" :id="monitor.id + '_monitoring_and_evaluations_evaluation_mechanism_tool'" >
                                         {{ monitor.evaluation_mechanism_tool }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Monitoring and Evaluation','Evaluation Mechanism Tool',monitor.evaluation_mechanism_tool,'evaluation_mechanism_tool','monitoring_and_evaluations', monitor, monitor.comments)">*
@@ -2144,7 +2380,9 @@
                                     <!-- M&E OPR and their roles -->
                                     <td :class="{
                                                 'text-danger': has_comment('Monitoring and Evaluation','OPCR & their roles',monitor.opr,'opr','monitoring_and_evaluations', monitor, monitor.comments)
-                                    }">{{ monitor.opr }}
+                                    }"
+                                    :id="monitor.id + '_monitoring_and_evaluations_opr'"
+                                    >{{ monitor.opr }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Monitoring and Evaluation','OPCR & their roles',monitor.opr,'opr','monitoring_and_evaluations', monitor, monitor.comments)">*
                                         </button>
@@ -2155,7 +2393,9 @@
                                     <!-- M&E Target Beneficiaries -->
                                     <td :class="{
                                                 'text-danger': has_comment('Monitoring and Evaluation','Target Beneficiaries',monitor.target_beneficiaries,'target_beneficiaries','monitoring_and_evaluations', monitor, monitor.comments)
-                                    }">
+                                    }"
+                                    :id="monitor.id + '_monitoring_and_evaluations_target_beneficiaries'"
+                                    >
                                         {{ monitor.target_beneficiaries }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Monitoring and Evaluation','Target Beneficiaries',monitor.target_beneficiaries,'target_beneficiaries','monitoring_and_evaluations', monitor, monitor.comments)">*
@@ -2167,7 +2407,9 @@
                                     <!-- M&E GAD Expert/Consultant -->
                                     <td :class="{
                                                 'text-danger': has_comment('Monitoring and Evaluation','Target Beneficiaries',monitor.gad,'gad','monitoring_and_evaluations', monitor, monitor.comments)
-                                    }">{{ monitor.gad }}
+                                    }"
+                                    :id="monitor.id + '_monitoring_and_evaluations_gad'"
+                                    >{{ monitor.gad }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Monitoring and Evaluation','Target Beneficiaries',monitor.gad,'gad','monitoring_and_evaluations', monitor, monitor.comments)">*
                                         </button>
@@ -2190,7 +2432,7 @@
                         <br><br>
                     </div>
                     <!--RISK MANAGEMENT-->
-                    <h3 v-if="risks.length > 0 || paps.risk_management !== null">
+                    <h3 id="risk_management" v-if="risks.length > 0 || paps.risk_management !== null">
                         X. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
                             ? `/RiskManagement/${paps.id}`:null">Risk Management</Link>
                     </h3>
@@ -2212,7 +2454,9 @@
                                     <!-- Risk Management -Possible Risks -->
                                     <td :class="{
                                         'text-danger': has_comment('Risk Management','Possible Risks',risk.possible_risk,'possible_risk','risk_manangements', risk, risk.comments)
-                                    }"><span v-html="risk.possible_risk"></span>
+                                    }"
+                                    :id="risk.id + '_risk_manangements_possible_risk'"
+                                    ><span v-html="risk.possible_risk"></span>
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Risk Management','Possible Risks',risk.possible_risk,'possible_risk','risk_manangements', risk, risk.comments)">*
                                         </button>
@@ -2223,7 +2467,9 @@
                                     <!-- Risk Management -Person Affected -->
                                     <td :class="{
                                         'text-danger': has_comment('Risk Management','Person Affected',risk.person_affected,'person_affected','risk_manangements', risk, risk.comments)
-                                    }"><span v-html="risk.person_affected"></span>
+                                    }"
+                                    :id="risk.id + '_risk_manangements_person_affected'"
+                                    ><span v-html="risk.person_affected"></span>
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Risk Management','Person Affected',risk.person_affected,'person_affected','risk_manangements', risk, risk.comments)">*
                                         </button>
@@ -2234,7 +2480,9 @@
                                     <!-- Risk Management -Management -->
                                     <td :class="{
                                         'text-danger': has_comment('Risk Management','Management',risk.management,'management','risk_manangements', risk, risk.comments)
-                                    }"><div v-html="risk.management"></div>
+                                    }"
+                                    :id="risk.id + '_risk_manangements_management'"
+                                    ><div v-html="risk.management"></div>
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Risk Management','Management',risk.management,'management','risk_manangements', risk, risk.comments)">*
                                         </button>
@@ -2255,15 +2503,19 @@
                         </span>
                         <br><br>
                     </div>
-                    <!--SIGNATORIES-->
-                    <div class="signatory-grid">
-                        <div v-for="(signatory, index) in signatories" :key="index" class="signatory-card">
-                        <strong>{{ signatory.acted }} by: </strong><br><br>
-                        <span class="text-decoration-underline"><b>{{ signatory.name
-                                                                }}</b></span>
-                                                                <br>{{ signatory.position }}<br><br><br><br>
+                    <!--SIGNATORIES class="signatory-card"-->
+                    <div id="signatories" class="signatory-grid">
+                        <div v-for="(signatory, index) in signatories" :key="index"
+                            :class="['signatory-card', (signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed') ? 'signatory-card-full' : 'signatory-card']">
+
+                            <div v-if="signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed'"></div>
+                            <strong>{{ signatory.acted }} by: </strong><br><br>
+                            <span class="text-decoration-underline"><b>{{ signatory.name
+                                                                    }}</b></span>
+                                                                    <br>{{ signatory.position }}<br><br><br><br>
                         </div>
                     </div>
+
                     <!-- <div v-if="paps.type === 'p'">
                         <table class="table table-borderless no-border-table">
                             <tbody>
@@ -2319,9 +2571,163 @@
                 </div>
             </div>
         </div>
+        <div class="col-3">
+            <div class="sticky-comments" v-if="!showComments">
+                    <button class="close-btn text-danger" @click="toggleShowCommentPanel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+                        </svg>
+                    </button>
+            </div>
+            <div class="bgc-white p-20 bd sticky-comments" v-if="showComments">
+                    <div class="d-flex justify-content-end">
+                        <button class="close-btn text-danger" @click="toggleShowCommentPanel">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="tab">
+                        <button style="color: red;" @click="openTab('Comments')">Comments</button>
+                        <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
+                    </div>
+
+                    <div v-if="open_tab==='Comments'">
+                        <div class="comments-header">
+                            <h4>COMMENTS ...</h4>
+
+                        </div>
+
+                        <div class="scrollable-text">
+                            <ul class="list-unstyled">
+                                <li v-for="(comment, index) in all_comments" :key="index" class="mb-2">
+
+                                    <span
+                                        class="clickable-comment"
+                                        @click="scrollToSection(
+                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                ? comment.column_name
+                                                    : (
+                                                    ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
+                                                        ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                        : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                )
+
+                                        )"
+                                        :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
+                                    >
+                                        {{ comment.comment }}
+                                        {{
+                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                ? comment.column_name
+                                                    : (
+                                                    ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
+                                                        ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                        : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                )
+                                        }}
+                                    </span>
+
+                                    <hr>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div v-if="open_tab==='Navigation'">
+                        <div class="comments-header">
+                            <h4>NAVIGATION ...</h4>
+
+                        </div>
+                        <div class="scrollable-text">
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('revision_plans')">
+                                        I.      Title
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('rationale')">
+                                        II.     Rationale
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('objective')">
+                                        III.    Objectives
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('beneficiaries')">
+                                        IV.     Target Beneficiaries
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('implementation_workplan')">
+                                        V.      Implementation Schedule/Workplan
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('budgetary_requirements')">
+                                        VI.     Estimated Cost/Budgetary Requirements
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('implementing_team')">
+                                        VII.    Implementing Team
+                                    </span>
+                                </li>
+                            </ul>
+                            <!-- partnership_sustainability -->
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('partnership_sustainability')">
+                                        VIII.   Partnership and Sustainability
+                                    </span>
+                                </li>
+                            </ul>
+
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('monitoring_evaluation')">
+                                        XI.     Monitoring and Evaluation
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('risk_management')">
+                                        X.      Risk Management
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="mb-2" style="color: blue">
+                                    <span class="clickable-comment"  @click="scrollToSection('signatories')">
+                                        XI.     Signatories
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
         <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
             <div class="d-flex justify-content-center">
-
+                <!-- {{ comment_reference_object }} -->
             </div>
             <div>
                 <span v-if="auth.user.department_code==='04'">
@@ -2426,12 +2832,13 @@
         <div class="d-flex justify-content-center">
 
         </div>
-        {{paps}}
+        <!-- {{paps}} -->
         <!-- {{ department_code_project }}
         {{ department_code_user }} -->
         <!-- {{ auth.user }} -->
         <!-- {{ auth.user }}
         {{ paps.is_strategy_based }} -->
+    </div> <!--Sa class="row gap-10" ni-->
     </div>
 </template>
 <script>
@@ -2446,7 +2853,7 @@ export default {
         paps: Object,
         office: String,
         implementation: Object,
-
+        all_comments: Object,
         team_members: Object,
         monitors: Object,
         risks: Object,
@@ -2456,7 +2863,7 @@ export default {
         signatories: Object,
         data: Object,
         imp_amount: Number,
-
+        budget_requirements: Object,
         department_code_project: String,
         department_code_user: String,
         // mooe_gad: Object,
@@ -2478,9 +2885,66 @@ export default {
         personnelServices: Object,
         financialExpenses: Object,
 
-        src: Object
+        src: Object,
+
     },
-    computed: {},
+    computed: {
+        groupedBudget() {
+            const result = {
+                maintenanceOperating: { GAD: [], "NON-GAD": [] },
+                personnelServices: { GAD: [], "NON-GAD": [] },
+                financialExpenses: { GAD: [], "NON-GAD": [] },
+                capitalOutlay: { GAD: [], "NON-GAD": [] },
+            };
+
+            const map = {
+                'Maintenance, Operating, and Other Expenses': 'maintenanceOperating',
+                'Personnel Services': 'personnelServices',
+                'Financial Expenses': 'financialExpenses',
+                'Capital Outlay': 'capitalOutlay',
+            };
+
+            this.budget_requirements.forEach(item => {
+            const catKey = map[item.category];
+            if (!catKey) return;
+                const gadKey = item.category_gad.toUpperCase() === 'GAD' ? 'GAD' : 'NON-GAD';
+                result[catKey][gadKey].push(item);
+            });
+
+            return result;
+        },
+        budgetSum() {
+            return (category, gadType) => {
+                const group = this.groupedBudget[category]?.[gadType];
+                if (!group) return 0;
+
+                return group.reduce((total, item) => {
+                    const amount = parseFloat(item.amount || 0);
+                    return total + (isNaN(amount) ? 0 : amount);
+                }, 0);
+            };
+        },
+        overallBudget() {
+            let total = 0;
+
+            for (const category in this.groupedBudget) {
+                const gadGroups = this.groupedBudget[category];
+
+                for (const gadType in gadGroups) {
+                    const rows = gadGroups[gadType];
+
+                    rows.forEach(item => {
+                        const amount = parseFloat(item.amount || 0);
+                        if (!isNaN(amount)) {
+                            total += amount;
+                        }
+                    });
+                }
+            }
+
+            return total;
+        },
+    },
 
     data() {
         return {
@@ -2505,7 +2969,9 @@ export default {
             has: 0,
             tot_gad: 0,
             tot_non:0,
-            grand_total: 0
+            grand_total: 0,
+            showComments: false,
+            open_tab: 'Navigation',
         }
     },
     mounted() {
@@ -2528,6 +2994,9 @@ export default {
     },
     watch: {},
     methods: {
+        openTab(tab_name){
+            this.open_tab=tab_name
+        },
         isOne() {
             // var mooe=this.b_mooe.length;
             // var co=this.b_capital.length;
@@ -2829,6 +3298,65 @@ export default {
             }
 
         },
+        toggleShowCommentPanel() {
+            this.showComments = !this.showComments;
+        },
+        /*scrollToSection(target) {
+            // const el = document.getElementById(target);
+            // alert(target);
+            // if (el) {
+            //     el.scrollIntoView({
+            //         behavior: "smooth",
+            //         block: "start"
+            //     });
+            // }
+            const el = document.getElementById(target);
+            if (!el) return;
+
+            const navbarHeight = 90; // adjust to your real navbar height
+
+            const topPos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+
+            window.scrollTo({
+                top: topPos,
+                behavior: "smooth"
+            });
+        }*/
+       scrollToSection(target) {
+            const el = document.getElementById(target);
+            if (!el) return;
+            // alert(target);
+            const navbarHeight = 90;
+            const targetPos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+
+            window.scrollTo({
+                top: targetPos,
+                behavior: "smooth"
+            });
+
+            // Highlight effect
+            el.classList.add("highlight-target");
+            setTimeout(() => el.classList.remove("highlight-target"), 2000);
+        },
+
+        //BUDGETARY
+        formatCategory(key) {
+            const map = {
+                maintenanceOperating: 'Maintenance, Operating, and Other Expenses',
+                personnelServices: 'Personnel Services',
+                financialExpenses: 'Financial Expenses',
+                capitalOutlay: 'Capital Outlay'
+            };
+            return map[key] || key;
+        },
+        hasRows(rows) {
+            return rows && rows.length > 0;
+        },
+
+        hasAnyRows(gadGroupsForCategory) {
+            return Object.values(gadGroupsForCategory).some(r => r.length > 0);
+        }
+
     }
 }
 </script>
@@ -2879,5 +3407,75 @@ table {
   border: 0px solid #ccc;
   padding: 1rem;
   border-radius: 8px;
+}
+
+
+.signatory-card-full {
+  width: 100%; /* each card full width */
+  margin-bottom: 1rem;
+}
+.sticky-comments {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    width: 450px;
+    z-index: 10;
+}
+
+.scrollable-text {
+    height: 300px;           /*define the height you want*/
+    overflow-y: auto;        /*vertical scrollbar if content exceeds height*/
+    /*padding: 0px;           optional padding*/
+    /*border: 1px solid #ccc;  optional border*/
+    background-color: #fff;  /*optional background*/
+    /*line-height: 1.6;        improve readability*/
+}
+
+.sticky-comments .comments-header {
+    display: flex;
+    justify-content: space-between; /* Push h4 left and button right */
+    align-items: center;            /* Vertical alignment */
+    margin-bottom: 10px;            /* Space below the header */
+}
+
+.sticky-comments .close-btn {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.highlight-target {
+    animation: highlightFlash 2s ease-out;
+}
+
+@keyframes highlightFlash {
+    0% { background-color: #c1fb3a; }
+    100% { background-color: transparent; }
+}
+
+.comment-approved {
+    color: darkgreen;
+    padding: 3px 6px;
+    border-radius: 4px;
+    transition: color .2s;
+}
+
+.comment-approved:hover {
+    color: #00AEEF; /* sky blue */
+}
+
+.comment-rejected {
+    color: red;
+    padding: 3px 6px;
+    border-radius: 4px;
+    transition: color .2s;
+}
+
+.comment-rejected:hover {
+    color: #CC7722; /* golden ochre */
 }
 </style>

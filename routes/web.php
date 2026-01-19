@@ -20,6 +20,7 @@ use App\Http\Controllers\AccomplishmentController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityProjectController;
 use App\Http\Controllers\BudgetRequirementController;
+use App\Http\Controllers\CashDisbursementForecastController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\IntermediateOutcomeController;
@@ -72,6 +73,7 @@ use App\Http\Controllers\aip_controller;
 use App\Http\Controllers\DailyAccomplishmentController;
 use App\Http\Controllers\AddAccomplishmentController;
 use App\Http\Controllers\AnnualInvestmentPlanController;
+use App\Http\Controllers\AnnualInvestmentPlanInstitutionalController;
 use App\Http\Controllers\AppropriationAmountController;
 use App\Http\Controllers\AppropriationBudgetController;
 use App\Http\Controllers\AppropriationController;
@@ -92,10 +94,12 @@ use App\Http\Controllers\IPCRController;
 use App\Http\Controllers\MeansOfVerificationController;
 use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
+use App\Http\Controllers\ProjectDesignController;
 use App\Http\Controllers\ProjectProfileStreamlinedController;
 use App\Http\Controllers\ProjectProfileTrackingController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
 use App\Http\Controllers\RevisionPlanCommentController;
+use App\Http\Controllers\RevisionPlanDocumentsController;
 use App\Http\Controllers\SentenceParserController;
 use App\Http\Controllers\SharedProgramAndProjectController;
 use App\Http\Controllers\StrategyProjectController;
@@ -112,6 +116,7 @@ use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OpcrAccomplishment;
 use App\Models\OpcrTarget;
 use App\Models\OpcrTargetBudget;
+use App\Models\ProgramAndProject;
 use App\Models\ProjectProfileTracking;
 use App\Models\UserOffice;
 use Illuminate\Support\Facades\Auth;
@@ -449,32 +454,63 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [ProjectProfileStreamlinedController::class, 'streamlined_store']);
         Route::get('/edit/{id}', [ProjectProfileStreamlinedController::class, 'streamlined_edit']);
         Route::patch('/update', [ProjectProfileStreamlinedController::class, 'streamlined_update']);
-
     });
     Route::prefix('/implementation-workplan')->group(function () {
         Route::post('/strategies', [StrategyController::class, 'save_strategies']);
         Route::post('/strategies/activities', [ActivityController::class, 'save_activities']);
+        Route::post('/implementing/team/plans', [TeamPlanController::class, 'save_team']);
+        // /implementation-workplan/implementing/team/plans/update
+        Route::patch('/implementing/team/plans/update', [TeamPlanController::class, 'update_team']);
     });
-    Route::prefix('/revision/streamlined/subtables')->group(function(){
+    // Project Design
+    Route::prefix('/project/design')->group(function () {
+        Route::post('/generate/{id}', [ProjectDesignController::class, 'generateProjectDesign']);
+    });
+    // Cash Disbursements Forecast
+    Route::prefix('/cdf')->group(function(){
+        Route::get('/{revision_plan_id}', [CashDisbursementForecastController::class, 'set_cdf']);
+        Route::patch('/{revision_plan_id}', [CashDisbursementForecastController::class, 'updateCdf']);
+        Route::patch('/signatories/{revision_plan_id}', [CashDisbursementForecastController::class, 'updateSignatories']);
+    });
+    Route::get('/get_employees_all', [TeamPlanController::class, 'getEmployees']);
+    Route::prefix('/revision/streamlined/subtables')->group(function () {
         Route::post('/save/monitoring/and/evaluation', [MonitoringAndEvaluationController::class, 'save_multiple']);
         Route::post('/save/risk/management', [RiskManangementController::class, 'save_multiple']);
+        Route::post('/save/signatories', [SignatoryController::class, 'save_multiple']);
     });
+    Route::prefix('/revision/streamlined/expected')->group(function () {
+        Route::post('/revised/outputs', [ExpectedRevisedOutputController::class, 'save_multiple']);
+        Route::post('/outcomes', [ExpectedRevisedOutcomeController::class, 'save_multiple']);
+    });
+    Route::prefix('/revison_plan_documents')->group(function () {
+        Route::get('/{id}', [RevisionPlanDocumentsController::class, 'get_docs']);
+        // Route::delete('/{id}', [RevisionPlanDocumentsController::class,'get_docs']);
+        Route::delete('/delete-multiple/many', [RevisionPlanDocumentsController::class, 'destroyMultiple']);
+    });
+
+
+    // ,[RevisionPlanDocumentsController::class,'get_docs']);
     Route::prefix('/status/revision')->group(function () {
         Route::post('/update/{id}/{type}/{new_status}', [ProjectProfileTrackingController::class, 'status_update']);
+        Route::post('/update/{id}/{type}/{new_status}/upload/justification', [RevisionPlanDocumentsController::class, 'upload_justification']);
         Route::get('/review/approve', [ProjectProfileTrackingController::class, 'review_approve_index']);
     });
     Route::prefix('/revisio/n')->group(function () {
         Route::patch('/', [RevisionPlanController::class, 'update']);
     });
+    // Supplemental Investment Plan
+    Route::prefix('/get/PAPS')->group(function () {
+        Route::get('/', [PAPController::class, 'getPAPS']);
+    });
     // Revision Plan Page
     Route::prefix('/revision_plans')->group(function () {
         Route::get('/', [RevisionPlanController::class, 'direct']);
         Route::get('/budget/{rev_id}', [RevisionPlanController::class, 'get_budget_data']);
-        // Route::get('/create/{id}', [RevisionPlanController::class, 'create']);
         Route::post('/store', [BudgetPrepController::class, 'store']);
         Route::get('/budget/edit/{id}', [BudgetPrepController::class, 'fetch_data']);
         Route::patch('/', [BudgetPrepController::class, 'update']);
         Route::delete('/{id}', [BudgetPrepController::class, 'destroy']);
+        // Route::get('/create/{id}', [RevisionPlanController::class, 'create']);
         // Route::get('/view/project/paps/{id}', [RevisionPlanController::class, 'view']);
         // Route::get('/general/administration/services/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas']);
         // Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
@@ -488,6 +524,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [RevisionPlanCommentController::class, 'editComment']);
         Route::patch('/{id}', [RevisionPlanCommentController::class, 'updateComment']);
         Route::delete('/{id}', [RevisionPlanCommentController::class, 'destroyComment']);
+    });
+    // AIP Submission
+    Route::prefix('/institutional_aip')->group(function () {
+        Route::get('/', [AnnualInvestmentPlanInstitutionalController::class, 'index']);
+        Route::post('/status/{type}', [AnnualInvestmentPlanInstitutionalController::class, 'updateInstitutionalAIPStatus']);
     });
     //Strategies and Activities
     Route::prefix('/strategies-and-activities')->group(function () {

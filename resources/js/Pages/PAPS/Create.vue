@@ -116,6 +116,30 @@
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.subsector">{{ form.errors.subsector }}</div>
 
+                <!-- SOURCE OF FUNDS -->
+                <label for="">Source of Funds</label>
+                <!-- {{ form.source_of_funds }} -->
+                <select class="form-control form-select" v-model="form.source_of_funds">
+                    <!-- <option value=""></option> -->
+                    <option value="gen_fund">General Fund</option>
+                    <option value="ldrrmf">Local Disaster Risk Reduction Management Fund (LDRRMF)</option>
+                    <option value="dev">20% Development Fund</option>
+                    <option value="other">Other Sources</option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.source_of_funds">{{ form.errors.source_of_funds }}</div>
+
+                <!--SOURCE OF FUNDS OTHERS SPECIFY -->
+                <div v-if="form.source_of_funds==='other'">
+                    <label for="">Please Specify Other Source of Funds</label>
+                    <input type="text" v-model="form.source_others_specify" class="form-control" autocomplete="chrome-off">
+                    <div class="fs-6 c-red-500" v-if="form.errors.source_others_specify">{{ form.errors.source_others_specify }}</div>
+                </div>
+                <!-- FUNDING AGENCY -->
+                <!-- <label for="">Funding Agency</label>
+                <input type="text" v-model="form.funding_agency" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.funding_agency">{{ form.errors.funding_agency }}</div> -->
+
+                <!-- POPSP SECTORS-->
                 <div v-if="form.sector==='General Public Services Sector'">
                     <input type="checkbox" v-model="form.popsp" :true-value="1" :false-value="0" />
                     <label for="popsp">POPSP</label>
@@ -246,6 +270,9 @@ export default {
                 research_agenda: "",
                 sector: "",
                 subsector: "",
+                source_of_funds: "",
+                source_others_specify: "",
+                funding_agency: "",
                 popsp: 0,
                 focus_area: "",
                 is_mother_program: 0,
@@ -415,6 +442,9 @@ export default {
             this.form.research_agenda = this.editData.research_agenda
             this.form.sector = this.editData.sector
             this.form.subsector = this.editData.subsector
+            this.form.source_of_funds = this.editData.source_of_funds
+            this.form.source_others_specify = this.editData.source_others_specify
+            this.form.funding_agency = this.editData.funding_agency
             this.form.popsp = this.editData.popsp
             this.form.focus_area = this.editData.focus_area
             this.form.is_mother_program = this.editData.is_mother_program

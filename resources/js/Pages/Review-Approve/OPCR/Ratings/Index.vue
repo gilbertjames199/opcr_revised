@@ -120,12 +120,12 @@
                     <!-- <iframe :src="my_link" style="width:100%; height:500px" /> -->
                     <!-- {{ opcr_data }} -->
 
-                    <table class="table table-sm table-borderless table-striped table-hover">
+                    <table class="table table-sm table-bordered border-dark table-striped table-hover">
                         <thead class="sticky-header">
                             <tr class="text-white" style="background-color: #026673">
                                 <th rowspan="2" ><h5>MFO</h5></th>
                                 <th rowspan="2" ><h5>PAPS</h5></th>
-                                <th colspan="8" rowspan="1" style="text-align: center" ><h5>Rating</h5></th>
+                                <th colspan="7" rowspan="1" style="text-align: center" ><h5>Rating</h5></th>
                                 <th rowspan="2" ><h5>Remarks</h5></th>
                                 <th rowspan="2" ><h5>MOVs</h5></th>
                             </tr>
@@ -137,7 +137,7 @@
                                 <th><h5>E2</h5></th>
                                 <th><h5>E3</h5></th>
                                 <th><h5>T1</h5></th>
-                                <th></th>
+                                <!-- <th></th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -147,7 +147,12 @@
                                         '--bs-table-accent-bg': opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
                                         fontWeight: opcr_data[index].mov_is_visible ? 'bold' : 'normal',
                                     }">
-                                    <td>{{ dat.mfo_desc }}</td>
+                                    <!-- MFO -->
+                                    <td>
+                                        <!-- {{ dat }} -->
+                                        {{ dat.mfo_desc }}
+                                    </td>
+                                    <!-- PAPS -->
                                     <td>
                                         {{ dat.paps_desc }}
 
@@ -157,8 +162,10 @@
                                     <td>{{ dat.quantity }}</td>
                                     @change="saveRating()"
                                     -->
-                                    <td>
+                                    <!-- Q1 -->
+                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                         <!-- width: 2.5em;  -->
+                                        <div>{{ dat.q1_standard }}</div>
                                         <select v-model="opcr_data[index].q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                             @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')">
                                             <option>1</option>
@@ -171,9 +178,11 @@
                                             Rating for this field is required to proceed with submission.
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- Q2 -->
+                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                         <!-- {{  dat }} -->
                                         <!-- width: 2.5em;  -->
+                                        <div>{{ dat.q2_standard }}</div>
                                         <select v-model="opcr_data[index].q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                             @change="saveRating(opcr_data[index].q2, opcr_data[index].opcr_rating_id, 'q2')"
                                         >
@@ -187,8 +196,10 @@
                                             Rating for this field is required to proceed with submission.
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- Q3 -->
+                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                         <!-- width: 2.5em;  -->
+                                        <div>{{ dat.q3_standard }}</div>
                                         <select v-model="opcr_data[index].q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                             @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3')"
                                         >
@@ -202,8 +213,10 @@
                                             Rating for this field is required to proceed with submission.
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- E1 -->
+                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                         <!--  width: 2.5em; -->
+                                        <div>Standard Response Time</div>
                                         <select v-model="opcr_data[index].e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                             @change="saveRating(opcr_data[index].e1, opcr_data[index].opcr_rating_id, 'e1')"
                                             :disabled="dat.e1_standard === 'No'"
@@ -219,8 +232,10 @@
                                             Rating for this field is required to proceed with submission.
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- E2 -->
+                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                         <!-- width: 2.5em;  -->
+                                        <div>Quantity Based</div>
                                         <select v-model="opcr_data[index].e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                             @change="saveRating(opcr_data[index].e2, opcr_data[index].opcr_rating_id, 'e2')"
                                             :disabled="dat.e2_standard === 'No'"
@@ -236,8 +251,10 @@
                                             Rating for this field is required to proceed with submission.
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- E3 -->
+                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                         <!-- style="width: 2.5em; text-align: center;"   -->
+                                        <div>Optimum use of resources</div>
                                         <select v-model="opcr_data[index].e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
                                             @change="saveRating(opcr_data[index].e3, opcr_data[index].opcr_rating_id, 'e3')"
                                             :disabled="dat.e3_standard === 'No'"
@@ -253,7 +270,9 @@
                                             Rating for this field is required to proceed with submission.
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- T1 -->
+                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <div>Timeliness (Deadline)</div>
                                         <select v-model="opcr_data[index].t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                             @change="saveRating(opcr_data[index].t1, opcr_data[index].opcr_rating_id, 't1')"
                                             :disabled="dat.t1_standard !== 'Yes'"
@@ -269,13 +288,13 @@
                                             Rating for this field is required to proceed with submission.
                                         </div>
                                     </td>
-                                    <td></td>
+                                    <!-- <td></td> -->
                                     <td>
+                                        <!-- @input="autoResize($event)" ref="remarksTextarea"-->
                                         <textarea class="form-control"
                                             v-model="opcr_data[index].remarks"
-                                            @input="autoResize($event)"
                                             @change="saveRating(opcr_data[index].remarks, opcr_data[index].opcr_rating_id,'remarks')"
-                                            ref="remarksTextarea"
+
                                         />
                                     </td>
                                     <td>
@@ -334,6 +353,7 @@
                                         View
                                     </th>
                                     <th colspan="7" class="bg-secondary text-white"></th>
+                                    <!-- <th></th> -->
                                 </tr>
                                 <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" v-for="file in dat.movs">
                                     <td class="no-stripe-bg">
@@ -381,6 +401,7 @@
                                         </button>&nbsp;
                                     </td>
                                     <td colspan="7"></td>
+                                    <!-- <td></td> -->
                                 </tr>
                                 <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)<1">
                                     <td></td>

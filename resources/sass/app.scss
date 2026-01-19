@@ -234,15 +234,15 @@ hr {
 /* Create an active/current tablink class */
 /*color: #fff;
       background-color: #6c757d;*/
-.tab button.active {
-    color: #f6f3f3 !important;
+.tab .button.active {
+    color: #f3efe9 !important;
     font-weight: bold;
-    background-color: #cd3706;
+    background-color: #caa607;
 }
 
-.tab button.active:hover {
-    background-color: rgb(243, 102, 7);
-    color: #f3ec11 !important;
+.tab .button.active:hover {
+    background-color: rgb(177, 224, 6);
+    color: #fcfcfc !important;
 }
 
 /* Style the tab content */
@@ -264,3 +264,46 @@ hr {
         display: none;
     }
 }
+
+// DRAGGABLE PANELS
+/* Generic draggable panel */
+.draggable-panel {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    width: 25%;
+    z-index: 1050;
+    cursor: default;
+}
+
+/* Drag handle */
+.drag-handle {
+    cursor: move;
+    user-select: none;
+}
+
+/* Prevent text selection while dragging */
+body.dragging {
+    user-select: none;
+}
+// .draggable-panel {
+//     position: fixed;
+//     top: 100px;
+//     right: 20px;
+//     cursor: move;
+//     z-index: 9999;
+// }
+
+.noselect {
+    user-select: none;
+}
+
+// For multiselect width based on content
+.dynamic-width {
+  display: inline-block;
+  width: 20ch; /* roughly 20 characters */
+  min-width: 150px; /* optional minimum */
+  max-width: 400px; /* optional maximum */
+}
+
+

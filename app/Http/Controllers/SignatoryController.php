@@ -131,6 +131,35 @@ class SignatoryController extends Controller
 
     }
 
+    public function save_multiple(Request $request){
+        $signatories = $request->input('signatories', []);
+        $revision_plan_id = $request->input('revision_plan_id');
+
+        foreach ($signatories as $data) {
+            Signatory::create([
+                'name'              => $data['name'] ?? null,
+                'position'          => $data['position'] ?? null,
+                'acted'             => $data['acted'] ?? null,
+                'sequence'          => $data['sequence'] ?? null,
+                'revision_plan_id'  => $revision_plan_id,
+            ]);
+        }
+
+        return response()->json(['status' => 'success']);
+    }
+
+    public function getSignatories(Request $request)
+    {
+        $empty = [];
+
+        $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
+
+        if ($data->isEmpty()) {
+            return $empty;
+        }
+
+        return $data;
+    }
 
 
 }

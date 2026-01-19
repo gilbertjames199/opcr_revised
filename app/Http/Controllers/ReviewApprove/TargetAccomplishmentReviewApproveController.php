@@ -247,6 +247,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
         //     ->get();
         $data = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)
                 ->with(['opcr_rating','opcr_rating2', 'paps','paps.MFO'])
+                ->where('is_included', '1')
                 ->get()
                 ->map(function($item)use($opcr_list_id){
                     // dd($item->opcr_rating2, $opcr_list_id);
@@ -366,11 +367,12 @@ class TargetAccomplishmentReviewApproveController extends Controller
     public function index_rating(Request $request){
         // dd("rating");
         // dd(auth()->user());
+
+                // ->where('rating_status', '<', 1)
         $disk = app()->environment('production') ? 'custom_uploads' : 'public';
         if (auth()->user()->department_code == '04') {
             $data = $this->revapp
                 ->where('rating_status', '>', -1)
-                ->where('rating_status', '<', 1)
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
                 ->paginate(10);
@@ -529,6 +531,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
         if($request->type=='Review'){
             $data = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)
                 ->with(['opcr_rating','opcr_rating.movs','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard'])
+                ->where('is_included', '1')
                 ->get()
                 ->map(function($item)use($opcr_list_id){
                     // dd($item->paps);

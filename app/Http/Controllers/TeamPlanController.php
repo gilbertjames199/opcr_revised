@@ -270,4 +270,120 @@ class TeamPlanController extends Controller
             'role.required' => 'Role is required'
         ];
     }
+
+    public function save_team(Request $request)
+    {
+        // Validate the rows array exists
+        // $request->validate([
+        //     'rows' => 'required|array',
+        // ]);
+
+        $rows = $request->input('rows', []);
+
+        // foreach ($rows as $row) {
+
+        // Insert or update row
+        TeamPlan::updateOrCreate(
+            [
+                'id' => $request->input['id'] ?? 0,   // if id = 0 → will insert
+            ],
+            [
+                'revision_plan_id'      => $rows['revision_plan_id'] ?? null,
+                'implementing_team_id'  => $rows['implementing_team_id'] ?? 0,
+                'role'                  => $rows['role'] ?? '',
+                'empl_id'               => $rows['empl_id'] ?? 0,
+                'name'                  => $rows['name'] ?? '',
+                'competency'            => $rows['competency'] ?? '',
+                'position'              => $rows['position'] ?? '',
+                'with_gad_training'     => $rows['with_gad_training'] ?? 'No',
+                'specify_GAD_training'  => $rows['specify_GAD_training'] ?? '',
+                'gender'                => $rows['gender'] ?? '',
+                'status'                => $rows['status'] ?? ''
+            ]
+        );
+        // }
+
+        return response()->json([
+            'message' => 'Team members saved successfully.'
+        ]);
+    }
+    public function getEmployees(Request $request){
+        // dd(UserEmployees::all());
+        return UserEmployees::select('empl_id','employee_name','gender','position_long_title','employment_type_descr')->get();
+    }
+    public function update_team(Request $request)
+    {
+        $rows = $request->input('rows', []);
+
+        // Make sure 'id' is provided
+        $id = $rows['id'] ?? null;
+
+        if ($id) {
+            $teamPlan = TeamPlan::find($id);
+
+            if ($teamPlan) {
+                $teamPlan->update([
+                    'revision_plan_id'      => $rows['revision_plan_id'] ?? null,
+                    'implementing_team_id'  => $rows['implementing_team_id'] ?? 0,
+                    'role'                  => $rows['role'] ?? '',
+                    'empl_id'               => $rows['empl_id'] ?? 0,
+                    'name'                  => $rows['name'] ?? '',
+                    'competency'            => $rows['competency'] ?? '',
+                    'position'              => $rows['position'] ?? '',
+                    'with_gad_training'     => $rows['with_gad_training'] ?? 'No',
+                    'specify_GAD_training'  => $rows['specify_GAD_training'] ?? '',
+                    'gender'                => $rows['gender'] ?? '',
+                    'status'                => $rows['status'] ?? ''
+                ]);
+
+                return response()->json([
+                    'message' => 'Team member updated successfully.'
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Team member not found.'
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'message' => 'ID is required for update.'
+            ], 400);
+        }
+    }
+
+    public function getTeamPlan(Request $request)
+    {
+
+
+        $empty = [];
+
+        $data = TeamPlan::with('userEmployee')
+                ->where('revision_plan_id', $request->revision_plan_id)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'revision_plan_id' => $item->revision_plan_id,
+                        'implementing_team_id' => $item->implementing_team_id,
+                        'role' => $item->role,
+                        'empl_id' => $item->empl_id,
+                        'name' => $item->name ?: optional($item->userEmployee)->employee_name ?: '',
+                        'competency' => $item->competency,
+                        'position' => $item->position ?: optional($item->userEmployee)->position_long_title ?: '',
+                        'with_gad_training' => $item->with_gad_training,
+                        'specify_GAD_training' => $item->specify_GAD_training,
+                        'gender' => $item->gender ?: optional($item->userEmployee)->gender ?: '',
+                        'status' => $item->status ?: optional($item->userEmployee)->employment_type_descr,
+                        'created_at' => $item->created_at,
+                        'updated_at' => $item->updated_at,
+                    ];
+                });
+
+        if ($data->isEmpty()) {
+            return $empty;
+        }
+
+        return $data;
+    }
+
 }

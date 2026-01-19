@@ -198,7 +198,12 @@ class PAPController extends Controller
             ->distinct('FFUNCCOD')
             ->orderBy('FFUNCTION', 'ASC')
             ->get();
-
+        // dd($functions);
+        if(!isset($functions) || $functions->isEmpty()){
+            // dd('dasdasdasdasd');
+            $functions = FFUNCCOD::where('department_code', auth()->user()->department_code)->get();
+        }
+        // dd($functions, auth()->user()->department_code);
         $popsp_agencies =PopspAgency::all();
         // dd($pops_agencies);
         // dd($functions);
@@ -266,6 +271,9 @@ class PAPController extends Controller
             $paps->research_agenda = $request->research_agenda;
             $paps->sector = $request->sector;
             $paps->subsector = $request->subsector;
+            $paps->source_of_funds = $request->source_of_funds;
+            $paps->source_others_specify = $request->source_others_specify;
+            $paps->funding_agency = $request->funding_agency;
             $paps->popsp = $request->popsp;
             $paps->focus_area = $request->focus_area;
             $paps->is_mother_program = $request->is_mother_program ?? '0';
@@ -324,6 +332,9 @@ class PAPController extends Controller
             'research_agenda',
             'sector',
             'subsector',
+            'source_of_funds',
+            'source_others_specify',
+            'funding_agency',
             'popsp',
             'focus_area',
             'is_mother_program',
@@ -377,6 +388,9 @@ class PAPController extends Controller
             'type' => $request->type,
             'chief_executive_agenda' => $request->chief_executive_agenda,
             'socio_economic_agenda' => $request->socio_economic_agenda,
+            'source_of_funds' => $request->source_of_funds,
+            'source_others_specify' => $request->source_others_specify,
+            'funding_agency' => $request->funding_agency,
             'sust_devt_goal' => $request->sust_devt_goal,
             'executive_legislative_agenda' => $request->executive_legislative_agenda,
             'research_agenda' => $request->research_agenda,
@@ -396,7 +410,7 @@ class PAPController extends Controller
     {
         $dept_code = auth()->user()->department_code;
         $data = $this->model::findOrFail($request->id);
-
+        // dd($request);
         // dd($request->chief_executive_agenda);
         // dd($request->aip_code);
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
@@ -414,6 +428,9 @@ class PAPController extends Controller
             'research_agenda' => $request->research_agenda,
             'sector' => $request->sector,
             'subsector' => $request->subsector,
+            'source_of_funds' => $request->source_of_funds,
+            'source_others_specify' => $request->source_others_specify,
+            'funding_agency' => $request->funding_agency,
             'popsp' => $request->popsp,
             'focus_area' => $request->focus_area,
             'is_mother_program' => $request->is_mother_program,
@@ -483,7 +500,7 @@ class PAPController extends Controller
         $idn = auth()->user()->recid;
         $FFUNCCODE = auth()->user()->office;
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCODE)->first();
-        // dd($office);
+        // dd(auth()->user());
         $department_code = $office->department_code;
         $divisions = OfficeDivision::where('department_code', $department_code)
             ->orderBy('division_name1', 'ASC')
@@ -513,6 +530,7 @@ class PAPController extends Controller
             })
             ->whereIn('id', $sharedPAPS)
             ->get();
+
         $data = $this->model->with('MFO')
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('paps_desc', 'LIKE', '%' . $searchItem . '%');
@@ -520,10 +538,10 @@ class PAPController extends Controller
             ->when($request->mfosel, function ($query, $searchItem) {
                 $query->where('idmfo', '=', $searchItem);
             })
-            ->when(auth()->user()->popsp_agency, function($query){
-                // dd(auth()->user()->popsp_agency);
-                $query->where('agency_name', auth()->user()->popsp_agency);
-            })
+            // ->when(auth()->user()->popsp_agency && auth()->user()->department_code=='01', function($query){
+            //     dd(auth()->user()->popsp_agency);
+            //     $query->where('agency_name', auth()->user()->popsp_agency);
+            // })
             ->where(function ($query) {
                 $query->where('idmfo', '>', '45')
                     ->orWhere(function ($query) {
@@ -656,5 +674,15 @@ class PAPController extends Controller
         $data = ProgramAndProject::where('idmfo', $idmfo)
             ->get();
         return ['data' => $data];
+    }
+    public function getPAPS(){
+        $usedPapsIds = RevisionPlan::whereIn('type', ['d', 'sip'])
+            ->where('status', 1)
+            ->pluck('idpaps')
+            ->unique();
+
+        return ProgramAndProject::where('department_code', auth()->user()->department_code)
+            ->whereNotIn('id', $usedPapsIds)
+            ->get();
     }
 }

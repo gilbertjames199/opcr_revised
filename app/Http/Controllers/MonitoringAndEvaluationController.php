@@ -151,4 +151,17 @@ class MonitoringAndEvaluationController extends Controller
 
         return redirect()->back()->with('message', 'monitoring and evaluation details updated successfully!');
     }
+
+    public function getMonitoringAndEvaluation(Request $request)
+    {
+        $empty = [];
+
+        $data = Monitoring_and_evaluation::where('revision_plan_id', $request->revision_plan_id)->get();
+
+        if ($data->isEmpty()) {
+            return $empty;
+        }
+
+        return $data;
+    }
 }

@@ -4,7 +4,12 @@
     </Head>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Profile/Design </h3>
+            <span>v13</span>
+            <h3>{{ pageTitle }} Project
+                <span v-if="editData.type === 'p'">Profile</span>
+                <span v-if="editData.type === 'd'">Design</span>
+                <span v-if="editData.type === 'sip'">Profile (SIP)</span>
+            </h3>
             <Link :href="`/revision/0?source=direct`" v-if="source=='direct'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                     viewBox="0 0 16 16">
@@ -293,7 +298,9 @@
                                 <th colspan="1">Amount (Php)</th>
                                 <td colspan="2" class="text-end"  :id="paps.id+'_revision_plans_amount'" :class="{
                                     'text-danger': has_comment('Title','Amount',imp_amount,'amount','revision_plans', paps, paps.comments)
-                                }">{{ format_number_conv(imp_amount, 2, true) }}
+                                }">
+                                    <!-- {{ format_number_conv(imp_amount, 2, true) }} -->
+                                      ₱ {{ overallBudget.toLocaleString() }}
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','Amount',imp_amount,'amount','revision_plans', paps, paps.comments)">*
                                     </button>
@@ -304,7 +311,10 @@
                                 <th colspan="1">Attributed GAD Budget (Php) </th>
                                 <td colspan="2" :id="paps.id+'_revision_plans_attributed_amount'" class="text-end" :class="{
                                     'text-danger': has_comment('Title','GAD Attributed Amount',imp_amount,'attributed_amount','revision_plans', paps, paps.comments)
-                                }">{{ format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true) }}
+                                }">
+                                <!-- {{ format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true) }} -->
+                                    <span v-if="parseFloat(paps.hgdg_score)>4">{{ format_number_conv((overallBudget * (paps.hgdg_score/20)), 2, true) }}</span>
+                                    <span v-else>0.00</span>
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','GAD Attributed Amount',format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true),'attributed_amount','revision_plans', paps, paps.comments)">*
                                     </button>
@@ -380,9 +390,36 @@
                         </section>
                         <br>
                         <div class="bgc-white p-20 bd" >
-                            <QuillEditor theme="snow" v-model:content="form.rationale" contentType="html"
-                             @update:content="val => updateRevisionPlans('revision_plans', 'rationale', form.id, val)"
-                            toolbar="essential" />
+
+                            <!-- Toolbar -->
+                            <div
+                                v-show="briefRationale"
+                                class="ql-container ql-snow"
+                                style="pointer-events: none;"
+                            >
+                                <div class="ql-toolbar ql-snow">
+                                    <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                    </span>
+                                </div>
+                                <div class="ql-editor" ref="rationaleEl"
+                                v-html="editData.rationale"
+                            ></div>
+                            </div>
+
+                            <QuillEditor theme="snow" v-model:content="form.rationale" contentType="html" v-if="!briefRationale"
+                                @update:content="val => updateRevisionPlans('revision_plans', 'rationale', form.id, val)"
+                                ref="rationaleQuill"
+                            />
                         </div>
                         <br>
                      </span>
@@ -411,7 +448,33 @@
 
                         <br>
                         <div  class="bgc-white p-20 bd">
-                            <QuillEditor theme="snow" v-model:content="form.objective" contentType="html"
+                            <div
+                                v-show="briefObjective"
+                                class="ql-container ql-snow"
+                                style="pointer-events: none;"
+                            >
+                                <div class="ql-toolbar ql-snow">
+                                    <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                    </span>
+                                </div>
+                                <div ref="objectiveEl"
+                                    class="ql-editor"
+                                    v-html="editData.objective"
+                                ></div>
+                            </div>
+
+                            <QuillEditor theme="snow" v-model:content="form.objective" contentType="html" ref="rationaleQuill"
+                            v-if="!briefObjective"
                             @update:content="val => updateRevisionPlans('revision_plans', 'objective', form.id, val)"
                             toolbar="essential" />
                         </div>
@@ -441,7 +504,34 @@
                         </section>
                     <br>
                     <div class="bgc-white p-20 bd">
-                        <QuillEditor theme="snow" v-model:content="form.beneficiaries" contentType="html"
+                        <div
+                            v-show="briefBeneficiaries"
+                            class="ql-container ql-snow"
+                            style="pointer-events: none;"
+                        >
+                            <div class="ql-toolbar ql-snow">
+                                <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                </span>
+                                <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                                </span>
+                                <span class="ql-formats">
+                                <button class="ql-link"></button>
+                                </span>
+                            </div>
+                            <div ref="beneficiariesEl"
+                                class="ql-editor"
+                                v-show="briefBeneficiaries"
+                                v-html="editData.beneficiaries"
+                            ></div>
+                        </div>
+
+                        <QuillEditor theme="snow" v-model:content="form.beneficiaries" contentType="html" ref="objectiveQuill"
+                            v-if="!briefBeneficiaries"
                              @update:content="val => updateRevisionPlans('revision_plans', 'beneficiaries', form.id, val)"
                             toolbar="essential" />
                     </div>
@@ -458,96 +548,44 @@
                             </Link>
                         </h3>
                         <p>
-                            <button class="btn btn-primary btn-sm text-white"
+                            <button class="btn btn-success btn-sm text-white"
                                 @click="showStrategyModal()">
                                     Add Strategies
                             </button>
                         </p>
-                        <table class="table table-hover table-bordered border-dark">
-                            <thead>
-                                <tr class="bg-secondary text-white" >
-                                    <th style="width: 12%; text-align: center;">Strategies/Activities</th>
-                                    <th style="width: 8%; text-align: center;" >Performance Target Indicators</th>
-                                    <th style="width: 8%; text-align: center;" >Gender Issues to be Addressed</th>
-                                    <th style="width: 8%; text-align: center;" >Timeline</th>
-                                    <th style="width: 8%; text-align: center;" >Expected Output</th>
-                                    <th style="width: 8%; text-align: center;" >Personnel Services</th>
-                                    <th style="width: 8%; text-align: center;" >MOOE</th>
-                                    <th style="width: 8%; text-align: center;" >Financial Expenses</th>
-                                    <th style="width: 8%; text-align: center;" >Capital Outlay</th>
-                                    <th style="width: 8%; text-align: center;" >Budget</th>
-                                    <th style="width: 8%; text-align: center;" >Climate Change Topology Code</th>
-                                    <th style="width: 8%; text-align: center;" >Person Responsible</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <template v-for="(dat, index) in implementation" :key="dat.id">
-                                    <!-- STRATEGIES***************************************************************************************************** -->
-                                    <tr  style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==1">
-                                        <td  :class="{
-                                            'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
-                                        }" ><b>{{  }} </b>
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
-                                            </button>
-                                            <textarea
-                                                class="form-control transparent-bg "
-                                                v-model="dat.description"
-                                                type="text"
-                                                @input="setUnsaved(true)"
-                                                @change="updateRevisionPlans('strategies', 'description', dat.id, dat.description)">
-                                                    {{ dat.description }}
-                                            </textarea>
-                                        </td>
-                                        <td :class="{
-                                            'text-danger': has_comment('Implementation Plan','strategies',dat.description,'target_indicator','strategy_projects', dat, dat.comments)
-                                        }">
-                                            <span v-if="paps.is_strategy_based==1">{{ dat.target_indicator }}</span>
-
-                                        </td>
-                                        <td><span v-if="paps.is_strategy_based==1">{{ dat.gad_issue }}</span></td>
-                                        <td>
-                                            <span v-if="paps.is_strategy_based==1">
-                                                <span v-if="dat.date_from">{{ formatMonthYear(dat.date_from) }}</span>
-                                                <span v-if="dat.date_from && dat.date_to">&nbsp;to&nbsp;</span>
-                                                <span v-if="dat.date_to">{{ formatMonthYear(dat.date_to) }}</span>
-                                            </span>
-
-
-                                        </td>
-                                        <td>
-                                            <span v-if="paps.is_strategy_based==1">
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_output">
-                                                    <div>{{ eo.description }}</div>
-                                                    <hr>
-                                                </div>
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_outcome">
-                                                    <div>{{ eo.description }}</div>
-                                                    <hr>
-                                                </div>
-                                            </span>
-
-                                        </td>
-                                        <td><span v-if="paps.is_strategy_based==1">{{ format_number_conv(parseFloat(dat.ps_total),2,true) }}</span></td>
-                                        <td><span v-if="paps.is_strategy_based==1">{{ format_number_conv(parseFloat(dat.ps_total),2,true) }}</span></td>
-                                        <td><span v-if="paps.is_strategy_based==1">{{ format_number_conv(parseFloat(dat.ps_total),2,true) }}</span></td>
-                                        <td><span v-if="paps.is_strategy_based==1"></span></td>
-                                        <td class="text-end"><span v-if="paps.is_strategy_based==1">
-                                            {{ format_number_conv(parseFloat(dat.ps_total) + parseFloat(dat.mooe_total)+ parseFloat(dat.co_total),2,true) }}
-                                        </span>
-                                        </td>
-                                        <td><span v-if="paps.is_strategy_based==1">{{ dat.ccet_code }}</span></td>
-                                        <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
+                        <!-- class="table-responsive" style="max-height: 500px; overflow-y: auto;" -->
+                        <div >
+                            <table class="table table-hover table-bordered border-dark">
+                                <thead >
+                                    <tr class="bg-secondary text-white" >
+                                        <th style="width: 12%; text-align: center;">Strategies/Activities</th>
+                                        <th style="width: 8%; text-align: center;" >Performance Target Indicators</th>
+                                        <th style="width: 8%; text-align: center;" >Gender Issues to be Addressed</th>
+                                        <th style="width: 8%; text-align: center;" >Timeline</th>
+                                        <th style="width: 8%; text-align: center;" >Expected Output</th>
+                                        <th style="width: 8%; text-align: center;" >Personnel Services</th>
+                                        <th style="width: 8%; text-align: center;" >MOOE</th>
+                                        <th style="width: 8%; text-align: center;" >Financial Expenses</th>
+                                        <th style="width: 8%; text-align: center;" >Capital Outlay</th>
+                                        <th style="width: 8%; text-align: center;" >Budget</th>
+                                        <th style="width: 8%; text-align: center;" >Climate Change Topology Code</th>
+                                        <th style="width: 8%; text-align: center;" >Person Responsible</th>
+                                        <th>Actions</th>
                                     </tr>
-                                    <tr :id="dat.id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
-                                        <td :class="{
-                                            'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
-                                        }" colspan="12"><b>
-                                            <div class="d-flex justify-content-between align-items-center w-100">
+                                </thead>
+                                <tbody>
+                                    <template v-for="(dat, index) in implementation" :key="dat.id">
+                                        <!-- STRATEGIES***************************************************************************************************** -->
+                                        <tr  style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==1">
+                                            <td  :class="{
+                                                'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
+                                            }" ><b>{{  }} </b>
+                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
+                                                </button>
+                                                <button v-if="has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
+                                                </button>
                                                 <textarea
                                                     class="form-control transparent-bg "
                                                     v-model="dat.description"
@@ -556,173 +594,134 @@
                                                     @change="updateRevisionPlans('strategies', 'description', dat.id, dat.description)">
                                                         {{ dat.description }}
                                                 </textarea>
-                                            </div>
-                                            </b>
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
-                                            </button>
-                                        </td>
-
-                                        <td>
-                                            <button class="btn btn-primary btn-sm text-white"
-                                            @click="showActivityModal(dat.id)">
-                                                Add Activities
-                                            </button>
-                                            <button class="btn btn-danger btn-sm text-white"
-                                                @click="deleteData(dat.id, 'strategies', dat.description)">
-                                                🗑 Delete Strategy
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <!-- ACTIVITIES **************************************************************************************************** -->
-                                    <template v-if="dat.activity && paps.is_strategy_based==0">
-                                        <tr  v-for="(act, subIndex) in dat.activity" :key="subIndex" style="height: 100%">
-                                            <!-- DESCRIPTION -->
+                                            </td>
                                             <td :class="{
-                                                'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
-                                            }" :id="act.id + '_activity_projects_activities'">
+                                                'text-danger': has_comment('Implementation Plan','strategies',dat.description,'target_indicator','strategy_projects', dat, dat.comments)
+                                            }">
+                                                <span v-if="paps.is_strategy_based==1">{{ dat.target_indicator }}</span>
 
-                                                <textarea
-                                                    class="form-control transparent-bg "
-                                                    v-model="act.description"
-                                                    type="text"
-                                                    @input="setUnsaved(true)"
-                                                    @change="updateRevisionPlans('activities', 'description', act.id, act.description)">
-                                                        {{ act.description }}
-                                                </textarea>
+                                            </td>
+                                            <td><span v-if="paps.is_strategy_based==1">{{ dat.gad_issue }}</span></td>
+                                            <td>
+                                                <span v-if="paps.is_strategy_based==1">
+                                                    <span v-if="dat.date_from">{{ formatMonthYear(dat.date_from) }}</span>
+                                                    <span v-if="dat.date_from && dat.date_to">&nbsp;to&nbsp;</span>
+                                                    <span v-if="dat.date_to">{{ formatMonthYear(dat.date_to) }}</span>
+                                                </span>
+
+
+                                            </td>
+                                            <td>
+                                                <span v-if="paps.is_strategy_based==1">
+                                                    <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_output">
+                                                        <div>{{ eo.description }}</div>
+                                                        <hr>
+                                                    </div>
+                                                    <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_outcome">
+                                                        <div>{{ eo.description }}</div>
+                                                        <hr>
+                                                    </div>
+                                                </span>
+
+                                            </td>
+                                            <td><span v-if="paps.is_strategy_based==1">{{ format_number_conv(parseFloat(dat.ps_total),2,true) }}</span></td>
+                                            <td><span v-if="paps.is_strategy_based==1">{{ format_number_conv(parseFloat(dat.ps_total),2,true) }}</span></td>
+                                            <td><span v-if="paps.is_strategy_based==1">{{ format_number_conv(parseFloat(dat.ps_total),2,true) }}</span></td>
+                                            <td><span v-if="paps.is_strategy_based==1"></span></td>
+                                            <td class="text-end"><span v-if="paps.is_strategy_based==1">
+                                                {{ format_number_conv(parseFloat(dat.ps_total) + parseFloat(dat.mooe_total)+ parseFloat(dat.co_total),2,true) }}
+                                            </span>
+                                            </td>
+                                            <td><span v-if="paps.is_strategy_based==1">{{ dat.ccet_code }}</span></td>
+                                            <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
+                                        </tr>
+                                        <tr :id="dat.id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
+                                            <td :class="{
+                                                'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
+                                            }" colspan="12"><b>
+                                                <div class="d-flex justify-content-between align-items-center w-100">
+                                                    <textarea
+                                                        class="form-control transparent-bg "
+                                                        v-model="dat.description"
+                                                        type="text"
+                                                        @input="setUnsaved(true)"
+                                                        @change="updateRevisionPlans('strategies', 'description', dat.id, dat.description)">
+                                                            {{ dat.description }}
+                                                    </textarea>
+                                                </div>
+                                                </b>
                                                 <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)">*
+                                                    @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
                                                 </button>
-                                                <button v-if="has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)">*
+                                                <button v-if="has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
                                                 </button>
                                             </td>
-                                            <!-- TARGET/INDICATORs, EXPECTED OUTPUTS, GAD ISSUE, IMPLEMENTATION DATES-->
-                                            <td colspan="4" style="width: 32%; padding: 0; border: 1px solid #000; vertical-align: top;">
-                                                <div style="display: flex; flex-direction: column; height: 100%; min-height: 100%;">
-                                                    <!-- IF THE ACTIVITY HAS OUTCOMES OR OUTPUTS -->
-                                                    <table class="m-0"
-                                                    style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed; flex: 1 1 auto;"
-                                                    v-if="getPairedOutputs(act.activityProject[0]) && getPairedOutputs(act.activityProject[0]).length">
-                                                        <template v-for="(pair, i) in getPairedOutputs(act.activityProject[0])" :key="i" >
-                                                            <tr style="height: 100%;">
-                                                                <!-- Target Indicator -->
-                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="dat.id + '_activity_projects_target_indicator'">
-                                                                    <span v-if="paps.is_strategy_based==0 && pair.target_indicator">{{ pair.target_indicator }}
-                                                                        <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
-                                                                        <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
-                                                                        </button>
-                                                                        <button v-if="has_comment('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
-                                                                        </button>
 
-                                                                    </span>
-                                                                    <br><br>
-                                                                </td>
-                                                                <!-- GAD Issue -->
-                                                                <td v-if="i === 0" class="align-top" :id="dat.id + '_activity_projects_gad_issue'" :class="{
-                                                                    'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
-                                                                }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
-                                                                    <span v-if="paps.is_strategy_based==0">
-                                                                        <textarea
-                                                                            class="form-control transparent-bg "
-                                                                            v-model="act.gad_issue"
-                                                                            type="text"
-                                                                            @input="setUnsaved(true)"
-                                                                            @change="updateRevisionPlans('activity_projects', 'gad_issue', act.activity_id, act.gad_issue)">
-                                                                                {{ act.gad_issue }}
-                                                                        </textarea>
-                                                                        <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
-                                                                        </button>
-                                                                        <button v-if="has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
-                                                                        </button>
-                                                                    </span>
-                                                                </td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm text-white"
+                                                @click="showActivityModal(dat.id)">
+                                                    Add Activities
+                                                </button>
+                                                <button class="btn btn-danger btn-sm text-white"
+                                                    @click="deleteData(dat.id, 'strategies', dat.description)">
+                                                    🗑 Delete Strategy
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <!-- ACTIVITIES **************************************************************************************************** -->
+                                        <template v-if="dat.activity && paps.is_strategy_based==0">
+                                            <tr  v-for="(act, subIndex) in dat.activity" :key="subIndex" style="height: 100%">
+                                                <!-- DESCRIPTION -->
+                                                <td :class="{
+                                                    'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
+                                                }" :id="act.activity_id + '_activity_projects_activities'">
+                                                <!-- {{act}}
+                                                    {{ act.id }}_activity_projects_activities -->
+                                                    <textarea
+                                                        class="form-control transparent-bg "
+                                                        v-model="act.description"
+                                                        type="text"
+                                                        @input="setUnsaved(true)"
+                                                        @change="updateRevisionPlans('activities', 'description', act.id, act.description)">
+                                                            {{ act.description }}
+                                                    </textarea>
+                                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                    <button v-if="has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                </td>
+                                                <!-- TARGET/INDICATORs, EXPECTED OUTPUTS, GAD ISSUE, IMPLEMENTATION DATES-->
+                                                <td colspan="4" style="width: 32%; padding: 0; border: 1px solid #000; vertical-align: top;">
+                                                    <div style="display: flex; flex-direction: column; height: 100%; min-height: 100%;">
+                                                        <!-- IF THE ACTIVITY HAS OUTCOMES OR OUTPUTS -->
+                                                        <table class="m-0"
+                                                        style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed; flex: 1 1 auto;"
+                                                        v-if="getPairedOutputs(act.activityProject[0]) && getPairedOutputs(act.activityProject[0]).length">
+                                                            <template v-for="(pair, i) in getPairedOutputs(act.activityProject[0])" :key="i" >
+                                                                <tr style="height: 100%;">
+                                                                    <!-- Target Indicator -->
+                                                                    <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="pair.id + '_activity_projects_target_indicator'">
+                                                                        <span v-if="paps.is_strategy_based==0 && pair.target_indicator">{{ pair.target_indicator }}
+                                                                            <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
 
-                                                                <!-- Timeline -->
-                                                                <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" v-if="i === 0" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
-                                                                    'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
-                                                                    has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
-                                                                }" >
-                                                                    <span v-if="paps.is_strategy_based==0">
 
-                                                                        <span v-if="act.date_from" :id="dat.id + '_activity_projects_date_from'">
-                                                                            <input class="form-control" type="date" v-model="act.date_from"
-                                                                                @change="updateRevisionPlans('activity_projects', 'date_from', act.activity_id, act.date_from)"/>
-                                                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
-                                                                            </button>
-                                                                            <button v-if="has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
-                                                                            </button>
                                                                         </span>
-                                                                        <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                                        <span v-if="act.date_to" :id="dat.id + '_activity_projects_date_to'">
-                                                                            <input class="form-control" type="date" v-model="act.date_to"
-                                                                                @change="updateRevisionPlans('activity_projects', 'date_to', act.activity_id, act.date_to)"/>
-                                                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
-                                                                            </button>
-                                                                            <button v-if="has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
-                                                                            </button>
-                                                                        </span>
-                                                                    </span>
-                                                                </td>
-                                                                <!-- Expected Outputs/Outcomes -->
-                                                                <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;"
-
-                                                                >
-                                                                    <!-- OUTPUTS*********************************************************************** -->
-                                                                    <div :class="{
-                                                                        'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
-                                                                        has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)
-                                                                    }" :id="pair.id + '_expected_revised_outputs'"
-                                                                    ><span v-if="pair.quantity>0" > {{ pair.quantity }} </span> {{ pair.output_description }}
-                                                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
-                                                                            </button>
-                                                                            <button v-if="has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
-                                                                            </button>
-                                                                    </div>
-                                                                    <!-- OUTCOMES*********************************************************************** -->
-                                                                    <div :class="{
-                                                                        'text-danger': has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments) ||
-                                                                        has_comment('Implementation Plan','outcome_description',pair.output_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)
-                                                                    }" v-if="pair.outcome_description" :id="pair.id + '_expected_revised_outcomes'"
-                                                                    >
-                                                                        {{ pair.outcome_description }}
+                                                                        <br><br>
                                                                         <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)">*
+                                                                            @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
                                                                         </button>
-                                                                        <button v-if="has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)">*
+                                                                        <button v-if="has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)" class="superscript-btn"
+                                                                            @click="handleClick('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator',pair.table, pair, pair.comments)">*
                                                                         </button>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        </template>
-                                                    </table>
-                                                    <!-- IF THE ACTIVITY HAS NO OUTCOMES OR OUTPUTS -->
-                                                    <table class="m-0" style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;"
-                                                    v-else>
-                                                        <!-- <template > -->
-                                                            <tr >
-                                                                <td >
-
-                                                                </td>
-                                                                <!-- GAD Issue -->
-                                                                <td class="align-top" :class="{
-                                                                    'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
-                                                                }" :id="dat.id + '_activity_projects_gad_issue'" style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
-                                                                    <span v-if="paps.is_strategy_based==0">
+                                                                    </td>
+                                                                    <!-- GAD Issue -->
+                                                                    <td v-if="i === 0" class="align-top" :id="act.activity_id + '_activity_projects_gad_issue'" :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
+                                                                    }"  style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
+                                                                        <span v-if="paps.is_strategy_based==0">
                                                                             <textarea
                                                                                 class="form-control transparent-bg "
                                                                                 v-model="act.gad_issue"
@@ -731,521 +730,669 @@
                                                                                 @change="updateRevisionPlans('activity_projects', 'gad_issue', act.activity_id, act.gad_issue)">
                                                                                     {{ act.gad_issue }}
                                                                             </textarea>
-                                                                        <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
-                                                                        </button>
-                                                                        <button v-if="has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
-                                                                        </button>
-                                                                    </span>
-                                                                </td>
-
-                                                                <!-- Timeline -->
-                                                                <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
-                                                                    'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
-                                                                    has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
-                                                                }" >
-                                                                    <span v-if="paps.is_strategy_based==0">
-                                                                        <span v-if="act.date_from" :id="dat.id + '_activity_projects_date_from'">
-                                                                            <input class="form-control" type="date" v-model="act.date_from"
-                                                                                @change="updateRevisionPlans('activity_projects', 'date_from', act.activity_id, act.date_from)"/>
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                                @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
                                                                             </button>
-                                                                            <button v-if="has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                            <button v-if="has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
                                                                             </button>
                                                                         </span>
-                                                                        <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                                        <span v-if="act.date_to" :id="dat.id + '_activity_projects_date_to'">
-                                                                            <input class="form-control" type="date" v-model="act.date_to"
-                                                                                @change="updateRevisionPlans('activity_projects', 'date_to', act.activity_id, act.date_to)"/>
+                                                                    </td>
+
+                                                                    <!-- Timeline -->
+                                                                    <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" v-if="i === 0" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
+                                                                        has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
+                                                                    }" >
+                                                                        <span v-if="paps.is_strategy_based==0">
+
+                                                                            <span v-if="act.date_from" >
+                                                                                <input class="form-control" type="date" v-model="act.date_from" :id="act.activity_id + '_activity_projects_date_from'"
+                                                                                    @change="updateRevisionPlans('activity_projects', 'date_from', act.activity_id, act.date_from)"/>
+                                                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                                <button v-if="has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                            </span>
+                                                                            <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
+                                                                            <span v-if="act.date_to" >
+                                                                                <input class="form-control" type="date" v-model="act.date_to"
+                                                                                    @change="updateRevisionPlans('activity_projects', 'date_to', act.activity_id, act.date_to)"
+                                                                                    :id="act.activity_id + '_activity_projects_date_to'"/>
+                                                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                                <button v-if="has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                            </span>
+                                                                        </span>
+                                                                    </td>
+                                                                    <!-- Expected Outputs/Outcomes -->
+                                                                    <td class="align-top" style="width: 25%; border: 1px solid #000; padding: 4px;"
+
+                                                                    >
+                                                                        <!-- OUTPUTS*********************************************************************** -->
+                                                                        <div :class="{
+                                                                            'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
+                                                                            has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)
+                                                                        }"  v-if="pair.output_description"
+                                                                        >       <textarea :id="pair.id + '_expected_revised_outputs'"
+                                                                                    class="form-control transparent-bg "
+                                                                                    v-model="pair.output_description"
+                                                                                    type="text"
+                                                                                    @input="setUnsaved(true)"
+                                                                                    @change="updateRevisionPlans('expected_revised_outputs', 'description', pair.id, pair.output_description)">
+                                                                                </textarea>
+                                                                                <!-- <span v-if="pair.quantity>0" > {{ pair.quantity }} </span> {{ pair.output_description }} gfhfghfghgfhgfh -->
+                                                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
+                                                                                </button>
+                                                                                <button v-if="has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
+                                                                                </button>
+                                                                        </div>
+                                                                        <!-- OUTCOMES*********************************************************************** -->
+                                                                        <div :class="{
+                                                                                'text-danger': has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments) ||
+                                                                                has_comment('Implementation Plan','outcome_description',pair.output_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)
+                                                                            }" v-if="pair.outcome_description" :id="pair.id + '_expected_revised_outcomes'"
+                                                                        >
+                                                                            <textarea
+                                                                                    class="form-control transparent-bg "
+                                                                                    v-model="pair.outcome_description"
+                                                                                    type="text"
+                                                                                    @input="setUnsaved(true)"
+                                                                                    @change="updateRevisionPlans('expected_revised_outcomes', 'description', pair.id, pair.outcome_description)">
+                                                                            </textarea>
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                                @click="handleClick('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)">*
                                                                             </button>
-                                                                            <button v-if="has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                            <button v-if="has_comment('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','outcome_description',pair.outcome_description,'outcome_description','expected_revised_outcomes', pair, pair.comments)">*
+                                                                            </button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </template>
+                                                        </table>
+                                                        <!-- IF THE ACTIVITY HAS NO OUTCOMES OR OUTPUTS -->
+                                                        <table class="m-0" style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;"
+                                                        v-else>
+                                                            <!-- <template > -->
+                                                                <tr >
+                                                                    <td >
+
+                                                                    </td>
+                                                                    <!-- GAD Issue -->
+                                                                    <td class="align-top" :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
+                                                                    }" :id="dat.id + '_activity_projects_gad_issue'" style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
+                                                                        <span v-if="paps.is_strategy_based==0">
+                                                                                <textarea
+                                                                                    class="form-control transparent-bg "
+                                                                                    v-model="act.gad_issue"
+                                                                                    type="text"
+                                                                                    @input="setUnsaved(true)"
+                                                                                    @change="updateRevisionPlans('activity_projects', 'gad_issue', act.activity_id, act.gad_issue)">
+                                                                                        {{ act.gad_issue }}
+                                                                                </textarea>
+                                                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
+                                                                            </button>
+                                                                            <button v-if="has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
                                                                             </button>
                                                                         </span>
-                                                                    </span>
-                                                                </td>
-                                                                <!-- Expected Outcome -->
-                                                                <td >
+                                                                    </td>
 
-                                                                </td>
-                                                            </tr>
-                                                        <!-- </template> -->
-                                                    </table>
-                                                </div>
+                                                                    <!-- Timeline -->
+                                                                    <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
+                                                                        has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
+                                                                    }" >
+                                                                        <span v-if="paps.is_strategy_based==0">
+                                                                            <span v-if="act.date_from" :id="dat.id + '_activity_projects_date_from'">
+                                                                                <input class="form-control" type="date" v-model="act.date_from"
+                                                                                    @change="updateRevisionPlans('activity_projects', 'date_from', act.activity_id, act.date_from)"/>
+                                                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                                <button v-if="has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                            </span>
+                                                                            <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
+                                                                            <span v-if="act.date_to" :id="dat.id + '_activity_projects_date_to'">
+                                                                                <input class="form-control" type="date" v-model="act.date_to"
+                                                                                    @change="updateRevisionPlans('activity_projects', 'date_to', act.activity_id, act.date_to)"/>
+                                                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                                <button v-if="has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                            </span>
+                                                                        </span>
+                                                                    </td>
+                                                                    <!-- Expected Outcome -->
+                                                                    <td >
 
-                                            </td>
-                                            <!-- PERSONNEL SERVICES -->
-                                            <td :class="{
-                                                'text-danger': has_comment('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_ps_total'">
-                                                <span v-if="paps.is_strategy_based==0">
-                                                    <p>Q1:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.ps_q1"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'ps_q1', act.activity_id, act.ps_q1)"
-                                                        />
-                                                    </p>
-                                                    <p>Q2:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.ps_q2"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'ps_q2', act.activity_id, act.ps_q2)"
-                                                        />
-                                                    </p>
-                                                    <p>Q3:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.ps_q3"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'ps_q3', act.activity_id, act.ps_q3)"
-                                                        />
-                                                    </p>
-                                                    <p>Q4:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.ps_q4"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'ps_q4', act.activity_id, act.ps_q4)"
-                                                        />
-                                                    </p>
-                                                    {{ format_number_conv((parseFloat(act.ps_q1)+parseFloat(act.ps_q2)+parseFloat(act.ps_q3)+parseFloat(act.ps_q4)),2,true) }}
-                                                </span>
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)">*
-                                                </button>
-                                            </td>
-                                            <!-- MAINTENANCE, OPERATING, AND OTHER EXPENSES -->
-                                            <td :class="{
-                                                'text-danger': has_comment('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_mooe_total'">
-                                                <span v-if="paps.is_strategy_based==0">
-                                                    <p>Q1:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.mooe_q1"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'mooe_q1', act.activity_id, act.mooe_q1)"
-                                                        />
-                                                    </p>
-                                                    <p>Q2:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.mooe_q2"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'mooe_q2', act.activity_id, act.mooe_q2)"
-                                                        />
-                                                    </p>
-                                                    <p>Q3:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.mooe_q3"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'mooe_q3', act.activity_id, act.mooe_q3)"
-                                                        />
-                                                    </p>
-                                                    <p>Q4:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.mooe_q4"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'mooe_q4', act.activity_id, act.mooe_q4)"
-                                                        />
-                                                    </p>
-                                                    {{ format_number_conv((parseFloat(act.mooe_q1)+parseFloat(act.mooe_q2)+parseFloat(act.mooe_q3)+parseFloat(act.mooe_q4)),2,true) }}
+                                                                    </td>
+                                                                </tr>
+                                                            <!-- </template> -->
+                                                        </table>
+                                                    </div>
 
-                                                </span>
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)">*
-                                                </button>
-                                            </td>
-                                            <!-- FINANCIAL EXPENSES -->
-                                            <td :class="{
-                                                'text-danger': has_comment('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_fe_total'">
-                                                <span v-if="paps.is_strategy_based==0">
-                                                    <p>Q1:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.fe_q1"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'fe_q1', act.activity_id, act.fe_q1)"
-                                                        />
-                                                    </p>
-                                                    <p>Q2:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.fe_q2"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'fe_q2', act.activity_id, act.fe_q2)"
-                                                        />
-                                                    </p>
-                                                    <p>Q3:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.fe_q3"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'fe_q3', act.activity_id, act.fe_q3)"
-                                                        />
-                                                    </p>
-                                                    <p>Q4:<input class="form-control"
-                                                            type="number"
-                                                            v-model="act.fe_q4"
-                                                             @input="setUnsaved(true)"
-                                                            @change="updateRevisionPlans('activity_projects', 'fe_q4', act.activity_id, act.fe_q4)"
-                                                        />
-                                                    </p>
-                                                    {{ format_number_conv((parseFloat(act.fe_q1)+parseFloat(act.fe_q2)+parseFloat(act.fe_q3)+parseFloat(act.fe_q4)),2,true) }}
-                                                </span>
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)">*
-                                                </button>
-                                            </td>
-                                            <!-- CAPITAL OUTLAY -->
-                                            <td :class="{
-                                                'text-danger': has_comment('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_co_total'">
+                                                </td>
+                                                <!-- PERSONNEL SERVICES -->
+                                                <td :class="{
+                                                    'text-danger': has_comment('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)
+                                                }" :id="act.activity_id + '_activity_projects_ps_total'">
                                                     <span v-if="paps.is_strategy_based==0">
                                                         <p>Q1:<input class="form-control"
                                                                 type="number"
-                                                                v-model="act.co_q1"
+                                                                v-model="act.ps_q1"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'co_q1', act.activity_id, act.co_q1)"
+                                                                @change="updateRevisionPlans('activity_projects', 'ps_q1', act.activity_id, act.ps_q1)"
                                                             />
                                                         </p>
                                                         <p>Q2:<input class="form-control"
                                                                 type="number"
-                                                                v-model="act.co_q2"
+                                                                v-model="act.ps_q2"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'co_q2', act.activity_id, act.co_q2)"
+                                                                @change="updateRevisionPlans('activity_projects', 'ps_q2', act.activity_id, act.ps_q2)"
                                                             />
                                                         </p>
                                                         <p>Q3:<input class="form-control"
                                                                 type="number"
-                                                                v-model="act.co_q3"
+                                                                v-model="act.ps_q3"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'co_q3', act.activity_id, act.co_q3)"
+                                                                @change="updateRevisionPlans('activity_projects', 'ps_q3', act.activity_id, act.ps_q3)"
                                                             />
                                                         </p>
                                                         <p>Q4:<input class="form-control"
                                                                 type="number"
-                                                                v-model="act.co_q4"
+                                                                v-model="act.ps_q4"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'co_q4', act.activity_id, act.co_q4)"
+                                                                @change="updateRevisionPlans('activity_projects', 'ps_q4', act.activity_id, act.ps_q4)"
                                                             />
                                                         </p>
-                                                        {{ format_number_conv((parseFloat(act.co_q1)+parseFloat(act.co_q2)+parseFloat(act.co_q3)+parseFloat(act.co_q4)),2,true) }}
+                                                        {{ format_number_conv((parseFloat(act.ps_q1)+parseFloat(act.ps_q2)+parseFloat(act.ps_q3)+parseFloat(act.ps_q4)),2,true) }}
+                                                    </span>
+                                                    <!-- {{ dat.id + '_activity_projects_ps_total' }} -->
+                                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                    <button v-if="has_comment('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity Personnel Services',act.ps_total,'ps_total','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                </td>
+                                                <!-- MAINTENANCE, OPERATING, AND OTHER EXPENSES -->
+                                                <td :class="{
+                                                    'text-danger': has_comment('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)
+                                                }" :id="dat.id + '_activity_projects_mooe_total'">
+                                                    <span v-if="paps.is_strategy_based==0">
+                                                        <p>Q1:<input class="form-control"
+                                                                type="number"
+                                                                v-model="act.mooe_q1"
+                                                                @input="setUnsaved(true)"
+                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q1', act.activity_id, act.mooe_q1)"
+                                                            />
+                                                        </p>
+                                                        <p>Q2:<input class="form-control"
+                                                                type="number"
+                                                                v-model="act.mooe_q2"
+                                                                @input="setUnsaved(true)"
+                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q2', act.activity_id, act.mooe_q2)"
+                                                            />
+                                                        </p>
+                                                        <p>Q3:<input class="form-control"
+                                                                type="number"
+                                                                v-model="act.mooe_q3"
+                                                                @input="setUnsaved(true)"
+                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q3', act.activity_id, act.mooe_q3)"
+                                                            />
+                                                        </p>
+                                                        <p>Q4:<input class="form-control"
+                                                                type="number"
+                                                                v-model="act.mooe_q4"
+                                                                @input="setUnsaved(true)"
+                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q4', act.activity_id, act.mooe_q4)"
+                                                            />
+                                                        </p>
+                                                        {{ format_number_conv((parseFloat(act.mooe_q1)+parseFloat(act.mooe_q2)+parseFloat(act.mooe_q3)+parseFloat(act.mooe_q4)),2,true) }}
 
                                                     </span>
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)">*
-                                                </button>
-                                            </td>
-                                            <!-- TOTAL -->
-                                            <td>
-                                                <!-- <span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.ps_total) + parseFloat(act.mooe_total)+ parseFloat(act.co_total),2,true) }}</span> -->
-                                                <p>Q1:
-                                                    <input class="form-control"
-                                                        type="number"
-                                                        :value="parseFloat(act.ps_q1) + parseFloat(act.mooe_q1) + parseFloat(act.fe_q1) + parseFloat(act.co_q1)"
-                                                        disabled
-                                                    />
-                                                </p>
+                                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                    <button v-if="has_comment('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity MOOE',act.mooe_total,'mooe_total','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                </td>
+                                                <!-- FINANCIAL EXPENSES -->
+                                                <td :class="{
+                                                    'text-danger': has_comment('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)
+                                                }" :id="dat.id + '_activity_projects_fe_total'">
+                                                    <span v-if="paps.is_strategy_based==0">
+                                                        <p>Q1:<input class="form-control"
+                                                                type="number"
+                                                                v-model="act.fe_q1"
+                                                                @input="setUnsaved(true)"
+                                                                @change="updateRevisionPlans('activity_projects', 'fe_q1', act.activity_id, act.fe_q1)"
+                                                            />
+                                                        </p>
+                                                        <p>Q2:<input class="form-control"
+                                                                type="number"
+                                                                v-model="act.fe_q2"
+                                                                @input="setUnsaved(true)"
+                                                                @change="updateRevisionPlans('activity_projects', 'fe_q2', act.activity_id, act.fe_q2)"
+                                                            />
+                                                        </p>
+                                                        <p>Q3:<input class="form-control"
+                                                                type="number"
+                                                                v-model="act.fe_q3"
+                                                                @input="setUnsaved(true)"
+                                                                @change="updateRevisionPlans('activity_projects', 'fe_q3', act.activity_id, act.fe_q3)"
+                                                            />
+                                                        </p>
+                                                        <p>Q4:<input class="form-control"
+                                                                type="number"
+                                                                v-model="act.fe_q4"
+                                                                @input="setUnsaved(true)"
+                                                                @change="updateRevisionPlans('activity_projects', 'fe_q4', act.activity_id, act.fe_q4)"
+                                                            />
+                                                        </p>
+                                                        {{ format_number_conv((parseFloat(act.fe_q1)+parseFloat(act.fe_q2)+parseFloat(act.fe_q3)+parseFloat(act.fe_q4)),2,true) }}
+                                                    </span>
+                                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                    <button v-if="has_comment('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                </td>
+                                                <!-- CAPITAL OUTLAY -->
+                                                <td :class="{
+                                                    'text-danger': has_comment('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)
+                                                }" :id="act.activity_id + '_activity_projects_co_total'">
+                                                        <span v-if="paps.is_strategy_based==0">
+                                                            <p>Q1:<input class="form-control"
+                                                                    type="number"
+                                                                    v-model="act.co_q1"
+                                                                    @input="setUnsaved(true)"
+                                                                    @change="updateRevisionPlans('activity_projects', 'co_q1', act.activity_id, act.co_q1)"
+                                                                />
+                                                            </p>
+                                                            <p>Q2:<input class="form-control"
+                                                                    type="number"
+                                                                    v-model="act.co_q2"
+                                                                    @input="setUnsaved(true)"
+                                                                    @change="updateRevisionPlans('activity_projects', 'co_q2', act.activity_id, act.co_q2)"
+                                                                />
+                                                            </p>
+                                                            <p>Q3:<input class="form-control"
+                                                                    type="number"
+                                                                    v-model="act.co_q3"
+                                                                    @input="setUnsaved(true)"
+                                                                    @change="updateRevisionPlans('activity_projects', 'co_q3', act.activity_id, act.co_q3)"
+                                                                />
+                                                            </p>
+                                                            <p>Q4:<input class="form-control"
+                                                                    type="number"
+                                                                    v-model="act.co_q4"
+                                                                    @input="setUnsaved(true)"
+                                                                    @change="updateRevisionPlans('activity_projects', 'co_q4', act.activity_id, act.co_q4)"
+                                                                />
+                                                            </p>
+                                                            {{ format_number_conv((parseFloat(act.co_q1)+parseFloat(act.co_q2)+parseFloat(act.co_q3)+parseFloat(act.co_q4)),2,true) }}
 
-                                                <p>Q2:
-                                                    <input class="form-control"
-                                                        type="number"
-                                                        :value="parseFloat(act.ps_q2) + parseFloat(act.mooe_q2) + parseFloat(act.fe_q2) + parseFloat(act.co_q2)"
-                                                        disabled
-                                                    />
-                                                </p>
+                                                        </span>
+                                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                    <button v-if="has_comment('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity Capital Outlay',act.co_total,'co_total','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                </td>
+                                                <!-- TOTAL -->
+                                                <td>
+                                                    <!-- <span v-if="paps.is_strategy_based==0">{{ format_number_conv(parseFloat(act.ps_total) + parseFloat(act.mooe_total)+ parseFloat(act.co_total),2,true) }}</span> -->
+                                                    <p>Q1:
+                                                        <input class="form-control"
+                                                            type="number"
+                                                            :value="parseFloat(act.ps_q1) + parseFloat(act.mooe_q1) + parseFloat(act.fe_q1) + parseFloat(act.co_q1)"
+                                                            disabled
+                                                        />
+                                                    </p>
 
-                                                <p>Q3:
-                                                    <input class="form-control"
-                                                        type="number"
-                                                        :value="parseFloat(act.ps_q3) + parseFloat(act.mooe_q3) + parseFloat(act.fe_q3) + parseFloat(act.co_q3)"
-                                                        disabled
-                                                    />
-                                                </p>
+                                                    <p>Q2:
+                                                        <input class="form-control"
+                                                            type="number"
+                                                            :value="parseFloat(act.ps_q2) + parseFloat(act.mooe_q2) + parseFloat(act.fe_q2) + parseFloat(act.co_q2)"
+                                                            disabled
+                                                        />
+                                                    </p>
 
-                                                <p>Q4:
-                                                    <input class="form-control"
-                                                        type="number"
-                                                        :value="parseFloat(act.ps_q4) + parseFloat(act.mooe_q4) + parseFloat(act.fe_q4) + parseFloat(act.co_q4)"
-                                                        disabled
-                                                    />
-                                                </p>
+                                                    <p>Q3:
+                                                        <input class="form-control"
+                                                            type="number"
+                                                            :value="parseFloat(act.ps_q3) + parseFloat(act.mooe_q3) + parseFloat(act.fe_q3) + parseFloat(act.co_q3)"
+                                                            disabled
+                                                        />
+                                                    </p>
 
-                                                <!-- SUM OF ALL 16 VALUES -->
-                                                {{
-                                                    format_number_conv(
-                                                        (
-                                                            parseFloat(act.ps_q1) + parseFloat(act.mooe_q1) + parseFloat(act.fe_q1) + parseFloat(act.co_q1) +
-                                                            parseFloat(act.ps_q2) + parseFloat(act.mooe_q2) + parseFloat(act.fe_q2) + parseFloat(act.co_q2) +
-                                                            parseFloat(act.ps_q3) + parseFloat(act.mooe_q3) + parseFloat(act.fe_q3) + parseFloat(act.co_q3) +
-                                                            parseFloat(act.ps_q4) + parseFloat(act.mooe_q4) + parseFloat(act.fe_q4) + parseFloat(act.co_q4)
-                                                        ),
-                                                        2,
-                                                        true
-                                                    )
-                                                }}
+                                                    <p>Q4:
+                                                        <input class="form-control"
+                                                            type="number"
+                                                            :value="parseFloat(act.ps_q4) + parseFloat(act.mooe_q4) + parseFloat(act.fe_q4) + parseFloat(act.co_q4)"
+                                                            disabled
+                                                        />
+                                                    </p>
 
-                                            </td>
-                                            <!-- CCET Code -->
-                                            <td :class="{
-                                                'text-danger': has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_ccet_code'">
-                                                <span v-if="paps.is_strategy_based==0">
-                                                    <textarea
-                                                        class="form-control transparent-bg "
-                                                        v-model="act.ccet_code"
-                                                        type="text"
-                                                        @input="setUnsaved(true)"
-                                                        @change="updateRevisionPlans('activity_projects', 'ccet_code', act.activity_id, act.ccet_code)">
-                                                            {{ act.ccet_code }}
-                                                    </textarea>
-                                                </span>
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)">*
-                                                </button>
-                                            </td>
-                                            <!-- RESPONSIBLE INDIVIDUAL -->
-                                            <td :class="{
-                                                'text-danger': has_comment('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)
-                                            }" :id="dat.id + '_activity_projects_responsible'">
-                                                <span v-if="paps.is_strategy_based==0">
-                                                    <textarea
-                                                        class="form-control transparent-bg "
-                                                        v-model="act.responsible"
-                                                        type="text"
-                                                        @input="setUnsaved(true)"
-                                                        @change="updateRevisionPlans('activity_projects', 'responsible', act.activity_id, act.responsible)">
-                                                            {{ act.ccet_code }}
-                                                    </textarea>
-                                                </span>
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)">*
-                                                </button>
-                                            </td>
-                                            <!--Actions-->
-                                            <td>
-                                                <button class="btn btn-primary btn-sm text-white"
-                                                @click="showExpectedOutputsModal(act.id)">
-                                                    Expected Outputs
-                                                </button><hr >
-                                                <button class="btn btn-primary btn-sm text-white"
-                                                @click="showExpectedOutcomesModal(act.id)">
-                                                    Expected Outcomes
-                                                </button><hr >
-                                                <button class="btn btn-primary btn-sm text-white"
-                                                @click="showExpectedOutcomesModal(act.id)">
-                                                    Edit Activity
-                                                </button><hr >
-                                                <button class="btn btn-danger btn-sm text-white"
-                                                    @click="deleteData(act.id, 'activities', dat.description)">
-                                                    🗑 Delete Activity
-                                                </button><hr>
-                                            </td>
-                                        </tr>
+                                                    <!-- SUM OF ALL 16 VALUES -->
+                                                    {{
+                                                        format_number_conv(
+                                                            (
+                                                                parseFloat(act.ps_q1) + parseFloat(act.mooe_q1) + parseFloat(act.fe_q1) + parseFloat(act.co_q1) +
+                                                                parseFloat(act.ps_q2) + parseFloat(act.mooe_q2) + parseFloat(act.fe_q2) + parseFloat(act.co_q2) +
+                                                                parseFloat(act.ps_q3) + parseFloat(act.mooe_q3) + parseFloat(act.fe_q3) + parseFloat(act.co_q3) +
+                                                                parseFloat(act.ps_q4) + parseFloat(act.mooe_q4) + parseFloat(act.fe_q4) + parseFloat(act.co_q4)
+                                                            ),
+                                                            2,
+                                                            true
+                                                        )
+                                                    }}
+
+                                                </td>
+                                                <!-- CCET Code -->
+                                                <td :class="{
+                                                    'text-danger': has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)
+                                                }" :id="act.activity_id + '_activity_projects_ccet_code'">
+                                                    <span v-if="paps.is_strategy_based==0">
+                                                        <multiselect
+                                                            class="form-select dynamic-width"
+                                                            :options="ccet_computed"
+                                                            :searchable="true"
+                                                            label="label"
+                                                            track-by="label"
+                                                            :reduce="act => act.ccet_code"
+                                                            v-model="act.ccet_code"
+                                                            @input="newVal => updateRevisionPlans('activity_projects', 'ccet_code', act.activity_id, newVal)"
+                                                        />
+                                                        <!-- <textarea
+                                                            class="form-control transparent-bg "
+                                                            v-model="act.ccet_code"
+                                                            type="text"
+                                                            @input="setUnsaved(true)"
+                                                            @input="updateCCET($event)"
+                                                            @change="updateRevisionPlans('activity_projects', 'ccet_code', act.activity_id, act.ccet_code)">
+                                                                {{ act.ccet_code }}
+                                                        </textarea> -->
+                                                    </span>
+                                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                    <button v-if="has_comment('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity CCET Code',act.ccet_code,'ccet_code','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                </td>
+                                                <!-- RESPONSIBLE INDIVIDUAL -->
+                                                <td :class="{
+                                                    'text-danger': has_comment('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)
+                                                }" :id="act.activity_id + '_activity_projects_responsible'">
+                                                    <span v-if="paps.is_strategy_based==0">
+                                                        <textarea
+                                                            class="form-control transparent-bg "
+                                                            v-model="act.responsible"
+                                                            type="text"
+                                                            @input="setUnsaved(true)"
+                                                            @change="updateRevisionPlans('activity_projects', 'responsible', act.activity_id, act.responsible)">
+                                                                {{ act.ccet_code }}
+                                                        </textarea>
+                                                    </span>
+                                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                    <button v-if="has_comment('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)" class="superscript-btn"
+                                                        @click="handleClick('Implementation Plan','activity Person Responsible',act.responsible,'responsible','activity_projects', act, act.comments)">*
+                                                    </button>
+                                                </td>
+                                                <!--Actions-->
+                                                <td>
+                                                    <!-- activity_id {{ act.activityProject[0].activity_id }}
+                                                    activity_project_id: {{ act.activityProject[0].id }} -->
+                                                    <button class="btn btn-primary btn-sm text-white"
+                                                    @click="showExpectedOutputModal(act.activityProject[0].expected_output,act.activityProject[0].activity_id,
+                                                        act.activityProject[0].id)
+                                                        ">
+                                                            Expected Outputs
+                                                    </button><hr >
+                                                    <button class="btn btn-primary btn-sm text-white"
+                                                    @click="showExpectedOutcomeModal(act.activityProject[0].expected_outcome,act.activityProject[0].activity_id,
+                                                        act.activityProject[0].id)">
+                                                        Expected Outcomes
+                                                    </button><hr >
+                                                    <button class="btn btn-primary btn-sm text-white"
+                                                    @click="showExpectedOutcomesModal(act.id)">
+                                                        Edit Activity
+                                                    </button><hr >
+                                                    <button class="btn btn-danger btn-sm text-white"
+                                                        @click="deleteData(act.id, 'activities', dat.description)">
+                                                        🗑 Delete Activity
+                                                    </button><hr>
+                                                </td>
+                                            </tr>
+                                        </template>
                                     </template>
-                                </template>
-                                <tr>
-                                        <td colspan="5">TOTAL</td>
-                                        <!-- PS TOTAL -->
-                                        <td :class="{
-                                            'text-danger': has_comment('Implementation Plan',
-                                            format_number_conv(v_imp_ps,2,true),
-                                            format_number_conv(v_imp_ps,2,true),
-                                            'imp_ps',
-                                            'revision_plans',
-                                            paps,
-                                            paps.comments)
-                                        }">{{ format_number_conv(v_imp_ps,2,true) }}
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan',
+                                    <!-- TOTALS*********************************************************************************** -->
+                                    <tr>
+                                            <td colspan="5">TOTAL</td>
+                                            <!-- PS TOTAL -->
+                                            <td :class="{
+                                                'text-danger': has_comment('Implementation Plan',
                                                 format_number_conv(v_imp_ps,2,true),
                                                 format_number_conv(v_imp_ps,2,true),
                                                 'imp_ps',
                                                 'revision_plans',
                                                 paps,
-                                                paps.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Implementation Plan',
+                                                paps.comments)
+                                            }"
+                                            :id="paps.id+'_revision_plans_imp_ps'">
+                                                <!-- {{ format_number_conv(v_imp_ps,2,true) }} -->
+                                                <!-- {{ paps.id+'_revision_plans_imp_ps' }} -->
+                                                ₱ {{ totalImplementationPS.toLocaleString() }}
+                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan',
                                                     format_number_conv(v_imp_ps,2,true),
                                                     format_number_conv(v_imp_ps,2,true),
                                                     'imp_ps',
                                                     'revision_plans',
                                                     paps,
-                                                    paps.comments)" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan',
-                                                    format_number_conv(v_imp_ps,2,true),
-                                                    format_number_conv(v_imp_ps,2,true),
-                                                    'imp_ps',
-                                                    'revision_plans',
-                                                    paps,
                                                     paps.comments)">*
-                                            </button>
-                                        </td>
-                                        <!-- MOOE TOTAL -->
-                                        <td :class="{
-                                            'text-danger': has_comment('Implementation Plan',
-                                            format_number_conv(v_imp_mooe,2,true),
-                                            format_number_conv(v_imp_mooe,2,true),
-                                            'imp_mooe',
-                                            'revision_plans',
-                                            paps,
-                                            paps.comments)
-                                        }">{{ format_number_conv(v_imp_mooe,2,true) }}
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan',
-                                                    format_number_conv(v_imp_mooe,2,true),
-                                                    format_number_conv(v_imp_mooe,2,true),
-                                                    'imp_mooe',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Implementation Plan',
-                                                    format_number_conv(v_imp_mooe,2,true),
-                                                    format_number_conv(v_imp_mooe,2,true),
-                                                    'imp_mooe',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan',
-                                                    format_number_conv(v_imp_mooe,2,true),
-                                                    format_number_conv(v_imp_mooe,2,true),
-                                                    'imp_mooe',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)">*
-                                            </button>
-                                        </td>
-                                        <!-- FE TOTAL -->
-                                        <td :class="{
-                                            'text-danger': has_comment('Implementation Plan',
-                                            format_number_conv(v_imp_fe,2,true),
-                                            format_number_conv(v_imp_fe,2,true),
-                                            'imp_fe',
-                                            'revision_plans',
-                                            paps,
-                                            paps.comments)
-                                        }">{{ format_number_conv(v_imp_fe,2,true) }}
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan',
-                                                    format_number_conv(v_imp_fe,2,true),
-                                                    format_number_conv(v_imp_fe,2,true),
-                                                    'imp_fe',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Implementation Plan',
-                                                    format_number_conv(v_imp_fe,2,true),
-                                                    format_number_conv(v_imp_fe,2,true),
-                                                    'imp_fe',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan',
-                                                    format_number_conv(v_imp_fe,2,true),
-                                                    format_number_conv(v_imp_fe,2,true),
-                                                    'imp_fe',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)">*
-                                            </button>
-                                        </td>
-                                        <!-- CO TOTAL -->
-                                        <td :class="{
-                                            'text-danger': has_comment('Implementation Plan',
-                                            format_number_conv(v_imp_co,2,true),
-                                            format_number_conv(v_imp_co,2,true),
-                                            'imp_co',
-                                            'revision_plans',
-                                            paps,
-                                            paps.comments)
-                                        }">{{ format_number_conv(v_imp_co,2,true)}}
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan',
-                                                    format_number_conv(v_imp_co,2,true),
-                                                    format_number_conv(v_imp_co,2,true),
-                                                    'imp_co',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Implementation Plan',
-                                                    format_number_conv(v_imp_co,2,true),
-                                                    format_number_conv(v_imp_co,2,true),
-                                                    'imp_co',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan',
-                                                    format_number_conv(v_imp_co,2,true),
-                                                    format_number_conv(v_imp_co,2,true),
-                                                    'imp_co',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)">*
-                                            </button>
-                                        </td>
-                                        <td class="text-end"
-                                            :class="{
+                                                </button>
+                                                <button v-if="has_comment('Implementation Plan',
+                                                        format_number_conv(v_imp_ps,2,true),
+                                                        format_number_conv(v_imp_ps,2,true),
+                                                        'imp_ps',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan',
+                                                        format_number_conv(v_imp_ps,2,true),
+                                                        format_number_conv(v_imp_ps,2,true),
+                                                        'imp_ps',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)">*
+                                                </button>
+                                            </td>
+                                            <!-- MOOE TOTAL -->
+                                            <td :class="{
                                                 'text-danger': has_comment('Implementation Plan',
-                                                format_number_conv(imp_amount,2,true),
-                                                format_number_conv(imp_amount,2,true),
-                                                'total_imp_amount',
+                                                format_number_conv(v_imp_mooe,2,true),
+                                                format_number_conv(v_imp_mooe,2,true),
+                                                'imp_mooe',
                                                 'revision_plans',
                                                 paps,
                                                 paps.comments)
                                             }"
-                                        >{{ format_number_conv(imp_amount,2,true) }}
-                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan',
+                                            :id="paps.id+'_revision_plans_imp_mooe'"
+                                            >
+                                            <!-- {{ format_number_conv(v_imp_mooe,2,true) }} -->
+                                            ₱ {{ totalImplementationMOOE.toLocaleString() }}
+                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan',
+                                                        format_number_conv(v_imp_mooe,2,true),
+                                                        format_number_conv(v_imp_mooe,2,true),
+                                                        'imp_mooe',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)">*
+                                                </button>
+                                                <button v-if="has_comment('Implementation Plan',
+                                                        format_number_conv(v_imp_mooe,2,true),
+                                                        format_number_conv(v_imp_mooe,2,true),
+                                                        'imp_mooe',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan',
+                                                        format_number_conv(v_imp_mooe,2,true),
+                                                        format_number_conv(v_imp_mooe,2,true),
+                                                        'imp_mooe',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)">*
+                                                </button>
+                                            </td>
+                                            <!-- FE TOTAL -->
+                                            <td :class="{
+                                                'text-danger': has_comment('Implementation Plan',
+                                                format_number_conv(v_imp_fe,2,true),
+                                                format_number_conv(v_imp_fe,2,true),
+                                                'imp_fe',
+                                                'revision_plans',
+                                                paps,
+                                                paps.comments)
+                                            }"
+                                            :id="paps.id+'_revision_plans_imp_fe'"
+                                            >
+                                            <!-- {{ format_number_conv(v_imp_fe,2,true) }} -->
+                                            ₱ {{ totalImplementationFE.toLocaleString() }}
+                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan',
+                                                        format_number_conv(v_imp_fe,2,true),
+                                                        format_number_conv(v_imp_fe,2,true),
+                                                        'imp_fe',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)">*
+                                                </button>
+                                                <button v-if="has_comment('Implementation Plan',
+                                                        format_number_conv(v_imp_fe,2,true),
+                                                        format_number_conv(v_imp_fe,2,true),
+                                                        'imp_fe',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan',
+                                                        format_number_conv(v_imp_fe,2,true),
+                                                        format_number_conv(v_imp_fe,2,true),
+                                                        'imp_fe',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)">*
+                                                </button>
+                                            </td>
+                                            <!-- CO TOTAL -->
+                                            <td :class="{
+                                                'text-danger': has_comment('Implementation Plan',
+                                                format_number_conv(v_imp_co,2,true),
+                                                format_number_conv(v_imp_co,2,true),
+                                                'imp_co',
+                                                'revision_plans',
+                                                paps,
+                                                paps.comments)
+                                            }"
+                                            :id="paps.id+'_revision_plans_imp_fe'"
+                                            >
+                                            <!-- {{ format_number_conv(v_imp_co,2,true)}} -->
+                                            ₱ {{ totalImplementationCO.toLocaleString() }}
+                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan',
+                                                        format_number_conv(v_imp_co,2,true),
+                                                        format_number_conv(v_imp_co,2,true),
+                                                        'imp_co',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)">*
+                                                </button>
+                                                <button v-if="has_comment('Implementation Plan',
+                                                        format_number_conv(v_imp_co,2,true),
+                                                        format_number_conv(v_imp_co,2,true),
+                                                        'imp_co',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan',
+                                                        format_number_conv(v_imp_co,2,true),
+                                                        format_number_conv(v_imp_co,2,true),
+                                                        'imp_co',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)">*
+                                                </button>
+                                            </td>
+                                            <td class="text-end"
+                                                :class="{
+                                                    'text-danger': has_comment('Implementation Plan',
                                                     format_number_conv(imp_amount,2,true),
                                                     format_number_conv(imp_amount,2,true),
                                                     'total_imp_amount',
                                                     'revision_plans',
                                                     paps,
-                                                    paps.comments)">*
-                                            </button>
-                                            <button v-if="has_comment('Implementation Plan',
-                                                    format_number_conv(imp_amount,2,true),
-                                                    format_number_conv(imp_amount,2,true),
-                                                    'total_imp_amount',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)" class="superscript-btn"
-                                                @click="handleClick('Implementation Plan',
-                                                    format_number_conv(imp_amount,2,true),
-                                                    format_number_conv(imp_amount,2,true),
-                                                    'total_imp_amount',
-                                                    'revision_plans',
-                                                    paps,
-                                                    paps.comments)">*
-                                            </button>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                                    paps.comments)
+                                                }"
+                                            >
+                                            <!-- {{ format_number_conv(imp_amount,2,true) }} -->
+                                            ₱ {{ totalImplementationAll.toLocaleString() }}
+                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan',
+                                                        format_number_conv(imp_amount,2,true),
+                                                        format_number_conv(imp_amount,2,true),
+                                                        'total_imp_amount',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)">*
+                                                </button>
+                                                <button v-if="has_comment('Implementation Plan',
+                                                        format_number_conv(imp_amount,2,true),
+                                                        format_number_conv(imp_amount,2,true),
+                                                        'total_imp_amount',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)" class="superscript-btn"
+                                                    @click="handleClick('Implementation Plan',
+                                                        format_number_conv(imp_amount,2,true),
+                                                        format_number_conv(imp_amount,2,true),
+                                                        'total_imp_amount',
+                                                        'revision_plans',
+                                                        paps,
+                                                        paps.comments)">*
+                                                </button>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                     <!--VI. BUDGETARY REQUIREMENTS************************************************** -->
                     <div>
@@ -1260,9 +1407,10 @@
                                 <tr>
                                     <th colspan="3">Particulars</th>
                                     <th>Account Code</th>
+                                    <th v-if="source==='sip'">SIP Number</th>
                                     <th>Amount</th>
                                     <th>Source</th>
-                                    <th>Edit</th>
+                                    <!-- <th>Edit</th> -->
                                     <th>Delete</th>
                                 </tr>
                             </thead>
@@ -1298,7 +1446,15 @@
                                      <tr v-for="row in rows" :key="row.id">
                                         <td></td>
                                         <td></td>
-                                        <td>
+                                        <!-- BUDGET PARTICULARS -->
+                                        <td
+                                            :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_particulars'"
+                                        >
                                             <textarea
                                                 class="form-control transparent-bg "
                                                 type="text"
@@ -1307,18 +1463,59 @@
                                                 @change="updateRevisionPlans('budget_requirements', 'particulars', row.id, row.particulars)">
                                                     {{ row.particulars }}
                                             </textarea>
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Particulars',row.particulars,
+                                                    'particulars','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
-                                        <td>
+                                        <!-- ACCOUNT CODE -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_account_code'">
                                             <textarea
                                                 class="form-control transparent-bg "
                                                 type="text"
                                                 v-model="row.account_code"
                                                 @input="setUnsaved(true)"
-                                                @change="updateRevisionPlans('budget_requirements', 'account_code', row.id, row.account_code)">
+                                                @change="updateRevisionPlans('budget_requirements', 'account_code', row.id, row.account_code)" disabled>
                                                     {{ row.account_code }}
                                             </textarea>
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Account Code',row.account_code,
+                                                    'account_code','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
-                                        <td>
+                                        <!-- SIP Number -->
+                                         <td v-if="source==='sip'">
+                                            {{ row.sip_number }}
+                                         </td>
+                                        <!-- AMOUNT -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Amount',row.amount,
+                                                    'amount','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_amount'"
+                                        >
                                             <textarea
                                                 class="form-control transparent-bg "
                                                 type="text"
@@ -1327,8 +1524,26 @@
                                                 @change="updateRevisionPlans('budget_requirements', 'amount', row.id, row.amount)">
                                                     {{ row.amount }}
                                             </textarea>
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
-                                        <td>
+                                        <!-- SOURCE OF FUND -->
+                                        <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)
+                                            }"
+                                            :id="row.id + '_budget_requirements_source'">
                                             <textarea
                                                 class="form-control transparent-bg "
                                                 type="text"
@@ -1337,15 +1552,27 @@
                                                 @change="updateRevisionPlans('budget_requirements', 'source', row.id, row.source)">
                                                     {{ row.source }}
                                             </textarea>
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                    'Source',row.source,
+                                                    'source','budget_requirements', row, row.comments)">*
+                                            </button>
                                         </td>
 
                                         <!-- EDIT -->
-                                        <td>
+                                        <!-- <td>
                                             <button class="btn btn-primary btn-sm text-white"
                                                 @click="showBudgetModal(form.id,gadType,category)">
                                                 ✏ Edit
                                             </button>
-                                        </td>
+                                        </td> -->
 
                                         <!-- DELETE -->
                                         <td>
@@ -1363,13 +1590,61 @@
                                         </td>
                                     </tr>
 
-
-
+                                    <!-- TOTAL ROW -->
+                                    <tr class="fw-bold bg-light">
+                                        <td></td>
+                                        <td colspan="2">TOTAL {{ gadType }}</td>
+                                        <td></td>
+                                        <td v-if="source==='sip'"></td>
+                                        <td>
+                                            ₱ {{ budgetSum(category, gadType).toLocaleString() }}
+                                        </td>
+                                        <td colspan="3"></td>
+                                    </tr>
                                 </template>
 
-                            </tbody>
-                        </table>
 
+                            </tbody>
+                            <tr >
+                                <td colspan="4"><h5>GAD TOTAL</h5></td>
+                                <td v-if="source==='sip'"></td>
+                                <td :class="{
+                                            'text-danger': has_comment('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)
+                                        }"
+                                        :id="paps.id + '_revision_plans_gad_total'">
+                                        ₱ {{ gadBudgetTotal.toLocaleString() }}
+                                        <button v-if="can_view_comment()" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                        <button v-if="has_comment('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)" class="superscript-btn"
+                                            @click="handleClick('Budgetary Requirements',
+                                            'GAD Grand Total',
+                                            format_number_conv(tot_gad,2,true),
+                                            'gad_total', 'revision_plans',
+                                            paps, paps.comments)">*
+                                        </button>
+                                </td>
+                                <td colspan="3"></td>
+                            </tr>
+                            <tr>
+                                    <td colspan="4"><h4>TOTAL</h4></td>
+                                    <td v-if="source==='sip'"></td>
+                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                    <td colspan="3"></td>
+                            </tr>
+                        </table>
                     </div>
                     <!--VI. IMPLEMENTING TEAM************************************************** -->
                     <h3 id='implementing_team'>
@@ -1389,7 +1664,7 @@
                         </button>
                     </h3>
                     <p>
-                        <button class="btn btn-primary btn-sm text-white"
+                        <button class="btn btn-success btn-sm text-white"
                             @click="showTeamModal()">
                                 Add Team Members
                         </button>
@@ -1411,6 +1686,7 @@
                                     <th>Position</th>
                                     <th>Employment Status</th>
                                     <th>GAD-related trainings</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1473,6 +1749,25 @@
                                             @click="handleClick('Team Plan','with_gad_training',team_member.with_gad_training,'with_gad_training','team_plans', team_member, team_member.comments)">*
                                         </button>
                                     </td>
+                                    <!--Actions-->
+                                    <td>
+                                        <Button
+                                            class="btn btn-primary btn-sm text-white"
+                                            @click="showTeamModalEdit(team_member)"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                            </svg>
+                                        </Button>&nbsp;
+                                        <Button class="btn btn-danger btn-sm text-white"
+                                            @click="deleteData(team_member.id, 'team_plans', team_member.name)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                            </svg>
+                                        </Button>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1494,7 +1789,7 @@
                             ? `/EvaluationMechanismTool/${paps.id}`:null">Monitoring and Evaluation</Link>
                     </h3>
                     <p>
-                        <button class="btn btn-primary btn-sm text-white"
+                        <button class="btn btn-success btn-sm text-white"
                             @click="showMonitoringModal()">
                                 Add Monitoring and Evaluation Details
                         </button>
@@ -1521,10 +1816,12 @@
                             <tbody>
                                 <tr v-for="monitor in monitoring_and_avaluation">
                                     <!-- M&E Evaluation Mechanism Tool -->
-                                    <td :class="{
-                                                'text-danger': has_comment('Monitoring and Evaluation','Evaluation Mechanism Tool',monitor.evaluation_mechanism_tool,'evaluation_mechanism_tool','monitoring_and_evaluations', monitor, monitor.comments)
-                                    }" :id="monitor.id + '_monitoring_and_evaluations_evaluation_mechanism_tool'" >
+                                    <td :id="monitor.id + '_monitoring_and_evaluations_evaluation_mechanism_tool'">
                                         <textarea
+                                            :class="{
+                                                'text-danger': has_comment('Monitoring and Evaluation','Evaluation Mechanism Tool',monitor.evaluation_mechanism_tool,'evaluation_mechanism_tool','monitoring_and_evaluations', monitor, monitor.comments)
+                                            }"
+
                                             class="form-control transparent-bg "
                                             type="text"
                                             v-model="monitor.evaluation_mechanism_tool"
@@ -1540,12 +1837,13 @@
                                         </button>
                                     </td>
                                     <!-- M&E OPR and their roles -->
-                                    <td :class="{
-                                                'text-danger': has_comment('Monitoring and Evaluation','OPCR & their roles',monitor.opr,'opr','monitoring_and_evaluations', monitor, monitor.comments)
-                                    }"
+                                    <td
                                     :id="monitor.id + '_monitoring_and_evaluations_opr'"
                                     >
                                         <textarea
+                                            :class="{
+                                                'text-danger': has_comment('Monitoring and Evaluation','OPCR & their roles',monitor.opr,'opr','monitoring_and_evaluations', monitor, monitor.comments)
+                                            }"
                                             class="form-control transparent-bg "
                                             type="text"
                                             v-model="monitor.opr"
@@ -1617,7 +1915,7 @@
                             ? `/RiskManagement/${paps.id}`:null">Risk Management</Link>
                     </h3>
                     <p>
-                        <button class="btn btn-primary btn-sm text-white"
+                        <button class="btn btn-success btn-sm text-white"
                             @click="showRiskManagementModal()">
                                 Add Risk Management Details
                         </button>
@@ -1712,297 +2010,272 @@
                             ? `/RiskManagement/${paps.id}`:null">Signatories</Link>
                     </h3>
                     <p>
-                        <button class="btn btn-primary btn-sm text-white"
+                        <button class="btn btn-success btn-sm text-white"
                             @click="showSignatoryModal()">
                                 Add Signatories
                         </button>
                     </p>
+                    <!-- {{signatoriesProps }} -->
                     <div id="signatories" class="signatory-grid">
-                        <div v-for="(signatory, index) in signatories" :key="index" class="signatory-card">
-                        <strong>{{ signatory.acted }} by: </strong><br><br>
-                        <span class="text-decoration-underline"><b>{{ signatory.name
-                                                                }}</b></span>
-                                                                <br>{{ signatory.position }}<br><br><br><br>
+                        <div v-for="(signatory, index) in signatoriesprops" :key="index"
+                             :class="['signatory-card', (signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed') ? 'signatory-card-full' : 'signatory-card']"
+                        >
+                            <!-- SIGNATORY ACTED ************************************************************************** -->
+                            <strong>
+
+                                <select v-model="signatory.acted" class="form-select" autocomplete="chrome-off"
+                                    @change="updateRevisionPlans('signatories', 'acted', signatory.id, signatory.acted)"
+                                    :class="{'text-danger':
+                                        has_comment('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)
+                                        }" :id="signatory.id + '_signatories_acted'"
+                                >
+                                    <option>Prepared</option>
+                                    <option>Reviewed</option>
+                                    <option>Noted</option>
+                                    <option>Approved</option>
+                                    <option >Recommending Approval</option>
+                                    <option v-if="editData.type !== 'p'">As to AIP Inclusion</option>
+                                    <option v-if="editData.type !== 'p'">As to AIP Appropriation</option>
+                                </select>
+                                <span v-if="signatory.acted==='Prepared' || signatory.acted==='Reviewed'
+                                    || signatory.acted==='Noted' || signatory.acted==='Approved'
+                                "
+                                >by:
+
+                                </span>
+                                <button v-if="can_view_comment()" class="superscript-btn"
+                                    @click="handleClick('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)">*
+                                </button>
+                                <button v-if="has_comment('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)" class="superscript-btn"
+                                    @click="handleClick('Signatories','Acted',signatory.acted,'acted','signatories', signatory, signatory.comments)">*
+                                </button>
+                            </strong>
+                            <br><br>
+
+                            <!-- SIGNATORY ACTED ************************************************************************** -->
+                            <span class="text-decoration-underline" :id="signatory.id + '_signatories_name'">
+                                <b>
+                                    <input
+                                        class="form-control"
+                                        :class="{'text-danger': has_comment('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)}"
+                                        v-model="signatory.name"
+                                        type="text"
+                                        :id="signatory.id + '_signatories_name'"
+                                        @input="setUnsaved(true)"
+                                        @change="updateRevisionPlans('signatories', 'name', signatory.id, signatory.name)" />
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)" class="superscript-btn"
+                                        @click="handleClick('Signatories','Name',signatory.name,'name','signatories', signatory, signatory.comments)">*
+                                    </button>
+                                    <!-- </input> -->
+                                </b>
+                            </span>
+                            <br>
+                            <span :id="signatory.id + '_signatories_position'">
+                                <input
+                                class="form-control transparent-bg "
+                                :class="{'text-danger':
+                                    has_comment('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)
+                                    }"
+
+                                v-model="signatory.position"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('signatories', 'position', signatory.id, signatory.position)" />
+                                <button v-if="can_view_comment()" class="superscript-btn"
+                                    @click="handleClick('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)">*
+                                </button>
+                                <button v-if="has_comment('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)" class="superscript-btn"
+                                    @click="handleClick('Signatories','Position',signatory.position,'position','signatories', signatory, signatory.comments)">*
+                                </button>
+                            </span>
+
+                            <br><br><br><br>
+                            <button class="btn btn-danger btn-sm text-white"
+                                @click="deleteData(signatory.id, 'signatories', signatory.name)">
+                                🗑 Delete
+                            </button>
                         </div>
                     </div>
                 </div>
-            <!-- <form @submit.prevent="submit()">
-                <div>
-                    <label for="">PROJECT TITLE</label>
-                    <input type="text" v-model="form.project_title" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.project_title">{{ form.errors.project_title }}</div>
 
-                    <label for="">AIP Code</label>
-                    <input type="text" v-model="form.aip_code" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.aip_code">{{ form.errors.aip_code }}</div>
+                <!-- {{editData}} -->
 
-                    <label for="">PROJECT LOCATION</label>
-                    <input type="text" v-model="form.project_location" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.project_location">{{ form.errors.project_location }}</div>
-
-                    <label for="">LIST OF LGUs COVERED</label>
-                    <input type="text" v-model="form.list_of_lgu_covered" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.list_of_lgu_covered">{{ form.errors.list_of_lgu_covered }}
-                    </div>
-
-                    <hr style="background-color: black !important; border:1px; height: 1px;">
-                    IMPLEMENTATION SCHEDULE<br>
-                    <label for="">START</label>
-                    <input type="date" v-model="form.date_start" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.date_start">{{ form.errors.date_start }}</div>
-
-                    <label for="">END</label>
-                    <input type="date" v-model="form.date_end" class="form-control" autocomplete="chrome-off">
-                    <div class="fs-6 c-red-500" v-if="form.errors.date_end">{{ form.errors.date_end }}</div>
-                    <hr style="background-color: black !important; border:1px; height: 1px;">
-
-                    INTENDED BENEFICIARIES<br>
-                    <div class="peers">
-                        <div class="peer mR-10">
-                            <label for="">MALE</label>
-                            <input type="number" v-model="form.beneficiary_male" class="form-control" autocomplete="chrome-off" @change="setIntendedTotal">
-                            <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_male">{{ form.errors.beneficiary_male }}</div>
-                        </div>
-                        <div class="peer mR-10">
-                            <label for="">FEMALE</label>
-                            <input type="number" v-model="form.beneficiary_female" class="form-control" autocomplete="chrome-off" @change="setIntendedTotal">
-                            <div class="fs-6 c-red-500" v-if="form.errors.beneficiary_female">{{ form.errors.beneficiary_female }}</div>
-                        </div>
-                        <div class="peer mR-10">
-                            <label for="">TOTAL</label>
-                            <input type="number" v-model="total_intended" class="form-control" autocomplete="chrome-off">
-                        </div>
-                    </div>
-                    <hr style="background-color: black !important; border:1px; height: 1px;">
-                    BASELINE DISAGGREGATED DATA<br>
-                    <div class="peers">
-                        <div class="peer mR-10">
-                            <label for="">MALE</label>
-                            <input type="number" v-model="form.baseline_male" class="form-control" autocomplete="chrome-off" @change="setTotal">
-                            <div class="fs-6 c-red-500" v-if="form.errors.baseline_male">{{ form.errors.baseline_male }}</div>
-                        </div>
-
-                        <div class="peer mR-10">
-                            <label for="">FEMALE</label>
-                            <input type="number" v-model="form.baseline_female" class="form-control" autocomplete="chrome-off" @change="setTotal">
-                            <div class="fs-6 c-red-500" v-if="form.errors.baseline_female">{{ form.errors.baseline_female }}</div>
-                        </div>
-                        <div class="peer mR-10">
-                            <label for="">TOTAL</label>
-                            <input type="number" v-model="form.baseline_total" class="form-control" autocomplete="chrome-off" >
-                            <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
-
-                        </div>
-                    </div>
-
-                    DATA SOURCE<br>
-                    <div class="peers">
-
-                        <div class="peer mR-10">
-
-                            <input type="text" v-model="form.data_source" class="form-control" autocomplete="chrome-off" >
-                            <div class="fs-6 c-red-500" v-if="form.errors.data_source">{{ form.errors.data_source }}</div>
-
-                        </div>
-                    </div>
-
-                    <hr style="background-color: black !important; border:1px; height: 1px;">
-
-
-                    <label for="">RATIONALE</label>
-                    <QuillEditor theme="snow" v-model:content="form.rationale" @input="limitWords" contentType="html"
-                        toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
-
-                    <label for="">OBJECTIVES</label>
-                    <QuillEditor theme="snow" v-model:content="form.objective" contentType="html" toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.objective">{{ form.errors.objective }}</div>
-
-                    <label for="">BENEFICIARIES</label>
-                    <QuillEditor theme="snow" v-model:content="form.beneficiaries" contentType="html" toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.beneficiaries">{{ form.errors.beneficiaries }}</div>
-
-                    <label for="">IMPLEMENTING TEAM</label>
-                    <QuillEditor theme="snow" v-model:content="form.implementing_team" contentType="html" toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.implementing_team">{{ form.errors.implementing_team }}</div>
-
-                    <label for="">PARTNERSHIPS AND SUSTAINABILITY</label>
-                    <QuillEditor theme="snow" v-model:content="form.partnership" contentType="html" toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.partnership">{{ form.errors.partnership }}</div>
-
-                    <label for="">MONITORING AND EVALUATION</label>
-                    <QuillEditor theme="snow" v-model:content="form.monitoring" contentType="html" toolbar="essential" />
-                    <div class="fs-6 c-red-500" v-if="form.errors.monitoring">{{ form.errors.monitoring }}</div>
-
-                    <label for="">RISK MANAGEMENT</label>
-                    <QuillEditor theme="snow" v-model:content="form.risk_management" contentType="html" toolbar="essential"
-                    />
-                    <div class="fs-6 c-red-500" v-if="form.errors.risk_management">{{ form.errors.risk_management }}</div>
-
-
-
-                    <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
-
-                    <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">
-                        Save changes
-                    </button>
-                </div>
-
-            </form> -->
         </div>
         <div class="col-3">
+            <!-- ALL YOUR EXISTING COMMENT PANEL HTML HERE -->
             <div class="sticky-comments" v-if="!showComments">
-                    <button class="close-btn text-danger" @click="toggleShowCommentPanel">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
-                        </svg>
-                    </button>
-            </div>
-            <div class="bgc-white p-20 bd sticky-comments" v-if="showComments">
-                    <div class="d-flex justify-content-end">
-                        <button class="close-btn text-danger" @click="toggleShowCommentPanel">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="tab">
-                        <button style="color: red;" @click="openTab('Comments')">Comments</button>
-                        <button style="color: red;" @click="openTab('Navigation')">Navigation</button>
-                    </div>
-
-                    <div v-if="open_tab==='Comments'">
-                        <div class="comments-header">
-                            <h4>COMMENTS ...</h4>
-
-                        </div>
-
-                        <div class="scrollable-text">
-                            <ul class="list-unstyled">
-                                <li v-for="(comment, index) in all_comments" :key="index" class="mb-2">
-
-                                    <span
-                                        class="clickable-comment"
-                                        @click="scrollToSection(
-                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                ? comment.column_name
-                                                    : (
-                                                    ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
-                                                        ? `${comment.table_row_id}_${comment.table_name}`
-                                                        : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                )
-
-                                        )"
-                                        :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
-                                    >
-                                        {{ comment.comment }} {{
-                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                ? comment.column_name
-                                                    : (
-                                                    ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
-                                                        ? `${comment.table_row_id}_${comment.table_name}`
-                                                        : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                )
-                                        }}
-                                    </span>
-
-                                    <hr>
-                                </li>
-                            </ul>
-
-                        </div>
-                    </div>
-                    <div v-if="open_tab==='Navigation'">
-                        <div class="comments-header">
-                            <h4>NAVIGATION ...</h4>
-
-                        </div>
-                        <div class="scrollable-text">
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('revision_plans')">
-                                        I.      Title
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('rationale')">
-                                        II.     Rationale
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('objective')">
-                                        III.    Objectives
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('beneficiaries')">
-                                        IV.     Target Beneficiaries
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('implementation_workplan')">
-                                        V.      Implementation Schedule/Workplan
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('budgetary_requirements')">
-                                        VI.     Estimated Cost/Budgetary Requirements
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('implementing_team')">
-                                        VII.    Implementing Team
-                                    </span>
-                                </li>
-                            </ul>
-                            <!-- partnership_sustainability -->
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('partnership_sustainability')">
-                                        VIII.   Partnership and Sustainability
-                                    </span>
-                                </li>
-                            </ul>
-
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('monitoring_evaluation')">
-                                        XI.     Monitoring and Evaluation
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('risk_management')">
-                                        X.      Risk Management
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li class="mb-2" style="color: blue">
-                                    <span class="clickable-comment"  @click="scrollToSection('signatories')">
-                                        XI.     Signatories
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
+                <button class="close-btn text-danger" @click="toggleShowCommentPanel">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+                    </svg>
+                    &nbsp;
+                    <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
+                        <b>
+                            {{ countUnresolvedComments }} unresolved {{ countUnresolvedComments > 1 ? 'updates' : 'update' }} — click to review
+                        </b>
+                    </span>
+                </button>
             </div>
         </div>
+        <SmallModalComments v-model="showComments" title="NAVIGATION PANEL">
+            <div class="tab">
+                <button class="button" :class="{ active: open_tab === 'Navigation' }" @click="openTab('Navigation')">Navigation</button>
+                <button class="button" :class="{ active: open_tab === 'Comments' }" @click="openTab('Comments')">Comments
+                    <span v-if="countUnresolvedComments>0" style="color: red;" class="blink">
+                        <b>
+                            ({{ countUnresolvedComments }} unresolved)
+                        </b>
+                    </span>
+                </button>
+            </div>
+
+            <div v-if="open_tab==='Comments'">
+                <div class="comments-header">
+                    <h4>COMMENTS ...</h4>
+
+                </div>
+                <div><i>Click a comment and follow the <span style="color: red">red</span> arrow</i></div>
+                <hr>
+                <div class="scrollable-text">
+                    <ul class="list-unstyled">
+                        <li v-for="(comment, index) in all_comments" :key="index" class="mb-2" >
+
+                            <span
+                                class="clickable-comment"
+                                @click="scrollToSection(
+                                    ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                        ? resolvePapsTargetId(editData, comment.column_name, comment)
+                                            : (
+                                            ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
+                                                ? `${comment.table_row_id}_${comment.table_name}`
+                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                        ),
+                                    comment,
+                                    comment.column_name
+
+                                )"
+                                :class="comment.comment_status == 1 ? 'comment-approved' : 'comment-rejected'"
+                                style="cursor: pointer; "
+                            >
+                                <!-- IF UNRESOLVED -->
+                                <svg v-if="comment.comment_status == 0"
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                </svg>
+                                <!-- IF RESOLVED -->
+                                    <svg v-if="comment.comment_status == 1"
+                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+                                </svg>
+                                {{ comment.comment }}
+                                <!-- {{
+                                    ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                        ? comment.column_name
+                                            : (
+                                            ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)
+                                                ? `${comment.table_row_id}_${comment.table_name}`
+                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                        )
+                                }} -->
+                            </span>
+                            <div v-html="comment.reply"></div>
+                            <hr>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            <div v-if="open_tab==='Navigation'">
+                <div class="comments-header">
+                    <h4>NAVIGATION ...</h4>
+
+                </div>
+                <div class="scrollable-text" style="cursor: pointer;">
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('revision_plans')">
+                                I.      Title
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('rationale')">
+                                II.     Rationale
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('objective')">
+                                III.    Objectives
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('beneficiaries')">
+                                IV.     Target Beneficiaries
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('implementation_workplan')">
+                                V.      Implementation Schedule/Workplan
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('budgetary_requirements')">
+                                VI.     Estimated Cost/Budgetary Requirements
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('implementing_team')">
+                                VII.    Implementing Team
+                            </span>
+                        </li>
+                    </ul>
+                    <!-- partnership_sustainability -->
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('partnership_sustainability')">
+                                VIII.   Partnership and Sustainability
+                            </span>
+                        </li>
+                    </ul>
+
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('monitoring_evaluation')">
+                                IX.     Monitoring and Evaluation
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('risk_management')">
+                                X.      Risk Management
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" style="color: blue">
+                            <span class="clickable-comment"  @click="scrollToSection('signatories')">
+                                XI.     Signatories
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </SmallModalComments>
         <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
 
             <div class="d-flex justify-content-center">
@@ -2108,7 +2381,8 @@
             </div>
             <br>
         </CommentModal>
-
+        <!-- ccet_computed:
+        {{ ccet_computed }} -->
     </div>
     <BudgetModal v-if="BudgetModalVisible" @close-modal-event="closeBudgetModal" title="BUDGETARY REQUIREMENTS">
         <div class="p-3">
@@ -2192,9 +2466,9 @@
         </table>
 
 
-        <button @click="addStrategy" class="btn btn-primary mt-2">Add Strategy</button>
+        <button @click="addStrategy" class="btn btn-primary mt-2">Add Row</button>
         <button @click="saveStrategies" class="btn btn-success mt-2">Save</button>
-        {{strategies}}
+        <!-- {{strategies}} -->
     </StrategyModal>
     <ActivityModal v-if="ActivityModalVisible" @close-modal-event="closeActivityModal" title="ACTIVITIES MODAL">
 
@@ -2229,7 +2503,7 @@
                 <tr v-for="(act, index) in activities" :key="index">
 
                     <td><textarea v-model="act.description" class="form-control" ></textarea></td>
-                    <td><input v-model="act.gad_issue" class="form-control" /></td>
+                    <td><textarea v-model="act.gad_issue" class="form-control" ></textarea></td>
 
 
                     <td><input v-model="act.date_from" type="date" class="form-control" /><p>to</p>
@@ -2281,7 +2555,25 @@
                         <div>Total ({{  format_number_conv(parseFloat(act.fe_q1) + parseFloat(act.fe_q2) + parseFloat(act.fe_q3) + parseFloat(act.fe_q4), 2, true)  }})</div>
                     </td>
                     <!-- CCET -->
-                    <td><input v-model="act.ccet_code" class="form-control" /></td>
+                    <td>
+                        <!-- <input v-model="act.ccet_code" class="form-control" /> -->
+                        <!-- <select v-model="act.ccet_code" class="form-select" >
+                            <option value="">Select CCET</option>
+                            <option v-for="ccet in ccet_codes" :key="ccet.ccet_code" :value="ccet.ccet_code">
+                                {{ ccet.ccet_code }} - {{ ccet.description }}
+                            </option>
+                        </select> -->
+                        <multiselect
+                            class="form-select dynamic-width"
+                            :options="ccet_computed"
+                            :searchable="true"
+                            label="label"
+                            track-by="label"
+                            :reduce="act => act.ccet_code"
+                            v-model="act.ccet_code"
+                            @input="updateCCET($event)"
+                        />
+                    </td>
                     <!-- PERSON RESPONSIBLE -->
                     <td><input v-model="act.responsible" class="form-control" /></td>
                     <td>
@@ -2301,7 +2593,67 @@
 
 
     </ActivityModal>
-    <TeamModal v-if="TeamModalVisible" @close-modal-event="closeTeamModal" title="IMPLEMENTING TEAM"></TeamModal>
+    <TeamModal v-if="TeamModalVisible" @close-modal-event="closeTeamModal" title="IMPLEMENTING TEAM">
+        <!-- {{ team_members }} -->
+        <input type="hidden" required>
+        <input type="hidden" v-model="team_members.revision_plan_id" class="form-control" autocomplete="chrome-off">
+        <label for="">ASSIGN PERSON</label>
+        <!-- team_members.implementing_team_id: {{ team_members.implementing_team_id }} -->
+        <multiselect
+            :options="employees_computed"
+            :searchable="true"
+            label="label"
+            track-by="label"
+            :reduce="emp => emp.empl_id"
+            v-model="team_members.implementing_team_id"
+            @input="updateEmployee($event)"
+        />
+
+        <label for="">NAME</label>
+        <input type="text" v-model="team_members.name" class="form-control" autocomplete="chrome-off">
+
+
+        <label for="">GENDER</label>
+        <select class="form-select" v-model="team_members.gender" autocomplete="chrome-off">
+            <options>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </options>
+        </select>
+
+        <label for="">ROLE IN THE PROJECT</label>
+        <input type="text" v-model="team_members.role" class="form-control" autocomplete="chrome-off">
+
+        <label for="">JOB STATUS</label>
+        <!-- <input type="text" v-model="team_members.status" class="form-control" autocomplete="chrome-off"> -->
+        <select v-model="team_members.status" class="form-control" autocomplete="chrome-off">
+            <option>Job Order</option>
+            <option>Regular</option>
+            <option>Casual</option>
+            <!-- <option>Regular</options>
+            <option>Job Order</option>
+            <option>Casual</option> -->
+        </select>
+
+        <input type="checkbox"
+        v-model="team_members.with_gad_training"
+        :true-value="1"
+        :false-value="0">
+            &nbsp;With GAD training
+        <br>
+
+        <span>
+            <label for="">Specify GAD Training</label>
+            <input type="text" v-model="team_members.specify_GAD_training" class="form-control" autocomplete="chrome-off">
+        </span>
+        <input type="hidden" v-model="team_members.id" class="form-control" autocomplete="chrome-off">
+
+
+        <label for="">POSITION</label>
+        <input type="text" v-model="team_members.position" class="form-control" autocomplete="chrome-off">
+
+        <button class="btn btn-primary text-white" @click="saveTeamMembers()">Save</button>
+    </TeamModal>
     <RiskManagementModal v-if="RiskManagementModalVisible" @close-modal-event="closeRiskManagementModal" title="RISK MANAGEMENT">
 
         <!-- TABLE -->
@@ -2344,7 +2696,7 @@
         </table>
         <!--ADD RISK MANAGEMENT ROW-->
         <button class="btn btn-primary mb-2 text-white" @click="addRiskManagementRow">
-            + Add Risk Management
+            + Add Row
         </button>
         &nbsp;&nbsp;
         <!-- SAVE BUTTON -->
@@ -2400,8 +2752,257 @@
             </div>
     </MonitoringModal>
     <SignatoryModal v-if="SignatoryModalVisible" @close-modal-event="closeSignatoryModal" title="SIGNATORIES">
+        <!-- ADD SIGNATORY BUTTON -->
 
+
+        <!-- SIGNATORIES TABLE -->
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Acted</th>
+                <th>Sequence</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr v-for="(row, index) in signatories" :key="index">
+                <td>
+                <input type="text" v-model="row.name" class="form-control">
+                </td>
+
+                <td>
+                <input type="text" v-model="row.position" class="form-control">
+                </td>
+
+                <td>
+
+                <select v-model="row.acted" class="form-select" autocomplete="chrome-off">
+                        <option>Prepared</option>
+                        <option>Reviewed</option>
+                        <option>Noted</option>
+                        <option>Approved</option>
+                        <option>Recommending Approval</option>
+                        <option>As to AIP Inclusion</option>
+                        <option>As to AIP Appropriation</option>
+                    </select>
+                </td>
+
+                <td>
+                <input type="number" v-model="row.sequence" class="form-control">
+                </td>
+
+                <td>
+                <button @click="removeSignatoryRow(index)"
+                        class="btn btn-danger btn-sm">
+                    Remove
+                </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button @click="addSignatoryRow"
+                class="btn btn-primary mb-3">
+            + Add Row
+        </button>&nbsp;&nbsp;
+        <button @click="saveSignatories()" class="btn btn-success text-white">Save</button>
     </SignatoryModal>
+    <ExpectedOutputModal v-if="ExpectedOutputModalVisible" @close-modal-event="hideExpectedOutputModal" title="EXPECTED OUTPUTS">
+
+        <h4>Expected Outputs</h4>
+        <!-- {{ expected_outputs_current }}
+        activity_id: {{ activity_id }}
+        activity_project_id: {{ activity_project_id }} -->
+        <div v-if="expected_outputs_new.length > 0" >
+            <div class="mb-3">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="table table-secondary text-center align-middle">
+                            <th rowspan="3">Description</th>
+                            <th rowspan="3">Target/Indicator</th>
+                            <th colspan="4">Physical</th>
+                            <th rowspan="3">Actions</th>
+                        </tr>
+                        <tr class="table table-secondary text-center align-middle">
+                            <th colspan="4">Timeline/Duration</th>
+                        </tr>
+                        <tr class="table table-secondary text-center align-middle">
+                            <th>1st Quarter</th>
+                            <th>2nd Quarter</th>
+                            <th>3rd Quarter</th>
+                            <th>4th Quarter</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(output, index) in expected_outputs_new" :key="index">
+                        <td><textarea v-model="output.description" class="form-control"></textarea></td>
+                        <td><input type="text" v-model="output.target_indicator" class="form-control"></td>
+                        <td><input type="number" v-model="output.physical_q1" class="form-control"></td>
+                        <td><input type="number" v-model="output.physical_q2" class="form-control"></td>
+                        <td><input type="number" v-model="output.physical_q3" class="form-control"></td>
+                        <td><input type="number" v-model="output.physical_q4" class="form-control"></td>
+                        <td>
+                            <button @click="removeExpectedOutput(index)" class="btn btn-danger btn-sm">Remove</button>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mt-3">
+            <button @click="addExpectedOutput" class="btn btn-primary">Add Row</button>
+            <button @click="saveExpectedOutputs" class="btn btn-success" v-if="expected_outputs_new.length > 0">Save</button>
+        </div>
+        <table class="table table-bordered">
+
+            <tr>
+                <thead>
+                    <tr class="table table-secondary text-center align-middle">
+                        <th rowspan="3">Description</th>
+                        <th rowspan="3">Target/Indicator</th>
+                        <th colspan="4">Physical</th>
+                        <th rowspan="3">Actions</th>
+                    </tr>
+                    <tr class="table table-secondary text-center align-middle">
+                        <th colspan="4">Timeline/Duration</th>
+                    </tr>
+                    <tr class="table table-secondary text-center align-middle">
+                        <th>1st Quarter</th>
+                        <th>2nd Quarter</th>
+                        <th>3rd Quarter</th>
+                        <th>4th Quarter</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="exp in expected_outputs_current">
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.description"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'description', exp.id, exp.description)">
+
+                            </textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.target_indicator"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'target_indicator', exp.id, exp.target_indicator)">
+
+                            </textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.physical_q1"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'physical_q1', exp.id, exp.physical_q1)">
+                            </textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.physical_q2"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'physical_q2', exp.id, exp.physical_q2)">
+                            </textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.physical_q3"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'physical_q3', exp.id, exp.physical_q3)">
+                            </textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.physical_q4"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outputs', 'physical_q4', exp.id, exp.physical_q4)">
+                            </textarea>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm text-white"
+                                @click="deleteExpectedOutput(exp.id, 'expected_revised_outputs', exp.description, index)">
+                                🗑 Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </tr>
+        </table>
+    </ExpectedOutputModal>
+    <ExpectedOutcomeModal v-if="ExpectedOutcomeModalVisible" @close-modal-event="hideExpectedOutcomeModal" title="EXPECTED OUTCOMES">
+        <!-- {{ expected_outputs_current }} -->
+        <!-- Table for Expected Outcomes -->
+        <table class="table table-bordered w-100" style="width: 100%;" v-if="expected_outcomes_new.length > 0" >
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(outcome, index) in expected_outcomes_new" :key="index">
+                    <td>
+                        <textarea v-model="outcome.description" class="form-control"></textarea>
+                    </td>
+                    <td>
+                        <button @click="removeOutcome(index)" class="btn btn-danger btn-sm">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Add & Save Buttons -->
+        <div class="mt-2">
+            <button @click="addOutcome" class="btn btn-primary">Add Outcome</button>
+            <button @click="saveExpectedOutcomes" class="btn btn-success" v-if="expected_outcomes_new.length > 0">Save All</button>
+        </div>
+        <table class="table table-bordered w-100" style="width: 100%;">
+            <tr>
+                <thead>
+                    <tr class="table thead-dark">
+                        <th rowspan="2">Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="exp in expected_outcomes_current">
+                        <td>
+                            <textarea
+                                class="form-control transparent-bg "
+                                v-model="exp.description"
+                                type="text"
+                                @input="setUnsaved(true)"
+                                @change="updateRevisionPlans('expected_revised_outcomes', 'description', exp.id, exp.description)">
+
+                            </textarea>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm text-white"
+                                @click="deleteExpectedOutcome(exp.id, 'expected_revised_outcomes', exp.description, index)">
+                                🗑 Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </tr>
+        </table>
+    </ExpectedOutcomeModal>
+    <div class="jump-arrow"></div>
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -2415,9 +3016,11 @@ import TeamModal from "@/Shared/ModalDynamicTitle";
 import RiskManagementModal from "@/Shared/ModalDynamicTitle";
 import MonitoringModal from "@/Shared/ModalDynamicTitle";
 import SignatoryModal from "@/Shared/ModalDynamicTitle";
-
+import ExpectedOutputModal from "@/Shared/ModalDynamicTitle";
+import ExpectedOutcomeModal from "@/Shared/ModalDynamicTitle";
 import axios from 'axios';
 import debounce from 'lodash/debounce';
+import SmallModalComments from "@/Shared/SmallModal";
 
 //import BootstrapModalNoJquery from './BootstrapModalNoJquery.vue';
 
@@ -2455,8 +3058,14 @@ export default {
         // OTHERS
         monitoring_and_avaluation: Object,
         implementing_team: Object,
-        signatories: Object,
+        signatoriesprops: Object,
         risk_manangement: Object,
+
+        // SOURCE
+        source: String,
+
+        // CCET CODE
+        ccet_codes: Object,
     },
     components: {
 
@@ -2473,7 +3082,10 @@ export default {
         TeamModal,
         RiskManagementModal,
         MonitoringModal,
-        SignatoryModal
+        SignatoryModal,
+        ExpectedOutputModal,
+        ExpectedOutcomeModal,
+        SmallModalComments
 
     },
     data() {
@@ -2562,6 +3174,8 @@ export default {
             //IMPLEMENTING TEAM *******************************
             TeamModalVisible: false,
             team_members: [],
+            all_employees: [],
+            action_type_team: '',
             //RISK MANAGEEMENT *******************************
             RiskManagementModalVisible: false,
             risk_managements: [],
@@ -2570,7 +3184,26 @@ export default {
             monitoring_and_evaluations: [],
             // SIGNATORIES*******************************
             SignatoryModalVisible: false,
-            signatories: []
+            signatories: [],
+
+
+            //EXPECTED OUTPUTS *******************************
+            ExpectedOutputModalVisible: false,
+            expected_outputs_current: [],
+            expected_outputs_new: [],
+            activity_id: 0,
+            activity_project_id: 0,
+
+            //EXPECTED OUTCOMES *******************************
+            ExpectedOutcomeModalVisible: false,
+            expected_outcomes_current: [],
+            expected_outcomes_new: [],
+
+            // SHOWING VHTML OVERLAYS
+            briefRationale: false,
+            briefObjective: false,
+            briefBeneficiaries: false,
+
         };
     },
     computed: {
@@ -2624,10 +3257,130 @@ export default {
             });
 
             return result;
+        },
+        budgetSum() {
+            return (category, gadType) => {
+                const group = this.groupedBudget[category]?.[gadType];
+                if (!group) return 0;
+
+                return group.reduce((total, item) => {
+                    const amount = parseFloat(item.amount || 0);
+                    return total + (isNaN(amount) ? 0 : amount);
+                }, 0);
+            };
+        },
+        overallBudget() {
+            let total = 0;
+
+            for (const category in this.groupedBudget) {
+                const gadGroups = this.groupedBudget[category];
+
+                for (const gadType in gadGroups) {
+                    const rows = gadGroups[gadType];
+
+                    rows.forEach(item => {
+                        const amount = parseFloat(item.amount || 0);
+                        if (!isNaN(amount)) {
+                            total += amount;
+                        }
+                    });
+                }
+            }
+
+            return total;
+        },
+        gadBudgetTotal() {
+            let total = 0;
+
+            for (const category in this.groupedBudget) {
+                const gadGroups = this.groupedBudget[category];
+
+                for (const gadType in gadGroups) {
+                    const rows = gadGroups[gadType];
+
+                    rows.forEach(item => {
+                        const amount = parseFloat(item.amount || 0);
+
+                        // Only include rows with category_gad === "GAD"
+                        if (!isNaN(amount) && item.category_gad === "GAD") {
+                            total += amount;
+                        }
+                    });
+                }
+            }
+
+            return total;
+        },
+        totalImplementationPS() {
+            return this.computeCategory("ps");
+        },
+        totalImplementationMOOE() {
+            return this.computeCategory("mooe");
+        },
+        totalImplementationCO() {
+            return this.computeCategory("co");
+        },
+        totalImplementationFE() {
+            return this.computeCategory("fe");
+        },
+
+        totalImplementationAll() {
+            return this.computeCategory("total");
+        },
+
+        employees_computed() {
+            // ALWAYS ensure it's an array
+            const emps = Array.isArray(this.all_employees)
+                ? this.all_employees
+                : [];
+
+            return emps.map(emp => ({
+                value: emp.empl_id,
+                label: `${emp.empl_id} - ${emp.employee_name}`,
+                _raw: emp
+            }));
+        },
+
+        ccet_computed(){
+            const ccet_code_c = Array.isArray(this.ccet_codes)
+                ? this.ccet_codes
+                : [];
+
+            // return ccet_code_c.map(ccet => ({
+            //     value: ccet.ccet_code,
+            //     label: `${ccet.ccet_code} - ${ccet.description}`,
+            //     _raw: ccet
+            // }));
+            // Map existing options
+            const options = ccet_code_c.map(ccet => ({
+                value: ccet.ccet_code,
+                label: `${ccet.ccet_code} - ${ccet.description}`,
+                _raw: ccet
+            }));
+
+            // Prepend default "Select CCET Code" option
+            options.unshift({
+                value: null,
+                label: "Select CCET Code",
+                _raw: null
+            });
+
+            return options;
+        },
+        countUnresolvedComments() {
+            // alert('unresolved')
+            return this.all_comments.filter(c => c.comment_status !== "1").length;
         }
 
     },
     mounted() {
+        this.$nextTick(() => {
+            setTimeout(() => {
+                // applyAllQuillHighlights();
+                // this.focusComment();
+            }, 50)
+        })
+
         window.addEventListener('beforeunload', this.handleBeforeUnload);
         this.form.idpaps = this.idpaps;
         if(this.source!==undefined){
@@ -2702,11 +3455,105 @@ export default {
             }
         }
 
+
+
+        this.applyAllHighlights()
+
+        //TEXTAREA -Set Sizes ***********************************************************************************************************
+        // const applyAutosize = (el) => {
+        //     el.style.overflow = 'hidden';
+        //     el.style.resize = 'none';
+
+        //     const resize = () => {
+        //         el.style.height = 'auto';
+        //         el.style.height = el.scrollHeight + 'px';
+        //     };
+
+        //     el.addEventListener('input', resize);
+        //     resize(); // initial
+        // };
+
+        // Apply to all textareas inside this page
+        // this.$nextTick(() => {
+        //     this.$el.querySelectorAll('textarea').forEach(applyAutosize);
+        // });
+
     },
     beforeUnmount() {
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
     },
+    watch: {
+        all_comments: {
+            handler() {
+                this.$nextTick(() => {
+                    this.applyAllHighlights()
+                })
+            },
+            deep: true
+        }
+        // all_comments: {
+        //     handler() {
+        //         this.$nextTick(() => {
+        //             setTimeout(() => {
+        //                 this.applyAllQuillHighlights()
+        //             }, 50)
+        //         })
+        //     },
+        //     deep: true
+        // }
+    },
     methods: {
+        applyAllQuillHighlights() {
+            ['rationale', 'objective','beneficiaries'].forEach(column => {
+                this.applyQuillHighlights(column)
+            })
+        },
+        applyQuillHighlights(column) {
+            const quillRef = this.$refs[`${column}Quill`]
+            if (!quillRef || !this.form[column]) return
+
+            const quill = quillRef.getQuill()
+            if (!quill) return
+
+            const containerEl = quill.root
+            const instance = new Mark(containerEl)
+
+            // 🔴 Remove old highlights first
+            instance.unmark({
+                done: () => {
+                    this.highlightWithComments(
+                        this.form[column],
+                        this.all_comments,
+                        column,
+                        containerEl
+                    )
+                }
+            })
+        },
+        focusComment(comment) {
+            const map = {
+            rationale: this.$refs.rationaleQuill,
+            objective: this.$refs.objectiveQuill,
+            beneficiaries: this.$refs.beneficiariesQuill
+            }
+
+            const ref =
+            map[comment.column_name] ??
+            this.$refs.rationaleQuill
+
+            if (!ref) return
+
+            const quill = ref.getQuill()
+
+            this.highlightQuillComment({ quill, comment })
+        },
+        onCommentClick(comment) {
+            this.highlightQuillComment({
+                quillRef: this.$refs.objectiveQuill,
+                comment,
+                columnName: comment.column_name
+            });
+        },
         //this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
         //alert(this.form.target_qty);
         // if (this.act_words > this.maxWords) {
@@ -2762,7 +3609,57 @@ export default {
         toggleShowCommentPanel() {
             this.showComments = !this.showComments;
         },
+        showCommentBox(index) {
+            // Toggle the show_comment_box property for the comment at the given index
+            if(this.is_replying==false || this.reply_index == index) {
+                this.comments[index].show_comment_box = !this.comments[index].show_comment_box;
+                this.reply_index = index; // Set the reply index to the current comment
+                this.reply_concat = ""; // Clear the reply input when showing the comment box
+                this.is_replying = !this.is_replying; // Set replying state to true
+            }
 
+        },
+        async updateComment(id, comment, index){
+            // const payload = {
+            //         id: id,
+            //         // strategy_id: this.form.localData[strategyIndex].id,
+            //         reply: reply,
+            //         type: "update",
+            //     };
+
+            // Clear existing timeout to prevent multiple calls
+            // clearTimeout(this.timeouts[`activity_${strategyIndex}_${activityIndex}`]);
+            var myurl = "/revision-plan-comments/"+id;
+            if (!this.reply_concat.trim()) {
+                return; // Don't send empty reply
+            }
+            try {
+                    this.$inertia.patch(myurl, {
+                        params: {
+                            reply: this.reply_concat,
+                            id: id
+                        }
+                    }, {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            // $uname . ' replied: ' . $reply . '<br>';
+                            var comment_init ="";
+                            if(this.comments[index].reply){
+                                comment_init = this.comments[index].reply;
+                            }
+                            this.comments[index].reply = comment_init +" <b>"+this.auth.user.FullName+"</b> replied: <i>"
+                                + this.reply_concat+"</i> <br><br>";
+                            this.comments[index].show_comment_box = false; // Hide the comment box after replying
+                            this.reply_concat = ""; // Clear the reply input after saving
+                            this.is_replying = false; // Reset the replying state
+                        }
+                    });
+                    // console.log(payload);
+                    this.unsaved = false; // Reset unsaved flag after successful save
+                } catch (error) {
+                    console.error('Error updating comment:', error);
+                }
+        },
         // **************************COMMENTS******************************************************//
         can_view_comment() {
             var can_comment_here=false;
@@ -2846,6 +3743,9 @@ export default {
             if(this.comment_table==='expected_revised_outcomes'){
                 table_row_id_l = this.comment_reference_object.id
             }
+            if(this.comment_table==='signatories'){
+                table_row_id_l = this.comment_reference_object.id
+            }
             //alert(table_row_id_l)
             this.$inertia.post(myurl, {
                 params: {
@@ -2860,6 +3760,29 @@ export default {
                         setTimeout(() => {
                 this.comment = "";
             }, 1000); // 1000 milliseconds = 1 second
+        },
+        applyAllHighlights() {
+            // alert("Applying all highlights...");
+            const columns = ['rationale', 'beneficiaries', 'objective']
+
+            columns.forEach(column => {
+                const el = this.$refs[`${column}El`]
+                if (!el || !this.editData[column]) return
+
+                const instance = new Mark(el)
+                // alert("Applying highlights for column:"+column);
+                // 🔴 MUST remove old highlights first
+                instance.unmark({
+                    done: () => {
+                        this.highlightWithComments(
+                            this.editData[column],
+                            this.all_comments,
+                            column,
+                            el
+                        )
+                    }
+                })
+            })
         },
         submitAction(type, comment_id, index){
             let actionText = {
@@ -2893,7 +3816,8 @@ export default {
                 }
             });
         },
-        scrollToSection(target) {
+        // TARGETED GUIDES
+        scrollToSection(target, comment, column) {
             const el = document.getElementById(target);
             if (!el) return;
             // alert(target);
@@ -2904,17 +3828,69 @@ export default {
                 top: targetPos,
                 behavior: "smooth"
             });
+            // FOr Quill
+            if(['rationale', 'objective', 'beneficiaries'].includes(column)){
+                const flagMap = {
+                    rationale: 'briefRationale',
+                    objective: 'briefObjective',
+                    beneficiaries: 'briefBeneficiaries'
+                };
 
+                this[flagMap[column]] = true;
+                setTimeout(() => {
+                    this[flagMap[column]] = false;
+                }, 2000); // Adjust delay as needed
+            }
             // Highlight effect
             el.classList.add("highlight-target");
             setTimeout(() => el.classList.remove("highlight-target"), 2000);
+
+            // NEW → show arrow
+            this.showArrow(el);
         },
+        showArrow(el) {
+            // Remove previous arrow
+            const oldArrow = document.querySelector(".jump-arrow");
+            if (oldArrow) oldArrow.remove();
+
+            // Create container div
+            const arrow = document.createElement("div");
+            arrow.classList.add("jump-arrow");
+            arrow.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="red" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                </svg>
+            `;
+            document.body.appendChild(arrow);
+
+            // Get target element position
+            const rect = el.getBoundingClientRect();
+            const scrollTop = window.scrollY || window.pageYOffset;
+
+            // Position arrow at the **top of the target element**
+            const arrowX = rect.left - 40; // offset left from element
+            const arrowY = scrollTop + rect.top; // align with element top
+
+            arrow.style.position = "absolute";
+            arrow.style.left = arrowX + "px";
+            arrow.style.top = arrowY + "px";
+            arrow.style.zIndex = 9999;
+            arrow.style.transition = "opacity 0.3s";
+
+            // Fade out after 2.5 seconds
+            setTimeout(() => {
+                arrow.style.opacity = 0;
+                setTimeout(() => arrow.remove(), 500);
+            }, 2500);
+        },
+
         // END OF COMMENTS*************************************************
 
         //EDITS***********************************************************
         setUnsaved(status){
             this.unsaved = status
         },
+
         handleBeforeUnload(event) {
             if (this.unsaved) {
                 event.preventDefault();
@@ -2925,6 +3901,14 @@ export default {
 
         // UPDATE Revision Plans*******************************************/
         updateRevisionPlans: debounce(async function(table_name, column_name, id, new_data) {
+            // If the column is ccet_code and new_data is empty, ask for confirmation
+            if (column_name === 'ccet_code' && (!new_data || new_data.trim() === '')) {
+                const confirmed = confirm("Are you sure you want to remove the CCET code?");
+                if (!confirmed) {
+                    // User canceled, stop here
+                    return;
+                }
+            }
             const payload = {
                 table_name: table_name,
                 column_name: column_name,
@@ -2940,36 +3924,7 @@ export default {
                 console.error(`Error updating ${table_name} (${column_name})`, error);
             }
         }, 1000), // 🔥 Delay here (1s or 300ms)
-        // async updateRevisionPlans(table_name, column_name, id, new_data){
-        //     const payload = {
-        //         table_name: table_name,
-        //         column_name: column_name,
-        //         id: id,
-        //         new_data: encodeURIComponent(new_data)
-        //     };
 
-        //     const debouncedCall = debounce(async () => {
-        //         try {
-        //             const response = await axios.patch(`/revision/streamlined/${id}/update`, payload);
-        //             console.log(response.data);
-        //             this.setUnsaved(false);
-        //             // this.refreshData();
-        //         } catch (error) {
-        //             console.error('Error updating ' + table_name + ' (' + column_name + ')', error);
-        //         }
-        //     }, 1000);
-
-            // call the debounced function
-            // debouncedCall();
-            // try {
-            //     const response = await axios.patch(`/revision/streamlined/${id}/update`, payload);
-            //     console.log(response.data);
-            //     this.setUnsaved(false)
-            //     // this.refreshData();
-            // } catch (error) {
-            //     console.error('Error updating '+table_name+' ('+column_name+')', error);
-            // }
-        // },
 
         // GENERAL DELETION ************************************************
         deleteData(id, table, title){
@@ -3109,6 +4064,7 @@ export default {
         },
         closeStrategyModal(){
             this.StrategyModalVisible=false;
+            this.strategies=[];
         },
         addStrategy() {
              const nextYear = new Date().getFullYear() + 1; // current year + 1
@@ -3163,6 +4119,7 @@ export default {
         },
         closeActivityModal(){
             this.ActivityModalVisible=false;
+            this.activities=[];
         },
         getDefaultActivityRow() {
             return {
@@ -3213,27 +4170,139 @@ export default {
             }
         },
 
-        //IMPLEMENTING TEAM
         //IMPLEMENTING TEAM *******************************
-        // TeamModalVisible: false,
-        // team_members: [],
-        // TeamModal,
         showTeamModal(){
-            this.TeamModalVisible=true;
+            this.action_type_team = 'store'
+            this.all_employees=[];
+            this.addTeamRow()
+            axios.get('/get_employees_all')
+                .then(response => {
+                    this.all_employees = response.data;   // store employees
+                    this.TeamModalVisible=true;
+                })
+                .catch(error => {
+                    console.error("Error loading employees:", error);
+                });
         },
         closeTeamModal(){
             this.TeamModalVisible=false;
+            this.all_employees=[];
+            // this.team_members=[];
+        },
+        showTeamModalEdit(emp){
+            this.action_type_team = 'update'
+            this.TeamModalVisible=true;
+            this.all_employees=[];
+            this.team_members=({
+                id: emp.id,
+                revision_plan_id: this.editData.id,
+                implementing_team_id: emp.empl_id,
+                role:  emp.role,
+                empl_id: emp.empl_id,
+                name:  emp.name,
+                competency:  emp.competency,
+                position:  emp.position,
+                with_gad_training: emp.with_gad_training,
+                specify_GAD_training:  emp.specify_GAD_training,
+                gender:  emp.gender,
+                status: emp.status
+            });
+            axios.get('/get_employees_all')
+                .then(response => {
+                    this.all_employees = response.data;   // store employees
+                })
+                .catch(error => {
+                    console.error("Error loading employees:", error);
+                });
+        },
+        // TEAM MEMBERS *********************************************
+        addTeamRow() {
+            this.team_members=({
+                id: 0,
+                revision_plan_id: this.editData.id,
+                implementing_team_id: 0,
+                role: '',
+                empl_id: 0,
+                name: '',
+                competency: '',
+                position: '',
+                with_gad_training: 1,
+                specify_GAD_training: '',
+                gender: '',
+                status: ''
+            });
+        },
+        removeTeamRow(index) {
+            this.team_members.splice(index, 1);
+        },
+        saveTeamMembers() {
+            if(this.action_type_team==='store'){
+                axios.post('/implementation-workplan/implementing/team/plans', {
+                    'rows': this.team_members
+                })
+                .then(res => {
+                    // optionally clear or close modal
+                    alert('Successfully saved team member!')
+                    this.team_members=[]
+                    this.TeamModalVisible = false;
+                    window.location.reload()
+                });
+            }else if(this.action_type_team==='update'){
+                axios.patch('/implementation-workplan/implementing/team/plans/update', {
+                    'rows': this.team_members
+                })
+                .then(res => {
+                    // optionally clear or close modal
+                    alert('Successfully saved team member!')
+                    this.team_members=[]
+                    this.TeamModalVisible = false;
+                    window.location.reload()
+                });
+            }
+
+
         },
 
+        updateEmployee(emplId) {
+            const selectedEmp = this.all_employees.find(
+                peop => String(peop.empl_id) === String(emplId)
+            );
+
+            this.team_members.name     = selectedEmp?.employee_name || '';
+            this.team_members.gender   = selectedEmp?.gender || '';
+            this.team_members.position = selectedEmp?.position_long_title || '';
+            this.team_members.empl_id  = emplId;
+            this.team_members.status = selectedEmp?.employment_type_descr || '';
+            // this.team_members=({
+            //     id: selectedEmp?.employee_name || 0,
+            //     revision_plan_id: this.editData.id,
+            //     implementing_team_id: selectedEmp?.empl_id || '',
+            //     role: selectedEmp?.role || '',
+            //     empl_id: selectedEmp?.empl_id || '',
+            //     name: selectedEmp?.name || '',
+            //     competency: selectedEmp?.competency || '',
+            //     position: selectedEmp?.position || '',
+            //     with_gad_training: selectedEmp?.with_gad_training || '',
+            //     specify_GAD_training: selectedEmp?.specify_GAD_training || '',
+            //     gender: selectedEmp?.gender || '',
+            //     status: selectedEmp?.status || ''
+            // });
+        },
+        // CCET CODES *********************************************\
+        updateCCET(code_ccet) {
+            const selectedEmp = this.ccet_codes.find(
+                ccet => String(ccet.ccet_code) === String(code_ccet)
+            );
+
+
+        },
         //RISK MANAGEEMENT *******************************
-        // RiskManagementModalVisible: false,
-        // risk_managements: [],
-        // RiskManagementModal,
         showRiskManagementModal(){
             this.RiskManagementModalVisible=true;
         },
         closeRiskManagementModal(){
             this.RiskManagementModalVisible=false;
+            this.risk_managements=[];
         },
         addRiskManagementRow() {
             this.risk_managements.push({
@@ -3244,11 +4313,9 @@ export default {
                 revision_plan_id: this.editData.id
             });
         },
-
         removeRiskManagementRow(index) {
             this.risk_managements.splice(index, 1);
         },
-
         saveRiskManagements() {
             axios.post('/revision/streamlined/subtables/save/risk/management', {
                 risk_managements: this.risk_managements
@@ -3265,6 +4332,7 @@ export default {
         // MONITORING AND EVALUATION*******************************
         closeMonitoringModal(){
             this.MonitoringModalVisible=false;
+            this.monitoring_and_evaluations=[];
         },
         showMonitoringModal(){
             this.MonitoringModalVisible=true;
@@ -3297,15 +4365,228 @@ export default {
             });
         },
         // SIGNATORIES*******************************
-        // SignatoryModalVisible: false,
-        // signatories: []
-        // SignatoryModal
         closeSignatoryModal(){
             this.SignatoryModalVisible=false;
         },
         showSignatoryModal(){
             this.SignatoryModalVisible=true;
-        }
+        },
+        addSignatoryRow() {
+            this.signatories.push({
+                id: null,
+                name: "",
+                position: "",
+                acted: "",
+                sequence: "",
+                revision_plan_id: this.editData.id,
+            });
+        },
+        removeSignatoryRow(index) {
+            this.signatories.splice(index, 1);
+        },
+        async saveSignatories() {
+            await axios.post("/revision/streamlined/subtables/save/signatories", {
+            signatories: this.signatories,
+            revision_plan_id: this.editData.id
+            })
+            .then(res => {
+                console.log("Signatories saved successfully:", res.data);
+                this.closeSignatoryModal();
+                window.location.reload()
+            })
+            .catch(err => {
+                console.error("Error saving signatories:", err);
+            });
+        },
+
+        //IMPLEMENTATION
+        computeCategory(type) {
+            if (!this.implementation) return 0;
+
+            const categories = ["ps", "mooe", "co", "fe"];
+            const activeCats = type === "total" ? categories : [type];
+
+            let sum = 0;
+
+            this.implementation.forEach(item => {
+                if (item.activity && Array.isArray(item.activity)) {
+                    item.activity.forEach(act => {
+                        activeCats.forEach(cat => {
+                            sum += this.sumQuarterValues(act, cat);
+                        });
+                    });
+                }
+            });
+
+            return sum;
+        },
+
+        sumQuarterValues(act, category) {
+            const quarters = ["q1", "q2", "q3", "q4"];
+            let total = 0;
+
+            quarters.forEach(q => {
+                const key = `${category}_${q}`;
+                // ex: "mooe_q1"
+                let val = act[key];
+                total += parseFloat(val) || 0;
+            });
+
+            return total;
+        },
+
+
+        //EXPECTED OUTPUT ******************************************
+        showExpectedOutputModal(activity, activity_id, activity_project_id){
+            this.activity_id=activity_id
+            this.activity_project_id=activity_project_id
+            this.expected_outputs_new = [];
+            this.expected_outputs_current = activity
+            this.ExpectedOutputModalVisible=true;
+        },
+        hideExpectedOutputModal(){
+            this.ExpectedOutputModalVisible=false;
+            window.location.reload()
+        },
+        addExpectedOutput() {
+            this.expected_outputs_new.push({
+                id: null,
+                description: '',
+                strategy_id: null,
+                strategy_project_id: null,
+                activity_id: this.activity_id,
+                activity_project_id: this.activity_project_id,
+                is_strategy_outcome: 0,
+                project_id: this.activity_project_id,
+                target_indicator: '',
+                date_from: null,
+                date_to: null,
+                physical_q1: 0,
+                physical_q2: 0,
+                physical_q3: 0,
+                physical_q4: 0,
+                ps_q1: 0,
+                ps_q2: 0,
+                ps_q3: 0,
+                ps_q4: 0,
+                mooe_q1: 0,
+                mooe_q2: 0,
+                mooe_q3: 0,
+                mooe_q4: 0,
+                co_q1: 0,
+                co_q2: 0,
+                co_q3: 0,
+                co_q4: 0,
+                gad_issue: '',
+                ccet_code: '',
+                responsible: '',
+                is_active: 1,
+                is_strategy_output: 0,
+            });
+        },
+        removeExpectedOutput(index) {
+            this.expected_outputs_new.splice(index, 1);
+        },
+        async saveExpectedOutputs() {
+            try {
+                const response = await axios.post('/revision/streamlined/expected/revised/outputs', {
+                    expected_outputs: this.expected_outputs_new
+                });
+                alert('Saved successfully!');
+                 this.expected_outputs_current.push(...this.expected_outputs_new);
+
+                this.expected_outputs_new = []; // Clear table after save
+                this.$emit('close-modal-event'); // Close modal
+            } catch (error) {
+                console.error(error);
+                alert('Error saving expected outputs.');
+            }
+        },
+        deleteExpectedOutput(id, table, title, index){
+            let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
+            if (confirm(text) == true) {
+                this.$inertia.delete(`/revision/streamlined/${id}/${table}`, {
+                    onSuccess: () => {
+                        // Only runs if backend deletion succeeds
+                        this.expected_outputs_current.splice(index, 1);
+                    },
+                    onError: () => {
+                        alert("Delete failed! Please try again.");
+                    },
+                });
+            }
+        },
+        //EXPECTED OUTCOMES ******************************************
+        showExpectedOutcomeModal(activity, activity_id, activity_project_id){
+            this.expected_outcomes_new=[];
+            this.activity_id=activity_id
+            this.activity_project_id=activity_project_id
+            this.expected_outputs_new = [];
+            this.expected_outcomes_current = activity
+            this.ExpectedOutcomeModalVisible=true;
+        },
+        hideExpectedOutcomeModal(){
+            // alert('outcome')
+            this.ExpectedOutcomeModalVisible=false;
+            window.location.reload()
+        },
+        addOutcome() {
+            this.expected_outcomes_new.push({
+                id: null,
+                description: '',
+                strategy_id: null,
+                strategy_project_id: null,
+                activity_id: this.activity_id,
+                activity_project_id: this.activity_project_id,
+                is_strategy_outcome: 0
+            });
+        },
+        removeOutcome(index) {
+            this.expected_outcomes_new.splice(index, 1);
+        },
+        async saveExpectedOutcomes() {
+            try {
+                const payload = this.expected_outcomes_new.map(item => ({
+                    ...item,
+                    activity_id: this.activity_id,
+                    activity_project_id: this.activity_project_id,
+                    project_id: this.project_id
+                }));
+
+                const response = await axios.post('/revision/streamlined/expected/outcomes', { rows: payload });
+
+                if (response.data.success) {
+                    // Push saved outcomes to current list
+                    this.expected_outcomes_current.push(...this.expected_outcomes_new);
+                    // Clear new outcomes
+                    this.expected_outcomes_new = [];
+                    // this.hideExpectedOutcomeModal();
+                } else {
+                    alert('Failed to save expected outcomes');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error saving expected outcomes');
+            }
+        },
+        deleteExpectedOutcome(id, table, title, index){
+            // this.deleteData(id,table,title)
+            let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
+            if (confirm(text) == true) {
+                this.$inertia.delete(`/revision/streamlined/${id}/${table}`, {
+                    onSuccess: () => {
+                        // Only runs if backend deletion succeeds
+                        this.expected_outcomes_current.splice(index, 1);
+                    },
+                    onError: () => {
+                        alert("Delete failed! Please try again.");
+                    },
+                });
+            }
+        },
+
+
+
 
     },
 };
@@ -3360,7 +4641,10 @@ table {
   padding: 1rem;
   border-radius: 8px;
 }
-
+.signatory-card-full {
+  width: 100%; /* each card full width */
+  margin-bottom: 1rem;
+}
 .sticky-comments {
     position: fixed;
     top: 70px;
@@ -3400,7 +4684,7 @@ table {
 }
 
 @keyframes highlightFlash {
-    0% { background-color: #c1fb3a; }
+    0% { background-color: #46ff18ff; }
     100% { background-color: transparent; }
 }
 
@@ -3473,5 +4757,42 @@ table {
     color: red;
 
 } */
+ .comment-rejected:hover {
+    color: #CC7722; /* golden ochre */
+}
+
+.blink {
+    color: red;
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    0%, 100% { color: red; }
+    50% { color: #f8d823; } /* paler red */
+}
+
+/* HIDING QUILL EDITOR */
+/* Hide only the .ql-editor inside this wrapper */
+:deep([ref="beneficiariesEditorWrapper"]) .ql-editor {
+  display: none;
+}
+/* .jump-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-right: 18px solid red;
+    z-index: 9999;
+    animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; }
+} */
+
+
 </style>
 

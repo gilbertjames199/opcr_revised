@@ -159,14 +159,7 @@
                     <Link class="sidebar-link" href="/revision/0?source=direct" :class="{ 'active': $page.url === '/revision/0?source=direct' }">
                     <span></span>
                     <span class="icon-holder">
-                        <!--OPCRStandard<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
-                            </svg>-->
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            class="bi bi-border-style" viewBox="0 0 16 16">
-                            <path
-                                d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z" />
-                        </svg> -->
+
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M4 2h12v20H4z"/>
                             <path d="M6 6h8"/>
@@ -175,6 +168,21 @@
                         </svg>
                     </span>
                     <span class="title">IPP</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
+                    <Link class="sidebar-link" href="/revision/0?source=sip" :class="{ 'active': $page.url === '/revision/0?source=sip' }">
+                    <span></span>
+                    <span class="icon-holder">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 2h12v20H4z"/>
+                            <path d="M6 6h8"/>
+                            <path d="M6 10h8"/>
+                            <circle cx="8" cy="16" r="2"/>
+                        </svg>
+                    </span>
+                    <span class="title">SIP</span>
                     </Link>
                 </li>
                 <!-- <li class="nav-item">
@@ -280,7 +288,7 @@
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/revision_plans?source=direct"
                         :class="{ 'active': $page.url === '/revision_plans?source=direct' }"
-                        v-if="($page.props.auth.user.department_code == '04' || $page.props.auth.user.department_code == '01')"
+                        v-if="($page.props.auth.user.department_code == '04' || $page.props.auth.user.office.empl_id == '1399')"
                     >
                     <span></span>
                     <span class="icon-holder">
@@ -541,7 +549,12 @@
                             <span class="title">Project Profile</span>
                             </Link>
                         </li>
-
+                        <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/institutional_aip"
+                                :class="{ 'active': $page.url === '/institutional_aip' }">
+                            <span class="title">AIP</span>
+                            </Link>
+                        </li>
                     </ul>
                 </li>
 

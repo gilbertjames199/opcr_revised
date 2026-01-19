@@ -816,6 +816,143 @@ class OpcrTargetController extends Controller
         $suffix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->suffix_name ? ', ' . $opcr_sem->office->pgHead->suffix_name : '') : '') : '') : '';
         $postfix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '') : '';
         $pgHead = $first_name . ' ' . ($middle_name ? substr($middle_name, 0, 1) . '. ' : '') . $last_name . $suffix_name . $postfix_name;
+
+
+        // Assistant PG Head
+        $assistant_pg_head = "";
+        $assistant_pg_head_2 = "";
+        $assistant_pg_head_3 = "";
+        if($opcr_sem){
+            if($opcr_sem->assistant_pg_head){
+                // ASSISTANT PG HEAD
+                $assistant_pg_head = $opcr_sem->assistant_pg_head;
+            }else{
+                // ASSISTANT PG HEAD
+                $ap_head=[];
+                $ap_head_1=[];
+                $ap_head_2=[];
+                $ap_head_3=[];
+                if($opcr_sem->department_code=='16'){
+                    $ap_head = UserEmployees::where('department_code',$opcr_sem->department_code)
+                    ->where('salary_grade','24')
+                    ->where('active_status','ACTIVE')
+                    ->get();
+
+                    // dd($ap_head[0],$ap_head[1],$ap_head[2]);
+                    $ap_head_1 = $ap_head[0];
+                    $ap_head_2 = $ap_head[1];
+                    $ap_head_3 = $ap_head[2];
+
+
+                    if($ap_head_1){
+                        $assistant_pg_head = $ap_head_1->first_name . ' ' . $ap_head_1->middle_name[0] . '. ' .
+                        $ap_head_1->last_name;
+                        $ap_suffix = $ap_head_1->suffix_name;
+                        $ap_post = $ap_head_1->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
+                        }
+                    }
+
+                    if($ap_head_2){
+                        $assistant_pg_head_2 = $ap_head_2->first_name . ' ' . $ap_head_2->middle_name[0] . '. ' .
+                        $ap_head_2->last_name;
+                        $ap_suffix = $ap_head_2->suffix_name;
+                        $ap_post = $ap_head_2->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head_2 = $assistant_pg_head_2 . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head_2 = $assistant_pg_head_2 . ', ' . $ap_post;
+                        }
+                    }
+
+                    if($ap_head_3){
+                        $assistant_pg_head_3 = $ap_head_3->first_name . ' ' . $ap_head_3->middle_name[0] . '. ' .
+                        $ap_head_3->last_name;
+                        $ap_suffix = $ap_head_3->suffix_name;
+                        $ap_post = $ap_head_3->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head_3 = $assistant_pg_head_3 . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head_3 = $assistant_pg_head_3 . ', ' . $ap_post;
+                        }
+                    }
+
+                }else if($opcr_sem->department_code=='11'){
+                    $ap_head = UserEmployees::where('department_code',$opcr_sem->department_code)
+                    ->where('salary_grade','24')
+                    ->where('active_status','ACTIVE')
+                    ->get();
+
+                    // dd($ap_head[0],$ap_head[1],$ap_head[2]);
+                    $ap_head_1 = $ap_head[0];
+                    $ap_head_2 = $ap_head[1];
+                    // $ap_head_3 = $ap_head[2];
+
+
+                    if($ap_head_1){
+                        $assistant_pg_head = $ap_head_1->first_name . ' ' . $ap_head_1->middle_name[0] . '. ' .
+                        $ap_head_1->last_name;
+                        $ap_suffix = $ap_head_1->suffix_name;
+                        $ap_post = $ap_head_1->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
+                        }
+                    }
+
+                    if($ap_head_2){
+                        $assistant_pg_head_2 = $ap_head_2->first_name . ' ' . $ap_head_2->middle_name[0] . '. ' .
+                        $ap_head_2->last_name;
+                        $ap_suffix = $ap_head_2->suffix_name;
+                        $ap_post = $ap_head_2->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head_2 = $assistant_pg_head_2 . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head_2 = $assistant_pg_head_2 . ', ' . $ap_post;
+                        }
+                    }
+
+
+                }else{
+                    $ap_head = UserEmployees::where('department_code',$opcr_sem->department_code)
+                    ->where('salary_grade','24')
+                    ->first();
+                    if($ap_head){
+                        $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
+                        $ap_head->last_name;
+                        $ap_suffix = $ap_head->suffix_name;
+                        $ap_post = $ap_head->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
+                        }
+                    }
+                }
+
+
+            }
+
+            if($opcr_sem->assistant_pg_head_2){
+                // ASSISTANT PG HEAD 2
+                $assistant_pg_head_2 = $opcr_sem->assistant_pg_head_2;
+            }
+            if($opcr_sem->assistant_pg_head_3){
+                // ASSISTANT PG HEAD 3
+                $assistant_pg_head_3 = $opcr_sem->assistant_pg_head_3;
+            }
+
+        }
         // dd($opcr_sem);
         // OpcrTargetBudget
         $opcr_target = OpcrTarget::with([
@@ -832,7 +969,8 @@ class OpcrTargetController extends Controller
             ->where('is_included', '1')
             ->whereHas('paps')
             ->get()
-            ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD) {
+            ->map(function ($item) use ($office, $pgHead, $sem, $year, $FFUNCCOD, $assistant_pg_head, $assistant_pg_head_2, $assistant_pg_head_3) {
+                // dd($item->opcrList->year);
                 $mfo_desc = "";
                 $paps_desc = "";
                 $success_indicator = "";
@@ -846,19 +984,74 @@ class OpcrTargetController extends Controller
                 $efficiency3 = "";
                 $timeliness = "";
                 $monitoring = "";
+                $approver = '';
+                $pos = '';
+                if($item->opcrList){
+                    if($item->opcrList->year){
+                        $semester = $sem; // "First Semester" or "Second Semester"
 
-                $approver = 'Dorothy Montejo Gonzaga';
-                $pos = 'Governor';
-                // $FFUNCCOD = $item->FFUNCCOD;
-                // dd($FFUNCCOD);
-                if ($FFUNCCOD == '1021') {
-                    $approver = 'Jayvee Tyron L. Uy';
-                    $pos = 'Vice Governor';
+                        $semValue = $semester === 'Second Semester' ? 2 : 1;
+                        // Inputs
+                        // dd($year, $semValue, $FFUNCCOD);
+                        // Default values
+                        // ===============================
+                        // TERM DETERMINATION
+                        // ===============================
+
+                        // Term 1: Second Semester 2022 → First Semester 2025
+                        if (
+                            ($year > 2022 || ($year == 2022 && $semValue == 2)) &&
+                            ($year < 2025 || ($year == 2025 && $semValue == 1))
+                        ) {
+
+                            $approver = 'Dorothy M. Gonzaga';
+                            $pos = 'Governor';
+                            if (in_array($FFUNCCOD, ['1021', '1016'])) {
+                                $approver = 'Tyron L. Uy';
+                                $pos = 'Vice Governor';
+                            }
+                        }
+
+                        // Term 2: Second Semester 2025 → First Semester 2028
+                        elseif (
+                            ($year > 2025 || ($year == 2025 && $semValue == 2)) &&
+                            ($year < 2028 || ($year == 2028 && $semValue == 1))
+                        ) {
+                            $approver = 'Engr. Raul G. Mabanglo';
+                            $pos = 'Governor';
+
+                            if (in_array($FFUNCCOD, ['1021', '1016'])) {
+                                $approver = 'Dorothy M. Gonzaga';
+                                $pos = 'Vice Governor';
+                            }
+                        }
+
+                        // Term 3: Second Semester 2028 → First Semester 2031
+                        elseif (
+                            ($year > 2028 || ($year == 2028 && $semValue == 2)) &&
+                            ($year < 2031 || ($year == 2031 && $semValue == 1))
+                        ) {
+                            $approver = '-';
+                            $pos = 'Governor';
+                            if (in_array($FFUNCCOD, ['1021', '1016'])) {
+                                $approver = '-';
+                                $pos = 'Vice Governor';
+                            }
+                        }
+                    }
                 }
-                if ($FFUNCCOD == '1016') {
-                    $approver = 'Jayvee Tyron L. Uy';
-                    $pos = 'Vice Governor';
-                }
+                // $approver = 'Engr. Raul G. Mabanglo';
+                // $pos = 'Governor';
+                // // $FFUNCCOD = $item->FFUNCCOD;
+                // // dd($FFUNCCOD);
+                // if ($FFUNCCOD == '1021') {
+                //     $approver = 'Dorothy M. Gonzaga';
+                //     $pos = 'Vice Governor';
+                // }
+                // if ($FFUNCCOD == '1016') {
+                //     $approver = 'Dorothy M. Gonzaga';
+                //     $pos = 'Vice Governor';
+                // }
                 // dd($item->paps->opcr_standard[0]);
                 if ($item->paps) {
                     $paps_desc = $item->paps->paps_desc;
@@ -910,6 +1103,9 @@ class OpcrTargetController extends Controller
                     'idpaps' => $item->paps ? $item->paps->id : "",
                     'office' => $office,
                     'pgHead' => $pgHead,
+                    'assistant_pg_head'=>$assistant_pg_head,
+                    'assistant_pg_head_2'=>$assistant_pg_head_2,
+                    'assistant_pg_head_3'=>$assistant_pg_head_3,
                     'sem' => $sem,
                     'year' => $year,
                     'period' => $period,
@@ -937,6 +1133,7 @@ class OpcrTargetController extends Controller
                 'idpaps' => null,
                 'office' => $office,
                 'pgHead' => $pgHead,
+                'assistant_pg_head'=>$assistant_pg_head,
                 'sem' => $sem,
                 'year' => $year,
                 'period' => ($sem === 'First Semester')

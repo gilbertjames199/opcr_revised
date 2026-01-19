@@ -169,4 +169,24 @@ class ExpectedRevisedOutcomeController extends Controller
         //dd($request->raao_id);
         return redirect()->back()->with('deleted', 'Deleted Expected Outcome');
     }
+    public function save_multiple(Request $request){
+        $rows = $request->input('rows', []);
+
+        $savedOutcomes = [];
+        foreach ($rows as $row) {
+            $savedOutcomes[] = ExpectedRevisedOutcome::create([
+                'description' => $row['description'],
+                'strategy_id' => $row['strategy_id'],
+                'strategy_project_id' => $row['strategy_project_id'],
+                'activity_id' => $row['activity_id'],
+                'activity_project_id' => $row['activity_project_id'],
+                'is_strategy_outcome' => $row['is_strategy_outcome'] ?? 0,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $savedOutcomes
+        ]);
+    }
 }
