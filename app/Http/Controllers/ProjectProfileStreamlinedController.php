@@ -94,12 +94,17 @@ class ProjectProfileStreamlinedController extends Controller
         // CHART OF ACCOUNTS --used in budgetary requirements
         $acc = DB::connection('mysql2')->table('chartofaccounts')->get();
         // dd($duplicate);
-
+        // dd($request->source);
         // CHECK FOR STATUS if submitted, return if error if true
         if ($duplicate) {
-            if (intval($duplicate->status) >= 0) {
-                return redirect()->back()->with('error', 'Project profile already submitted');
+            if($request->source=="rev_app"){
+                // dd("here");
+            }else{
+                if (intval($duplicate->status) >= 0) {
+                    return redirect()->back()->with('error', 'Project profile already submitted');
+                }
             }
+
         }
 
         // GET ALL POPSP AGENCIES

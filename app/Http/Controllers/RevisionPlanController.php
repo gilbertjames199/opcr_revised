@@ -3798,7 +3798,10 @@ class RevisionPlanController extends Controller
                 ])->where('project_id', $revision->id)
                 // Activity must exist and NOT be soft-deleted
                 ->whereHas('activity', function ($q) {
-                    $q->whereNull('deleted_at');
+                    $q->whereNull('deleted_at')
+                        ->whereHas('strat', function($query){
+                            $query->whereNull('deleted_at');
+                        });
                 })
 
                 // Strategy must exist and NOT be soft-deleted
@@ -3954,7 +3957,15 @@ class RevisionPlanController extends Controller
     {
 
 
-        $activitiesQuery = ActivityProject::where('project_id', $revision->id);
+        $activitiesQuery = ActivityProject::whereHas('activity', function($query){
+                            $query->whereNull('deleted_at')
+          ->whereHas('strat', function ($q) {
+              $q->whereNull('deleted_at');
+          });
+                        }
+
+                    )
+                    ->where('project_id', $revision->id);
 
         // ---- TOTAL BUDGET ACROSS ALL ACTIVITY ROWS ----
         $total_budget = $activitiesQuery->get()->reduce(function ($carry, $row) {
