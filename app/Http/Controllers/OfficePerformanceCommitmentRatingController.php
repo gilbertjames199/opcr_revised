@@ -1041,8 +1041,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                         ->where('salary_grade', '24')
                         ->get();
                     // dd($ap_head_m);
-                    if(count($ap_head_m)>0){
-                        $ap_head=$ap_head_m[0];
+                    if (count($ap_head_m) > 0) {
+                        $ap_head = $ap_head_m[0];
                         $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
                             $ap_head->last_name;
                         $ap_suffix = $ap_head->suffix_name;
@@ -1137,6 +1137,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'office_performance_commitment_ratings.rating_q',
             'office_performance_commitment_ratings.rating_e',
             'office_performance_commitment_ratings.rating_t',
+            'office_performance_commitment_ratings.e1',
             'office_performance_commitment_ratings.remarks',
             'office_performance_commitment_ratings.FFUNCCOD',
             'office_performance_commitment_ratings.opcr_id',
@@ -1154,9 +1155,12 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'opcr_targets.quantity_unit',
             'os.performance_measure',
             'os.efficiency1',
+            'os.efficiency2',
+            'os.efficiency3',
             'os.timeliness',
             'os.prescribed_period',
-            'os.office_accountable'
+            'os.office_accountable',
+
         )
             ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
             ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'office_performance_commitment_ratings.id_paps')
@@ -1196,8 +1200,12 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 // dd($item);
                 // dd($my_opcr);
                 $efficiency1 = $item->efficiency1;
+                $efficiency2 = $item->efficiency2;
+                $efficiency3 = $item->efficiency3;
                 $performance_measure = $item->performance_measure;
                 $timeliness = $item->timeliness;
+
+
                 $prescribed_period = $item->prescribed_period;
                 $paps_desc = $item->paps_desc;
                 $office_accountable = $item->office_accountable;
@@ -1208,6 +1216,38 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 } else {
                     $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
                 }
+
+
+                $quality_rating_description = $this->qualityRatingDescription($item->rating_q);
+                $efficiency_rating_description = $this->efficiencyRatingDescription($item->rating_e);
+                $prescribed_period_description = "";
+
+                if ($item->rating_q == 2 || $item->rating_q == 1 || $item->rating_e == 2 || $item->rating_e == 1) {
+                    $prescribed_period_description = $this->prescribedPeriodRatingDescription_below2($item->e1);
+                } else {
+                    $prescribed_period_description = $this->prescribedPeriodDescription($item->e1);
+                }
+
+                $timeliness_description = "";
+                if ($item->rating_q == 2 || $item->rating_q == 1 || $item->rating_e == 2 || $item->rating_e == 1) {
+                    $timeliness_description = $this->timelinessRatingDescription_below2($item->rating_t);
+                } else {
+                    $timeliness_description = $this->timelinessDescription($item->rating_t);
+                }
+
+                // dd($item);
+                $Actual_Accomplishment = "";
+                if ($paps_desc) {
+                    if ($efficiency1 == "Yes") {
+                        $Actual_Accomplishment = $timeliness == "No" ? $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness " . $prescribed_period_description : $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness ";;
+                    } elseif ($efficiency1 == "No" && $timeliness != null && $timeliness != "No") {
+                        $Actual_Accomplishment = $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness " . $timeliness_description;
+                    } elseif ($efficiency1 == "No" && $timeliness == "No") {
+                        $Actual_Accomplishment = $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness ";
+                    }
+                }
+
+                // dd($Actual_Accomplishment);
                 $approver = 'Engr. Raul G. Mabanglo';
                 // true
                 if ($isPA1) {
@@ -1330,7 +1370,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "adjectival" => $adj,
                     "pmt_chair" => $pmt_chair,
                     "overall_average" => $ave,
-
+                    "Actual_Accomplishment" => $Actual_Accomplishment,
                     // "office_accountable" => $office_accountable
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
@@ -1375,6 +1415,127 @@ class OfficePerformanceCommitmentRatingController extends Controller
         //********************************************** */
 
 
+    }
+
+
+    private function qualityRatingDescription($score)
+    {
+        $rating = round($score);
+
+        switch ($rating) {
+            case 1:
+                return 'Poor';
+            case 2:
+                return 'Unsatisfactory';
+            case 3:
+                return 'Satisfactory';
+            case 4:
+                return 'Very Satisfactory';
+            case 5:
+                return 'Outstanding';
+            default:
+                return 'No';
+        }
+    }
+
+    private function efficiencyRatingDescription($score)
+    {
+        $rating = round($score);
+
+        switch ($rating) {
+            case 1:
+                return 'Poor';
+            case 2:
+                return 'Unsatisfactory';
+            case 3:
+                return 'Satisfactory';
+            case 4:
+                return 'Very Satisfactory';
+            case 5:
+                return 'Outstanding';
+            default:
+                return 'No';
+        }
+    }
+
+    private function prescribedPeriodRatingDescription_below2($score)
+    {
+        $rating = round($score);
+
+        switch ($rating) {
+            case 5:
+                return 'however way ahead of the prescribed period';
+            case 4:
+                return 'however earlier than the prescribed period';
+            case 3:
+                return 'however within the prescribed period';
+            case 2:
+                return 'and beyond the prescribed period';
+            case 1:
+                return 'and far beyond the prescribed period';
+            default:
+                return 'No Rating';
+        }
+    }
+
+    private function prescribedPeriodDescription($score)
+    {
+        $rating = round($score);
+
+        switch ($rating) {
+            case 5:
+                return 'and way ahead of the prescribed period';
+            case 4:
+                return 'and earlier than the prescribed period';
+            case 3:
+                return 'and within the prescribed period';
+            case 2:
+                return 'however beyond the prescribed period';
+            case 1:
+                return 'however far beyond the prescribed period';
+            default:
+                return 'No Rating';
+        }
+    }
+
+    private function timelinessRatingDescription_below2($score)
+    {
+        $rating = round($score);
+
+        switch ($rating) {
+            case 5:
+                return 'however significantly ahead of the deadline';
+            case 4:
+                return 'however earlier than the deadline';
+            case 3:
+                return 'however within the deadline';
+            case 2:
+                return 'and beyond the deadline';
+            case 1:
+                return 'and far beyond the deadline';
+            default:
+                return 'No Rating';
+        }
+    }
+
+    private function timelinessDescription($score)
+    {
+        $rating = round($score);
+
+        switch ($rating) {
+            case 5:
+                return 'and way ahead of the deadline';
+            case 4:
+                return 'and earlier than the deadline';
+            case 3:
+                return 'and within the deadline';
+            case 2:
+                return 'however beyond the deadline';
+            case 1:
+                return 'however far beyond the deadline';
+            default:
+                return 'No Rating';
+        }
     }
     // public function print_accomplishment(Request $request)
     // {
