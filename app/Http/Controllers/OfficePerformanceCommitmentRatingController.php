@@ -1235,11 +1235,12 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $timeliness_description = $this->timelinessDescription($item->rating_t);
                 }
 
+                // dd($item);
                 $Actual_Accomplishment = "";
                 if ($paps_desc) {
                     if ($efficiency1 == "Yes") {
                         $Actual_Accomplishment = $timeliness == "No" ? $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness " . $prescribed_period_description : $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness ";;
-                    } elseif ($efficiency1 == "No") {
+                    } elseif ($efficiency1 == "No" && $timeliness == "Yes") {
                         $Actual_Accomplishment = $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness " . $timeliness_description;
                     } elseif ($efficiency1 == "No" && $timeliness == "No") {
                         $Actual_Accomplishment = $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness ";
