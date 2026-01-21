@@ -23,13 +23,19 @@ class HGDGScoreController extends Controller
 
         $revplan = RevisionPlan::find($idrevplan);
         // dd($revplan->status);
+        // dd($request->source);
         if($revplan->status>-1){
-            $status_words = [
-                '0'=>'Submitted',
-                '1'=>'Reviewed',
-                '2'=>'Locked'
-            ];
-            return redirect()->back()->with('error', 'Cannot access HGDG Evaluation. Revision Plan is already '.$status_words[$revplan->status].'.');
+            if($request->source=='rev_app'){
+
+            }else{
+                $status_words = [
+                    '0'=>'Submitted',
+                    '1'=>'Reviewed',
+                    '2'=>'Locked'
+                ];
+                return redirect()->back()->with('error', 'Cannot access HGDG Evaluation. Revision Plan is already '.$status_words[$revplan->status].'.');
+            }
+
         }
         $checklist_id = $revplan->checklist_id;
         // dd($revplan->checklist_id);

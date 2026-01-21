@@ -4698,7 +4698,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.checklist_id]])], 8
   /* PROPS */
   , _hoisted_59), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    href: "/HGDGScore/".concat($data.paps.id),
+    href: "/HGDGScore/".concat($data.paps.id, "?source=rev_app"),
     style: {
       "color": "white"
     }

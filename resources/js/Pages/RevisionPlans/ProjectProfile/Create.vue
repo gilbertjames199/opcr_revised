@@ -357,7 +357,7 @@
                                     </select>
                                 </td>
                                 <th class="bg-secondary text-white" colspan="1">
-                                    <Link :href="`/HGDGScore/${paps.id}`" style="color:white">HGDG Score </Link>
+                                    <Link :href="`/HGDGScore/${paps.id}?source=rev_app`" style="color:white">HGDG Score </Link>
                                      <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','HGDG Score',paps.hgdg_score,'hgdg_score','revision_plans', paps, paps.comments)">*
                                     </button>
