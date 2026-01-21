@@ -535,6 +535,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->get()
                 ->map(function($item)use($opcr_list_id){
                     // dd($item->paps);
+                    // dd($item);
                     // dd($item->opcr_rating2, $opcr_list_id);
                     $rating = null;
                     $movs = [];
@@ -584,6 +585,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'quantity'=>$item->quantity,
                         'success_indicator'=>$item->success_indicator,
                         "opcr_rating_id"=>$rid,
+                        "accomplishments"=>optional(optional($item)->opcr_rating)->accomplishments,
                         "q1"=>$q1,
                         "q2"=>$q2,
                         "q3"=>$q3,

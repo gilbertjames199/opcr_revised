@@ -125,6 +125,7 @@
                             <tr class="text-white" style="background-color: #026673">
                                 <th rowspan="2" ><h5>MFO</h5></th>
                                 <th rowspan="2" ><h5>PAPS</h5></th>
+                                <th rowspan="2" ><h5>Accomplishments</h5></th>
                                 <th colspan="7" rowspan="1" style="text-align: center" ><h5>Rating</h5></th>
                                 <th rowspan="2" ><h5>Remarks</h5></th>
                                 <th rowspan="2" ><h5>MOVs</h5></th>
@@ -157,6 +158,8 @@
                                         {{ dat.paps_desc }}
 
                                     </td>
+                                    <!-- Actual Accomplishments -->
+                                    <td>{{ dat.accomplishments }}</td>
                                     <!-- <td>{{ dat.success_indicator }}</td>
                                     <td>{{ dat.target_success_indicator }}</td>
                                     <td>{{ dat.quantity }}</td>
