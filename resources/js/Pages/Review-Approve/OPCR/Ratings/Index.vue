@@ -273,10 +273,26 @@
                                     <!-- T1 -->
                                     <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                         <div>Timeliness (Deadline)</div>
+                                        <!-- t1_standard: {{ dat.t1_standard }} -->
+                                        <!-- :disabled="dat.t1_standard !== 'Yes'"
+                                            :style="dat.t1_standard !== 'Yes' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''" -->
                                         <select v-model="opcr_data[index].t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                             @change="saveRating(opcr_data[index].t1, opcr_data[index].opcr_rating_id, 't1')"
-                                            :disabled="dat.t1_standard !== 'Yes'"
-                                            :style="dat.t1_standard !== 'Yes' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
+
+                                            :disabled="
+                                                dat.t1_standard === 'No' ||
+                                                dat.t1_standard === null ||
+                                                dat.t1_standard === undefined ||
+                                                Number.isNaN(dat.t1_standard)
+                                            "
+                                            :style="
+                                                dat.t1_standard === 'No' ||
+                                                dat.t1_standard === null ||
+                                                dat.t1_standard === undefined ||
+                                                Number.isNaN(dat.t1_standard)
+                                                    ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;'
+                                                    : ''
+                                            "
                                         >
                                             <option>1</option>
                                             <option>2</option>
