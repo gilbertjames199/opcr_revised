@@ -74,6 +74,7 @@
                                 <th>Full Edit</th>
                                 <th></th>
                                 <th>Version</th>
+                                <th>Year</th>
                                 <th>Type</th>
                                 <th>Actions</th>
                             </tr>
@@ -253,10 +254,29 @@
                                     >
                                         Request for return
                                     </button>
+
+
+                                    <!-- Forward for Next Year when status = 'approved' (example) -->
+                                    <button
+                                        v-if="dat.status == 1 && parseInt(dat.number_of_clones)<1 && dat.type==='p'"
+                                        @click="generateProjectDesign(dat.id, 'ny')"
+                                        :style="{
+                                            padding: '4px 10px',
+                                            border: 'none',
+                                            borderRadius: '4px',
+                                            backgroundColor: 'green',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold'
+                                        }"
+                                    >
+                                        Forward Next Year
+                                    </button>
                                     <!-- {{ dat.number_of_clones }} -->
                                 </td>
                                 <!-- VERSIONS -->
                                 <td>{{ dat.version }} </td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>{{dat.year}}</b>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <!-- TYPE -->
                                 <td>{{ formatProjectType(dat.type) }}</td>
                                 <td>
@@ -867,19 +887,35 @@ export default {
             if (!confirm("Are you sure you want to generate the Project Design for this project?")) {
                 return; // User canceled
             }
+            if(type=='p'){
+                // Make the Inertia POST request
+                Inertia.post(`/project/design/generate/${id}`, {
+                    'type': type
+                }, {
+                    onSuccess: () => {
+                        // optional: anything you want to run after success
+                        console.log("Project Design generated.");
+                    },
+                    onError: (errors) => {
+                        console.error(errors);
+                    }
+                });
+            }else if(type=='ny'){
+                // alert(type)
+                Inertia.post(`/project/next_year/${id}`, {
+                    'type': type
+                }, {
+                    onSuccess: () => {
+                        // optional: anything you want to run after success
+                        console.log("Project Design generated.");
+                    },
+                    onError: (errors) => {
+                        console.error(errors);
+                    }
+                });
+            }
 
-            // Make the Inertia POST request
-            Inertia.post(`/project/design/generate/${id}`, {
-                'type': type
-            }, {
-                onSuccess: () => {
-                    // optional: anything you want to run after success
-                    console.log("Project Design generated.");
-                },
-                onError: (errors) => {
-                    console.error(errors);
-                }
-            });
+
         },
         // NEW SIP GENERATION
         showSIPModal(){

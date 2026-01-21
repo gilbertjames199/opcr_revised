@@ -95,6 +95,7 @@ use App\Http\Controllers\MeansOfVerificationController;
 use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
 use App\Http\Controllers\ProjectDesignController;
+use App\Http\Controllers\ProjectProfileNextYearController;
 use App\Http\Controllers\ProjectProfileStreamlinedController;
 use App\Http\Controllers\ProjectProfileTrackingController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
@@ -465,6 +466,10 @@ Route::middleware('auth')->group(function () {
     // Project Design
     Route::prefix('/project/design')->group(function () {
         Route::post('/generate/{id}', [ProjectDesignController::class, 'generateProjectDesign']);
+    });
+    // Forward Next Year
+    Route::prefix('/project/next_year')->group(function(){
+        Route::post('/{sem_id}',[ProjectProfileNextYearController::class,'index']);
     });
     // Cash Disbursements Forecast
     Route::prefix('/cdf')->group(function(){

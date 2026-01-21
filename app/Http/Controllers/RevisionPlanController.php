@@ -289,6 +289,7 @@ class RevisionPlanController extends Controller
             ->map(function ($item) use ($budget_controller) {
                 // COUNT THE COMMENTS
                 // dd($item);
+                $year = Carbon::parse($item->date_start)->year;
                 $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)->where('table_name', 'revision_plans')->count();
                 // dd($revision_comment);
 
@@ -328,6 +329,7 @@ class RevisionPlanController extends Controller
                     'imp_amount' => $imp_amount,
                     'status' => $item->status,
                     'number_of_clones' => $item->clonedVersions->count(),
+                    'year'=>$year
                     // 'paps'=>$item->paps
                 ];
             });
@@ -431,6 +433,7 @@ class RevisionPlanController extends Controller
             })
             ->get()
             ->map(function ($item) use ($budget_controller) {
+                $year = Carbon::parse($item->date_start)->year;
                 // COUNT THE COMMENTS
                 // dd($item);
                 $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)->where('table_name', 'revision_plans')->count();
@@ -478,7 +481,8 @@ class RevisionPlanController extends Controller
                     'imp_amount' => $imp_amount,
                     'status' => $item->status,
                     'number_of_clones' => $item->clonedVersions->count(),
-                    'return_request_status' => $item->return_request_status
+                    'return_request_status' => $item->return_request_status,
+                    'year'=>$year
                     // 'paps'=>$item->paps
                 ];
             });
