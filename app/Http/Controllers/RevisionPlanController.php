@@ -4162,6 +4162,11 @@ class RevisionPlanController extends Controller
                 $expected_outcomes = optional($proj)->expected_outcome
                     ? optional($proj)->expected_outcome->pluck('description')->implode('<br><br>')
                     : null;
+                $ps_total=floatval($proj->ps_q1)+floatval($proj->ps_q2)+floatval($proj->ps_q3)+floatval($proj->ps_q4);
+                $mooe_total=floatval($proj->mooe_q1)+floatval($proj->mooe_q2)+floatval($proj->mooe_q3)+floatval($proj->mooe_q4);
+                $fe_total= floatval($proj->fe_q1)+floatval($proj->fe_q2)+floatval($proj->fe_q3)+floatval($proj->fe_q4);
+                $co_total= floatval($proj->co_q1)+floatval($proj->co_q2)+floatval($proj->co_q3)+floatval($proj->co_q4);
+                $overall_total = floatval($ps_total)+floatval($mooe_total)+floatval($fe_total)+floatval($co_total);
                 return [
                     'activity_project_id' => $proj->id ?? null,
                     'revision_plan_id' => $request->revision_plan_id,
@@ -4175,23 +4180,24 @@ class RevisionPlanController extends Controller
                     'ps_q2' => $proj->ps_q2 ?? 0,
                     'ps_q3' => $proj->ps_q3 ?? 0,
                     'ps_q4' => $proj->ps_q4 ?? 0,
-                    'ps_total' => floatval($proj->ps_q1)+floatval($proj->ps_q2)+floatval($proj->ps_q3)+floatval($proj->ps_q4),
+                    'ps_total' => $ps_total,
                     'mooe_q1' => $proj->mooe_q1 ?? 0,
                     'mooe_q2' => $proj->mooe_q2 ?? 0,
                     'mooe_q3' => $proj->mooe_q3 ?? 0,
                     'mooe_q4' => $proj->mooe_q4 ?? 0,
-                    'mooe_total' => floatval($proj->mooe_q1)+floatval($proj->mooe_q2)+floatval($proj->mooe_q3)+floatval($proj->mooe_q4),
+                    'mooe_total' => $mooe_total,
                     'fe_q1' => $proj->fe_q1 ?? 0,
                     'fe_q2' => $proj->fe_q2 ?? 0,
                     'fe_q3' => $proj->fe_q3 ?? 0,
                     'fe_q4' => $proj->fe_q4 ?? 0,
-                    'fe_total' => floatval($proj->fe_q1)+floatval($proj->fe_q2)+floatval($proj->fe_q3)+floatval($proj->fe_q4),
+                    'fe_total' => $fe_total,
                     'co_q1' => $proj->co_q1 ?? 0,
                     'co_q2' => $proj->co_q2 ?? 0,
                     'co_q3' => $proj->co_q3 ?? 0,
                     'co_q4' => $proj->co_q4 ?? 0,
                     'ccet' => $proj->ccet ?? null,
-                    'co_total' => floatval($proj->co_q1)+floatval($proj->co_q2)+floatval($proj->co_q3)+floatval($proj->co_q4),
+                    'co_total' => $co_total,
+                    'total'=>$overall_total,
                     'responsible' => $proj->responsible ?? null,
                     'expected_outputs' => $expected_outputs,
                     'target_indicators' => $target_indicators,
