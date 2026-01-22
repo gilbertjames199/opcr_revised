@@ -388,6 +388,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // dd($baseUrl);
         // dd($rating_status);
         // dd($baseUrl);
+        // dd($component);
         return inertia($component, [
             'total' => $total,
             'ave' => $ave,

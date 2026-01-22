@@ -33,7 +33,7 @@ class ProjectProfileTrackingController extends Controller
     public function status_update(Request $request, $id, $type, $new_status)
     {
         if ($new_status == "7") {
-            dd("seven jud siya:", $id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
+            // dd("seven jud siya:", $id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
         }
         // dd($id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
         $rrt = "";
@@ -311,5 +311,14 @@ class ProjectProfileTrackingController extends Controller
             ->groupBy('raaohs.idprogram')
             ->get();
         return $programs;
+    }
+
+    public function tracking(Request $request){
+        // dd($request);
+        $uid = auth()->user()->recid;
+        // dd($uid);
+        $data = ProjectProfileTracking::with(['revisionPlan'])
+                ->where('action_by')->get();
+        dd($data);
     }
 }

@@ -2597,8 +2597,9 @@ class RevisionPlanController extends Controller
     public function api_ppa(Request $request)
     {
         $dept_id = $request->department_code;
-
+        // dd($dept_id);
         $budget_controller = new BudgetRequirementController($this->budget);
+    // dd($budget_controller);
         // select(
         //     'revision_plans.id',
         //     'revision_plans.project_title',
@@ -2611,6 +2612,8 @@ class RevisionPlanController extends Controller
         // )
         // ->
         // dd("dsdsdsdsd");
+        // dd(RevisionPlan::with(['paps','paps.office'])->whereHas('paps', function($query)use($dept_id)
+        //     {$query->where('department_code', $dept_id);})->get()->pluck('status'));
         $query = RevisionPlan::with(['paps', 'paps.office'])
             ->where('status','1')
             // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')

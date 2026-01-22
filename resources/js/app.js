@@ -375,10 +375,11 @@ createInertiaApp({
 
                     },
                     getStatus(stat_num) {
+                        // alert(stat_num)
                         if (typeof stat_num !== 'string') {
                             stat_num = String(stat_num);
                         }
-                        if (stat_num === '-2') {
+                        if (stat_num == '-2') {
                             return 'Returned';
                         } else if (stat_num === '-1') {
                             return 'Saved';
@@ -624,6 +625,7 @@ createInertiaApp({
                         if (status === 0) return 'Submitted';
                         if (status === 1) return 'Reviewed';
                         if (status === 2) return 'Approved';
+                        if (status === -2) return 'Returned';
 
                         return 'unknown';
                     },

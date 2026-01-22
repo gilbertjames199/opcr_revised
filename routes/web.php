@@ -432,6 +432,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProjectProfileController::class, 'index']);
         Route::get('/create', [ProjectProfileController::class, 'create']);
     });
+    // Project Profile Trackings
+    Route::prefix('/project-profile-tracking')->group(function(){
+        Route::get('/',[ProjectProfileTrackingController::class, 'tracking']);
+    });
     //Revision Plan
     Route::prefix('/revision')->group(function () {
         Route::get('/{id}', [RevisionPlanController::class, 'index']);

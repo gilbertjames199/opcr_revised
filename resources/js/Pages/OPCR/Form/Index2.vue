@@ -30,7 +30,9 @@
         <!-- {{ opcr_date }} -->
         <div class="masonry-sizer col-md-6">
             <h5>PERIOD: <u>{{ opcr_date }}</u></h5>
-            <h5>STATUS: <u>{{ getStatus(list.rating_status) }}</u></h5>
+            <h5>STATUS: <u>{{ getStatus(String(list.rating_status)) }}</u></h5>
+            <!-- {{ list }}
+            {{ list.rating_status }} -->
         </div>
         <div class="col-12">
             <!-- <div class="row gap-20"></div> -->
@@ -175,6 +177,13 @@
                             :disabled="form.processing">
                             Print
                         </button>&nbsp;
+                        <!-- rating_status_dt:{{ rating_status_dt }} -->
+                        <span v-if="rating_status_dt==-2">
+                            <button type="button" class="btn btn-primary mt-3 text-white" @click="submitRecallRating(-1,0,'Successfully submitted OPCR', 'Are you sure you want to submit this OPCR')"
+                            :disabled="form.processing" >
+                                Submit
+                            </button>&nbsp;
+                        </span>
                         <!-- <span v-if="rating_status_dt==-1 || rating_status_dt==-2">
                             <button type="button" class="btn btn-primary mt-3 text-white" @click="submitRecallRating(-1,0,'Successfully submitted OPCR', 'Are you sure you want to submit this OPCR')"
                             :disabled="form.processing" >

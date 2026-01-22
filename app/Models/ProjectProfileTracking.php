@@ -11,4 +11,9 @@ class ProjectProfileTracking extends Model
     protected $connection = "mysql";
     protected $table='project_profile_trackings';
     protected $guarded = ['id'];
+
+    public function revisionPlan()
+    {
+        return $this->belongsTo(RevisionPlan::class, 'revision_plan_id', 'id');
+    }
 }
