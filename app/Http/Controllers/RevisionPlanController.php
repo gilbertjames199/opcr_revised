@@ -3507,6 +3507,10 @@ class RevisionPlanController extends Controller
                 // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
                 $signatories = $this->getSignatories($item->id);
                 // dd($signatories);
+                $rationale = html_entity_decode($item->rationale, ENT_QUOTES | ENT_HTML5);
+
+                // Optional but recommended: strip unsupported tags
+                $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
                 return [
                     'id' => $item->id,
                     'idpaps' => $item->idpaps,
@@ -3537,7 +3541,8 @@ class RevisionPlanController extends Controller
                     'checklist_id' => $item->checklist_id,
                     'hgdg_score' => $item->hgdg_score,
                     'hgdg_percent' => $item->hgdg_percent,
-                    'rationale' => '<p align="justify">' . e($item->rationale) . '</p>',
+                    // 'rationale' => '<p align="justify">' . e($item->rationale) . '</p>',
+                    'rationale' => '<p align="justify">' . $rationale . '</p>',
                     'objective' => '<p align="justify">' .trim($item->objective). '</p>',
                     'beneficiaries' => $item->beneficiaries,
                     'implementing_team' => $item->implementing_team,
