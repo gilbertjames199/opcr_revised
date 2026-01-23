@@ -529,6 +529,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
         // dd($request->type);
         $data=[];
         if($request->type=='Review'){
+            // dd(OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)->where('is_included', '1')->get());
             $data = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)
                 ->with(['opcr_rating','opcr_rating.movs','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard'])
                 ->where('is_included', '1')

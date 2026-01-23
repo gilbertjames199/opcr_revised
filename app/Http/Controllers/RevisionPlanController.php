@@ -3558,9 +3558,6 @@ class RevisionPlanController extends Controller
 
     public function ipp(Request $request)
     {
-        $amount = $this->getActivityTotal($request->id);
-        $proposed_budget = $this->getTotalBudgetRequirements($request->id);
-        // dd($amount);
         $revplan = RevisionPlan::with([
             // 'teamPlans',
             // 'monitoringAndEvaluations',
@@ -3569,8 +3566,13 @@ class RevisionPlanController extends Controller
             'paps.office'
         ])
             ->where('id', $request->id)
-            ->get()
-            ->map(function ($item)use($amount, $proposed_budget) {
+            ->get();
+        $amount = $this->getActivityTotal($request->id);
+        $proposed_budget = $this->getTotalBudgetRequirements($request->id);
+
+        // dd($amount);
+
+            $revplan=clone($revplan)->map(function ($item)use($amount, $proposed_budget) {
                 // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
                 $signatories = $this->getSignatories($item->id);
                 // dd($signatories);
