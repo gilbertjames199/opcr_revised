@@ -3559,6 +3559,7 @@ class RevisionPlanController extends Controller
     public function ipp(Request $request)
     {
         $amount = $this->getActivityTotal($request->id);
+        $proposed_budget = $this->getTotalBudgetRequirements($request->id);
         // dd($amount);
         $revplan = RevisionPlan::with([
             // 'teamPlans',
@@ -3569,7 +3570,7 @@ class RevisionPlanController extends Controller
         ])
             ->where('id', $request->id)
             ->get()
-            ->map(function ($item)use($amount) {
+            ->map(function ($item)use($amount, $proposed_budget) {
                 // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
                 $signatories = $this->getSignatories($item->id);
                 // dd($signatories);
@@ -3606,7 +3607,7 @@ class RevisionPlanController extends Controller
                     'baseline_total' => $tot,
                     'data_source' => $item->data_source,
                     'amount' => $amount,
-                    'proposed_budget' => $item->proposed_budget,
+                    'proposed_budget' => $proposed_budget,
                     'attributed_amount' => $item->attributed_amount,
                     'checklist_id' => $item->checklist_id,
                     'hgdg_score' => $item->hgdg_score,
