@@ -3578,8 +3578,8 @@ class RevisionPlanController extends Controller
                 // Optional but recommended: strip unsupported tags
                 $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
 
-                $date_start = Carbon::parse($item->date_start)->format('F, Y');
-                $date_end = Carbon::parse($item->date_end)->format('F, Y');
+                $date_start = Carbon::parse($item->date_start)->format('F Y');
+                $date_end = Carbon::parse($item->date_end)->format('F Y');
                 $tot = intval($item->beneficiary_male)+intval($item->beneficiary_female);
                 return [
                     'id' => $item->id,
