@@ -526,7 +526,8 @@ class ProjectProfileStreamlinedController extends Controller
             },
             'activity.activityProject' => function ($q) use ($id) {
                 $q->where('project_id', $id)
-                    ->where('is_active', '1');
+                    ->where('is_active', '1')
+                    ->orderBy('activity_id', 'asc');
             },
             'activity.activityProject.expected_output',
             'activity.activityProject.expected_output.comments',

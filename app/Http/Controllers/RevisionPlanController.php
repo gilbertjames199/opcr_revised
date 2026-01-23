@@ -108,10 +108,21 @@ class RevisionPlanController extends Controller
                 if ($request->source == 'sip') {
                     $data = $this->getSip($request, $dept_id, $popsp_agency, $budget_controller);
                 } else {
+                    $gas = $this->forGas($FFUNCCOD, 2026);
+                    // dd($gas);
+                    $gas2 = $this->forGas($FFUNCCOD, 2027);
+                    // dd($gas2);
                     $data = $this->getDirect($request, $dept_id, $popsp_agency, $budget_controller);
+
+                    if(count($gas)>0){
+                        $data = $data->concat($gas);
+                    }
+                    if(count($gas2)>0){
+                        $data = $data->concat($gas2);
+                    }
                 }
             }
-
+            // dd($data);
             return inertia('RevisionPlans/Index', [
                 // "filters" => $request->only(['search']),
                 'data' => $data,
@@ -187,6 +198,60 @@ class RevisionPlanController extends Controller
                 ],
             ]);
         }
+    }
+    public function forGas($FFUNCCOD, $currentYear){
+        // dd($FFUNCCOD);
+        // dd(RevisionPlan::where('revision_plans.FFUNCCOD', $FFUNCCOD)->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'revision_plans.FFUNCCOD')->where('revision_plans.scope', 'GAS')->get());
+        $data = RevisionPlan::select(
+            'revision_plans.id',
+            'revision_plans.project_title',
+            'revision_plans.version',
+            'revision_plans.type',
+            'revision_plans.year_period',
+            'ff.FFUNCTION',
+            'status',
+        )
+            ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'revision_plans.FFUNCCOD')
+            ->where('revision_plans.FFUNCCOD', $FFUNCCOD)
+            ->where('revision_plans.year_period', $currentYear)
+            // ->where('revision_plans.idpaps', '0')
+            // ->where('revision_plans.idmfo', '0')
+            // ->where('revision_plans.idmfo', '0')
+            ->where('revision_plans.scope', 'GAS')
+            ->get()
+            ->map(function ($item) use($currentYear) {
+                $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                    ->sum('amount');
+                // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
+                //                 ->join('targets', 'targets.id','implementation_plans.id')
+                //                 ->sum('targets.planned_budget');
+                // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
+                //                 ->join('targets', 'targets.id','implementation_plans.id')
+                //                 ->get();
+                $imp_amount = DB::table('targets')
+                    ->where('implementation_plans.idrev_plan', $item->id)
+                    ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                    ->select('targets.*', 'implementation_plans.*')
+                    ->sum('targets.planned_budget');
+
+                // dd($item);
+                return [
+                    'FFUNCTION' => $item->FFUNCTION,
+                    'id' => $item->id,
+                    'project_title' => $item->project_title,
+                    'type' => $item->type,
+                    'version' => $item->version,
+                    'budget_sum' => $budgetary_requirement,
+                    'imp_amount' => $imp_amount,
+                    'scope' => $item->scope,
+                    'year_period' => $item->year_period,
+                    'status' => $item->status,
+                    'number_of_clones' => 0,
+                    'return_request_status' => $item->return_request_status,
+                    'year'=>$currentYear
+                ];
+            });
+        return $data;
     }
     public function getSip(Request $request, $dept_id, $popsp_agency, $budget_controller)
     {
@@ -3493,7 +3558,7 @@ class RevisionPlanController extends Controller
 
     public function ipp(Request $request)
     {
-
+        $amount =
         $revplan = RevisionPlan::with([
             // 'teamPlans',
             // 'monitoringAndEvaluations',
@@ -4134,6 +4199,7 @@ class RevisionPlanController extends Controller
             ->whereHas('activity', function ($query) use ($request) {
                 $query->where('strategy_id', $request->strategy_id);
             })
+            ->orderBy('activity_id', 'asc')
             ->get()
             ->map(function ($proj) use ($request) {
                 // Collect expected outputs (description column)

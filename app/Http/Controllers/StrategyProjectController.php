@@ -40,6 +40,7 @@ class StrategyProjectController extends Controller
         // dd($revision_plan->idpaps);
         // dd($revision_plan);
         $scope = $revision_plan->scope;
+        // dd($scope);
         if ($scope == 'GAS') {
             $data = Strategy::with([
                 'strategyProject' => function ($query) use ($request) {
@@ -164,7 +165,7 @@ class StrategyProjectController extends Controller
         } else {
             $data = $this->getData($request, $revision_plan, $idrevplan);
         }
-
+        // dd($data);
         // dd($revision_plan);
         return inertia('StrategyProject/Index', [
             'data' => $data,
@@ -182,7 +183,8 @@ class StrategyProjectController extends Controller
         if ($revision_plan) {
             $strat_base = intval($revision_plan->is_strategy_based);
         }
-        return Strategy::with([
+        // dd($revision_plan);
+        $strat= Strategy::with([
             'strategyProject' => function ($query) use ($request) {
                 $query->where('project_id', $request->idrevplan);
                 // ->where('is_active', '1');
@@ -379,6 +381,7 @@ class StrategyProjectController extends Controller
                     // "expected_output" => $item->expected_output,
                 ];
             });
+        return $strat;
     }
     public function refresh(Request $request, $idrevplan)
     {
