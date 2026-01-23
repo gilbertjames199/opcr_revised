@@ -3577,6 +3577,9 @@ class RevisionPlanController extends Controller
 
                 // Optional but recommended: strip unsupported tags
                 $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
+
+
+                $tot = intval($item->beneficiary_male)+intval($item->beneficiary_female);
                 return [
                     'id' => $item->id,
                     'idpaps' => $item->idpaps,
@@ -3599,7 +3602,7 @@ class RevisionPlanController extends Controller
                     'beneficiary_female' => $item->beneficiary_female,
                     'baseline_male' => $item->baseline_male,
                     'baseline_female' => $item->baseline_female,
-                    'baseline_total' => $item->baseline_total,
+                    'baseline_total' => $tot,
                     'data_source' => $item->data_source,
                     'amount' => $amount,
                     'proposed_budget' => $item->proposed_budget,
