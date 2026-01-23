@@ -3558,7 +3558,8 @@ class RevisionPlanController extends Controller
 
     public function ipp(Request $request)
     {
-        $amount =
+        $amount = $this->getActivityTotal($request->id);
+        // dd($amount);
         $revplan = RevisionPlan::with([
             // 'teamPlans',
             // 'monitoringAndEvaluations',
@@ -3568,7 +3569,7 @@ class RevisionPlanController extends Controller
         ])
             ->where('id', $request->id)
             ->get()
-            ->map(function ($item) {
+            ->map(function ($item)use($amount) {
                 // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
                 $signatories = $this->getSignatories($item->id);
                 // dd($signatories);
@@ -3600,7 +3601,7 @@ class RevisionPlanController extends Controller
                     'baseline_female' => $item->baseline_female,
                     'baseline_total' => $item->baseline_total,
                     'data_source' => $item->data_source,
-                    'amount' => $item->amount,
+                    'amount' => $amount,
                     'proposed_budget' => $item->proposed_budget,
                     'attributed_amount' => $item->attributed_amount,
                     'checklist_id' => $item->checklist_id,
