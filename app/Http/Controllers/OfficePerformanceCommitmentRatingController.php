@@ -1115,7 +1115,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $approver = 'Engr. Raul G. Mabanglo';
         $pos = 'Governor';
         $isPA1 = $this->isPA($opcr_date, 'PA 1');
-        $average = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)
+        $average = round(OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)
             ->whereHas('opcrTarget', function($query){
                 $query->where('is_included', '1');
             })
@@ -1136,7 +1136,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     : null;
             })
             ->filter()
-            ->avg();
+            ->avg(),
+            2
+        );
         // $average = $avet->pluck("average");
         // $average = $plucked_average->avg();
 
