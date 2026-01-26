@@ -534,6 +534,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->with(['opcr_rating','opcr_rating.movs','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard'])
                 ->where('is_included', '1')
                 ->get()
+                // ->pluck('id');
                 ->map(function($item)use($opcr_list_id){
                     // dd($item->paps);
                     // dd($item);

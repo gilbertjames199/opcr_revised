@@ -1116,21 +1116,46 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $pos = 'Governor';
         $isPA1 = $this->isPA($opcr_date, 'PA 1');
         $average = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)
-            ->selectRaw("
-                ROUND(
-                    AVG(
-                        (COALESCE(rating_q, 0) + COALESCE(rating_e, 0) + COALESCE(rating_t, 0)) /
-                        NULLIF(
-                            (rating_q IS NOT NULL) +
-                            (rating_e IS NOT NULL) +
-                            (rating_t IS NOT NULL),
-                            0
-                        )
-                    ),
-                    2
-                ) AS average_rating
-            ")
-            ->value('average_rating');
+            ->whereHas('opcrTarget', function($query){
+                $query->where('is_included', '1');
+            })
+            ->get()
+            ->map(function($item){
+                $qVals = collect([$item->q1, $item->q2, $item->q3])->filter(fn ($v) => $v > 0);
+                $eVals = collect([$item->e1, $item->e2, $item->e3])->filter(fn ($v) => $v > 0);
+                $tVals = collect([$item->t1, $item->t2, $item->t3])->filter(fn ($v) => $v > 0);
+
+                $qAve = $qVals->count() ? $qVals->avg() : null;
+                $eAve = $eVals->count() ? $eVals->avg() : null;
+                $tAve = $tVals->count() ? $tVals->avg() : null;
+
+                $finalVals = collect([$qAve, $eAve, $tAve])->filter(fn ($v) => $v !== null);
+
+                return $finalVals->count()
+                    ? round($finalVals->avg(), 2)
+                    : null;
+            })
+            ->filter()
+            ->avg();
+        // $average = $avet->pluck("average");
+        // $average = $plucked_average->avg();
+
+            // ->selectRaw("
+            //     ROUND(
+            //         AVG(
+            //             (COALESCE(rating_q, 0) + COALESCE(rating_e, 0) + COALESCE(rating_t, 0)) /
+            //             NULLIF(
+            //                 (rating_q IS NOT NULL) +
+            //                 (rating_e IS NOT NULL) +
+            //                 (rating_t IS NOT NULL),
+            //                 0
+            //             )
+            //         ),
+            //         2
+            //     ) AS average_rating
+            // ")
+            // ->value('average_rating');
+        // dd("average",$average);
         $data = $this->model->select(
             'office_performance_commitment_ratings.id',
             'office_performance_commitment_ratings.success_indicator_id',
@@ -1327,6 +1352,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 } else {
                     $adj = "Poor";
                 }
+                // dd($ave);
                 // $quant = OpcrTarget::where()
 
                 // dd("average: " . $ave);
