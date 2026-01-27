@@ -317,10 +317,20 @@ class ProjectProfileTrackingController extends Controller
         // dd($request);
         $uid = auth()->user()->recid;
         // dd($uid);
-        $data = ProjectProfileTracking::with(['revisionPlan'])
+        $data = ProjectProfileTracking::with(['revisionPlan', 'revisionPlan.projectProfileTrackings'])
                 ->where('action_by', $uid)
                 ->orderBy('created_at','desc')
-                ->get();
+                ->get()
+                ->map(function($item){
+                    return [
+                        "action_type"=>$item->action_type,
+                        "revision_plan_id"=>$item->revision_plan_id,
+                        "revision_plan"=>$item->revisionPlan,
+                        "created_at"=>$item->created_at,
+                        "accordion_visible"=>false
+                        // "profile_trac"
+                    ];
+                });
         // dd($data);
         return inertia("RevisionPlans/Tracking/Index", [
             "data"=>$data

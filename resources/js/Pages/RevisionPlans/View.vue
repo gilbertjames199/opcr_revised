@@ -140,6 +140,7 @@
 
                                 </td>
                             </tr>
+
                             <!-- PROJECT LOCATION -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Project Location</th>
@@ -151,6 +152,20 @@
                                     </button>
                                     <button v-if="has_comment('Title',paps.project_location,paps.project_location,'project_location','revision_plans', paps, paps.comments)" class="superscript-btn"
                                         @click="handleClick('Title',paps.project_location,paps.project_location,'project_location','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- LIST OF LGUs COVERED -->
+                            <tr>
+                                <th class="bg-secondary text-white" colspan="1">List of LGUs Covered</th>
+                                <td colspan="6" :class="{
+                                    'text-danger': has_comment('Title',paps.project_location,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)
+                                }" :id="paps.id+'_revision_plans_list_of_lgu_covered'">{{ paps.list_of_lgu_covered }}
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Title',paps.list_of_lgu_covered,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Title',paps.list_of_lgu_covered,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                        @click="handleClick('Title',paps.list_of_lgu_covered,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)">*
                                     </button>
                                 </td>
                             </tr>

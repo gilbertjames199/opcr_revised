@@ -119,6 +119,30 @@
 
                                 </td>
                             </tr>
+                            <!--LIST OF LGUs Covered*************************************************************************************************************************-->
+                            <tr>
+                                <th class="bg-secondary text-white" colspan="1">List of LGUs Covered
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Title',paps.list_of_lgu_covered,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Title',paps.list_of_lgu_covered,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                        @click="handleClick('Title',paps.list_of_lgu_covered,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                </th>
+                                <td colspan="6" :class="{
+                                    'text-danger': has_comment('Title',paps.list_of_lgu_covered,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)
+                                }" :id="paps.id+'_revision_plans_list_of_lgu_covered'">
+                                     <textarea
+                                        class="form-control transparent-bg "
+                                        v-model="form.list_of_lgu_covered"
+                                        type="text"
+                                        @input="setUnsaved(true)"
+                                        @change="updateRevisionPlans('revision_plans', 'list_of_lgu_covered', form.id, form.list_of_lgu_covered)">
+                                            {{ form.list_of_lgu_covered }}
+                                    </textarea>
+
+                                </td>
+                            </tr>
                             <!--IMPLEMENTATION SCHEDULE*************************************************************************************************************************-->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Implementation Schedule</th>

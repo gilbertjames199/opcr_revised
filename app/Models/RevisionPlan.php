@@ -68,6 +68,11 @@ class RevisionPlan extends Model
     {
         return $this->hasMany(Signatory::class, 'revision_plan_id', 'id');
     }
+
+    public function projectProfileTrackings()
+    {
+        return $this->hasMany(ProjectProfileTracking::class, 'revision_plan_id', 'id');
+    }
     // protected $fillable = [
     //     'id',
     //     'idpaps',
