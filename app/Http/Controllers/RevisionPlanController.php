@@ -4080,8 +4080,11 @@ class RevisionPlanController extends Controller
             // 'strategy.activity.activityProject.expected_output',
             // 'strategy.activity.activityProject.expected_outcome'
         ])
-            ->whereHas('strategy')
+            ->whereHas('strategy', function($query){
+                $query->whereNull('deleted_at');
+            })
             ->where('project_id', $request->id)
+            ->where('is_active','1')
             ->get()
             ->map(function ($item) use ($request) {
                 $strategy = optional($item->strategy);
