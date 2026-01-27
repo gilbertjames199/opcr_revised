@@ -1650,6 +1650,28 @@ createInertiaApp({
                     //         span.replaceWith(...span.childNodes);
                     //     });
                     // }
+                    formatDateTime(dateString) {
+                        if (!dateString) return '';
+
+                        const date = new Date(dateString);
+
+                        const options = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                        };
+
+                        const datePart = date.toLocaleDateString('en-US', options);
+
+                        const timePart = date.toLocaleTimeString('en-US', {
+                        hour12: true,
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                        });
+
+                        return `${datePart} - ${timePart}`;
+                    }
                 }
             })
             .mount(el)

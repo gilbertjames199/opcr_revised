@@ -318,7 +318,12 @@ class ProjectProfileTrackingController extends Controller
         $uid = auth()->user()->recid;
         // dd($uid);
         $data = ProjectProfileTracking::with(['revisionPlan'])
-                ->where('action_by')->get();
-        dd($data);
+                ->where('action_by', $uid)
+                ->orderBy('created_at','desc')
+                ->get();
+        // dd($data);
+        return inertia("RevisionPlans/Tracking/Index", [
+            "data"=>$data
+        ]);
     }
 }
