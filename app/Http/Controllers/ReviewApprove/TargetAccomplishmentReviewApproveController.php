@@ -5,7 +5,9 @@ namespace App\Http\Controllers\ReviewApprove;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
+use App\Models\DpcrTarget;
 use App\Models\FFUNCCOD;
+use App\Models\MonthlyTarget;
 use App\Models\OfficePerformanceCommitmentRating;
 use App\Models\OfficePerformanceCommitmentRatingList;
 use App\Models\OpcrRemarks;
@@ -531,14 +533,13 @@ class TargetAccomplishmentReviewApproveController extends Controller
         if($request->type=='Review'){
             // dd(OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)->where('is_included', '1')->get());
             $data = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)
-                ->with(['opcr_rating','opcr_rating.movs','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard'])
+                ->with(['opcrList','opcr_rating','opcr_rating.movs','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard', 'paps.divisionOutputs'])
                 ->where('is_included', '1')
                 ->get()
                 // ->pluck('id');
                 ->map(function($item)use($opcr_list_id){
-                    // dd($item->paps);
-                    // dd($item);
-                    // dd($item->opcr_rating2, $opcr_list_id);
+
+                    // THESE*******************************************************
                     $rating = null;
                     $movs = [];
                     $q1 = "";
@@ -577,6 +578,20 @@ class TargetAccomplishmentReviewApproveController extends Controller
                             $count_movs = $show_mov ? 1 : 0;
                         }
                     }
+                    $division_outputs =optional(optional($item)->paps)->divisionOutputs;
+                    if(count($division_outputs)>0){
+                        // dd($division_outputs->pluck('id'));
+                        $sem = (optional(optional($item)->opcrList)->semester=='Second Semester')? '2':'1';
+                        $year=optional(optional($item)->opcrList)->year;
+                        $dpcr_targets =DpcrTarget::with(['ipcr_Semestral'])
+                                        ->whereIn('idDPCR', $division_outputs->pluck('id'))
+                                        ->whereHas('ipcr_Semestral', function($query)use($sem, $year){
+                                            $query->where('sem', $sem)
+                                                    ->where('year', $year);
+                                        })
+                                        ->get();
+                        // dd($dpcr_targets->pluck('id'), $item->opcrList);
+                    }
 
                     return [
                         'mfo_desc' => optional(optional(optional($item)->paps)->MFO)->mfo_desc,
@@ -595,6 +610,23 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "e2"=>$e2,
                         "e3"=>$e3,
                         "t1"=>$t1,
+                        // 'q1_ave' => round($computeAve($summary['q1']), 2),
+                        // 'q2_ave' => round($computeAve($summary['q2']), 2),
+                        // 'q3_ave' => round($computeAve($summary['q3']), 2),
+
+                        // 'e1_ave' => round($computeAve($summary['e1']), 2),
+                        // 'e2_ave' => round($computeAve($summary['e2']), 2),
+                        // 'e3_ave' => round($computeAve($summary['e3']), 2),
+
+                        // 't1_ave' => round($computeAve($summary['t1']), 2),
+
+                        // // Now compute q_ave, e_ave, t_ave per original logic
+                        // 'q_ave' => round($computeAve(array_merge($summary['q1'], $summary['q2'], $summary['q3'])), 2),
+                        // 'e_ave' => round($computeAve(array_merge($summary['e1'], $summary['e2'], $summary['e3'])), 2),
+                        // 't_ave' => round($computeAve($summary['t1']), 2),
+
+                        // // Overall row average across all monthly row averages
+                        // 'average' => round($computeAve($summary['row_averages']), 2),
                         "remarks" => optional($item->opcr_rating)->remarks,
                         "q1_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->quality1,
                         "q2_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->quality2,
@@ -605,7 +637,9 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "t1_standard"=> optional(optional(optional($item)->paps)->opcr_stardard)->timeliness,
                         "movs"=>$movs,
                         "mov_is_visible"=>$show_mov,
-                        "count_movs"=>$count_movs
+                        "count_movs"=>$count_movs,
+                        "division_outputs"=>$division_outputs,
+                        // "flat" => $flat,
                         // 'standard'=>optional(optional($item)->paps)->opcr_stardard
                     ];
                 });

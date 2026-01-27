@@ -12,4 +12,9 @@ class DivisionOutput extends Model
     protected $connection = "mysql";
     protected $table = 'division_outputs';
     protected $guarded = [];
+
+    public function dpcrTargets()
+    {
+        return $this->hasMany(DpcrTarget::class, 'idDPCR');
+    }
 }

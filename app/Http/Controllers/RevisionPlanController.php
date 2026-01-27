@@ -3879,13 +3879,19 @@ class RevisionPlanController extends Controller
             $budget_total = $this->getTotalBudget($revision);
             $activities = ActivityProject::with(['expected_output', 'expected_outcome',
                     'activity',
-                    'activity.strat'
+                    'activity.strat',
+                    'activity.strat.strategyProject'=> function ($query) use ($revision) {
+                        $query->where('project_id', $revision->id);
+                    },
                 ])->where('project_id', $revision->id)
                 // Activity must exist and NOT be soft-deleted
                 ->whereHas('activity', function ($q) {
                     $q->whereNull('deleted_at')
                         ->whereHas('strat', function($query){
-                            $query->whereNull('deleted_at');
+                            $query->whereNull('deleted_at')
+                                ->whereHas('strategyProject', function($q){
+                                    $q->where('is_active', "1");
+                                });
                         });
                 })
 
@@ -3898,6 +3904,7 @@ class RevisionPlanController extends Controller
                     // dd($revision->paps->office->FFUNCTION);
                     // dd($revision->budget[0]->source);
                     // dd($revision->signatories);
+                    // dd($item);
                     $get = fn($type) => optional($revision->signatories->firstWhere('acted', $type));
                     $signatories = isset($revision) ? $revision->signatories : null;
                     // dd($signatories);
@@ -4013,7 +4020,7 @@ class RevisionPlanController extends Controller
                         // "noted_by_position"     => $this->getSig('Noted', $revision->signatories)->position ?? null,
                     ];
                 });
-
+            // dd($activities);
             return $activities;
         } else {
             return [];
