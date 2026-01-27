@@ -34,7 +34,9 @@
                         <tbody>
                             <!-- :class="actionTypeClass(dat.action_type)" -->
                             <tr v-for="dat in data" :key="dat.id" style="font-weight: bold" >
-                                <td :class="actionTypeClass(dat.action_type)">{{ dat.action_type }}</td>
+                                <td :class="actionTypeClass(dat.action_type)">
+                                    {{ formatType(dat.action_type) }}
+                                </td>
                                 <td>{{ dat.revision_plan.project_title }}</td>
                                 <td>{{ formatDateTime(dat.created_at) }}</td>
                                 <!-- <td>{{ dat.agenda_description }}</td>
@@ -123,6 +125,20 @@ export default {
             if (value.includes('submit')) return 'action-submit';
             if (value.includes('return')) return 'action-return';
             if (value.includes('recall')) return 'action-recall';
+
+            return '';
+        },
+        formatType(action){
+            if (!action) return '';
+
+            const value = action.toLowerCase();
+
+            if (value.includes('recall')) return 'Recalled Project Profile';
+            if (value.includes('request')) return 'Requested for the return of the Project Profile';
+            if (value.includes('return')) return 'Returned Project Profile';
+            if (value.includes('review')) return 'Reviewed Project Profile';
+            if (value.includes('submit')) return 'Submitted Project Profile';
+            if (value.includes('approve')) return 'Approved Project Profile';
 
             return '';
         }

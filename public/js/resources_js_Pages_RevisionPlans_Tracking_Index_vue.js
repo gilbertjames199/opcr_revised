@@ -43,6 +43,17 @@ __webpack_require__.r(__webpack_exports__);
       if (value.includes('return')) return 'action-return';
       if (value.includes('recall')) return 'action-recall';
       return '';
+    },
+    formatType: function formatType(action) {
+      if (!action) return '';
+      var value = action.toLowerCase();
+      if (value.includes('recall')) return 'Recalled Project Profile';
+      if (value.includes('request')) return 'Requested for the return of the Project Profile';
+      if (value.includes('return')) return 'Returned Project Profile';
+      if (value.includes('review')) return 'Reviewed Project Profile';
+      if (value.includes('submit')) return 'Submitted Project Profile';
+      if (value.includes('approve')) return 'Approved Project Profile';
+      return '';
     }
   }
 });
@@ -195,7 +206,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.actionTypeClass(dat.action_type))
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.action_type), 3
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatType(dat.action_type)), 3
     /* TEXT, CLASS */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.revision_plan.project_title), 1
     /* TEXT */
