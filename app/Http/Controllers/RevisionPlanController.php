@@ -594,11 +594,15 @@ class RevisionPlanController extends Controller
     public function create(Request $request, $id)
     {
         // dd($request->source);
+        // dd($id, auth()->user()->department_code);
+
+
         $paps = ProgramAndProject::with('MFO')->where('id', $id)->get();
+        // dd($paps,"PAPS");
         $dept_code = auth()->user()->department_code;
         $paps_all = [];
         // dd(auth()->user()->department_code);
-        if (isset($paps)) {
+        if (!isset($paps)) {
             $paps_all = ProgramAndProject::with('MFO')
                 ->where(function ($query) use ($dept_code) {
                     $query->whereHas('MFO', function ($query) use ($dept_code) {
@@ -608,7 +612,7 @@ class RevisionPlanController extends Controller
                 })
 
                 ->get();
-            // dd("wala si paps");
+            // dd("wala si paps", $paps);
             // $all_paps = Progr
         }
         $hgdg = HGDG_Checklist::get();

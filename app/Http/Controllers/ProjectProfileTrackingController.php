@@ -50,10 +50,12 @@ class ProjectProfileTrackingController extends Controller
         // Only apply this check if submitting (new_status = 0)
         if ($new_status == 0) {
             $idpaps = $revplan->idpaps;
-
+            $year = $revplan->year_period;
+            // dd($revplan);
             // Check if any other revision plans of this idpaps are already submitted, reviewed, or approved , '1', '2'
             $otherPlans = RevisionPlan::where('idpaps', $idpaps)
                 ->where('id', '!=', $id)
+                ->where('year_period', $year)
                 ->whereIn('status', ['0'])
                 ->count();
 

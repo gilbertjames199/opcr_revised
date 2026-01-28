@@ -532,8 +532,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
         $data=[];
         if($request->type=='Review'){
             // dd(OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)->where('is_included', '1')->get());
-            $data = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)
-                ->with(['opcrList','opcr_rating','opcr_rating.movs','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard', 'paps.divisionOutputs'])
+            $data = OpcrTarget::with(['opcrList','opcr_rating','opcr_rating.movs','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard', 'paps.divisionOutputs'])
+                ->where('office_performance_commitment_rating_list_id', $opcr_list_id)
                 ->where('is_included', '1')
                 ->get()
                 // ->pluck('id');
@@ -578,18 +578,79 @@ class TargetAccomplishmentReviewApproveController extends Controller
                             $count_movs = $show_mov ? 1 : 0;
                         }
                     }
-                    $division_outputs =optional(optional($item)->paps)->divisionOutputs;
+                    $division_outputs =optional(optional($item)->paps)->divisionOutputs ?? [];
+                    $dpcr_targets=[];
+                    $sem = (optional(optional($item)->opcrList)->semester=='Second Semester')? '2':'1';
+                    $year=optional(optional($item)->opcrList)->year;
+
                     if(count($division_outputs)>0){
                         // dd($division_outputs->pluck('id'));
-                        $sem = (optional(optional($item)->opcrList)->semester=='Second Semester')? '2':'1';
-                        $year=optional(optional($item)->opcrList)->year;
-                        $dpcr_targets =DpcrTarget::with(['ipcr_Semestral'])
+
+                        $dpcr_targets =DpcrTarget::with(['ipcr_Semestral', 'monthlyTargets'])
                                         ->whereIn('idDPCR', $division_outputs->pluck('id'))
                                         ->whereHas('ipcr_Semestral', function($query)use($sem, $year){
-                                            $query->where('sem', $sem)
-                                                    ->where('year', $year);
+                                            // $query->where('sem', $sem)
+                                            //         ->where('year', $year);
                                         })
                                         ->get();
+                        // $dpcr_targets = $dpcr_targets->map(function ($target) {
+
+                        //     $m = $target->monthlyTargets;
+
+                        //     // Default everything if monthlyTargets is missing
+                        //     if (!$m) {
+                        //         $target->q_ave = 0;
+                        //         $target->e_ave = 0;
+                        //         $target->t_ave = 0;
+                        //         $target->overall_ave = 0;
+                        //         return $target;
+                        //     }
+
+                        //     // Helper: keep only valid numeric > 0 values
+                        //     $valid = fn ($v) => is_numeric($v) && $v > 0;
+
+                        //     // ---------- Q average ----------
+                        //     $qValues = collect([
+                        //         $m->q1 ?? null,
+                        //         $m->q2 ?? null,
+                        //         $m->q3 ?? null,
+                        //     ])->filter($valid);
+
+                        //     $qAve = $qValues->isNotEmpty()
+                        //         ? $qValues->sum() / $qValues->count()
+                        //         : 0;
+
+                        //     // ---------- E average ----------
+                        //     $eValues = collect([
+                        //         $m->e1 ?? null,
+                        //         $m->e2 ?? null,
+                        //         $m->e3 ?? null,
+                        //     ])->filter($valid);
+
+                        //     $eAve = $eValues->isNotEmpty()
+                        //         ? $eValues->sum() / $eValues->count()
+                        //         : 0;
+
+                        //     // ---------- T average ----------
+                        //     $tAve = $valid($m->t1 ?? null) ? (float) $m->t1 : 0;
+
+                        //     // ---------- Overall average ----------
+                        //     $overallValues = collect([$qAve, $eAve, $tAve])->filter($valid);
+
+                        //     $overallAve = $overallValues->isNotEmpty()
+                        //         ? $overallValues->sum() / $overallValues->count()
+                        //         : 0;
+
+                        //     // Attach computed values
+                        //     $target->q_ave = round($qAve, 2);
+                        //     $target->e_ave = round($eAve, 2);
+                        //     $target->t_ave = round($tAve, 2);
+                        //     $target->overall_ave = round($overallAve, 2);
+
+                        //     return $target;
+                        // });
+
+                        // dd($dpcr_targets);
                         // dd($dpcr_targets->pluck('id'), $item->opcrList);
                     }
 
@@ -639,6 +700,11 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "mov_is_visible"=>$show_mov,
                         "count_movs"=>$count_movs,
                         "division_outputs"=>$division_outputs,
+                        "division_output_ids"=>optional($division_outputs)->pluck('id'),
+                        "dpcr_targets"=>optional($dpcr_targets),
+                        "sem"=>$sem,
+                        "year"=>$year
+                        // ->monthlyTargets
                         // "flat" => $flat,
                         // 'standard'=>optional(optional($item)->paps)->opcr_stardard
                     ];
@@ -760,7 +826,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     ];
                 });
         }
-
+        dd($data->pluck("dpcr_targets")->first());
         return $data;
     }
 }
