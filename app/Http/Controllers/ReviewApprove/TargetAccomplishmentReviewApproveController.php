@@ -826,7 +826,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     ];
                 });
         }
-        dd($data->pluck("dpcr_targets")->first());
+        // dd($data->pluck("dpcr_targets")->first());
         return $data;
     }
 }
