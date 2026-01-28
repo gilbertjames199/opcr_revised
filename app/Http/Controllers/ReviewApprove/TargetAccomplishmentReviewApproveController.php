@@ -631,7 +631,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     $average_monthly=$this->calculate($monthly_targets);
                     $dpcr_ave = optional($dpcr_targets)->pluck('monthlyTargets') ?? collect();
                     if($item->id==2117){
-                        dd($monthly_targets, $item);
+                        // dd($monthly_targets, $item);
                     }
                     // dd($dpcr_ave);
                     return [
