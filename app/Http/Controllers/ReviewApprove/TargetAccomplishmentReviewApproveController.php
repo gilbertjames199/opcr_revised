@@ -610,8 +610,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                             return $value ?? collect();
                         }
                         // Loop through PAPS → divisionOutputs → dpcrTargets → monthlyTargets
-                        $monthly_targets = $item->paps;
-                        dd($monthly_targets);
+                        // $monthly_targets = $item->paps->;
+                        // dd($monthly_targets);
                         // $dpcr_targets=DpcrTarget::with(['ipcr_Semestral', 'monthlyTargets'])
                         //                 ->whereIn('idDPCR', $division_outputs->pluck('id')->toArray())
                         //                 ->whereHas('ipcr_Semestral', function($query)use($sem, $year){
