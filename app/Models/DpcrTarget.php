@@ -46,7 +46,7 @@ class DpcrTarget extends Model
 
     public function monthlyTargets()
     {
-        return $this->hasMany(MonthlyTarget::class, 'dpcr_target_id');
+        return $this->hasMany(MonthlyTarget::class, 'dpcr_target_id', 'id');
     }
 
 

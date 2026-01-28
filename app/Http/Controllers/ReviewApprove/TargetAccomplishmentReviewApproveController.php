@@ -21,7 +21,11 @@ use Illuminate\Support\Str;
 class TargetAccomplishmentReviewApproveController extends Controller
 {
     protected $revapp;
-
+    protected static array $columns = [
+        'q1', 'q2', 'q3',
+        'e1', 'e2', 'e3',
+        't1'
+    ];
     public function __construct(OfficePerformanceCommitmentRatingList $revapp)
     {
         $this->revapp = $revapp;
@@ -532,7 +536,18 @@ class TargetAccomplishmentReviewApproveController extends Controller
         $data=[];
         if($request->type=='Review'){
             // dd(OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)->where('is_included', '1')->get());
-            $data = OpcrTarget::with(['opcrList','opcr_rating','opcr_rating.movs','opcr_rating2', 'paps','paps.MFO', 'paps.opcr_stardard', 'paps.divisionOutputs'])
+            $data = OpcrTarget::with(['opcrList',
+                    'opcr_rating',
+                    'opcr_rating.movs',
+                    'opcr_rating2',
+                    'paps',
+                    'paps.MFO',
+                    'paps.opcr_stardard',
+                    'paps.divisionOutputs',
+                    'paps.divisionOutputs.dpcrTargets',
+                    'paps.divisionOutputs.dpcrTargets.ipcr_Semestral',
+                    'paps.divisionOutputs.dpcrTargets.monthlyTargets',
+                ])
                 ->where('office_performance_commitment_rating_list_id', $opcr_list_id)
                 ->where('is_included', '1')
                 ->get()
@@ -583,78 +598,46 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     $sem = (optional(optional($item)->opcrList)->semester=='Second Semester')? '2':'1';
                     $year=optional(optional($item)->opcrList)->year;
 
+
+                    $monthly_targets = collect();
+                    // DPCR Rating
                     if(count($division_outputs)>0){
                         // dd($division_outputs->pluck('id'));
+                        // dd($division_outputs->pluck('id')->toArray());
+                        $monthly_targets = collect();
+                        // dd($item);
+                        function safe($value) {
+                            return $value ?? collect();
+                        }
+                        // Loop through PAPS → divisionOutputs → dpcrTargets → monthlyTargets
+                        $monthly_targets = $item->paps;
+                        dd($monthly_targets);
+                        // $dpcr_targets=DpcrTarget::with(['ipcr_Semestral', 'monthlyTargets'])
+                        //                 ->whereIn('idDPCR', $division_outputs->pluck('id')->toArray())
+                        //                 ->whereHas('ipcr_Semestral', function($query)use($sem, $year){
+                        //                     // $query->where('sem', $sem)
+                        //                     //         ->where('year', $year);
+                        //                 })
+                        //                 ->get();
+                        //             dd($dpcr_targets);
 
-                        $dpcr_targets =DpcrTarget::with(['ipcr_Semestral', 'monthlyTargets'])
-                                        ->whereIn('idDPCR', $division_outputs->pluck('id'))
-                                        ->whereHas('ipcr_Semestral', function($query)use($sem, $year){
-                                            // $query->where('sem', $sem)
-                                            //         ->where('year', $year);
-                                        })
-                                        ->get();
-                        // $dpcr_targets = $dpcr_targets->map(function ($target) {
-
-                        //     $m = $target->monthlyTargets;
-
-                        //     // Default everything if monthlyTargets is missing
-                        //     if (!$m) {
-                        //         $target->q_ave = 0;
-                        //         $target->e_ave = 0;
-                        //         $target->t_ave = 0;
-                        //         $target->overall_ave = 0;
-                        //         return $target;
-                        //     }
-
-                        //     // Helper: keep only valid numeric > 0 values
-                        //     $valid = fn ($v) => is_numeric($v) && $v > 0;
-
-                        //     // ---------- Q average ----------
-                        //     $qValues = collect([
-                        //         $m->q1 ?? null,
-                        //         $m->q2 ?? null,
-                        //         $m->q3 ?? null,
-                        //     ])->filter($valid);
-
-                        //     $qAve = $qValues->isNotEmpty()
-                        //         ? $qValues->sum() / $qValues->count()
-                        //         : 0;
-
-                        //     // ---------- E average ----------
-                        //     $eValues = collect([
-                        //         $m->e1 ?? null,
-                        //         $m->e2 ?? null,
-                        //         $m->e3 ?? null,
-                        //     ])->filter($valid);
-
-                        //     $eAve = $eValues->isNotEmpty()
-                        //         ? $eValues->sum() / $eValues->count()
-                        //         : 0;
-
-                        //     // ---------- T average ----------
-                        //     $tAve = $valid($m->t1 ?? null) ? (float) $m->t1 : 0;
-
-                        //     // ---------- Overall average ----------
-                        //     $overallValues = collect([$qAve, $eAve, $tAve])->filter($valid);
-
-                        //     $overallAve = $overallValues->isNotEmpty()
-                        //         ? $overallValues->sum() / $overallValues->count()
-                        //         : 0;
-
-                        //     // Attach computed values
-                        //     $target->q_ave = round($qAve, 2);
-                        //     $target->e_ave = round($eAve, 2);
-                        //     $target->t_ave = round($tAve, 2);
-                        //     $target->overall_ave = round($overallAve, 2);
-
-                        //     return $target;
-                        // });
 
                         // dd($dpcr_targets);
                         // dd($dpcr_targets->pluck('id'), $item->opcrList);
                     }
 
+                    $q1_dpcr=0;
+                    // dd($monthly_targets, "monthly_targets");
+                    $average_monthly=$this->calculate($monthly_targets);
+                    $dpcr_ave = optional($dpcr_targets)->pluck('monthlyTargets') ?? collect();
+                    if($item->id==2117){
+                        dd($monthly_targets, $item);
+                    }
+                    // dd($dpcr_ave);
                     return [
+                        'id'=>$item->id,
+                        'average_monthly'=>$average_monthly,
+                        'monthly_targets'=>$monthly_targets,
                         'mfo_desc' => optional(optional(optional($item)->paps)->MFO)->mfo_desc,
                         'idpaps' => $item->idpaps,
                         'paps_desc' => optional(optional($item)->paps)->paps_desc,
@@ -701,7 +684,12 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "count_movs"=>$count_movs,
                         "division_outputs"=>$division_outputs,
                         "division_output_ids"=>optional($division_outputs)->pluck('id'),
-                        "dpcr_targets"=>optional($dpcr_targets),
+                        "q1_dpcr"=>$dpcr_ave,
+                        // "monthly_targets"=>optional($dpcr_targets)->pluck("monthlyTargets"),
+
+                        // count(optional($dpcr_targets)->pluck("monthlyTargets"))>0?$d
+                        "monthly_targets"=> optional($dpcr_targets)->pluck("monthlyTargets"),
+
                         "sem"=>$sem,
                         "year"=>$year
                         // ->monthlyTargets
@@ -828,5 +816,171 @@ class TargetAccomplishmentReviewApproveController extends Controller
         }
         // dd($data->pluck("dpcr_targets")->first());
         return $data;
+    }
+
+    public static function calculate(Collection $monthlyTargets)
+    {
+        // dd($monthlyTargets);
+        $monthlyTargets = collect($monthlyTargets);
+
+        /**
+         * 1️⃣ Per-subarray averages
+         */
+
+        $subarrayAverages = $monthlyTargets->map(function ($subarray) {
+            $subarray = collect($subarray);
+
+            return collect(self::$columns)->mapWithKeys(function ($column) use ($subarray) {
+                $validValues = $subarray
+                    ->pluck($column)
+                    ->filter(fn ($v) => !is_null($v) && $v != 0);
+
+                return [
+                    $column => $validValues->count()
+                        ? $validValues->avg()
+                        : 0
+                ];
+            })->toArray();
+        });
+
+
+        /**
+         * 2️⃣ Overall average (based on subarray averages)
+         */
+        $overallAverage = collect(self::$columns)->mapWithKeys(function ($column) use ($subarrayAverages) {
+            $validValues = $subarrayAverages
+                ->pluck($column)
+                ->filter(fn ($v) => !is_null($v) && $v != 0);
+
+            return [
+                $column => $validValues->count()
+                    ? $validValues->avg()
+                    : 0
+            ];
+        })->toArray();
+        return $overallAverage;
+        // return [
+        //     'per_subarray_average' => $subarrayAverages->toArray(),
+        //     'overall_average'      => $overallAverage
+        // ];
+    }
+    public function calculateDpcrIndicatorAverages(Collection $monthlyTargets): array
+    {
+        if ($monthlyTargets->isEmpty()) {
+            return [
+                'entries'  => collect(),
+                'overall'  => [
+                    'q1_ave' => 0,
+                    'q2_ave' => 0,
+                    'q3_ave' => 0,
+                    'e1_ave' => 0,
+                    'e2_ave' => 0,
+                    'e3_ave' => 0,
+                    't1_ave' => 0,
+                ],
+            ];
+        }
+
+        $entries = $monthlyTargets->flatten(1);
+
+        /**
+         * PER-ENTRY AVERAGE
+         */
+        $entriesWithAverage = $entries->map(function ($monthly) {
+            dd($monthly);
+            $values = [
+                $monthly->q1,
+                $monthly->q2,
+                $monthly->q3,
+                $monthly->e1,
+                $monthly->e2,
+                $monthly->e3,
+                $monthly->t1,
+            ];
+
+            $nonZero = array_filter($values, fn ($v) => $v > 0);
+
+            $entryAve = count($nonZero)
+                ? array_sum($nonZero) / count($nonZero)
+                : 0;
+
+            return [
+                'q1'        => $monthly->q1,
+                'q2'        => $monthly->q2,
+                'q3'        => $monthly->q3,
+                'e1'        => $monthly->e1,
+                'e2'        => $monthly->e2,
+                'e3'        => $monthly->e3,
+                't1'        => $monthly->t1,
+                'entry_ave' => $entryAve,
+            ];
+        });
+
+        /**
+         * OVERALL AVERAGE PER INDICATOR
+         */
+        $overall = [];
+
+        foreach (['q1','q2','q3','e1','e2','e3','t1'] as $field) {
+            $values = $entries->pluck($field)->filter(fn ($v) => $v > 0);
+
+            $overall[$field . '_ave'] = $values->count()
+                ? $values->sum() / $values->count()
+                : 0;
+        }
+        return $overall;
+        // return [
+        //     'entries' => $entriesWithAverage,
+        //     'overall' => $overall,
+        // ];
+    }
+    public function averageNonZero(array $values): float
+    {
+        $filtered = array_filter($values, fn ($v) => $v > 0);
+
+        return count($filtered)
+            ? array_sum($filtered) / count($filtered)
+            : 0;
+    }
+
+    public function calculateDpcrMonthlyAverages(Collection $monthlyTargets): array
+    {
+        if ($monthlyTargets->isEmpty()) {
+            return [
+                'entries'     => collect(),
+                'overall_ave' => 0,
+            ];
+        }
+
+        $entries = $monthlyTargets->flatten(1);
+
+        $entriesWithAverages = $entries->map(function ($monthly) {
+
+            $qAve = $this->averageNonZero([$monthly->q1, $monthly->q2, $monthly->q3]);
+            $eAve = $this->averageNonZero([$monthly->e1, $monthly->e2, $monthly->e3]);
+            $tAve = $monthly->t1 > 0 ? $monthly->t1 : 0;
+
+            $components = array_filter([$qAve, $eAve, $tAve], fn ($v) => $v > 0);
+
+            $entryAve = count($components)
+                ? array_sum($components) / count($components)
+                : 0;
+
+            return [
+                'q_ave'     => $qAve,
+                'e_ave'     => $eAve,
+                't_ave'     => $tAve,
+                'entry_ave' => $entryAve,
+            ];
+        });
+
+        $overallAve = $this->averageNonZero(
+            $entriesWithAverages->pluck('entry_ave')->toArray()
+        );
+
+        return [
+            'entries'     => $entriesWithAverages,
+            'overall_ave' => $overallAve,
+        ];
     }
 }
