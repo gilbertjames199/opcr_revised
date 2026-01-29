@@ -157,65 +157,29 @@
                                         <!-- PAPS -->
                                         <td rowspan="2">
                                             {{ dat.paps_desc }}
-
                                         </td>
                                         <!-- Actual Accomplishments -->
-                                        <td rowspan="2">{{ dat.accomplishments }}</td>
-                                        <!-- <td>{{ dat.success_indicator }}</td>
-                                        <td>{{ dat.target_success_indicator }}</td>
-                                        <td>{{ dat.quantity }}</td>
-                                        @change="saveRating()"
-                                        -->
+                                        <td rowspan="2">
+                                            {{ dat.accomplishments }}
+                                            <hr>
+                                            <div><b>DPCR Score:&nbsp;</b>{{ computeAverageScore(dat.monthly_targets) }}</div>
+                                        </td>
+
                                         <!-- Q1 -->
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <!-- width: 2.5em;  -->
                                             <div>{{ dat.q1_standard }}</div>
-                                            <!-- <select v-model="opcr_data[index].q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                                @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                            <div v-if="submit_attempt==true && !dat.q1" style="color: red; font-weight: bold">
-                                                Rating for this field is required to proceed with submission.
-                                            </div> -->
                                         </td>
                                         <!-- Q2 -->
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <!-- {{  dat }} -->
                                             <!-- width: 2.5em;  -->
                                             <div>{{ dat.q2_standard }}</div>
-                                            <!-- <select v-model="opcr_data[index].q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                                @change="saveRating(opcr_data[index].q2, opcr_data[index].opcr_rating_id, 'q2')"
-                                            >
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                            <div v-if="submit_attempt==true && !dat.q2" style="color: red; font-weight: bold">
-                                                Rating for this field is required to proceed with submission.
-                                            </div> -->
                                         </td>
                                         <!-- Q3 -->
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <!-- width: 2.5em;  -->
                                             <div>{{ dat.q3_standard }}</div>
-                                            <!-- <select v-model="opcr_data[index].q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                                @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3')"
-                                            >
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                            <div v-if="submit_attempt==true && !dat.q3" style="color: red; font-weight: bold">
-                                                Rating for this field is required to proceed with submission.
-                                            </div> -->
                                         </td>
                                         <!-- E1 -->
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
@@ -586,8 +550,9 @@
 
             <div v-if="mode_1==='Approve'">
                 <div class="d-flex justify-content-center" >
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered border-dark">
+                    <div class="table-responsive w-100" style="max-width:100%; overflow-x:auto;">
+                        <!-- <table class="table table-hover table-bordered border-dark"> -->
+                        <table class="table table-sm table-bordered border-dark table-striped table-hover" style="table-layout: fixed;">
                             <thead class="sticky-header">
                                 <tr class="bg-secondary text-white">
                                     <th rowspan="2">Major Final Output</th>
@@ -595,7 +560,8 @@
                                     <th rowspan="2">Alloted Budget</th>
                                     <th rowspan="2">Accountable Division</th>
                                     <th rowspan="2">Actual Accomplishments</th>
-                                    <th colspan="4">Rating</th>
+                                    <th colspan="4">Rating (PPDO Score)</th>
+                                    <th colspan="4">Rating (DPCR Score)</th>
                                     <th rowspan="2">Remarks</th>
                                     <th rowspan="2">MOV</th>
                                 </tr>
@@ -604,7 +570,17 @@
                                     <th>Efficiency</th>
                                     <th>Timeliness</th>
                                     <th>Average</th>
+                                    <th>Quality</th>
+                                    <th>Efficiency</th>
+                                    <th>Timeliness</th>
+                                    <th>Average</th>
                                 </tr>
+                                <!-- <tr class="bg-secondary text-white">
+                                    <th>Quality</th>
+                                    <th>Efficiency</th>
+                                    <th>Timeliness</th>
+                                    <th>Average</th>
+                                </tr> -->
                             </thead>
                             <tbody>
                                 <tr v-for="(opcr, index) in opcr_data" :key="index">
@@ -622,12 +598,13 @@
                                         style="vertical-align:middle">
                                         {{ opcr.office_accountable }}
                                     </td>
+
                                     <td>
                                         <!-- <textarea v-model="opcr_data[index].accomplishments"
                                             style="height: inherit"></textarea> -->
                                             {{ opcr_data[index].accomplishments }}
                                     </td>
-
+                                    <!-- PPDO RATING ********************************************* -->
                                     <td>
                                         <!-- <input v-model="opcr_data[index].rating_q" class="centered-input" type="number"
                                             min="0" max="5" step="1" disabled> -->
@@ -647,6 +624,33 @@
                                     > -->
                                     {{ computeAverage(opcr_data[index]) }}
                                     </td>
+                                    <!-- DPCR RATING ************************************************-->
+                                     <td>
+                                        {{ computeAverageByType(opcr_data[index].monthly_targets,"q") }}
+                                    </td>
+                                    <td>
+                                        {{ computeAverageByType(opcr_data[index].monthly_targets,"e") }}
+                                    </td>
+                                    <td>
+                                        {{ opcr_data[index].monthly_targets.t1 }}
+                                    </td>
+                                    <td>
+                                    <!-- <input :value="computeAverage(opcr_data[index])" class="centered-input" type="number"
+                                       min="0" max="5" step="1" disabled
+                                    > -->
+                                        {{
+                                            format_number_conv(
+                                                computeAverageQET(
+                                                    computeAverageByType(opcr_data[index].monthly_targets,"q"),
+                                                    computeAverageByType(opcr_data[index].monthly_targets,"e"),
+                                                    opcr_data[index].monthly_targets.t1
+                                                ),
+                                                2,true
+                                            )
+
+                                        }}
+                                    </td>
+
 
                                     <td><textarea v-model="opcr_data[index].remarks"
                                             style="height: inherit"></textarea>
@@ -656,15 +660,20 @@
                                     </td>
                                 </tr>
                                  <tr>
-                                    <td colspan="6"></td>
-                                    <td colspan="3">TOTAL RATING</td>
+                                    <td colspan="5"></td>
+                                    <td colspan="3">TOTAL RATING (PPDO)</td>
                                     <td>{{ getTotalAverage() }}</td>
+
+                                    <td colspan="3">TOTAL RATING (DPCR)</td>
+                                    <td>{{ computeDPCRTotal(opcr_data) }}</td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6"></td>
-                                    <td colspan="3">FINAL AVERAGE RATING</td>
+                                    <td colspan="5"></td>
+                                    <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
                                     <td>{{ getAverageAll() }}</td>
+                                    <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
+                                    <td>{{ computeDPCRAverage(opcr_data) }}</td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -828,10 +837,10 @@ export default {
         // auto-resize whenever data changes after updates
         this.$nextTick(() => {
             if (this.$refs.remarksTextarea) {
-            this.$refs.remarksTextarea.forEach((ta) => {
-                ta.style.height = "auto";
-                ta.style.height = ta.scrollHeight + "px";
-            });
+                this.$refs.remarksTextarea.forEach((ta) => {
+                    ta.style.height = "auto";
+                    ta.style.height = ta.scrollHeight + "px";
+                });
             }
         });
     },
@@ -1182,6 +1191,128 @@ export default {
             return (total / validAverages.length).toFixed(2); // keep 2 decimals
 
         },
+        // *********************************************AVERAGE -DPCR SCORES *********************************************
+        computeAverageScore(monthly_ratings) {
+            if (!monthly_ratings || typeof monthly_ratings !== 'object') {
+                return 0
+            }
+
+            const values = Object.values(monthly_ratings)
+                .filter(v => typeof v === 'number' && v > 0)
+
+            if (values.length === 0) {
+                return 0
+            }
+
+            const sum = values.reduce((total, v) => total + v, 0)
+
+            return Number((sum / values.length).toFixed(2))
+        },
+        computeAverageByType(monthly_ratings, type) {
+            if (!monthly_ratings || typeof monthly_ratings !== 'object') {
+                return 0
+            }
+
+            const map = {
+                q: ['q1', 'q2', 'q3'],
+                e: ['e1', 'e2', 'e3']
+            }
+
+            if (!map[type]) {
+                return 0
+            }
+
+            const values = map[type]
+                .map(key => monthly_ratings[key])
+                .filter(v => typeof v === 'number' && v > 0)
+
+            if (values.length === 0) {
+                return 0
+            }
+
+            const sum = values.reduce((total, v) => total + v, 0)
+
+            return Number((sum / values.length).toFixed(2))
+        },
+        computeAverageQET(q, e, t) {
+            const values = [q, e, t].filter(v => Number(v) > 0);
+
+            if (values.length === 0) {
+                return 0;
+            }
+
+            const sum = values.reduce((total, val) => total + Number(val), 0);
+
+            return sum / values.length;
+        },
+        // ===============================
+        // TOTAL of DPCR (sum of row averages)
+        // ===============================
+        computeDPCRTotal(rows) {
+            if (!Array.isArray(rows)) {
+                // console.log("zero cya")
+                return 0
+            }
+
+            let total = 0
+
+            rows.forEach(row => {
+                const ratings = row?.monthly_targets
+                console.log(row.month)
+                if (!ratings || typeof ratings !== 'object') {
+                    return
+                }
+
+                const q = this.computeAverageByType(ratings, 'q')
+                const e = this.computeAverageByType(ratings, 'e')
+                const t = Number(ratings?.t1) > 0 ? Number(ratings.t1) : 0
+
+                const rowAverage = this.computeAverageQET(q, e, t)
+                console.log(rowAverage)
+                if (rowAverage > 0) {
+                    total += rowAverage
+                }
+            })
+
+            return Number(total.toFixed(2))
+        },
+
+        // ===============================
+        // AVERAGE of DPCR (ignore zero rows)
+        // ===============================
+        computeDPCRAverage(rows) {
+            if (!Array.isArray(rows)) {
+                return 0
+            }
+
+            const rowAverages = []
+
+            rows.forEach(row => {
+                const ratings = row?.monthly_targets
+
+                if (!ratings || typeof ratings !== 'object') {
+                    return
+                }
+
+                const q = this.computeAverageByType(ratings, 'q')
+                const e = this.computeAverageByType(ratings, 'e')
+                const t = Number(ratings?.t1) > 0 ? Number(ratings.t1) : 0
+
+                const rowAverage = this.computeAverageQET(q, e, t)
+
+                if (rowAverage > 0) {
+                    rowAverages.push(rowAverage)
+                }
+            })
+
+            if (rowAverages.length === 0) {
+                return 0
+            }
+
+            const sum = rowAverages.reduce((total, val) => total + val, 0)
+
+            return Number((sum / rowAverages.length).toFixed(2))
+        }
     }
 };
 </script>

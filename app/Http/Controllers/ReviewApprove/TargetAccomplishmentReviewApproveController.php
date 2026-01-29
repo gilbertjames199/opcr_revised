@@ -599,44 +599,21 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     $year=optional(optional($item)->opcrList)->year;
 
 
-                    $monthly_targets = collect();
+                    $monthly_targets = $this->calculateMonthlyAverages($item, [
+                        'q1','q2','q3',
+                        'e1','e2','e3',
+                        't1'
+                    ]);
+                    // dd($monthly_targets, $item->id);
+
                     // DPCR Rating
-                    if(count($division_outputs)>0){
-                        // dd($division_outputs->pluck('id'));
-                        // dd($division_outputs->pluck('id')->toArray());
-                        $monthly_targets = collect();
-                        // dd($item);
-                        // function safe($value) {
-                        //     return $value ?? collect();
-                        // }
-                        // Loop through PAPS → divisionOutputs → dpcrTargets → monthlyTargets
-                        // $monthly_targets = $item->paps->;
-                        // dd($monthly_targets);
-                        // $dpcr_targets=DpcrTarget::with(['ipcr_Semestral', 'monthlyTargets'])
-                        //                 ->whereIn('idDPCR', $division_outputs->pluck('id')->toArray())
-                        //                 ->whereHas('ipcr_Semestral', function($query)use($sem, $year){
-                        //                     // $query->where('sem', $sem)
-                        //                     //         ->where('year', $year);
-                        //                 })
-                        //                 ->get();
-                        //             dd($dpcr_targets);
 
 
-                        // dd($dpcr_targets);
-                        // dd($dpcr_targets->pluck('id'), $item->opcrList);
-                    }
+                    // $dpcr_ave = optional($dpcr_targets)->pluck('monthlyTargets') ?? collect();
 
-                    $q1_dpcr=0;
-                    // dd($monthly_targets, "monthly_targets");
-                    $average_monthly=$this->calculate($monthly_targets);
-                    $dpcr_ave = optional($dpcr_targets)->pluck('monthlyTargets') ?? collect();
-                    if($item->id==2117){
-                        // dd($monthly_targets, $item);
-                    }
-                    // dd($dpcr_ave);
                     return [
                         'id'=>$item->id,
-                        'average_monthly'=>$average_monthly,
+                        // 'average_monthly'=>$average_monthly,
                         'monthly_targets'=>$monthly_targets,
                         'mfo_desc' => optional(optional(optional($item)->paps)->MFO)->mfo_desc,
                         'idpaps' => $item->idpaps,
@@ -684,11 +661,11 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "count_movs"=>$count_movs,
                         "division_outputs"=>$division_outputs,
                         "division_output_ids"=>optional($division_outputs)->pluck('id'),
-                        "q1_dpcr"=>$dpcr_ave,
+                        // "q1_dpcr"=>$dpcr_ave,
                         // "monthly_targets"=>optional($dpcr_targets)->pluck("monthlyTargets"),
 
                         // count(optional($dpcr_targets)->pluck("monthlyTargets"))>0?$d
-                        "monthly_targets"=> optional($dpcr_targets)->pluck("monthlyTargets"),
+                        // "monthly_targets"=> optional($dpcr_targets)->pluck("monthlyTargets"),
 
                         "sem"=>$sem,
                         "year"=>$year
@@ -706,7 +683,11 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 'opcrList',
                 'paps',
                 'paps.MFO',
-                'paps.opcr_stardard'
+                'paps.opcr_stardard',
+                'paps.divisionOutputs',
+                'paps.divisionOutputs.dpcrTargets',
+                'paps.divisionOutputs.dpcrTargets.ipcr_Semestral',
+                'paps.divisionOutputs.dpcrTargets.monthlyTargets',
             ])
                 ->whereHas('paps', function ($query) use ($FFUNCCOD) {
                     $query->whereHas('MFO', function ($query) use ($FFUNCCOD) {
@@ -788,8 +769,14 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     $t1 = $item->opcr_rating ? ($item->opcr_rating->t1 ?? 0) : 0;
                     $r_t = $t1 != 0 ? round($t1, 2) : 0;
 
+                    $monthly_targets = $this->calculateMonthlyAverages($item, [
+                        'q1','q2','q3',
+                        'e1','e2','e3',
+                        't1'
+                    ]);
                     return [
                         "id" => $id,
+                        "monthly_targets"=>$monthly_targets,
                         "success_indicator_id" => $su,
                         "accomplishments" => $accomp,
                         "rating_q" => $r_q,
@@ -817,7 +804,85 @@ class TargetAccomplishmentReviewApproveController extends Controller
         // dd($data->pluck("dpcr_targets")->first());
         return $data;
     }
+    private function calculateMonthlyAverages($item, array $columns)
+    {
+        // Collect all monthly targets under this OPCR item
+        // dd($item);
+        $sem = $item->opcrList->semester === 'Second Semester' ? 2 : 1;
+        $year = $item->opcrList->year;
+        $ipcrSemestrals = collect(optional($item->paps)->divisionOutputs)
+            ->flatMap(function ($division) {
+                // dd($division);
+                return collect($division->dpcrTargets)
+                    ->map(fn ($dpcr) => $dpcr->ipcr_Semestral);
+            })
+            ->filter(fn ($ipcr) =>
+                $ipcr !== null && (int) $ipcr->sem === $sem
+            )
+            ->first();
+        // dd($ipcrSemestrals);
+        $sem_id = optional($ipcrSemestrals)->id?optional($ipcrSemestrals)->id:0;
+        $monthlyTargets = collect(optional($item->paps))
+            ->flatMap(function ($paps) {
+                return collect(optional($paps)->divisionOutputs);
+            })
+            ->flatMap(function ($divisionOutput) {
+                return collect(optional($divisionOutput)->dpcrTargets);
+            })
+            ->flatMap(function ($dpcrTarget) {
+                return collect(optional($dpcrTarget)->monthlyTargets);
+            })
+            ->filter(function ($monthlyTarget) use ($sem, $year, $sem_id) {
+                // return  (int) $monthlyTarget->year === (int) $year;
+                // always filter by year
+                $match = (int) $monthlyTarget->year === (int) $year;
 
+                // if sem_id is not 0, also filter by sem_id
+                if ($sem_id !== 0) {
+                    $match = $match && ((int) $monthlyTarget->sem_id === (int) $sem_id);
+                }
+
+                return $match;
+            })
+        ->values(); // reindex;
+        // dd($monthlyTargets);
+        // dd($item);
+        // dd($monthlyTargets, collect(optional($item->paps))
+        // ->flatMap(function ($paps) {
+        //     return collect(optional($paps)->divisionOutputs);
+        // })
+        // ->flatMap(function ($divisionOutput) {
+        //     return collect(optional($divisionOutput)->dpcrTargets);
+        // })
+        // ->flatMap(function ($dpcrTarget) {
+        //     return collect(optional($dpcrTarget)->monthlyTargets);
+        // })->first());
+
+        $averages = [];
+
+        foreach ($columns as $column) {
+            $values = $monthlyTargets
+                ->pluck($column)
+                ->filter(fn ($v) => !is_null($v) && $v != 0);
+
+            $averages[$column] = $values->count()
+                ? round($values->avg(), 2)
+                : 0;
+        }
+        return $averages;
+        // $
+        // return [
+        //     'opcr_target_id' => $item->id,
+        //     'averages'       => $averages,
+        //     'q1'=>optional($averages)->q1,
+        //     'q2'=>optional($averages)->q2,
+        //     'q3'=>optional($averages)->q3,
+        //     'e1'=>optional($averages)->e1,
+        //     'e1'=>optional($averages)->e1,
+        //     'e3'=>optional($averages)->e3,
+        //     't1'=>optional($averages)->t1,
+        // ];
+    }
     public static function calculate(Collection $monthlyTargets)
     {
         // dd($monthlyTargets);

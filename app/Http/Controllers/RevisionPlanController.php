@@ -2668,7 +2668,7 @@ class RevisionPlanController extends Controller
         $dept_id = $request->department_code;
         // dd($dept_id);
         $budget_controller = new BudgetRequirementController($this->budget);
-    // dd($budget_controller);
+        // dd($budget_controller);
         // select(
         //     'revision_plans.id',
         //     'revision_plans.project_title',
@@ -3590,7 +3590,8 @@ class RevisionPlanController extends Controller
             // 'monitoringAndEvaluations',
             // 'riskManagements',
             // 'signatories',
-            'paps.office'
+            'paps.office',
+            'checklist'
         ])
             ->where('id', $request->id)
             ->get();
@@ -3611,6 +3612,7 @@ class RevisionPlanController extends Controller
                 $date_start = Carbon::parse($item->date_start)->format('F Y');
                 $date_end = Carbon::parse($item->date_end)->format('F Y');
                 $tot = intval($item->beneficiary_male)+intval($item->beneficiary_female);
+                // dd($item->checklist);
                 return [
                     'id' => $item->id,
                     'idpaps' => $item->idpaps,
@@ -3638,7 +3640,7 @@ class RevisionPlanController extends Controller
                     'amount' => $amount,
                     'proposed_budget' => $proposed_budget,
                     'attributed_amount' => $item->attributed_amount,
-                    'checklist_id' => $item->checklist_id,
+                    'checklist_id' => optional(optional($item)->checklist)->box_number.'. '.optional(optional($item)->checklist)->sector,
                     'hgdg_score' => $item->hgdg_score,
                     'hgdg_percent' => $item->hgdg_percent,
                     // 'rationale' => '<p align="justify">' . e($item->rationale) . '</p>',
