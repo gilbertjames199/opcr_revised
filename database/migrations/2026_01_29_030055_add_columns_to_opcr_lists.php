@@ -14,7 +14,7 @@ class AddColumnsToOpcrLists extends Migration
     public function up()
     {
         Schema::table('office_performance_commitment_rating_lists', function (Blueprint $table) {
-            $table->string("rating_type")->after("accomplishment_status")->comment("0 -ppdo rating, 1 -dpcr-based");
+            $table->string("rating_type")->after("accomplishment_status")->comment("0 -ppdo rating, 1 -dpcr-based")->default('0');
         });
     }
 
