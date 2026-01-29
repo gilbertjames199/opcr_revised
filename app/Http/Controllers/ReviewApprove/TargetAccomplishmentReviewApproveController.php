@@ -689,6 +689,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 'paps.divisionOutputs.dpcrTargets.ipcr_Semestral',
                 'paps.divisionOutputs.dpcrTargets.monthlyTargets',
             ])
+            // ->join('paps', 'paps.id', '=', 'opcr_targets.idpaps')
+            // ->join('mfos', 'mfos.id', '=', 'paps.mfo_id') // <-- MFO table
                 ->whereHas('paps', function ($query) use ($FFUNCCOD) {
                     $query->whereHas('MFO', function ($query) use ($FFUNCCOD) {
                         $query->where('mfo_desc', '<>', '');
@@ -699,11 +701,13 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         ->where('FFUNCCOD', $FFUNCCOD);
                 })
                 ->where('is_included', '1')
-                // ->orderBy('mfo.id', 'asc')
-                ->orderBy('idpaps', 'asc')
+                // ->orderBy('paps.mfo.id', 'asc')
+                // ->orderBy('idpaps', 'asc')
                 ->groupBy('office_performance_commitment_rating_list_id')
                 ->groupBy('idpaps')
                 ->get()
+                ->sortBy(fn ($item) => optional($item->paps->MFO)->id)
+                ->values()
                 ->map(function ($item) {
                     // dd($item);
                     $id = $item->opcr_rating ? $item->opcr_rating->id : null;

@@ -451,7 +451,7 @@
                                 <th>Implementing Offices</th>
                                 <th>Planned Amount</th>
                                 <th>View IPP</th>
-                                <th v-if="my_source=='rev_app'">Review/Approve</th>
+                                <th v-if="my_source=='rev_app'">Approve</th>
                                 <th v-if="my_source=='rev_app'">Full Edit</th>
                                 <th v-if="my_source=='rev_app'">Return</th>
                                 <th v-if="my_source=='budget'">Budget Details </th>
