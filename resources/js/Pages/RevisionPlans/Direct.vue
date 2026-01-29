@@ -545,7 +545,7 @@
                                             marginRight: '4px'
                                         }"
                                     >
-                                        Review
+                                        Approve
                                     </button>
 
                                     <!-- Approve -->
