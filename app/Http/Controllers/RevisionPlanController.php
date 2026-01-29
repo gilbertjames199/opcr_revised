@@ -2684,7 +2684,7 @@ class RevisionPlanController extends Controller
         // dd(RevisionPlan::with(['paps','paps.office'])->whereHas('paps', function($query)use($dept_id)
         //     {$query->where('department_code', $dept_id);})->get()->pluck('status'));
         $query = RevisionPlan::with(['paps', 'paps.office'])
-            ->where('status','1')
+            // ->where('status','1')
             // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
             // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
             // ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
@@ -2726,7 +2726,7 @@ class RevisionPlanController extends Controller
             ->map(function ($item) use ($budget_controller, $request) {
                 $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                     ->sum('amount');
-
+                // dd($item->gad_status);
                 return [
                     'department_code' => optional(optional($item->paps)->office)->department_code,
                     'FFUNCTION' => trim(optional(optional($item->paps)->office)->FFUNCTION),
@@ -2735,13 +2735,36 @@ class RevisionPlanController extends Controller
                     'type' => $item->type,
                     'version' => $item->version,
                     'amount' => $budgetary_requirement,
-                    'strategies' => $this->get_strategies($request, $item->id)
+                    'strategies' => $this->get_strategies($request, $item->id),
+                    'status'=> $this->set_status($item->status, $item->gad_status)
                 ];
             });
 
         return $data;
     }
+    protected function set_status($status, $gad_status){
+        if($status=="1"){
+            return "Reviewed";
+        }
 
+        if($status=="0"){
+            if($gad_status=="1"){
+                return "Submitted";
+            }else{
+                return "Submitted for GAD Review";
+            }
+
+        }
+
+        if($status=="-1"){
+            return "Saved";
+        }
+
+        if($status=="-2"){
+            return "Returned";
+        }
+
+    }
     public function aip_api(Request $request)
     {
         ActivityProject::with([
