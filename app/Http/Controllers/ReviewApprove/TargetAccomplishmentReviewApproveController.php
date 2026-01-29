@@ -606,9 +606,9 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         // dd($division_outputs->pluck('id')->toArray());
                         $monthly_targets = collect();
                         // dd($item);
-                        function safe($value) {
-                            return $value ?? collect();
-                        }
+                        // function safe($value) {
+                        //     return $value ?? collect();
+                        // }
                         // Loop through PAPS → divisionOutputs → dpcrTargets → monthlyTargets
                         // $monthly_targets = $item->paps->;
                         // dd($monthly_targets);
