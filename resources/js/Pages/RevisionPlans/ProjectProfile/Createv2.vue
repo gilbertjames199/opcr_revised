@@ -607,6 +607,7 @@
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
                                             }" colspan="12"><b>
+                                                    {{ dat.is_active }}
                                                 <div class="d-flex justify-content-between align-items-center w-100">
                                                     <textarea
                                                         class="form-control transparent-bg "
@@ -632,14 +633,16 @@
                                                     Add Activities
                                                 </button>
                                                 <button class="btn btn-danger btn-sm text-white"
-                                                    @click="deleteData(dat.id, 'strategies', dat.description)">
+                                                    @click="deleteDataActivityOrStrat(dat.id, 'strategies', dat.description, this.form.id)">
+
+                                                    <!-- @click="deleteData(dat.id, 'strategies', dat.description)" -->
                                                     🗑 Delete Strategy
                                                 </button>
                                             </td>
                                         </tr>
                                         <!-- ACTIVITIES **************************************************************************************************** -->
-                                        <template v-if="dat.activity && paps.is_strategy_based==0">
-                                            <tr  v-for="(act, subIndex) in dat.activity" :key="subIndex" style="height: 100%">
+                                        <template v-if="dat.activity && paps.is_strategy_based==0" v-for="(act, subIndex) in dat.activity" :key="subIndex" >
+                                            <tr  v-if="act.is_active==='1'" style="height: 100%">
                                                 <!-- DESCRIPTION -->
                                                 <td :class="{
                                                     'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
@@ -944,6 +947,7 @@
                                                     'text-danger': has_comment('Implementation Plan','activity Financial Expenses',act.fe_total,'fe_total','activity_projects', act, act.comments)
                                                 }" :id="dat.id + '_activity_projects_fe_total'">
                                                     <span v-if="paps.is_strategy_based==0">
+                                                        {{ act_}}
                                                         <p>Q1:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.fe_q1"
@@ -1145,8 +1149,9 @@
                                                     @click="showExpectedOutcomesModal(act.id)">
                                                         Edit Activity
                                                     </button><hr >
+                                                    <!-- form: {{ form.id}} -- {{ act.is_active }} -->
                                                     <button class="btn btn-danger btn-sm text-white"
-                                                        @click="deleteData(act.id, 'activities', dat.description)">
+                                                        @click="deleteDataActivityOrStrat(act.id, 'activities', dat.description, this.form.id)">
                                                         🗑 Delete Activity
                                                     </button><hr>
                                                 </td>
@@ -3805,6 +3810,16 @@ export default {
             let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
               if (confirm(text) == true) {
                 this.$inertia.delete("/revision/streamlined/" + id+"/"+table);
+            }
+
+        },
+        // DELETE STRATEGY OR ACTIVITY
+        deleteDataActivityOrStrat(id, table, title, project_id){
+
+            //alert(this.idpaps);
+            let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
+              if (confirm(text) == true) {
+                this.$inertia.delete("/revision/streamlined/" + id+"/"+table+"/"+project_id);
             }
 
         },

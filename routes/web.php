@@ -456,6 +456,7 @@ Route::middleware('auth')->group(function () {
         // /revision/streamlined/${table_name}/${column_here}/${id}/${new_data}/update
         Route::patch('/{id}/update', [ProjectProfileStreamlinedController::class, 'streamlined_update']);
         Route::delete('/{id}/{table}', [ProjectProfileStreamlinedController::class, 'streamlined_delete']);
+        Route::delete('/{id}/{table}/{project_id}', [ProjectProfileStreamlinedController::class, 'streamlined_delete_act_strat']);
         Route::post('/store', [ProjectProfileStreamlinedController::class, 'streamlined_store']);
         Route::get('/edit/{id}', [ProjectProfileStreamlinedController::class, 'streamlined_edit']);
         Route::patch('/update', [ProjectProfileStreamlinedController::class, 'streamlined_update']);

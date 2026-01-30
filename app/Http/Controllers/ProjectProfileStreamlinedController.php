@@ -363,7 +363,7 @@ class ProjectProfileStreamlinedController extends Controller
         $table = $request->input('table_name');
         $column = $request->input('column_name');
         $newData = urldecode($request->input('new_data'));
-
+        // dd(DB::table($table)->where('id', $id)->get());
         // Perform update
         // dd($request);
         DB::table($table)
@@ -535,8 +535,12 @@ class ProjectProfileStreamlinedController extends Controller
             'activity.activityProject.expected_outcome.comments',
             'activity.activityProject.comments',
             'activity.activityProject.comments.user'
-        ])->whereHas('strategyProject', function ($query) {
-            $query->where('is_active', '1');
+        ])->whereHas('strategyProject', function ($query)use ($id) {
+            $query->where('project_id', $id)->where('is_active', '1');
+        })->whereHas('activity', function($q)use ($id){
+            $q->whereHas('activityProject', function($q2)use ($id){
+                $q2->where('project_id', $id)->where('is_active','1')->orderBy('activity_id', 'asc');
+            });
         })
             ->where('idpaps', $idpaps)
             ->get()
@@ -684,12 +688,9 @@ class ProjectProfileStreamlinedController extends Controller
         // if (!in_array($table, $allowedTables)) {
         //     abort(403, 'Table not allowed.');
         // }
-
-
-
         if ($table == 'strategies') {
-            $strat = Strategy::where('id', $id)->first();
-            $strat->delete();
+            // $strat = Strategy::where('id', $id)->first();
+            // $strat->delete();
 
             $strat_proj = StrategyProject::where('strategy_id', $id)->get();
             foreach ($strat_proj as $proj) {
@@ -703,8 +704,8 @@ class ProjectProfileStreamlinedController extends Controller
                     ->update(['is_active' => 0]);
             }
         } else if ($table == 'activities') {
-            $act = Activity::where('id', $id)->first();
-            $act->delete();
+            // $act = Activity::where('id', $id)->first();
+            // $act->delete();
 
             $act_proj = ActivityProject::where('activity_id', $id)->first();
             $act_proj->is_active = 0;
@@ -721,6 +722,37 @@ class ProjectProfileStreamlinedController extends Controller
         //     'deleted_id' => $id,
         //     'table' => $table
         // ]);
+    }
+    public function streamlined_delete_act_strat($id, $table, $project_id){
+        if ($table == 'strategies') {
+            // $strat = Strategy::where('id', $id)->first();
+            // $strat->delete();
+
+            $strat_proj = StrategyProject::where('strategy_id', $id)
+                ->where('project_id', $project_id)
+                ->get();
+            foreach ($strat_proj as $proj) {
+                $proj->is_active = 0;
+                $proj->save();
+            }
+
+            $activities = Activity::where('strategy_id', $id)->get();
+            foreach ($activities as $act) {
+                ActivityProject::where('activity_id', $act->id)
+                    ->where('project_id', $project_id)
+                    ->update(['is_active' => 0]);
+            }
+        } else if ($table == 'activities') {
+            // $act = Activity::where('id', $id)->first();
+            // $act->delete();
+
+            $act_proj = ActivityProject::where('activity_id', $id)
+                ->where('project_id', $project_id)
+                ->first();
+            $act_proj->is_active = 0;
+            $act_proj->save();
+        }
+        return redirect()->back()->with('message', 'Successfully deleted');
     }
     public function team_members($id)
     {
