@@ -607,7 +607,7 @@
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
                                             }" colspan="12"><b>
-                                                    {{ dat.is_active }}
+                                                    <!-- {{ dat.is_active }} -->
                                                 <div class="d-flex justify-content-between align-items-center w-100">
                                                     <textarea
                                                         class="form-control transparent-bg "

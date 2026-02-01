@@ -22,8 +22,12 @@ class TargetAccomplishmentReviewApproveController extends Controller
 {
     protected $revapp;
     protected static array $columns = [
-        'q1', 'q2', 'q3',
-        'e1', 'e2', 'e3',
+        'q1',
+        'q2',
+        'q3',
+        'e1',
+        'e2',
+        'e3',
         't1'
     ];
     public function __construct(OfficePerformanceCommitmentRatingList $revapp)
@@ -153,7 +157,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
             return inertia('Review-Approve/OPCR/Targets/Index', [
                 'data' => $data
             ]);
-        }else {
+        } else {
             return redirect('/forbidden')
                 ->with('error', 'Access forbidden!');
         }
@@ -252,53 +256,53 @@ class TargetAccomplishmentReviewApproveController extends Controller
         //     ->orderBy('program_and_projects.paps_desc', 'asc')
         //     ->get();
         $data = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)
-                ->with(['opcr_rating','opcr_rating2', 'paps','paps.MFO'])
-                ->where('is_included', '1')
-                ->get()
-                ->map(function($item)use($opcr_list_id){
-                    // dd($item->opcr_rating2, $opcr_list_id);
-                    $rating = null;
-                    $q1 = "";
-                    $q2 = "";
-                    $q3 = "";
-                    $e1 = "";
-                    $e2 = "";
-                    $e3 = "";
-                    $t1 = "";
-                    $rid = "";
-                    if (!empty($item->opcr_rating2)) {
-                        //
-                        $rating = collect($item->opcr_rating2)->where('opcr_id', $opcr_list_id)->first();
-                        // dd($rating,'collect');
-                        $q1 = optional($rating)->q1;
-                        $q2 = optional($rating)->q2;
-                        $q3 = optional($rating)->q3;
-                        $e1 = optional($rating)->e1;
-                        $e2 = optional($rating)->e2;
-                        $e3 = optional($rating)->e3;
-                        $t1 = optional($rating)->t1;
-                        $rid = optional($rating)->id;
-                        // dd($rating);
-                    }
+            ->with(['opcr_rating', 'opcr_rating2', 'paps', 'paps.MFO'])
+            ->where('is_included', '1')
+            ->get()
+            ->map(function ($item) use ($opcr_list_id) {
+                // dd($item->opcr_rating2, $opcr_list_id);
+                $rating = null;
+                $q1 = "";
+                $q2 = "";
+                $q3 = "";
+                $e1 = "";
+                $e2 = "";
+                $e3 = "";
+                $t1 = "";
+                $rid = "";
+                if (!empty($item->opcr_rating2)) {
+                    //
+                    $rating = collect($item->opcr_rating2)->where('opcr_id', $opcr_list_id)->first();
+                    // dd($rating,'collect');
+                    $q1 = optional($rating)->q1;
+                    $q2 = optional($rating)->q2;
+                    $q3 = optional($rating)->q3;
+                    $e1 = optional($rating)->e1;
+                    $e2 = optional($rating)->e2;
+                    $e3 = optional($rating)->e3;
+                    $t1 = optional($rating)->t1;
+                    $rid = optional($rating)->id;
+                    // dd($rating);
+                }
 
-                    return [
-                        'mfo_desc' => optional(optional(optional($item)->paps)->MFO)->mfo_desc,
-                        'idpaps' => $item->idpaps,
-                        'paps_desc' => optional(optional($item)->paps)->paps_desc,
-                        'id' =>$item->id,
-                        'target_success_indicator'=>$item->target_success_indicator,
-                        'quantity'=>$item->quantity,
-                        'success_indicator'=>$item->success_indicator,
-                        "opcr_rating_id"=>$rid,
-                        "q1"=>$q1,
-                        "q2"=>$q2,
-                        "q3"=>$q3,
-                        "e1"=>$e1,
-                        "e2"=>$e2,
-                        "e3"=>$e3,
-                        "t1"=>$t1,
-                    ];
-                });
+                return [
+                    'mfo_desc' => optional(optional(optional($item)->paps)->MFO)->mfo_desc,
+                    'idpaps' => $item->idpaps,
+                    'paps_desc' => optional(optional($item)->paps)->paps_desc,
+                    'id' => $item->id,
+                    'target_success_indicator' => $item->target_success_indicator,
+                    'quantity' => $item->quantity,
+                    'success_indicator' => $item->success_indicator,
+                    "opcr_rating_id" => $rid,
+                    "q1" => $q1,
+                    "q2" => $q2,
+                    "q3" => $q3,
+                    "e1" => $e1,
+                    "e2" => $e2,
+                    "e3" => $e3,
+                    "t1" => $t1,
+                ];
+            });
         return $data;
     }
     public function reviewOPCRAccomplishment(Request $request, $opcr_list_id)
@@ -319,7 +323,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
     {
         $update_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)
             ->update(['rating_status' => 1]);
-            // '/opcrtarget/' . $opcr_list_id
+        // '/opcrtarget/' . $opcr_list_id
         return redirect()->back()
             ->with('info', 'Office performance rating reviewed!');
     }
@@ -327,7 +331,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
     {
         $update_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)
             ->update(['rating_status' => 2]);
-            return redirect()->back()
+        return redirect()->back()
             ->with('info', 'Office performance rating approved!');
         // return redirect('/opcrtarget/' . $opcr_list_id)
         //     ->with('info', 'Office performance rating approved!');
@@ -370,11 +374,12 @@ class TargetAccomplishmentReviewApproveController extends Controller
         $val = $targets[0]->sum;
         return $val;
     }
-    public function index_rating(Request $request){
+    public function index_rating(Request $request)
+    {
         // dd("rating");
         // dd(auth()->user());
 
-                // ->where('rating_status', '<', 1)
+        // ->where('rating_status', '<', 1)
         $disk = app()->environment('production') ? 'custom_uploads' : 'public';
         if (auth()->user()->department_code == '04') {
             $data = $this->revapp
@@ -435,15 +440,16 @@ class TargetAccomplishmentReviewApproveController extends Controller
 
             return inertia('Review-Approve/OPCR/Ratings/Index', [
                 'data' => $data,
-                'mode_1'=>'Review',
-                'disk'=>$disk
+                'mode_1' => 'Review',
+                'disk' => $disk
             ]);
         } else if (auth()->user()->department_code == '02' && auth()->user()->recid == '795') {
             $data = $this->revapp
                 ->where('rating_status', '>', 0)
-                ->where('rating_status', '<', 2)
+                ->where('rating_status', '<', 5)
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
+                ->orderBy('rating_status', 'asc')
                 ->paginate(10);
             $data->getCollection()->transform(function ($item) {
                 $opcr_id = $item->id;
@@ -491,26 +497,28 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     'total' => $total,
                     'ave' => $ave,
                     'opcr_date' => $opcr_date,
-                    'office' => $office
+                    'office' => $office,
+                    'rating_type' => $item->rating_type
                 ];
             });
             // dd($data);
             return inertia('Review-Approve/OPCR/Ratings/Index', [
                 'data' => $data,
-                'mode_1'=>'Approve',
-                'disk'=>$disk
+                'mode_1' => 'Approve',
+                'disk' => $disk
             ]);
-        }else {
+        } else {
             return redirect('/forbidden')
                 ->with('error', 'Access forbidden!');
         }
     }
-    public function update_rating_score(Request $request, $column, $opcr_rating_id, $item_score){
+    public function update_rating_score(Request $request, $column, $opcr_rating_id, $item_score)
+    {
         // dd($column, $opcr_rating_id, $item_score);
         $rating = OfficePerformanceCommitmentRating::find($opcr_rating_id);
         // dd($item_score, $column, $opcr_rating_id, $rating);
-        if($item_score=="rating is null"){
-            $item_score="";
+        if ($item_score == "rating is null") {
+            $item_score = "";
         }
         if ($rating) {
             // Update dynamic column
@@ -533,26 +541,27 @@ class TargetAccomplishmentReviewApproveController extends Controller
     {
 
         // dd($request->type);
-        $data=[];
-        if($request->type=='Review'){
+        $data = [];
+        if ($request->type == 'Review') {
             // dd(OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)->where('is_included', '1')->get());
-            $data = OpcrTarget::with(['opcrList',
-                    'opcr_rating',
-                    'opcr_rating.movs',
-                    'opcr_rating2',
-                    'paps',
-                    'paps.MFO',
-                    'paps.opcr_stardard',
-                    'paps.divisionOutputs',
-                    'paps.divisionOutputs.dpcrTargets',
-                    'paps.divisionOutputs.dpcrTargets.ipcr_Semestral',
-                    'paps.divisionOutputs.dpcrTargets.monthlyTargets',
-                ])
+            $data = OpcrTarget::with([
+                'opcrList',
+                'opcr_rating',
+                'opcr_rating.movs',
+                'opcr_rating2',
+                'paps',
+                'paps.MFO',
+                'paps.opcr_stardard',
+                'paps.divisionOutputs',
+                'paps.divisionOutputs.dpcrTargets',
+                'paps.divisionOutputs.dpcrTargets.ipcr_Semestral',
+                'paps.divisionOutputs.dpcrTargets.monthlyTargets',
+            ])
                 ->where('office_performance_commitment_rating_list_id', $opcr_list_id)
                 ->where('is_included', '1')
                 ->get()
                 // ->pluck('id');
-                ->map(function($item)use($opcr_list_id){
+                ->map(function ($item) use ($opcr_list_id) {
 
                     // THESE*******************************************************
                     $rating = null;
@@ -566,7 +575,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     $t1 = "";
                     $rid = "";
                     $show_mov = false;
-                    $count_movs=0;
+                    $count_movs = 0;
                     if (!empty($item->opcr_rating2)) {
                         //
                         $rating = collect($item->opcr_rating2)->where('opcr_id', $opcr_list_id)->first();
@@ -593,15 +602,27 @@ class TargetAccomplishmentReviewApproveController extends Controller
                             $count_movs = $show_mov ? 1 : 0;
                         }
                     }
-                    $division_outputs =optional(optional($item)->paps)->divisionOutputs ?? [];
-                    $dpcr_targets=[];
-                    $sem = (optional(optional($item)->opcrList)->semester=='Second Semester')? '2':'1';
-                    $year=optional(optional($item)->opcrList)->year;
+                    $division_outputs = optional(optional($item)->paps)->divisionOutputs ?? [];
+                    $dpcr_targets = [];
+                    $sem = (optional(optional($item)->opcrList)->semester == 'Second Semester') ? '2' : '1';
+                    $year = optional(optional($item)->opcrList)->year;
 
-
-                    $monthly_targets = $this->calculateMonthlyAverages($item, [
-                        'q1','q2','q3',
-                        'e1','e2','e3',
+                    // dd(calculateMonthlyAverages($item, [
+                    //     'q1',
+                    //     'q2',
+                    //     'q3',
+                    //     'e1',
+                    //     'e2',
+                    //     'e3',
+                    //     't1'
+                    // ]));
+                    $monthly_targets = calculateMonthlyAverages($item, [
+                        'q1',
+                        'q2',
+                        'q3',
+                        'e1',
+                        'e2',
+                        'e3',
                         't1'
                     ]);
                     // dd($monthly_targets, $item->id);
@@ -612,25 +633,25 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     // $dpcr_ave = optional($dpcr_targets)->pluck('monthlyTargets') ?? collect();
 
                     return [
-                        'id'=>$item->id,
+                        'id' => $item->id,
                         // 'average_monthly'=>$average_monthly,
-                        'monthly_targets'=>$monthly_targets,
+                        'monthly_targets' => $monthly_targets,
                         'mfo_desc' => optional(optional(optional($item)->paps)->MFO)->mfo_desc,
                         'idpaps' => $item->idpaps,
                         'paps_desc' => optional(optional($item)->paps)->paps_desc,
-                        'id' =>$item->id,
-                        'target_success_indicator'=>$item->target_success_indicator,
-                        'quantity'=>$item->quantity,
-                        'success_indicator'=>$item->success_indicator,
-                        "opcr_rating_id"=>$rid,
-                        "accomplishments"=>optional(optional($item)->opcr_rating)->accomplishments,
-                        "q1"=>$q1,
-                        "q2"=>$q2,
-                        "q3"=>$q3,
-                        "e1"=>$e1,
-                        "e2"=>$e2,
-                        "e3"=>$e3,
-                        "t1"=>$t1,
+                        'id' => $item->id,
+                        'target_success_indicator' => $item->target_success_indicator,
+                        'quantity' => $item->quantity,
+                        'success_indicator' => $item->success_indicator,
+                        "opcr_rating_id" => $rid,
+                        "accomplishments" => optional(optional($item)->opcr_rating)->accomplishments,
+                        "q1" => $q1,
+                        "q2" => $q2,
+                        "q3" => $q3,
+                        "e1" => $e1,
+                        "e2" => $e2,
+                        "e3" => $e3,
+                        "t1" => $t1,
                         // 'q1_ave' => round($computeAve($summary['q1']), 2),
                         // 'q2_ave' => round($computeAve($summary['q2']), 2),
                         // 'q3_ave' => round($computeAve($summary['q3']), 2),
@@ -649,35 +670,35 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         // // Overall row average across all monthly row averages
                         // 'average' => round($computeAve($summary['row_averages']), 2),
                         "remarks" => optional($item->opcr_rating)->remarks,
-                        "q1_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->quality1,
-                        "q2_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->quality2,
-                        "q3_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->quality3,
-                        "e1_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->efficiency1,
-                        "e2_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->efficiency2,
-                        "e3_standard"=>optional(optional(optional($item)->paps)->opcr_stardard)->efficiency3,
-                        "t1_standard"=> optional(optional(optional($item)->paps)->opcr_stardard)->timeliness,
-                        "movs"=>$movs,
-                        "mov_is_visible"=>$show_mov,
-                        "count_movs"=>$count_movs,
-                        "division_outputs"=>$division_outputs,
-                        "division_output_ids"=>optional($division_outputs)->pluck('id'),
+                        "q1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality1,
+                        "q2_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality2,
+                        "q3_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality3,
+                        "e1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency1,
+                        "e2_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency2,
+                        "e3_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency3,
+                        "t1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->timeliness,
+                        "movs" => $movs,
+                        "mov_is_visible" => $show_mov,
+                        "count_movs" => $count_movs,
+                        "division_outputs" => $division_outputs,
+                        "division_output_ids" => optional($division_outputs)->pluck('id'),
                         // "q1_dpcr"=>$dpcr_ave,
                         // "monthly_targets"=>optional($dpcr_targets)->pluck("monthlyTargets"),
 
                         // count(optional($dpcr_targets)->pluck("monthlyTargets"))>0?$d
                         // "monthly_targets"=> optional($dpcr_targets)->pluck("monthlyTargets"),
 
-                        "sem"=>$sem,
-                        "year"=>$year
+                        "sem" => $sem,
+                        "year" => $year
                         // ->monthlyTargets
                         // "flat" => $flat,
                         // 'standard'=>optional(optional($item)->paps)->opcr_stardard
                     ];
                 });
-        }else{
+        } else {
             $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
-            $opcr_id=$opcr_list_id;
-            $FFUNCCOD=$opcr_list->FFUNCCOD;
+            $opcr_id = $opcr_list_id;
+            $FFUNCCOD = $opcr_list->FFUNCCOD;
             $data = OpcrTarget::with([
                 'opcr_rating',
                 'opcrList',
@@ -689,8 +710,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 'paps.divisionOutputs.dpcrTargets.ipcr_Semestral',
                 'paps.divisionOutputs.dpcrTargets.monthlyTargets',
             ])
-            // ->join('paps', 'paps.id', '=', 'opcr_targets.idpaps')
-            // ->join('mfos', 'mfos.id', '=', 'paps.mfo_id') // <-- MFO table
+                // ->join('paps', 'paps.id', '=', 'opcr_targets.idpaps')
+                // ->join('mfos', 'mfos.id', '=', 'paps.mfo_id') // <-- MFO table
                 ->whereHas('paps', function ($query) use ($FFUNCCOD) {
                     $query->whereHas('MFO', function ($query) use ($FFUNCCOD) {
                         $query->where('mfo_desc', '<>', '');
@@ -706,7 +727,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->groupBy('office_performance_commitment_rating_list_id')
                 ->groupBy('idpaps')
                 ->get()
-                ->sortBy(fn ($item) => optional($item->paps->MFO)->id)
+                ->sortBy(fn($item) => optional($item->paps->MFO)->id)
                 ->values()
                 ->map(function ($item) {
                     // dd($item);
@@ -773,14 +794,18 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     $t1 = $item->opcr_rating ? ($item->opcr_rating->t1 ?? 0) : 0;
                     $r_t = $t1 != 0 ? round($t1, 2) : 0;
 
-                    $monthly_targets = $this->calculateMonthlyAverages($item, [
-                        'q1','q2','q3',
-                        'e1','e2','e3',
+                    $monthly_targets = calculateMonthlyAverages($item, [
+                        'q1',
+                        'q2',
+                        'q3',
+                        'e1',
+                        'e2',
+                        'e3',
                         't1'
                     ]);
                     return [
                         "id" => $id,
-                        "monthly_targets"=>$monthly_targets,
+                        "monthly_targets" => $monthly_targets,
                         "success_indicator_id" => $su,
                         "accomplishments" => $accomp,
                         "rating_q" => $r_q,
@@ -808,85 +833,86 @@ class TargetAccomplishmentReviewApproveController extends Controller
         // dd($data->pluck("dpcr_targets")->first());
         return $data;
     }
-    private function calculateMonthlyAverages($item, array $columns)
-    {
-        // Collect all monthly targets under this OPCR item
-        // dd($item);
-        $sem = $item->opcrList->semester === 'Second Semester' ? 2 : 1;
-        $year = $item->opcrList->year;
-        $ipcrSemestrals = collect(optional($item->paps)->divisionOutputs)
-            ->flatMap(function ($division) {
-                // dd($division);
-                return collect($division->dpcrTargets)
-                    ->map(fn ($dpcr) => $dpcr->ipcr_Semestral);
-            })
-            ->filter(fn ($ipcr) =>
-                $ipcr !== null && (int) $ipcr->sem === $sem
-            )
-            ->first();
-        // dd($ipcrSemestrals);
-        $sem_id = optional($ipcrSemestrals)->id?optional($ipcrSemestrals)->id:0;
-        $monthlyTargets = collect(optional($item->paps))
-            ->flatMap(function ($paps) {
-                return collect(optional($paps)->divisionOutputs);
-            })
-            ->flatMap(function ($divisionOutput) {
-                return collect(optional($divisionOutput)->dpcrTargets);
-            })
-            ->flatMap(function ($dpcrTarget) {
-                return collect(optional($dpcrTarget)->monthlyTargets);
-            })
-            ->filter(function ($monthlyTarget) use ($sem, $year, $sem_id) {
-                // return  (int) $monthlyTarget->year === (int) $year;
-                // always filter by year
-                $match = (int) $monthlyTarget->year === (int) $year;
+    // private function calculateMonthlyAverages($item, array $columns)
+    // {
+    //     // Collect all monthly targets under this OPCR item
+    //     // dd($item);
+    //     $sem = $item->opcrList->semester === 'Second Semester' ? 2 : 1;
+    //     $year = $item->opcrList->year;
+    //     $ipcrSemestrals = collect(optional($item->paps)->divisionOutputs)
+    //         ->flatMap(function ($division) {
+    //             // dd($division);
+    //             return collect($division->dpcrTargets)
+    //                 ->map(fn($dpcr) => $dpcr->ipcr_Semestral);
+    //         })
+    //         ->filter(
+    //             fn($ipcr) =>
+    //             $ipcr !== null && (int) $ipcr->sem === $sem
+    //         )
+    //         ->first();
+    //     // dd($ipcrSemestrals);
+    //     $sem_id = optional($ipcrSemestrals)->id ? optional($ipcrSemestrals)->id : 0;
+    //     $monthlyTargets = collect(optional($item->paps))
+    //         ->flatMap(function ($paps) {
+    //             return collect(optional($paps)->divisionOutputs);
+    //         })
+    //         ->flatMap(function ($divisionOutput) {
+    //             return collect(optional($divisionOutput)->dpcrTargets);
+    //         })
+    //         ->flatMap(function ($dpcrTarget) {
+    //             return collect(optional($dpcrTarget)->monthlyTargets);
+    //         })
+    //         ->filter(function ($monthlyTarget) use ($sem, $year, $sem_id) {
+    //             // return  (int) $monthlyTarget->year === (int) $year;
+    //             // always filter by year
+    //             $match = (int) $monthlyTarget->year === (int) $year;
 
-                // if sem_id is not 0, also filter by sem_id
-                if ($sem_id !== 0) {
-                    $match = $match && ((int) $monthlyTarget->sem_id === (int) $sem_id);
-                }
+    //             // if sem_id is not 0, also filter by sem_id
+    //             if ($sem_id !== 0) {
+    //                 $match = $match && ((int) $monthlyTarget->sem_id === (int) $sem_id);
+    //             }
 
-                return $match;
-            })
-        ->values(); // reindex;
-        // dd($monthlyTargets);
-        // dd($item);
-        // dd($monthlyTargets, collect(optional($item->paps))
-        // ->flatMap(function ($paps) {
-        //     return collect(optional($paps)->divisionOutputs);
-        // })
-        // ->flatMap(function ($divisionOutput) {
-        //     return collect(optional($divisionOutput)->dpcrTargets);
-        // })
-        // ->flatMap(function ($dpcrTarget) {
-        //     return collect(optional($dpcrTarget)->monthlyTargets);
-        // })->first());
+    //             return $match;
+    //         })
+    //         ->values(); // reindex;
+    //     // dd($monthlyTargets);
+    //     // dd($item);
+    //     // dd($monthlyTargets, collect(optional($item->paps))
+    //     // ->flatMap(function ($paps) {
+    //     //     return collect(optional($paps)->divisionOutputs);
+    //     // })
+    //     // ->flatMap(function ($divisionOutput) {
+    //     //     return collect(optional($divisionOutput)->dpcrTargets);
+    //     // })
+    //     // ->flatMap(function ($dpcrTarget) {
+    //     //     return collect(optional($dpcrTarget)->monthlyTargets);
+    //     // })->first());
 
-        $averages = [];
+    //     $averages = [];
 
-        foreach ($columns as $column) {
-            $values = $monthlyTargets
-                ->pluck($column)
-                ->filter(fn ($v) => !is_null($v) && $v != 0);
+    //     foreach ($columns as $column) {
+    //         $values = $monthlyTargets
+    //             ->pluck($column)
+    //             ->filter(fn($v) => !is_null($v) && $v != 0);
 
-            $averages[$column] = $values->count()
-                ? round($values->avg(), 2)
-                : 0;
-        }
-        return $averages;
-        // $
-        // return [
-        //     'opcr_target_id' => $item->id,
-        //     'averages'       => $averages,
-        //     'q1'=>optional($averages)->q1,
-        //     'q2'=>optional($averages)->q2,
-        //     'q3'=>optional($averages)->q3,
-        //     'e1'=>optional($averages)->e1,
-        //     'e1'=>optional($averages)->e1,
-        //     'e3'=>optional($averages)->e3,
-        //     't1'=>optional($averages)->t1,
-        // ];
-    }
+    //         $averages[$column] = $values->count()
+    //             ? round($values->avg(), 2)
+    //             : 0;
+    //     }
+    //     return $averages;
+    //     // $
+    //     // return [
+    //     //     'opcr_target_id' => $item->id,
+    //     //     'averages'       => $averages,
+    //     //     'q1'=>optional($averages)->q1,
+    //     //     'q2'=>optional($averages)->q2,
+    //     //     'q3'=>optional($averages)->q3,
+    //     //     'e1'=>optional($averages)->e1,
+    //     //     'e1'=>optional($averages)->e1,
+    //     //     'e3'=>optional($averages)->e3,
+    //     //     't1'=>optional($averages)->t1,
+    //     // ];
+    // }
     public static function calculate(Collection $monthlyTargets)
     {
         // dd($monthlyTargets);
@@ -902,7 +928,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
             return collect(self::$columns)->mapWithKeys(function ($column) use ($subarray) {
                 $validValues = $subarray
                     ->pluck($column)
-                    ->filter(fn ($v) => !is_null($v) && $v != 0);
+                    ->filter(fn($v) => !is_null($v) && $v != 0);
 
                 return [
                     $column => $validValues->count()
@@ -919,7 +945,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
         $overallAverage = collect(self::$columns)->mapWithKeys(function ($column) use ($subarrayAverages) {
             $validValues = $subarrayAverages
                 ->pluck($column)
-                ->filter(fn ($v) => !is_null($v) && $v != 0);
+                ->filter(fn($v) => !is_null($v) && $v != 0);
 
             return [
                 $column => $validValues->count()
@@ -967,7 +993,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 $monthly->t1,
             ];
 
-            $nonZero = array_filter($values, fn ($v) => $v > 0);
+            $nonZero = array_filter($values, fn($v) => $v > 0);
 
             $entryAve = count($nonZero)
                 ? array_sum($nonZero) / count($nonZero)
@@ -990,8 +1016,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
          */
         $overall = [];
 
-        foreach (['q1','q2','q3','e1','e2','e3','t1'] as $field) {
-            $values = $entries->pluck($field)->filter(fn ($v) => $v > 0);
+        foreach (['q1', 'q2', 'q3', 'e1', 'e2', 'e3', 't1'] as $field) {
+            $values = $entries->pluck($field)->filter(fn($v) => $v > 0);
 
             $overall[$field . '_ave'] = $values->count()
                 ? $values->sum() / $values->count()
@@ -1005,7 +1031,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
     }
     public function averageNonZero(array $values): float
     {
-        $filtered = array_filter($values, fn ($v) => $v > 0);
+        $filtered = array_filter($values, fn($v) => $v > 0);
 
         return count($filtered)
             ? array_sum($filtered) / count($filtered)
@@ -1029,7 +1055,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
             $eAve = $this->averageNonZero([$monthly->e1, $monthly->e2, $monthly->e3]);
             $tAve = $monthly->t1 > 0 ? $monthly->t1 : 0;
 
-            $components = array_filter([$qAve, $eAve, $tAve], fn ($v) => $v > 0);
+            $components = array_filter([$qAve, $eAve, $tAve], fn($v) => $v > 0);
 
             $entryAve = count($components)
                 ? array_sum($components) / count($components)
@@ -1051,5 +1077,25 @@ class TargetAccomplishmentReviewApproveController extends Controller
             'entries'     => $entriesWithAverages,
             'overall_ave' => $overallAve,
         ];
+    }
+
+    public function updateRatingType(Request $request, $rating_type, $id)
+    {
+        $rating = OfficePerformanceCommitmentRatingList::findOrFail($id);
+
+        if ($rating_type === 'ppdo') {
+            $rating->rating_type = 0;
+        } elseif ($rating_type === 'dpcr') {
+            $rating->rating_type = 1;
+        } else {
+            return response()->json(['message' => 'Invalid rating type'], 400);
+        }
+
+        $rating->save();
+        return redirect()->back();
+        // return response()->json([
+        //     'message' => 'Rating type updated successfully',
+        //     'rating_type' => $rating->rating_type
+        // ]);
     }
 }

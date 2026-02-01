@@ -125,6 +125,7 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Carbon\Carbon;
 
+
 Auth::routes(['verify' => true]);
 
 Route::middleware(['auth', 'can:manage users'])->group(function () {
@@ -433,8 +434,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [ProjectProfileController::class, 'create']);
     });
     // Project Profile Trackings
-    Route::prefix('/project-profile-tracking')->group(function(){
-        Route::get('/',[ProjectProfileTrackingController::class, 'tracking']);
+    Route::prefix('/project-profile-tracking')->group(function () {
+        Route::get('/', [ProjectProfileTrackingController::class, 'tracking']);
     });
     //Revision Plan
     Route::prefix('/revision')->group(function () {
@@ -473,11 +474,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/generate/{id}', [ProjectDesignController::class, 'generateProjectDesign']);
     });
     // Forward Next Year
-    Route::prefix('/project/next_year')->group(function(){
-        Route::post('/{sem_id}',[ProjectProfileNextYearController::class,'index']);
+    Route::prefix('/project/next_year')->group(function () {
+        Route::post('/{sem_id}', [ProjectProfileNextYearController::class, 'index']);
     });
     // Cash Disbursements Forecast
-    Route::prefix('/cdf')->group(function(){
+    Route::prefix('/cdf')->group(function () {
         Route::get('/{revision_plan_id}', [CashDisbursementForecastController::class, 'set_cdf']);
         Route::patch('/{revision_plan_id}', [CashDisbursementForecastController::class, 'updateCdf']);
         Route::patch('/signatories/{revision_plan_id}', [CashDisbursementForecastController::class, 'updateSignatories']);
@@ -961,6 +962,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/return/remarks/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'returnOpcrRating']);
             Route::post('/submit/opcr/{column}/{opcr_rating_id}/{item_score}', [TargetAccomplishmentReviewApproveController::class, 'update_rating_score']);
             Route::get('/{opcr_list_id}/view/opcr/rating/submission', [TargetAccomplishmentReviewApproveController::class, 'viewRating']);
+            Route::patch('/set/rating/type/{rating_type}/{id}', [TargetAccomplishmentReviewApproveController::class, 'updateRatingType']);
         });
         Route::prefix('/ipp')->group(function () {
             Route::get('/', [ProjectProfileTrackingController::class, 'index_ipp']);

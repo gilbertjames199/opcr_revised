@@ -17,6 +17,10 @@ class OfficePerformanceCommitmentRating extends Model
         return $this->belongsTo(OpcrTarget::class, 'id_opcr_target', 'id');
     }
 
+    public function opcrList()
+    {
+        return $this->belongsTo(OfficePerformanceCommitmentRatingList::class, 'opcr_id', 'id');
+    }
     public function paps()
     {
         return $this->belongsTo(ProgramAndProject::class, 'id_paps', 'id');

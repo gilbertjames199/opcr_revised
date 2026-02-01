@@ -560,8 +560,25 @@
                                     <th rowspan="2">Alloted Budget</th>
                                     <th rowspan="2">Accountable Division</th>
                                     <th rowspan="2">Actual Accomplishments</th>
-                                    <th colspan="4">Rating (PPDO Score)</th>
-                                    <th colspan="4">Rating (DPCR Score)</th>
+                                    <th colspan="4">
+                                        <input
+                                            type="radio"
+                                            name="rating"
+                                            :checked="currentRatingType === '0'"
+                                            @change="setRatingType('ppdo', opcr_current.id)"
+                                        >
+                                        Rating (PPDO Score)
+                                        <!-- -{{ opcr_current.id }} -ratingxcxv type - {{ currentRatingType }} -->
+                                    </th>
+                                    <th colspan="4">
+                                        <input
+                                            type="radio"
+                                            name="rating"
+                                            :checked="currentRatingType === '1'"
+                                            @change="setRatingType('dpcr', opcr_current.id)"
+                                        >
+                                        Rating (DPCR Score)
+                                    </th>
                                     <th rowspan="2">Remarks</th>
                                     <th rowspan="2">MOV</th>
                                 </tr>
@@ -667,6 +684,7 @@
                                     <td colspan="3">TOTAL RATING (DPCR)</td>
                                     <td>{{ computeDPCRTotal(opcr_data) }}</td>
                                     <td></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td colspan="5"></td>
@@ -674,6 +692,7 @@
                                     <td>{{ getAverageAll() }}</td>
                                     <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
                                     <td>{{ computeDPCRAverage(opcr_data) }}</td>
+                                    <td></td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -797,6 +816,7 @@ import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/ModalDynamicTitle2";
 import Modal2 from "@/Shared/PrintModal";
 import SideModal from "@/Shared/PrintModal";
+import { Inertia } from '@inertiajs/inertia';
 
 export default {
     props: {
@@ -821,7 +841,8 @@ export default {
             }),
             can_submit: false,
             submit_attempt: false,
-            show_all_not_clicked: false
+            show_all_not_clicked: false,
+            currentRatingType: 0,
         }
     },
     mounted() {
@@ -889,6 +910,7 @@ export default {
                 console.error(error);
             });
             this.displayModal = true;
+            this.currentRatingType=this.opcr_current.rating_type
         },
         hideModal() {
             this.displayModal = false;
@@ -1312,7 +1334,21 @@ export default {
             const sum = rowAverages.reduce((total, val) => total + val, 0)
 
             return Number((sum / rowAverages.length).toFixed(2))
-        }
+        },
+
+        // _______________________________
+        // SET RATING TYPE
+        // ===============================
+        setRatingType(rating_type, id) {
+            Inertia.patch(`/review-approve/ratings/set/rating/type/${rating_type}/${id}`, {}, {
+                onSuccess: () => {
+                console.log(`Rating type ${type} updated for ID ${id}`);
+                },
+                onError: (errors) => {
+                console.error(errors);
+                }
+        });
+    }
     }
 };
 </script>

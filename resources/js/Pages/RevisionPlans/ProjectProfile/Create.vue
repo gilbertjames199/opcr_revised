@@ -4,7 +4,7 @@
     </Head>
     <div class="relative row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <span>v13</span>
+            <span>v1</span>
             <h3>{{ pageTitle }} Project
                 <span v-if="editData.type === 'p'">Profile</span>
                 <span v-if="editData.type === 'd'">Design</span>
@@ -691,15 +691,17 @@
                                                 @click="showActivityModal(dat.id)">
                                                     Add Activities
                                                 </button>
+                                                <!-- @click="deleteData(dat.id, 'strategies', dat.description)" -->
                                                 <button class="btn btn-danger btn-sm text-white"
-                                                    @click="deleteData(dat.id, 'strategies', dat.description)">
+                                                @click="deleteDataActivityOrStrat(dat.id, 'strategies', dat.description, this.form.id)"
+                                                    >
                                                     🗑 Delete Strategy
                                                 </button>
                                             </td>
                                         </tr>
                                         <!-- ACTIVITIES **************************************************************************************************** -->
-                                        <template v-if="dat.activity && paps.is_strategy_based==0">
-                                            <tr  v-for="(act, subIndex) in dat.activity" :key="subIndex" style="height: 100%">
+                                        <template v-if="dat.activity && paps.is_strategy_based==0" v-for="(act, subIndex) in dat.activity" :key="subIndex" >
+                                            <tr  v-if="act.is_active==='1'" style="height: 100%">
                                                 <!-- DESCRIPTION -->
                                                 <td :class="{
                                                     'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
@@ -1209,7 +1211,7 @@
                                                         Edit Activity
                                                     </button><hr >
                                                     <button class="btn btn-danger btn-sm text-white"
-                                                        @click="deleteData(act.id, 'activities', dat.description)">
+                                                        @click="deleteDataActivityOrStrat(act.id, 'activities', dat.description, this.form.id)">
                                                         🗑 Delete Activity
                                                     </button><hr>
                                                 </td>
@@ -3961,6 +3963,16 @@ export default {
             let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
               if (confirm(text) == true) {
                 this.$inertia.delete("/revision/streamlined/" + id+"/"+table);
+            }
+
+        },
+        // DELETE STRATEGY OR ACTIVITY
+        deleteDataActivityOrStrat(id, table, title, project_id){
+
+            //alert(this.idpaps);
+            let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
+              if (confirm(text) == true) {
+                this.$inertia.delete("/revision/streamlined/" + id+"/"+table+"/"+project_id);
             }
 
         },
