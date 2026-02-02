@@ -235,7 +235,7 @@ class StrategyController extends Controller
                 'responsible'      => null,
                 'is_active'        => 1,
             ]);
-            dd(StrategyProject::where('strategy_id', $strategy->id)->get(), $strategy);
+            // dd(StrategyProject::where('strategy_id', $strategy->id)->get(), $strategy);
         }
         // dd(StrategyProject)
         return response()->json(['message' => 'Strategies saved successfully.']);

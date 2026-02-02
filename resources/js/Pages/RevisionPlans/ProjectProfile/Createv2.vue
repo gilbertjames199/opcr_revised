@@ -1145,10 +1145,10 @@
                                                         act.activityProject[0].id)">
                                                         Expected Outcomes
                                                     </button><hr >
-                                                    <button class="btn btn-primary btn-sm text-white"
+                                                    <!-- <button class="btn btn-primary btn-sm text-white"
                                                     @click="showExpectedOutcomesModal(act.id)">
                                                         Edit Activity
-                                                    </button><hr >
+                                                    </button><hr > -->
                                                     <!-- form: {{ form.id}} -- {{ act.is_active }} -->
                                                     <button class="btn btn-danger btn-sm text-white"
                                                         @click="deleteDataActivityOrStrat(act.id, 'activities', dat.description, this.form.id)">
@@ -2797,7 +2797,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr class="table table-secondary text-center align-middle">
-                            <th rowspan="3">Description</th>
+                            <th rowspan="3">Expected Output Description</th>
                             <th rowspan="3">Target/Indicator</th>
                             <th colspan="4">Physical</th>
                             <th rowspan="3">Actions</th>

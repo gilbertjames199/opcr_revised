@@ -2850,7 +2850,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr class="table table-secondary text-center align-middle">
-                            <th rowspan="3">Description</th>
+                            <th rowspan="3">Expected Output Description</th>
                             <th rowspan="3">Target/Indicator</th>
                             <th colspan="4">Physical</th>
                             <th rowspan="3">Actions</th>
