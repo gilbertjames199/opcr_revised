@@ -121,7 +121,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
             case 0:
               // alert('View Modal');
               _this3.status_val = status;
-              alert(_this3.status_val);
+              // alert(this.status_val)
               _this3.opcr_current = opcr;
               url = "/review-approve/ratings/" + opcr_id + "/view/opcr/rating/submission";
               _context.n = 1;

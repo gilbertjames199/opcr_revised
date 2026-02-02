@@ -381,7 +381,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
         // dd($request);
         // ->where('rating_status', '<', 1)
         $disk = app()->environment('production') ? 'custom_uploads' : 'public';
-        if (auth()->user()->department_code == '04') {
+        if ((auth()->user()->department_code == '04') && $request->source!='ppdo_approval') {
             $data = $this->revapp
                 ->where('rating_status', '>', -1)
                 ->orderBy('year', 'desc')
@@ -443,7 +443,9 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 'mode_1' => 'Review',
                 'disk' => $disk
             ]);
-        } else if (auth()->user()->department_code == '02' && auth()->user()->recid == '795') {
+        } else if ((auth()->user()->department_code == '02' && auth()->user()->recid == '795') ||
+            ((auth()->user()->department_code == '04') && $request->source=='ppdo_approval')
+        ) {
             $data = $this->revapp
                 ->where('rating_status', '>', 0)
                 ->where('rating_status', '<', 5)
