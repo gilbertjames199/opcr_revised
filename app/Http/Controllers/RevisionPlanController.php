@@ -594,6 +594,7 @@ class RevisionPlanController extends Controller
     public function create(Request $request, $id)
     {
         // dd($request->source);
+
         // dd($id, auth()->user()->department_code);
 
 
@@ -610,13 +611,32 @@ class RevisionPlanController extends Controller
                     })
                         ->orWhere('department_code', $dept_code);
                 })
-
                 ->get();
             // dd("wala si paps", $paps);
             // $all_paps = Progr
+        }else{
+            $paps_all = ProgramAndProject::with('MFO')
+                ->where(function ($query) use ($dept_code) {
+                    $query->whereHas('MFO', function ($query) use ($dept_code) {
+                        $query->where('department_code', $dept_code);
+                    })
+                        ->orWhere('department_code', $dept_code);
+                })
+                ->where('id', $id)
+                ->get();
         }
+        // dd(ProgramAndProject::with('MFO')
+        //         ->where(function ($query) use ($dept_code) {
+        //             $query->whereHas('MFO', function ($query) use ($dept_code) {
+        //                 $query->where('department_code', $dept_code);
+        //             })
+        //                 ->orWhere('department_code', $dept_code);
+        //         })
+        //         ->get(), "ALL PAPS");
+        // dd($paps, $paps_all, $dept_code, $id);
         $hgdg = HGDG_Checklist::get();
         $count = RevisionPlan::where('idpaps', $id)->count();
+
         $max_id = RevisionPlan::where('idpaps', $id)->max('id');
         // dd($max_id);
         $duplicate = RevisionPlan::where('id', $max_id)->get();
@@ -628,6 +648,7 @@ class RevisionPlanController extends Controller
                 "idpaps" => $id,
                 "hgdgs" => $hgdg,
                 "paps" => $paps,
+                "paps_all" => $paps_all,
                 "popsp_agencies" => $popsp_agencies,
                 "duplicate" => $duplicate,
                 "can" => [

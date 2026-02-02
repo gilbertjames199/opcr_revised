@@ -35,6 +35,9 @@ class ProjectProfileStreamlinedController extends Controller
 
     public function streamlined_create(Request $request, $idpaps)
     {
+         // SET USER DEPARTMENT CODE
+        $dept_code = auth()->user()->department_code;
+        // dd($request);
         // SET PAPS ID
         $id = $idpaps;
         $source = null;
@@ -42,14 +45,24 @@ class ProjectProfileStreamlinedController extends Controller
         // dd($idpaps);
 
         // SET PAPS VALUE
-        $paps = ProgramAndProject::with('MFO')->where('id', $id)->get();
-        $paps0 = $paps->first();
 
+        // dd($paps);
+        if($id!=0){
+            $paps = ProgramAndProject::with('MFO')->where('id', $id)->get();
+            $paps0 = $paps->first();
+        }else{
+            // dd(RevisionPlan::where('id', $request->idrevplan)->get());
+            $paps = ProgramAndProject::with('MFO')->where('type','GAS')
+                    ->where('department_code', $dept_code)
+                    ->first();
+                    $paps0 = $paps->first();
+        }
+
+        // dd($paps);
         // SET OFFICE OBJECT
         $office = Office::where('department_code', $paps0->department_code)->first();
         // dd($office);
-        // SET USER DEPARTMENT CODE
-        $dept_code = auth()->user()->department_code;
+
         $paps_all = [];
         // FOR BUDGETARY REQUIREMENTS
         $s_mooe_gad = 0;
@@ -87,7 +100,7 @@ class ProjectProfileStreamlinedController extends Controller
         } else {
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $max_id)->first();
         }
-
+        // dd($duplicate);
         // HGDG Checklist
         $hgdg = HGDG_Checklist::get();
 

@@ -30,6 +30,7 @@
                         {{ pap.paps_desc }}
                     </option>
                 </select>
+                <!-- {{ paps_all }} -->
                 <!-- <div v-if="paps[0]" >
                     <label for="">PROGRAMS AND PROJECTS -Description</label>
                     <input type="text" v-model="paps[0].paps_desc" class="form-control" />

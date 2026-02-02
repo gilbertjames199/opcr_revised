@@ -843,6 +843,7 @@ export default {
             submit_attempt: false,
             show_all_not_clicked: false,
             currentRatingType: 0,
+            modal_mode: 'Review',
         }
     },
     mounted() {
@@ -898,6 +899,7 @@ export default {
         async viewModal(opcr_id, status, opcr) {
             // alert('View Modal');
             this.status_val = status
+            // alert(this.status_val)
             this.opcr_current = opcr
             var url = "/review-approve/ratings/" + opcr_id + "/view/opcr/rating/submission"
             await axios.get(url, {
