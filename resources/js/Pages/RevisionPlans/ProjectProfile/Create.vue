@@ -4137,6 +4137,7 @@ export default {
             // Proceed to save (e.g., emit event or call API)
             axios.post('/implementation-workplan/strategies', {
                 strategies: this.strategies,
+                project_id: this.form.id,
                 paps_id: this.paps_specific.id,
             })
             .then(response => {

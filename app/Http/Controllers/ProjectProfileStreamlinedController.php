@@ -506,7 +506,7 @@ class ProjectProfileStreamlinedController extends Controller
     }
     public function getImplementationPlan($id, $paps, $idpaps)
     {
-        return Strategy::with([
+        $imp= Strategy::with([
             'strategyProject' => function ($query) use ($id) {
                 $query->where('project_id', $id)
                     ->where('is_active', '1');
@@ -537,11 +537,21 @@ class ProjectProfileStreamlinedController extends Controller
             'activity.activityProject.comments.user'
         ])->whereHas('strategyProject', function ($query)use ($id) {
             $query->where('project_id', $id)->where('is_active', '1');
-        })->whereHas('activity', function($q)use ($id){
-            $q->whereHas('activityProject', function($q2)use ($id){
-                $q2->where('project_id', $id)->where('is_active','1')->orderBy('activity_id', 'asc');
-            });
         })
+        ->where(function ($q) use ($id) {
+            $q->whereHas('activity', function ($q2) use ($id) {
+                $q2->whereHas('activityProject', function ($q3) use ($id) {
+                    $q3->where('project_id', $id)
+                    ->where('is_active', '1');
+                });
+            })
+            ->orWhereDoesntHave('activity');
+        })
+        // ->whereHas('activity', function($q)use ($id){
+        //     $q->whereHas('activityProject', function($q2)use ($id){
+        //         $q2->where('project_id', $id)->where('is_active','1')->orderBy('activity_id', 'asc');
+        //     });
+        // })
             ->where('idpaps', $idpaps)
             ->get()
             ->map(function ($item) {
@@ -680,6 +690,9 @@ class ProjectProfileStreamlinedController extends Controller
                     "comments" => $comments
                 ];
             });
+
+        // dd($imp);
+        return $imp;
     }
 
     public function streamlined_delete($id, $table)

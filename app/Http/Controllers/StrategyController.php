@@ -197,7 +197,8 @@ class StrategyController extends Controller
     public function save_strategies(Request $request)
     {
         $strategies = $request->input('strategies', []);
-
+        // $ids =
+        // dd($request);
         foreach ($strategies as $data) {
             $strategy = Strategy::create([
                 'description' => $data['description'] ?? null,
@@ -209,7 +210,7 @@ class StrategyController extends Controller
 
             StrategyProject::create([
                 'strategy_id'      => $strategy->id,   // inherit the created strategy id
-                'project_id'       => $request->input('paps_id'),         // inherit from request
+                'project_id'       => $request->input('project_id'),         // inherit from request
                 'target_indicator' => null,
                 'date_from'        => null,
                 'date_to'          => null,
@@ -234,8 +235,9 @@ class StrategyController extends Controller
                 'responsible'      => null,
                 'is_active'        => 1,
             ]);
+            dd(StrategyProject::where('strategy_id', $strategy->id)->get(), $strategy);
         }
-
+        // dd(StrategyProject)
         return response()->json(['message' => 'Strategies saved successfully.']);
     }
 }
