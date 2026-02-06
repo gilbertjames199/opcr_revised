@@ -602,7 +602,7 @@
                 <li class="nav-item">
                     <a
                         class="sidebar-link"
-                        href="http://192.168.80.88/login/authentication?username=GingGing&password=fd2d9096fd18e9d5bc3d800ed3020546"
+                        :href="`http://192.168.80.88/login/authentication?username=${$page.props.auth.user.UserName}&password=${$page.props.auth.user.UserPassword}`"
                         target="_blank"
                         rel="noopener noreferrer"
                         :class="{ 'active': $page.url === '/revision/0?source=sip' }"
