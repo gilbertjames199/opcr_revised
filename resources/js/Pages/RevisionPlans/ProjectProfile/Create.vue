@@ -1197,7 +1197,7 @@
                                                     activity_project_id: {{ act.activityProject[0].id }} -->
                                                     <button class="btn btn-primary btn-sm text-white"
                                                     @click="showExpectedOutputModal(act.activityProject[0].expected_output,act.activityProject[0].activity_id,
-                                                        act.activityProject[0].id)
+                                                        act.activityProject[0].id, act.description)
                                                         ">
                                                             Expected Outputs
                                                     </button><hr >
@@ -2840,8 +2840,9 @@
         <button @click="saveSignatories()" class="btn btn-success text-white">Save</button>
     </SignatoryModal>
     <ExpectedOutputModal v-if="ExpectedOutputModalVisible" @close-modal-event="hideExpectedOutputModal" title="EXPECTED OUTPUTS">
-
+        <h3><p><b>Activity: </b><u>{{activity_description_current}}</u></p></h3>
         <h4>Expected Outputs</h4>
+
         <!-- {{ expected_outputs_current }}
         activity_id: {{ activity_id }}
         activity_project_id: {{ activity_project_id }} -->
@@ -3200,6 +3201,7 @@ export default {
             strategy_id: 0, /*Parent strategy of the activity */
             ActivityModalVisible: false,
             activities: [],
+            activity_description_current: '',
 
             //IMPLEMENTING TEAM *******************************
             TeamModalVisible: false,
@@ -4478,12 +4480,13 @@ export default {
 
 
         //EXPECTED OUTPUT ******************************************
-        showExpectedOutputModal(activity, activity_id, activity_project_id){
+        showExpectedOutputModal(activity, activity_id, activity_project_id, activity_desc){
             this.activity_id=activity_id
             this.activity_project_id=activity_project_id
             this.expected_outputs_new = [];
             this.expected_outputs_current = activity
             this.ExpectedOutputModalVisible=true;
+            this.activity_description_current=activity_desc;
         },
         hideExpectedOutputModal(){
             this.ExpectedOutputModalVisible=false;

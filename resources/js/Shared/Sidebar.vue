@@ -599,6 +599,42 @@
                     <span class="title">IPP Tracking</span>
                     </Link>
                 </li>
+                <li class="nav-item">
+                    <a
+                        class="sidebar-link"
+                        href="http://192.168.80.88/login/authentication?username=GingGing&password=fd2d9096fd18e9d5bc3d800ed3020546"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        :class="{ 'active': $page.url === '/revision/0?source=sip' }"
+                    >
+                        <span></span>
+                        <span class="icon-holder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 2h12v20H4z"/>
+                                <path d="M6 6h8"/>
+                                <path d="M6 10h8"/>
+                                <circle cx="8" cy="16" r="2"/>
+                            </svg>
+                        </span>
+                        <span class="title">Monthly Accomplishments</span>
+                    </a>
+                </li>
+
+                <!-- <li class="nav-item">
+                    <a class="sidebar-link" href="192.168.80.88/login/authentication?username=GingGing&password=fd2d9096fd18e9d5bc3d800ed3020546" :class="{ 'active': $page.url === '/revision/0?source=sip' }">
+                        <span></span>
+                        <span class="icon-holder">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 2h12v20H4z"/>
+                                <path d="M6 6h8"/>
+                                <path d="M6 10h8"/>
+                                <circle cx="8" cy="16" r="2"/>
+                            </svg>
+                        </span>
+                        <span class="title">Accomplishments</span>
+                    </a>
+                </li> -->
             </ul>
         </div>
     </div>
