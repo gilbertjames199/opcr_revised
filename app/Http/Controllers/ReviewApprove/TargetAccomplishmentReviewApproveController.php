@@ -387,6 +387,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
                 ->paginate(10);
+
             $data->getCollection()->transform(function ($item) {
                 $opcr_id = $item->id;
                 // dd($item);
@@ -441,7 +442,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
             return inertia('Review-Approve/OPCR/Ratings/Index', [
                 'data' => $data,
                 'mode_1' => 'Review',
-                'disk' => $disk
+                'disk' => $disk,
+                'source'=>$request->source
             ]);
         } else if ((auth()->user()->department_code == '02' && auth()->user()->recid == '795') ||
             ((auth()->user()->department_code == '04') && $request->source=='ppdo_approval')
@@ -453,6 +455,11 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->orderBy('semester', 'desc')
                 ->orderBy('rating_status', 'asc')
                 ->paginate(10);
+            if (request('source') === 'ppdo_approval') {
+                $data->appends([
+                    'source' => request('source'),
+                ]);
+            }
             $data->getCollection()->transform(function ($item) {
                 $opcr_id = $item->id;
                 // dd($item);

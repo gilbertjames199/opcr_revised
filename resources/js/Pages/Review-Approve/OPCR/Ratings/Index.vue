@@ -84,8 +84,8 @@
                     </table>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
+                    <div class="col-md-12" >
+                        <pagination :next="data.next_page_url" :prev="data.prev_page_url" v-bind="source === 'ppdo_approval' ? { source: source } : {}"/>
                     </div>
                 </div>
                 <div class="row justify-content-center">
@@ -669,7 +669,7 @@
                                     </td>
 
 
-                                    <td><textarea v-model="opcr_data[index].remarks"
+                                    <td><textarea v-model="opcr_data[index].remarks" class="form-control"
                                             style="height: inherit"></textarea>
                                     </td>
                                     <td>
@@ -823,6 +823,7 @@ export default {
         auth: Object,
         data: Object,
         mode_1: String,
+        source: String,
         disk: String
     },
     data() {

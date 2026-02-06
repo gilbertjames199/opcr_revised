@@ -4268,6 +4268,7 @@ class RevisionPlanController extends Controller
                 $query->where('strategy_id', $request->strategy_id);
             })
             ->orderBy('activity_id', 'asc')
+            ->where('is_active', '1')
             ->get()
             ->map(function ($proj) use ($request) {
                 // Collect expected outputs (description column)
