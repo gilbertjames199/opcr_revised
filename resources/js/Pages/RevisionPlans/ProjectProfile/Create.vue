@@ -2868,7 +2868,7 @@
                     <tbody>
                         <tr v-for="(output, index) in expected_outputs_new" :key="index">
                         <td><textarea v-model="output.description" class="form-control"></textarea></td>
-                        <td><input type="text" v-model="output.target_indicator" class="form-control"></td>
+                        <td><textarea type="text" v-model="output.target_indicator" class="form-control"></textarea></td>
                         <td><input type="number" v-model="output.physical_q1" class="form-control"></td>
                         <td><input type="number" v-model="output.physical_q2" class="form-control"></td>
                         <td><input type="number" v-model="output.physical_q3" class="form-control"></td>

@@ -1415,6 +1415,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "onUpdate:modelValue": function onUpdateModelValue($event) {
             return $data.opcr_data[index].remarks = $event;
           },
+          "class": "form-control",
           style: {
             "height": "inherit"
           }
