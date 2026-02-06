@@ -560,12 +560,25 @@ class ProjectProfileStreamlinedController extends Controller
             })
             ->orWhereDoesntHave('activity');
         })
+        // ->join('strategy_projects', function ($join) use ($id) {
+        //         $join->on('strategy_projects.strategy_id', '=', 'strategies.id')
+        //             ->where('strategy_projects.project_id', $id)
+        //             ->where('strategy_projects.is_active', '1');
+        //     })
         // ->whereHas('activity', function($q)use ($id){
         //     $q->whereHas('activityProject', function($q2)use ($id){
         //         $q2->where('project_id', $id)->where('is_active','1')->orderBy('activity_id', 'asc');
         //     });
         // })
             ->where('idpaps', $idpaps)
+            // ->orderBy(
+            //     StrategyProject::select('seq_no')
+            //         ->whereColumn('strategy_projects.strategy_id', 'strategies.id')
+            //         ->where('project_id', $id)
+            //         ->where('is_active', '1')
+            //         ->limit(1),
+            //     'asc'
+            // )
             ->get()
             ->map(function ($item) {
                 // dd($item);
@@ -594,6 +607,7 @@ class ProjectProfileStreamlinedController extends Controller
                     $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
                     // dd($activity->activityProject);
                     return [
+                        "seq_no" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->seq_no : null,
                         "id" => $activity->id,
                         "date_from" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_from : null,
                         "date_to" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_to : null,
@@ -630,7 +644,9 @@ class ProjectProfileStreamlinedController extends Controller
                         "is_active" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->is_active : 0,
                         "comments" => $act_comments
                     ];
-                });
+                })
+                ->sortBy('seq_no')   // 👈 ORDER BY ASC
+                ->values();          // 👈 reset array indexes;
                 $ps_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q1 > 0 ? $item->strategyProject[0]->ps_q1 : 0) : 0;
                 $ps_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q2 > 0 ? $item->strategyProject[0]->ps_q2 : 0) : 0;
                 $ps_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q3 > 0 ? $item->strategyProject[0]->ps_q3 : 0) : 0;
@@ -657,6 +673,7 @@ class ProjectProfileStreamlinedController extends Controller
                 // dd($item->strategyProject[0]);
 
                 return [
+                    "seq_no" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->seq_no : null,
                     "id" => $item->id,
                     "description" => $item->description,
                     "target_indicator" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->target_indicator : null,
@@ -702,7 +719,9 @@ class ProjectProfileStreamlinedController extends Controller
                     "activity_visible" => 0,
                     "comments" => $comments
                 ];
-            });
+            })
+            ->sortBy('seq_no')   // 👈 sort AFTER mapping
+            ->values();          // 👈 reset indexes for Vue;
 
         // dd($imp);
         return $imp;

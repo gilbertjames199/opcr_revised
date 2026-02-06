@@ -885,6 +885,7 @@ class RevisionPlanController extends Controller
                     $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
                     // dd($activity->activityProject);
                     return [
+                        "seq_no" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->seq_no:null,
                         "id" => $activity->id,
                         "date_from" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_from : null,
                         "date_to" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_to : null,
@@ -921,7 +922,9 @@ class RevisionPlanController extends Controller
                         "is_active" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->is_active : 0,
                         "comments" => $act_comments
                     ];
-                });
+                })
+                ->sortBy('seq_no')   // 👈 sort AFTER mapping
+                ->values();          // 👈 reset indexes for Vue;
                 $ps_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q1 > 0 ? $item->strategyProject[0]->ps_q1 : 0) : 0;
                 $ps_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q2 > 0 ? $item->strategyProject[0]->ps_q2 : 0) : 0;
                 $ps_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q3 > 0 ? $item->strategyProject[0]->ps_q3 : 0) : 0;
@@ -947,6 +950,7 @@ class RevisionPlanController extends Controller
                 // dd($co_total);
                 // dd($item->strategyProject[0]);
                 return [
+                    "seq_no" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->seq_no : null,
                     "id" => $item->id,
                     "description" => $item->description,
                     "target_indicator" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->target_indicator : null,
@@ -992,9 +996,11 @@ class RevisionPlanController extends Controller
                     "activity_visible" => 0,
                     "comments" => $comments
                 ];
-            });
+            })
+            ->sortBy('seq_no')   // 👈 sort AFTER mapping
+            ->values();          // 👈 reset indexes for Vue;
         //Budget Revised
-
+        // dd($implement);
         // $budgetRequirements = $this->budgetRequirements($id);
         $budgetRequirements = $this->budgetRequirementsUngrouped($id);
         // dd($id);

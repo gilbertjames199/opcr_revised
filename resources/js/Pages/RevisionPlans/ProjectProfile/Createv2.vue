@@ -526,6 +526,7 @@
                             <table class="table table-hover table-bordered border-dark">
                                 <thead >
                                     <tr class="bg-secondary text-white" >
+                                        <th style="text-align: center;">SEQ#</th>
                                         <th style="width: 12%; text-align: center;">Strategies/Activities</th>
                                         <th style="width: 8%; text-align: center;" >Performance Target Indicators</th>
                                         <th style="width: 8%; text-align: center;" >Gender Issues to be Addressed</th>
@@ -604,6 +605,13 @@
                                             <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
                                         </tr>
                                         <tr :id="dat.id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
+                                            <!-- SEQUENCE NUMBER -->
+                                            <td>
+                                                <input
+                                                    type="number" v-model="dat.seq_no" style="width: 4ch;"
+                                                    @input="setUnsaved(true)"
+                                                    @change="updateRevisionPlans('strategy_projects', 'seq_no', dat.strategy_id, dat.seq_no)">
+                                            </td>
                                             <td :class="{
                                                 'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
                                             }" colspan="12"><b>
@@ -643,6 +651,13 @@
                                         <!-- ACTIVITIES **************************************************************************************************** -->
                                         <template v-if="dat.activity && paps.is_strategy_based==0" v-for="(act, subIndex) in dat.activity" :key="subIndex" >
                                             <tr  v-if="act.is_active==='1'" style="height: 100%">
+                                                <!-- SEQUENCE NUMBER -->
+                                                <td>
+                                                    <input
+                                                        type="number" v-model="act.seq_no" style="width: 4ch;"
+                                                        @input="setUnsaved(true)"
+                                                        @change="updateRevisionPlans('activity_projects', 'seq_no', act.activity_id, act.seq_no)">
+                                                </td>
                                                 <!-- DESCRIPTION -->
                                                 <td :class="{
                                                     'text-danger': has_comment('Implementation Plan','activities',act.description,'activities','activity_projects', act, act.comments)
@@ -2594,10 +2609,10 @@
 
         <label for="">GENDER</label>
         <select class="form-select" v-model="team_members.gender" autocomplete="chrome-off">
-            <options>
+            <!-- <options> -->
                 <option value="M">Male</option>
                 <option value="F">Female</option>
-            </options>
+            <!-- </options> -->
         </select>
 
         <label for="">ROLE IN THE PROJECT</label>
