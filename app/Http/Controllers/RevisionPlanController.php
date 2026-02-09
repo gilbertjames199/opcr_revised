@@ -4141,6 +4141,8 @@ class RevisionPlanController extends Controller
             })
             ->where('project_id', $request->id)
             ->where('is_active','1')
+            ->orderBy('seq_no', 'ASC')        // primary sort
+            ->orderBy('created_at', 'ASC')    // tie-breaker (oldest first)
             ->get()
             ->map(function ($item) use ($request) {
                 $strategy = optional($item->strategy);
@@ -4275,6 +4277,8 @@ class RevisionPlanController extends Controller
             })
             ->orderBy('activity_id', 'asc')
             ->where('is_active', '1')
+            ->orderBy('seq_no', 'ASC')        // primary sort
+            ->orderBy('created_at', 'ASC')    // tie-breaker (oldest first)
             ->get()
             ->map(function ($proj) use ($request) {
                 // Collect expected outputs (description column)

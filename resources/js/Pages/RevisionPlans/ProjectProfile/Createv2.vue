@@ -523,6 +523,9 @@
                         </p>
                         <!-- class="table-responsive" style="max-height: 500px; overflow-y: auto;" -->
                         <div >
+                            <p><em>Use the <strong>numeric SEQ#</strong> to order strategies and activities from lowest to highest. After making changes, click outside the field and refresh the page (<strong>Ctrl+R</strong>) to apply them.</em></p>
+
+
                             <table class="table table-hover table-bordered border-dark">
                                 <thead >
                                     <tr class="bg-secondary text-white" >
@@ -608,7 +611,7 @@
                                             <!-- SEQUENCE NUMBER -->
                                             <td>
                                                 <input
-                                                    type="number" v-model="dat.seq_no" style="width: 4ch;"
+                                                    type="number" v-model="dat.seq_no" style="width: 8ch;"
                                                     @input="setUnsaved(true)"
                                                     @change="updateRevisionPlans('strategy_projects', 'seq_no', dat.strategy_id, dat.seq_no)">
                                             </td>
@@ -654,7 +657,7 @@
                                                 <!-- SEQUENCE NUMBER -->
                                                 <td>
                                                     <input
-                                                        type="number" v-model="act.seq_no" style="width: 4ch;"
+                                                        type="number" v-model="act.seq_no" style="width: 8ch;"
                                                         @input="setUnsaved(true)"
                                                         @change="updateRevisionPlans('activity_projects', 'seq_no', act.activity_id, act.seq_no)">
                                                 </td>
@@ -2803,7 +2806,13 @@
       <button @click="saveSignatories()" class="btn btn-success text-white">Save</button>
     </SignatoryModal>
     <ExpectedOutputModal v-if="ExpectedOutputModalVisible" @close-modal-event="hideExpectedOutputModal" title="EXPECTED OUTPUTS">
-        <h3><p><b>Activity: </b><u>{{activity_description_current}}</u></p></h3>
+        <!-- <h3><p><b>Activity: </b><u>{{activity_description_current}}</u></p></h3> -->
+        <table>
+            <tr>
+                <td><b>Activity: </b></td>
+                <td><u>{{activity_description_current}}</u></td>
+            </tr>
+        </table>
         <h4>Expected Outputs</h4>
         <!-- <p><b>Parent Activity: </b><u>{{activity_description_current}}</u></p> -->
         <!-- {{ expected_outputs_current }}
