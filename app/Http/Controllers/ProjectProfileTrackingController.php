@@ -55,10 +55,14 @@ class ProjectProfileTrackingController extends Controller
             // Check if any other revision plans of this idpaps are already submitted, reviewed, or approved , '1', '2'
             $otherPlans = RevisionPlan::where('idpaps', $idpaps)
                 ->where('id', '!=', $id)
-                ->where('year_period', $year)
+                ->whereYear('date_start', $year)
+                // ->where('year_period', $year)
                 ->whereIn('status', ['0'])
                 ->count();
-
+            // dd($otherPlans = RevisionPlan::where('idpaps', $idpaps)
+            //     ->where('id', '!=', $id)
+            //     ->whereYear('date_start', $year)
+            //     ->whereIn('status', ['0'])->get(), $revplan, $id, $year);
             if ($otherPlans > 0) {
                 return redirect()->back()->with('error', 'Cannot submit this Revision Plan because other plans for this PAP are already submitted, reviewed, or approved.');
             }

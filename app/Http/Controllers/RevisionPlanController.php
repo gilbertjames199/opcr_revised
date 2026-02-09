@@ -141,6 +141,7 @@ class RevisionPlanController extends Controller
                 ->where('idpaps', '=', $idpaps)
                 ->get()
                 ->map(function ($item) use ($budget_controller) {
+                    $year = Carbon::parse($item->date_start)->year;
                     // COUNT THE COMMENTS
                     $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)->where('table_name', 'revision_plans')->count();
                     // dd($revision_comment);
@@ -169,10 +170,12 @@ class RevisionPlanController extends Controller
                             $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
                             $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
                     }
+                    // $year = ""
                     // dd($total);
                     // dd($imp_amount);
                     return [
                         // 'FFUNCTION' => $item->FFUNCTION,
+                        'year' => $year,
                         'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
                         'idpaps' => $item->idpaps,
                         'id' => $item->id,
