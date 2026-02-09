@@ -4301,8 +4301,23 @@ class RevisionPlanController extends Controller
             ->map(function ($proj) use ($request) {
                 // Collect expected outputs (description column)
                 // dd($proj->expected_output);
-                $expected_outputs = collect(optional(optional($proj)->activity)->expected_output)
-                    ->filter(fn ($eo) => is_object($eo) && ($eo->project_id ?? null) == $request->revision_plan_id)
+                // $expected_outputs = collect(optional(optional($proj)->activity)->expected_output)
+                //     ->filter(fn ($eo) => is_object($eo) && ($eo->project_id ?? null) == $request->revision_plan_id)
+                //     ->filter(fn($eo) => is_object($eo))
+                //     ->map(function ($eo) {
+
+                //         // Convert to numeric safely using (float) casting
+                //         $total = (float)($eo->physical_q1 ?? 0)
+                //             + (float)($eo->physical_q2 ?? 0)
+                //             + (float)($eo->physical_q3 ?? 0)
+                //             + (float)($eo->physical_q4 ?? 0);
+
+                //         return "{$total} " . (string)($eo->description ?? '');
+                //     })
+                //     ->whenEmpty(fn() => collect())   // ensure safe implode
+                //     ->implode('<br><br>');
+                $expected_outputs = collect(optional($proj)->expected_output)
+                    // ->filter(fn ($eo) => is_object($eo) && ($eo->project_id ?? null) == $request->revision_plan_id)
                     ->filter(fn($eo) => is_object($eo))
                     ->map(function ($eo) {
 
@@ -4331,6 +4346,11 @@ class RevisionPlanController extends Controller
                 $fe_total= floatval($proj->fe_q1)+floatval($proj->fe_q2)+floatval($proj->fe_q3)+floatval($proj->fe_q4);
                 $co_total= floatval($proj->co_q1)+floatval($proj->co_q2)+floatval($proj->co_q3)+floatval($proj->co_q4);
                 $overall_total = floatval($ps_total)+floatval($mooe_total)+floatval($fe_total)+floatval($co_total);
+                // if($proj->id==3670){
+                //     dd($expected_outputs,
+                //     $proj->expected_output,
+                //     );
+                // }
                 return [
                     'activity_project_id' => $proj->id ?? null,
                     'revision_plan_id' => $request->revision_plan_id,
