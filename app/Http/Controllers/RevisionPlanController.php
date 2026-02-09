@@ -4141,8 +4141,8 @@ class RevisionPlanController extends Controller
             })
             ->where('project_id', $request->id)
             ->where('is_active','1')
-            ->orderBy('seq_no', 'ASC')        // primary sort
-            ->orderBy('created_at', 'ASC')    // tie-breaker (oldest first)
+            // ->orderBy('seq_no', 'ASC')        // primary sort
+            // ->orderBy('created_at', 'ASC')    // tie-breaker (oldest first)
             ->get()
             ->map(function ($item) use ($request) {
                 $strategy = optional($item->strategy);
@@ -4221,8 +4221,11 @@ class RevisionPlanController extends Controller
                             });
                         })
                         : collect(),
+                    'seq_no' => $item->seq_no ?? 0, // default to a high number if seq_no is missing
                 ];
-            });
+            })
+            ->sortBy('seq_no')   // 👈 ORDER BY ASC
+            ->values();;
         return $strat->isEmpty()
             ? $empty
             : $strat;
@@ -4273,12 +4276,13 @@ class RevisionPlanController extends Controller
         ])
             ->where('project_id', $request->revision_plan_id)
             ->whereHas('activity', function ($query) use ($request) {
+                // dd($request->strategy_id);
                 $query->where('strategy_id', $request->strategy_id);
             })
             ->orderBy('activity_id', 'asc')
             ->where('is_active', '1')
-            ->orderBy('seq_no', 'ASC')        // primary sort
-            ->orderBy('created_at', 'ASC')    // tie-breaker (oldest first)
+            // ->orderByRaw('CAST(seq_no AS UNSIGNED) ASC')  // numeric sort
+            // ->orderBy('created_at', 'ASC')                // tie-breaker
             ->get()
             ->map(function ($proj) use ($request) {
                 // Collect expected outputs (description column)
@@ -4346,6 +4350,7 @@ class RevisionPlanController extends Controller
                     'responsible' => $proj->responsible ?? null,
                     'expected_outputs' => $expected_outputs,
                     'target_indicators' => $target_indicators,
+                    'seq_no' => $proj->seq_no ?? null,
                     // 'expected_outputs' => $combined->values(),
                     // 'expected_outputs' => ($proj->expected_output ?? collect())
                     //     ->map(function ($eo) {
@@ -4355,7 +4360,24 @@ class RevisionPlanController extends Controller
                     //         ];
                     //     }),
                 ];
-            });
+            })
+            ->sortBy('seq_no')   // 👈 ORDER BY ASC
+                ->values();
+            // dd($activityProjects,"OK na po?");
+        // dd(ActivityProject::with([
+        //     'activity',
+        //     'expected_output',
+        //     'expected_outcome'
+        // ])
+        //     ->where('project_id', $request->revision_plan_id)
+        //     ->whereHas('activity', function ($query) use ($request) {
+        //         $query->where('strategy_id', $request->strategy_id);
+        //     })
+        //     ->orderBy('activity_id', 'asc')
+        //     ->where('is_active', '1')
+        //     ->orderBy('seq_no', 'ASC')        // primary sort
+        //     ->orderBy('created_at', 'ASC')    // tie-breaker (oldest first)
+        //     ->get());
         return $activityProjects->isEmpty()
             ? $empty
             : $activityProjects;
