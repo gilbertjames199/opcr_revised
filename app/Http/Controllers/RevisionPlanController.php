@@ -4294,6 +4294,7 @@ class RevisionPlanController extends Controller
             })
             ->orderBy('activity_id', 'asc')
             ->where('is_active', '1')
+
             // ->orderByRaw('CAST(seq_no AS UNSIGNED) ASC')  // numeric sort
             // ->orderBy('created_at', 'ASC')                // tie-breaker
             ->get()
@@ -4301,6 +4302,7 @@ class RevisionPlanController extends Controller
                 // Collect expected outputs (description column)
                 // dd($proj->expected_output);
                 $expected_outputs = collect(optional(optional($proj)->activity)->expected_output)
+                    ->filter(fn ($eo) => is_object($eo) && ($eo->project_id ?? null) == $request->revision_plan_id)
                     ->filter(fn($eo) => is_object($eo))
                     ->map(function ($eo) {
 
@@ -4314,7 +4316,7 @@ class RevisionPlanController extends Controller
                     })
                     ->whenEmpty(fn() => collect())   // ensure safe implode
                     ->implode('<br><br>');
-
+    // dd(optional(optional($proj)->activity)->expected_output);
                 // Collect expected outcomes (target_indicator column)
                 $target_indicators = optional($proj)->expected_output
                     ? optional($proj)->expected_output->pluck('target_indicator')->implode('<br><br>')
