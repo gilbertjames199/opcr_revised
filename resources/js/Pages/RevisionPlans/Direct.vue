@@ -450,6 +450,8 @@
                                 <th>Type</th>
                                 <th>Implementing Offices</th>
                                 <th>Planned Amount</th>
+                                <th v-if="my_source=='rev_app'">HGDG Score</th>
+                                <th v-if="my_source=='rev_app'">Year</th>
                                 <th>View IPP</th>
                                 <th v-if="my_source=='rev_app'">Approve</th>
                                 <th v-if="my_source=='rev_app'">Full Edit</th>
@@ -473,10 +475,11 @@
                                 <td>{{ dat.version }}</td>
                                 <td>{{ formatProjectType(dat.type) }}</td>
                                 <td>{{ dat.FFUNCTION }}</td>
-
                                 <th class="text-end">
                                     {{ format_number_conv(dat.budget_sum,2,true) }}
                                 </th>
+                                <td>{{ dat.hgdg_score }}</td>
+                                <td>{{ dat.year }}</td>
                                 <!-- View -->
                                 <td>
                                     <Link

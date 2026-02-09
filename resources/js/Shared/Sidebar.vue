@@ -600,9 +600,10 @@
                     </Link>
                 </li>
                 <li class="nav-item">
+                    <!-- :href="`http://192.168.80.88/login/authentication?username=${$page.props.auth.user.UserName}&password=${$page.props.auth.user.UserPassword}`" -->
                     <a
                         class="sidebar-link"
-                        :href="`http://192.168.80.88/login/authentication?username=${$page.props.auth.user.UserName}&password=${$page.props.auth.user.UserPassword}`"
+                        :href="`generate/token/for/accomplishments`"
                         target="_blank"
                         rel="noopener noreferrer"
                         :class="{ 'active': $page.url === '/revision/0?source=sip' }"

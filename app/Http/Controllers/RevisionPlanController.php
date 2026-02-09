@@ -71,13 +71,16 @@ class RevisionPlanController extends Controller
             // dd($request->source, $AIPInstitutional->sp_approved, $AIPInstitutional->sip_period);
             if ($AIPInstitutional) {
                 if ($AIPInstitutional->sp_approved != '1') {
-                    return redirect()->back()->with('error', 'The AIP is not yet finalized');
+                    return redirect()->back();
+                    // ->with('error', 'The AIP is not yet finalized');
                 }
                 if (intval($AIPInstitutional->sip_period) < 1) {
-                    return redirect()->back()->with('error', 'SIP preparation has not commenced yet.');
+                    return redirect()->back();
+                    // ->with('error', 'SIP preparation has not commenced yet.');
                 }
             } else {
-                return redirect()->back()->with('error', 'The AIP is not yet finalized');
+                return redirect()->back();
+                // ->with('error', 'The AIP is not yet finalized');
             }
         }
         // dd($FFUNCCOD);
@@ -2307,7 +2310,7 @@ class RevisionPlanController extends Controller
         }
         $aip = AnnualInvestmentPlanInstitutional::where('year_period', $year_period)->first();
 
-        $data = RevisionPlan::with(['budget', 'paps', 'paps.office', 'clonedVersions'])
+        $data = RevisionPlan::with(['budget', 'paps', 'paps.office', 'clonedVersions', 'hgdgScores'])
             ->whereHas('budget', function ($query) {
                 $query->select(DB::raw('revision_plan_id'))
                     ->groupBy('revision_plan_id')
@@ -2460,6 +2463,9 @@ class RevisionPlanController extends Controller
                     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
                     $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
             }
+            // dd($item->hgdgScores);
+            $hgdg_score_sum = optional($item->hgdgScores)->sum('score') ?? 0;
+
             // dd($item->type);
             return [
                 'aip' => $aip,
@@ -2476,7 +2482,11 @@ class RevisionPlanController extends Controller
                 'status' => $item->status,
                 'gad_status' => $item->gad_status,
                 'number_of_clones' => $item->cloned_versions_count, // ❗ special name
-                'return_request_status' => $item->return_request_status
+                'return_request_status' => $item->return_request_status,
+                'hgdg_score' => number_format((float) $hgdg_score_sum, 2, '.', ''),
+                'year' => $year = $item->date_start
+                    ? Carbon::parse($item->date_start)->year
+                    : null,
             ];
         });
         // dd($data);
