@@ -3669,7 +3669,7 @@ class RevisionPlanController extends Controller
                     $gad_attributed = $amount;
                 }
             }
-
+            // dd($totalScore, $gad_attributed);
             // optional: round to 2 decimals
             $gad_attributed = number_format($gad_attributed, 2);
             $tot_rounded = round($totalScore, 2);
@@ -4379,11 +4379,12 @@ class RevisionPlanController extends Controller
                             + (float)($eo->physical_q2 ?? 0)
                             + (float)($eo->physical_q3 ?? 0)
                             + (float)($eo->physical_q4 ?? 0);
-
-                        return "{$total} " . (string)($eo->description ?? '');
+                        // "{$total} " .
+                        return  (string)($eo->description ?? '');
                     })
                     ->whenEmpty(fn() => collect())   // ensure safe implode
                     ->implode('<br><br>');
+                    // dd(optional($proj)->expected_output,$expected_outputs);
     // dd(optional(optional($proj)->activity)->expected_output);
                 // Collect expected outcomes (target_indicator column)
                 $target_indicators = optional($proj)->expected_output
