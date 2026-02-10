@@ -1725,6 +1725,23 @@ class RevisionPlanController extends Controller
                 // if ($item->id == 201) {
                 //     dd($item);
                 // }
+                // return [
+                //     // 'FFUNCTION' => $item->FFUNCTION,
+                //     'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
+                //     'idpaps' => $item->idpaps,
+                //     'id' => $item->id,
+                //     'project_title' => $item->project_title,
+                //     'type' => $item->type,
+                //     'version' => $item->version,
+                //     'budget_sum' => $budgetary_requirement,
+                //     'imp_amount' => $imp_amount,
+                //     'status' => $item->status,
+                //     'number_of_clones' => $item->clonedVersions->count(),
+                //     'return_request_status' => $item->return_request_status,
+                //     'year'=>$year
+                //     // 'paps'=>$item->paps
+                // ];
+                $year = Carbon::parse($item->date_start)->year;
                 return [
                     // 'FFUNCTION' => $item->FFUNCTION,
                     'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
@@ -1736,7 +1753,9 @@ class RevisionPlanController extends Controller
                     'budget_sum' => $budgetary_requirement,
                     'imp_amount' => $imp_amount,
                     'status' => $item->status,
-                    'return_request_status' => $item->return_request_status
+                    'number_of_clones' => $item->clonedVersions->count(),
+                    'return_request_status' => $item->return_request_status,
+                    'year'=>$year
                     // 'paps'=>$item->paps
                 ];
             });
