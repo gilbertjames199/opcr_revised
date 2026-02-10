@@ -61,7 +61,15 @@
                         <div v-else>PROJECT DESIGN</div>
                     </h4>
                 </div>
+                <p>
+                    <b>Year:&nbsp;</b>
+                    <select v-model="form.year_period" class="form-select d-inline-block w-auto" autocomplete="chrome-off">
+                        <option v-for="yr in my_years" :value="yr">{{ yr }}
 
+                        </option>
+                    </select>
+                    <!-- {{form}} -->
+                </p>
                 <div class="bgc-white p-20 bd">
                     <section id="revision_plans">
                         <h3>I.&nbsp;&nbsp;&nbsp;
@@ -3178,7 +3186,8 @@ export default {
                 agency_name: "",
                 source: "",
                 id: null,
-                selPaps: ""
+                selPaps: "",
+                year_period: "",
             }),
             total_intended: 0,
             pageTitle: "",
@@ -3471,6 +3480,7 @@ export default {
             this.form.is_strategy_based = this.editData.is_strategy_based
             this.form.id = this.editData.id
             this.form.aip_code = this.editData.aip_code
+            this.form.year_period = this.editData.year_period
             if(this.form.checklist_id=='0'){
                 this.form.checklist_id =null;
             }

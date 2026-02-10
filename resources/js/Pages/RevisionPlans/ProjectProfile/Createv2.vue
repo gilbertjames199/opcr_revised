@@ -3124,7 +3124,8 @@ export default {
                 agency_name: "",
                 source: "",
                 id: null,
-                selPaps: ""
+                selPaps: "",
+                year_period: "",
             }),
             total_intended: 0,
             pageTitle: "",
@@ -3398,6 +3399,7 @@ export default {
             this.form.is_strategy_based = this.editData.is_strategy_based
             this.form.id = this.editData.id
             this.form.aip_code = this.editData.aip_code
+            this.form.year_period = this.editData.year_period
             if(this.form.checklist_id=='0'){
                 this.form.checklist_id =null;
             }

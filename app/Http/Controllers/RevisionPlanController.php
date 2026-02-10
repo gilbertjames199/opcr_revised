@@ -111,12 +111,12 @@ class RevisionPlanController extends Controller
                 if ($request->source == 'sip') {
                     $data = $this->getSip($request, $dept_id, $popsp_agency, $budget_controller);
                 } else {
-                    $gas = $this->forGas($FFUNCCOD, 2026);
+                    $gas = $this->forGas($FFUNCCOD, 2026, $budget_controller);
                     // dd($gas);
-                    $gas2 = $this->forGas($FFUNCCOD, 2027);
+                    $gas2 = $this->forGas($FFUNCCOD, 2027, $budget_controller);
                     // dd($gas2);
                     $data = $this->getDirect($request, $dept_id, $popsp_agency, $budget_controller);
-
+                    // dd($gas, $gas2, $data);
                     if(count($gas)>0){
                         $data = $data->concat($gas);
                     }
@@ -205,7 +205,7 @@ class RevisionPlanController extends Controller
             ]);
         }
     }
-    public function forGas($FFUNCCOD, $currentYear){
+    public function forGas($FFUNCCOD, $currentYear, $budget_controller){
         // dd($FFUNCCOD);
         // dd(RevisionPlan::where('revision_plans.FFUNCCOD', $FFUNCCOD)->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'revision_plans.FFUNCCOD')->where('revision_plans.scope', 'GAS')->get());
         $data = RevisionPlan::select(
@@ -225,7 +225,7 @@ class RevisionPlanController extends Controller
             // ->where('revision_plans.idmfo', '0')
             ->where('revision_plans.scope', 'GAS')
             ->get()
-            ->map(function ($item) use($currentYear) {
+            ->map(function ($item) use($currentYear, $budget_controller) {
                 $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                     ->sum('amount');
                 // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
@@ -234,11 +234,23 @@ class RevisionPlanController extends Controller
                 // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
                 //                 ->join('targets', 'targets.id','implementation_plans.id')
                 //                 ->get();
-                $imp_amount = DB::table('targets')
-                    ->where('implementation_plans.idrev_plan', $item->id)
-                    ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
-                    ->select('targets.*', 'implementation_plans.*')
-                    ->sum('targets.planned_budget');
+                // $imp_amount = DB::table('targets')
+                //     ->where('implementation_plans.idrev_plan', $item->id)
+                //     ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                //     ->select('targets.*', 'implementation_plans.*')
+                //     ->sum('targets.planned_budget');
+                if ($item->is_strategy_based == 1) {
+                    $total = $budget_controller->getStratTotal($item->id);
+                } else {
+                    $total = $budget_controller->getActivityTotal($item->id);
+                }
+                // dd($item->is_strategy_based);
+                if ($total) {
+                    $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                        $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                        $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
+                        $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                }
 
                 // dd($item);
                 return [
