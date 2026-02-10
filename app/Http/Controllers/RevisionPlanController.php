@@ -3671,7 +3671,7 @@ class RevisionPlanController extends Controller
             }
 
             // optional: round to 2 decimals
-            $gad_attributed = round($gad_attributed, 2);
+            $gad_attributed = number_format($gad_attributed, 2);
             $tot_rounded = round($totalScore, 2);
             // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
             $signatories = $this->getSignatories($item->id);
