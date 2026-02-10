@@ -3783,8 +3783,28 @@ class RevisionPlanController extends Controller
     }
     public function getActivityTotal($idrev)
     {
-        $total = ActivityProject::where('project_id', $idrev)
+        // $activityProjects = ActivityProject::with([
+        //     'activity',
+        //     'expected_output',
+        //     'expected_outcome'
+        // ])
+        //     ->where('project_id', $idrev)
+        //     ->whereHas('activity', function ($query) {
+        //         // use ($request)
+        //         // dd($request->strategy_id);
+        //         // $query->where('strategy_id', $request->strategy_id);
+        //     })
+        //     ->orderBy('activity_id', 'asc')
+        //     ->where('is_active', '1')
+
+        //     // ->orderByRaw('CAST(seq_no AS UNSIGNED) ASC')  // numeric sort
+        //     // ->orderBy('created_at', 'ASC')                // tie-breaker
+        //     ->get();
+        $total = ActivityProject::with([
+            'activity'
+        ])->where('project_id', $idrev)
             ->select(
+                'id',
                 'ps_q1',
                 'ps_q2',
                 'ps_q3',
@@ -3811,6 +3831,7 @@ class RevisionPlanController extends Controller
         $all_total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
             $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
             $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+        // dd($total, $activityProjects, $all_total);
         return $all_total;
     }
     public function list(Request $request)
@@ -4118,7 +4139,7 @@ class RevisionPlanController extends Controller
     {
 
 
-        $activitiesQuery = ActivityProject::whereHas('activity', function($query){
+        $activitiesQuery = ActivityProject::with(['activity','strat'])->whereHas('activity', function($query){
                             $query->whereNull('deleted_at')
           ->whereHas('strat', function ($q) {
               $q->whereNull('deleted_at');

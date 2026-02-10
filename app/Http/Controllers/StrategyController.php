@@ -64,6 +64,7 @@ class StrategyController extends Controller
         $paps = ProgramAndProject::get();
         $idpaps = 0;
         $idmfo = 0;
+        // dd($ismfo);
         if ($ismfo == 1) {
             $idmfo = $id;
         } else {
@@ -153,7 +154,7 @@ class StrategyController extends Controller
         //dd($request->plan_period);
         $data->update([
             'description' => $request->description,
-            'idpaps' => $request->idpaps
+            // 'idpaps' => $request->idpaps
         ]);
 
         return redirect('/strategies/' . $request->idpaps)

@@ -381,6 +381,7 @@ class StrategyProjectController extends Controller
                     // "expected_output" => $item->expected_output,
                 ];
             });
+            // dd($strat);
         return $strat;
     }
     public function refresh(Request $request, $idrevplan)
