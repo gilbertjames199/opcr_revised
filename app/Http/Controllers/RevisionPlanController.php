@@ -3630,6 +3630,7 @@ class RevisionPlanController extends Controller
             // 'monitoringAndEvaluations',
             // 'riskManagements',
             // 'signatories',
+            'hgdgScores',
             'paps.office',
             'checklist'
         ])
@@ -3640,93 +3641,124 @@ class RevisionPlanController extends Controller
 
         // dd($amount);
 
-            $revplan=clone($revplan)->map(function ($item)use($amount, $proposed_budget) {
-                // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
-                $signatories = $this->getSignatories($item->id);
-                // dd($signatories);
-                $rationale = html_entity_decode($item->rationale, ENT_QUOTES | ENT_HTML5);
+        $revplan=clone($revplan)->map(function ($item)use($amount, $proposed_budget) {
+            $totalScore = $item->hgdgScores->sum('score');
+            // dd($item);
+            // dd($totalScore);
 
-                // Optional but recommended: strip unsupported tags
-                $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
+            // ********************************************************************************
+            $gad_attributed = 0;
 
-                $date_start = Carbon::parse($item->date_start)->format('F Y');
-                $date_end = Carbon::parse($item->date_end)->format('F Y');
-                $tot = intval($item->beneficiary_male)+intval($item->beneficiary_female);
-                // dd($item->checklist);
-                return [
-                    'id' => $item->id,
-                    'idpaps' => $item->idpaps,
-                    'idmfo' => $item->idmfo,
-                    'status' => $item->status,
-                    'program_id' => $item->program_id,
-                    'agency_name' => $item->agency_name,
-                    'FFUNCCOD' => $item->FFUNCCOD,
-                    'office' => optional(optional($item->paps)->office)->FFUNCTION ?? '',
-                    'year_period' => ($item->year_period && $item->year_period != 0) ? $item->year_period
-                        : date('Y', strtotime($item->date_start)),
-                    'scope' => $item->scope,
-                    'aip_code' => $item->aip_code,
-                    'project_title' => $item->project_title,
-                    'project_location' => $item->project_location,
-                    'list_of_lgu_covered' => $item->list_of_lgu_covered,
-                    'date_start' => $date_start,
-                    'date_end' => $date_end,
-                    'beneficiary_male' => $item->beneficiary_male,
-                    'beneficiary_female' => $item->beneficiary_female,
-                    'baseline_male' => $item->baseline_male,
-                    'baseline_female' => $item->baseline_female,
-                    'baseline_total' => $tot,
-                    'data_source' => $item->data_source,
-                    'amount' => $amount,
-                    'proposed_budget' => $proposed_budget,
-                    'attributed_amount' => $item->attributed_amount,
-                    'checklist_id' => optional(optional($item)->checklist)->box_number.'. '.optional(optional($item)->checklist)->sector,
-                    'hgdg_score' => $item->hgdg_score,
-                    'hgdg_percent' => $item->hgdg_percent,
-                    // 'rationale' => '<p align="justify">' . e($item->rationale) . '</p>',
-                    'rationale' => '<p align="justify">' . $rationale . '</p>',
-                    'objective' => '<p align="justify">' .trim($item->objective). '</p>',
-                    'beneficiaries' => $item->beneficiaries,
-                    'implementing_team' => $item->implementing_team,
-                    'implementing_teams' => $item->teamPlans,
-                    'partnership' => $item->partnership,
-                    'monitoring' => $item->monitoring,
-                    'monitoring_and_evaluations' => $item->monitoringAndEvaluations,
-                    'risk_management' => $item->risk_management,
-                    'risk_managements' => $item->riskManagements,
-                    'version' => $item->version,
-                    'type' => $item->type,
-                    'final' => $item->final,
-                    'supplemental' => $item->supplemental,
-                    'user_id' => $item->user_id,
-                    'created_at' => $item->created_at,
-                    'updated_at' => $item->updated_at,
-                    'is_strategy_based' => $item->is_strategy_based,
-                    'is_activity_based' => $item->is_activity_based,
-                    'breakdown_by_expected_output' => $item->breakdown_by_expected_output,
-                    // Merge all signatory fields directly at top level
-                    // ...$this->getSignatories($item->id),
-                    // 'office' => optional(optional($item)->paps)->office,
-                    'total_implementation' => $this->getActivityTotal($item->id),
-                    'budget_total' => floatval($this->getTotalBudgetRequirements($item->id)),
-                    'name_prepared'    => $signatories['name_prepared'] ?? null,
-                    'position_prepared' => $signatories['position_prepared'] ?? null,
-                    'acted_prepared'   => $signatories['acted_prepared'] ?? null,
-                    'name_noted'    => $signatories['name_noted'] ?? null,
-                    'position_noted' => $signatories['position_noted'] ?? null,
-                    'acted_noted'   => $signatories['acted_noted'] ?? null,
-                    'name_reviewed'    => $signatories['name_reviewed'] ?? null,
-                    'position_reviewed' => $signatories['position_reviewed'] ?? null,
-                    'acted_reviewed'   => $signatories['acted_reviewed'] ?? null,
-                    'name_recommending_approval'    => $signatories['name_recommending_approval'] ?? null,
-                    'position_recommending_approval' => $signatories['position_recommending_approval'] ?? null,
-                    'acted_recommending_approval'   => $signatories['acted_recommending_approval'] ?? null,
-                    'name_approved'    => $signatories['name_approved'] ?? null,
-                    'position_approved' => $signatories['position_approved'] ?? null,
-                    'acted_approved'   => $signatories['acted_approved'] ?? null,
+            if ($item->type === 'p' && $item->year_period < 2027) {
 
-                ];
-            });
+                // old rule
+                $gad_attributed = $amount * ($totalScore / 20);
+
+            } else {
+
+                // new rule (score brackets)
+                if ($totalScore <= 3.9) {
+                    $gad_attributed = $amount * 0;
+                } elseif ($totalScore >= 4 && $totalScore <= 7.9) {
+                    $gad_attributed = $amount * 0.25;
+                } elseif ($totalScore >= 8 && $totalScore <= 14.9) {
+                    $gad_attributed = $amount * 0.5;
+                } elseif ($totalScore >= 15 && $totalScore <= 19.9) {
+                    $gad_attributed = $amount * 0.75;
+                } elseif ($totalScore == 20) {
+                    $gad_attributed = $amount;
+                }
+            }
+
+            // optional: round to 2 decimals
+            $gad_attributed = round($gad_attributed, 2);
+            $tot_rounded = round($totalScore, 2);
+            // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
+            $signatories = $this->getSignatories($item->id);
+            // dd($signatories);
+            $rationale = html_entity_decode($item->rationale, ENT_QUOTES | ENT_HTML5);
+
+            // Optional but recommended: strip unsupported tags
+            $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
+
+            $date_start = Carbon::parse($item->date_start)->format('F Y');
+            $date_end = Carbon::parse($item->date_end)->format('F Y');
+            $tot = intval($item->beneficiary_male)+intval($item->beneficiary_female);
+            // dd($item->checklist);
+            return [
+                'id' => $item->id,
+                'idpaps' => $item->idpaps,
+                'idmfo' => $item->idmfo,
+                'status' => $item->status,
+                'program_id' => $item->program_id,
+                'agency_name' => $item->agency_name,
+                'FFUNCCOD' => $item->FFUNCCOD,
+                'office' => optional(optional($item->paps)->office)->FFUNCTION ?? '',
+                'year_period' => ($item->year_period && $item->year_period != 0) ? $item->year_period
+                    : date('Y', strtotime($item->date_start)),
+                'scope' => $item->scope,
+                'aip_code' => $item->aip_code,
+                'project_title' => $item->project_title,
+                'project_location' => $item->project_location,
+                'list_of_lgu_covered' => $item->list_of_lgu_covered,
+                'date_start' => $date_start,
+                'date_end' => $date_end,
+                'beneficiary_male' => $item->beneficiary_male,
+                'beneficiary_female' => $item->beneficiary_female,
+                'baseline_male' => $item->baseline_male,
+                'baseline_female' => $item->baseline_female,
+                'baseline_total' => $tot,
+                'data_source' => $item->data_source,
+                'amount' => $amount,
+                'proposed_budget' => $proposed_budget,
+                'attributed_amount' => $gad_attributed,
+                'checklist_id' => optional(optional($item)->checklist)->box_number.'. '.optional(optional($item)->checklist)->sector,
+                'hgdg_score' => $tot_rounded,
+                'hgdg_percent' => $item->hgdg_percent,
+                // 'rationale' => '<p align="justify">' . e($item->rationale) . '</p>',
+                'rationale' => '<p align="justify">' . $rationale . '</p>',
+                'objective' => '<p align="justify">' .trim($item->objective). '</p>',
+                'beneficiaries' => $item->beneficiaries,
+                'implementing_team' => $item->implementing_team,
+                'implementing_teams' => $item->teamPlans,
+                'partnership' => $item->partnership,
+                'monitoring' => $item->monitoring,
+                'monitoring_and_evaluations' => $item->monitoringAndEvaluations,
+                'risk_management' => $item->risk_management,
+                'risk_managements' => $item->riskManagements,
+                'version' => $item->version,
+                'type' => $item->type,
+                'final' => $item->final,
+                'supplemental' => $item->supplemental,
+                'user_id' => $item->user_id,
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at,
+                'is_strategy_based' => $item->is_strategy_based,
+                'is_activity_based' => $item->is_activity_based,
+                'breakdown_by_expected_output' => $item->breakdown_by_expected_output,
+                // Merge all signatory fields directly at top level
+                // ...$this->getSignatories($item->id),
+                // 'office' => optional(optional($item)->paps)->office,
+                'total_implementation' => $this->getActivityTotal($item->id),
+                'budget_total' => floatval($this->getTotalBudgetRequirements($item->id)),
+                'name_prepared'    => $signatories['name_prepared'] ?? null,
+                'position_prepared' => $signatories['position_prepared'] ?? null,
+                'acted_prepared'   => $signatories['acted_prepared'] ?? null,
+                'name_noted'    => $signatories['name_noted'] ?? null,
+                'position_noted' => $signatories['position_noted'] ?? null,
+                'acted_noted'   => $signatories['acted_noted'] ?? null,
+                'name_reviewed'    => $signatories['name_reviewed'] ?? null,
+                'position_reviewed' => $signatories['position_reviewed'] ?? null,
+                'acted_reviewed'   => $signatories['acted_reviewed'] ?? null,
+                'name_recommending_approval'    => $signatories['name_recommending_approval'] ?? null,
+                'position_recommending_approval' => $signatories['position_recommending_approval'] ?? null,
+                'acted_recommending_approval'   => $signatories['acted_recommending_approval'] ?? null,
+                'name_approved'    => $signatories['name_approved'] ?? null,
+                'position_approved' => $signatories['position_approved'] ?? null,
+                'acted_approved'   => $signatories['acted_approved'] ?? null,
+
+            ];
+        });
         // $signatories = $this->getSignatories($request->id);
         // $revplanArray = $revplan->toArray();
         // $revplanArray = $revplanArray[0] ?? [];
