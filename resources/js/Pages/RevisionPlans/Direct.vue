@@ -26,6 +26,11 @@
                         <option value="1">Plans with comments</option>
                         <option value="0">Plans with no comments</option>
                     </select>
+                    Filter Plans by Year
+                    <select v-model="year_filtering_d" @change="filterPrograms(search, filter_FFUNCCOD)">
+                        <option value="">All Years</option>
+                        <option v-for="year in my_years" :value="year">{{ year }}</option>
+                    </select>
                     <!-- <input
                         type="checkbox"
                         v-model="checked"
@@ -1060,7 +1065,8 @@ export default {
         disk: String,
         // HAS COMMENTS
         has_comments: String,
-        reviewers: Object
+        reviewers: Object,
+        year_filtering: String,
     },
     data() {
         return{
@@ -1158,6 +1164,7 @@ export default {
             reviewers: [681,685],
             approvers: [682],
             current_user_id: '',
+            year_filtering_d: ''
         }
     },
     computed: {
@@ -1256,6 +1263,7 @@ export default {
         }
         window.addEventListener("keydown", this.handleKeydown);
         this.has_comments_filtering=this.has_comments
+        this.year_filtering_d=this.year_filtering
     },
     beforeUnmount() {
         window.removeEventListener("keydown", this.handleKeydown);
@@ -1359,7 +1367,8 @@ export default {
                     search: search,
                     FFUNCCOD: office_code,
                     source: this.my_source,
-                    has_comments: this.has_comments_filtering
+                    has_comments: this.has_comments_filtering,
+                    year: this.year_filtering_d
                 },
                 {
                     preserveScroll: true,

@@ -100,4 +100,8 @@ class ProgramAndProject extends Model
     {
         return $this->hasMany(Strategy::class, 'idpaps', 'id');
     }
+    public function sharedProgramAndProjects()
+    {
+        return $this->hasMany(SharedProgramAndProject::class, 'idpaps', 'id');
+    }
 }
