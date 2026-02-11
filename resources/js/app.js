@@ -218,6 +218,19 @@ createInertiaApp({
                             "2099",
                             "2100",
                         ],
+                        pcr_years: [
+                            "2025",
+                            "2026",
+                            "2027",
+                            "2028",
+                            "2029",
+                            "2030",
+                            "2031",
+                            "2032",
+                            "2033",
+                            "2034",
+                            "2035",
+                        ],
                         measurement_units: [
                             'meter', 'kilometer', 'mile', 'yard', // Units of measure for distance
                             'centimeter', 'inch', 'foot', 'meter', // Units of measure for length

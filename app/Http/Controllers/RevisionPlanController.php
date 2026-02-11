@@ -114,6 +114,7 @@ class RevisionPlanController extends Controller
                 if ($request->source == 'sip') {
                     $data = $this->getSip($request, $dept_id, $popsp_agency, $budget_controller, $year_filtering);
                 } else {
+                    // dd($year_filtering);
                     $gas = $this->forGas($request, $FFUNCCOD, 2026, $budget_controller, $year_filtering);
                     // dd($gas);
                     $gas2 = $this->forGas($request, $FFUNCCOD, 2027, $budget_controller, $year_filtering);
@@ -241,7 +242,7 @@ class RevisionPlanController extends Controller
             // ->where('revision_plans.idmfo', '0')
             ->where('revision_plans.scope', 'GAS')
             ->when($year_filtering, function($query) use ($year_filtering){
-                $query->where('revision_plans.date_from', $year_filtering);
+                $query->where('revision_plans.date_start', $year_filtering);
             })
             ->get()
             ->map(function ($item) use($currentYear, $budget_controller) {
@@ -389,7 +390,7 @@ class RevisionPlanController extends Controller
                     ->orWhere('type', 'sip');
             })
             ->when($year_filtering, function($query) use ($year_filtering){
-                $query->where('revision_plans.date_from', $year_filtering);
+                $query->where('revision_plans.date_start', $year_filtering);
             })
             ->get()
             ->map(function ($item) use ($budget_controller) {
@@ -442,7 +443,7 @@ class RevisionPlanController extends Controller
     }
     public function getDirect(Request $request, $dept_id, $popsp_agency, $budget_controller, $year_filtering)
     {
-        return RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects','paps.office', 'clonedVersions'])
+        $data= RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects','paps.office', 'clonedVersions'])
             ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                 $query->where('department_code', $dept_id)
                 ->orWhereHas('sharedProgramAndProjects', function ($q) use ($dept_id, $popsp_agency) {
@@ -542,7 +543,7 @@ class RevisionPlanController extends Controller
                 $query->where('type', $request->type_filter);
             })
             ->when($year_filtering, function($query) use ($year_filtering){
-                $query->where('revision_plans.date_from', $year_filtering);
+                $query->whereYear('revision_plans.date_start', $year_filtering);
             })
             ->get()
             ->map(function ($item) use ($budget_controller) {
@@ -599,6 +600,7 @@ class RevisionPlanController extends Controller
                     // 'paps'=>$item->paps
                 ];
             });
+        return $data;
     }
 
     public function getShared(Request $request, $dept_id, $popsp_agency, $budget_controller, $year_filtering)

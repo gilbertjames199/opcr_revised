@@ -29,7 +29,7 @@
                     Filter Plans by Year
                     <select v-model="year_filtering_d" @change="filterPrograms(search, filter_FFUNCCOD)">
                         <option value="">All Years</option>
-                        <option v-for="year in my_years" :value="year">{{ year }}</option>
+                        <option v-for="year in pcr_years" :value="year">{{ year }}</option>
                     </select>
                     <!-- <input
                         type="checkbox"

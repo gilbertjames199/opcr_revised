@@ -20,26 +20,120 @@
                 </Link>
             </div>
         </div>
+        <!-- FILTERING SECTION************************************** -->
+        <div class="masonry-item w-100 ">
+            <div class="row gap-10">
+                <!-- <div class="layers bd bgc-white p-20"> -->
+                <div class="col-md-4">
+                    <div class="layers bd bgc-white p-10">
+                        <div class="layer w-100 mB-10">
+                            Filter Plans by Year
 
-        <div class="peers fxw-nw jc-sb ai-c">
-            <div class="peers">
-                <div class="peer mR-10">
+                            <select v-model="year_filtering_d" class="form-control form-control-sm" @change="filterProjects()">
+                                <option value="">All Years</option>
+                                <option v-for="year in pcr_years" :value="year">{{ year }}</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="layers bd bgc-white p-10">
+                        <div class="layer w-100 mB-10">
+
+                            <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`" v-if="source==undefined">Add Project Profile</Link>
+
+                            <!-- :href="`/revision/streamlined/create/${idpaps}?source=sip`"  -->
+                            <Button class="btn btn-primary btn-sm text-white" @click="showSIPModal" v-if="source=='sip'">Add SIP Profile</Button>
+
+                            <!-- <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Project Profile</Link>&nbsp; -->
+                            <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Project Profile</Link>&nbsp;
+                            <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
+                            <button @click="exportUsers" class="btn btn-primary btn-sm mL-2 text-white">Export AIP to Excel</button>&nbsp;
+                            <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>&nbsp;
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-4">
+                    <div class="layers bd bgc-white p-20">
+                        <div class="layer w-100 mB-10">
+
+                            <Link class="btn btn-primary btn-sm" :href="`/revision/streamlined/create/${idpaps}`" v-else-if="source==undefined">Add Project Profile</Link>&nbsp;
+
+
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-md-4">
+                    <div class="layers bd bgc-white p-20">
+                        <div class="layer w-100 mB-10">
+                            Filter by type:
+                            <select v-model="type_filter" class="form-control form-control-sm" @change="filterProjects">
+                                <option></option>
+                                <option value="p">Project Profile</option>
+                                <option value="d">Project Design</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="layers bd bgc-white p-20">
+                        <div class="layer w-100 mB-10">
+                            <input
+                                type="checkbox"
+                                v-model="checked"
+                                @change="updateValue"
+                            />&nbsp; No Climate Change Expenditure (Please Click the box if your LGU does not have any climate change expenditure)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="layers bd bgc-white p-10">
+                        <div class="layer w-100 mB-10">
+                            <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+                            &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <!-- </div> -->
+
+
+            </div>
+        </div>
+        <!-- <div class="peers fxw-nw jc-sb ai-c"> -->
+            <!-- <div class="peers"> -->
+                <!-- <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
 
-                </div>
-                <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`" v-if="source==undefined">Add Project Profile</Link>
+                </div> -->
+                <!-- <div class="peer"> -->
+                    <!-- <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search..."> -->
+                    <!-- <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`" v-if="source==undefined">Add Project Profile</Link> -->
 
                     <!-- :href="`/revision/streamlined/create/${idpaps}?source=sip`"  -->
-                    <Button class="btn btn-primary btn-sm text-white" @click="showSIPModal" v-if="source=='sip'">Add SIP Profile</Button>
+                    <!-- <Button class="btn btn-primary btn-sm text-white" @click="showSIPModal" v-if="source=='sip'">Add SIP Profile</Button> -->
 
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Project Profile</Link>&nbsp; -->
-                     <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Project Profile</Link>&nbsp;
+                     <!-- <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Project Profile</Link>&nbsp; -->
                     <!-- <Link class="btn btn-primary btn-sm" :href="`/revision/streamlined/create/${idpaps}`" v-else-if="source==undefined">Add Project Profile</Link>&nbsp; -->
 
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
+                    <!-- <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
                     <button @click="exportUsers" class="btn btn-primary btn-sm mL-2 text-white">Export AIP to Excel</button>&nbsp;
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>&nbsp;
+
+                    &nbsp;&nbsp;&nbsp;
+                    <input
+                        type="checkbox"
+                        v-model="checked"
+                        @change="updateValue"
+                    />&nbsp; No Climate Change Expenditure (Please Click the box if your LGU does not have any climate change expenditure)
+                    <p> -->
+
+                    <!-- </p> -->
+                <!-- </div> -->
+                <!-- <div class="peer">
                     Filter by type:
                     <select v-model="type_filter" @change="filterProjects">
                         <option></option>
@@ -47,18 +141,158 @@
                         <option value="d">Project Design</option>
                     </select>
                     &nbsp;&nbsp;&nbsp;
-                    <input
-                        type="checkbox"
-                        v-model="checked"
-                        @change="updateValue"
-                    />&nbsp; No Climate Change Expenditure (Please Click the box if your LGU does not have any climate change expenditure)
+                    <b>Filter Plans by Year</b>
+                        <select v-model="year_filtering_d" @change="filterProjects()">
+                            <option value="">All Years</option>
+                            <option v-for="year in my_years" :value="year">{{ year }}</option>
+                        </select>
+                </div> -->
+
+
+            <!-- </div> -->
+
+        <!-- </div> -->
+        <!-- END OF FILTERING SECTION******************************* -->
+        <!-- FILTERING SECTION V2 -->
+        <!-- <body class="bg-gray-50">
+            <div id="app" class="container mx-auto px-4 py-8">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="space-y-4">
+                        Row 1: Search and Action Buttons
+                        <div class="flex flex-wrap items-center gap-3">
+                            Search Input
+                            <div class="flex-1 min-w-[250px]">
+                                <div class="relative">
+                                    <input
+                                        v-model="search"
+                                        type="text"
+                                        class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        placeholder="Search projects...">
+                                    <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            Action Buttons
+                            <div class="flex flex-wrap gap-2">
+                                Conditional Add Profile Buttons
+                                <button
+                                    v-if="source === undefined"
+                                    @click="navigateTo(`/revision/create/${idpaps}`)"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Add Project Profile
+                                    </span>
+                                </button>
+
+                                <button
+                                    v-if="source === 'sip'"
+                                    @click="showSIPModal"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Add SIP Profile
+                                    </span>
+                                </button>
+
+                                <button
+                                    v-if="source !== undefined && source !== 'sip'"
+                                    @click="navigateTo('/revision/create/0?source=direct')"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Add Project Profile
+                                    </span>
+                                </button>
+
+                                <button
+                                    @click="showFilter"
+                                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                                        </svg>
+                                        Filter
+                                    </span>
+                                </button>
+
+                                <button
+                                    @click="exportUsers"
+                                    class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium shadow-sm">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        Export to Excel
+                                    </span>
+                                </button>
+
+                                <button
+                                    @click="showAIPModalMethod"
+                                    class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium shadow-sm">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        AIP
+                                    </span>
+                                </button>
+                            </div>
+                            Row 2: Filter Dropdowns
+                            <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-gray-200">
+                                Type Filter
+                                <div class="flex items-center gap-2">
+                                    <label class="text-sm font-medium text-gray-700 whitespace-nowrap">Filter by Type:</label>
+                                    <select
+                                        v-model="type_filter"
+                                        @change="filterProjects"
+                                        class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                                        <option value="">All Types</option>
+                                        <option value="p">Project Profile</option>
+                                        <option value="d">Project Design</option>
+                                    </select>
+                                </div>
+
+                                Year Filter
+                                <div class="flex items-center gap-2">
+                                    <label class="text-sm font-medium text-gray-700 whitespace-nowrap">Filter by Year:</label>
+                                    <select
+                                        v-model="year_filtering_d"
+                                        @change="filterProjects"
+                                        class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                                        <option value="">All Years</option>
+                                        <option v-for="year in my_years" :key="year" :value="year">{{ year }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            Row 3: Climate Change Checkbox
+                            <div class="pt-2 border-t border-gray-200">
+                                <label class="flex items-start gap-3 cursor-pointer group">
+                                    <input
+                                        type="checkbox"
+                                        v-model="checked"
+                                        @change="updateValue"
+                                        class="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer">
+                                    <span class="text-sm text-gray-700 group-hover:text-gray-900">
+                                        <span class="font-medium">No Climate Change Expenditure</span>
+                                        <span class="block text-gray-500 mt-1">Please check this box if your LGU does not have any climate change expenditure</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-
             </div>
+        </body> -->
 
-        </div>
-
+        <!-- FILTERING SECTION END -->
         <div class="peers fxw-nw jc-sb ai-c" v-if="paps.paps_desc">
             <h5>Program/Project: <u>{{ paps.paps_desc }}</u></h5>
         </div>
@@ -660,6 +894,7 @@ export default {
         paps: Object,
         monitors: Object,
         source: String,
+        year_filtering: String,
         // search: String,
         // type_f: String,
     },
@@ -704,6 +939,7 @@ export default {
             displaySideModal: false,
             showImageModal: false,
             // END OF RETURN REQUEST***************
+            year_filtering_d: ''
         }
     },
     components: {
@@ -964,7 +1200,8 @@ export default {
                 {
                     search: this.search,
                     type_filter: this.type_filter,
-                    source:this.source
+                    source:this.source,
+                    year: this.year_filtering_d
                 },
                 {
                     preserveScroll: true,
