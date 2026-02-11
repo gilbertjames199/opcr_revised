@@ -2571,6 +2571,27 @@ class RevisionPlanController extends Controller
 
                 });
             })
+            ->when($request->source == 'approved', function ($query)use ($myid, $gad_reviewers)  {
+
+                $query->where(function ($q) {
+                    $q->where('status', '1')
+                        ->orWhere('status', '2');
+
+                });
+
+                //  // GAD visibility rules
+                // $query->whereHas('paps', function ($q) use ($myid, $gad_reviewers) {
+
+                //     if (in_array($myid, $gad_reviewers, true)) {
+                //         // ✅ GAD reviewer → see ONLY gad_status = 0
+                //         $q->where('gad_status', 0);
+                //     } else {
+                //         // ❌ Not a reviewer → see ONLY gad_status = 1
+                //         $q->where('gad_status', 1);
+                //     }
+
+                // });
+            })
             ->when($request->FFUNCCOD, function ($query) use ($request) {
                 $query->whereHas('paps', function ($query_inner) use ($request) {
                     $query_inner->where('FFUNCCOD', $request->FFUNCCOD);

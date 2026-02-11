@@ -455,12 +455,12 @@
                                 <th>Type</th>
                                 <th>Implementing Offices</th>
                                 <th>Planned Amount</th>
-                                <th v-if="my_source=='rev_app'">HGDG Score</th>
-                                <th v-if="my_source=='rev_app'">Year</th>
-                                <th>View IPP</th>
+                                <th>HGDG Score</th>
+                                <th>Year</th>
+                                <th>View</th>
                                 <th v-if="my_source=='rev_app'">Approve</th>
                                 <th v-if="my_source=='rev_app'">Full Edit</th>
-                                <th v-if="my_source=='rev_app'">Return</th>
+                                <th v-if="my_source=='rev_app' || my_source=='approved'">Return</th>
                                 <th v-if="my_source=='budget'">Budget Details </th>
                                 <!-- <th>Edit</th> -->
                                 <!-- <th>Actions</th> -->
@@ -590,9 +590,9 @@
                                 </td>
                                 <!--  -->
                                 <!-- Return -->
-                                <td v-if="my_source=='rev_app'">
+                                <td v-if="my_source=='rev_app' || my_source=='approved'">
                                     <button
-                                        v-if="['0'].includes(dat.status)"
+                                        v-if="['0','1'].includes(dat.status)"
                                         @click="statusAction(dat, -2)"
                                         :style="{
                                         padding: '4px 10px',

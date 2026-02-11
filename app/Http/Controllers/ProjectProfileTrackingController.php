@@ -111,7 +111,7 @@ class ProjectProfileTrackingController extends Controller
         //         ->with('message','Project Profile '.$actionText.' successfully.');
         // }
         // Submit (0) OR Recall (-1) → go back to same page
-        if ($new_status == 0 || $new_status == -1 || $new_status == "5") {
+        if ($new_status == 0 || $new_status == -1 || $new_status == "5" || $new_status == -2) {
             return redirect()->back()
                 ->with('message', $type . " {$actionText} successfully.");
         }

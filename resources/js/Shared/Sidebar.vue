@@ -549,10 +549,22 @@
                             <span class="title">Rating (For Approval)</span>
                             </Link>
                         </li>
+                        <!-- <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/review-approve/ratings?source=approved"
+                                :class="{ 'active': $page.url === '/review-approve/ratings?source=approved' }">
+                            <span class="title">Rating (Approved)</span>
+                            </Link>
+                        </li> -->
                         <li v-if="$page.props.auth.user.department_code == '04'">
                             <Link class="sidebar-link" href="/revision_plans?source=rev_app"
                                 :class="{ 'active': $page.url === '/revision_plans?source=rev_app' }">
                             <span class="title">Project Profile</span>
+                            </Link>
+                        </li>
+                        <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/revision_plans?source=approved"
+                                :class="{ 'active': $page.url === '/revision_plans?source=approved' }">
+                            <span class="title">Project Profile (Approved)</span>
                             </Link>
                         </li>
                         <li v-if="$page.props.auth.user.department_code == '04'">
