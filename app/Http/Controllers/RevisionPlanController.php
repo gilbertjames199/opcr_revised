@@ -3948,6 +3948,7 @@ class RevisionPlanController extends Controller
             $date_start = Carbon::parse($item->date_start)->format('F Y');
             $date_end = Carbon::parse($item->date_end)->format('F Y');
             $tot = intval($item->beneficiary_male)+intval($item->beneficiary_female);
+
             // dd($item->checklist);
             return [
                 'id' => $item->id,
@@ -3967,13 +3968,13 @@ class RevisionPlanController extends Controller
                 'list_of_lgu_covered' => $item->list_of_lgu_covered,
                 'date_start' => $date_start,
                 'date_end' => $date_end,
-                'beneficiary_male' => $item->beneficiary_male,
-                'beneficiary_female' => $item->beneficiary_female,
-                'baseline_male' => $item->baseline_male,
-                'baseline_female' => $item->baseline_female,
-                'baseline_total' => $tot,
+                'beneficiary_male' => number_format($item->beneficiary_male, 0),
+                'beneficiary_female' => number_format($item->beneficiary_female, 0),
+                'baseline_male' => number_format($item->baseline_male, 0),
+                'baseline_female' => number_format($item->baseline_female, 0),
+                'baseline_total' => number_format($tot, 0),
                 'data_source' => $item->data_source,
-                'amount' => $amount,
+                'amount' => number_format($amount, 2),
                 'proposed_budget' => $proposed_budget,
                 'attributed_amount' => $gad_attributed,
                 'checklist_id' => optional(optional($item)->checklist)->box_number.'. '.optional(optional($item)->checklist)->sector,
@@ -4476,12 +4477,7 @@ class RevisionPlanController extends Controller
             ->get()
             ->map(function ($item) use ($request) {
                 $strategy = optional($item->strategy);
-
-                return [
-                    'strategy' => $strategy->description ?? null,
-                    'id' => $strategy->id ?? null,
-                    'revision_plan_id' => $request->id,
-                    'activities' => $strategy->activity
+                $act=$strategy->activity
                         ? $strategy->activity->flatMap(function ($act) use ($request) {
 
                             $projects = $act->activityProject ?? collect();
@@ -4550,7 +4546,85 @@ class RevisionPlanController extends Controller
                                 ];
                             });
                         })
-                        : collect(),
+                        : collect();
+                // if(count($act)<1){
+                //     dd("less than 1", $item);
+                // }
+                return [
+                    'strategy' => $strategy->description ?? null,
+                    'id' => $strategy->id ?? null,
+                    'revision_plan_id' => $request->id,
+                    'activities' => $act,
+                    // $strategy->activity
+                    //     ? $strategy->activity->flatMap(function ($act) use ($request) {
+
+                    //         $projects = $act->activityProject ?? collect();
+                    //         // dd($act);
+                    //         return $projects->map(function ($proj) use ($act, $request) {
+                    //             // Build expected outputs first
+                    //             // $expectedOutputs = collect($proj->expected_output ?? [])
+                    //             //     ->map(function ($eo) {
+                    //             //         return [
+                    //             //             'description' => $eo->description ?? null,
+                    //             //             'target_indicator' => $eo->target_indicator ?? null,
+                    //             //         ];
+                    //             //     });
+
+                    //             // // Append expected outcomes to SAME ARRAY
+                    //             // $expectedOutcomes = collect($proj->expected_outcome ?? [])
+                    //             //     ->map(function ($eo) {
+                    //             //         return [
+                    //             //             'description' => $eo->description ?? null,
+                    //             //             'target_indicator' => $eo->target_indicator ?? null,
+                    //             //         ];
+                    //             //     });
+
+                    //             // Merge both into a single array
+                    //             // $combined = $expectedOutputs->merge($expectedOutcomes);
+
+                    //             return [
+                    //                 'activity_project_id' => $proj->id ?? null,
+                    //                 'revision_plan_id' => $request->id,
+                    //                 'strategy_id' => $act->strategy_id ?? null,
+                    //                 'description' => $act->description ?? null,
+                    //                 'gad_issue' => $proj->gad_issue ?? null,
+                    //                 'date_from' => $proj->date_from ?? null,
+                    //                 'date_to' => $proj->date_to ?? null,
+
+                    //                 'ps_q1' => $proj->ps_q1 ?? 0,
+                    //                 'ps_q2' => $proj->ps_q2 ?? 0,
+                    //                 'ps_q3' => $proj->ps_q3 ?? 0,
+                    //                 'ps_q4' => $proj->ps_q4 ?? 0,
+
+                    //                 'mooe_q1' => $proj->mooe_q1 ?? 0,
+                    //                 'mooe_q2' => $proj->mooe_q2 ?? 0,
+                    //                 'mooe_q3' => $proj->mooe_q3 ?? 0,
+                    //                 'mooe_q4' => $proj->mooe_q4 ?? 0,
+
+                    //                 'fe_q1' => $proj->fe_q1 ?? 0,
+                    //                 'fe_q2' => $proj->fe_q2 ?? 0,
+                    //                 'fe_q3' => $proj->fe_q3 ?? 0,
+                    //                 'fe_q4' => $proj->fe_q4 ?? 0,
+
+                    //                 'co_q1' => $proj->co_q1 ?? 0,
+                    //                 'co_q2' => $proj->co_q2 ?? 0,
+                    //                 'co_q3' => $proj->co_q3 ?? 0,
+                    //                 'co_q4' => $proj->co_q4 ?? 0,
+                    //                 'ccet' => $proj->ccet ?? null,
+                    //                 'responsible' => $proj->responsible ?? null,
+
+                    //                 // 'expected_outputs' => $combined->values(),
+                    //                 // 'expected_outputs' => ($proj->expected_output ?? collect())
+                    //                 //     ->map(function ($eo) {
+                    //                 //         return [
+                    //                 //             'description' => $eo->description ?? null,
+                    //                 //             'target_indicator' => $eo->target_indicator ?? null,
+                    //                 //         ];
+                    //                 //     }),
+                    //             ];
+                    //         });
+                    //     })
+                    //     : collect(),
                     'seq_no' => $item->seq_no ?? 0, // default to a high number if seq_no is missing
                 ];
             })
@@ -4678,28 +4752,28 @@ class RevisionPlanController extends Controller
                     'date_from' => $proj->date_from ?? "2026-01-01",
                     'date_to' => $proj->date_to ?? "2026-12-31",
 
-                    'ps_q1' => $proj->ps_q1 ?? 0,
-                    'ps_q2' => $proj->ps_q2 ?? 0,
-                    'ps_q3' => $proj->ps_q3 ?? 0,
-                    'ps_q4' => $proj->ps_q4 ?? 0,
-                    'ps_total' => $ps_total,
-                    'mooe_q1' => $proj->mooe_q1 ?? 0,
-                    'mooe_q2' => $proj->mooe_q2 ?? 0,
-                    'mooe_q3' => $proj->mooe_q3 ?? 0,
-                    'mooe_q4' => $proj->mooe_q4 ?? 0,
-                    'mooe_total' => $mooe_total,
-                    'fe_q1' => $proj->fe_q1 ?? 0,
-                    'fe_q2' => $proj->fe_q2 ?? 0,
-                    'fe_q3' => $proj->fe_q3 ?? 0,
-                    'fe_q4' => $proj->fe_q4 ?? 0,
-                    'fe_total' => $fe_total,
-                    'co_q1' => $proj->co_q1 ?? 0,
-                    'co_q2' => $proj->co_q2 ?? 0,
-                    'co_q3' => $proj->co_q3 ?? 0,
-                    'co_q4' => $proj->co_q4 ?? 0,
-                    'ccet' => $proj->ccet ?? null,
-                    'co_total' => $co_total,
-                    'total'=>$overall_total,
+                    'ps_q1' => number_format(($proj->ps_q1 ?? 0),2),
+                    'ps_q2' => number_format(($proj->ps_q2 ?? 0),2),
+                    'ps_q3' => number_format(($proj->ps_q3 ?? 0),2),
+                    'ps_q4' => number_format(($proj->ps_q4 ?? 0),2),
+                    'ps_total' => number_format(($ps_total),2),
+                    'mooe_q1' => number_format(($proj->mooe_q1 ?? 0),2),
+                    'mooe_q2' => number_format(($proj->mooe_q2 ?? 0),2),
+                    'mooe_q3' => number_format(($proj->mooe_q3 ?? 0),2),
+                    'mooe_q4' => number_format(($proj->mooe_q4 ?? 0),2),
+                    'mooe_total' => number_format(($mooe_total),2),
+                    'fe_q1' => number_format(($proj->fe_q1 ?? 0),2),
+                    'fe_q2' => number_format(($proj->fe_q2 ?? 0),2),
+                    'fe_q3' => number_format(($proj->fe_q3 ?? 0),2),
+                    'fe_q4' => number_format(($proj->fe_q4 ?? 0),2),
+                    'fe_total' => number_format(($fe_total),2),
+                    'co_q1' => number_format(($proj->co_q1 ?? 0),2),
+                    'co_q2' => number_format(($proj->co_q2 ?? 0),2),
+                    'co_q3' => number_format(($proj->co_q3 ?? 0),2),
+                    'co_q4' => number_format(($proj->co_q4 ?? 0),2),
+                    'ccet' => number_format(($proj->ccet ?? null),2),
+                    'co_total' => number_format(($co_total),2),
+                    'total'=>number_format(($overall_total),2),
                     'responsible' => $proj->responsible ?? null,
                     'expected_outputs' => $expected_outputs,
                     'target_indicators' => $target_indicators,
