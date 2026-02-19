@@ -4746,9 +4746,9 @@ class RevisionPlanController extends Controller
 
                         // Detect if description starts with a number or (number)
                         $startsWithNumber = preg_match('/^\s*(\(\d+\)|\d+)/', $desc);
-                        $startsWithVerbNumber    = preg_match('/^\s*[A-Za-z]+\s+\d+/', $desc);
+                        $startsWithVerbNumbers = preg_match('/^\s*[A-Za-z]+(?:\s+[A-Za-z]+)*\s+\d+/', $desc);
                         // If it DOES NOT start with number → prepend total
-                        if (!$startsWithNumber && !$startsWithVerbNumber  && $total > 0) {
+                        if (!$startsWithNumber && !$startsWithVerbNumbers  && $total > 0) {
                             return "{$total} {$desc}";
                         }
 
@@ -4779,10 +4779,10 @@ class RevisionPlanController extends Controller
                         // Conditions where total should NOT be appended
                         $startsWithNumber        = preg_match('/^\s*(\(\d+\)|\d+)/', $indicator);
                         $startsWithVerbNumber    = preg_match('/^\s*[A-Za-z]+\s+\d+/', $indicator);
-
+                        $endsWithNumber       = preg_match('/\d+\s*$/', $indicator);
                         // Append total ONLY if none of the disallowed patterns match
-                        if (!$startsWithNumber && !$startsWithVerbNumber && $total > 0) {
-                            return "{$indicator} {$total}";
+                        if (!$startsWithNumber && !$startsWithVerbNumber && !$endsWithNumber && $total > 0) {
+                            return "{$indicator} - {$total}";
                         }
                         return $indicator;
                     })
