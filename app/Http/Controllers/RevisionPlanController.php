@@ -4746,9 +4746,9 @@ class RevisionPlanController extends Controller
 
                         // Detect if description starts with a number or (number)
                         $startsWithNumber = preg_match('/^\s*(\(\d+\)|\d+)/', $desc);
-
+                        $startsWithVerbNumber    = preg_match('/^\s*[A-Za-z]+\s+\d+/', $desc);
                         // If it DOES NOT start with number → prepend total
-                        if (!$startsWithNumber && $total > 0) {
+                        if (!$startsWithNumber && !$startsWithVerbNumber  && $total > 0) {
                             return "{$total} {$desc}";
                         }
 
@@ -4776,15 +4776,14 @@ class RevisionPlanController extends Controller
                             + (float)($eo->physical_q3 ?? 0)
                             + (float)($eo->physical_q4 ?? 0);
 
-                        // Detect if indicator starts with a number or (number)
-                        $startsWithNumber = preg_match('/^\s*(\(\d+\)|\d+)/', $indicator);
+                        // Conditions where total should NOT be appended
+                        $startsWithNumber        = preg_match('/^\s*(\(\d+\)|\d+)/', $indicator);
+                        $startsWithVerbNumber    = preg_match('/^\s*[A-Za-z]+\s+\d+/', $indicator);
 
-                        // If it DOES NOT start with number → append total AFTER description
-                        if (!$startsWithNumber && $total > 0) {
-                            return "{$indicator} -{$total}";
+                        // Append total ONLY if none of the disallowed patterns match
+                        if (!$startsWithNumber && !$startsWithVerbNumber && $total > 0) {
+                            return "{$indicator} {$total}";
                         }
-
-                        // Otherwise return indicator only
                         return $indicator;
                     })
                     ->whenEmpty(fn() => collect())
