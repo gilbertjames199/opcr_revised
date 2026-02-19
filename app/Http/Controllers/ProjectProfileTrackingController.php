@@ -44,7 +44,7 @@ class ProjectProfileTrackingController extends Controller
         // dd($us);
         $revplan = RevisionPlan::where('id', $id)->first();
         if (!$revplan) {
-            return redirect()->back()->with('error', 'Revision Plan not found.');
+            return redirect()->back()->with('error', 'Revision Plan not found.')->withQueryString();
         }
 
         // Only apply this check if submitting (new_status = 0)
@@ -112,8 +112,8 @@ class ProjectProfileTrackingController extends Controller
         // }
         // Submit (0) OR Recall (-1) → go back to same page
         if ($new_status == 0 || $new_status == -1 || $new_status == "5" || $new_status == -2) {
-            return redirect()->back()
-                ->with('message', $type . " {$actionText} successfully.");
+            return redirect()->back()->withQueryString();
+                // ->with('message', $type . " {$actionText} successfully.");
         }
 
         // Review (1), Approve (2), Return (-2) → go to revision list

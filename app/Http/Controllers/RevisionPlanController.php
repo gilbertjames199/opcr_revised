@@ -4263,6 +4263,7 @@ class RevisionPlanController extends Controller
         if ($request->id) {
             $revision = RevisionPlan::with(['paps', 'paps.office', 'budget', 'signatories'])->where('id', $request->id)->first();
             // dd($revision);
+            // dd($request->id);
             $budget_total = $this->getTotalBudget($revision);
             $activities = ActivityProject::with(['expected_output', 'expected_outcome',
                     'activity',
@@ -4292,6 +4293,10 @@ class RevisionPlanController extends Controller
                     // dd($revision->budget[0]->source);
                     // dd($revision->signatories);
                     // dd($item);
+
+                    // if($item->id==254){
+                    //     dd($item);
+                    // }
                     $get = fn($type) => optional($revision->signatories->firstWhere('acted', $type));
                     $signatories = isset($revision) ? $revision->signatories : null;
                     // dd($signatories);
@@ -4459,6 +4464,7 @@ class RevisionPlanController extends Controller
     }
     public function imp_schedule(Request $request)
     {
+        // dd($request);
         $empty = [];
         $strat = StrategyProject::with([
             'strategy',
@@ -4549,6 +4555,10 @@ class RevisionPlanController extends Controller
                         : collect();
                 // if(count($act)<1){
                 //     dd("less than 1", $item);
+                // }
+                // dd($item);
+                // if($item->strategy_id==254){
+                //     dd($item);
                 // }
                 return [
                     'strategy' => $strategy->description ?? null,
@@ -4707,28 +4717,78 @@ class RevisionPlanController extends Controller
                 //     })
                 //     ->whenEmpty(fn() => collect())   // ensure safe implode
                 //     ->implode('<br><br>');
+                // $expected_outputs = collect(optional($proj)->expected_output)
+                //     // ->filter(fn ($eo) => is_object($eo) && ($eo->project_id ?? null) == $request->revision_plan_id)
+                //     ->filter(fn($eo) => is_object($eo))
+                //     ->map(function ($eo) {
+
+                //         // Convert to numeric safely using (float) casting
+                //         $total = (float)($eo->physical_q1 ?? 0)
+                //             + (float)($eo->physical_q2 ?? 0)
+                //             + (float)($eo->physical_q3 ?? 0)
+                //             + (float)($eo->physical_q4 ?? 0);
+                //         // "{$total} " .
+                //         return  (string)($eo->description ?? '');
+                //     })
+                //     ->whenEmpty(fn() => collect())   // ensure safe implode
+                //     ->implode('<br><br>');
                 $expected_outputs = collect(optional($proj)->expected_output)
-                    // ->filter(fn ($eo) => is_object($eo) && ($eo->project_id ?? null) == $request->revision_plan_id)
                     ->filter(fn($eo) => is_object($eo))
                     ->map(function ($eo) {
 
-                        // Convert to numeric safely using (float) casting
+                        $desc = (string)($eo->description ?? '');
+
+                        // Compute total safely
                         $total = (float)($eo->physical_q1 ?? 0)
                             + (float)($eo->physical_q2 ?? 0)
                             + (float)($eo->physical_q3 ?? 0)
                             + (float)($eo->physical_q4 ?? 0);
-                        // "{$total} " .
-                        return  (string)($eo->description ?? '');
+
+                        // Detect if description starts with a number or (number)
+                        $startsWithNumber = preg_match('/^\s*(\(\d+\)|\d+)/', $desc);
+
+                        // If it DOES NOT start with number → prepend total
+                        if (!$startsWithNumber && $total > 0) {
+                            return "{$total} {$desc}";
+                        }
+
+                        // Otherwise return description only
+                        return $desc;
                     })
-                    ->whenEmpty(fn() => collect())   // ensure safe implode
+                    ->whenEmpty(fn() => collect())
                     ->implode('<br><br>');
                     // dd(optional($proj)->expected_output,$expected_outputs);
-    // dd(optional(optional($proj)->activity)->expected_output);
-                // Collect expected outcomes (target_indicator column)
-                $target_indicators = optional($proj)->expected_output
-                    ? optional($proj)->expected_output->pluck('target_indicator')->implode('<br><br>')
-                    : null;
+                    // dd(optional(optional($proj)->activity)->expected_output);
 
+                // Collect expected outcomes (target_indicator column)
+                // $target_indicators = optional($proj)->expected_output
+                //     ? optional($proj)->expected_output->pluck('target_indicator')->implode('<br><br>')
+                //     : null;
+                $target_indicators = collect(optional($proj)->expected_output)
+                    ->filter(fn($eo) => is_object($eo))
+                    ->map(function ($eo) {
+
+                        $indicator = (string)($eo->target_indicator ?? '');
+
+                        // Compute total safely
+                        $total = (float)($eo->physical_q1 ?? 0)
+                            + (float)($eo->physical_q2 ?? 0)
+                            + (float)($eo->physical_q3 ?? 0)
+                            + (float)($eo->physical_q4 ?? 0);
+
+                        // Detect if indicator starts with a number or (number)
+                        $startsWithNumber = preg_match('/^\s*(\(\d+\)|\d+)/', $indicator);
+
+                        // If it DOES NOT start with number → append total AFTER description
+                        if (!$startsWithNumber && $total > 0) {
+                            return "{$indicator} -{$total}";
+                        }
+
+                        // Otherwise return indicator only
+                        return $indicator;
+                    })
+                    ->whenEmpty(fn() => collect())
+                    ->implode('<br><br>');
                 // Collect expected outcomes (target_indicator column)
                 $expected_outcomes = optional($proj)->expected_outcome
                     ? optional($proj)->expected_outcome->pluck('description')->implode('<br><br>')
@@ -4738,6 +4798,12 @@ class RevisionPlanController extends Controller
                 $fe_total= floatval($proj->fe_q1)+floatval($proj->fe_q2)+floatval($proj->fe_q3)+floatval($proj->fe_q4);
                 $co_total= floatval($proj->co_q1)+floatval($proj->co_q2)+floatval($proj->co_q3)+floatval($proj->co_q4);
                 $overall_total = floatval($ps_total)+floatval($mooe_total)+floatval($fe_total)+floatval($co_total);
+                // if($proj->id==3961){
+                //     dd($ps_total, $mooe_total, $fe_total, $co_total, $overall_total, $proj);
+                // }else{
+                //     // dd("alalalaa");
+                // }
+
                 // if($proj->id==3670){
                 //     dd($expected_outputs,
                 //     $proj->expected_output,

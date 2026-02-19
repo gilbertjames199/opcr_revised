@@ -1843,7 +1843,8 @@ export default {
                     column: column
                 },
                 {
-                    preserveScroll: true
+                    preserveScroll: true,
+                    preserveState: true   // ⭐ keeps pagination page
                 }
             );
         },

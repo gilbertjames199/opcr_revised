@@ -885,7 +885,8 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         // ← SEND IT HERE
         column: column
       }, {
-        preserveScroll: true
+        preserveScroll: true,
+        preserveState: true // ⭐ keeps pagination page
       });
     },
     // PRINT IPP List
