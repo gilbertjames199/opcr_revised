@@ -781,7 +781,8 @@
                                                                         'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
                                                                         has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)
                                                                     }" :id="pair.id + '_expected_revised_outputs_output_description'"
-                                                                    ><span v-if="pair.quantity>0" > {{ pair.quantity }} </span> {{ pair.output_description }}
+                                                                    ><span v-if="pair.quantity>0 && shouldDisplayQuantity(pair.output_description)" > {{ pair.quantity }} </span> {{ pair.output_description }}
+
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
                                                                             </button>
@@ -4199,7 +4200,38 @@ export default {
             } else {
             return 'Fully gender responsive';
             }
+        },
+        shouldDisplayQuantity(description){
+            if(!description) return false
+
+            const text = description.trim()
+
+            // 1. If description starts with a number → DO NOT display quantity
+            if(/^\d+/.test(text)){
+                return false
+            }
+
+            /*
+                2. If description follows:
+                <verb> <number> ...
+                OR
+                <verb1>, <verb2>, and <verbN> <number> ...
+
+                Example matches:
+                "Conduct 5 trainings"
+                "Prepare, review, and submit 3 reports"
+            */
+
+            const verbNumberPattern = /^[A-Za-z,\s]+?\s\d+\b/
+
+            if(verbNumberPattern.test(text)){
+                return false
+            }
+
+            // Otherwise, display quantity
+            return true
         }
+
 
     }
 }
