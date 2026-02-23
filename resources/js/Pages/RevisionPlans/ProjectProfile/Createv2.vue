@@ -691,7 +691,17 @@
                                                                 <tr style="height: 100%;">
                                                                     <!-- Target Indicator -->
                                                                     <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="pair.id + '_activity_projects_target_indicator'">
-                                                                        <span v-if="paps.is_strategy_based==0 && pair.target_indicator">{{ pair.target_indicator }}
+                                                                        <span v-if="paps.is_strategy_based==0 && pair.target_indicator"
+
+                                                                        >
+                                                                            <!-- {{ pair.target_indicator }} -->
+                                                                            <textarea :id="pair.id + '_target_indicator'"
+                                                                                class="form-control transparent-bg "
+                                                                                v-model="pair.target_indicator"
+                                                                                type="text"
+                                                                                @input="setUnsaved(true)"
+                                                                                @change="updateRevisionPlans('expected_revised_outputs', 'target_indicator', pair.id, pair.target_indicator)">
+                                                                            </textarea>
                                                                             <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
 
 
