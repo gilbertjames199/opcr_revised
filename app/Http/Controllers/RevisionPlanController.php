@@ -1049,8 +1049,9 @@ class RevisionPlanController extends Controller
             'strategyProject.comments.user',
             'activity' => function ($query) use ($paps, $id) {
                 if ($paps->is_strategy_based == 0) {
-                    $query->whereHas('activityProject', function ($q) {
-                        $q->where('is_active', '1');
+                    $query->whereHas('activityProject', function ($q) use($id) {
+                        $q->where('is_active', '1')
+                             ->where('project_id', $id);
                     });
                 }
             },
