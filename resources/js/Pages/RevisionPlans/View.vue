@@ -712,7 +712,7 @@
                                                                         has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator','expected_revised_outputs', pair, pair.comments)
                                                                     }"
                                                                     >{{ pair.target_indicator }}
-                                                                        <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
+                                                                        <span v-if="pair.quantity>0"> - {{ format_number_conv(pair.quantity,2,true) }}</span>
                                                                     </span>
 
                                                                     <br><br>
