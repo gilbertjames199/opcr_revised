@@ -3973,6 +3973,13 @@ class RevisionPlanController extends Controller
             $rationale = preg_replace('/align="justify"/', '', $rationale);
 
             $rationale = preg_replace('/style="text-align:\s*justify;?"/', '', $rationale);
+
+
+            $$partnership = $item->partnership ? html_entity_decode($item->partnership, ENT_QUOTES | ENT_HTML5) : '';
+            $partnership = strip_tags($$partnership, '<p><br><b><strong><i><em><u>');
+            $partnership = preg_replace('/class="ql-align-justify"/', '', $partnership);
+            $partnership = preg_replace('/align="justify"/', '', $partnership);
+            $partnership = preg_replace('/style="text-align:\s*justify;?"/', '', $partnership);
             $date_start = Carbon::parse($item->date_start)->format('F Y');
             $date_end = Carbon::parse($item->date_end)->format('F Y');
             $tot = intval($item->beneficiary_male)+intval($item->beneficiary_female);
@@ -4015,7 +4022,7 @@ class RevisionPlanController extends Controller
                 'beneficiaries' => $item->beneficiaries,
                 'implementing_team' => $item->implementing_team,
                 'implementing_teams' => $item->teamPlans,
-                'partnership' => $item->partnership,
+                'partnership' => $partnership,
                 'monitoring' => $item->monitoring,
                 'monitoring_and_evaluations' => $item->monitoringAndEvaluations,
                 'risk_management' => $item->risk_management,
