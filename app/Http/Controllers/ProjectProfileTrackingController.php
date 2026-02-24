@@ -120,11 +120,14 @@ class ProjectProfileTrackingController extends Controller
         // }
         // Submit (0) OR Recall (-1) → go back to same page
         if ($new_status == 0 || $new_status == -1 || $new_status == "5" || $new_status == -2) {
-            return redirect()->back();
+            // return redirect()->back();
+            return redirect()->to(url()->previous());
             // ->withQueryString()
                 // ->with('message', $type . " {$actionText} successfully.");
         }
-
+        if($new_status==1){
+            return redirect()->to(url()->previous());
+        }
         // Review (1), Approve (2), Return (-2) → go to revision list
         return redirect('/revision_plans?source=rev_app')
             ->with('message', $typpe . " {$actionText} successfully.");
