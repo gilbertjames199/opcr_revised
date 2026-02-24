@@ -3275,11 +3275,20 @@ export default {
             return result;
         },
         budgetSum() {
-            return (category, gadType) => {
-                const group = this.groupedBudget[category]?.[gadType];
-                if (!group) return 0;
+            // return (category, gadType) => {
+            //     const group = this.groupedBudget[category]?.[gadType];
+            //     if (!group) return 0;
 
-                return group.reduce((total, item) => {
+            //     return group.reduce((total, item) => {
+            //         const amount = parseFloat(item.amount || 0);
+            //         return total + (isNaN(amount) ? 0 : amount);
+            //     }, 0);
+            // };
+            return (category) => {
+                const items = this.groupedBudget[category];
+                if (!Array.isArray(items)) return 0;
+
+                return items.reduce((total, item) => {
                     const amount = parseFloat(item.amount || 0);
                     return total + (isNaN(amount) ? 0 : amount);
                 }, 0);

@@ -1051,7 +1051,7 @@ class RevisionPlanController extends Controller
                 //     ->with('func')->first();
             }
         }
-
+        // dd($idpaps, $scope);
         //IMPLEMENTATION PLANS
         $implement = Strategy::with([
             'strategyProject' => function ($query) use ($id) {
@@ -1082,10 +1082,15 @@ class RevisionPlanController extends Controller
             'activity.activityProject.expected_outcome.comments',
             'activity.activityProject.comments',
             'activity.activityProject.comments.user'
-        ])->whereHas('strategyProject', function ($query) {
-            $query->where('is_active', '1');
-        })
-            ->where('idpaps', $idpaps)
+        ])
+            ->whereHas('strategyProject', function ($query)use($id) {
+                $query->where('is_active', '1')
+                    ->where('project_id', $id);
+            })
+            ->when($scope!= 'GAS', function ($query) use ($idpaps) {
+                $query->where('idpaps', $idpaps);
+            })
+            // ->where('idpaps', $idpaps)
             ->get()
             ->map(function ($item) {
                 // dd($item);

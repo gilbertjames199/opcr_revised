@@ -204,11 +204,19 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     },
     budgetSum: function budgetSum() {
       var _this = this;
-      return function (category, gadType) {
-        var _this$groupedBudget$c;
-        var group = (_this$groupedBudget$c = _this.groupedBudget[category]) === null || _this$groupedBudget$c === void 0 ? void 0 : _this$groupedBudget$c[gadType];
-        if (!group) return 0;
-        return group.reduce(function (total, item) {
+      // return (category, gadType) => {
+      //     const group = this.groupedBudget[category]?.[gadType];
+      //     if (!group) return 0;
+
+      //     return group.reduce((total, item) => {
+      //         const amount = parseFloat(item.amount || 0);
+      //         return total + (isNaN(amount) ? 0 : amount);
+      //     }, 0);
+      // };
+      return function (category) {
+        var items = _this.groupedBudget[category];
+        if (!Array.isArray(items)) return 0;
+        return items.reduce(function (total, item) {
           var amount = parseFloat(item.amount || 0);
           return total + (isNaN(amount) ? 0 : amount);
         }, 0);
