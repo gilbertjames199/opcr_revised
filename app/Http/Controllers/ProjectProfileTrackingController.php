@@ -46,14 +46,22 @@ class ProjectProfileTrackingController extends Controller
         if (!$revplan) {
             return redirect()->back()->with('error', 'Revision Plan not found.')->withQueryString();
         }
-
+    // dd(auth()->user(), $revplan);
         // Only apply this check if submitting (new_status = 0)
         if ($new_status == 0) {
             $idpaps = $revplan->idpaps;
+            // dd($idpaps);
+            // if($idpaps == 0){
+            //     dd("0 si idpaps");
+            // }else{
+            //     dd("dili 0 si idpaps: ", $idpaps);
+            // }
             $year = $revplan->year_period;
             // dd($revplan);
             // Check if any other revision plans of this idpaps are already submitted, reviewed, or approved , '1', '2'
-            $otherPlans = RevisionPlan::where('idpaps', $idpaps)
+            $otherPlans = RevisionPlan::when($idpaps!=0, function($query) use ($idpaps, $id, $year){
+                $query->where('idpaps', $idpaps);
+            })
                 ->where('id', '!=', $id)
                 ->whereYear('date_start', $year)
                 // ->where('year_period', $year)
@@ -63,7 +71,7 @@ class ProjectProfileTrackingController extends Controller
             //     ->where('id', '!=', $id)
             //     ->whereYear('date_start', $year)
             //     ->whereIn('status', ['0'])->get(), $revplan, $id, $year);
-            if ($otherPlans > 0) {
+            if ($otherPlans > 0 && $idpaps != 0) {
                 return redirect()->back()->with('error', 'Cannot submit this Revision Plan because other plans for this PAP are already submitted, reviewed, or approved.');
             }
         }
@@ -112,7 +120,8 @@ class ProjectProfileTrackingController extends Controller
         // }
         // Submit (0) OR Recall (-1) → go back to same page
         if ($new_status == 0 || $new_status == -1 || $new_status == "5" || $new_status == -2) {
-            return redirect()->back()->withQueryString();
+            return redirect()->back();
+            // ->withQueryString()
                 // ->with('message', $type . " {$actionText} successfully.");
         }
 
