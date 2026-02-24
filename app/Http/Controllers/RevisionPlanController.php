@@ -134,16 +134,16 @@ class RevisionPlanController extends Controller
                     // dd($year_filtering);
                     $gas = $this->forGas($request, $FFUNCCOD, 2026, $budget_controller, $year_filtering);
                     // dd($gas);
-                    $gas2 = $this->forGas($request, $FFUNCCOD, 2027, $budget_controller, $year_filtering);
+                    // $gas2 = $this->forGas($request, $FFUNCCOD, 2027, $budget_controller, $year_filtering);
                     // dd($gas2);
                     $data = $this->getDirect($request, $dept_id, $popsp_agency, $budget_controller, $year_filtering);
                     // dd($gas, $gas2, $data);
                     if(count($gas)>0){
                         $data = $data->concat($gas);
                     }
-                    if(count($gas2)>0){
-                        $data = $data->concat($gas2);
-                    }
+                    // if(count($gas2)>0){
+                    //     $data = $data->concat($gas2);
+                    // }
                 }
             }
             // dd($data);
@@ -253,7 +253,7 @@ class RevisionPlanController extends Controller
         )
             ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'revision_plans.FFUNCCOD')
             ->where('revision_plans.FFUNCCOD', $FFUNCCOD)
-            ->where('revision_plans.year_period', $currentYear)
+            // ->where('revision_plans.year_period', $currentYear)
             // ->where('revision_plans.idpaps', '0')
             // ->where('revision_plans.idmfo', '0')
             // ->where('revision_plans.idmfo', '0')
