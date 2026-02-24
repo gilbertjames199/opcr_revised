@@ -303,7 +303,8 @@ class RevisionPlanController extends Controller
                     'status' => $item->status,
                     'number_of_clones' => 0,
                     'return_request_status' => $item->return_request_status,
-                    'year'=>$currentYear
+                    // 'year'=>$currentYear
+                    'year'=>$item->year_period
                 ];
             });
         // dd("gas", $data);
