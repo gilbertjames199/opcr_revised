@@ -4464,7 +4464,7 @@ class RevisionPlanController extends Controller
     {
 
 
-        $activitiesQuery = ActivityProject::with(['activity','strat'])->whereHas('activity', function($query){
+        $activitiesQuery = ActivityProject::with(['activity','activity.strat'])->whereHas('activity', function($query){
                             $query->whereNull('deleted_at')
           ->whereHas('strat', function ($q) {
               $q->whereNull('deleted_at');
