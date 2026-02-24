@@ -175,46 +175,7 @@ class StrategyProjectController extends Controller
                     $mooe_total = floatval($mooe_q1) + floatval($mooe_q2) + floatval($mooe_q3) + floatval($mooe_q4);
                     $co_total = floatval($co_q1) + floatval($co_q2) + floatval($co_q3) + floatval($co_q4);
 
-                    // return [
-                    //     "id" => $item->id,
-                    //     "description" => $item->description,
-                    //     "target_indicator" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->target_indicator : null,
-                    //     "strategy_id" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->id : null,
-                    //     "project_id" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->project_id : null,
-                    //     "date_from" => $item->strategyProject->count() > 0
-                    //         ? ($item->strategyProject[0]->date_from
-                    //             ? $item->strategyProject[0]->date_from
-                    //             : null)
-                    //         : null,
-                    //     "date_to" => $item->strategyProject->count() > 0
-                    //         ? ($item->strategyProject[0]->date_to
-                    //             ? Carbon::parse($item->strategyProject[0]->date_to)->format('Y-m-d')
-                    //             : null)
-                    //         : null,
-                    //     "ps_q1" => $ps_q1,
-                    //     "ps_q2" => $ps_q2,
-                    //     "ps_q3" => $ps_q3,
-                    //     "ps_q4" => $ps_q4,
-                    //     "ps_total" => $ps_total,
-                    //     "mooe_q1" => $mooe_q1,
-                    //     "mooe_q2" => $mooe_q2,
-                    //     "mooe_q3" => $mooe_q3,
-                    //     "mooe_q4" => $mooe_q4,
-                    //     "mooe_total" => $mooe_total,
-                    //     "co_q1" => $co_q1,
-                    //     "co_q2" => $co_q2,
-                    //     "co_q3" => $co_q3,
-                    //     "co_q4" => $co_q4,
-                    //     "co_total" => $co_total,
-                    //     "gad_issue" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->gad_issue : null,
-                    //     "ccet_code" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->ccet_code : null,
-                    //     "responsible" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->responsible : null,
-                    //     "strategyProject" => $item->strategyProject,
-                    //     "activity" => $item->activity,
-                    //     "finance_visible" => 0,
-                    //     "is_active" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->is_active : 0,
-                    //     "activity_visible" => 0,
-                    // ];
+
                     $strat_id = $item->strategyProject->count() > 0 ? $item->strategyProject[0]->id : null;
                     $show_act = 1;
                     return [
@@ -267,7 +228,7 @@ class StrategyProjectController extends Controller
                         // "expected_output" => $item->expected_output,
                     ];
                 });
-                // dd($data);
+                // dd($data, $this->getData($request, $revision_plan, $idrevplan));
             if(count($data)<1){
                 $data = $this->getData($request, $revision_plan, $idrevplan);
                 // dd($data);
@@ -315,7 +276,7 @@ class StrategyProjectController extends Controller
             ->where('idpaps', $revision_plan->idpaps)
             ->get()
             ->map(function ($item) use ($strat_base, $idrevplan) {
-                // dd($item);
+                // dd($item, 'expected output');
                 $strat_id = $item->strategyProject->count() > 0 ? $item->strategyProject[0]->id : null;
                 $show_act = 1;
                 if ($strat_base == 1) {
@@ -492,7 +453,7 @@ class StrategyProjectController extends Controller
                     // "expected_output" => $item->expected_output,
                 ];
             });
-            // dd($strat);
+            // dd($strat,'strat');
         return $strat;
     }
     public function refresh(Request $request, $idrevplan)

@@ -120,20 +120,12 @@
                                         </tr>
                                     </td>
                                     <td v-if="strategy.strategyProject[0] && revision_plan.is_strategy_based==1" >
-                                        <tr v-for="outcome in strategy.strategyProject[0].expected_output">
-                                            <div>{{ outcome.description }}<hr></div>
-                                        </tr>
-                                        <tr v-for="outcome in strategy.strategyProject[0].expected_outcome">
-                                            <div>{{ outcome.description }}<hr></div>
-                                        </tr>
+                                        <div v-for="outcome in strategy.strategyProject[0]?.expected_output || []">{{ outcome.description }}<hr></div>
+                                        <div v-for="outcome in strategy.strategyProject[0]?.expected_outcome || []">{{ outcome.description }}<hr></div>
                                     </td>
                                     <td v-else>
-                                        <tr v-for="outcome in strategy.expected_output && revision_plan.is_strategy_based==1">
-                                            <div>{{ outcome.description }}<hr></div>
-                                        </tr>
-                                        <tr v-for="outcome in strategy.expected_outcome && revision_plan.is_strategy_based==1">
-                                            <div>{{ outcome.description }}<hr></div>
-                                        </tr>
+                                        <div v-if="revision_plan.is_strategy_based==1" v-for="outcome in strategy.expected_output || []">{{ outcome.description }}<hr></div>
+                                        <div v-if="revision_plan.is_strategy_based==1" v-for="outcome in strategy.expected_outcome || []">{{ outcome.description }}<hr></div>
                                     </td>
                                     <td @click="setVisibility(strategy.finance_visible, index)" style="cursor: pointer;">
                                         <span v-if="strategy.is_active==1 && revision_plan.is_strategy_based==1">{{ format_number_conv(strategy.ps_total,2,true) }} </span>
@@ -223,6 +215,7 @@
                                             <div class="peers">
                                                 <div>
                                                     <table class="table table-sm table-bordered table-hover" style="border-color: #000; border-width: 2px;">
+                                                        <thead>
                                                         <tr class="bg-primary text-white">
                                                             <th>Quarter/Period&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                                             <th colspan="1">Personnel Services</th>
@@ -230,6 +223,8 @@
                                                             <th colspan="1">Financial Expenses</th>
                                                             <th colspan="1">Capital Outlay</th>
                                                         </tr>
+                                                        </thead>
+                                                        <tbody>
                                                         <tr>
                                                             <th>Q1:&nbsp;&nbsp;</th>
                                                             <td><input v-model="strategy.ps_q1" @input="setUnsaved(true)"
@@ -276,6 +271,7 @@
                                                             <td>{{ strategy.fe_total }}</td>
                                                             <td>{{ strategy.co_total }}</td>
                                                         </tr>
+                                                        </tbody>
                                                     </table>
                                                 </div>
 
@@ -325,49 +321,33 @@
                                                             />
                                                             <!-- {{ activity }} -->
                                                         </td>
-                                                        <th @click="setActivityVisibility(activity.finance_visible,index, activity_index)" style="cursor: pointer;">{{ activity.description }}</th>
+                                                        <td @click="setActivityVisibility(activity.finance_visible,index, activity_index)" style="cursor: pointer;">{{ activity.description }}</td>
                                                         <td>
-                                                            <!-- <textarea class="form-control" type="text"
-                                                            v-model="activity.target_indicator" @input="setUnsaved(true)"
-                                                            @change="updateActivity(activity, activity_index, index)"
-                                                            v-if="activity.is_active==1 "></textarea> -->
-                                                            <tr v-for="outcome in activity.activityProject[0].expected_output">
-                                                                <div>{{ outcome.target_indicator }}<hr></div>
-                                                            </tr>
+                                                            <div v-for="outcome in activity.activityProject[0]?.expected_output || []">{{ outcome.target_indicator }}<hr></div>
                                                         </td>
                                                         <td>
-                                                            <tr v-if="activity.is_active==1">
-                                                                <td><b>Date from:</b></td>
-                                                                <td>
+                                                            <div v-if="activity.is_active==1">
+                                                                <div><b>Date from:</b>
                                                                     <input class="form-control"
                                                                         type="date"
                                                                         v-model="activity.date_from"
                                                                         @input="setUnsaved(true)"
                                                                         @change="updateActivity(activity, activity_index, index)"
                                                                         />
-                                                                        <br>
-                                                                </td>
-                                                            </tr>
-                                                            <tr v-if="activity.is_active==1">
-                                                                <td><b>Date to:</b></td>
-                                                                <td>
+                                                                </div>
+                                                                <div><b>Date to:</b>
                                                                     <input class="form-control"
                                                                         type="date"
                                                                         v-model="activity.date_to"
                                                                         @input="setUnsaved(true)"
                                                                         @change="updateActivity(activity, activity_index, index)"
                                                                         />
-                                                                        <br>
-                                                                </td>
-                                                            </tr>
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                         <td>
-                                                            <tr v-for="outcome in activity.activityProject[0].expected_output">
-                                                                <div>{{ outcome.description }}<hr></div>
-                                                            </tr>
-                                                            <tr v-for="outcome in activity.activityProject[0].expected_outcome">
-                                                                <div>{{ outcome.description }}<hr></div>
-                                                            </tr>
+                                                            <div v-for="outcome in activity.activityProject[0]?.expected_output || []">{{ outcome.description }}<hr></div>
+                                                            <div v-for="outcome in activity.activityProject[0]?.expected_outcome || []">{{ outcome.description }}<hr></div>
                                                             <!-- {{ activity.activityProject[0].expected_output }} -->
                                                         </td>
                                                         <td @click="setActivityVisibility(activity.finance_visible,index, activity_index)">
@@ -452,6 +432,7 @@
                                                                 <div class="peers">
                                                                     <div>
                                                                         <table class="table table-sm table-bordered table-hover" style="border-color: #000; border-width: 2px;">
+                                                                            <thead>
                                                                             <tr class="bg-primary text-white">
                                                                                 <th>Quarter/Period&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                                                                 <th colspan="1">Personnel Services</th>
@@ -459,6 +440,8 @@
                                                                                 <th colspan="1">FE&nbsp;</th>
                                                                                 <th colspan="1">Capital Outlay</th>
                                                                             </tr>
+                                                                            </thead>
+                                                                            <tbody>
                                                                             <tr>
                                                                                 <th>Q1:&nbsp;&nbsp;</th>
                                                                                 <td><input v-model="activity.ps_q1" @input="setUnsaved(true)"
@@ -547,12 +530,7 @@
                                                                                 <td style="font-weight: bold">{{ format_number_conv(activity.fe_total,2,true) }}</td>
                                                                                 <td style="font-weight: bold">{{ format_number_conv(activity.co_total,2,true) }}</td>
                                                                             </tr>
-                                                                            <!-- <tr>
-                                                                                <th>Total:&nbsp;&nbsp;</th>
-                                                                                <td><input v-model="activity.ps_total" class="form-control"/></td>
-                                                                                <td><input v-model="activity.mooe_total" class="form-control"/></td>
-                                                                                <td><input v-model="activity.co_total" class="form-control"/></td>
-                                                                            </tr> -->
+                                                                            </tbody>
                                                                         </table>
                                                                     </div>
 

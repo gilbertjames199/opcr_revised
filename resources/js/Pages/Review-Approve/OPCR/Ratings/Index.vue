@@ -6,9 +6,9 @@
     <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
     </p>-->
     <div class="row gap-20 masonry pos-r">
-        <p class="text-center">
-        <h4>Review/Approve </h4>
-        </p>
+        <!-- <p class="text-center"> -->
+        <h4 class="text-center">Review/Approve </h4>
+        <!-- </p> -->
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>OPCR (Rating)</h3>
             <div class="peers">

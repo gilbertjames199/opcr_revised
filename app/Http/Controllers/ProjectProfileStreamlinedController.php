@@ -18,8 +18,8 @@ use App\Models\Risk_manangement;
 use App\Models\Signatory;
 use App\Models\Strategy;
 use App\Models\StrategyProject;
-use App\Models\TeamPlan;
 use App\Models\User;
+use App\Models\TeamPlan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +31,22 @@ class ProjectProfileStreamlinedController extends Controller
     public function __construct(RevisionPlan $rev_plan)
     {
         $this->rev_plan = $rev_plan;
+    }
+
+    /**
+     * Check if user can perform an action
+     * @param string $ability
+     * @param mixed $arguments
+     * @return bool
+     */
+    private function userCan($ability, $arguments = null)
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+        if ($user) {
+            return $user->can($ability, $arguments);
+        }
+        return false;
     }
 
     public function streamlined_create(Request $request, $idpaps)
@@ -250,8 +266,8 @@ class ProjectProfileStreamlinedController extends Controller
             "source" => $request->source,
             "ccet_codes" => $ccet_codes,
             "can" => [
-                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                'can_access_validation' => $this->userCan('can_access_validation', User::class),
+                'can_access_indicators' => $this->userCan('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -551,15 +567,15 @@ class ProjectProfileStreamlinedController extends Controller
         ])->whereHas('strategyProject', function ($query)use ($id) {
             $query->where('project_id', $id)->where('is_active', '1');
         })
-        ->where(function ($q) use ($id) {
-            $q->whereHas('activity', function ($q2) use ($id) {
-                $q2->whereHas('activityProject', function ($q3) use ($id) {
-                    $q3->where('project_id', $id)
-                    ->where('is_active', '1');
-                });
-            })
-            ->orWhereDoesntHave('activity');
-        })
+        // ->where(function ($q) use ($id) {
+        //     $q->whereHas('activity', function ($q2) use ($id) {
+        //         $q2->whereHas('activityProject', function ($q3) use ($id) {
+        //             $q3->where('project_id', $id)
+        //             ->where('is_active', '1');
+        //         });
+        //     })
+        //     ->orWhereDoesntHave('activity');
+        // })
         // ->join('strategy_projects', function ($join) use ($id) {
         //         $join->on('strategy_projects.strategy_id', '=', 'strategies.id')
         //             ->where('strategy_projects.project_id', $id)

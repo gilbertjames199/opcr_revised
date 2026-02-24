@@ -736,210 +736,217 @@
         <ReturnWithAmmendmentsModal v-if="ReturnWithAmmendmentsModalVisible" @close-modal-event="hideReturnWithAmmendmentsModal" title="RETURN WITH AMMENDMENTS">
             <div class="peers mb-12">
                 <table class="table">
-                    <tr>
-                        <td><h6>Project Title: <u>{{selected_plan.project_title }}</u></h6></td>
-                        <td><h6>Office: <u>{{selected_plan.FFUNCTION }}</u></h6></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="col-md-5">
-                            <!-- Warnings -->
-                            <!-- <div v-if="show_warnings">
-                                <div v-if="!isWithinLimit()" class="text-danger mt-2">
-                                ❌ Total file size must not exceed 10 MB.
-                                </div>
-                                <div v-if="!isWithinCount()" class="text-danger mt-2">
-                                ❌ You can only upload a maximum of 2 files.
-                                </div>
-                            </div> -->
+                    <tbody>
+                        <tr>
+                            <td><h6>Project Title: <u>{{selected_plan.project_title }}</u></h6></td>
+                            <td><h6>Office: <u>{{selected_plan.FFUNCTION }}</u></h6></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="col-md-5">
+                                <!-- Warnings -->
+                                <!-- <div v-if="show_warnings">
+                                    <div v-if="!isWithinLimit()" class="text-danger mt-2">
+                                    ❌ Total file size must not exceed 10 MB.
+                                    </div>
+                                    <div v-if="!isWithinCount()" class="text-danger mt-2">
+                                    ❌ You can only upload a maximum of 2 files.
+                                    </div>
+                                </div> -->
 
-                            <!-- :disabled="!(isWithinLimit() && isWithinCount())" -->
-                            <input
-                                type="file"
-                                multiple
-                                @change="handleFiles"
-                                accept="application/pdf"
-                                ref="fileInput"
-                            />
-                            <!-- :disabled="!(isWithinLimit() && isWithinCount())" -->
-                            <div>
-                                <button type="button" @click="uploadFiles" class="btn btn-primary text-white" >Upload</button>
-                                <button type="button" @click="cancelFiles" class="btn btn-danger text-white">Cancel </button>
+                                <!-- :disabled="!(isWithinLimit() && isWithinCount())" -->
+                                <input
+                                    type="file"
+                                    multiple
+                                    @change="handleFiles"
+                                    accept="application/pdf"
+                                    ref="fileInput"
+                                />
+                                <!-- :disabled="!(isWithinLimit() && isWithinCount())" -->
+                                <div>
+                                    <button type="button" @click="uploadFiles" class="btn btn-primary text-white" >Upload</button>
+                                    <button type="button" @click="cancelFiles" class="btn btn-danger text-white">Cancel </button>
+                                </div>
+                                <p>
+
+                                    <div v-if="files.length>0">
+                                        <h3>Selected Files (Pending Upload)</h3>
+                                        <table >
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>File Name</th>
+                                                    <th>File Type</th>
+                                                    <th>File Size</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(file, index) in files" :key="index">
+                                                    <td>
+                                                        <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
+                                                    </td>
+                                                    <td>{{ file.name }}&nbsp;</td>
+                                                    <td>{{ file.name.split('.').pop() }}&nbsp;</td>
+                                                    <td>{{ formatFileSize(file.size) }}&nbsp;</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </p>
                             </div>
-                            <p>
 
-                                <div v-if="files.length>0">
-                                    <h3>Selected Files (Pending Upload)</h3>
-                                    <table >
-                                        <thead>
-                                            <th></th>
-                                            <th>File Name</th>
-                                            <th>File Type</th>
-                                            <th>File Size</th>
-                                        </thead>
-                                        <tr v-for="(file, index) in files" :key="index">
-                                            <td>
-                                                <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
-                                            </td>
-                                            <td>{{ file.name }}&nbsp;</td>
-                                            <td>{{ file.name.split('.').pop() }}&nbsp;</td>
-                                            <td>{{ formatFileSize(file.size) }}&nbsp;</td>
-                                        </tr>
-                                    </table>
+                            </td>
+                            <td>
+                                <div class="col-md-7">
+                                <div class="peers">
+                                    <h5>Justification Letters Uploaded</h5>&nbsp;
+                                    <button
+                                        @click="deleteFiles"
+                                        class="btn btn-danger btn-sm mL-2 text-white"
+                                        :disabled="!file_ids.length"
+                                        >
+                                        Delete Selected
+                                    </button>
                                 </div>
-                            </p>
-                        </div>
-
-                        </td>
-                        <td>
-                            <div class="col-md-7">
-                            <div class="peers">
-                                <h5>Justification Letters Uploaded</h5>&nbsp;
-                                <button
-                                    @click="deleteFiles"
-                                    class="btn btn-danger btn-sm mL-2 text-white"
-                                    :disabled="!file_ids.length"
-                                    >
-                                    Delete Selected
-                                </button>
-                            </div>
-                            <!-- <button @click="previewFile(file)" class="btn btn-primary text-white">Preview</button>&nbsp; -->
-                            <!-- /files/proxy-download -->
-                            <!-- target="_blank" rel="noopener noreferrer" -->
-                            <!-- <a :href="`http://122.53.120.18:8067/images/${file.filename}`" class="btn btn-success">Download</a>&nbsp; -->
-                            <!-- http://122.53.120.18:8067/images/{{file.filename}} - /file-upload/download/ -->
-                            <!-- <p> http://192.168.80.89:8073//file-upload/download/{{file.id}}</p> -->
-                            <table name="tabel" class="table table-hover table-striped">
-                                <thead>
-                                    <tr>
-                                    <th>
-                                        <input
-                                        type="checkbox"
-                                        :checked="allSelected"
-                                        v-model="allSelected"
-                                        @change="toggleSelectAll($event)"
-                                        />
-                                    </th>
-                                    <th></th>
-                                    <th>File Name</th>
-                                    <th>File Size</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                    <th>Return No.</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="file in docs" :key="file.id">
-                                        <td>
+                                <!-- <button @click="previewFile(file)" class="btn btn-primary text-white">Preview</button>&nbsp; -->
+                                <!-- /files/proxy-download -->
+                                <!-- target="_blank" rel="noopener noreferrer" -->
+                                <!-- <a :href="`http://122.53.120.18:8067/images/${file.filename}`" class="btn btn-success">Download</a>&nbsp; -->
+                                <!-- http://122.53.120.18:8067/images/{{file.filename}} - /file-upload/download/ -->
+                                <!-- <p> http://192.168.80.89:8073//file-upload/download/{{file.id}}</p> -->
+                                <table name="tabel" class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                        <th>
                                             <input
                                             type="checkbox"
-                                            :value="file.id"
-                                            @change="toggleFileSelection(file.id, $event)"
-                                            v-model="file_ids"
+                                            :checked="allSelected"
+                                            v-model="allSelected"
+                                            @change="toggleSelectAll($event)"
                                             />
-
-                                            <!-- {{ file }} -->
-                                        </td>
-                                        <!-- <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> -->
-                                        <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/></td>
-                                        <td>{{ file.filename }} </td>
-                                        <td>{{ format_number((file.file_size/1024),2,true) }} KB </td>
-                                        <th
-                                            :style="{
-                                                backgroundColor: file.return_executed === '0' ? '#d4f8d4' : '#f8d4d4'
-                                            }"
-                                        >
-                                            {{ file.return_executed === "0" ? 'New' : 'Used' }}
                                         </th>
-                                        <td>
-                                            <button
-                                                @click="previewFile(file)"
-                                                class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
-                                                title="Preview"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="20"
-                                                    height="20"
-                                                    fill="blue"
-                                                    class="bi bi-eye-fill"
-                                                    viewBox="0 0 16 16"
-                                                >
-                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                </svg>
-                                            </button>&nbsp;
-                                            <!-- download -->
-                                            <a
-                                                :href="`/movs/download/${file.id}`"
+                                        <th></th>
+                                        <th>File Name</th>
+                                        <th>File Size</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                        <th>Return No.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="file in docs" :key="file.id">
+                                            <td>
+                                                <input
+                                                type="checkbox"
+                                                :value="file.id"
+                                                @change="toggleFileSelection(file.id, $event)"
+                                                v-model="file_ids"
+                                                />
 
-                                                class="inline-flex items-center"
-                                                title="Download"
-                                                target="_blank"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="20"
-                                                    height="20"
-                                                    fill="green"
-                                                    class="bi bi-cloud-arrow-down-fill"
-                                                    viewBox="0 0 16 16"
-                                                >
-                                                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
-                                                </svg>
-                                            </a>&nbsp;
-
-                                            <!-- <button
-                                                @click="deleteFile(file.id)"
-                                                class="p-1 rounded-full bg-transparent hover:bg-red-100 border-0"
-                                                data-toggle="tooltip"
-                                                title="Delete"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="20"
-                                                    height="20"
-                                                    fill="red"
-                                                    class="bi bi-trash-fill"
-                                                    viewBox="0 0 16 16"
-                                                >
-                                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                                </svg>
-                                            </button> -->
-
-                                        </td>
-                                        <td>0{{  file.return_batch }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table class="table table-hover ">
-                                <tr>
-                                    <td>Remarks:</td>
-                                    <td><textarea class="form-control" v-model="remarks"></textarea></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <button
-                                                @click="returnWithAmmendmentsActual()"
+                                                <!-- {{ file }} -->
+                                            </td>
+                                            <!-- <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> -->
+                                            <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/></td>
+                                            <td>{{ file.filename }} </td>
+                                            <td>{{ format_number((file.file_size/1024),2,true) }} KB </td>
+                                            <th
                                                 :style="{
-                                                padding: '4px 10px',
-                                                border: 'none',
-                                                borderRadius: '4px',
-                                                backgroundColor: 'red',
-                                                color: 'white',
-                                                cursor: 'pointer',
-                                                fontWeight: 'bold'
+                                                    backgroundColor: file.return_executed === '0' ? '#d4f8d4' : '#f8d4d4'
                                                 }"
                                             >
-                                                Return with ammendments
-                                            </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        </td>
-                    </tr>
+                                                {{ file.return_executed === "0" ? 'New' : 'Used' }}
+                                            </th>
+                                            <td>
+                                                <button
+                                                    @click="previewFile(file)"
+                                                    class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
+                                                    title="Preview"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="20"
+                                                        height="20"
+                                                        fill="blue"
+                                                        class="bi bi-eye-fill"
+                                                        viewBox="0 0 16 16"
+                                                    >
+                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                                    </svg>
+                                                </button>&nbsp;
+                                                <!-- download -->
+                                                <a
+                                                    :href="`/movs/download/${file.id}`"
 
+                                                    class="inline-flex items-center"
+                                                    title="Download"
+                                                    target="_blank"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="20"
+                                                        height="20"
+                                                        fill="green"
+                                                        class="bi bi-cloud-arrow-down-fill"
+                                                        viewBox="0 0 16 16"
+                                                    >
+                                                        <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
+                                                    </svg>
+                                                </a>&nbsp;
+
+                                                <!-- <button
+                                                    @click="deleteFile(file.id)"
+                                                    class="p-1 rounded-full bg-transparent hover:bg-red-100 border-0"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="20"
+                                                        height="20"
+                                                        fill="red"
+                                                        class="bi bi-trash-fill"
+                                                        viewBox="0 0 16 16"
+                                                    >
+                                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                                    </svg>
+                                                </button> -->
+
+                                            </td>
+                                            <td>0{{  file.return_batch }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-hover ">
+                                    <tbody>
+                                        <tr>
+                                            <td>Remarks:</td>
+                                            <td><textarea class="form-control" v-model="remarks"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <button
+                                                        @click="returnWithAmmendmentsActual()"
+                                                        :style="{
+                                                        padding: '4px 10px',
+                                                        border: 'none',
+                                                        borderRadius: '4px',
+                                                        backgroundColor: 'red',
+                                                        color: 'white',
+                                                        cursor: 'pointer',
+                                                        fontWeight: 'bold'
+                                                        }"
+                                                    >
+                                                        Return with ammendments
+                                                    </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
 
 

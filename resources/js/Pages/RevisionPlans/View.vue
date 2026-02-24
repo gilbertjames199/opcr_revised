@@ -615,11 +615,11 @@
                                         </td>
                                         <td>
                                             <span v-if="paps.is_strategy_based==1">
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_output">
+                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0]?.expected_output || []">
                                                     <div>{{ eo.description }}</div>
                                                     <hr>
                                                 </div>
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_outcome">
+                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0]?.expected_outcome || []">
                                                     <div>{{ eo.description }}</div>
                                                     <hr>
                                                 </div>
@@ -810,7 +810,8 @@
                                                     </table>
                                                     <table class="m-0" style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;"
                                                     v-else>
-                                                        <template >
+                                                        <tbody>
+                                                        <!-- <template > -->
                                                             <tr >
                                                                 <td >
 
@@ -859,7 +860,8 @@
 
                                                                 </td>
                                                             </tr>
-                                                        </template>
+                                                        <!-- </template> -->
+                                                        </tbody>
                                                     </table>
                                                 </div>
 
@@ -2033,6 +2035,7 @@
 
 
                             </tbody>
+                            <tfoot>
                             <tr >
                                 <td colspan="4"><h5>GAD TOTAL</h5></td>
                                 <td :class="{
@@ -2065,11 +2068,12 @@
                                 </td>
                                 <td colspan="3"></td>
                             </tr>
-                             <tr>
+                            <tr>
                                 <td colspan="4"><h5>TOTAL</h5></td>
                                 <td>₱ {{ overallBudget.toLocaleString() }}</td>
                                 <td colspan="3"></td>
                             </tr>
+                            </tfoot>
                             <!-- <tr>
                                     <td colspan="4"><h4>TOTAL</h4></td>
                                     <td>₱ {{ overallBudget.toLocaleString() }}</td>
@@ -2755,6 +2759,7 @@
                             <li v-for="(comment, index) in unresolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
 
                                     <table style="border-collapse: collapse; border: none !important;">
+                                        <tbody>
                                         <tr style="border: none !important; vertical-align: top;">
                                             <td style="border: none !important; vertical-align: top; text-align:left;">
                                                 <button class="btn p-0 border-0 bg-transparent"
@@ -2798,6 +2803,7 @@
                                                 <div v-html="comment.reply"></div>
                                             </td>
                                         </tr>
+                                        </tbody>
                                     </table>
 
 
@@ -2851,6 +2857,7 @@
                                     :class="'comment-approved'"
                                 >
                                     <table style="border-collapse: collapse; border: none !important;">
+                                        <tbody>
                                         <tr style="border: none !important; vertical-align: top;">
                                             <td style="border: none !important; vertical-align: top; text-align:left;">
                                                 <!-- RESOLVED ICON -->
@@ -2863,6 +2870,7 @@
                                                 {{ comment.comment }}
                                             </td>
                                         </tr>
+                                        </tbody>
                                     </table>
 
 

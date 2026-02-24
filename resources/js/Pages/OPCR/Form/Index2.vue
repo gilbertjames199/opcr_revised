@@ -272,19 +272,23 @@
                             <h3>Selected Files (Pending Upload)</h3>
                             <table >
                                 <thead>
-                                    <th></th>
-                                    <th>File Name</th>
-                                    <th>File Type</th>
-                                    <th>File Size</th>
+                                    <tr>
+                                        <th></th>
+                                        <th>File Name</th>
+                                        <th>File Type</th>
+                                        <th>File Size</th>
+                                    </tr>
                                 </thead>
-                                <tr v-for="(file, index) in files" :key="index">
-                                    <td>
-                                        <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
-                                    </td>
-                                    <td>{{ file.name }}&nbsp;</td>
-                                    <td>{{ file.name.split('.').pop() }}&nbsp;</td>
-                                    <td>{{ formatFileSize(file.size) }}&nbsp;</td>
-                                </tr>
+                                <tbody>
+                                    <tr v-for="(file, index) in files" :key="index">
+                                        <td>
+                                            <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
+                                        </td>
+                                        <td>{{ file.name }}&nbsp;</td>
+                                        <td>{{ file.name.split('.').pop() }}&nbsp;</td>
+                                        <td>{{ formatFileSize(file.size) }}&nbsp;</td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </p>

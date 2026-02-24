@@ -653,14 +653,16 @@
                                             </td>
                                             <td>
                                                 <span v-if="paps.is_strategy_based==1">
-                                                    <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_output">
-                                                        <div>{{ eo.description }}</div>
-                                                        <hr>
-                                                    </div>
-                                                    <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_outcome">
-                                                        <div>{{ eo.description }}</div>
-                                                        <hr>
-                                                    </div>
+                                                    <template v-if="dat.strategyProject[0]">
+                                                        <div v-for="eo in dat.strategyProject[0]?.expected_output || []">
+                                                            <div>{{ eo.description }}</div>
+                                                            <hr>
+                                                        </div>
+                                                        <div v-for="eo in dat.strategyProject[0]?.expected_outcome || []">
+                                                            <div>{{ eo.description }}</div>
+                                                            <hr>
+                                                        </div>
+                                                    </template>
                                                 </span>
 
                                             </td>
@@ -719,8 +721,8 @@
                                             </td>
                                         </tr>
                                         <!-- ACTIVITIES **************************************************************************************************** -->
-                                        <template v-if="dat.activity && paps.is_strategy_based==0" v-for="(act, subIndex) in dat.activity" :key="subIndex" >
-                                            <tr  v-if="act.is_active==='1'" style="height: 100%">
+                                        <template v-for="(act, subIndex) in dat.activity" :key="subIndex" >
+                                            <tr v-if="dat.activity && paps.is_strategy_based==0 && act.is_active==='1'" style="height: 100%">
                                                 <!-- SEQUENCE NUMBER -->
                                                 <td>
                                                     <input
@@ -884,7 +886,7 @@
                                                         <!-- IF THE ACTIVITY HAS NO OUTCOMES OR OUTPUTS -->
                                                         <table class="m-0" style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;"
                                                         v-else>
-                                                            <!-- <template > -->
+                                                            <tbody >
                                                                 <tr >
                                                                     <td >
 
@@ -945,7 +947,7 @@
 
                                                                     </td>
                                                                 </tr>
-                                                            <!-- </template> -->
+                                                            </tbody>
                                                         </table>
                                                     </div>
 
@@ -1669,45 +1671,47 @@
 
 
                             </tbody>
-                            <tr >
-                                <td colspan="4"><h5>GAD TOTAL</h5></td>
-                                <td v-if="source==='sip'"></td>
-                                <td :class="{
-                                            'text-danger': has_comment('Budgetary Requirements',
-                                            'GAD Grand Total',
-                                            format_number_conv(tot_gad,2,true),
-                                            'gad_total', 'revision_plans',
-                                            paps, paps.comments)
-                                        }"
-                                        :id="paps.id + '_revision_plans_gad_total'">
-                                        ₱ {{ gadBudgetTotal.toLocaleString() }}
-                                        <button v-if="can_view_comment()" class="superscript-btn"
-                                            @click="handleClick('Budgetary Requirements',
-                                            'GAD Grand Total',
-                                            format_number_conv(tot_gad,2,true),
-                                            'gad_total', 'revision_plans',
-                                            paps, paps.comments)">*
-                                        </button>
-                                        <button v-if="has_comment('Budgetary Requirements',
-                                            'GAD Grand Total',
-                                            format_number_conv(tot_gad,2,true),
-                                            'gad_total', 'revision_plans',
-                                            paps, paps.comments)" class="superscript-btn"
-                                            @click="handleClick('Budgetary Requirements',
-                                            'GAD Grand Total',
-                                            format_number_conv(tot_gad,2,true),
-                                            'gad_total', 'revision_plans',
-                                            paps, paps.comments)">*
-                                        </button>
-                                </td>
-                                <td colspan="3"></td>
-                            </tr>
-                            <tr>
-                                    <td colspan="4"><h4>TOTAL</h4></td>
+                            <tfoot>
+                                <tr >
+                                    <td colspan="4"><h5>GAD TOTAL</h5></td>
                                     <td v-if="source==='sip'"></td>
-                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                    <td :class="{
+                                                'text-danger': has_comment('Budgetary Requirements',
+                                                'GAD Grand Total',
+                                                format_number_conv(tot_gad,2,true),
+                                                'gad_total', 'revision_plans',
+                                                paps, paps.comments)
+                                            }"
+                                            :id="paps.id + '_revision_plans_gad_total'">
+                                            ₱ {{ gadBudgetTotal.toLocaleString() }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                'GAD Grand Total',
+                                                format_number_conv(tot_gad,2,true),
+                                                'gad_total', 'revision_plans',
+                                                paps, paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Budgetary Requirements',
+                                                'GAD Grand Total',
+                                                format_number_conv(tot_gad,2,true),
+                                                'gad_total', 'revision_plans',
+                                                paps, paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Budgetary Requirements',
+                                                'GAD Grand Total',
+                                                format_number_conv(tot_gad,2,true),
+                                                'gad_total', 'revision_plans',
+                                                paps, paps.comments)">*
+                                            </button>
+                                    </td>
                                     <td colspan="3"></td>
-                            </tr>
+                                </tr>
+                                <tr>
+                                        <td colspan="4"><h4>TOTAL</h4></td>
+                                        <td v-if="source==='sip'"></td>
+                                        <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                        <td colspan="3"></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                     <!--VI. IMPLEMENTING TEAM************************************************** -->
@@ -2530,7 +2534,7 @@
         </table>
 
 
-        <button @click="addStrategy" class="btn btn-primary mt-2">Add Row</button>
+        <button @click="addStrategy" class="btn btn-primary mt-2">Add Row</button>&nbsp;
         <button @click="saveStrategies" class="btn btn-success mt-2">Save</button>
         <!-- {{strategies}} -->
     </StrategyModal>
@@ -2875,11 +2879,13 @@
     </SignatoryModal>
     <ExpectedOutputModal v-if="ExpectedOutputModalVisible" @close-modal-event="hideExpectedOutputModal" title="EXPECTED OUTPUTS">
         <!-- <h3><p><b>Activity: </b><u>{{activity_description_current}}</u></p></h3> -->
-        <table>
-            <tr>
-                <td><b>Activity: </b></td>
-                <td><u>{{activity_description_current}}</u></td>
-            </tr>
+        <table style="border: none !important; border-collapse: collapse !important;">
+            <tbody>
+                <tr>
+                    <td style="border: none !important;"><b>Activity: </b></td>
+                    <td style="border: none !important;"><u>{{activity_description_current}}</u></td>
+                </tr>
+            </tbody>
         </table>
         <h4>Expected Outputs</h4>
 
@@ -2928,7 +2934,7 @@
         </div>
         <table class="table table-bordered">
 
-            <tr>
+            <!-- <tr> -->
                 <thead>
                     <tr class="table table-secondary text-center align-middle">
                         <th rowspan="3">Description</th>
@@ -3012,7 +3018,7 @@
                         </td>
                     </tr>
                 </tbody>
-            </tr>
+            <!-- </tr> -->
         </table>
     </ExpectedOutputModal>
     <ExpectedOutcomeModal v-if="ExpectedOutcomeModalVisible" @close-modal-event="hideExpectedOutcomeModal" title="EXPECTED OUTCOMES">
@@ -3043,7 +3049,7 @@
             <button @click="saveExpectedOutcomes" class="btn btn-success" v-if="expected_outcomes_new.length > 0">Save All</button>
         </div>
         <table class="table table-bordered w-100" style="width: 100%;">
-            <tr>
+            <!-- <tr> -->
                 <thead>
                     <tr class="table thead-dark">
                         <th rowspan="2">Description</th>
@@ -3070,7 +3076,7 @@
                         </td>
                     </tr>
                 </tbody>
-            </tr>
+            <!-- </tr> -->
         </table>
     </ExpectedOutcomeModal>
     <div class="jump-arrow"></div>
@@ -4006,7 +4012,9 @@ export default {
             //alert(this.idpaps);
             let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
               if (confirm(text) == true) {
-                this.$inertia.delete("/revision/streamlined/" + id+"/"+table);
+                this.$inertia.delete("/revision/streamlined/" + id+"/"+table, {
+                    preserveScroll: true
+                });
             }
 
         },
@@ -4016,7 +4024,10 @@ export default {
             //alert(this.idpaps);
             let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
               if (confirm(text) == true) {
-                this.$inertia.delete("/revision/streamlined/" + id+"/"+table+"/"+project_id);
+                this.$inertia.delete("/revision/streamlined/" + id+"/"+table+"/"+project_id,
+                {
+                    preserveScroll: true
+                });
             }
 
         },
@@ -4177,15 +4188,25 @@ export default {
                 alert("Please fill out all Description and Year Period fields before saving.");
                 return;
             }
+            // Save current scroll position before reload
+            const scrollPosition = window.scrollY;
+            sessionStorage.setItem('scrollPosition', scrollPosition);
 
             // Proceed to save (e.g., emit event or call API)
             axios.post('/implementation-workplan/strategies', {
                 strategies: this.strategies,
                 project_id: this.form.id,
                 paps_id: this.paps_specific.id,
-            })
+            },
+            {
+                preserveScroll: true,
+                preserveState: true,
+            }
+            )
             .then(response => {
                 console.log('Saved successfully:', response.data);
+                // ✅ Save scroll position
+                // sessionStorage.setItem('scrollPosition', window.scrollY);
                 window.location.reload();
                 // Optionally clear the strategies array or show a success message
             })
@@ -4242,9 +4263,18 @@ export default {
                     {
                         activities: this.activities,
                         strategy_id: this.strategy_id
+                    },
+                    {
+                        preserveScroll: true,
+                        preserveState: true,
                     }
                 ).then((response=>{
-                    window.location.reload()
+                    // ✅ Save scroll position
+                    sessionStorage.setItem('scrollPosition', window.scrollY);
+                    window.location.reload({
+                        preserveScroll: true,
+                        preserveState: true,
+                    });
                 }));
 
                 alert('Activities saved successfully!');
@@ -4324,24 +4354,37 @@ export default {
             if(this.action_type_team==='store'){
                 axios.post('/implementation-workplan/implementing/team/plans', {
                     'rows': this.team_members
+                },               {
+                    preserveScroll: true,
+                    preserveState: true,
                 })
                 .then(res => {
                     // optionally clear or close modal
                     alert('Successfully saved team member!')
                     this.team_members=[]
                     this.TeamModalVisible = false;
-                    window.location.reload()
+                    window.location.reload({
+                        preserveScroll: true,
+                        preserveState: true,
+                    });
                 });
             }else if(this.action_type_team==='update'){
                 axios.patch('/implementation-workplan/implementing/team/plans/update', {
                     'rows': this.team_members
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
                 })
                 .then(res => {
                     // optionally clear or close modal
                     alert('Successfully saved team member!')
                     this.team_members=[]
                     this.TeamModalVisible = false;
-                    window.location.reload()
+                    window.location.reload({
+                        preserveScroll: true,
+                        preserveState: true,
+                    });
                 });
             }
 
@@ -4407,7 +4450,10 @@ export default {
             })
             .then(res => {
                 console.log("Saved:", res.data);
-                window.location.reload()
+                window.location.reload({
+                    preserveScroll: true,
+                    preserveState: true,
+                });
                 // Optional success message or close modal
             })
             .catch(err => {
@@ -4443,7 +4489,10 @@ export default {
             .then(res => {
                 // console.log("Saved:", res.data);
                 this.MonitoringModalVisible = false;
-                window.location.reload()
+                window.location.reload({
+                    preserveScroll: true,
+                    preserveState: true,
+                });
             })
             .catch(err => {
                 console.error(err);
@@ -4477,7 +4526,10 @@ export default {
             .then(res => {
                 console.log("Signatories saved successfully:", res.data);
                 this.closeSignatoryModal();
-                window.location.reload()
+                window.location.reload({
+                    preserveScroll: true,
+                    preserveState: true,
+                });
             })
             .catch(err => {
                 console.error("Error saving signatories:", err);
@@ -4531,8 +4583,17 @@ export default {
             this.activity_description_current=activity_desc;
         },
         hideExpectedOutputModal(){
-            this.ExpectedOutputModalVisible=false;
-            window.location.reload()
+            // this.ExpectedOutputModalVisible=false;
+            // window.location.reload()
+            this.ExpectedOutputModalVisible = false;
+
+            // Save scroll position
+            localStorage.setItem('scrollPosition', window.scrollY);
+
+            window.location.reload({
+                preserveScroll: true,
+                preserveState: true,
+            });
         },
         addExpectedOutput() {
             this.expected_outputs_new.push({
@@ -4614,7 +4675,10 @@ export default {
         hideExpectedOutcomeModal(){
             // alert('outcome')
             this.ExpectedOutcomeModalVisible=false;
-            window.location.reload()
+            window.location.reload({
+                preserveScroll: true,
+                preserveState: true,
+            });
         },
         addOutcome() {
             this.expected_outcomes_new.push({

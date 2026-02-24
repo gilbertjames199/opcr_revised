@@ -404,11 +404,11 @@
                                         </td>
                                         <td>
                                             <span v-if="paps.is_strategy_based==1">
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_output">
+                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0]?.expected_output || []">
                                                     <div>{{ eo.description }}</div>
                                                     <hr>
                                                 </div>
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_outcome">
+                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0]?.expected_outcome || []">
                                                     <div>{{ eo.description }}</div>
                                                     <hr>
                                                 </div>

@@ -9,6 +9,7 @@ use App\Models\MajorFinalOutput;
 use App\Models\ProgramAndProject;
 use App\Models\Strategy;
 use App\Models\StrategyProject;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +21,23 @@ class StrategyController extends Controller
         //$this->middleware(['auth','verified']);
         $this->model = $model;
     }
+
+    /**
+     * Check if user can perform an action
+     * @param string $ability
+     * @param mixed $arguments
+     * @return bool
+     */
+    private function userCan($ability, $arguments = null)
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+        if ($user) {
+            return $user->can($ability, $arguments);
+        }
+        return false;
+    }
+
     public function index(Request $request, $id, $ismfo)
     {
         // dd($id);
@@ -51,8 +69,8 @@ class StrategyController extends Controller
             "ismfo" => $ismfo,
             "filters" => $request->only(['search']),
             'can' => [
-                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                'can_access_validation' => $this->userCan('can_access_validation', User::class),
+                'can_access_indicators' => $this->userCan('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -78,8 +96,8 @@ class StrategyController extends Controller
             'mfos' => $mfos,
             'ismfo' => $ismfo,
             'can' => [
-                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                'can_access_validation' => $this->userCan('can_access_validation', User::class),
+                'can_access_indicators' => $this->userCan('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -141,8 +159,8 @@ class StrategyController extends Controller
             'mfos' => $mfos,
             'ismfo' => $ismfo,
             'can' => [
-                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                'can_access_validation' => $this->userCan('can_access_validation', User::class),
+                'can_access_indicators' => $this->userCan('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -199,7 +217,8 @@ class StrategyController extends Controller
     {
         $strategies = $request->input('strategies', []);
         // $ids =
-        // dd($request);
+        // dd($request, $request->input('strategy_id'), $request->input('paps_id'), $request->input('project_id'));
+        // dd($strategies);
         foreach ($strategies as $data) {
             $strategy = Strategy::create([
                 'description' => $data['description'] ?? null,
@@ -208,7 +227,7 @@ class StrategyController extends Controller
                 'FFUNCCOD'    => $data['FFUNCCOD'] ?? null,
                 'year_period' => $data['year_period'] ?? null,
             ]);
-
+            // dd($strategy);
             StrategyProject::create([
                 'strategy_id'      => $strategy->id,   // inherit the created strategy id
                 'project_id'       => $request->input('project_id'),         // inherit from request

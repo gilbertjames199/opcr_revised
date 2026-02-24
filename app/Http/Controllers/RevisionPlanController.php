@@ -50,6 +50,23 @@ class RevisionPlanController extends Controller
         $this->imp = $imp;
         $this->budget = $budget;
     }
+
+    /**
+     * Check if user can perform an action
+     * @param string $ability
+     * @param mixed $arguments
+     * @return bool
+     */
+    private function userCan($ability, $arguments = null)
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+        if ($user) {
+            return $user->can($ability, $arguments);
+        }
+        return false;
+    }
+
     public function index(Request $request, $idpaps)
     {
         // dd($idpaps);
@@ -2695,7 +2712,7 @@ class RevisionPlanController extends Controller
                 $query->whereYear('date_start', $request->year);
             })
             ->paginate(10)
-            ->withQueryString();
+            ->withQueryString(); // @var \Illuminate\Pagination\LengthAwarePaginator
 
         // dd($request->search);
         $data->through(function ($item) use ($budget_controller, $aip) {
@@ -3906,7 +3923,7 @@ class RevisionPlanController extends Controller
 
         // dd($amount);
 
-        $revplan=clone($revplan)->map(function ($item)use($amount, $proposed_budget) {
+        $revplan=$revplan->map(function ($item)use($amount, $proposed_budget) {
             $totalScore = $item->hgdgScores->sum('score');
             // dd($item);
             // dd($totalScore);

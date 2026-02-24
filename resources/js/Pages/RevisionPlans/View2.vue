@@ -575,14 +575,16 @@
                                         </td>
                                         <td>
                                             <span v-if="paps.is_strategy_based==1">
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_output">
-                                                    <div>{{ eo.description }}</div>
-                                                    <hr>
-                                                </div>
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_outcome">
-                                                    <div>{{ eo.description }}</div>
-                                                    <hr>
-                                                </div>
+                                                <template v-if="dat.strategyProject[0]">
+                                                    <div v-for="eo in dat.strategyProject[0]?.expected_output || []">
+                                                        <div>{{ eo.description }}</div>
+                                                        <hr>
+                                                    </div>
+                                                    <div v-for="eo in dat.strategyProject[0]?.expected_outcome || []">
+                                                        <div>{{ eo.description }}</div>
+                                                        <hr>
+                                                    </div>
+                                                </template>
                                             </span>
 
                                         </td>
@@ -762,56 +764,58 @@
                                                     </table>
                                                     <table class="m-0" style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;"
                                                     v-else>
-                                                        <template >
-                                                            <tr >
-                                                                <td >
+                                                        <tbody>
+                                                            <!-- <template > -->
+                                                                <tr >
+                                                                    <td >
 
-                                                                </td>
-                                                                <!-- GAD Issue -->
-                                                                <td class="align-top" :class="{
-                                                                    'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
-                                                                }" :id="act.activity_id + '_activity_projects_gad_issue'" style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
-                                                                    <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
-                                                                        <button v-if="can_view_comment()" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
-                                                                        </button>
-                                                                        <button v-if="has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                            @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
-                                                                        </button>
-                                                                    </span>
-                                                                </td>
-
-                                                                <!-- Timeline -->
-                                                                <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
-                                                                    'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
-                                                                    has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
-                                                                }" >
-                                                                    <span v-if="paps.is_strategy_based==0">
-                                                                        <span v-if="act.date_from" :id="act.activity_id + '_activity_projects_date_from'">{{ formatMonthYear(act.date_from) }}
+                                                                    </td>
+                                                                    <!-- GAD Issue -->
+                                                                    <td class="align-top" :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)
+                                                                    }" :id="act.activity_id + '_activity_projects_gad_issue'" style="width: 25%; border: 1px solid #000; padding: 4px;" :rowspan="getPairedOutputs(act.activityProject[0]).length">
+                                                                        <span v-if="paps.is_strategy_based==0">{{ act.gad_issue }}
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                                @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
                                                                             </button>
-                                                                            <button v-if="has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                            <button v-if="has_comment('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                @click="handleClick('Implementation Plan','activity GAD issue',act.gad_issue,'gad_issue','activity_projects', act, act.comments)">*
                                                                             </button>
                                                                         </span>
-                                                                        <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                                        <span v-if="act.date_to" :id="act.activity_id + '_activity_projects_date_to'">{{ formatMonthYear(act.date_to) }}
-                                                                            <button v-if="can_view_comment()" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
-                                                                            </button>
-                                                                            <button v-if="has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)" class="superscript-btn"
-                                                                                @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
-                                                                            </button>
-                                                                        </span>
-                                                                    </span>
-                                                                </td>
-                                                                <!-- Expected Outcome -->
-                                                                <td >
+                                                                    </td>
 
-                                                                </td>
-                                                            </tr>
-                                                        </template>
+                                                                    <!-- Timeline -->
+                                                                    <td style="width: 25%; border: 1px solid #000; padding: 4px;" class="align-top" :rowspan="getPairedOutputs(act.activityProject[0]).length" :class="{
+                                                                        'text-danger': has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments) ||
+                                                                        has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
+                                                                    }" >
+                                                                        <span v-if="paps.is_strategy_based==0">
+                                                                            <span v-if="act.date_from" :id="act.activity_id + '_activity_projects_date_from'">{{ formatMonthYear(act.date_from) }}
+                                                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                                <button v-if="has_comment('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                            </span>
+                                                                            <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
+                                                                            <span v-if="act.date_to" :id="act.activity_id + '_activity_projects_date_to'">{{ formatMonthYear(act.date_to) }}
+                                                                                <button v-if="can_view_comment()" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                                <button v-if="has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)" class="superscript-btn"
+                                                                                    @click="handleClick('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)">*
+                                                                                </button>
+                                                                            </span>
+                                                                        </span>
+                                                                    </td>
+                                                                    <!-- Expected Outcome -->
+                                                                    <td >
+
+                                                                    </td>
+                                                                </tr>
+                                                            <!-- </template> -->
+                                                        </tbody>
                                                     </table>
                                                 </div>
 
@@ -1217,11 +1221,13 @@
                                 </td>
                                 <td colspan="3"></td>
                             </tr> -->
-                             <tr>
-                                <td colspan="4"><h5>TOTAL</h5></td>
-                                <td>₱ {{ overallBudget.toLocaleString() }}</td>
-                                <td colspan="3"></td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4"><h5>TOTAL</h5></td>
+                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            </tbody>
                             <!-- <tr>
                                     <td colspan="4"><h4>TOTAL</h4></td>
                                     <td>₱ {{ overallBudget.toLocaleString() }}</td>
@@ -1251,7 +1257,8 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr v-if="mooe_gad.length > 0" v-for="dat in mooe_gad">
+                                <template v-if="mooe_gad.length > 0">
+                                <tr v-for="dat in mooe_gad">
                                     <td></td>
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
@@ -1259,6 +1266,7 @@
                                     <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
+                                </template>
                                 <tr v-if="mooe_gad.length > 0">
                                     <td></td>
                                     <td></td>
@@ -1273,7 +1281,8 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr v-if="mooe_non.length > 0" v-for="dat in mooe_non">
+                                <template v-if="mooe_non.length > 0">
+                                <tr v-for="dat in mooe_non">
                                     <td></td>
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
@@ -1281,6 +1290,7 @@
                                     <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
+                                </template>
                                 <tr v-if="mooe_non.length > 0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
@@ -1307,7 +1317,8 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr v-if="cap_gad.length > 0" v-for="dat in cap_gad">
+                                <template v-if="cap_gad.length > 0">
+                                <tr v-for="dat in cap_gad">
                                     <td></td>
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
@@ -1315,6 +1326,7 @@
                                     <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
+                                </template>
                                 <tr v-if="cap_gad.length > 0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
@@ -1329,7 +1341,8 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr v-if="cap_non.length > 0" v-for="dat in cap_non">
+                                <template v-if="cap_non.length > 0">
+                                <tr v-for="dat in cap_non">
                                     <td></td>
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
@@ -1337,6 +1350,7 @@
                                     <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
+                                </template>
                                 <tr v-if="cap_non.length > 0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
@@ -1363,7 +1377,8 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr v-if="ps_gad.length > 0" v-for="dat in ps_gad">
+                                <template v-if="ps_gad.length > 0">
+                                <tr v-for="dat in ps_gad">
                                     <td></td>
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
@@ -1371,6 +1386,7 @@
                                     <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
+                                </template>
                                 <tr v-if="ps_gad.length > 0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
@@ -1385,7 +1401,8 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr v-if="ps_non.length > 0" v-for="dat in ps_non">
+                                <template v-if="ps_non.length > 0">
+                                <tr v-for="dat in ps_non">
                                     <td></td>
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
@@ -1393,6 +1410,7 @@
                                     <td class="text-end">{{ format_number_conv(dat.amount, 2, true) }}</td>
                                     <td>{{ dat.source }}</td>
                                 </tr>
+                                </template>
                                 <tr v-if="ps_non.length > 0" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
@@ -1910,40 +1928,42 @@
                                     <li v-for="(comment, index) in unresolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
 
                                         <table style="border-collapse: collapse; border: none !important;">
-                                            <tr style="border: none !important; vertical-align: top;">
-                                                <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                    <button class="btn p-0 border-0 bg-transparent"
-                                                        @click="submitAction('delete', comment.id, index)"
-                                                        title="Delete this comment"
-                                                    >
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
-                                                            class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
-                                                        </svg>&nbsp;&nbsp;&nbsp;
-                                                    </button>
+                                            <tbody>
+                                                <tr style="border: none !important; vertical-align: top;">
+                                                    <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                        <button class="btn p-0 border-0 bg-transparent"
+                                                            @click="submitAction('delete', comment.id, index)"
+                                                            title="Delete this comment"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                                                class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                                            </svg>&nbsp;&nbsp;&nbsp;
+                                                        </button>
 
-                                                </td>
-                                                <!-- comment.column_name -->
-                                                <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                    <span
-                                                        class="clickable-comment"
-                                                        @click="scrollToSection(
-                                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                                ? `${comment.id}_${comment.table_name}_${comment.column_name}`
-                                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                        )"
-                                                        :class="'comment-rejected'"
-                                                    >
-                                                        {{ comment.comment }}
-                                                                            <!-- {{
-                                                                    ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                                        ? comment.column_name
-                                                                        : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
-                                                                }} -->
-                                                    </span>
-                                                    <div v-html="comment.reply"></div>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                    <!-- comment.column_name -->
+                                                    <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                        <span
+                                                            class="clickable-comment"
+                                                            @click="scrollToSection(
+                                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                    ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                                                    : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                            )"
+                                                            :class="'comment-rejected'"
+                                                        >
+                                                            {{ comment.comment }}
+                                                                                <!-- {{
+                                                                        ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                            ? comment.column_name
+                                                                            : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
+                                                                    }} -->
+                                                        </span>
+                                                        <div v-html="comment.reply"></div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
                                         </table>
 
 
@@ -1998,6 +2018,7 @@
                                             :class="'comment-approved'"
                                         >
                                             <table style="border-collapse: collapse; border: none !important;">
+                                                <tbody>
                                                 <tr style="border: none !important; vertical-align: top;">
                                                     <td style="border: none !important; vertical-align: top; text-align:left;">
                                                         <!-- RESOLVED ICON -->
@@ -2010,6 +2031,7 @@
                                                         {{ comment.comment }}
                                                     </td>
                                                 </tr>
+                                                </tbody>
                                             </table>
 
 

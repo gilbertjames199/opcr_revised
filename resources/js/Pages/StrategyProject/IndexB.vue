@@ -71,7 +71,8 @@
                                         </th>
                                         <td></td>
                                     </tr>
-                                    <tr v-if="strategy.activity" v-for="activity in strategy.activity"  :key="activity.id">
+                                    <template v-if="strategy.activity">
+                                        <tr v-for="activity in strategy.activity" :key="activity.id">
 
                                         <td>
                                             <span class="ms-4">&nbsp;&nbsp;
@@ -108,6 +109,7 @@
                             <!-- <template v-if="strategy.activity && strategy.activity.length > 0">
 
                             </template> -->
+                            </template>
                             </template>
 
 

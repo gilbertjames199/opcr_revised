@@ -585,14 +585,16 @@
                                             </td>
                                             <td>
                                                 <span v-if="paps.is_strategy_based==1">
-                                                    <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_output">
-                                                        <div>{{ eo.description }}</div>
-                                                        <hr>
-                                                    </div>
-                                                    <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_outcome">
-                                                        <div>{{ eo.description }}</div>
-                                                        <hr>
-                                                    </div>
+                                                    <template v-if="dat.strategyProject[0]">
+                                                        <div v-for="eo in dat.strategyProject[0]?.expected_output || []">
+                                                            <div>{{ eo.description }}</div>
+                                                            <hr>
+                                                        </div>
+                                                        <div v-for="eo in dat.strategyProject[0]?.expected_outcome || []">
+                                                            <div>{{ eo.description }}</div>
+                                                            <hr>
+                                                        </div>
+                                                    </template>
                                                 </span>
 
                                             </td>
@@ -652,8 +654,8 @@
                                             </td>
                                         </tr>
                                         <!-- ACTIVITIES **************************************************************************************************** -->
-                                        <template v-if="dat.activity && paps.is_strategy_based==0" v-for="(act, subIndex) in dat.activity" :key="subIndex" >
-                                            <tr  v-if="act.is_active==='1'" style="height: 100%">
+                                        <template v-for="(act, subIndex) in dat.activity" :key="subIndex" >
+                                            <tr v-if="dat.activity && paps.is_strategy_based==0 && act.is_active==='1'" style="height: 100%">
                                                 <!-- SEQUENCE NUMBER -->
                                                 <td>
                                                     <input
@@ -818,7 +820,7 @@
                                                         <!-- IF THE ACTIVITY HAS NO OUTCOMES OR OUTPUTS -->
                                                         <table class="m-0" style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;"
                                                         v-else>
-                                                            <!-- <template > -->
+                                                            <tbody >
                                                                 <tr >
                                                                     <td >
 
@@ -879,7 +881,7 @@
 
                                                                     </td>
                                                                 </tr>
-                                                            <!-- </template> -->
+                                                            </tbody>
                                                         </table>
                                                     </div>
 
@@ -1188,207 +1190,210 @@
                                         </template>
                                     </template>
                                     <!-- TOTALS*********************************************************************************** -->
+                                    <!-- <template> -->
                                     <tr>
-                                            <td></td>
-                                            <td colspan="5">TOTAL</td>
-                                            <!-- PS TOTAL -->
-                                            <td :class="{
-                                                'text-danger': has_comment('Implementation Plan',
+                                        <td></td>
+                                        <td colspan="5">TOTAL</td>
+                                        <!-- PS TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_ps,2,true),
+                                            format_number_conv(v_imp_ps,2,true),
+                                            'imp_ps',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_ps'">
+                                            <!-- {{ format_number_conv(v_imp_ps,2,true) }} -->
+                                            <!-- {{ paps.id+'_revision_plans_imp_ps' }} -->
+                                            ₱ {{ totalImplementationPS.toLocaleString() }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
                                                 format_number_conv(v_imp_ps,2,true),
                                                 format_number_conv(v_imp_ps,2,true),
                                                 'imp_ps',
                                                 'revision_plans',
                                                 paps,
-                                                paps.comments)
-                                            }"
-                                            :id="paps.id+'_revision_plans_imp_ps'">
-                                                <!-- {{ format_number_conv(v_imp_ps,2,true) }} -->
-                                                <!-- {{ paps.id+'_revision_plans_imp_ps' }} -->
-                                                ₱ {{ totalImplementationPS.toLocaleString() }}
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan',
+                                                paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_ps,2,true),
+                                                    format_number_conv(v_imp_ps,2,true),
+                                                    'imp_ps',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
                                                     format_number_conv(v_imp_ps,2,true),
                                                     format_number_conv(v_imp_ps,2,true),
                                                     'imp_ps',
                                                     'revision_plans',
                                                     paps,
                                                     paps.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan',
-                                                        format_number_conv(v_imp_ps,2,true),
-                                                        format_number_conv(v_imp_ps,2,true),
-                                                        'imp_ps',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan',
-                                                        format_number_conv(v_imp_ps,2,true),
-                                                        format_number_conv(v_imp_ps,2,true),
-                                                        'imp_ps',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)">*
-                                                </button>
-                                            </td>
-                                            <!-- MOOE TOTAL -->
-                                            <td :class="{
+                                            </button>
+                                        </td>
+                                        <!-- MOOE TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_mooe,2,true),
+                                            format_number_conv(v_imp_mooe,2,true),
+                                            'imp_mooe',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_mooe'"
+                                        >
+                                        <!-- {{ format_number_conv(v_imp_mooe,2,true) }} -->
+                                        ₱ {{ totalImplementationMOOE.toLocaleString() }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    'imp_mooe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    'imp_mooe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    format_number_conv(v_imp_mooe,2,true),
+                                                    'imp_mooe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- FE TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_fe,2,true),
+                                            format_number_conv(v_imp_fe,2,true),
+                                            'imp_fe',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_fe'"
+                                        >
+                                        <!-- {{ format_number_conv(v_imp_fe,2,true) }} -->
+                                        ₱ {{ totalImplementationFE.toLocaleString() }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    'imp_fe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    'imp_fe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    format_number_conv(v_imp_fe,2,true),
+                                                    'imp_fe',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <!-- CO TOTAL -->
+                                        <td :class="{
+                                            'text-danger': has_comment('Implementation Plan',
+                                            format_number_conv(v_imp_co,2,true),
+                                            format_number_conv(v_imp_co,2,true),
+                                            'imp_co',
+                                            'revision_plans',
+                                            paps,
+                                            paps.comments)
+                                        }"
+                                        :id="paps.id+'_revision_plans_imp_fe'"
+                                        >
+                                        <!-- {{ format_number_conv(v_imp_co,2,true)}} -->
+                                        ₱ {{ totalImplementationCO.toLocaleString() }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    'imp_co',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    'imp_co',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    format_number_conv(v_imp_co,2,true),
+                                                    'imp_co',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <td class="text-end"
+                                            :class="{
                                                 'text-danger': has_comment('Implementation Plan',
-                                                format_number_conv(v_imp_mooe,2,true),
-                                                format_number_conv(v_imp_mooe,2,true),
-                                                'imp_mooe',
+                                                format_number_conv(imp_amount,2,true),
+                                                format_number_conv(imp_amount,2,true),
+                                                'total_imp_amount',
                                                 'revision_plans',
                                                 paps,
                                                 paps.comments)
                                             }"
-                                            :id="paps.id+'_revision_plans_imp_mooe'"
-                                            >
-                                            <!-- {{ format_number_conv(v_imp_mooe,2,true) }} -->
-                                            ₱ {{ totalImplementationMOOE.toLocaleString() }}
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan',
-                                                        format_number_conv(v_imp_mooe,2,true),
-                                                        format_number_conv(v_imp_mooe,2,true),
-                                                        'imp_mooe',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan',
-                                                        format_number_conv(v_imp_mooe,2,true),
-                                                        format_number_conv(v_imp_mooe,2,true),
-                                                        'imp_mooe',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan',
-                                                        format_number_conv(v_imp_mooe,2,true),
-                                                        format_number_conv(v_imp_mooe,2,true),
-                                                        'imp_mooe',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)">*
-                                                </button>
-                                            </td>
-                                            <!-- FE TOTAL -->
-                                            <td :class="{
-                                                'text-danger': has_comment('Implementation Plan',
-                                                format_number_conv(v_imp_fe,2,true),
-                                                format_number_conv(v_imp_fe,2,true),
-                                                'imp_fe',
-                                                'revision_plans',
-                                                paps,
-                                                paps.comments)
-                                            }"
-                                            :id="paps.id+'_revision_plans_imp_fe'"
-                                            >
-                                            <!-- {{ format_number_conv(v_imp_fe,2,true) }} -->
-                                            ₱ {{ totalImplementationFE.toLocaleString() }}
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan',
-                                                        format_number_conv(v_imp_fe,2,true),
-                                                        format_number_conv(v_imp_fe,2,true),
-                                                        'imp_fe',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan',
-                                                        format_number_conv(v_imp_fe,2,true),
-                                                        format_number_conv(v_imp_fe,2,true),
-                                                        'imp_fe',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan',
-                                                        format_number_conv(v_imp_fe,2,true),
-                                                        format_number_conv(v_imp_fe,2,true),
-                                                        'imp_fe',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)">*
-                                                </button>
-                                            </td>
-                                            <!-- CO TOTAL -->
-                                            <td :class="{
-                                                'text-danger': has_comment('Implementation Plan',
-                                                format_number_conv(v_imp_co,2,true),
-                                                format_number_conv(v_imp_co,2,true),
-                                                'imp_co',
-                                                'revision_plans',
-                                                paps,
-                                                paps.comments)
-                                            }"
-                                            :id="paps.id+'_revision_plans_imp_fe'"
-                                            >
-                                            <!-- {{ format_number_conv(v_imp_co,2,true)}} -->
-                                            ₱ {{ totalImplementationCO.toLocaleString() }}
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan',
-                                                        format_number_conv(v_imp_co,2,true),
-                                                        format_number_conv(v_imp_co,2,true),
-                                                        'imp_co',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan',
-                                                        format_number_conv(v_imp_co,2,true),
-                                                        format_number_conv(v_imp_co,2,true),
-                                                        'imp_co',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan',
-                                                        format_number_conv(v_imp_co,2,true),
-                                                        format_number_conv(v_imp_co,2,true),
-                                                        'imp_co',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)">*
-                                                </button>
-                                            </td>
-                                            <td class="text-end"
-                                                :class="{
-                                                    'text-danger': has_comment('Implementation Plan',
+                                        >
+                                        <!-- {{ format_number_conv(imp_amount,2,true) }} -->
+                                        ₱ {{ totalImplementationAll.toLocaleString() }}
+                                            <button v-if="can_view_comment()" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
                                                     format_number_conv(imp_amount,2,true),
                                                     format_number_conv(imp_amount,2,true),
                                                     'total_imp_amount',
                                                     'revision_plans',
                                                     paps,
-                                                    paps.comments)
-                                                }"
-                                            >
-                                            <!-- {{ format_number_conv(imp_amount,2,true) }} -->
-                                            ₱ {{ totalImplementationAll.toLocaleString() }}
-                                                <button v-if="can_view_comment()" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan',
-                                                        format_number_conv(imp_amount,2,true),
-                                                        format_number_conv(imp_amount,2,true),
-                                                        'total_imp_amount',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)">*
-                                                </button>
-                                                <button v-if="has_comment('Implementation Plan',
-                                                        format_number_conv(imp_amount,2,true),
-                                                        format_number_conv(imp_amount,2,true),
-                                                        'total_imp_amount',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)" class="superscript-btn"
-                                                    @click="handleClick('Implementation Plan',
-                                                        format_number_conv(imp_amount,2,true),
-                                                        format_number_conv(imp_amount,2,true),
-                                                        'total_imp_amount',
-                                                        'revision_plans',
-                                                        paps,
-                                                        paps.comments)">*
-                                                </button>
-                                            </td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                                    paps.comments)">*
+                                            </button>
+                                            <button v-if="has_comment('Implementation Plan',
+                                                    format_number_conv(imp_amount,2,true),
+                                                    format_number_conv(imp_amount,2,true),
+                                                    'total_imp_amount',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)" class="superscript-btn"
+                                                @click="handleClick('Implementation Plan',
+                                                    format_number_conv(imp_amount,2,true),
+                                                    format_number_conv(imp_amount,2,true),
+                                                    'total_imp_amount',
+                                                    'revision_plans',
+                                                    paps,
+                                                    paps.comments)">*
+                                            </button>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
+                                    <!-- </template> -->
+
                                 </tbody>
                             </table>
                         </div>
@@ -1645,12 +1650,14 @@
                                 </td>
                                 <td colspan="3"></td>
                             </tr> -->
-                            <tr>
-                                    <td colspan="4"><h4>TOTAL</h4></td>
-                                    <td v-if="source==='sip'"></td>
-                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>
-                                    <td colspan="3"></td>
-                            </tr>
+                            <tfoot>
+                                <tr>
+                                        <td colspan="4"><h4>TOTAL</h4></td>
+                                        <td v-if="source==='sip'"></td>
+                                        <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                        <td colspan="3"></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                     <!--VI. IMPLEMENTING TEAM************************************************** -->
@@ -2482,7 +2489,7 @@
 
         <button @click="addStrategy" class="btn btn-primary mt-2">Add Strategy</button>
         <button @click="saveStrategies" class="btn btn-success mt-2">Save</button>
-        {{strategies}}
+        <!-- {{strategies}} -->
     </StrategyModal>
     <ActivityModal v-if="ActivityModalVisible" @close-modal-event="closeActivityModal" title="ACTIVITIES MODAL">
 
@@ -2818,11 +2825,13 @@
     </SignatoryModal>
     <ExpectedOutputModal v-if="ExpectedOutputModalVisible" @close-modal-event="hideExpectedOutputModal" title="EXPECTED OUTPUTS">
         <!-- <h3><p><b>Activity: </b><u>{{activity_description_current}}</u></p></h3> -->
-        <table>
+        <table style="border: none !important; border-collapse: collapse !important;">
+            <tbody>
             <tr>
-                <td><b>Activity: </b></td>
-                <td><u>{{activity_description_current}}</u></td>
+                <td style="border: none !important;"><b>Activity: </b></td>
+                <td style="border: none !important;"><u>{{activity_description_current}}</u></td>
             </tr>
+            </tbody>
         </table>
         <h4>Expected Outputs</h4>
         <!-- <p><b>Parent Activity: </b><u>{{activity_description_current}}</u></p> -->
@@ -2871,7 +2880,7 @@
         </div>
         <table class="table table-bordered">
 
-            <tr>
+            <!-- <tr> -->
                 <thead>
                     <tr class="table table-secondary text-center align-middle">
                         <th rowspan="3">Description</th>
@@ -2955,7 +2964,7 @@
                         </td>
                     </tr>
                 </tbody>
-            </tr>
+            <!-- </tr> -->
         </table>
     </ExpectedOutputModal>
     <ExpectedOutcomeModal v-if="ExpectedOutcomeModalVisible" @close-modal-event="hideExpectedOutcomeModal" title="EXPECTED OUTCOMES">
@@ -2986,34 +2995,34 @@
             <button @click="saveExpectedOutcomes" class="btn btn-success" v-if="expected_outcomes_new.length > 0">Save All</button>
         </div>
         <table class="table table-bordered w-100" style="width: 100%;">
-            <tr>
-                <thead>
-                    <tr class="table thead-dark">
-                        <th rowspan="2">Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="exp in expected_outcomes_current">
-                        <td>
-                            <textarea
-                                class="form-control transparent-bg "
-                                v-model="exp.description"
-                                type="text"
-                                @input="setUnsaved(true)"
-                                @change="updateRevisionPlans('expected_revised_outcomes', 'description', exp.id, exp.description)">
+            <!-- <tr> -->
+            <thead>
+                <tr class="table thead-dark">
+                    <th rowspan="2">Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="exp in expected_outcomes_current">
+                    <td>
+                        <textarea
+                            class="form-control transparent-bg "
+                            v-model="exp.description"
+                            type="text"
+                            @input="setUnsaved(true)"
+                            @change="updateRevisionPlans('expected_revised_outcomes', 'description', exp.id, exp.description)">
 
-                            </textarea>
-                        </td>
-                        <td>
-                            <button class="btn btn-danger btn-sm text-white"
-                                @click="deleteExpectedOutcome(exp.id, 'expected_revised_outcomes', exp.description, index)">
-                                🗑 Delete
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </tr>
+                        </textarea>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm text-white"
+                            @click="deleteExpectedOutcome(exp.id, 'expected_revised_outcomes', exp.description, index)">
+                            🗑 Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <!-- </tr> -->
         </table>
     </ExpectedOutcomeModal>
 
@@ -3848,7 +3857,9 @@ export default {
             //alert(this.idpaps);
             let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
               if (confirm(text) == true) {
-                this.$inertia.delete("/revision/streamlined/" + id+"/"+table);
+                this.$inertia.delete("/revision/streamlined/" + id+"/"+table, {
+                    preserveScroll: true
+                });
             }
 
         },
@@ -3858,7 +3869,9 @@ export default {
             //alert(this.idpaps);
             let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
               if (confirm(text) == true) {
-                this.$inertia.delete("/revision/streamlined/" + id+"/"+table+"/"+project_id);
+                this.$inertia.delete("/revision/streamlined/" + id+"/"+table+"/"+project_id, {
+                    preserveScroll: true
+                });
             }
 
         },
@@ -4019,14 +4032,23 @@ export default {
                 alert("Please fill out all Description and Year Period fields before saving.");
                 return;
             }
-
+            const scrollPosition = window.scrollY;
+            sessionStorage.setItem('scrollPosition', scrollPosition);
             // Proceed to save (e.g., emit event or call API)
             axios.post('/implementation-workplan/strategies', {
                 strategies: this.strategies,
                 paps_id: this.paps_specific.id,
+                project_id: this.editData.id
+            },
+            {
+                preserveScroll: true,
+                preserveState: true,
             })
             .then(response => {
                 console.log('Saved successfully:', response.data);
+                // ✅ Save scroll position
+                // sessionStorage.setItem('scrollPosition', window.scrollY);
+
                 window.location.reload();
                 // Optionally clear the strategies array or show a success message
             })
@@ -4083,6 +4105,11 @@ export default {
                     {
                         activities: this.activities,
                         strategy_id: this.strategy_id
+                    },
+
+                    {
+                        preserveScroll: true,
+                        preserveState: true,
                     }
                 ).then((response=>{
                     window.location.reload()
@@ -4381,7 +4408,10 @@ export default {
         },
         hideExpectedOutputModal(){
             this.ExpectedOutputModalVisible=false;
-            window.location.reload()
+            window.location.reload({
+                preserveScroll: true,
+                preserveState: true,
+            });
         },
         addExpectedOutput() {
             this.expected_outputs_new.push({
@@ -4426,7 +4456,11 @@ export default {
             try {
                 const response = await axios.post('/revision/streamlined/expected/revised/outputs', {
                     expected_outputs: this.expected_outputs_new
-                });
+                },
+            {
+                preserveScroll: true,
+                preserveState: true,
+            });
                 alert('Saved successfully!');
                  this.expected_outputs_current.push(...this.expected_outputs_new);
 

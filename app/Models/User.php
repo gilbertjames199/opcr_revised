@@ -17,6 +17,10 @@ use App\Models\Permission;
 //for email verification
 use Illuminate\Auth\Events\Registered;
 //, MustVerifyEmail
+
+/**
+ * @method bool can(string $ability, mixed $arguments = [])
+ */
 class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
