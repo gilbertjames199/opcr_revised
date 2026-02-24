@@ -3968,7 +3968,11 @@ class RevisionPlanController extends Controller
 
             // Optional but recommended: strip unsupported tags
             $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
+            $rationale = preg_replace('/class="ql-align-justify"/', '', $rationale);
 
+            $rationale = preg_replace('/align="justify"/', '', $rationale);
+
+            $rationale = preg_replace('/style="text-align:\s*justify;?"/', '', $rationale);
             $date_start = Carbon::parse($item->date_start)->format('F Y');
             $date_end = Carbon::parse($item->date_end)->format('F Y');
             $tot = intval($item->beneficiary_male)+intval($item->beneficiary_female);
@@ -4005,7 +4009,8 @@ class RevisionPlanController extends Controller
                 'hgdg_score' => $tot_rounded,
                 'hgdg_percent' => $item->hgdg_percent,
                 // 'rationale' => '<p align="justify">' . e($item->rationale) . '</p>',
-                'rationale' => '<p style="text-align: justify;">' . $rationale . '</p>',
+                // 'rationale' => '<p style="text-align: justify;">' . $rationale . '</p>',
+                'rationale' => $rationale,
                 'objective' => '<p style="text-align: justify;">' .trim($item->objective). '</p>',
                 'beneficiaries' => $item->beneficiaries,
                 'implementing_team' => $item->implementing_team,
