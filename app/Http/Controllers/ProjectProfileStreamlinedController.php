@@ -529,6 +529,7 @@ class ProjectProfileStreamlinedController extends Controller
         }])
             ->select('id', 'revision_plan_id', 'particulars', 'account_code', 'amount', 'proposed_budget', 'category', 'category_gad', 'source', 'sip_number')
             ->where('revision_plan_id', $id)
+            ->orderBy('account_code')
             ->orderBy('category') // optional: keep some order
             ->orderBy('category_gad')
             ->get();

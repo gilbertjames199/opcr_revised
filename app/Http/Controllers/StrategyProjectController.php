@@ -42,6 +42,7 @@ class StrategyProjectController extends Controller
         $scope = $revision_plan->scope;
         // dd($scope);
         if ($scope == 'GAS') {
+            // return redirect('/revision/streamlined/create/0?source=direct&goto="workplan"&idrevplan=' . $idrevplan);
             $data = Strategy::with([
                 'strategyProject' => function ($query) use ($request) {
                     $query->where('project_id', $request->idrevplan);
@@ -55,7 +56,8 @@ class StrategyProjectController extends Controller
             ])
                 // ->where('idpaps', $revision_plan->idpaps)
                 ->whereHas('strategyProject', function ($query) use ($request) {
-                    $query->where('project_id', $request->idrevplan);
+                    $query->where('project_id', $request->idrevplan)
+                    ;
                 })
                 ->get()
                 ->map(function ($item) {
@@ -228,6 +230,7 @@ class StrategyProjectController extends Controller
                         // "expected_output" => $item->expected_output,
                     ];
                 });
+            // dd($data);
                 // dd($data, $this->getData($request, $revision_plan, $idrevplan));
             if(count($data)<1){
                 $data = $this->getData($request, $revision_plan, $idrevplan);

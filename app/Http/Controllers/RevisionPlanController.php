@@ -1561,6 +1561,7 @@ class RevisionPlanController extends Controller
         }])
             ->select('id', 'revision_plan_id', 'particulars', 'account_code', 'amount', 'proposed_budget', 'category', 'category_gad', 'source')
             ->where('revision_plan_id', $id)
+            ->orderBy('account_code') // optional: keep some order
             ->orderBy('category') // optional: keep some order
             ->orderBy('category_gad')
             ->get();
@@ -4925,7 +4926,7 @@ class RevisionPlanController extends Controller
         ];
 
         // Fetch all budget requirements
-        $items = BudgetRequirement::where('revision_plan_id', $request->revision_plan_id)->orderBy('category')->get();
+        $items = BudgetRequirement::where('revision_plan_id', $request->revision_plan_id)->orderBy('account_code')->orderBy('category')->get();
         // dd($items);
         // Group by category
         $grouped = [];
