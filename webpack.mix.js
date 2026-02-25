@@ -22,5 +22,9 @@ mix.js('resources/js/app.js', 'public/js')
         }
     })
     .version();
-    
-      
+
+// mix.webpackConfig({
+//     stats: {
+//         children: true
+//     }
+// });

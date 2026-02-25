@@ -1642,7 +1642,617 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
     }
 
+    //PRINT ACCOMPLISHMENTS
+    public function print_accomplishment_dual_score_system(Request $request)
+    {
 
+        $opcr_id = $request->opcr_id;
+        $FFUNCCOD = $request->FFUNCCOD;
+        //REVISION PLAN ID
+
+        $mooe = "0.00";
+        $ps = "0.00";
+        $empl_id = "";
+        //Department Head
+        $dept_head = "";
+        $suff = "";
+        $post = "";
+        // Assistant PG Head
+        $assistant_pg_head = "";
+        $assistant_pg_head2 = "";
+        $assistant_pg_head3 = "";
+
+        if ($FFUNCCOD) {
+            $office_id = FFUNCCOD::where('FFUNCCOD', $FFUNCCOD)->first()->department_code;
+            $empl_id = Office::where('id', $office_id)->first()->empl_id;
+            $employee = UserEmployees::where('empl_id', $empl_id)->first();
+            $dept_head = $employee->first_name . ' ' . $employee->middle_name[0] . '. ' .
+                $employee->last_name;
+            $suff = $employee->suffix_name;
+
+            if ($suff) {
+                $dept_head = $dept_head . ', ' . $suff;
+            }
+            $post = $employee->postfix_name;
+            if ($post) {
+                $dept_head = $dept_head . ', ' . $post;
+            }
+        }
+        //Get OPCR Date
+        $opcr_date = "";
+        $dateStart = "";
+        $dateEnd = "";
+        $start = "";
+        $end = "";
+
+        $ap_head_2 = [];
+        $ap_head_3 = [];
+        $my_opcr = "";
+        if ($opcr_id) {
+            $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+            // dd($opcr_id);
+            $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+            $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+            $start = $dateStart->format('F');
+            $end = $dateEnd->format('F Y');
+            $opcr_date = $start . " to " . $end;
+            $opcr_date = Str::upper($opcr_date);
+            if ($my_opcr) {
+                $ap_head = UserEmployees::where('department_code', $my_opcr->department_code)
+                    ->where('salary_grade', '24')
+                    ->where('active_status', 'ACTIVE')
+                    ->get();
+                // dd($opcr_id,$my_opcr,$ap_head);
+                if ($my_opcr->assistant_pg_head) {
+                    // ASSISTANT PG HEAD
+                    $assistant_pg_head = $my_opcr->assistant_pg_head;
+                } else {
+                    // ASSISTANT PG HEAD
+                    $ap_head_m = UserEmployees::where('department_code', $office_id)
+                        ->where('salary_grade', '24')
+                        ->get();
+                    // dd($ap_head_m);
+                    if (count($ap_head_m) > 0) {
+                        $ap_head = $ap_head_m[0];
+                        $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
+                            $ap_head->last_name;
+                        $ap_suffix = $ap_head->suffix_name;
+                        $ap_post = $ap_head->postfix_name;
+                        if ($ap_suffix) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_suffix;
+                        }
+                        if ($ap_post) {
+                            $assistant_pg_head = $assistant_pg_head . ', ' . $ap_post;
+                        }
+
+                        if ($my_opcr->department_code == '17' || $my_opcr->department_code == '11') {
+                            $ap_head_2 = $ap_head_m[1];
+                            $assistant_pg_head2 = $ap_head_2->first_name . ' ' . $ap_head_2->middle_name[0] . '. ' .
+                                $ap_head_2->last_name;
+                            $ap2_suffix = $ap_head_2->suffix_name;
+                            $ap2_post = $ap_head_2->postfix_name;
+                            if ($ap2_suffix) {
+                                $assistant_pg_head2 = $assistant_pg_head2 . ', ' . $ap2_suffix;
+                            }
+                            if ($ap2_post) {
+                                $assistant_pg_head2 = $assistant_pg_head2 . ', ' . $ap2_post;
+                            }
+                        }
+                        if ($my_opcr->department_code == '17') {
+                            $ap_head_3 = $ap_head_m[2];
+                            $assistant_pg_head3 = $ap_head_3->first_name . ' ' . $ap_head_3->middle_name[0] . '. ' .
+                                $ap_head_3->last_name;
+                            $ap3_suffix = $ap_head_3->suffix_name;
+                            $ap3_post = $ap_head_3->postfix_name;
+                            if ($ap3_suffix) {
+                                $assistant_pg_head3 = $assistant_pg_head3 . ', ' . $ap3_suffix;
+                            }
+                            if ($ap3_post) {
+                                $assistant_pg_head3 = $assistant_pg_head3 . ', ' . $ap3_post;
+                            }
+                        }
+                    }
+                }
+
+                if ($my_opcr->assistant_pg_head_2) {
+                    // ASSISTANT PG HEAD 2
+                    $assistant_pg_head2 = $my_opcr->assistant_pg_head_2;
+                }
+                if ($my_opcr->assistant_pg_head_3) {
+                    // ASSISTANT PG HEAD 3
+                    $assistant_pg_head3 = $my_opcr->assistant_pg_head_3;
+                }
+            }
+        }
+        //Carbon Date
+        $date_now = Carbon::now()->format('F d, Y');
+
+        $total = number_format($request->total, 2);
+        $ave = number_format($request->average, 2);
+        $pmt_chair = "Ivan Kleb N. Ulgasan, CESE";
+
+        $approver = 'Engr. Raul G. Mabanglo';
+        $pos = 'Governor';
+        $isPA1 = $this->isPA($opcr_date, 'PA 1');
+        $average = round(
+            OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)
+                ->whereHas('opcrTarget', function ($query) {
+                    $query->where('is_included', '1');
+                })
+                ->get()
+                ->map(function ($item) {
+                    $qVals = collect([$item->q1, $item->q2, $item->q3])->filter(fn($v) => $v > 0);
+                    $eVals = collect([$item->e1, $item->e2, $item->e3])->filter(fn($v) => $v > 0);
+                    $tVals = collect([$item->t1, $item->t2, $item->t3])->filter(fn($v) => $v > 0);
+
+                    $qAve = $qVals->count() ? $qVals->avg() : null;
+                    $eAve = $eVals->count() ? $eVals->avg() : null;
+                    $tAve = $tVals->count() ? $tVals->avg() : null;
+
+                    $finalVals = collect([$qAve, $eAve, $tAve])->filter(fn($v) => $v !== null);
+
+                    return $finalVals->count()
+                        ? round($finalVals->avg(), 2)
+                        : null;
+                })
+                ->filter()
+                ->avg(),
+            2
+        );
+        // $average = $avet->pluck("average");
+        // $average = $plucked_average->avg();
+
+        // ->selectRaw("
+        //     ROUND(
+        //         AVG(
+        //             (COALESCE(rating_q, 0) + COALESCE(rating_e, 0) + COALESCE(rating_t, 0)) /
+        //             NULLIF(
+        //                 (rating_q IS NOT NULL) +
+        //                 (rating_e IS NOT NULL) +
+        //                 (rating_t IS NOT NULL),
+        //                 0
+        //             )
+        //         ),
+        //         2
+        //     ) AS average_rating
+        // ")
+        // ->value('average_rating');
+        // dd("average",$average);
+        $data = $this->model->select(
+            'office_performance_commitment_ratings.id',
+            'office_performance_commitment_ratings.success_indicator_id',
+            'office_performance_commitment_ratings.accomplishments',
+            'office_performance_commitment_ratings.rating_q',
+            'office_performance_commitment_ratings.rating_e',
+            'office_performance_commitment_ratings.rating_t',
+            'office_performance_commitment_ratings.q1',
+            'office_performance_commitment_ratings.q2',
+            'office_performance_commitment_ratings.q3',
+            'office_performance_commitment_ratings.e1',
+            'office_performance_commitment_ratings.e2',
+            'office_performance_commitment_ratings.e3',
+            'office_performance_commitment_ratings.t1',
+            'office_performance_commitment_ratings.e1',
+            'office_performance_commitment_ratings.remarks',
+            'office_performance_commitment_ratings.FFUNCCOD',
+            'office_performance_commitment_ratings.opcr_id',
+            'office_performance_commitment_ratings.id_opcr_target',
+            'office_performance_commitment_ratings.id_paps',
+            'SU.success_indicator',
+            // 'off.office_accountable',
+            'PAPS.paps_desc',
+            'mfo.mfo_desc',
+            'mfo.created_at',
+            'opcr_targets.quantity',
+            'PAPS.id AS idpaps',
+            'mfo.from_excel',
+            'mfo.id AS mfo_idmfo',
+            'PAPS.idmfo AS paps_idmfo',
+            'opcr_targets.target_success_indicator AS target_success_indicator',
+            'opcr_targets.quantity_unit',
+            'os.performance_measure',
+            'os.efficiency1',
+            'os.efficiency2',
+            'os.efficiency3',
+            'os.timeliness',
+            'os.prescribed_period',
+            'os.office_accountable',
+
+        )
+            ->with([
+                'opcrtarget',
+                'opcrList',
+                'paps',
+                'paps.MFO',
+                'paps.opcr_stardard',
+                'paps.divisionOutputs',
+                'paps.divisionOutputs.dpcrTargets',
+                'paps.divisionOutputs.dpcrTargets.ipcr_Semestral',
+                'paps.divisionOutputs.dpcrTargets.monthlyTargets',
+            ])
+            ->leftjoin('success_indicators AS SU', 'SU.id', 'office_performance_commitment_ratings.success_indicator_id')
+            ->leftjoin('program_and_projects AS PAPS', 'PAPS.id', 'office_performance_commitment_ratings.id_paps')
+            ->leftjoin('opcr_standards AS os', 'os.idpaps', 'PAPS.id')
+            ->leftjoin('office_accountables AS off', 'off.idpaps', 'PAPS.id')
+            ->join('major_final_outputs AS mfo', 'mfo.id', 'PAPS.idmfo')
+            // ->join('opcr_targets', 'opcr_targets.idpaps', 'PAPS.id')
+            ->leftjoin('opcr_targets', 'opcr_targets.id', 'office_performance_commitment_ratings.id_opcr_target')
+            ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
+            ->where('opcr_targets.is_included', '1')
+            ->whereNull('mfo.from_excel')
+            ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
+            ->orderBy('mfo.id', 'asc')
+            ->orderBy('PAPS.id', 'asc')
+            ->groupBy('office_performance_commitment_ratings.id')
+            ->get()
+            ->map(function ($item) use (
+                $opcr_id,
+                $FFUNCCOD,
+                $total,
+                $ave,
+                $dept_head,
+                $opcr_date,
+                $mooe,
+                $ps,
+                $date_now,
+                $approver,
+                $pos,
+                $isPA1,
+                $pmt_chair,
+                $average,
+                $assistant_pg_head,
+                $assistant_pg_head2,
+                $assistant_pg_head3,
+                $request,
+                $my_opcr
+            ) {
+                // dd($item);
+                // dd($my_opcr);
+                $efficiency1 = $item->efficiency1;
+                $efficiency2 = $item->efficiency2;
+                $efficiency3 = $item->efficiency3;
+                $performance_measure = $item->performance_measure;
+                $timeliness = $item->timeliness;
+
+
+                $prescribed_period = $item->prescribed_period;
+                $paps_desc = $item->paps_desc;
+                $office_accountable = $item->office_accountable;
+                if ($efficiency1 === 'No' && $timeliness === 'No') {
+                    $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency";
+                } elseif ($efficiency1 === 'Yes') {
+                    $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency within {$prescribed_period}";
+                } else {
+                    $su = "{$performance_measure} {$paps_desc} with a satisfactory rating for quality/effectiveness and efficiency on or before {$timeliness}";
+                }
+
+
+                $quality_rating_description = $this->qualityRatingDescription($item->rating_q);
+                $efficiency_rating_description = $this->efficiencyRatingDescription($item->rating_e);
+                $prescribed_period_description = "";
+
+                if ($item->rating_q == 2 || $item->rating_q == 1 || $item->rating_e == 2 || $item->rating_e == 1) {
+                    $prescribed_period_description = $this->prescribedPeriodRatingDescription_below2($item->e1);
+                } else {
+                    $prescribed_period_description = $this->prescribedPeriodDescription($item->e1);
+                }
+
+                $timeliness_description = "";
+                if ($item->rating_q == 2 || $item->rating_q == 1 || $item->rating_e == 2 || $item->rating_e == 1) {
+                    $timeliness_description = $this->timelinessRatingDescription_below2($item->rating_t);
+                } else {
+                    $timeliness_description = $this->timelinessDescription($item->rating_t);
+                }
+
+                // dd($item);
+                $Actual_Accomplishment = "";
+                if ($paps_desc) {
+                    if ($efficiency1 == "Yes") {
+                        $Actual_Accomplishment = $timeliness == "No" ? $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness " . $prescribed_period_description : $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness ";;
+                    } elseif ($efficiency1 == "No" && $timeliness != null && $timeliness != "No") {
+                        $Actual_Accomplishment = $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness " . $timeliness_description;
+                    } elseif ($efficiency1 == "No" && $timeliness == "No") {
+                        $Actual_Accomplishment = $performance_measure . " " . $paps_desc . " with " . $quality_rating_description . " rating in efficiency, " . $efficiency_rating_description . " rating in quality/effectiveness ";
+                    }
+                }
+
+                // dd($Actual_Accomplishment);
+                $approver = 'Engr. Raul G. Mabanglo';
+                // true
+                if ($isPA1) {
+                    $approver = 'Dorothy Montejo Gonzaga';
+                    $pmt_chair = 'Lewis Jake G. Caiman, CPA';
+                }
+                $pos = 'Governor';
+                if ($FFUNCCOD == '1021') {
+                    $approver = 'Dorothy Montejo Gonzaga';
+                    $pos = 'Vice Governor';
+                    if ($isPA1) {
+                        $approver = 'Jayvee Tyron L. Uy';
+                    }
+                }
+                if ($FFUNCCOD == '1016') {
+                    $approver = 'Dorothy Montejo Gonzaga';
+                    $pos = 'Vice Governor';
+                    if ($isPA1) {
+                        $approver = 'Jayvee Tyron L. Uy';
+                    }
+                }
+
+                // dd($isPA1);
+                // dd($item->opcrList);
+                // dd($item->id_opcr_target);
+                $rating_type = optional(optional($item)->opcrList)->rating_type ?? "0";
+                $monthly_ratings = [];
+                // QET -from Planning
+                $var_q_pl = 0;
+                $var_e_pl = 0;
+                $var_t_pl = 0;
+                $ave_qet_pl = 0;
+                $ave_pl = $average;
+
+                // QET From HR/DPCR Averaging
+                $var_q_dpcr = 0;
+                $var_e_dpcr = 0;
+                $var_t_dpcr = 0;
+                $ave_qet_dpcr = 0;
+                $ave_dpcr = $average;
+                // dd($item);
+                // dd($item, $monthly_ratings);
+                // if ($rating_type == "0") {
+
+                // FROM PLANNING**********************************************************************
+                $qValues = array_filter([
+                    $item['q1'] ?? 0,
+                    $item['q2'] ?? 0,
+                    $item['q3'] ?? 0
+                ], fn($v) => $v != 0);
+
+                $eValues = array_filter([
+                    $item['e1'] ?? 0,
+                    $item['e2'] ?? 0,
+                    $item['e3'] ?? 0
+                ], fn($v) => $v != 0);
+
+                $tValues = array_filter([
+                    $item['t1'] ?? 0
+                ], fn($v) => $v != 0);
+
+                // --- Compute averages, default to 0 if no non-zero values ---
+                $var_q_pl = count($qValues) > 0 ? round(array_sum($qValues) / count($qValues), 2) : 0;
+                $var_e_pl = count($eValues) > 0 ? round(array_sum($eValues) / count($eValues), 2) : 0;
+                $var_t_pl = count($tValues) > 0 ? round(array_sum($tValues) / count($tValues), 2) : 0;
+
+                $div = 3;
+
+                try {
+                    if (intval($var_q_pl) < 1) {
+                        $div = $div - 1;
+                    }
+                } catch (Exception $e) {
+                    $div = $div - 1;
+                }
+                try {
+                    if (intval($var_e_pl) < 1) {
+                        $div = $div - 1;
+                    }
+                } catch (Exception $e) {
+                    $div = $div - 1;
+                }
+                try {
+                    if (intval($var_t_pl) < 1) {
+                        $div = $div - 1;
+                    }
+                } catch (Exception $e) {
+                    $div = $div - 1;
+                }
+                $sum_pl = $var_q_pl + $var_e_pl + $var_t_pl;
+                $ave_qet_pl = 0;
+                if ($div > 0) {
+                    $ave_qet_pl = $sum_pl / $div;
+                    $ave_qet_pl = number_format(floatval($ave_qet_pl), 2);
+                }
+                $ave_pl = $average;
+                    // dd("0");
+                // } else {
+                    // dd("1");
+                    //
+                // FROM DPCR**********************************************************************
+                $monthly_ratings = calculateMonthlyAverages($item, [
+                    'q1',
+                    'q2',
+                    'q3',
+                    'e1',
+                    'e2',
+                    'e3',
+                    't1'
+                ]);
+
+                // dd()
+                // dd($item->id);
+                // if (intval($item->id) === 684) {
+                //     dd($monthly_ratings);
+                // } else {
+                //     // dd("wala")
+                // }
+                $qValues = array_filter([
+                    $monthly_ratings['q1'] ?? 0,
+                    $monthly_ratings['q2'] ?? 0,
+                    $monthly_ratings['q3'] ?? 0
+                ], fn($v) => $v != 0);
+
+                $eValues = array_filter([
+                    $monthly_ratings['e1'] ?? 0,
+                    $monthly_ratings['e2'] ?? 0,
+                    $monthly_ratings['e3'] ?? 0
+                ], fn($v) => $v != 0);
+
+                $tValues = array_filter([
+                    $monthly_ratings['t1'] ?? 0
+                ], fn($v) => $v != 0);
+
+                // --- Compute averages, default to 0 if no non-zero values ---
+                $var_q_dpcr = count($qValues) > 0 ? round(array_sum($qValues) / count($qValues), 2) : 0;
+                $var_e_dpcr = count($eValues) > 0 ? round(array_sum($eValues) / count($eValues), 2) : 0;
+                $var_t_dpcr = count($tValues) > 0 ? round(array_sum($tValues) / count($tValues), 2) : 0;
+
+                // --- Compute how many valid groups to divide by ---
+                $div = 3;
+
+                try {
+                    if (intval($var_q_dpcr) < 1) {
+                        $div--;
+                    }
+                } catch (Exception $e) {
+                    $div--;
+                }
+
+                try {
+                    if (intval($var_e_dpcr) < 1) {
+                        $div--;
+                    }
+                } catch (Exception $e) {
+                    $div--;
+                }
+
+                try {
+                    if (intval($var_t_dpcr) < 1) {
+                        $div--;
+                    }
+                } catch (Exception $e) {
+                    $div--;
+                }
+
+                // --- Compute overall QET average ---
+                $sum = $var_q_dpcr + $var_e_dpcr + $var_t_dpcr;
+                $ave_qet_dpcr = 0;
+
+                if ($div > 0) {
+                    $ave_qet_dpcr = $sum / $div;
+                    $ave_qet_dpcr = number_format(floatval($ave_qet_dpcr), 2);
+                }
+                $ave_dpcr = $request->average;
+                    // dd($item->id, $item, $monthly_ratings, $monthly_ratings['q1'], $var_q);
+                // }
+                $adj = "Outstanding";
+
+                if ($ave >= 4.51) {
+                    $adj = "Outstanding";
+                } else if ($ave >= 3.51) {
+                    $adj = "Very Satisfactory";
+                } else if ($ave >= 2.51) {
+                    $adj = "Satisfactory";
+                } else if ($ave >= 1.51) {
+                    $adj = "Unsatisfactory";
+                } else {
+                    $adj = "Poor";
+                }
+                // dd($ave);
+                // $quant = OpcrTarget::where()
+
+                // dd("average: " . $ave);
+                // dd($item->id);
+                if ($item->id = 684) {
+                    // dd($item);
+                }
+                return [
+                    "id" => $item->id,
+                    "success_indicator_id" => $item->success_indicator_id,
+                    "accomplishments" => $item->accomplishments,
+                    "rating_q_dpcr" => $var_q_dpcr,
+                    "rating_e_dpcr" => $var_e_dpcr,
+                    "rating_t_dpcr" => $var_t_dpcr,
+                    "ave_qet_dpcr" => $ave_qet_dpcr,
+                    "rating_q_pl" => $var_q_pl,
+                    "rating_e_pl" => $var_e_pl,
+                    "rating_t_pl" => $var_t_pl,
+                    "ave_qet_pl" => $ave_qet_pl,
+                    "remarks" => $item->remarks,
+                    "FFUNCCOD" => $item->FFUNCCOD,
+                    "idpaps" => $item->idpaps,
+                    "opcr_id" => $item->opcr_id,
+                    "success_indicator" => $item->success_indicator,
+                    "office_accountable" => $office_accountable,
+                    "paps_desc" => $item->paps_desc,
+                    "quantity" => $item->quantity . ' ' . $item->quantity_unit,
+                    // "quantity_unit" => $item->quantity_unit,
+                    "mfo_desc" => $item->mfo_desc,
+                    "created_at" => $item->created_at,
+                    "total" => $total,
+                    "ave" => $ave,
+                    "dept_head" => $dept_head,
+                    "assistant_pg_head" => $my_opcr ? ($my_opcr->assistant_pg_head ? $my_opcr->assistant_pg_head : $assistant_pg_head) : $assistant_pg_head,
+                    "assistant_pg_head2" => $assistant_pg_head2,
+                    "assistant_pg_head3" => $assistant_pg_head3,
+                    "opcr_date" => $opcr_date,
+                    "opcr_id" => $opcr_id,
+                    "mooe" => $mooe,
+                    "ps" => $ps,
+                    "FFUNCCOD" => $FFUNCCOD,
+                    "date_now" => $date_now,
+                    "approver" => $approver,
+                    "position" => $pos,
+                    "target_success_indicator" => $su,
+                    "adjectival" => $adj,
+                    "pmt_chair" => $pmt_chair,
+                    "overall_average" => $ave,
+                    "Actual_Accomplishment" => $Actual_Accomplishment,
+                    // "office_accountable" => $office_accountable
+                    // "from_excel" => $item->from_excel,
+                    // "mfo_idmfo" => $item->mfo_idmfo,
+                    // "paps_idmfo" => $item->paps_idmfo
+                    // "mfo"
+                    // "paps" => optional($item)->paps,
+                    // "id_paps" => $item->id_paps,
+                    // "monthly_ratings" => $monthly_ratings
+                ];
+            });
+        // dd(count($data));
+        // dd(
+        //     $data->pluck("paps"),
+        //     $data->pluck('id_paps'),
+        //     $data->pluck("rating_q"),
+        //     $data->pluck("rating_e"),
+        //     $data->pluck("rating_t"),
+        //     $data
+        // );
+        if ($data->isEmpty()) {
+            $data = collect([[
+                "id" => null,
+                "success_indicator_id" => 0,
+                "accomplishments" => null,
+                "rating_q" => null,
+                "rating_e" => null,
+                "rating_t" => null,
+                "remarks" => null,
+                "FFUNCCOD" => $FFUNCCOD,
+                "idpaps" => null,
+                "opcr_id" => $opcr_id,
+                "success_indicator" => null,
+                "office_accountable" => null,
+                "paps_desc" => " ",
+                "quantity" => null,
+                "mfo_desc" => " ",
+                "created_at" => null,
+                "total" => null,
+                "ave" => null,
+                "dept_head" => null,
+                "opcr_date" => $opcr_date,
+                "mooe" => null,
+                "ps" => null,
+                "date_now" => now()->format('F d, Y'), // or fixed "June 25, 2025"
+                "approver" => "Engr Raul G. Mabanglo",
+                "position" => "Governor",
+                "ave_qet" => null,
+                "target_success_indicator" => null,
+                "adjectival" => null
+            ]]);
+        }
+        return $data;
+        //********************************************** */
+
+
+    }
     private function qualityRatingDescription($score)
     {
         $rating = round($score);

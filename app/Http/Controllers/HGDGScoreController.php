@@ -22,6 +22,10 @@ class HGDGScoreController extends Controller
     {
 
         $revplan = RevisionPlan::find($idrevplan);
+        // dd($revplan);
+        if($revplan->checklist_id==null || $revplan->checklist_id==0){
+            return redirect()->back()->with('error', 'Cannot access HGDG Evaluation. No checklist assigned to this Revision Plan.');
+        }
         // dd($revplan->status);
         // dd($request->source);
         $allowedUsers = [
@@ -60,6 +64,7 @@ class HGDGScoreController extends Controller
 
         $hgdg_checklist = HGDG_Checklist::find($checklist_id);
         $hgdg_questions = $this->getResults($request, $checklist_id);
+        // dd($hgdg_questions, $hgdg_checklist, $checklist_id, $revplan);
         $nr = [];
         if ($count < 1) {
             $nr = $this->setValues($hgdg_questions);
@@ -109,7 +114,7 @@ class HGDGScoreController extends Controller
                     "question_number" => $question->question_number
                 ];
             });
-        //dd($scores);
+        // dd($scores);
         $idpaps = $revplan->idpaps;
         $idmfo = $revplan->idmfo;
         $scope = $revplan->scope;
