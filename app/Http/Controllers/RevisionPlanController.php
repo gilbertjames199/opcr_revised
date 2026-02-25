@@ -3978,7 +3978,7 @@ class RevisionPlanController extends Controller
             $rationale = preg_replace('/style="text-align:\s*justify;?"/', '', $rationale);
 
 
-            $$partnership = $item->partnership ? html_entity_decode($item->partnership, ENT_QUOTES | ENT_HTML5) : '';
+            $partnership = $item->partnership ? html_entity_decode($item->partnership, ENT_QUOTES | ENT_HTML5) : '';
             $partnership = strip_tags($$partnership, '<p><br><b><strong><i><em><u>');
             $partnership = preg_replace('/class="ql-align-justify"/', '', $partnership);
             $partnership = preg_replace('/align="justify"/', '', $partnership);
