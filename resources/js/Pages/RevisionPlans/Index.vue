@@ -357,6 +357,8 @@
                                         'Unknown'
                                         }}
                                     </span>
+                                    <p v-if="parseFloat(dat.status)>-1"><i>{{ dat.gad_status==1 ? 'GAD Approved' : 'GAD Not Yet Evaluated' }}</i></p>
+
                                 </td>
                                 <!-- VIEW -->
                                 <td>

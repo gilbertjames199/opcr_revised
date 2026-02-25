@@ -304,7 +304,8 @@ class RevisionPlanController extends Controller
                     'number_of_clones' => 0,
                     'return_request_status' => $item->return_request_status,
                     // 'year'=>$currentYear
-                    'year'=>$item->year_period
+                    'year'=>$item->year_period,
+                    'gad_status'=>$item->gad_status
                 ];
             });
         // dd("gas", $data);
@@ -454,7 +455,8 @@ class RevisionPlanController extends Controller
                     'imp_amount' => $imp_amount,
                     'status' => $item->status,
                     'number_of_clones' => $item->clonedVersions->count(),
-                    'year'=>$year
+                    'year'=>$year,
+                    'gad_status'=>$item->gad_status
                     // 'paps'=>$item->paps
                 ];
             });
@@ -614,7 +616,8 @@ class RevisionPlanController extends Controller
                     'status' => $item->status,
                     'number_of_clones' => $item->clonedVersions->count(),
                     'return_request_status' => $item->return_request_status,
-                    'year'=>$year
+                    'year'=>$year,
+                    'gad_status'=>$item->gad_status
                     // 'paps'=>$item->paps
                 ];
             });
