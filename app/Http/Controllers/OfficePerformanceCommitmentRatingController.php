@@ -2201,6 +2201,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "semester"=>$my_opcr ? $my_opcr->semester : null,
                     "year"=>$my_opcr ? $my_opcr->year : null,
                     "office_name"=>$my_opcr ? optional(optional($my_opcr)->office)->office : null,
+                    'rating_status' => $my_opcr ? $my_opcr->rating_status : null,
                     'total_ave_qet_dpcr'=>0,
                     'total_ave_qet_ppdo'=>0,
                     'average_non_zero'=>0,
@@ -2226,26 +2227,32 @@ class OfficePerformanceCommitmentRatingController extends Controller
             return (float) ($item['ave_qet_ppdo'] ?? 0);
         });
 
-        // 3) Average of ALL non-zero values (dpcr + ppdo combined)
-        $nonZeroValues = $collection->flatMap(function ($item) {
-            return [
-                (float) ($item['ave_qet_dpcr'] ?? 0),
-                (float) ($item['ave_qet_ppdo'] ?? 0),
-            ];
-        })->filter(function ($value) {
-            return $value != 0;
-        });
+        // 3) Average of non-zero ave_qet_dpcr
+        $ave_nonzero_dpcr = $collection
+            ->pluck('ave_qet_dpcr')                  // get the column
+            ->map(fn($v) => (float) $v)             // cast to float
+            ->filter(fn($v) => $v != 0);            // only non-zero
 
-        $average_non_zero = $nonZeroValues->count() > 0
-            ? $nonZeroValues->avg()
+        $average_nonzero_dpcr = $ave_nonzero_dpcr->count() ? round($ave_nonzero_dpcr->avg(), 2) : 0;
+
+        // 4) Average of non-zero ave_qet_ppdo
+        $ave_nonzero_ppdo = $collection
+            ->pluck('ave_qet_ppdo')
+            ->map(fn($v) => (float) $v)
+            ->filter(fn($v) => $v != 0);
+
+        $average_non_zero = $ave_nonzero_ppdo->count() > 0
+            ? round($ave_nonzero_ppdo->avg(), 2)
             : 0;
+
 
         // Optional: round to 2 decimals
         $total_ave_qet_dpcr = round($total_ave_qet_dpcr, 2);
         $total_ave_qet_ppdo = round($total_ave_qet_ppdo, 2);
+        $average_nonzero_dpcr   = round($average_nonzero_dpcr, 2);
         $average_non_zero   = round($average_non_zero, 2);
-
-        $data = $data->map(function ($row) {
+        // dd($total_ave_qet_dpcr, $total_ave_qet_ppdo, $average_nonzero_dpcr, $average_non_zero);
+        $data = $data->map(function ($row) use ($total_ave_qet_dpcr, $total_ave_qet_ppdo, $average_nonzero_dpcr, $average_non_zero) {
 
             $ave_qet_dpcr = (float) ($row['ave_qet_dpcr'] ?? 0);
             $ave_qet_ppdo = (float) ($row['ave_qet_ppdo'] ?? 0);
@@ -2254,10 +2261,11 @@ class OfficePerformanceCommitmentRatingController extends Controller
             $values = collect([$ave_qet_dpcr, $ave_qet_ppdo])->filter(fn($v) => $v != 0);
 
             // Add the 4 new fields
-            $row['total_ave_qet_dpcr'] = round($ave_qet_dpcr, 2);
-            $row['total_ave_qet_ppdo'] = round($ave_qet_ppdo, 2);
-            $row['average_non_zero']   = $values->count() ? round($values->avg(), 2) : 0;
-            $row['grand_total']        = round($ave_qet_dpcr + $ave_qet_ppdo, 2);
+            $row['total_ave_qet_dpcr'] = round($total_ave_qet_dpcr, 2);
+            $row['total_ave_qet_ppdo'] = round($total_ave_qet_ppdo, 2);
+            $row['average_nonzero_dpcr']   = round($average_nonzero_dpcr,2);
+            $row['average_nonzero_ppdo']   = round($average_non_zero,2);
+            // $row['grand_total']        = round($ave_qet_dpcr + $ave_qet_ppdo, 2);
 
             return $row;
         });
@@ -2304,6 +2312,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 "semester"=>$my_opcr ? $my_opcr->semester : null,
                 "year"=>$my_opcr ? $my_opcr->year : null,
                 "office_name"=>$my_opcr ? optional(optional($my_opcr)->office)->office : null,
+                'rating_status' => $my_opcr ? $my_opcr->rating_status : null,
                 'total_ave_qet_dpcr'=>0,
                 'total_ave_qet_ppdo'=>0,
                 'average_non_zero'=>0,
