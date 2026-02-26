@@ -1689,7 +1689,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $ap_head_3 = [];
         $my_opcr = "";
         if ($opcr_id) {
-            $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+            $my_opcr = OfficePerformanceCommitmentRatingList::with(['office'])->where('id', $opcr_id)->first();
             // dd($opcr_id);
             $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
             $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
@@ -1818,6 +1818,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // ")
         // ->value('average_rating');
         // dd("average",$average);
+        // dd($my_opcr);
         $data = $this->model->select(
             'office_performance_commitment_ratings.id',
             'office_performance_commitment_ratings.success_indicator_id',
@@ -2197,6 +2198,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "pmt_chair" => $pmt_chair,
                     "overall_average" => $ave,
                     "Actual_Accomplishment" => $Actual_Accomplishment,
+                    "semester"=>$my_opcr ? $my_opcr->semester : null,
+                    "year"=>$my_opcr ? $my_opcr->year : null,
+                    "office_name"=>$my_opcr ? optional(optional($my_opcr)->office)->office : null,
+                    'total_ave_qet_dpcr'=>0,
+                    'total_ave_qet_ppdo'=>0,
+                    'average_non_zero'=>0,
+                    'grand_total'=>0,
                     // "office_accountable" => $office_accountable
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
@@ -2207,7 +2215,54 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     // "monthly_ratings" => $monthly_ratings
                 ];
             });
+        $collection = collect($data); // if not yet a collection
+        // 1) Total of ave_qet_dpcr
+        $total_ave_qet_dpcr = $collection->sum(function ($item) {
+            return (float) ($item['ave_qet_dpcr'] ?? 0);
+        });
+
+        // 2) Total of ave_qet_ppdo
+        $total_ave_qet_ppdo = $collection->sum(function ($item) {
+            return (float) ($item['ave_qet_ppdo'] ?? 0);
+        });
+
+        // 3) Average of ALL non-zero values (dpcr + ppdo combined)
+        $nonZeroValues = $collection->flatMap(function ($item) {
+            return [
+                (float) ($item['ave_qet_dpcr'] ?? 0),
+                (float) ($item['ave_qet_ppdo'] ?? 0),
+            ];
+        })->filter(function ($value) {
+            return $value != 0;
+        });
+
+        $average_non_zero = $nonZeroValues->count() > 0
+            ? $nonZeroValues->avg()
+            : 0;
+
+        // Optional: round to 2 decimals
+        $total_ave_qet_dpcr = round($total_ave_qet_dpcr, 2);
+        $total_ave_qet_ppdo = round($total_ave_qet_ppdo, 2);
+        $average_non_zero   = round($average_non_zero, 2);
+
+        $data = $data->map(function ($row) {
+
+            $ave_qet_dpcr = (float) ($row['ave_qet_dpcr'] ?? 0);
+            $ave_qet_ppdo = (float) ($row['ave_qet_ppdo'] ?? 0);
+
+            // Only non-zero values for average
+            $values = collect([$ave_qet_dpcr, $ave_qet_ppdo])->filter(fn($v) => $v != 0);
+
+            // Add the 4 new fields
+            $row['total_ave_qet_dpcr'] = round($ave_qet_dpcr, 2);
+            $row['total_ave_qet_ppdo'] = round($ave_qet_ppdo, 2);
+            $row['average_non_zero']   = $values->count() ? round($values->avg(), 2) : 0;
+            $row['grand_total']        = round($ave_qet_dpcr + $ave_qet_ppdo, 2);
+
+            return $row;
+        });
         // dd(count($data));
+        // dd($data);
         // dd(
         //     $data->pluck("paps"),
         //     $data->pluck('id_paps'),
@@ -2245,7 +2300,14 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 "position" => "Governor",
                 "ave_qet" => null,
                 "target_success_indicator" => null,
-                "adjectival" => null
+                "adjectival" => null,
+                "semester"=>$my_opcr ? $my_opcr->semester : null,
+                "year"=>$my_opcr ? $my_opcr->year : null,
+                "office_name"=>$my_opcr ? optional(optional($my_opcr)->office)->office : null,
+                'total_ave_qet_dpcr'=>0,
+                'total_ave_qet_ppdo'=>0,
+                'average_non_zero'=>0,
+                'grand_total'=>0,
             ]]);
         }
         return $data;
