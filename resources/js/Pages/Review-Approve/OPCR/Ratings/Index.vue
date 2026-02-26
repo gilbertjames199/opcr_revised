@@ -73,6 +73,8 @@
                                                     @click="viewModal(dat.id, dat.rating_status, dat)">View</button>
                                             </li>
                                             <li>
+                                                <button class="dropdown-item"
+                                                    @click="viewPrintModal(dat.id, dat.office.FFUNCCOD)">Print</button>
                                                 <!-- <Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">
                                                 Delete</Link> -->
                                             </li>
@@ -786,6 +788,12 @@
                 Open File
             </a> -->
         </SideModal>
+        <PrintModal v-if="displayPrintModal" @close-modal-event="hidePrintModal" :title="`PRINTING`">
+            <div class="d-flex justify-content-center">
+                <!-- {{ my_link }} -->
+                <iframe :src="print_link" style="width:100%; height:400px" />
+            </div>
+        </PrintModal>
         <!--
         <Modal2 v-if="displayModal2" @close-modal-event="hideModal">
             <button @click="backTo()" class="btn btn-light">
@@ -815,6 +823,7 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/ModalDynamicTitle2";
 import Modal2 from "@/Shared/PrintModal";
+import PrintModal from "@/Shared/ModalDynamicTitle2";
 import SideModal from "@/Shared/PrintModal";
 import { Inertia } from '@inertiajs/inertia';
 
@@ -831,6 +840,7 @@ export default {
             displayModal: false,
             displayModal2: false,
             displaySideModal: false,
+            displayPrintModal: false,
             opcr_data: [],
             status_val: -3,
             opcr_current: [],
@@ -845,6 +855,7 @@ export default {
             show_all_not_clicked: false,
             currentRatingType: 0,
             modal_mode: 'Review',
+            print_link: ""
         }
     },
     mounted() {
@@ -868,10 +879,46 @@ export default {
         });
     },
     components: {
-        Pagination, Filtering, Modal, Modal2, SideModal,
+        Pagination, Filtering, Modal, Modal2, SideModal, PrintModal
     },
 
     methods: {
+        // START OF PRINTING
+        viewlink(opcr_id1,FFUNCCOD1) {
+            var tot = this.getTotalAverage();
+            var ave = this.getAverageAll();
+            // var linkt = "abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+
+            // https://paps.davaodeoro.gov.ph/jasperserver/flow.html??pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FOPCR_ForApproval_PA&standAlone=true&opcr_id=116&FFUNCCOD=8751-1&total=0&average=0&output=pdf
+            // var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Rating&standAlone=true&fbclid=IwAR1PZD2108LiuvPwxw4IoCBioYDFnY-NdpOVtDe7XKRWoKYcR5bANaX7x1M&standAlone=true&decorate=no&output=pdf';
+            // var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2Fopcr_rating_revised&standAlone=true&fbclid=IwAR1PZD2108LiuvPwxw4IoCBioYDFnY-NdpOVtDe7XKRWoKYcR5bANaX7x1M&standAlone=true&decorate=no&output=pdf';
+            var jasper_link = 'jasperserver/flow.html??pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FOPCR_ForApproval_PA&standAlone=true&output=pdf'
+            var params = '&opcr_id=' + opcr_id1 + '&FFUNCCOD=' + FFUNCCOD1 +
+                '&total=' + 0 + '&average=' + 0;
+            var linkl = linkt + jasper_ip + jasper_link + params;
+            this.report_link = linkl;
+            return linkl;
+        },
+        viewPrintModal(opcr_id, FFUNCCOD){
+            // this.status_val = status
+            // this.opcr_current = opcr
+            // var url = "/review-approve/ratings/" + opcr_id + "/view/opcr/rating/submission"
+            // axios.get(url, {
+            //     params: {
+            //         type: this.mode_1
+            //     }
+            // }).then((response) => {
+            //     this.opcr_data = response.data;
+            //     // alert(JSON.stringify(this.opcr_data))
+            // }).catch((error) => {
+            //     console.error(error);
+            // });
+            this.print_link=this.viewlink(opcr_id, FFUNCCOD)
+            this.displayPrintModal = true;
+        },
+        //END OF PRINTING
         updateMOVisVisible(mov_is_visible, index){
             this.opcr_data[index].mov_is_visible = !mov_is_visible
         },
