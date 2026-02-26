@@ -170,8 +170,8 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     can_submit: function can_submit(budget, imp_amount) {
       // var status_now="";
       // var showAmount ="";
-      var bdg = parseFloat(budget);
-      var imp = parseFloat(imp_amount);
+      var bdg = Number((parseFloat(budget) || 0).toFixed(2));
+      var imp = Number((parseFloat(imp_amount) || 0).toFixed(2));
       return bdg >= 1 && imp >= 1 && bdg === imp;
       // if(bdg>imp){
       //     return false;

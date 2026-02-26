@@ -784,6 +784,22 @@ function _readOnlyError(r) { throw new TypeError('"' + r + '" is read-only'); }
 
       // Otherwise, display quantity
       return true;
+    },
+    // ATTRIBUTED AMOUNT**********************************************************
+    getGadAttributedAmount: function getGadAttributedAmount(overallBudget, hgdg_score) {
+      var score = parseFloat(hgdg_score) || 0;
+      var budget = parseFloat(overallBudget) || 0;
+      if (score < 4) {
+        return budget * 0;
+      } else if (score < 8) {
+        return budget * 0.25;
+      } else if (score < 15) {
+        return budget * 0.50;
+      } else if (score < 20) {
+        return budget * 0.75;
+      } else {
+        return budget * 1.00;
+      }
     }
   }
 });
