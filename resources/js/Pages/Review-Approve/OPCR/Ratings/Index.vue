@@ -918,6 +918,9 @@ export default {
             this.print_link=this.viewlink(opcr_id, FFUNCCOD)
             this.displayPrintModal = true;
         },
+        hidePrintModal(){
+            this.displayPrintModal=false;
+        },
         //END OF PRINTING
         updateMOVisVisible(mov_is_visible, index){
             this.opcr_data[index].mov_is_visible = !mov_is_visible
