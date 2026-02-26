@@ -324,6 +324,8 @@
                                 <td>{{ dat.project_title }}
                                     <span style="color:red; font-weight: bold">
                                         {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
+
+                                        <!-- {{ dat.budget_sum }} --{{dat.imp_amount}} -- {{dat.id}} -->
                                     </span>
                                 </td>
                                 <!-- OFFICE -->
@@ -1032,8 +1034,8 @@ export default {
         amountStatus(budget, imp_amount){
             var status_now="";
             var showAmount ="";
-            var bdg = parseFloat(budget);
-            var imp = parseFloat(imp_amount);
+            var bdg = parseFloat(parseFloat(budget).toFixed(2));
+            var imp = parseFloat(parseFloat(imp_amount).toFixed(2));
             //showAmount ="Budget is "+budget+" \n imp amount is "+imp_amount + " "
             if(bdg>imp){
                 //alert('budget is greater than impamount');

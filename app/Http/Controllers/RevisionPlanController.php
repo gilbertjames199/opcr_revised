@@ -1015,7 +1015,9 @@ class RevisionPlanController extends Controller
         $paps = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])
             ->where('id', $id)
             ->first();
+
         // dd($paps);
+        $checklist_id=$paps->checklist_id;
         $scope = $paps->scope;
         $idpaps = $paps->idpaps;
         $idmfo = $paps->idmfo;

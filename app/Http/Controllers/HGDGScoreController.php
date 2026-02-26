@@ -298,10 +298,19 @@ class HGDGScoreController extends Controller
 
     public function getHgdgScoreSum($idrevplan)
     {
-        $totalScore = DB::table('hgdg_score')
-            ->where('idrevplan', $idrevplan)
+        // $totalScore = DB::table('hgdg_score')
+        //     ->where('idrevplan', $idrevplan)
+        //     ->sum('score');
+        $totalScore = HGDGScore::with(['question','question.checklist'])->where('idrevplan', $idrevplan)
+            ->whereHas('question', function ($query) use($idrevplan) {
+                $query->where('checklist_id', function ($query) use($idrevplan) {
+                    $query->select('checklist_id')
+                        ->from('revision_plans')
+                        ->where('id', $idrevplan);
+                });
+            })
             ->sum('score');
-
+        // dd($totalScore);
         return $totalScore;
     }
     public function store_one(Request $request, $id, $score)

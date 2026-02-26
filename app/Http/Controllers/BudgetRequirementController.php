@@ -189,7 +189,9 @@ class BudgetRequirementController extends Controller
     }
     public function getActivityTotal($idrev)
     {
-        $total = ActivityProject::where('project_id', $idrev)
+        $total = ActivityProject::with(['activity',
+                'activity.strat','activity.strat.strategyProject'])
+            ->where('project_id', $idrev)
             ->select(
                 'ps_q1',
                 'ps_q2',
@@ -209,12 +211,65 @@ class BudgetRequirementController extends Controller
                 'fe_q4'
             )
             ->where('is_active', '1')
-            ->whereHas('activity', function ($q) {
-                $q->whereNull('deleted_at');   // activity must NOT be soft deleted
+            ->whereHas('activity', function ($q) use($idrev) {
+                $q->whereNull('deleted_at')
+                  ->with('strat', function($q)use($idrev){
+                        $q->whereNull('deleted_at')
+                            ->with('strategyProject', function($q)use($idrev){
+                                $q->whereNull('deleted_at')
+                                 ->where('project_id', $idrev)
+                                 ->where('is_active', '1');
+                            });
+                  });   // activity must NOT be soft deleted
             })
             ->get();
+        // $total = ActivityProject::with(['activity', 'activity.strat','activity.strat.strategyProject'])
+        //     ->where('project_id', $idrev)
+        //     ->where('is_active', '1')
+        //     ->whereHas('activity', function ($q) use($idrev) {
+        //         $q->whereNull('deleted_at')   // activity must NOT be soft deleted
+        //             ->whereHas('strat', function ($q2)  use($idrev){
+        //                 $q2->whereNull('deleted_at')   // strategy must NOT be soft deleted
+        //                     ->whereHas('strategyProject', function ($q3) use($idrev){
+        //                         $q3->where('project_id', $idrev)
+        //                             ->whereNull('deleted_at');   // strategyProject must NOT be soft deleted
+        //                     });
+        //             });
+        //     })
+        //     ->get();
+        // dd($total);
 
-        // $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+        // $total = ActivityProject::with([
+        //         'activity.strat.strategyProject'
+        //     ])
+        //     ->where('project_id', $idrev)
+        //     ->where('is_active', '1')
+
+        //     ->whereHas('activity', function ($q) {
+        //         $q->whereNull('deleted_at');
+        //     })
+
+        //     ->whereHas('activity.strat', function ($q) {
+        //         $q->whereNull('deleted_at');
+        //     })
+
+        //     ->whereHas('activity.strat.strategyProject', function ($q) use ($idrev) {
+        //         $q->whereNull('deleted_at')
+        //         ->where('project_id', $idrev)
+        //         ->where('is_active', '1');
+        //     })
+
+        //     ->select([
+        //         'ps_q1','ps_q2','ps_q3','ps_q4',
+        //         'mooe_q1','mooe_q2','mooe_q3','mooe_q4',
+        //         'co_q1','co_q2','co_q3','co_q4',
+        //         'fe_q1','fe_q2','fe_q3','fe_q4'
+        //     ])
+        //     ->get();
+        if($idrev==148){
+            // dd($total);
+        }
+        // // $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
         //     $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
         //     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
         return $total;

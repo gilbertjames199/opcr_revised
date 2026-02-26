@@ -4,9 +4,11 @@
     </Head>
 
     <div class="row gap-10 masonry pos-r">
+        <h1 v-if="revision_plan">{{ revision_plan.project_title }}</h1>
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{  hgdg_checklist.box_number }}. {{  hgdg_checklist.sector }}
             </h3>
+
             <!--<h6>List of User Accounts</h6>-->
             <div class="peers">
                 <div class="peer mR-10">
