@@ -106,7 +106,8 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       // https://paps.davaodeoro.gov.ph/jasperserver/flow.html??pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FOPCR_ForApproval_PA&standAlone=true&opcr_id=116&FFUNCCOD=8751-1&total=0&average=0&output=pdf
       // var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FOPCR_Rating&standAlone=true&fbclid=IwAR1PZD2108LiuvPwxw4IoCBioYDFnY-NdpOVtDe7XKRWoKYcR5bANaX7x1M&standAlone=true&decorate=no&output=pdf';
       // var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA%2CSales%7Cpa1%3DSweden&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2Fopcr_rating_revised&standAlone=true&fbclid=IwAR1PZD2108LiuvPwxw4IoCBioYDFnY-NdpOVtDe7XKRWoKYcR5bANaX7x1M&standAlone=true&decorate=no&output=pdf';
-      var jasper_link = 'jasperserver/flow.html??pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FOPCR_ForApproval_PA&standAlone=true&output=pdf';
+      // jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2Fopcr_standard&standAlone=true&decorate=no&output=pdf';
+      var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FOPCR_ForApproval_PA&standAlone=true&output=pdf';
       var params = '&opcr_id=' + opcr_id1 + '&FFUNCCOD=' + FFUNCCOD1 + '&total=' + 0 + '&average=' + 0;
       var linkl = linkt + jasper_ip + jasper_link + params;
       this.report_link = linkl;
@@ -128,6 +129,9 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       // });
       this.print_link = this.viewlink(opcr_id, FFUNCCOD);
       this.displayPrintModal = true;
+    },
+    hidePrintModal: function hidePrintModal() {
+      this.displayPrintModal = false;
     },
     //END OF PRINTING
     updateMOVisVisible: function updateMOVisVisible(mov_is_visible, index) {
@@ -1563,7 +1567,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1 /* STABLE */
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.displayPrintModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_PrintModal, {
     key: 2,
-    onCloseModalEvent: _ctx.hidePrintModal,
+    onCloseModalEvent: $options.hidePrintModal,
     title: "PRINTING"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
