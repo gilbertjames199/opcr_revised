@@ -15,12 +15,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Shared/Filter */ "./resources/js/Shared/Filter.vue");
 /* harmony import */ var _Shared_Pagination__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Shared/Pagination */ "./resources/js/Shared/Pagination.vue");
 /* harmony import */ var _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Shared/PrintModal */ "./resources/js/Shared/PrintModal.vue");
-Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/Shared/PrintModalPrint'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 
 
 
 
-
+// import ModalPrint from "@/Shared/PrintModalPrint";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     opcr_id: String,
@@ -50,8 +49,8 @@ Object(function webpackMissingModule() { var e = new Error("Cannot find module '
   components: {
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_2__["default"],
     Filtering: _Shared_Filter__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Modal: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_3__["default"],
-    ModalPrint: Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/Shared/PrintModalPrint'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())
+    Modal: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_3__["default"]
+    // , ModalPrint
   },
   // beforeMount() {
   //     this.form.opcrs = this.opcrs
@@ -473,15 +472,10 @@ var _hoisted_30 = {
   "class": "table-responsive"
 };
 var _hoisted_31 = ["src"];
-var _hoisted_32 = {
-  "class": "d-flex justify-content-center"
-};
-var _hoisted_33 = ["src"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
   var _component_Modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal");
-  var _component_ModalPrint = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalPrint");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Head, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return _toConsumableArray(_cache[4] || (_cache[4] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("title", null, "OPCR", -1 /* CACHED */)]));
@@ -673,21 +667,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary text-white\" @click=\"submitAction('1')\" v-if=\"emp_status === '0'\">\n                        Review\n                    </button>\n                    <button class=\"btn btn-primary text-white\" @click=\"submitAction('2')\" v-if=\"emp_status === '1'\">\n                        Approve\n                    </button>&nbsp;\n                    <button class=\"btn btn-danger text-white\" @click=\"showModal3()\">\n                        Return\n                    </button> ")], -1 /* CACHED */))])];
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.displayModalPrint ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ModalPrint, {
-    key: 1,
-    onCloseModalEvent: _ctx.hideModalPrint
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ my_link }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("iframe", {
-        src: $data.my_link,
-        style: {
-          "width": "100%",
-          "height": "400px"
-        }
-      }, null, 8 /* PROPS */, _hoisted_33)])];
-    }),
-    _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 64 /* STABLE_FRAGMENT */);
+  }, 8 /* PROPS */, ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <ModalPrint v-if=\"displayModalPrint\" @close-modal-event=\"hideModalPrint\">\n            <div class=\"d-flex justify-content-center\">\n                {{ my_link }}\n                <iframe :src=\"my_link\" style=\"width:100%; height:400px\" />\n            </div>\n        </ModalPrint> ")])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ },

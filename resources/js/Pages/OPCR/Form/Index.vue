@@ -203,12 +203,12 @@
                 </div>
             </div>
         </Modal>
-        <ModalPrint v-if="displayModalPrint" @close-modal-event="hideModalPrint">
+        <!-- <ModalPrint v-if="displayModalPrint" @close-modal-event="hideModalPrint">
             <div class="d-flex justify-content-center">
-                <!-- {{ my_link }} -->
+                {{ my_link }}
                 <iframe :src="my_link" style="width:100%; height:400px" />
             </div>
-        </ModalPrint>
+        </ModalPrint> -->
     </div>
 </template>
 <script>
@@ -216,7 +216,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
-import ModalPrint from "@/Shared/PrintModalPrint";
+// import ModalPrint from "@/Shared/PrintModalPrint";
 export default {
     props: {
         opcr_id: String,
@@ -246,7 +246,8 @@ export default {
 
     },
     components: {
-        Pagination, Filtering, Modal, ModalPrint
+        Pagination, Filtering, Modal
+        // , ModalPrint
     },
     // beforeMount() {
     //     this.form.opcrs = this.opcrs
