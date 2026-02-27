@@ -4507,6 +4507,8 @@ class RevisionPlanController extends Controller
     public function imp_schedule(Request $request)
     {
         // dd($request);
+        // $rev = RevisionPlan::with('paps')->where('id',$request->id)->first();
+        // dd($rev);
         $empty = [];
         $strat = StrategyProject::with([
             'strategy',
@@ -4607,6 +4609,7 @@ class RevisionPlanController extends Controller
                     'id' => $strategy->id ?? null,
                     'revision_plan_id' => $request->id,
                     'activities' => $act,
+                    'is_active'=>$item->is_active,
                     // $strategy->activity
                     //     ? $strategy->activity->flatMap(function ($act) use ($request) {
 
@@ -4677,11 +4680,13 @@ class RevisionPlanController extends Controller
                     //         });
                     //     })
                     //     : collect(),
+                    'strategy'=>$item->strategy,
                     'seq_no' => $item->seq_no ?? 0, // default to a high number if seq_no is missing
                 ];
             })
             ->sortBy('seq_no')   // 👈 ORDER BY ASC
-            ->values();;
+            ->values();
+        // dd($strat);
         return $strat->isEmpty()
             ? $empty
             : $strat;

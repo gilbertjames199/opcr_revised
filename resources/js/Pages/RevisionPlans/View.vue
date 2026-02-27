@@ -2727,6 +2727,7 @@
 
         </div>
         <SmallModalComments v-model="showComments" title="NAVIGATION PANEL">
+            <!-- Sampleeeee -->
             <!-- <p>This can be anything.</p>
             <button class="btn btn-sm btn-primary">Save</button> -->
             <div class="tab">
@@ -2806,12 +2807,31 @@
                                         </tbody>
                                     </table>
 
-
+                                <!-- Action Buttons v-model="comment"-->
+                                 <!-- {{ id_comment_current }} -- {{comment.id}} -- show reply: {{ show_reply_bar }} -->
+                                <div class="text-end" v-if="id_comment_current==comment.id && show_reply_bar==true">
+                                    <div>
+                                        <textarea class="form-control" rows="5"
+                                            placeholder="Write your comment here..."></textarea>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-primary mt-2 text-white" @click="saveComment()">
+                                            Submit Comment
+                                        </button>
+                                    </div>
+                                </div>
                                 <!-- Action Buttons -->
-                                <div class="text-end" v-if="auth.user.department_code==='04'">
+                                <div class="text-end" >
+
+                                    <button class="btn btn-success btn-sm text-white"
+                                        @click="showReplyBar(comment.id)"
+                                        title="Reply">
+                                        <!-- <i class="bi bi-check-circle"></i> -->
+                                            reply
+                                    </button>
                                     <button class="btn btn-success btn-sm text-white"
                                         @click="submitAction('resolve', comment.id, index)"
-                                        title="Mark comment as Resolved">
+                                        title="Mark comment as Resolved" v-if="auth.user.department_code==='04'">
                                         <!-- <i class="bi bi-check-circle"></i> -->
                                             resolve
                                     </button>
@@ -2825,7 +2845,7 @@
 
                                     <button class="btn btn-danger btn-sm text-white"
                                         @click="submitAction('delete', comment.id, index)"
-                                        title="Delete this comment">
+                                        title="Delete this comment" v-if="auth.user.department_code==='04'">
                                         <!-- <i class="bi bi-trash-fill"></i>-->
                                             delete
                                     </button>
@@ -3399,6 +3419,8 @@ export default {
         return {
             unsaved: false,
             show_comment_modal: false,
+            id_comment_current: 0,
+            show_reply_bar: false,
             comment: '',
             comment_section: '',
             comment_subtitle: '',
@@ -3576,6 +3598,7 @@ export default {
             return has_comm;
         },
         handleClick(section, subtitle, data, column, table, obj, comments_obj) {
+        // alert("handle Cl;");
             this.comment_section = section;
             this.comment_subtitle = subtitle;
             this.comment_data = data;
@@ -3594,6 +3617,8 @@ export default {
             this.show_comment_modal = false;
             this.removeHighlights();
         },
+
+
         async saveComment() {
             // Logic to save the comment
             // This is just a placeholder, implement your actual saving logic here
@@ -3679,6 +3704,10 @@ export default {
             setTimeout(() => {
                 this.comment = "";
             }, 1000); // 1000 milliseconds = 1 second
+        },
+        showReplyBar(id_current){
+            this.id_comment_current=id_current
+            this.show_reply_bar=true
         },
         // COMMENTS FOR RATIONALE, TARGET BENEFICIARIES, OBJECTIVES
         // Detect user highlighted text
