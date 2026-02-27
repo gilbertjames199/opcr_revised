@@ -340,7 +340,7 @@
                                         color: 'white',
                                         fontWeight: 'bold',
                                         backgroundColor:
-                                            dat.status == '-2' ? 'red' :
+                                            dat.status == '-2' ? '#ff1078' :
                                             dat.status == '-1' ? 'gray' :
                                             dat.status == '0'  ? 'orange' :
                                             dat.status == '1'  ? 'blue' :
