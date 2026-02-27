@@ -57,8 +57,10 @@ class ExpectedRevisedOutputController extends Controller
     public function activityOutput($id)
     {
         $act_proj = ActivityProject::with(["activity"])->where('id', $id)->get();
+        // dd($act_proj);
         $expected_Outputs = ExpectedRevisedOutput::where('is_strategy_output', '0')
             ->where('activity_id', $act_proj[0]->activity_id)
+            ->where('activity_project_id', $id)
             ->get();
         return [
             "project" => $act_proj,
@@ -99,6 +101,8 @@ class ExpectedRevisedOutputController extends Controller
             'is_strategy_output' => 'required'
 
         ]);
+        $act = ActivityProject::where("id", $request->activity_project_id)->first();
+
         // dd($request);
         $expected_output = new ExpectedRevisedOutput();
         $expected_output->id = $request->id;
@@ -108,7 +112,7 @@ class ExpectedRevisedOutputController extends Controller
         $expected_output->strategy_project_id = $request->strategy_project_id;
         $expected_output->activity_project_id = $request->activity_project_id;
         // $expected_output->is_strategy_outcome = $request->is_strategy_outcome;
-        $expected_output->project_id = $request->project_id;
+        $expected_output->project_id = optional($act)->project_id;
         $expected_output->target_indicator = $request->target_indicator;
         $expected_output->date_from = $request->date_from;
         $expected_output->date_to = $request->date_to;

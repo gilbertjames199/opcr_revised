@@ -27,6 +27,9 @@
             <!-- {{ unsaved }} -->
             <span><u>{{ revision_plan.project_title }}</u></span>
         </div>
+        <div>
+            <span><u>{{ new Date(revision_plan.date_start).getFullYear() }}</u></span>
+        </div>
         <!-- <div class="peers">
             <input type=checkbox v-model="show_inactive">&nbsp;Show Inactive
         </div> -->
