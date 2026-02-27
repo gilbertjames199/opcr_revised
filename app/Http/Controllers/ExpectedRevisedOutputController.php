@@ -72,6 +72,7 @@ class ExpectedRevisedOutputController extends Controller
 
         if ($type == 'activity') {
             $project = $this->activityProjectOutput($id);
+            // dd($id);
             // $data = $compound_data->expected_Outputs;
         } else if ($type == 'strategy') {
 

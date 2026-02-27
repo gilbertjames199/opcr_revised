@@ -322,7 +322,7 @@
                             <tr v-for="dat in data">
                                 <!-- TITLE -->
                                 <td>{{ dat.project_title }}
-                                    <span style="color:red; font-weight: bold">
+                                    <span style="color:#FF10F0; font-weight: bold">
                                         {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
 
                                         <!-- {{ dat.budget_sum }} --{{dat.imp_amount}} -- {{dat.id}} -->
@@ -446,7 +446,7 @@
                                         padding: '4px 10px',
                                         border: 'none',
                                         borderRadius: '4px',
-                                        backgroundColor: 'red',
+                                        backgroundColor: '#ff1093',
                                         color: 'white',
                                         cursor: 'pointer',
                                         fontWeight: 'bold'
@@ -497,7 +497,7 @@
                                             padding: '4px 10px',
                                             border: 'none',
                                             borderRadius: '4px',
-                                            backgroundColor: 'red',
+                                            backgroundColor: '#d81b60',
                                             color: 'white',
                                             cursor: 'pointer',
                                             fontWeight: 'bold'
@@ -511,7 +511,7 @@
                                     <!-- {{ dat.number_of_clones }} -->
                                 </td>
                                 <!-- FORWARD TO NEXT YEAR -->
-                                 <td>
+                                <td>
                                     <!-- Forward for Next Year when status = 'approved' (example) -->
                                     <button
                                         v-if="parseInt(dat.number_of_clones)<1 && dat.type==='p'"

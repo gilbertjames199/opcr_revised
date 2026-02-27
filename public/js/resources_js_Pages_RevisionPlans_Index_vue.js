@@ -1024,7 +1024,7 @@ var _hoisted_29 = {
 };
 var _hoisted_30 = {
   style: {
-    "color": "red",
+    "color": "#FF10F0",
     "font-weight": "bold"
   }
 };
@@ -1380,7 +1380,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         padding: '4px 10px',
         border: 'none',
         borderRadius: '4px',
-        backgroundColor: 'red',
+        backgroundColor: '#ff1093',
         color: 'white',
         cursor: 'pointer',
         fontWeight: 'bold'
@@ -1422,7 +1422,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         padding: '4px 10px',
         border: 'none',
         borderRadius: '4px',
-        backgroundColor: 'red',
+        backgroundColor: '#d81b60',
         color: 'white',
         cursor: 'pointer',
         fontWeight: 'bold'

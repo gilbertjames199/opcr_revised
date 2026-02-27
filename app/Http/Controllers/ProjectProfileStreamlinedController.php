@@ -395,6 +395,27 @@ class ProjectProfileStreamlinedController extends Controller
         // dd(DB::table($table)->where('id', $id)->get());
         // Perform update
         // dd($request);
+        $restrictedColumns = [
+            'ps_q1','ps_q2','ps_q3','ps_q4',
+            'mooe_q1','mooe_q2','mooe_q3','mooe_q4',
+            'co_q1','co_q2','co_q3','co_q4',
+            'fe_q1','fe_q2','fe_q3','fe_q4',
+        ];
+
+        if ($table === 'activity_projects' && in_array($column, $restrictedColumns)) {
+
+            // Check if numeric and not less than -1
+            if (!is_numeric($newData) || $newData < -1) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid value. Must be numeric and not less than -1.'
+                ], 422);
+            }
+
+            // Optional: cast to float to ensure numeric type
+            $newData = (float) $newData;
+        }
+
         DB::table($table)
             ->where('id', $id)
             ->update([$column => $newData]);
