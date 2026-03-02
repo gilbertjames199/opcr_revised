@@ -305,6 +305,7 @@
                         <thead>
                             <tr class="bg-secondary text-white">
                                 <th>Project Title</th>
+                                <th>Date Submitted</th>
                                 <th>Office</th>
                                 <th>Status</th>
                                 <th>View</th>
@@ -328,6 +329,8 @@
                                         <!-- {{ dat.budget_sum }} --{{dat.imp_amount}} -- {{dat.id}} -->
                                     </span>
                                 </td>
+                                <!-- DATE SUBMITTED -->
+                                <td></td>
                                 <!-- OFFICE -->
                                 <td>{{ dat.FFUNCTION }}</td>
                                 <!-- STATUS -->

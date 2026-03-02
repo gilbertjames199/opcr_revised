@@ -451,6 +451,7 @@
                             <tr class="bg-secondary text-white">
                                 <th>AIP Code</th>
                                 <th>Program Title</th>
+                                <th>Date Submitted</th>
                                 <th>Version</th>
                                 <th>Type</th>
                                 <th>Implementing Offices</th>
@@ -477,6 +478,7 @@
                                         Review the project for comments
                                     </span>
                                 </td>
+                                <td>{{ formatDate(dat.project_profile_tracking.created_at) }} -- {{ dat.project_profile_tracking.created_at }}</td>
                                 <td>{{ dat.version }}</td>
                                 <td>{{ formatProjectType(dat.type) }}</td>
                                 <td>{{ dat.FFUNCTION }}</td>

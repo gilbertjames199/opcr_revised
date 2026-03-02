@@ -2567,14 +2567,20 @@ class RevisionPlanController extends Controller
             $year_period = $request->year_period;
         }
         $aip = AnnualInvestmentPlanInstitutional::where('year_period', $year_period)->first();
-
+        // dd($aip);
         $data = RevisionPlan::with(['budget',
                     'paps',
                     'paps.office',
                     'clonedVersions',
                     'hgdgScores',
-                    'hgdgScores.question'
+                    'hgdgScores.question',
+                    'projectProfileTrackings'
                 ])
+                ->withMax([
+                    'projectProfileTrackings as date_submitted' => function ($q) {
+                        $q->where('action_type', 'Submit Project Profile');
+                    }
+                ], 'created_at')
             ->whereHas('budget', function ($query) {
                 $query->select(DB::raw('revision_plan_id'))
                     ->groupBy('revision_plan_id')
@@ -2723,11 +2729,13 @@ class RevisionPlanController extends Controller
             ->when($request->year, function ($query) use ($request) {
                 $query->whereYear('date_start', $request->year);
             })
+            ->orderBy('date_submitted', 'asc') // oldest first ✅
             ->paginate(10)
             ->withQueryString(); // @var \Illuminate\Pagination\LengthAwarePaginator
 
         // dd($request->search);
         $data->through(function ($item) use ($budget_controller, $aip) {
+
             $all_comments = $this->getAllRevisionPlanComments($item->id);
             $commentCount = $all_comments->where('comment_status', 0)->count();
             // dd($commentCount);
@@ -2760,6 +2768,11 @@ class RevisionPlanController extends Controller
             //     // dd($item, $hgdg_score_sum, $item->hgdgScores);
             // }
             // dd($item->type);
+            $latestSubmit = collect($item->projectProfileTrackings)
+                ->where('action_type', 'Submit Project Profile')
+                ->sortByDesc('created_at')
+                ->first();
+            // dd($item->project_profile_tracking);
             return [
                 'aip' => $aip,
                 'comments_count' => $commentCount,
@@ -2780,6 +2793,8 @@ class RevisionPlanController extends Controller
                 'year' => $year = $item->date_start
                     ? Carbon::parse($item->date_start)->year
                     : null,
+                'project_profile_tracking'=>$latestSubmit,
+                'date_submitted'=>optional($latestSubmit)->created_at
             ];
         });
         // dd($data);

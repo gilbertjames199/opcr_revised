@@ -335,7 +335,15 @@ class ProjectProfileTrackingController extends Controller
         // dd($request);
         $uid = auth()->user()->recid;
         // dd($uid);
-        $data = ProjectProfileTracking::with(['revisionPlan', 'revisionPlan.projectProfileTrackings'])
+        $data = ProjectProfileTracking::with(['revisionPlan' => function ($query) {
+        $query->withTrashed();
+            //   ->with(['projectProfileTrackings' => function ($q) {
+            //       $q->withTrashed();
+              }])
+    // }
+    // , 'revisionPlan.projectProfileTrackings'
+    // ])
+
                 ->where('action_by', $uid)
                 ->orderBy('created_at','desc')
                 ->get()

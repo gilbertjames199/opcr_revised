@@ -357,6 +357,28 @@ createInertiaApp({
                     }
                 },
                 methods: {
+                    formatDate(dateString) {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+
+    const datePart = date.toLocaleDateString('en-US', {
+        month: 'long',
+        day: '2-digit',
+        year: 'numeric',
+        timeZone: 'Asia/Manila'
+    });
+
+    const timePart = date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Manila'
+    });
+    console.log(new Date("2026-02-26T02:44:20.000000Z"))
+    return `${datePart} ${timePart}`;
+},
                     goBack() {
                         window.history.back();  // or this.$router.go(-1)
                     },
