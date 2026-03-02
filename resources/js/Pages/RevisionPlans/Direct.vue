@@ -478,7 +478,13 @@
                                         Review the project for comments
                                     </span>
                                 </td>
-                                <td>{{ formatDate(dat.project_profile_tracking.created_at) }} -- {{ dat.project_profile_tracking.created_at }}</td>
+                                <td>
+                                    <!-- {{ formatDate(dat.project_profile_tracking.created_at) }} -- {{ dat.project_profile_tracking.created_at }}
+                                       -->
+                                    <span v-if="dat.project_profile_tracking?.created_at">
+  {{ formatDate(dat.project_profile_tracking.created_at) }} -- {{ dat.project_profile_tracking.created_at }}
+</span>
+                                </td>
                                 <td>{{ dat.version }}</td>
                                 <td>{{ formatProjectType(dat.type) }}</td>
                                 <td>{{ dat.FFUNCTION }}</td>
