@@ -2576,11 +2576,16 @@ class RevisionPlanController extends Controller
                     'hgdgScores.question',
                     'projectProfileTrackings'
                 ])
+                // ->withMax([
+                //     'projectProfileTrackings as date_submitted' => function ($q) {
+                //         $q->where('action_type', 'Submit Project Profile');
+                //     }
+                // ], 'created_at')
                 ->withMax([
-                    'projectProfileTrackings as date_submitted' => function ($q) {
-                        $q->where('action_type', 'Submit Project Profile');
-                    }
-                ], 'created_at')
+    'projectProfileTrackings as date_submitted' => function ($q) {
+        $q->where('action_type', 'Submit Project Profile');
+    }
+], 'created_at')
             ->whereHas('budget', function ($query) {
                 $query->select(DB::raw('revision_plan_id'))
                     ->groupBy('revision_plan_id')
