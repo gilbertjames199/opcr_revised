@@ -349,6 +349,7 @@
 
                         </tbody>
                     </table>
+
                     <!-- RATIONALE -->
                     <span v-if="paps.rationale">
                         <section id="rationale">
@@ -370,7 +371,7 @@
                         </section>
                         <br>
                         <div class="bgc-white p-20 bd" >
-                             <!-- <p ref="rationale"
+                            <!-- <p ref="rationale"
                                 v-html="renderedText('rationale')"
                                 @mouseup="handleSelection('rationale')"
                                 class="cursor-text"></p> -->
@@ -420,7 +421,6 @@
                                 </button>
                             </h3>
                         </section>
-
                         <br>
                         <div  class="bgc-white p-20 bd">
                             <!-- <div v-html="paps.objective" style="white-space: pre-line"></div> -->
@@ -2834,12 +2834,12 @@
                                 <!-- Action Buttons -->
                                 <div class="text-end" >
 
-                                    <button class="btn btn-success btn-sm text-white"
+                                        <!-- <i class="bi bi-check-circle"></i> -->
+                                    <!-- <button class="btn btn-success btn-sm text-white"
                                         @click="showReplyBar(comment.id, comment)"
                                         title="Reply">
-                                        <!-- <i class="bi bi-check-circle"></i> -->
                                             reply
-                                    </button>
+                                    </button> -->
                                     <button class="btn btn-success btn-sm text-white"
                                         @click="submitAction('resolve', comment.id, index, comment)"
                                         title="Mark comment as Resolved" v-if="auth.user.department_code==='04'">
@@ -3716,9 +3716,21 @@ export default {
                 this.comment = "";
             }, 1000); // 1000 milliseconds = 1 second
         },
-        showReplyBar(id_current){
+        // 'Title',paps.project_title,paps.project_title,'project_title','revision_plans', paps, paps.comments
+        showReplyBar(id_current, comment){
             this.id_comment_current=id_current
             this.show_reply_bar=true
+            this.comment_section = section;
+            this.comment_subtitle = subtitle;
+            this.comment_data = data;
+            this.comment_column = column;
+            this.comment_table = table;
+            this.comment_reference_object = obj;
+            // this.comments = comments_obj;
+
+            this.comments = comments_obj.filter(comment =>
+                comment.table_name === table && comment.column_name === column
+            );
         },
         // COMMENTS FOR RATIONALE, TARGET BENEFICIARIES, OBJECTIVES
         // Detect user highlighted text
