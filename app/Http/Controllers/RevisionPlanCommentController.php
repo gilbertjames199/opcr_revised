@@ -77,23 +77,25 @@ class RevisionPlanCommentController extends Controller
         $extracted = mb_substr($text, $start, $length);
 
         if ($extracted !== $request->selected_text) {
-            abort(409, 'Selected text no longer matches. Please reselect.');
-        }
-        // ${comment.id}_${comment.table_name}_${comment.column_name}
-        $spanId = "{$comment->id}_revision_plans_{$column}";
-        // 'data-comment-id="'.$comment->id.'" '.
-        $wrapped =
-            '<span id="'.$spanId.'" '.
-            'style="color:red;font-weight:bold"
-            contenteditable="false"
-            >'.
-            e($extracted).
-            '</span>';
-        $before = mb_substr($text, 0, $start);
-        $after  = mb_substr($text, $end);
+            // abort(409, 'Selected text no longer matches. Please reselect.');
+        }else{
+            // ${comment.id}_${comment.table_name}_${comment.column_name}
+            $spanId = "{$comment->id}_revision_plans_{$column}";
+            // 'data-comment-id="'.$comment->id.'" '.
+            $wrapped =
+                '<span id="'.$spanId.'" '.
+                'style="color:red;font-weight:bold"
+                contenteditable="false"
+                >'.
+                e($extracted).
+                '</span>';
+            $before = mb_substr($text, 0, $start);
+            $after  = mb_substr($text, $end);
 
-        $plan->$column = $before . $wrapped . $after;
-        $plan->save();
+            $plan->$column = $before . $wrapped . $after;
+            $plan->save();
+        }
+
     }
     public static function tagCommentInText($commentId, $tableName, $rowId, $columnName)
     {

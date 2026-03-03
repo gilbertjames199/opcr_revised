@@ -339,10 +339,10 @@ class ProjectProfileTrackingController extends Controller
         $query->withTrashed();
             //   ->with(['projectProfileTrackings' => function ($q) {
             //       $q->withTrashed();
-              }])
-    // }
-    // , 'revisionPlan.projectProfileTrackings'
-    // ])
+            }])
+            // }
+            // , 'revisionPlan.projectProfileTrackings'
+            // ])
 
                 ->where('action_by', $uid)
                 ->orderBy('created_at','desc')

@@ -393,7 +393,7 @@
                                 @mouseup="handleSelection('rationale')"
                                 v-html="paps.rationale"
                             ></div>
-
+                            {{ paps.rationale }}
                         </div>
                         <br>
                     </span>
@@ -2758,52 +2758,62 @@
                         </div>
                         <ul class="list-unstyled">
                             <li v-for="(comment, index) in unresolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
-
                                     <table style="border-collapse: collapse; border: none !important;">
                                         <tbody>
-                                        <tr style="border: none !important; vertical-align: top;">
-                                            <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                <button class="btn p-0 border-0 bg-transparent"
-                                                    @click="submitAction('delete', comment.id, index)"
-                                                    title="Delete this comment"
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
-                                                        class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
-                                                    </svg>&nbsp;&nbsp;&nbsp;
-                                                </button>
+                                            <tr style="border: none !important; vertical-align: top;">
+                                                <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                    <button class="btn p-0 border-0 bg-transparent"
+                                                        @click="submitAction('delete', comment.id, index)"
+                                                        title="Delete this comment"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                                            class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                                        </svg>&nbsp;&nbsp;&nbsp;
+                                                    </button>
 
-                                            </td>
-                                            <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                <span
-                                                    class="clickable-comment"
-                                                    @click="scrollToSection(
-                                                        ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                            ? `${comment.id}_${comment.table_name}_${comment.column_name}`
-                                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                    )"
-                                                    :class="'comment-rejected'"
-                                                    :title="['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                        ? comment.selected_text
-                                                        : ''"
-                                                >
-                                                <!-- Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                            ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                            resolvePapsTargetId(paps, comment.column_name, comment)
-                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
-                                                    {{ comment.comment }}
-                                                    <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p> -->
-                                                    <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
-                                                    <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p> -->
-                                                                        <!-- {{
-                                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                                    ? comment.column_name
-                                                                    : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
-                                                            }} -->
-                                                </span>
-                                                <div v-html="comment.reply"></div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                    <!-- @click="scrollToSection(
+                                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                        )"  -->
+                                                    <span
+                                                        class="clickable-comment"
+
+                                                        @click="scrollToSection(
+                                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                ? (
+                                                                    paps[comment.column_name] &&
+                                                                    paps[comment.column_name].includes(`${comment.id}_${comment.table_name}_${comment.column_name}`)
+                                                                        ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                                                        : comment.column_name
+                                                                )
+                                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                        )"
+                                                        :class="'comment-rejected'"
+                                                        :title="['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                            ? comment.selected_text
+                                                            : ''"
+                                                    >
+                                                    <!-- Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                resolvePapsTargetId(paps, comment.column_name, commentcolumn name w)
+                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
+                                                        {{ comment.comment }}
+                                                        <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
+                                                         <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
+                                                        <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p> -->
+                                                                            <!-- {{
+                                                                    ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                        ? comment.column_name
+                                                                        : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
+                                                                }} -->
+                                                    </span>
+                                                    <div v-html="comment.reply"></div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
 
@@ -2824,7 +2834,7 @@
                                 <div class="text-end" >
 
                                     <button class="btn btn-success btn-sm text-white"
-                                        @click="showReplyBar(comment.id)"
+                                        @click="showReplyBar(comment.id, comment)"
                                         title="Reply">
                                         <!-- <i class="bi bi-check-circle"></i> -->
                                             reply
@@ -3691,7 +3701,7 @@ export default {
                 payload.context_after = this.contextAfter;
             }
             console.log(payload);
-            alert(this.selectedStart+ " Selected Start");
+            // alert(this.selectedStart+ " Selected Start");
             console.log("selectedText: "+this.selectedText);
 
             console.log("selectedStart: "+this.selectedStart);
