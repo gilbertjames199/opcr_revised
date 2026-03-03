@@ -1944,11 +1944,22 @@
                                                 </td>
                                                 <!-- comment.column_name -->
                                                 <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                    <span
-                                                        class="clickable-comment"
-                                                        @click="scrollToSection(
+                                                    <!-- @click="scrollToSection(
                                                             ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                                 ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                        )" -->
+                                                    <span
+                                                        class="clickable-comment"
+
+                                                        @click="scrollToSection(
+                                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                ? (
+                                                                    paps[comment.column_name] &&
+                                                                    paps[comment.column_name].includes(`${comment.id}_${comment.table_name}_${comment.column_name}`)
+                                                                        ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                                                        : comment.column_name
+                                                                )
                                                                 : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                         )"
                                                         :class="'comment-rejected'"

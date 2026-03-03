@@ -393,7 +393,7 @@
                                 @mouseup="handleSelection('rationale')"
                                 v-html="paps.rationale"
                             ></div>
-                            {{ paps.rationale }}
+                            <!-- {{ paps.rationale }} -->
                         </div>
                         <br>
                     </span>
@@ -2804,7 +2804,8 @@
                                                         {{ comment.comment }}
                                                         <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
                                                          <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
-                                                        <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p> -->
+                                                        <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p>
+                                                        <p>status: {{ comment}}</p> -->
                                                                             <!-- {{
                                                                     ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                                         ? comment.column_name
@@ -2840,7 +2841,7 @@
                                             reply
                                     </button>
                                     <button class="btn btn-success btn-sm text-white"
-                                        @click="submitAction('resolve', comment.id, index)"
+                                        @click="submitAction('resolve', comment.id, index, comment)"
                                         title="Mark comment as Resolved" v-if="auth.user.department_code==='04'">
                                         <!-- <i class="bi bi-check-circle"></i> -->
                                             resolve
@@ -2854,7 +2855,7 @@
                                     </button> -->
 
                                     <button class="btn btn-danger btn-sm text-white"
-                                        @click="submitAction('delete', comment.id, index)"
+                                        @click="submitAction('delete', comment.id, index, comment)"
                                         title="Delete this comment" v-if="auth.user.department_code==='04'">
                                         <!-- <i class="bi bi-trash-fill"></i>-->
                                             delete
@@ -3876,6 +3877,7 @@ export default {
             if (!confirm(`Are you sure you want to ${actionText[type]}?`)) {
                 return; // User cancelled
             }
+            // alert("index: "+index)
             var myurl = "/revision-plan-comments/action/done";
             this.$inertia.post(myurl, {
                 params: {
