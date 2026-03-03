@@ -482,7 +482,7 @@
                                     <!-- {{ formatDate(dat.project_profile_tracking.created_at) }} -- {{ dat.project_profile_tracking.created_at }}
                                        -->
                                     <span v-if="dat.project_profile_tracking?.created_at">
-  {{ formatDate(dat.project_profile_tracking.created_at) }} -- {{ dat.project_profile_tracking.created_at }}
+  {{ formatDateTime(dat.project_profile_tracking.created_at) }}
 </span>
                                 </td>
                                 <td>{{ dat.version }}</td>
@@ -606,7 +606,7 @@
                                         padding: '4px 10px',
                                         border: 'none',
                                         borderRadius: '4px',
-                                        backgroundColor: 'red',
+                                        backgroundColor: '#fc00d7',
                                         color: 'white',
                                         cursor: 'pointer',
                                         fontWeight: 'bold'

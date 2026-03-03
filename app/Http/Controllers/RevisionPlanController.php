@@ -621,6 +621,7 @@ class RevisionPlanController extends Controller
                     // 'paps'=>$item->paps
                 ];
             });
+        // dd($data);
         return $data;
     }
 

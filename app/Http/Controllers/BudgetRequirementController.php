@@ -189,8 +189,7 @@ class BudgetRequirementController extends Controller
     }
     public function getActivityTotal($idrev)
     {
-        $total = ActivityProject::with(['activity',
-                'activity.strat','activity.strat.strategyProject'])
+        $total = ActivityProject::with(['activity.strat.strategyProject'])
             ->where('project_id', $idrev)
             ->select(
                 'ps_q1',
@@ -211,18 +210,15 @@ class BudgetRequirementController extends Controller
                 'fe_q4'
             )
             ->where('is_active', '1')
-            ->whereHas('activity', function ($q) use($idrev) {
+            ->whereHas('activity.strat.strategyProject', function ($q) use ($idrev) {
                 $q->whereNull('deleted_at')
-                  ->with('strat', function($q)use($idrev){
-                        $q->whereNull('deleted_at')
-                            ->with('strategyProject', function($q)use($idrev){
-                                $q->whereNull('deleted_at')
-                                 ->where('project_id', $idrev)
-                                 ->where('is_active', '1');
-                            });
-                  });   // activity must NOT be soft deleted
+                ->where('project_id', $idrev)
+                ->where('is_active', '1');
             })
+            ->whereHas('activity.strat', fn($q) => $q->whereNull('deleted_at'))
+            ->whereHas('activity', fn($q) => $q->whereNull('deleted_at'))
             ->get();
+            // dd("fsddfdsf");
         // $total = ActivityProject::with(['activity', 'activity.strat','activity.strat.strategyProject'])
         //     ->where('project_id', $idrev)
         //     ->where('is_active', '1')

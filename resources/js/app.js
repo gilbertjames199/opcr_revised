@@ -358,9 +358,12 @@ createInertiaApp({
                 },
                 methods: {
                     formatDate(dateString) {
-    if (!dateString) return '';
+if (!dateString) return '';
 
-    const date = new Date(dateString);
+    // Strip microseconds if they exist
+    const cleanDateString = dateString.replace(/\.\d{3,6}Z$/, 'Z');
+
+    const date = new Date(cleanDateString);
 
     const datePart = date.toLocaleDateString('en-US', {
         month: 'long',
@@ -376,7 +379,7 @@ createInertiaApp({
         hour12: true,
         timeZone: 'Asia/Manila'
     });
-    console.log(new Date("2026-02-26T02:44:20.000000Z"))
+
     return `${datePart} ${timePart}`;
 },
                     goBack() {
