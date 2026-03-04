@@ -810,8 +810,8 @@
                                                                         has_comment('Implementation Plan','activity Date To',act.date_to,'date_to','activity_projects', act, act.comments)
                                                                     }" >
                                                                         <span v-if="paps.is_strategy_based==0">
-
-                                                                            <span v-if="act.date_from" >
+                                                                            <!-- v-if="act.date_from"  -->
+                                                                            <span >
                                                                                 <input class="form-control" type="date" v-model="act.date_from" :id="act.activity_id + '_activity_projects_date_from'"
                                                                                     @change="updateRevisionPlans('activity_projects', 'date_from', act.activity_id, act.date_from)"/>
                                                                                 <button v-if="can_view_comment()" class="superscript-btn"
@@ -821,8 +821,10 @@
                                                                                     @click="handleClick('Implementation Plan','activity Date From',act.date_from,'date_from','activity_projects', act, act.comments)">*
                                                                                 </button>
                                                                             </span>
-                                                                            <span v-if="act.date_from && act.date_to">&nbsp;to&nbsp;</span>
-                                                                            <span v-if="act.date_to" >
+                                                                            <!-- v-if="act.date_from && act.date_to" -->
+                                                                            <span >&nbsp;to&nbsp;</span>
+                                                                            <!-- v-if="act.date_to" -->
+                                                                            <span  >
                                                                                 <input class="form-control" type="date" v-model="act.date_to"
                                                                                     @change="updateRevisionPlans('activity_projects', 'date_to', act.activity_id, act.date_to)"
                                                                                     :id="act.activity_id + '_activity_projects_date_to'"/>

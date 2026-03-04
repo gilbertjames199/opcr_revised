@@ -1711,7 +1711,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $ap_head_m = UserEmployees::where('department_code', $office_id)
                         ->where('salary_grade', '24')
                         ->get();
-                    // dd($ap_head_m);
+                    dd($ap_head_m);
                     if (count($ap_head_m) > 0) {
                         $ap_head = $ap_head_m[0];
                         $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
