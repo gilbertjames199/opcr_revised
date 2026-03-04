@@ -346,8 +346,8 @@
                                 }">
                                 <!-- {{ format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true) }} -->
                                     <span v-if="parseFloat(paps.hgdg_score)>4">
-                                        <!-- {{ format_number_conv((overallBudget * (paps.hgdg_score/20)), 2, true) }} -->
-                                         {{ format_number_conv(getGadAttributedAmount(overallBudget, paps.hgdg_score), 2, true) }}
+                                        {{ format_number_conv((overallBudget * (paps.hgdg_score/20)), 2, true) }}
+                                         <!-- {{ format_number_conv(getGadAttributedAmount(overallBudget, paps.hgdg_score), 2, true) }} -->
 
                                     </span>
                                     <span v-else>0.00</span>
