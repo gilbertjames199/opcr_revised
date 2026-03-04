@@ -36,8 +36,8 @@
 
                 </li>
             </ul>
-            <ul class="nav-right" v-if="$page.props.flash.impersonating">
-                <li>
+            <ul >
+                <li class="nav-right" v-if="$page.props.flash.impersonating">
                     <Link href="/users/stop-impersonate" class="btn btn-sm btn-danger text-white px-3 py-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
                                 class="bi bi-exclamation-circle" viewBox="0 0 16 16">
