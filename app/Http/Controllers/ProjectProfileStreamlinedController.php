@@ -110,7 +110,7 @@ class ProjectProfileStreamlinedController extends Controller
 
         // SET DUPLICATE DATA
         $duplicate = [];
-        if ($request->source == 'direct') {
+        if ($request->source == 'direct' || $request->source == 'rev_app') {
             $source = $request->source;
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $request->idrevplan)->first();
         } else {
