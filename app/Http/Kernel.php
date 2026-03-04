@@ -41,6 +41,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
+            \App\Http\Middleware\HandleImpersonation::class,
             //\App\Http\Middleware\SessionTimeout::class,
             \Clockwork\Support\Laravel\ClockworkMiddleware::class,
 

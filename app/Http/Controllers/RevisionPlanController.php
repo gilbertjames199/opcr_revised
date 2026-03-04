@@ -3963,11 +3963,11 @@ class RevisionPlanController extends Controller
 
             // ********************************************************************************
             $gad_attributed = 0;
-
+            $tot_rounded = round($totalScore, 2);
             if ($item->type === 'p' && $item->year_period < 2027) {
 
                 // old rule
-                $gad_attributed = $amount * ($totalScore / 20);
+                $gad_attributed = $amount * ($tot_rounded / 20);
 
             } else {
 

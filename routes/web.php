@@ -164,6 +164,8 @@ Route::middleware('auth')->group(function () {
         ///users/change-password
         Route::get('/change-password', [UserController::class, 'changePassword']);
         Route::post('/update-password', [UserController::class, 'updatePassword']);
+        Route::get('/{id}/impersonate', [UserController::class, 'impersonate'])->name('users.impersonate');
+        Route::get('/stop-impersonate', [UserController::class, 'stopImpersonate'])->name('users.stop-impersonate');
     });
     //UserOffice
     Route::prefix('/office')->group(function () {
