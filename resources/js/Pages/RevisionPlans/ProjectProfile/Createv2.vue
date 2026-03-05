@@ -1927,7 +1927,6 @@
                         </table>
                         <br>
                     </div>
-
                     <!--RISK MANAGEMENT-->
                     <h3 id="risk_management">
                         X. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
@@ -2119,7 +2118,6 @@
                         </div>
                     </div>
                 </div>
-
         </div>
         <div class="col-3">
                 <!-- ALL YOUR EXISTING COMMENT PANEL HTML HERE -->
@@ -2408,7 +2406,6 @@
             </div>
             <br>
         </CommentModal>
-
     </div>
     <BudgetModal v-if="BudgetModalVisible" @close-modal-event="closeBudgetModal" title="BUDGETARY REQUIREMENTS">
         <div class="p-3">
@@ -3030,7 +3027,6 @@
             <!-- </tr> -->
         </table>
     </ExpectedOutcomeModal>
-
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";

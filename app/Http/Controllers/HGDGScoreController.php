@@ -347,4 +347,46 @@ class HGDGScoreController extends Controller
         return redirect()->back();
         // dd($comment, $id);
     }
+
+    public function print_hgdg_score(Request $request){
+        $idrevplan=$request->idrevplan;
+        $revplan =RevisionPlan::where('id', $idrevplan)->first();
+        // dd($revplan);
+        $checklist_id = $revplan->checklist_id;
+        $scores = HGDGScore::select(
+            'hgdg_score.id',
+            'hgdg_score.idrevplan',
+            'hgdg_score.question_id',
+            'hgdg_score.score',
+            'hgdg_score.result_comment'
+        )
+            ->join(DB::raw("hgdg_questions"), "hgdg_questions.id", "hgdg_score.question_id")
+            ->where("hgdg_score.idrevplan", $idrevplan)
+            ->where("hgdg_questions.checklist_id", $checklist_id)
+            ->get()
+            ->map(function ($item) use ($idrevplan, $revplan) {
+                $question = HGDGQuestion::where('id', $item->question_id)->first();
+                // $scory = floatval($item->score);
+                // $scoor = floatval($question->score);
+                // $scoor2 = floatval($question->score) * 2;
+                $scory = round(floatval($item->score), 8);
+                $scoor = round(floatval($question->score), 8);
+                $scoor2 = round((floatval($question->score) * 2), 8);
+                return [
+                    "id" => $item->id,
+                    "idrevplan" => $item->idrevplan,
+                    "question_id" => $item->question_id,
+                    "score" => $scory,
+                    "result_comment" => $item->result_comment,
+                    "has_subquestion" => $question->has_subquestion,
+                    "question" => $question->question,
+                    "q_score" => $scoor,
+                    "q_score2" => $scoor2,
+                    "question_number" => $question->question_number,
+                    "project_title"=>$revplan->project_title,
+                    "hgdg_score"=>$revplan->hgdg_score
+                ];
+            });
+        return $scores;
+    }
 }
