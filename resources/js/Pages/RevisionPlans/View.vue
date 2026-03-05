@@ -2764,6 +2764,7 @@
                                                 <td style="border: none !important; vertical-align: top; text-align:left;">
                                                     <button class="btn p-0 border-0 bg-transparent"
                                                         @click="submitAction('delete', comment.id, index)"
+                                                        :disabled="auth.user.department_code !== '04'"
                                                         title="Delete this comment"
                                                     >
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"

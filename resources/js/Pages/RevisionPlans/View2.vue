@@ -1935,6 +1935,7 @@
                                             <tr style="border: none !important; vertical-align: top;">
                                                 <td style="border: none !important; vertical-align: top; text-align:left;">
                                                     <button class="btn p-0 border-0 bg-transparent"
+                                                    :disabled="auth.user.department_code !== '04'"
                                                         @click="submitAction('delete', comment.id, index)"
                                                         title="Delete this comment"
                                                     >

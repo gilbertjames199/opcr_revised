@@ -1522,7 +1522,7 @@ var _hoisted_247 = {
     "text-align": "left"
   }
 };
-var _hoisted_248 = ["onClick"];
+var _hoisted_248 = ["disabled", "onClick"];
 var _hoisted_249 = {
   style: {
     "border": "none !important",
@@ -3313,6 +3313,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_245, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_246, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_247, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn p-0 border-0 bg-transparent",
+      disabled: $props.auth.user.department_code !== '04',
       onClick: function onClick($event) {
         return $options.submitAction('delete', comment.id, index);
       },

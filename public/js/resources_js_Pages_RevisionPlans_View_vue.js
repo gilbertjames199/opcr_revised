@@ -1952,7 +1952,7 @@ var _hoisted_251 = {
     "text-align": "left"
   }
 };
-var _hoisted_252 = ["onClick"];
+var _hoisted_252 = ["onClick", "disabled"];
 var _hoisted_253 = {
   style: {
     "border": "none !important",
@@ -3787,6 +3787,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: function onClick($event) {
             return $options.submitAction('delete', comment.id, index);
           },
+          disabled: $props.auth.user.department_code !== '04',
           title: "Delete this comment"
         }, _toConsumableArray(_cache[189] || (_cache[189] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
           xmlns: "http://www.w3.org/2000/svg",
