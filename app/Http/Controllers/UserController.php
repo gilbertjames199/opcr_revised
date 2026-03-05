@@ -471,18 +471,18 @@ class UserController extends Controller
     public function impersonate($id)
     {
         $user = $this->model->where('recid', $id)->first();
-        
+
         // Check if user exists and has a non-null department_code
         if (!$user || is_null($user->department_code)) {
             return redirect('/users')->with('error', 'This user cannot be impersonated. Department code is missing.');
         }
-        
+
         // Store the original user ID in session
         session(['impersonate_original_user' => auth()->user()->recid]);
-        
+
         // Log in as the target user
         Auth::login($user);
-        
+
         return redirect('/')->with([
             'message' => 'Now impersonating ' . $user->FullName,
             'impersonating' => true
@@ -495,19 +495,19 @@ class UserController extends Controller
         if (!session('impersonate_original_user')) {
             return redirect('/')->with('error', 'You are not impersonating anyone.');
         }
-        
+
         // Get the original user
         $original_user = $this->model->where('recid', session('impersonate_original_user'))->first();
-        
+
         if (!$original_user) {
             session()->forget('impersonate_original_user');
             return redirect('/')->with('error', 'Original user not found.');
         }
-        
+
         // Clear the impersonate session and log back in as original user
         session()->forget('impersonate_original_user');
         Auth::login($original_user);
-        
+
         return redirect('/')->with('message', 'Stopped impersonating. Back to ' . $original_user->FullName);
     }
 }

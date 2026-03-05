@@ -295,7 +295,10 @@
                                 <td colspan="2" :id="paps.id+'_revision_plans_attributed_amount'" class="text-end" :class="{
                                     'text-danger': has_comment('Title','GAD Attributed Amount',imp_amount,'attributed_amount','revision_plans', paps, paps.comments)
                                 }"><span v-if="parseFloat(paps.hgdg_score)>4">
-                                    {{ format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true) }}</span>
+                                    <!-- {{ format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true) }} -->
+                                    {{ format_number_conv(getGadAttributedAmount(imp_amount, paps.hgdg_score), 2, true) }}
+
+                                </span>
                                     <span v-else>0.00</span>
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','GAD Attributed Amount',format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true),'attributed_amount','revision_plans', paps, paps.comments)">*
@@ -3113,15 +3116,15 @@ export default {
             const budget = parseFloat(overallBudget) || 0;
 
             if (score < 4) {
-            return budget * 0;
+                return budget * 0;
             } else if (score < 8) {
-            return budget * 0.25;
+                return budget * 0.25;
             } else if (score < 15) {
-            return budget * 0.50;
+                return budget * 0.50;
             } else if (score < 20) {
-            return budget * 0.75;
+                return budget * 0.75;
             } else {
-            return budget * 1.00;
+                return budget * 1.00;
             }
         },
 
