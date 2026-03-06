@@ -4,7 +4,14 @@
     </Head>
 
     <div class="row gap-10 masonry pos-r">
-        <h1 v-if="revision_plan">{{ revision_plan.project_title }}</h1>
+        <h1 v-if="revision_plan">{{ revision_plan.project_title }}
+            <b>({{
+                revision_plan?.created_at && !isNaN(new Date(revision_plan.created_at))
+                    ? new Date(revision_plan.created_at).getFullYear()
+                    : ''
+                }})</b>
+        </h1>
+
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{  hgdg_checklist.box_number }}. {{  hgdg_checklist.sector }}
             </h3>
@@ -269,7 +276,8 @@ export default {
         submit3(id, comment){
             // alert(comment)
             // console.log(comment)
-            this.$inertia.post(
+            if(this.can_edit){
+                this.$inertia.post(
                 "/HGDGScore/commentstore",
                 {
                     // scores: jsonString,
@@ -282,6 +290,8 @@ export default {
                     replace: true,
                 }
             )
+            }
+
         },
         getTotalScore() {
             var tot= this.questions.reduce((total, q) => {

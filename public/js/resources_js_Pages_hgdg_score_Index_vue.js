@@ -121,15 +121,17 @@ __webpack_require__.r(__webpack_exports__);
     submit3: function submit3(id, comment) {
       // alert(comment)
       // console.log(comment)
-      this.$inertia.post("/HGDGScore/commentstore", {
-        // scores: jsonString,
-        id: id,
-        comment: comment
-      }, {
-        preserveScroll: true,
-        preserveState: true,
-        replace: true
-      });
+      if (this.can_edit) {
+        this.$inertia.post("/HGDGScore/commentstore", {
+          // scores: jsonString,
+          id: id,
+          comment: comment
+        }, {
+          preserveScroll: true,
+          preserveState: true,
+          replace: true
+        });
+      }
     },
     getTotalScore: function getTotalScore() {
       var tot = this.questions.reduce(function (total, q) {
@@ -280,6 +282,7 @@ var _hoisted_20 = ["onUpdate:modelValue", "name", "hidden", "value", "onChange"]
 var _hoisted_21 = ["hidden"];
 var _hoisted_22 = ["onUpdate:modelValue", "disabled", "onChange"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _$props$revision_plan;
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
   var _component_filtering = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("filtering");
@@ -288,7 +291,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return _toConsumableArray(_cache[6] || (_cache[6] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("title", null, "Questions", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [$props.revision_plan ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h1", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.revision_plan.project_title), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.hgdg_checklist.box_number) + ". " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.hgdg_checklist.sector), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<h6>List of User Accounts</h6>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [$props.revision_plan ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h1", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.revision_plan.project_title) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "(" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$revision_plan = $props.revision_plan) !== null && _$props$revision_plan !== void 0 && _$props$revision_plan.created_at && !isNaN(new Date($props.revision_plan.created_at)) ? new Date($props.revision_plan.created_at).getFullYear() : '') + ")", 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.hgdg_checklist.box_number) + ". " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.hgdg_checklist.sector), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<h6>List of User Accounts</h6>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.search = $event;
     }),
