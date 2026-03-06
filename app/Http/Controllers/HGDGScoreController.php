@@ -31,22 +31,7 @@ class HGDGScoreController extends Controller
         $allowedUsers = [
             39, 406, 437, 489, 545, 586, 605, 681, 682, 683, 684, 685
         ];
-        if (!in_array(auth()->user()->recid, $allowedUsers)) {
 
-            if($revplan->status>-1){
-                if($request->source=='rev_app'){
-
-                }else{
-                    $status_words = [
-                        '0'=>'Submitted',
-                        '1'=>'Reviewed',
-                        '2'=>'Locked'
-                    ];
-                    return redirect()->back()->with('error', 'Cannot access HGDG Evaluation. Revision Plan is already '.$status_words[$revplan->status].'.');
-                }
-
-            }
-        }
 
         // dd(auth()->user()->recid);
         $checklist_id = $revplan->checklist_id;
@@ -118,7 +103,28 @@ class HGDGScoreController extends Controller
         $idpaps = $revplan->idpaps;
         $idmfo = $revplan->idmfo;
         $scope = $revplan->scope;
-        return inertia('hgdg_score/Index', [
+        $loc='hgdg_score/Index';
+        $can_edit=true;
+        if (!in_array(auth()->user()->recid, $allowedUsers)) {
+
+            if($revplan->status>-1){
+                if($request->source=='rev_app'){
+
+                }else{
+                    $status_words = [
+                        '0'=>'Submitted',
+                        '1'=>'Reviewed',
+                        '2'=>'Locked'
+                    ];
+                    // $loc='hgdg_score/Uneditable';
+                    $can_edit=false;
+                    // return redirect()->back()->with('error', 'Cannot access HGDG Evaluation. Revision Plan is already '.$status_words[$revplan->status].'.');
+                }
+
+            }
+        }
+        // dd($loc, $can_edit);
+        return inertia($loc, [
             "questions" => $scores,
             "checklist_id" => $checklist_id,
             "hgdg_checklist" => $hgdg_checklist,
@@ -128,6 +134,7 @@ class HGDGScoreController extends Controller
             "scope" => $scope,
             "FFUNCCOD" => $revplan->FFUNCCOD,
             "revision_plan" => $revplan,
+            "can_edit"=>$can_edit,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -315,6 +322,10 @@ class HGDGScoreController extends Controller
     }
     public function store_one(Request $request, $id, $score)
     {
+        // dd($request->can_edit);
+        if (!$request->boolean('can_edit')) {
+            return redirect()->back()->with('message', 'Editing not allowed');
+        }
         $clean = trim($id, '{}"'); // removes {, }, and " if present
         $value = (int) $clean;
         $cleanscore = trim($score, '{}"');

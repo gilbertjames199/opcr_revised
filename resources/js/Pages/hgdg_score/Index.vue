@@ -62,11 +62,11 @@
                                 <tr >
                                     <th>Item Number</th>
                                     <th>Question</th>
-                                    <th>Not Done</th>
-                                    <th>Partly Done</th>
-                                    <th>Done</th>
+                                    <th v-if="can_edit">Not Done</th>
+                                    <th v-if="can_edit">Partly Done</th>
+                                    <th v-if="can_edit">Done</th>
                                     <!--<th>Score</th>-->
-                                    <th scope="col" style="text-align: right" >score</th>
+                                    <th scope="col" style="text-align: right" >Score</th>
                                     <th>Remarks</th>
                                 </tr>
                                 <!--v-if="showActionsColumn(user.can.canEditUsers, user.can.canUpdateUserPermissions, user.can.canDeleteUsers)"-->
@@ -75,7 +75,7 @@
                                 <tr v-for="(hgdg_score, index) in form.hgdg_scores">
                                     <th>{{ form.hgdg_scores[index].question_number }}</th>
                                     <th>{{ form.hgdg_scores[index].question }}</th>
-                                    <th>
+                                    <th v-if="can_edit">
                                         <input type="radio"
                                             v-model="form.hgdg_scores[index].score"
                                             :name="form.hgdg_scores[index].id"
@@ -84,9 +84,7 @@
                                             @change="submit2(form.hgdg_scores[index].id,form.hgdg_scores[index].score)"
                                         />
                                     </th>
-                                    <th>
-                                        <!--@click="viewScore(hgdg_score.score)"-->
-                                        <!-- {{ form.hgdg_scores[index].q_score }}--{{ form.hgdg_scores[index].score }} -->
+                                    <th v-if="can_edit">
                                         <input type="radio"
                                             v-model="form.hgdg_scores[index].score"
                                             :name="form.hgdg_scores[index].id"
@@ -96,15 +94,7 @@
                                         /><br>
 
                                     </th>
-                                    <th>
-                                        <!-- {{ form.hgdg_scores[index].q_score2}} --{{ form.hgdg_scores[index].q_score * 2 }}--{{ form.hgdg_scores[index].score }} -->
-                                        <!-- <input type="radio"
-                                            v-model="form.hgdg_scores[index].score"
-                                            :name="form.hgdg_scores[index].id"
-                                            v-bind:hidden="hgdg_score.has_subquestion!='0'"
-                                            :value="format_number_conv(form.hgdg_scores[index].q_score * 2)"
-
-                                        /> -->
+                                    <th v-if="can_edit">
                                         <input type="radio"
                                             v-model="form.hgdg_scores[index].score"
                                             :name="form.hgdg_scores[index].id"
@@ -116,6 +106,7 @@
                                     <th><div v-bind:hidden="hgdg_score.has_subquestion!='0'">{{ format_number_conv(setScore(form.hgdg_scores[index].score),2,false) }}</div></th>
                                     <th>
                                         <textarea v-model="form.hgdg_scores[index].result_comment"
+                                            :disabled="!can_edit"
                                             @change="submit3(form.hgdg_scores[index].id,form.hgdg_scores[index].result_comment)"
                                         >
 
@@ -141,6 +132,7 @@
                 </div> -->
 
                 <div>
+                    <!-- can_edit: {{ can_edit }} -->
                     <b>TOTAL:&nbsp;</b>
                     <u>{{ total_score }}</u>
                 </div>
@@ -183,6 +175,7 @@ export default {
         scope: String,
         FFUNCCOD: String,
         revision_plan: Object,
+        can_edit: Boolean
     },
     mounted(){
         this.form.hgdg_scores=this.questions
@@ -263,6 +256,7 @@ export default {
                 {
                     // scores: jsonString,
                     // idrevplan: this.idrevplan
+                    can_edit: this.can_edit
                 },
                 {
                     preserveScroll: true,
