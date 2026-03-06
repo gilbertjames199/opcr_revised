@@ -148,7 +148,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <td>GAD Attributed Amount </td>
+                        <td>GAD Attributed Amount {{gad_version}}</td>
                         <td>{{ format_number_conv(revs_attributed,2,true) }}</td>
                         <td>{{ format_number_conv(GAD_total,2,true) }}</td>
                         <td>
@@ -629,6 +629,7 @@ export default {
         s_ps_non: Number,
         s_fe_gad: Number,
         s_fe_non: Number,
+        gad_version: String,
     },
     data() {
         return{
