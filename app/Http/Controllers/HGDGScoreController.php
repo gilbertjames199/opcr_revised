@@ -105,11 +105,16 @@ class HGDGScoreController extends Controller
         $scope = $revplan->scope;
         $loc='hgdg_score/Index';
         $can_edit=true;
+        // dd($revplan);
         if (!in_array(auth()->user()->recid, $allowedUsers)) {
 
             if($revplan->status>-1){
                 if($request->source=='rev_app'){
-
+                    if($revplan->status>0){
+                        $can_edit=false;
+                    }else{
+                        $can_edit=true;
+                    }
                 }else{
                     $status_words = [
                         '0'=>'Submitted',
@@ -121,6 +126,10 @@ class HGDGScoreController extends Controller
                     // return redirect()->back()->with('error', 'Cannot access HGDG Evaluation. Revision Plan is already '.$status_words[$revplan->status].'.');
                 }
 
+            }
+        }else{
+            if($revplan->status>-1){
+                $can_edit=false;
             }
         }
         // dd($loc, $can_edit);
