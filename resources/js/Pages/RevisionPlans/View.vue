@@ -637,10 +637,11 @@
                                         <td><span v-if="paps.is_strategy_based==1">{{ dat.ccet_code }}</span></td>
                                         <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
                                     </tr>
-                                    <tr :id="dat.id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
+                                    <tr :id="dat.strategy_id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
                                         <td :class="{
                                             'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
                                         }" colspan="12"><b>{{ dat.description }}</b>
+                                        <!-- {{dat.strategy_id  }}_strategy_projects_strategy -->
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
                                             </button>
@@ -2803,11 +2804,11 @@
                                                 resolvePapsTargetId(paps, comment.column_name, commentcolumn name w)
                                                 : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
                                                         {{ comment.comment }}
-                                                        <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
-                                                         <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
+                                                        <!-- <p>{{comment.table_row_id}}_{{comment.table_name}}_{{comment.column_name}}</p> -->
+                                                         <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
                                                         <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p>
-                                                        <p>status: {{ comment}}</p> -->
-                                                                            <!-- {{
+                                                        <p>status: {{ comment}}</p>
+                                                                             {{
                                                                     ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                                         ? comment.column_name
                                                                         : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
