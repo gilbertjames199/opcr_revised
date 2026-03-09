@@ -3106,9 +3106,9 @@ class RevisionPlanController extends Controller
 
         if($status=="0"){
             if($gad_status=="1"){
-                return "Submitted";
+                return "PPDO Review on-going";
             }else{
-                return "Submitted for GAD Review";
+                return "GAD Review on-going";
             }
 
         }
