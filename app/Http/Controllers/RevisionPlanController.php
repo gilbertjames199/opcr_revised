@@ -4318,7 +4318,7 @@ class RevisionPlanController extends Controller
                 'idpaps' => $item->idpaps,
                 'status' => $item->status,
                 'warning' => $warning,
-                'sector' => $item->paps->sector
+                'sector' => optional(optional($item)->paps)->sector
             ];
         });
     }

@@ -702,7 +702,17 @@
                                                         <template v-for="(pair, i) in getPairedOutputs(act.activityProject[0])" :key="i" >
                                                             <tr style="height: 100%;">
                                                                 <!-- Target Indicator -->
-                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;"
+                                                                <td class="align-top"
+                                                                    style="width: 25%;
+                                                                            height: 100%;
+                                                                            max-width:0;
+                                                                            border: 1px solid #000;
+                                                                            white-space:normal;
+                                                                            overflow:hidden;
+                                                                            text-overflow:clip;
+                                                                            word-break:break-word;
+                                                                            overflow-wrap:anywhere;
+                                                                            "
                                                                     :id="(pair.outcome_description
                                                                         ? pair.id + '_expected_revised_outcomes_target_indicator'
                                                                         : pair.id + '_expected_revised_outputs_target_indicator')"
@@ -713,7 +723,8 @@
                                                                         has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator','expected_revised_outputs', pair, pair.comments)
                                                                     }"
                                                                     >{{ pair.target_indicator }}
-                                                                        <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
+                                                                        <span v-if="pair.quantity>0  && !/\d+(\s*[a-zA-Z]+)?$/.test(pair.target_indicator)">
+                                                                            - {{ pair.quantity }}</span>
                                                                     </span>
 
                                                                     <br><br>
