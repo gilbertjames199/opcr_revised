@@ -4218,11 +4218,11 @@ class RevisionPlanController extends Controller
                     ->groupBy('revision_plan_id')
                     ->havingRaw('SUM(amount) > 0');
             })
-
-            ->when($request->source == 'rev_app', function ($query) {
+            ->where('status', '>=', '0')
+            // ->when($request->source == 'rev_app', function ($query) {
                 // dd("rev app ang source");
-                $query->where('status', '>=', '0');
-            })
+                // $query->where('status', '>=', '0');
+            // })
             ->when($request->office, function ($query) use ($request) {
                 $query->whereHas('paps', function ($query_inner) use ($request) {
                     $query_inner->where('FFUNCCOD', $request->office);
