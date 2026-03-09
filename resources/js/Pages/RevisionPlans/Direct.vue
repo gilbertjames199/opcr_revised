@@ -734,6 +734,15 @@
                     <option>Economic Services</option>
                 </select>
             </div>
+            <div class="d-flex align-items-center mb-2">
+                <label class="me-2" style="width: 80px;">Year:</label>
+                <select v-model="ipp_list_year" class="form-select w-auto">
+                    <option>2025</option>
+                    <option>2026</option>
+                    <option>2027</option>
+
+                </select>
+            </div>
             <!-- {{ list_link }} -->
             <div class="d-flex justify-content-center">
 
@@ -1152,6 +1161,7 @@ export default {
             list_link: "",
             ipp_list_office: "",
             ipp_list_sector: "",
+            ipp_list_year: "",
 
             //For Project Design
             ReturnWithAmmendmentsModalVisible: false,
@@ -1876,7 +1886,7 @@ export default {
             var linkt = "https://";
             var jasper_ip = this.jasper_ip;
             var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FList_IPP&standAlone=true&decorate=no&output=pdf';
-            var params = '&sector=' + this.ipp_list_sector + '&office=' + this.ipp_list_office;
+            var params = '&sector=' + this.ipp_list_sector + '&office=' + this.ipp_list_office+'&year'+this.ipp_list_year;
             var link1 = linkt + jasper_ip + jasper_link+params;
             return link1;
         },

@@ -3048,10 +3048,11 @@ class RevisionPlanController extends Controller
             })
             ->whereHas('paps', function ($query) use ($dept_id) {
                 $query->where('department_code', $dept_id);
+            })
+            ->where('status','>',-1)
+            ->when($request->year, function($query)use($request){
+                $query->whereYear('date_start', $request->year);
             });
-
-
-
         // if ($dept_id) {
         //     $query->whereHas('paps', function($query1)use($dept_id){
         //         // $query->where('department_code', $dept_id);
@@ -3087,6 +3088,7 @@ class RevisionPlanController extends Controller
                     'FFUNCTION' => trim(optional(optional($item->paps)->office)->FFUNCTION),
                     'id' => $item->id,
                     'project_title' => $item->project_title,
+                    'year'=>optional($item)->date_start?\Carbon\Carbon::parse($item->date_start)->year:'',
                     'type' => $item->type,
                     'version' => $item->version,
                     'amount' => $budgetary_requirement,
