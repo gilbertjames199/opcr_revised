@@ -3101,7 +3101,7 @@ class RevisionPlanController extends Controller
     }
     protected function set_status($status, $gad_status){
         if($status=="1"){
-            return "Reviewed";
+            return "Approved";
         }
 
         if($status=="0"){
