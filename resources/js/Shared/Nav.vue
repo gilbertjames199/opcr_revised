@@ -142,8 +142,8 @@
                             <span> &nbsp;&nbsp;Stop Impersonating</span>
                             </Link>
                         </li>
-                        <li role="separator" class="divider"></li>
-                        <li>
+                        <li v-if="!$page.props.flash.impersonating" role="separator" class="divider"></li>
+                        <li v-if="!$page.props.flash.impersonating">
                             <a @click="logout()" href="" class="
                                     d-b
                                     td-n

@@ -506,7 +506,7 @@
                                     <!-- {{ dat }} -->
                                 </td>
                                 <!-- Review/Approve -->
-                                <td v-if="my_source=='rev_app'">
+                                <td >
                                     <!-- Review -->
                                      <!-- {{ dat.id }}<br>
                                     {{ dat.budget_sum }}, {{ dat.imp_amount }} {{  dat.comments_count }}
@@ -515,23 +515,59 @@
                                      <!-- -{{ dat }} -->
                                       <!-- :disabled="!canReviewApproveGAD()" -->
                                        <!-- backgroundColor: canReviewApproveGAD() ? 'blue' : '#a0c4ff', -->
-                                    <button
-                                        v-if="dat.gad_status=='0'"
-                                        @click="statusAction(dat, 1, 'gad_status')"
+                                    <span v-if="my_source=='rev_app'">
+                                        <button
+                                            v-if="dat.gad_status=='0'"
+                                            @click="statusAction(dat, 1, 'gad_status')"
 
-                                        :style="{
-                                        padding: '4px 10px',
-                                        border: 'none',
-                                        borderRadius: '4px',
-                                        backgroundColor: 'blue' ,
-                                        color: 'white',
-                                        cursor: 'pointer',
-                                        fontWeight: 'bold',
-                                        marginRight: '4px'
-                                        }"
-                                    >
-                                        GAD Review
-                                    </button>
+                                            :style="{
+                                            padding: '4px 10px',
+                                            border: 'none',
+                                            borderRadius: '4px',
+                                            backgroundColor: 'blue' ,
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold',
+                                            marginRight: '4px'
+                                            }"
+                                        >
+                                            GAD Review
+                                        </button>
+                                        <button
+                                            v-if="dat.status == '0' && dat.gad_status=='1'"
+
+                                            @click="statusAction(dat, 1, 'status')"
+                                            :style="{
+                                                padding: '4px 10px',
+                                                border: 'none',
+                                                borderRadius: '4px',
+                                                backgroundColor: 'blue',
+                                                color: 'white',
+                                                cursor: 'pointer',
+                                                fontWeight: 'bold',
+                                                marginRight: '4px'
+                                            }"
+                                        >
+                                            Approve
+                                        </button>
+                                    </span>
+                                    <span v-else>
+                                        <button
+                                            v-if="dat.status == '1' && parseInt(dat.number_of_clones)<1 && dat.type==='p'"
+                                            :style="{
+                                            padding: '4px 10px',
+                                            border: 'none',
+                                            borderRadius: '4px',
+                                            backgroundColor: 'darkgreen',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold',
+                                            marginRight: '4px'
+                                            }"
+                                        >
+                                            Generate Project Design
+                                        </button>
+                                    </span>
                                     <!-- {{ reviewers }}
                                     reviewers
                                     {{ auth.user.recid }}
@@ -546,42 +582,13 @@
                                                     dat.comments_count > 0 ||
                                                     Math.round(parseFloat(dat.imp_amount)) !== Math.round(parseFloat(dat.budget_sum))
                                                     ? '#a0c4ff' : 'blue', -->
-                                    <button
-                                        v-if="dat.status == '0' && dat.gad_status=='1'"
 
-                                        @click="statusAction(dat, 1, 'status')"
-                                        :style="{
-                                            padding: '4px 10px',
-                                            border: 'none',
-                                            borderRadius: '4px',
-                                            backgroundColor: 'blue',
-                                            color: 'white',
-                                            cursor: 'pointer',
-                                            fontWeight: 'bold',
-                                            marginRight: '4px'
-                                        }"
-                                    >
-                                        Approve
-                                    </button>
 
                                     <!-- Approve -->
 
                                     <!-- @click="statusAction(dat, 2)" -->
-                                    <button
-                                        v-if="dat.status == '1' && parseInt(dat.number_of_clones)<1 && dat.type==='p'"
-                                        :style="{
-                                        padding: '4px 10px',
-                                        border: 'none',
-                                        borderRadius: '4px',
-                                        backgroundColor: 'darkgreen',
-                                        color: 'white',
-                                        cursor: 'pointer',
-                                        fontWeight: 'bold',
-                                        marginRight: '4px'
-                                        }"
-                                    >
-                                        Generate Project Design
-                                    </button>
+                                     <!-- {{dat.number_of_clones}} -->
+
                                 </td>
                                 <!-- Full Edit -->
                                 <!-- source: {{ my_source }} -->

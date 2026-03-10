@@ -723,7 +723,9 @@
                                                                         has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator','expected_revised_outputs', pair, pair.comments)
                                                                     }"
                                                                     >{{ pair.target_indicator }}
-                                                                        <span v-if="pair.quantity>0  && !/\d+(\s*[a-zA-Z]+)?$/.test(pair.target_indicator)">
+                                                                        <span v-if="pair.quantity>0
+                                                                            && !/\d+(\s*[a-zA-Z]+)?$/.test(pair.target_indicator)
+                                                                            && !/-\s*\d{1,3}(,\d{3})*/.test(pair.target_indicator)">
                                                                             - {{ pair.quantity }}</span>
                                                                     </span>
 
