@@ -587,7 +587,7 @@ class PAPController extends Controller
             "department_code" => $department_code,
             "offices" => $offices,
             "offices_shared" => $offices_shared,
-            'office' => $office->FFUNCTION,
+            'office' => optional($office)->FFUNCTION,
             "data" => $paginatedResult,
             "mfos" => $mfos,
             "filters" => $request->only(['search']),

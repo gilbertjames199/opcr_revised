@@ -29,7 +29,7 @@ class BudgetRequirementController extends Controller
     public function index(Request $request, $idrev)
     {
         // $start = microtime(true);
-        dd("budgetary reqwuirements");
+        // dd("budgetary reqwuirements");
         // $data = $this->model->where('revision_plan_id','=',$idrev)
         //         ->orderBy('category', 'desc')
         //         ->orderBy('particulars')
