@@ -458,8 +458,9 @@
                                         Recall
                                     </button>
                                     <!-- Generate Project Design button when status = 'approved' (example) -->
+                                     <!-- number of clones: {{dat.number_of_clones}} -->
                                     <button
-                                        v-if="dat.status == 1 && parseInt(dat.number_of_clones)<1 && dat.type==='p'"
+                                        v-if="dat.status == 1 && parseInt(dat.number_of_clones_design)<1 && dat.type==='p'"
                                         @click="generateProjectDesign(dat.id, 'd')"
                                         :style="{
                                             padding: '4px 10px',

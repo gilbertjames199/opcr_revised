@@ -2431,6 +2431,20 @@
                     <h3 id="partnership_sustainability" v-if="paps.partnership !== null">
                         VIII. <Link>Partnership and Sustainability</Link>
                     </h3>
+                    <h3 id="partnership_sustainability" v-if="paps.partnership !== null">
+                        VIII. <Link
+                            :class="{
+                                'text-danger': has_comment('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)
+                            }"
+                            :id="paps.id + '_revision_plans_implementing_team'"
+                        >Partnership and Sustainability</Link>
+                        <button v-if="can_view_comment()" class="superscript-btn"
+                            @click="handleClick('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)">*
+                        </button>
+                        <button v-if="has_comment('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)" class="superscript-btn"
+                            @click="handleClick('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)">*
+                        </button>
+                    </h3>
                     <div align="justify" style="white-space: pre-line">
                         <div v-html="paps.partnership"></div>
                     </div>

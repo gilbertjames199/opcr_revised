@@ -29,6 +29,7 @@ class BudgetRequirementController extends Controller
     public function index(Request $request, $idrev)
     {
         // $start = microtime(true);
+        dd("budgetary reqwuirements");
         // $data = $this->model->where('revision_plan_id','=',$idrev)
         //         ->orderBy('category', 'desc')
         //         ->orderBy('particulars')
@@ -69,6 +70,7 @@ class BudgetRequirementController extends Controller
                 ->orderBy('category', 'desc')
                 ->orderBy('particulars')
                 ->get();
+        // dd($all_budget_requirements);
         if($gad_version=="2"){
             //MOOE
             $mooe_gad = collect();

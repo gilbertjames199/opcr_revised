@@ -126,7 +126,8 @@ class RevisionPlanController extends Controller
             $data = [];
             if ($popsp_agency) {
 
-                $data = $this->getPopsPProfilesDirect($request, $budget_controller, $dept_id, $popsp_agency, $year_filtering);
+                // $data = $this->getPopsPProfilesDirect($request, $budget_controller, $dept_id, $popsp_agency, $year_filtering);
+                $data = $this->getDirect($request, $dept_id, $popsp_agency, $budget_controller, $year_filtering);
             } else {
                 if ($request->source == 'sip') {
                     $data = $this->getSip($request, $dept_id, $popsp_agency, $budget_controller, $year_filtering);
@@ -603,6 +604,9 @@ class RevisionPlanController extends Controller
                 // if ($item->id == 201) {
                 //     dd($item);
                 // }
+                // if($item->id==91){
+                //     dd($item);
+                // }
                 return [
                     // 'FFUNCTION' => $item->FFUNCTION,
                     'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
@@ -614,6 +618,7 @@ class RevisionPlanController extends Controller
                     'budget_sum' => $budgetary_requirement,
                     'imp_amount' => $imp_amount,
                     'status' => $item->status,
+                    'number_of_clones_design' => $item->clonedVersions->where('type', 'd')->count(),
                     'number_of_clones' => $item->clonedVersions->count(),
                     'return_request_status' => $item->return_request_status,
                     'year'=>$year,

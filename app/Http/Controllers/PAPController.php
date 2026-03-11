@@ -501,7 +501,7 @@ class PAPController extends Controller
         $FFUNCCODE = auth()->user()->office;
         $office = FFUNCCOD::where('FFUNCCOD', $FFUNCCODE)->first();
         // dd(auth()->user());
-        $department_code = $office->department_code;
+        $department_code = optional($office)->department_code;
         $divisions = OfficeDivision::where('department_code', $department_code)
             ->orderBy('division_name1', 'ASC')
             ->get();
