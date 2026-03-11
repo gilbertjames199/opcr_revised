@@ -1592,7 +1592,7 @@
                             :class="{
                                 'text-danger': has_comment('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)
                             }"
-                            :id="paps.id + '_revision_plans_implementing_team'"
+                            :id="paps.id + '_revision_plans_partnership'"
                         >Partnership and Sustainability</Link>
                         <button v-if="can_view_comment()" class="superscript-btn"
                             @click="handleClick('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)">*
@@ -1607,9 +1607,25 @@
                     <br>
                     <br>
                     <!--MONITORING & EVALUATION-->
-                    <h3 id="monitoring_evaluation" v-if="monitors.length > 0 || paps.monitoring !== null">
+                    <!-- <h3 id="monitoring_evaluation" v-if="monitors.length > 0 || paps.monitoring !== null">
                         IX. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
                             ? `/EvaluationMechanismTool/${paps.id}`:null">Monitoring and Evaluation</Link>
+                    </h3> -->
+
+                    <h3  id="monitoring_evaluation" v-if="monitors.length > 0 || paps.monitoring !== null">
+                        IX. <Link :id="paps.id + '_revision_plans_monitoring'"
+                            :class="{
+                                'text-danger': has_comment('Monitoring and Evaluation','Monitoring and Evaluation',paps.monitoring,'monitoring','revision_plans', paps, paps.comments)
+                            }"
+
+                        >Monitoring and Evaluation</Link>
+
+                        <button v-if="can_view_comment()" class="superscript-btn"
+                            @click="handleClick('Monitoring and Evaluation','Monitoring and Evaluation',paps.monitoring,'monitoring','revision_plans', paps, paps.comments)">*
+                        </button>
+                        <button v-if="has_comment('Monitoring and Evaluation','Monitoring and Evaluation',paps.monitoring,'monitoring','revision_plans', paps, paps.comments)" class="superscript-btn"
+                            @click="handleClick('Monitoring and Evaluation','Monitoring and Evaluation',paps.monitoring,'monitoring','revision_plans', paps, paps.comments)">*
+                        </button>
                     </h3>
                     <div align="justify" style="white-space: pre-line">
                         <div v-html="paps.monitoring"></div>
@@ -1697,7 +1713,18 @@
                     <!--RISK MANAGEMENT-->
                     <h3 id="risk_management" v-if="risks.length > 0 || paps.risk_management !== null">
                         X. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/RiskManagement/${paps.id}`:null">Risk Management</Link>
+                            ? `/RiskManagement/${paps.id}`:null"
+                            :class="{
+                                'text-danger': has_comment('Risk Management','Risk Management',paps.risk_management,'risk_management','revision_plans', paps, paps.comments)
+                            }"
+                            :id="paps.id + '_revision_plans_risk_management'"
+                        >Risk Management</Link>
+                        <button v-if="can_view_comment()" class="superscript-btn"
+                            @click="handleClick('Risk Management','Risk Management',paps.risk_management,'risk_management','revision_plans', paps, paps.comments)">*
+                        </button>
+                        <button v-if="has_comment('Risk Management','Risk Management',paps.risk_management,'risk_management','revision_plans', paps, paps.comments)" class="superscript-btn"
+                            @click="handleClick('Risk Management','Risk Management',paps.risk_management,'risk_management','revision_plans', paps, paps.comments)">*
+                        </button>
                     </h3>
                     <div align="justify" style="white-space: pre-line">
                         <div v-html="paps.risk_management"></div>
@@ -1961,6 +1988,7 @@
                                                     </button>
 
                                                 </td>
+
                                                 <!-- comment.column_name -->
                                                 <td style="border: none !important; vertical-align: top; text-align:left;">
                                                     <!-- @click="scrollToSection(
@@ -1968,6 +1996,7 @@
                                                                 ? `${comment.id}_${comment.table_name}_${comment.column_name}`
                                                                 : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
                                                         )" -->
+                                                        <p>{{ comment.user?.FullName }} commented: </p>
                                                     <span
                                                         class="clickable-comment"
 
@@ -1984,6 +2013,7 @@
                                                         :class="'comment-rejected'"
                                                     >
                                                         {{ comment.comment }}
+                                                        <!-- <p>{{comment.table_row_id}}_{{comment.table_name}}_{{comment.column_name}}</p> -->
                                                                             <!-- {{
                                                                     ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                                         ? comment.column_name
@@ -2744,7 +2774,9 @@ export default {
                 payload.context_after = this.contextAfter;
             }
             await this.$nextTick();
-            this.$inertia.post('/revision-plan-comments/store', payload);
+            this.$inertia.post('/revision-plan-comments/store', payload, {
+                preserveScroll: true
+            });
             this.closeCommentModal();
             setTimeout(() => {
                 this.comment = "";

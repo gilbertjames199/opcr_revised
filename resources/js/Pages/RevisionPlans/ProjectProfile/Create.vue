@@ -1845,7 +1845,12 @@
                     </div>
                     <!--VIII. PARTNERSHIP & SUSTAINABILITY-->
                     <h3 id="partnership_sustainability">
-                        VIII. <Link>Partnership and Sustainability</Link>
+                        VIII. <Link
+                        :class="{
+                                'text-danger': has_comment('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)
+                            }"
+                            :id="paps.id + '_revision_plans_partnership'"
+                        >Partnership and Sustainability</Link>
                     </h3>
                     <div align="justify" style="white-space: pre-line">
                         <QuillEditor theme="snow" v-model:content="form.partnership" contentType="html"
@@ -1856,7 +1861,13 @@
                     <!--XI. MONITORING & EVALUATION-->
                     <h3 id="monitoring_evaluation">
                         IX. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/EvaluationMechanismTool/${paps.id}`:null">Monitoring and Evaluation</Link>
+                            ? `/EvaluationMechanismTool/${paps.id}`:null"
+                            :id="paps.id + '_revision_plans_monitoring'"
+                            :class="{
+                                'text-danger': has_comment('Monitoring and Evaluation','Monitoring and Evaluation',paps.monitoring,'monitoring','revision_plans', paps, paps.comments)
+                            }"
+
+                            >Monitoring and Evaluation</Link>
                     </h3>
                     <p>
                         <button class="btn btn-success btn-sm text-white"
@@ -1982,7 +1993,12 @@
                     <!--RISK MANAGEMENT-->
                     <h3 id="risk_management">
                         X. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/RiskManagement/${paps.id}`:null">Risk Management</Link>
+                            ? `/RiskManagement/${paps.id}`:null"
+                            :class="{
+                                'text-danger': has_comment('Risk Management','Risk Management',paps.risk_management,'risk_management','revision_plans', paps, paps.comments)
+                            }"
+                            :id="paps.id + '_revision_plans_risk_management'"
+                        >Risk Management</Link>
                     </h3>
                     <p>
                         <button class="btn btn-success btn-sm text-white"
@@ -2241,6 +2257,7 @@
                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
                                 </svg>
                                 {{ comment.comment }}
+                                <!-- <p>{{comment.table_row_id}}_{{comment.table_name}}_{{comment.column_name}}</p> -->
                                 <!-- {{
                                     ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                         ? comment.column_name
@@ -3836,7 +3853,8 @@ export default {
                     column_name: this.comment_column,
                     comment_status: 0,
                     comment: this.comment,
-                }
+                },
+                preserveScroll: true
             });
             this.closeCommentModal();
                         setTimeout(() => {

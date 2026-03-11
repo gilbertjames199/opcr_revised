@@ -1413,7 +1413,8 @@ class RevisionPlanController extends Controller
     function getAllRevisionPlanComments(int $revisionPlanId)
     {
         // 1️⃣ Comments directly on revision_plans
-        $revisionPlanComments = RevisionPlanComment::where('table_name', 'revision_plans')
+        $revisionPlanComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'revision_plans')
             ->where('table_row_id', $revisionPlanId);
 
         // 2️⃣ activity_projects comments
@@ -1421,7 +1422,8 @@ class RevisionPlanController extends Controller
             ->where('project_id', $revisionPlanId)
             ->pluck('id');
 
-        $activityComments = RevisionPlanComment::where('table_name', 'activity_projects')
+        $activityComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'activity_projects')
             ->whereIn('table_row_id', $activityProjectIds);
 
         // 3️⃣ expected_revised_outcomes / outputs linked to activity_projects
@@ -1433,10 +1435,12 @@ class RevisionPlanController extends Controller
             ->whereIn('activity_project_id', $activityProjectIds)
             ->pluck('id');
 
-        $activityOutcomeComments = RevisionPlanComment::where('table_name', 'expected_revised_outcomes')
+        $activityOutcomeComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'expected_revised_outcomes')
             ->whereIn('table_row_id', $outcomeIds);
 
-        $activityOutputComments = RevisionPlanComment::where('table_name', 'expected_revised_outputs')
+        $activityOutputComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'expected_revised_outputs')
             ->whereIn('table_row_id', $outputIds);
 
         // 4️⃣ strategy_projects comments
@@ -1444,7 +1448,8 @@ class RevisionPlanController extends Controller
             ->where('project_id', $revisionPlanId)
             ->pluck('id');
 
-        $strategyComments = RevisionPlanComment::where('table_name', 'strategy_projects')
+        $strategyComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'strategy_projects')
             ->whereIn('table_row_id', $strategyProjectIds);
 
         // strategy outcomes / outputs
@@ -1456,10 +1461,12 @@ class RevisionPlanController extends Controller
             ->whereIn('strategy_project_id', $strategyProjectIds)
             ->pluck('id');
 
-        $strategyOutcomeComments = RevisionPlanComment::where('table_name', 'expected_revised_outcomes')
+        $strategyOutcomeComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'expected_revised_outcomes')
             ->whereIn('table_row_id', $strategyOutcomeIds);
 
-        $strategyOutputComments = RevisionPlanComment::where('table_name', 'expected_revised_outputs')
+        $strategyOutputComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'expected_revised_outputs')
             ->whereIn('table_row_id', $strategyOutputIds);
 
         // 5️⃣ budget_requirements
@@ -1467,7 +1474,8 @@ class RevisionPlanController extends Controller
             ->where('revision_plan_id', $revisionPlanId)
             ->pluck('id');
 
-        $budgetComments = RevisionPlanComment::where('table_name', 'budget_requirements')
+        $budgetComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'budget_requirements')
             ->whereIn('table_row_id', $budgetIds);
 
         // 6️⃣ monitoring_and_evaluations
@@ -1475,7 +1483,8 @@ class RevisionPlanController extends Controller
             ->where('revision_plan_id', $revisionPlanId)
             ->pluck('id');
 
-        $monitoringComments = RevisionPlanComment::where('table_name', 'monitoring_and_evaluations')
+        $monitoringComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'monitoring_and_evaluations')
             ->whereIn('table_row_id', $monitoringIds);
 
         // 7️⃣ risk_manangements
@@ -1483,7 +1492,8 @@ class RevisionPlanController extends Controller
             ->where('revision_plan_id', $revisionPlanId)
             ->pluck('id');
 
-        $riskComments = RevisionPlanComment::where('table_name', 'risk_manangements')
+        $riskComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'risk_manangements')
             ->whereIn('table_row_id', $riskIds);
 
         // 8️⃣ team_plans
@@ -1491,12 +1501,15 @@ class RevisionPlanController extends Controller
             ->where('revision_plan_id', $revisionPlanId)
             ->pluck('id');
 
-        $teamComments = RevisionPlanComment::where('table_name', 'team_plans')
+        $teamComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'team_plans')
             ->whereIn('table_row_id', $teamIds);
 
         // Signatories
-        $signatories = Signatory::where('revision_plan_id', $revisionPlanId)->pluck('id');
-        $signatoryComments = RevisionPlanComment::where('table_name', 'signatories')
+        $signatories = Signatory::with(['user'])
+            ->where('revision_plan_id', $revisionPlanId)->pluck('id');
+        $signatoryComments = RevisionPlanComment::with(['user'])
+            ->where('table_name', 'signatories')
             ->whereIn('table_row_id', $signatories);
         // dd($signatories);
 
@@ -1513,13 +1526,35 @@ class RevisionPlanController extends Controller
             ->unionAll($riskComments)
             ->unionAll($teamComments)
             ->unionAll($signatoryComments);
+
+        // $commentIds = $allComments->pluck('id');
+
+        // $allComments = DB::table(DB::raw("({$unionQuery->toSql()}) as comments"))
+        //     ->mergeBindings($unionQuery->getQuery()) // important to merge bindings
+        //     ->orderBy('comment_status', 'asc')
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
         $allComments = DB::table(DB::raw("({$unionQuery->toSql()}) as comments"))
-            ->mergeBindings($unionQuery->getQuery()) // important to merge bindings
+            ->mergeBindings($unionQuery->getQuery())
             ->orderBy('comment_status', 'asc')
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $userIds = $allComments->pluck('user_id')->unique();
+
+        // $users = User::whereIn('recid', $userIds)->get()->keyBy('id');
+        $users = User::whereIn((new User)->getKeyName(), $userIds)
+            ->get()
+            ->keyBy((new User)->getKeyName());
+        // dd($users, $userIds);
+        $allComments->map(function ($comment) use ($users) {
+            $comment->user = $users[$comment->user_id] ?? null;
+            return $comment;
+        });
         return $allComments;
+
+
+// The user relation is not included in allCOmments
     }
 
     public function budgetRequirements($id)
