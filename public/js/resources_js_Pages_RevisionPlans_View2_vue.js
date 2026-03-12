@@ -804,6 +804,31 @@ function _readOnlyError(r) { throw new TypeError('"' + r + '" is read-only'); }
       } else {
         return budget * 1.00;
       }
+    },
+    // RETURN/REVIEW/APPROVE
+    statusAction: function statusAction(revision_plan, newStatus, column) {
+      var actions = {
+        0: "Submit",
+        "-1": "Recall",
+        1: "Review",
+        2: "Approve",
+        "-2": "Return",
+        5: "Request for Return",
+        7: "Approve the request for return for"
+      };
+      var actionLabel = actions[newStatus];
+      var typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+      var confirmMessage = "Are you sure you want to ".concat(actionLabel, " the ").concat(typeLabel, " entitled \"").concat(revision_plan.project_title, "\"?");
+      var actionlabelcomplete = actionLabel + ' ' + typeLabel;
+      if (!confirm(confirmMessage)) return;
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__.Inertia.post("/status/revision/update/".concat(revision_plan.id, "/").concat(actionlabelcomplete, "/").concat(newStatus), {
+        remarks: this.remarks,
+        // ← SEND IT HERE
+        column: column
+      }, {
+        preserveScroll: true,
+        preserveState: true // ⭐ keeps pagination page
+      });
     }
   }
 });

@@ -3175,7 +3175,36 @@ export default {
                 return budget * 1.00;
             }
         },
+        // RETURN/REVIEW/APPROVE
+        statusAction(revision_plan, newStatus, column) {
+            const actions = {
+                0: "Submit",
+                "-1": "Recall",
+                1: "Review",
+                2: "Approve",
+                "-2": "Return",
+                5: "Request for Return",
+                7: "Approve the request for return for"
+            };
+            const actionLabel = actions[newStatus];
+            const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
 
+            const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+            const actionlabelcomplete = actionLabel + ' ' + typeLabel;
+            if (!confirm(confirmMessage)) return;
+
+            Inertia.post(
+                `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
+                {
+                    remarks: this.remarks,   // ← SEND IT HERE
+                    column: column
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true   // ⭐ keeps pagination page
+                }
+            );
+        },
     }
 }
 </script>
