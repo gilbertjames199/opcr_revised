@@ -4597,13 +4597,13 @@ class RevisionPlanController extends Controller
             ->get()
             ->map(function ($item) use ($request) {
                 $strategy = optional($item->strategy);
-                if ($strategy) {
-                    $strategyArray = $strategy->toArray();
-                    $strategyArray['strategy'] = $strategyArray['description'];
-                    unset($strategyArray['description']);
+                // if ($strategy) {
+                //     $strategyArray = $strategy->toArray();
+                //     $strategyArray['strategy'] = $strategyArray['description'];
+                //     unset($strategyArray['description']);
 
-                    $item->strategy = $strategyArray;
-                }
+                //     $item->strategy = $strategyArray;
+                // }
                 $act=$strategy->activity
                         ? $strategy->activity->flatMap(function ($act) use ($request) {
 
@@ -4757,7 +4757,7 @@ class RevisionPlanController extends Controller
                     //         });
                     //     })
                     //     : collect(),
-                    'strategy'=>$item->strategy,
+                    // 'strategy'=>$item->strategy,
                     'seq_no' => $item->seq_no ?? 0, // default to a high number if seq_no is missing
                 ];
             })
