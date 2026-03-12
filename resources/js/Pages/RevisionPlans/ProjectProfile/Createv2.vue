@@ -3821,6 +3821,23 @@ export default {
 
         // UPDATE Revision Plans*******************************************/
         updateRevisionPlans: debounce(async function(table_name, column_name, id, new_data) {
+            // Columns that must be >= 0
+            const nonNegativeColumns = [
+                'ps_q1','ps_q2','ps_q3','ps_q4',
+                'mooe_q1','mooe_q2','mooe_q3','mooe_q4',
+                'fe_q1','fe_q2','fe_q3','fe_q4',
+                'co_q1','co_q2','co_q3','co_q4'
+            ];
+
+            // Validate value
+            if (nonNegativeColumns.includes(column_name)) {
+                const value = parseFloat(new_data);
+
+                if (isNaN(value) || value < 0) {
+                    alert("Value must be greater than or equal to 0.");
+                    return; // stop execution
+                }
+            }
             // If the column is ccet_code and new_data is empty, ask for confirmation
             if (column_name === 'ccet_code' && (!new_data || new_data.trim() === '')) {
                 const confirmed = confirm("Are you sure you want to remove the CCET code?");

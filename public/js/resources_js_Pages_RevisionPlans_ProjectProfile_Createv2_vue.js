@@ -724,10 +724,24 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     // UPDATE Revision Plans*******************************************/
     updateRevisionPlans: lodash_debounce__WEBPACK_IMPORTED_MODULE_6___default()(/*#__PURE__*/function () {
       var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(table_name, column_name, id, new_data) {
-        var confirmed, payload, response, _t;
+        var nonNegativeColumns, value, confirmed, payload, response, _t;
         return _regenerator().w(function (_context2) {
           while (1) switch (_context2.p = _context2.n) {
             case 0:
+              // Columns that must be >= 0
+              nonNegativeColumns = ['ps_q1', 'ps_q2', 'ps_q3', 'ps_q4', 'mooe_q1', 'mooe_q2', 'mooe_q3', 'mooe_q4', 'fe_q1', 'fe_q2', 'fe_q3', 'fe_q4', 'co_q1', 'co_q2', 'co_q3', 'co_q4']; // Validate value
+              if (!nonNegativeColumns.includes(column_name)) {
+                _context2.n = 1;
+                break;
+              }
+              value = parseFloat(new_data);
+              if (!(isNaN(value) || value < 0)) {
+                _context2.n = 1;
+                break;
+              }
+              alert("Value must be greater than or equal to 0.");
+              return _context2.a(2);
+            case 1:
               // If the column is ccet_code and new_data is empty, ask for confirmation
               if (column_name === 'ccet_code' && (!new_data || new_data.trim() === '')) {
                 confirmed = confirm("Are you sure you want to remove the CCET code?");
@@ -742,23 +756,23 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
                 id: id,
                 new_data: encodeURIComponent(new_data)
               };
-              _context2.p = 1;
-              _context2.n = 2;
+              _context2.p = 2;
+              _context2.n = 3;
               return axios__WEBPACK_IMPORTED_MODULE_5___default().patch("/revision/streamlined/".concat(id, "/update"), payload);
-            case 2:
+            case 3:
               response = _context2.v;
               console.log(response.data);
               this.setUnsaved(false);
-              _context2.n = 4;
+              _context2.n = 5;
               break;
-            case 3:
-              _context2.p = 3;
+            case 4:
+              _context2.p = 4;
               _t = _context2.v;
               console.error("Error updating ".concat(table_name, " (").concat(column_name, ")"), _t);
-            case 4:
+            case 5:
               return _context2.a(2);
           }
-        }, _callee2, this, [[1, 3]]);
+        }, _callee2, this, [[2, 4]]);
       }));
       return function (_x, _x2, _x3, _x4) {
         return _ref2.apply(this, arguments);

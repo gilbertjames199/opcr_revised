@@ -613,9 +613,11 @@
                 </li>
                 <li class="nav-item">
                     <!-- :href="`http://192.168.80.88/login/authentication?username=${$page.props.auth.user.UserName}&password=${$page.props.auth.user.UserPassword}`" -->
+
+                        <!-- :href="`generate/token/for/accomplishments`" -->
                     <a
                         class="sidebar-link"
-                        :href="`generate/token/for/accomplishments`"
+                        :href="`https://accomplishment.davaodeoro.gov.ph/login/authentication?username=${$page.props.auth.user.UserName}&password=${$page.props.auth.user.UserPassword}`"
                         target="_blank"
                         rel="noopener noreferrer"
                         :class="{ 'active': $page.url === '/revision/0?source=sip' }"

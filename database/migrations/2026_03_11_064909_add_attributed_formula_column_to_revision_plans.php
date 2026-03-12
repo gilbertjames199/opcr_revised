@@ -14,7 +14,12 @@ class AddAttributedFormulaColumnToRevisionPlans extends Migration
     public function up()
     {
         Schema::table('revision_plans', function (Blueprint $table) {
-            //
+            $table->string('GAD_attributed_formula')->nullable()
+                ->comment("
+                    Formula 1: Amount * (HGDG Score/20);
+                    Formula 2: Range
+                ")
+                ->after('amount');
         });
     }
 

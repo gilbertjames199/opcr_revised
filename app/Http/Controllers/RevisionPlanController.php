@@ -126,8 +126,8 @@ class RevisionPlanController extends Controller
             $data = [];
             if ($popsp_agency) {
 
-                // $data = $this->getPopsPProfilesDirect($request, $budget_controller, $dept_id, $popsp_agency, $year_filtering);
-                $data = $this->getDirect($request, $dept_id, $popsp_agency, $budget_controller, $year_filtering);
+                $data = $this->getPopsPProfilesDirect($request, $budget_controller, $dept_id, $popsp_agency, $year_filtering);
+                // $data = $this->getDirect($request, $dept_id, $popsp_agency, $budget_controller, $year_filtering);
             } else {
                 if ($request->source == 'sip') {
                     $data = $this->getSip($request, $dept_id, $popsp_agency, $budget_controller, $year_filtering);
@@ -1527,6 +1527,12 @@ class RevisionPlanController extends Controller
             ->unionAll($teamComments)
             ->unionAll($signatoryComments);
 
+
+        $allComments = DB::table(DB::raw("({$unionQuery->toSql()}) as comments"))
+            ->mergeBindings($unionQuery->getQuery())
+            ->orderBy('comment_status', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->get();
         // $commentIds = $allComments->pluck('id');
 
         // $allComments = DB::table(DB::raw("({$unionQuery->toSql()}) as comments"))
@@ -1534,12 +1540,6 @@ class RevisionPlanController extends Controller
         //     ->orderBy('comment_status', 'asc')
         //     ->orderBy('created_at', 'desc')
         //     ->get();
-        $allComments = DB::table(DB::raw("({$unionQuery->toSql()}) as comments"))
-            ->mergeBindings($unionQuery->getQuery())
-            ->orderBy('comment_status', 'asc')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
         $userIds = $allComments->pluck('user_id')->unique();
 
         // $users = User::whereIn('recid', $userIds)->get()->keyBy('id');
@@ -1948,6 +1948,10 @@ class RevisionPlanController extends Controller
         $idpaps_all = $sharedPAPS->concat($PAPS);
         return RevisionPlan::with(['paps', 'paps.office'])
             ->whereIn('idpaps', $idpaps_all)
+
+            ->when($request->search, function ($query) use ($request) {
+                $query->where('project_title', 'LIKE', '%' . $request->search . '%');
+            })
             // ->where('department_code', auth()->user()->department_code)
             ->get()
             ->map(function ($item) use ($budget_controller) {

@@ -2779,7 +2779,43 @@
                         </b>
                     </span>
                 </button>
+                <!-- {{src}} -->
+                <button
+                v-if="['0','1'].includes(paps.status) && src=='rev_app'"
+                @click="statusAction(paps, -2)"
+                :style="{
+                padding: '4px 10px',
+                border: 'none',
+                borderRadius: '4px',
+                backgroundColor: '#fc00d7',
+                color: 'white',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+                }"
+            >
+                Return
+            </button> &nbsp;
+            <button
+                v-if="paps.status == '0' && paps.gad_status=='1'  && src=='rev_app'"
+
+                @click="statusAction(dat, 1, 'status')"
+                :style="{
+                    padding: '4px 10px',
+                    border: 'none',
+                    borderRadius: '4px',
+                    backgroundColor: 'blue',
+                    color: 'white',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    marginRight: '4px'
+                }"
+            >
+                Approve
+            </button>
+                <!-- {{ paps.status }}-->
             </div>
+
+
             <!-- p-20  -->
 
         </div>
@@ -2796,6 +2832,7 @@
                         </b>
                     </span>
                 </button>
+
             </div>
             <div v-if="open_tab==='Comments'">
                 <div class="comments-header">

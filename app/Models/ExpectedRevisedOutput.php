@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ExpectedRevisedOutput extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $guarded=['id'];
     public function comments()
     {
@@ -16,6 +17,6 @@ class ExpectedRevisedOutput extends Model
     }
     public function expected_output()
     {
-        return $this->hasMany(ExpectedRevisedOutput::class, 'activity)d', 'id');
+        return $this->hasMany(ExpectedRevisedOutput::class, 'activity_id', 'id');
     }
 }
