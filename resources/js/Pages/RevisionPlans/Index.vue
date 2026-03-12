@@ -335,7 +335,7 @@
                                 <td>{{ dat.FFUNCTION }}</td>
                                 <!-- STATUS -->
                                 <td>
-                                    <span
+                                    <!-- <span
                                         :style="{
                                         display: 'inline-block',
                                         padding: '2px 8px',
@@ -361,6 +361,50 @@
                                         dat.status == '7'  ? 'Request for Return' :
                                         'Unknown'
                                         }}
+                                    </span> -->
+                                    <span
+                                        :style="{
+                                            display: 'inline-block',
+                                            padding: '3px 10px',
+                                            borderRadius: '20px',
+                                            fontSize: '12px',
+                                            fontWeight: '600',
+                                            border: '1px solid',
+                                            backgroundColor:
+                                                dat.status == '-2' ? '#ffe4ef' :
+                                                dat.status == '-1' ? '#f2f2f2' :
+                                                dat.status == '0'  ? '#fff4db' :
+                                                dat.status == '1'  ? '#e6f0ff' :
+                                                dat.status == '2'  ? '#e6f7ec' :
+                                                dat.status == '7'  ? '#fde6e6' :
+                                                '#f0f0f0',
+                                            color:
+                                                dat.status == '-2' ? '#d6006c' :
+                                                dat.status == '-1' ? '#666' :
+                                                dat.status == '0'  ? '#cc8400' :
+                                                dat.status == '1'  ? '#2a6df4' :
+                                                dat.status == '2'  ? '#1f8a4c' :
+                                                dat.status == '7'  ? '#c62828' :
+                                                '#333',
+                                            borderColor:
+                                                dat.status == '-2' ? '#ffb3d1' :
+                                                dat.status == '-1' ? '#d9d9d9' :
+                                                dat.status == '0'  ? '#ffd27a' :
+                                                dat.status == '1'  ? '#a9c6ff' :
+                                                dat.status == '2'  ? '#9edbb4' :
+                                                dat.status == '7'  ? '#f5b5b5' :
+                                                '#ddd'
+                                        }"
+                                    >
+                                    {{
+                                        dat.status == '-2' ? 'Returned' :
+                                        dat.status == '-1' ? 'Saved' :
+                                        dat.status == '0'  ? 'Submitted' :
+                                        dat.status == '1'  ? 'Reviewed' :
+                                        dat.status == '2'  ? 'Approved' :
+                                        dat.status == '7'  ? 'Request for Return' :
+                                        'Unknown'
+                                    }}
                                     </span>
                                     <p v-if="parseFloat(dat.status)>-1 && parseFloat(dat.status) !== 1"><i>{{ dat.gad_status==1 ? 'GAD Approved' : 'GAD Not Yet Evaluated' }}</i></p>
 

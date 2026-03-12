@@ -2780,38 +2780,86 @@
                     </span>
                 </button>
                 <!-- {{src}} -->
-                <button
-                v-if="['0','1'].includes(paps.status) && src=='rev_app'"
-                @click="statusAction(paps, -2)"
-                :style="{
-                padding: '4px 10px',
-                border: 'none',
-                borderRadius: '4px',
-                backgroundColor: '#fc00d7',
-                color: 'white',
-                cursor: 'pointer',
-                fontWeight: 'bold'
-                }"
-            >
-                Return
-            </button> &nbsp;
-            <button
-                v-if="paps.status == '0' && paps.gad_status=='1'  && src=='rev_app'"
+                <span >
+                    <button
+                        v-if="['0','1'].includes(paps.status) && src=='rev_app'"
+                        @click="statusAction(paps, -2)"
+                        :style="{
+                        padding: '4px 10px',
+                        border: 'none',
+                        borderRadius: '4px',
+                        backgroundColor: '#fc00d7',
+                        color: 'white',
+                        cursor: 'pointer',
+                        fontWeight: 'bold'
+                        }"
+                    >
+                        Return
+                    </button> &nbsp;
+                    <button
+                        v-if="paps.status == '0' && paps.gad_status=='1'  && src=='rev_app'"
 
-                @click="statusAction(dat, 1, 'status')"
-                :style="{
-                    padding: '4px 10px',
-                    border: 'none',
-                    borderRadius: '4px',
-                    backgroundColor: 'blue',
-                    color: 'white',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    marginRight: '4px'
-                }"
-            >
-                Approve
-            </button>
+                        @click="statusAction(paps, 1, 'status')"
+                        :style="{
+                            padding: '4px 10px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            backgroundColor: 'blue',
+                            color: 'white',
+                            cursor: 'pointer',
+                            fontWeight: 'bold',
+                            marginRight: '4px'
+                        }"
+                    >
+                        Approve
+                    </button>
+                </span>
+                <span  :style="{
+                        display: 'inline-block',
+                        padding: '3px 10px',
+                        borderRadius: '20px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        border: '1px solid',
+                        backgroundColor:
+                            paps.status == '-2' ? '#d6006c' :
+                            paps.status == '-1' ? '#666666' :
+                            paps.status == '0'  ? '#cc8400' :
+                            paps.status == '1'  ? '#2a6df4' :
+                            paps.status == '2'  ? '#1f8a4c' :
+                            paps.status == '7'  ? '#c62828' :
+                            '#555',
+
+                        color:
+                            paps.status == '-2' ? '#ffd1e8' :
+                            paps.status == '-1' ? '#f2f2f2' :
+                            paps.status == '0'  ? '#fff4db' :
+                            paps.status == '1'  ? '#e6f0ff' :
+                            paps.status == '2'  ? '#e6f7ec' :
+                            paps.status == '7'  ? '#fde6e6' :
+                            '#ffffff',
+
+                        borderColor:
+                            paps.status == '-2' ? '#ffb3d1' :
+                            paps.status == '-1' ? '#d9d9d9' :
+                            paps.status == '0'  ? '#ffd27a' :
+                            paps.status == '1'  ? '#a9c6ff' :
+                            paps.status == '2'  ? '#9edbb4' :
+                            paps.status == '7'  ? '#f5b5b5' :
+                            '#ddd'
+                    }">
+                    <b>Status:
+                        {{
+                            paps.status == '-2' ? 'Returned' :
+                            paps.status == '-1' ? 'Saved' :
+                            paps.status == '0'  ? 'Submitted' :
+                            paps.status == '1'  ? 'Reviewed' :
+                            paps.status == '2'  ? 'Approved' :
+                            paps.status == '7'  ? 'Request for Return' :
+                            'Unknown'
+                        }}
+                    </b>
+                </span>
                 <!-- {{ paps.status }}-->
             </div>
 
@@ -3320,6 +3368,7 @@ import Pagination from "@/Shared/Pagination";
 import CommentModal from "@/Shared/ModalDynamicTitle";
 import SmallModalComments from "@/Shared/SmallModal";
 import SmallModalCommentActions from "@/Shared/SmallModal";
+import { Inertia } from '@inertiajs/inertia';
 export default {
     components: { Filtering, Pagination, CommentModal, SmallModalComments, SmallModalCommentActions },
     props: {
@@ -4390,7 +4439,38 @@ export default {
 
             // Otherwise, display quantity
             return true
-        }
+        },
+
+        // RETURN/REVIEW/APPROVE
+        statusAction(revision_plan, newStatus, column) {
+            const actions = {
+                0: "Submit",
+                "-1": "Recall",
+                1: "Review",
+                2: "Approve",
+                "-2": "Return",
+                5: "Request for Return",
+                7: "Approve the request for return for"
+            };
+            const actionLabel = actions[newStatus];
+            const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+
+            const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+            const actionlabelcomplete = actionLabel + ' ' + typeLabel;
+            if (!confirm(confirmMessage)) return;
+
+            Inertia.post(
+                `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
+                {
+                    remarks: this.remarks,   // ← SEND IT HERE
+                    column: column
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true   // ⭐ keeps pagination page
+                }
+            );
+        },
 
 
     }

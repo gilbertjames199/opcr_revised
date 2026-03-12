@@ -2376,7 +2376,7 @@
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import CommentModal from "@/Shared/ModalDynamicTitle";
-
+import { Inertia } from '@inertiajs/inertia';
 export default {
     components: { Filtering, Pagination, CommentModal },
     props: {
