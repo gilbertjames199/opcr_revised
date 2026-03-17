@@ -74,6 +74,10 @@ class RevisionPlan extends Model
     {
         return $this->hasMany(ProjectProfileTracking::class, 'revision_plan_id', 'id');
     }
+    public function boxNumber()
+    {
+        return $this->belongsTo(HGDG_Checklist::class, 'checklist_id', 'id');
+    }
     // protected $fillable = [
     //     'id',
     //     'idpaps',

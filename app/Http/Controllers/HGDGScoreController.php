@@ -370,22 +370,28 @@ class HGDGScoreController extends Controller
 
     public function print_hgdg_score(Request $request){
         $idrevplan=$request->idrevplan;
-        $revplan =RevisionPlan::where('id', $idrevplan)->first();
+        $revplan =RevisionPlan::with(['boxNumber'])->where('id', $idrevplan)->first();
         // dd($revplan);
-        $checklist_id = $revplan->checklist_id;
-        $scores = HGDGScore::select(
-            'hgdg_score.id',
-            'hgdg_score.idrevplan',
-            'hgdg_score.question_id',
-            'hgdg_score.score',
-            'hgdg_score.result_comment'
-        )
-            ->join(DB::raw("hgdg_questions"), "hgdg_questions.id", "hgdg_score.question_id")
+        $checklist_id = optional($revplan)->checklist_id;
+        $scores = HGDGScore::with(['question'])
+        // select(
+        //     'hgdg_score.id',
+        //     'hgdg_score.idrevplan',
+        //     'hgdg_score.question_id',
+        //     'hgdg_score.score',
+        //     'hgdg_score.result_comment'
+        // )
+            // ->join(DB::raw("hgdg_questions"), "hgdg_questions.id", "hgdg_score.question_id")
             ->where("hgdg_score.idrevplan", $idrevplan)
-            ->where("hgdg_questions.checklist_id", $checklist_id)
+            // ->where("hgdg_questions.checklist_id", $checklist_id)
+            ->whereHas('question', function($q)use($checklist_id){
+                $q->where('checklist_id', $checklist_id);
+            })
             ->get()
             ->map(function ($item) use ($idrevplan, $revplan) {
-                $question = HGDGQuestion::where('id', $item->question_id)->first();
+                $question = $item->question;
+                // dd($revplan);
+                // HGDGQuestion::where('id', $item->question_id)->first();
                 // $scory = floatval($item->score);
                 // $scoor = floatval($question->score);
                 // $scoor2 = floatval($question->score) * 2;
@@ -404,9 +410,11 @@ class HGDGScoreController extends Controller
                     "q_score2" => $scoor2,
                     "question_number" => $question->question_number,
                     "project_title"=>$revplan->project_title,
-                    "hgdg_score"=>$revplan->hgdg_score
+                    "hgdg_score"=>$revplan->hgdg_score,
+                    "box_number"=>optional(optional($revplan)->boxNumber)->box_number,
+                    "sector"=>optional(optional($revplan)->boxNumber)->sector
                 ];
             });
-        return $scores;
+        return count($scores)>0?$scores:[];
     }
 }
