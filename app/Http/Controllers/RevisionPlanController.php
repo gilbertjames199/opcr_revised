@@ -3065,7 +3065,7 @@ class RevisionPlanController extends Controller
     public function api_ppa(Request $request)
     {
         $dept_id = $request->department_code;
-        // dd($dept_id);
+
         $budget_controller = new BudgetRequirementController($this->budget);
         // dd($budget_controller);
         // select(

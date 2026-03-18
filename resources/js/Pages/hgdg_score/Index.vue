@@ -18,12 +18,13 @@
 
             <!--<h6>List of User Accounts</h6>-->
             <div class="peers">
-                <div class="peer mR-10">
+                <!-- <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
+                </div> -->
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/HGDGQuestions/create/${hgdg_checklist.id}`">Add Question</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                    <!-- <Link class="btn btn-primary btn-sm" :href="`/HGDGQuestions/create/${hgdg_checklist.id}`">Add Question</Link>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
+                        <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(idrevplan)">Print HGDG Score</button>
                 </div>
                 <!-- {{ revision_plan }} -->
                 <a @click.prevent="goBack" href="#">
@@ -157,6 +158,13 @@
                 </div>
             </div>
         </div>
+
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
+
+                <iframe :src="my_link" style="width:100%; height:500px" />
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -164,10 +172,11 @@
 import { useForm } from "@inertiajs/inertia-vue3";
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 //import Table from './Table.vue'               , Table
 
 export default {
-    components: { Pagination, Filtering },
+    components: { Pagination, Filtering, Modal },
     props: {
         auth: Object,
         users: Object,
@@ -210,7 +219,9 @@ export default {
             confirm: false,
             filter: false,
             total_score: 0,
-            results: []
+            results: [],
+            my_link: "",
+            displayModal: false,
         };
     },
     computed:{
@@ -252,6 +263,30 @@ export default {
                     replace: true,
                 }
             )
+        },
+
+        showModal(idrevplan) {
+            // alert("FFUNCCOD: " + ffunccod + "\n "
+            //     + " FFUNCTION: " + ffunction + "\n " +
+            //     "MOOE: " + MOOE + " \n" +
+            //     "PS: " + PS
+            // )
+            this.my_link = this.getToRep(idrevplan);
+            this.displayModal = true;
+        },
+
+        hideModal() {
+            this.displayModal = false;
+        },
+
+        getToRep(idrevplan) {
+            // alert(data[0].FFUNCCOD);
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FHGDG_Score&standAlone=true&decorate=no&output=pdf';
+            var params = '&idrevplan=' + idrevplan;
+            var link1 = linkt + jasper_ip + jasper_link + params;
+            return link1;
         },
         submit2(id, score){
             // alert(score+" "+ id)

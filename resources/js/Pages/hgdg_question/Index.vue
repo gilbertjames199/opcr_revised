@@ -15,6 +15,8 @@
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/HGDGQuestions/create/${hgdg_checklist.id}`">Add Question</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+
+
                 </div>
             </div>
         </div>
@@ -24,6 +26,7 @@
             <input type="text" class="form-control">
             <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
         </filtering>
+
 
         <div class="col-12">
             <div class="bgc-white p-20 bd">

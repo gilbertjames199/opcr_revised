@@ -1311,6 +1311,8 @@ Route::prefix('lbp_by_ppa2')->group(function () {
 Route::prefix('aip')->group(function () {
     Route::get('/printing', [AnnualInvestmentPlanController::class, 'print_OPCR']);
 });
+
+
 // Route::prefix('api_ppa2')->group(function () {
 //     Route::get('/', [RevisionPlanController::class, 'api_ppa']);
 // });
