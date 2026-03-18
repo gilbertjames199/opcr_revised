@@ -370,7 +370,7 @@ class HGDGScoreController extends Controller
 
     public function print_hgdg_score(Request $request){
         $idrevplan=$request->idrevplan;
-        $revplan =RevisionPlan::with(['boxNumber'])->where('id', $idrevplan)->first();
+        $revplan =RevisionPlan::with(['boxNumber','signatories'])->where('id', $idrevplan)->first();
         // dd($revplan);
         $checklist_id = optional($revplan)->checklist_id;
         $scores = HGDGScore::with(['question'])
@@ -395,9 +395,16 @@ class HGDGScoreController extends Controller
                 // $scory = floatval($item->score);
                 // $scoor = floatval($question->score);
                 // $scoor2 = floatval($question->score) * 2;
+                $sig = optional($revplan)->signatories;
+                // dd($sig);
                 $scory = round(floatval($item->score), 8);
                 $scoor = round(floatval($question->score), 8);
                 $scoor2 = round((floatval($question->score) * 2), 8);
+
+
+                $preparedRow = $sig->firstWhere('acted', 'Prepared');
+                $approvedRow = $sig->firstWhere('acted','Approved');
+                // dd($preparedRow, $approvedRow);
                 return [
                     "id" => $item->id,
                     "idrevplan" => $item->idrevplan,
@@ -412,7 +419,11 @@ class HGDGScoreController extends Controller
                     "project_title"=>$revplan->project_title,
                     "hgdg_score"=>$revplan->hgdg_score,
                     "box_number"=>optional(optional($revplan)->boxNumber)->box_number,
-                    "sector"=>optional(optional($revplan)->boxNumber)->sector
+                    "sector"=>optional(optional($revplan)->boxNumber)->sector,
+                    "program_coordinator"=>$preparedRow->name,
+                    "program_coordinator_position"=>$preparedRow->position,
+                    "head"=>$approvedRow->name,
+                    "head_position"=>$approvedRow->position,
                 ];
             });
         return count($scores)>0?$scores:[];
