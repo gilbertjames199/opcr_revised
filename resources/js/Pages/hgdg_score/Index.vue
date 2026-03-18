@@ -4,17 +4,27 @@
     </Head>
 
     <div class="row gap-10 masonry pos-r">
+        <h1 v-if="revision_plan">{{ revision_plan.project_title }}
+            <b>({{
+                revision_plan?.created_at && !isNaN(new Date(revision_plan.created_at))
+                    ? new Date(revision_plan.created_at).getFullYear()
+                    : ''
+                }})</b>
+        </h1>
+
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{  hgdg_checklist.box_number }}. {{  hgdg_checklist.sector }}
             </h3>
+
             <!--<h6>List of User Accounts</h6>-->
             <div class="peers">
-                <div class="peer mR-10">
+                <!-- <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
+                </div> -->
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/HGDGQuestions/create/${hgdg_checklist.id}`">Add Question</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                    <!-- <Link class="btn btn-primary btn-sm" :href="`/HGDGQuestions/create/${hgdg_checklist.id}`">Add Question</Link>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
+                        <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(idrevplan)">Print HGDG Score</button>
                 </div>
                 <!-- {{ revision_plan }} -->
                 <a @click.prevent="goBack" href="#">
@@ -60,11 +70,11 @@
                                 <tr >
                                     <th>Item Number</th>
                                     <th>Question</th>
-                                    <th>Not Done</th>
-                                    <th>Partly Done</th>
-                                    <th>Done</th>
+                                    <th v-if="can_edit">Not Done</th>
+                                    <th v-if="can_edit">Partly Done</th>
+                                    <th v-if="can_edit">Done</th>
                                     <!--<th>Score</th>-->
-                                    <th scope="col" style="text-align: right" >score</th>
+                                    <th scope="col" style="text-align: right" >Score</th>
                                     <th>Remarks</th>
                                 </tr>
                                 <!--v-if="showActionsColumn(user.can.canEditUsers, user.can.canUpdateUserPermissions, user.can.canDeleteUsers)"-->
@@ -73,7 +83,7 @@
                                 <tr v-for="(hgdg_score, index) in form.hgdg_scores">
                                     <th>{{ form.hgdg_scores[index].question_number }}</th>
                                     <th>{{ form.hgdg_scores[index].question }}</th>
-                                    <th>
+                                    <th v-if="can_edit">
                                         <input type="radio"
                                             v-model="form.hgdg_scores[index].score"
                                             :name="form.hgdg_scores[index].id"
@@ -82,9 +92,7 @@
                                             @change="submit2(form.hgdg_scores[index].id,form.hgdg_scores[index].score)"
                                         />
                                     </th>
-                                    <th>
-                                        <!--@click="viewScore(hgdg_score.score)"-->
-                                        <!-- {{ form.hgdg_scores[index].q_score }}--{{ form.hgdg_scores[index].score }} -->
+                                    <th v-if="can_edit">
                                         <input type="radio"
                                             v-model="form.hgdg_scores[index].score"
                                             :name="form.hgdg_scores[index].id"
@@ -94,15 +102,7 @@
                                         /><br>
 
                                     </th>
-                                    <th>
-                                        <!-- {{ form.hgdg_scores[index].q_score2}} --{{ form.hgdg_scores[index].q_score * 2 }}--{{ form.hgdg_scores[index].score }} -->
-                                        <!-- <input type="radio"
-                                            v-model="form.hgdg_scores[index].score"
-                                            :name="form.hgdg_scores[index].id"
-                                            v-bind:hidden="hgdg_score.has_subquestion!='0'"
-                                            :value="format_number_conv(form.hgdg_scores[index].q_score * 2)"
-
-                                        /> -->
+                                    <th v-if="can_edit">
                                         <input type="radio"
                                             v-model="form.hgdg_scores[index].score"
                                             :name="form.hgdg_scores[index].id"
@@ -114,6 +114,7 @@
                                     <th><div v-bind:hidden="hgdg_score.has_subquestion!='0'">{{ format_number_conv(setScore(form.hgdg_scores[index].score),2,false) }}</div></th>
                                     <th>
                                         <textarea v-model="form.hgdg_scores[index].result_comment"
+                                            :disabled="!can_edit"
                                             @change="submit3(form.hgdg_scores[index].id,form.hgdg_scores[index].result_comment)"
                                         >
 
@@ -139,6 +140,7 @@
                 </div> -->
 
                 <div>
+                    <!-- can_edit: {{ can_edit }} -->
                     <b>TOTAL:&nbsp;</b>
                     <u>{{ total_score }}</u>
                 </div>
@@ -156,6 +158,13 @@
                 </div>
             </div>
         </div>
+
+        <Modal v-if="displayModal" @close-modal-event="hideModal">
+            <div class="d-flex justify-content-center">
+
+                <iframe :src="my_link" style="width:100%; height:500px" />
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -163,10 +172,11 @@
 import { useForm } from "@inertiajs/inertia-vue3";
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import Modal from "@/Shared/PrintModal";
 //import Table from './Table.vue'               , Table
 
 export default {
-    components: { Pagination, Filtering },
+    components: { Pagination, Filtering, Modal },
     props: {
         auth: Object,
         users: Object,
@@ -181,6 +191,7 @@ export default {
         scope: String,
         FFUNCCOD: String,
         revision_plan: Object,
+        can_edit: Boolean
     },
     mounted(){
         this.form.hgdg_scores=this.questions
@@ -208,7 +219,9 @@ export default {
             confirm: false,
             filter: false,
             total_score: 0,
-            results: []
+            results: [],
+            my_link: "",
+            displayModal: false,
         };
     },
     computed:{
@@ -251,6 +264,30 @@ export default {
                 }
             )
         },
+
+        showModal(idrevplan) {
+            // alert("FFUNCCOD: " + ffunccod + "\n "
+            //     + " FFUNCTION: " + ffunction + "\n " +
+            //     "MOOE: " + MOOE + " \n" +
+            //     "PS: " + PS
+            // )
+            this.my_link = this.getToRep(idrevplan);
+            this.displayModal = true;
+        },
+
+        hideModal() {
+            this.displayModal = false;
+        },
+
+        getToRep(idrevplan) {
+            // alert(data[0].FFUNCCOD);
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link = 'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system&reportUnit=%2Freports%2Fplanning_system%2FHGDG_Score&standAlone=true&decorate=no&output=pdf';
+            var params = '&idrevplan=' + idrevplan;
+            var link1 = linkt + jasper_ip + jasper_link + params;
+            return link1;
+        },
         submit2(id, score){
             // alert(score+" "+ id)
             // let jsonString = JSON.stringify(this.form.hgdg_scores);
@@ -261,6 +298,7 @@ export default {
                 {
                     // scores: jsonString,
                     // idrevplan: this.idrevplan
+                    can_edit: this.can_edit
                 },
                 {
                     preserveScroll: true,
@@ -273,7 +311,8 @@ export default {
         submit3(id, comment){
             // alert(comment)
             // console.log(comment)
-            this.$inertia.post(
+            if(this.can_edit){
+                this.$inertia.post(
                 "/HGDGScore/commentstore",
                 {
                     // scores: jsonString,
@@ -286,6 +325,8 @@ export default {
                     replace: true,
                 }
             )
+            }
+
         },
         getTotalScore() {
             var tot= this.questions.reduce((total, q) => {

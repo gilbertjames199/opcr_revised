@@ -15,6 +15,8 @@
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" :href="`/HGDGQuestions/create/${hgdg_checklist.id}`">Add Question</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+
+
                 </div>
             </div>
         </div>
@@ -24,6 +26,7 @@
             <input type="text" class="form-control">
             <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
         </filtering>
+
 
         <div class="col-12">
             <div class="bgc-white p-20 bd">
@@ -48,26 +51,30 @@
                                     <td><b>{{ question.question }}</b></td>
                                     <td><b>{{ format_number_conv(question.score,2,true) }}</b></td>
                                     <td><b>{{ format_number_conv(question.score*2,2,true) }}</b></td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                            </svg>
-                                        </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <li >
-                                                <Link class="dropdown-item"
-                                                        :href="`/HGDGQuestions/create/subquestions/${question.checklist_id}/${question.id}`">
-                                                    Add Subquestion
-                                                </Link>
-                                                <Link class="dropdown-item"
-                                                        :href="`/HGDGQuestions/${question.id}/edit`">
-                                                    Edit
-                                                </Link>
+                                    <td>
+                                        <div class="dropdown dropstart" >
+                                            <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                                </svg>
+                                            </button>
+                                            <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                                <li >
+                                                    <Link class="dropdown-item"
+                                                            :href="`/HGDGQuestions/create/subquestions/${question.checklist_id}/${question.id}`">
+                                                        Add Subquestion
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link class="dropdown-item"
+                                                            :href="`/HGDGQuestions/${question.id}/edit`">
+                                                        Edit
+                                                    </Link>
+                                                </li>
                                                 <li><Link class="text-danger dropdown-item" @click="deleteQ(question.id, question.has_subquestion)">Delete</Link></li>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                            </ul>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <template v-if="question.subQuestions">
                                     <template v-for="(subQuestion, subIndex) in question.subQuestions" :key="subQuestion.id">
@@ -76,27 +83,31 @@
                                         <td>{{ subQuestion.question }}</td>
                                         <td><b>{{ format_number_conv(subQuestion.score,2,true) }}</b></td>
                                         <td><b>{{ format_number_conv(subQuestion.score*2,2,true) }}</b></td>
-                                        <div class="dropdown dropstart" >
-                                            <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                                </svg>
-                                            </button>
-                                            <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                        <td>
+                                            <div class="dropdown dropstart" >
+                                                <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                                    </svg>
+                                                </button>
+                                                <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
 
-                                                <!--<li ><Link class="dropdown-item" :href="`/users//edit`">Edit</Link></li>-->
-                                                <li >
-                                                    <Link class="dropdown-item" :href="`/HGDGQuestions/create/subquestions/${subQuestion.checklist_id}/${subQuestion.id}`">
-                                                        Add Subquestion
-                                                    </Link>
-                                                    <Link class="dropdown-item"
-                                                        :href="`/HGDGQuestions/${subQuestion.id}/edit`">
-                                                        Edit
-                                                    </Link>
+                                                    <!--<li ><Link class="dropdown-item" :href="`/users//edit`">Edit</Link></li>-->
+                                                    <li >
+                                                        <Link class="dropdown-item" :href="`/HGDGQuestions/create/subquestions/${subQuestion.checklist_id}/${subQuestion.id}`">
+                                                            Add Subquestion
+                                                        </Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link class="dropdown-item"
+                                                            :href="`/HGDGQuestions/${subQuestion.id}/edit`">
+                                                            Edit
+                                                        </Link>
+                                                    </li>
                                                     <li><Link class="text-danger dropdown-item" @click="deleteQ(subQuestion.id,subQuestion.has_subquestion)">Delete</Link></li>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                                </ul>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <template v-if="subQuestion.subQuestions">
                                         <template v-for="(subSubQuestion, subSubIndex) in subQuestion.subQuestions" :key="subSubQuestion.id">
@@ -105,27 +116,31 @@
                                                 <td>{{ subSubQuestion.question }}</td>
                                                 <td><b>{{ format_number_conv(subSubQuestion.score,2,true) }}</b></td>
                                                 <td><b>{{ format_number_conv(subSubQuestion.score*2,2,true) }}</b></td>
-                                                <div class="dropdown dropstart" >
-                                                    <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                                        </svg>
-                                                    </button>
-                                                    <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                                <td>
+                                                    <div class="dropdown dropstart" >
+                                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                                            </svg>
+                                                        </button>
+                                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
 
-                                                        <!--<li ><Link class="dropdown-item" :href="`/users//edit`">Edit</Link></li>-->
-                                                        <li >
-                                                            <Link class="dropdown-item" :href="`/HGDGQuestions/create/subquestions/${subSubQuestion.checklist_id}/${subSubQuestion.id}`">
-                                                                Add Subquestion
-                                                            </Link>
-                                                            <Link class="dropdown-item"
-                                                                :href="`/HGDGQuestions/${subSubQuestion.id}/edit`">
-                                                                Edit
-                                                            </Link>
+                                                            <!--<li ><Link class="dropdown-item" :href="`/users//edit`">Edit</Link></li>-->
+                                                            <li >
+                                                                <Link class="dropdown-item" :href="`/HGDGQuestions/create/subquestions/${subSubQuestion.checklist_id}/${subSubQuestion.id}`">
+                                                                    Add Subquestion
+                                                                </Link>
+                                                            </li>
+                                                            <li>
+                                                                <Link class="dropdown-item"
+                                                                    :href="`/HGDGQuestions/${subSubQuestion.id}/edit`">
+                                                                    Edit
+                                                                </Link>
+                                                            </li>
                                                             <li><Link class="text-danger dropdown-item" @click="deleteQ(subSubQuestion.id,subSubQuestion.has_subquestion)">Delete</Link></li>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                        </ul>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             <template v-if="subSubQuestion.subQuestions">
                                                 <template v-for="(subSubSubQuestion, subSubSubIndex) in subSubQuestion.subQuestions" :key="subSubSubQuestion.id">
@@ -134,27 +149,31 @@
                                                         <td>{{ subSubSubQuestion.question }}</td>
                                                         <td><b>{{ format_number_conv(subSubSubQuestion.score,2,true) }}</b></td>
                                                         <td><b>{{ format_number_conv(subSubSubQuestion.score*2,2,true) }}</b></td>
-                                                        <div class="dropdown dropstart" >
-                                                            <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                                                </svg>
-                                                            </button>
-                                                            <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                                        <td>
+                                                            <div class="dropdown dropstart" >
+                                                                <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                                                    </svg>
+                                                                </button>
+                                                                <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
 
-                                                                <!--<li ><Link class="dropdown-item" :href="`/users//edit`">Edit</Link></li>-->
-                                                                <li >
-                                                                    <Link class="dropdown-item" :href="`/HGDGQuestions/create/subquestions/${subSubSubQuestion.checklist_id}/${subSubSubQuestion.id}`" >
-                                                                        Add Subquestion
-                                                                    </Link>
-                                                                </li>
-                                                                <Link class="dropdown-item"
-                                                                    :href="`/HGDGQuestions/${subSubSubQuestion.id}/edit`">
-                                                                    Edit
-                                                                </Link>
-                                                                <li><Link class="text-danger dropdown-item" @click="deleteQ(subSubSubQuestion.id,subSubSubQuestion.has_subquestion)">Delete</Link></li>
-                                                            </ul>
-                                                        </div>
+                                                                    <!--<li ><Link class="dropdown-item" :href="`/users//edit`">Edit</Link></li>-->
+                                                                    <li >
+                                                                        <Link class="dropdown-item" :href="`/HGDGQuestions/create/subquestions/${subSubSubQuestion.checklist_id}/${subSubSubQuestion.id}`" >
+                                                                            Add Subquestion
+                                                                        </Link>
+                                                                    </li>
+                                                                    <li>
+                                                                        <Link class="dropdown-item"
+                                                                            :href="`/HGDGQuestions/${subSubSubQuestion.id}/edit`">
+                                                                            Edit
+                                                                        </Link>
+                                                                    </li>
+                                                                    <li><Link class="text-danger dropdown-item" @click="deleteQ(subSubSubQuestion.id,subSubSubQuestion.has_subquestion)">Delete</Link></li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                     <template v-if="subSubSubQuestion.subQuestions">
                                                         <template v-for="(subSubSubSubQuestion, subSubSubSubIndex) in subSubSubQuestion.subQuestions" :key="subSubSubSubQuestion.id">
@@ -163,6 +182,9 @@
                                                                 <td>{{ subSubSubSubQuestion.question }}</td>
                                                                 <td><b>{{ format_number_conv(subSubSubSubQuestion.score,2,true) }}</b></td>
                                                                 <td><b>{{ format_number_conv(subSubSubSubQuestion.score*2,2,true) }}</b></td>
+                                                                <td>
+
+
                                                                 <div class="dropdown dropstart" >
                                                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -178,14 +200,17 @@
                                                                             >
                                                                                 Add Subquestion
                                                                             </Link>
+                                                                        </li>
+                                                                        <li>
                                                                             <Link class="dropdown-item"
                                                                                 :href="`/HGDGQuestions/${subSubSubSubQuestion.id}/edit`">
                                                                                 Edit
                                                                             </Link>
-                                                                            <li><Link class="text-danger dropdown-item" @click="deleteQ(subSubSubSubQuestion.id,subSubSubSubQuestion.has_subquestion)">Delete</Link></li>
                                                                         </li>
+                                                                        <li><Link class="text-danger dropdown-item" @click="deleteQ(subSubSubSubQuestion.id,subSubSubSubQuestion.has_subquestion)">Delete</Link></li>
                                                                     </ul>
                                                                 </div>
+                                                                </td>
                                                             </tr>
                                                         </template>
 
@@ -197,15 +222,13 @@
                                     </template>
                                 </template>
                             </template>
-                            <template>
-                                <tr>
-                                    <td>Total</td>
-                                    <td></td>
-                                    <td>{{ format_number_conv(sum,2,true) }}</td>
-                                    <td>{{ format_number_conv(sum*2,2,true) }}</td>
-                                    <td></td>
-                                </tr>
-                            </template>
+                            <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td>{{ format_number_conv(sum,2,true) }}</td>
+                                <td>{{ format_number_conv(sum*2,2,true) }}</td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                     {{  format_number_conv(sum,2,true) }}

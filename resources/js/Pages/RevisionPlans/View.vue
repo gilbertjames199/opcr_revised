@@ -140,6 +140,7 @@
 
                                 </td>
                             </tr>
+
                             <!-- PROJECT LOCATION -->
                             <tr>
                                 <th class="bg-secondary text-white" colspan="1">Project Location</th>
@@ -151,6 +152,20 @@
                                     </button>
                                     <button v-if="has_comment('Title',paps.project_location,paps.project_location,'project_location','revision_plans', paps, paps.comments)" class="superscript-btn"
                                         @click="handleClick('Title',paps.project_location,paps.project_location,'project_location','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- LIST OF LGUs COVERED -->
+                            <tr>
+                                <th class="bg-secondary text-white" colspan="1">List of LGUs Covered</th>
+                                <td colspan="6" :class="{
+                                    'text-danger': has_comment('Title',paps.project_location,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)
+                                }" :id="paps.id+'_revision_plans_list_of_lgu_covered'">{{ paps.list_of_lgu_covered }}
+                                    <button v-if="can_view_comment()" class="superscript-btn"
+                                        @click="handleClick('Title',paps.list_of_lgu_covered,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)">*
+                                    </button>
+                                    <button v-if="has_comment('Title',paps.list_of_lgu_covered,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)" class="superscript-btn"
+                                        @click="handleClick('Title',paps.list_of_lgu_covered,paps.list_of_lgu_covered,'list_of_lgu_covered','revision_plans', paps, paps.comments)">*
                                     </button>
                                 </td>
                             </tr>
@@ -285,7 +300,13 @@
                                 <th colspan="1">Attributed GAD Budget (Php) </th>
                                 <td colspan="2" :id="paps.id+'_revision_plans_attributed_amount'" class="text-end" :class="{
                                     'text-danger': has_comment('Title','GAD Attributed Amount',imp_amount,'attributed_amount','revision_plans', paps, paps.comments)
-                                }"><span v-if="parseFloat(paps.hgdg_score)>4">{{ format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true) }}</span>
+                                }"><span v-if="parseFloat(paps.hgdg_score)>4">
+                                        {{ format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true) }}
+                                        <!-- NOTE:
+                                         1.) Solid Waste Management set GAD Attributed to 1,646,500 -correct formula (getGadAttributedAmount(imp_amount, paps.hgdg_score), 2, true)  --RANGE)
+                                         -->
+                                        <!-- {{ format_number_conv(getGadAttributedAmount(imp_amount, paps.hgdg_score), 2, true) }} -->
+                                    </span>
                                     <span v-else>0.00</span>
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','GAD Attributed Amount',format_number_conv((imp_amount * (paps.hgdg_score/20)), 2, true),'attributed_amount','revision_plans', paps, paps.comments)">*
@@ -303,6 +324,7 @@
                                     'text-danger': has_comment('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)
                                 }" >
                                     GAD {{ paps.checklist?.box_number }} {{ paps.checklist?.sector }}
+
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','HGDG Checklist',paps.checklist.box_number+' '+paps.checklist.sector,'HGDG Checklist','revision_plans', paps, paps.comments)">*
                                     </button>
@@ -318,6 +340,7 @@
                                 <td colspan="2" :id="paps.id+'_revision_plans_hgdg_score'" :class="{
                                     'text-danger': has_comment('Title','HGDG Score',paps.hgdg_score,'hgdg_score','revision_plans', paps, paps.comments)
                                 }">{{ paps.hgdg_score }}
+                                <b>- {{  getGadClassification(paps.hgdg_score) }}</b>
                                     <button v-if="can_view_comment()" class="superscript-btn"
                                         @click="handleClick('Title','HGDG Score',paps.hgdg_score,'hgdg_score','revision_plans', paps, paps.comments)">*
                                     </button>
@@ -329,6 +352,7 @@
 
                         </tbody>
                     </table>
+
                     <!-- RATIONALE -->
                     <span v-if="paps.rationale">
                         <section id="rationale">
@@ -350,7 +374,7 @@
                         </section>
                         <br>
                         <div class="bgc-white p-20 bd" >
-                             <!-- <p ref="rationale"
+                            <!-- <p ref="rationale"
                                 v-html="renderedText('rationale')"
                                 @mouseup="handleSelection('rationale')"
                                 class="cursor-text"></p> -->
@@ -373,7 +397,7 @@
                                 @mouseup="handleSelection('rationale')"
                                 v-html="paps.rationale"
                             ></div>
-
+                            <!-- {{ paps.rationale }} -->
                         </div>
                         <br>
                     </span>
@@ -400,7 +424,6 @@
                                 </button>
                             </h3>
                         </section>
-
                         <br>
                         <div  class="bgc-white p-20 bd">
                             <!-- <div v-html="paps.objective" style="white-space: pre-line"></div> -->
@@ -595,11 +618,11 @@
                                         </td>
                                         <td>
                                             <span v-if="paps.is_strategy_based==1">
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_output">
+                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0]?.expected_output || []">
                                                     <div>{{ eo.description }}</div>
                                                     <hr>
                                                 </div>
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_outcome">
+                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0]?.expected_outcome || []">
                                                     <div>{{ eo.description }}</div>
                                                     <hr>
                                                 </div>
@@ -617,10 +640,11 @@
                                         <td><span v-if="paps.is_strategy_based==1">{{ dat.ccet_code }}</span></td>
                                         <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
                                     </tr>
-                                    <tr :id="dat.id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
+                                    <tr :id="dat.strategy_id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
                                         <td :class="{
                                             'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
                                         }" colspan="12"><b>{{ dat.description }}</b>
+                                        <!-- {{dat.strategy_id  }}_strategy_projects_strategy -->
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
                                             </button>
@@ -681,7 +705,17 @@
                                                         <template v-for="(pair, i) in getPairedOutputs(act.activityProject[0])" :key="i" >
                                                             <tr style="height: 100%;">
                                                                 <!-- Target Indicator -->
-                                                                <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;"
+                                                                <td class="align-top"
+                                                                    style="width: 25%;
+                                                                            height: 100%;
+                                                                            max-width:0;
+                                                                            border: 1px solid #000;
+                                                                            white-space:normal;
+                                                                            overflow:hidden;
+                                                                            text-overflow:clip;
+                                                                            word-break:break-word;
+                                                                            overflow-wrap:anywhere;
+                                                                            "
                                                                     :id="(pair.outcome_description
                                                                         ? pair.id + '_expected_revised_outcomes_target_indicator'
                                                                         : pair.id + '_expected_revised_outputs_target_indicator')"
@@ -692,7 +726,10 @@
                                                                         has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator','expected_revised_outputs', pair, pair.comments)
                                                                     }"
                                                                     >{{ pair.target_indicator }}
-                                                                        <span v-if="pair.quantity>0"> - {{ pair.quantity }}</span>
+                                                                        <span v-if="pair.quantity>0
+                                                                            && !/\d+(\s*[a-zA-Z]+)?$/.test(pair.target_indicator)
+                                                                            && !/-\s*\d{1,3}(,\d{3})*/.test(pair.target_indicator)">
+                                                                            - {{ pair.quantity }}</span>
                                                                     </span>
 
                                                                     <br><br>
@@ -761,7 +798,8 @@
                                                                         'text-danger': has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments) ||
                                                                         has_comment('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)
                                                                     }" :id="pair.id + '_expected_revised_outputs_output_description'"
-                                                                    ><span v-if="pair.quantity>0" > {{ pair.quantity }} </span> {{ pair.output_description }}
+                                                                    ><span v-if="pair.quantity>0 && shouldDisplayQuantity(pair.output_description)" > {{ pair.quantity }} </span> {{ pair.output_description }}
+
                                                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                                                 @click="handleClick('Implementation Plan','output_description',pair.output_description,'output_description','expected_revised_outputs', pair, pair.comments)">*
                                                                             </button>
@@ -789,7 +827,8 @@
                                                     </table>
                                                     <table class="m-0" style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;"
                                                     v-else>
-                                                        <template >
+                                                        <tbody>
+                                                        <!-- <template > -->
                                                             <tr >
                                                                 <td >
 
@@ -838,7 +877,8 @@
 
                                                                 </td>
                                                             </tr>
-                                                        </template>
+                                                        <!-- </template> -->
+                                                        </tbody>
                                                     </table>
                                                 </div>
 
@@ -2012,6 +2052,7 @@
 
 
                             </tbody>
+                            <tfoot>
                             <tr >
                                 <td colspan="4"><h5>GAD TOTAL</h5></td>
                                 <td :class="{
@@ -2044,11 +2085,12 @@
                                 </td>
                                 <td colspan="3"></td>
                             </tr>
-                             <tr>
+                            <tr>
                                 <td colspan="4"><h5>TOTAL</h5></td>
                                 <td>₱ {{ overallBudget.toLocaleString() }}</td>
                                 <td colspan="3"></td>
                             </tr>
+                            </tfoot>
                             <!-- <tr>
                                     <td colspan="4"><h4>TOTAL</h4></td>
                                     <td>₱ {{ overallBudget.toLocaleString() }}</td>
@@ -2389,8 +2431,22 @@
                     </div>
                     <br>
                     <!--PARTNERSHIP & SUSTAINABILITY-->
-                    <h3 id="partnership_sustainability" v-if="paps.partnership !== null">
+                    <!-- <h3 id="partnership_sustainability" v-if="paps.partnership !== null">
                         VIII. <Link>Partnership and Sustainability</Link>
+                    </h3> -->
+                    <h3 id="partnership_sustainability" v-if="paps.partnership !== null">
+                        VIII. <Link
+                            :class="{
+                                'text-danger': has_comment('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)
+                            }"
+                            :id="paps.id + '_revision_plans_partnership'"
+                        >Partnership and Sustainability</Link>
+                        <button v-if="can_view_comment()" class="superscript-btn"
+                            @click="handleClick('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)">*
+                        </button>
+                        <button v-if="has_comment('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)" class="superscript-btn"
+                            @click="handleClick('Partnership and Sustainability','Partnership and Sustainability',paps.partnership,'partnership','revision_plans', paps, paps.comments)">*
+                        </button>
                     </h3>
                     <div align="justify" style="white-space: pre-line">
                         <div v-html="paps.partnership"></div>
@@ -2398,9 +2454,24 @@
                     <br>
                     <br>
                     <!--MONITORING & EVALUATION-->
-                    <h3 id="monitoring_evaluation" v-if="monitors.length > 0 || paps.monitoring !== null">
+                    <!-- <h3 id="monitoring_evaluation" v-if="monitors.length > 0 || paps.monitoring !== null">
                         IX. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
                             ? `/EvaluationMechanismTool/${paps.id}`:null">Monitoring and Evaluation</Link>
+                    </h3> -->
+                    <h3  id="monitoring_evaluation" v-if="monitors.length > 0 || paps.monitoring !== null">
+                        IX. <Link :id="paps.id + '_revision_plans_monitoring'"
+                            :class="{
+                                'text-danger': has_comment('Monitoring and Evaluation','Monitoring and Evaluation',paps.monitoring,'monitoring','revision_plans', paps, paps.comments)
+                            }"
+
+                        >Monitoring and Evaluation</Link>
+
+                        <button v-if="can_view_comment()" class="superscript-btn"
+                            @click="handleClick('Monitoring and Evaluation','Monitoring and Evaluation',paps.monitoring,'monitoring','revision_plans', paps, paps.comments)">*
+                        </button>
+                        <button v-if="has_comment('Monitoring and Evaluation','Monitoring and Evaluation',paps.monitoring,'monitoring','revision_plans', paps, paps.comments)" class="superscript-btn"
+                            @click="handleClick('Monitoring and Evaluation','Monitoring and Evaluation',paps.monitoring,'monitoring','revision_plans', paps, paps.comments)">*
+                        </button>
                     </h3>
                     <div align="justify" style="white-space: pre-line">
                         <div v-html="paps.monitoring"></div>
@@ -2488,7 +2559,18 @@
                     <!--RISK MANAGEMENT-->
                     <h3 id="risk_management" v-if="risks.length > 0 || paps.risk_management !== null">
                         X. <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
-                            ? `/RiskManagement/${paps.id}`:null">Risk Management</Link>
+                            ? `/RiskManagement/${paps.id}`:null"
+                            :class="{
+                                'text-danger': has_comment('Risk Management','Risk Management',paps.risk_management,'risk_management','revision_plans', paps, paps.comments)
+                            }"
+                            :id="paps.id + '_revision_plans_risk_management'"
+                        >Risk Management</Link>
+                        <button v-if="can_view_comment()" class="superscript-btn"
+                            @click="handleClick('Risk Management','Risk Management',paps.risk_management,'risk_management','revision_plans', paps, paps.comments)">*
+                        </button>
+                        <button v-if="has_comment('Risk Management','Risk Management',paps.risk_management,'risk_management','revision_plans', paps, paps.comments)" class="superscript-btn"
+                            @click="handleClick('Risk Management','Risk Management',paps.risk_management,'risk_management','revision_plans', paps, paps.comments)">*
+                        </button>
                     </h3>
                     <div align="justify" style="white-space: pre-line">
                         <div v-html="paps.risk_management"></div>
@@ -2697,11 +2779,96 @@
                         </b>
                     </span>
                 </button>
+                <!-- {{src}} -->
+                <span >
+                    <button
+                        v-if="['0','1'].includes(paps.status) && src=='rev_app'"
+                        @click="statusAction(paps, -2)"
+                        :style="{
+                        padding: '4px 10px',
+                        border: 'none',
+                        borderRadius: '4px',
+                        backgroundColor: '#fc00d7',
+                        color: 'white',
+                        cursor: 'pointer',
+                        fontWeight: 'bold'
+                        }"
+                    >
+                        Return
+                    </button> &nbsp;
+                    <button
+                        v-if="paps.status == '0' && paps.gad_status=='1'  && src=='rev_app'"
+
+                        @click="statusAction(paps, 1, 'status')"
+                        :style="{
+                            padding: '4px 10px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            backgroundColor: 'blue',
+                            color: 'white',
+                            cursor: 'pointer',
+                            fontWeight: 'bold',
+                            marginRight: '4px'
+                        }"
+                    >
+                        Approve
+                    </button>
+                </span>
+                <span  :style="{
+                        display: 'inline-block',
+                        padding: '3px 10px',
+                        borderRadius: '20px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        border: '1px solid',
+                        backgroundColor:
+                            paps.status == '-2' ? '#d6006c' :
+                            paps.status == '-1' ? '#666666' :
+                            paps.status == '0'  ? '#cc8400' :
+                            paps.status == '1'  ? '#2a6df4' :
+                            paps.status == '2'  ? '#1f8a4c' :
+                            paps.status == '7'  ? '#c62828' :
+                            '#555',
+
+                        color:
+                            paps.status == '-2' ? '#ffd1e8' :
+                            paps.status == '-1' ? '#f2f2f2' :
+                            paps.status == '0'  ? '#fff4db' :
+                            paps.status == '1'  ? '#e6f0ff' :
+                            paps.status == '2'  ? '#e6f7ec' :
+                            paps.status == '7'  ? '#fde6e6' :
+                            '#ffffff',
+
+                        borderColor:
+                            paps.status == '-2' ? '#ffb3d1' :
+                            paps.status == '-1' ? '#d9d9d9' :
+                            paps.status == '0'  ? '#ffd27a' :
+                            paps.status == '1'  ? '#a9c6ff' :
+                            paps.status == '2'  ? '#9edbb4' :
+                            paps.status == '7'  ? '#f5b5b5' :
+                            '#ddd'
+                    }">
+                    <b>Status:
+                        {{
+                            paps.status == '-2' ? 'Returned' :
+                            paps.status == '-1' ? 'Saved' :
+                            paps.status == '0'  ? 'Submitted' :
+                            paps.status == '1'  ? 'Reviewed' :
+                            paps.status == '2'  ? 'Approved' :
+                            paps.status == '7'  ? 'Request for Return' :
+                            'Unknown'
+                        }}
+                    </b>
+                </span>
+                <!-- {{ paps.status }}-->
             </div>
+
+
             <!-- p-20  -->
 
         </div>
         <SmallModalComments v-model="showComments" title="NAVIGATION PANEL">
+            <!-- Sampleeeee -->
             <!-- <p>This can be anything.</p>
             <button class="btn btn-sm btn-primary">Save</button> -->
             <div class="tab">
@@ -2713,6 +2880,7 @@
                         </b>
                     </span>
                 </button>
+
             </div>
             <div v-if="open_tab==='Comments'">
                 <div class="comments-header">
@@ -2732,59 +2900,94 @@
                         </div>
                         <ul class="list-unstyled">
                             <li v-for="(comment, index) in unresolvedComments" :key="'r-' + index" class="mb-2" style="cursor: pointer;">
-
                                     <table style="border-collapse: collapse; border: none !important;">
-                                        <tr style="border: none !important; vertical-align: top;">
-                                            <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                <button class="btn p-0 border-0 bg-transparent"
-                                                    @click="submitAction('delete', comment.id, index)"
-                                                    title="Delete this comment"
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
-                                                        class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
-                                                    </svg>&nbsp;&nbsp;&nbsp;
-                                                </button>
+                                        <tbody>
+                                            <tr style="border: none !important; vertical-align: top;">
+                                                <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                    <button class="btn p-0 border-0 bg-transparent"
+                                                        @click="submitAction('delete', comment.id, index)"
+                                                        :disabled="auth.user.department_code !== '04'"
+                                                        title="Delete this comment"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                                            class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                                        </svg>&nbsp;&nbsp;&nbsp;
+                                                    </button>
 
-                                            </td>
-                                            <td style="border: none !important; vertical-align: top; text-align:left;">
-                                                <span
-                                                    class="clickable-comment"
-                                                    @click="scrollToSection(
-                                                        ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                            ? `${comment.id}_${comment.table_name}_${comment.column_name}`
-                                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                                    )"
-                                                    :class="'comment-rejected'"
-                                                    :title="['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                        ? comment.selected_text
-                                                        : ''"
-                                                >
-                                                <!-- Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                            ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
-                                            resolvePapsTargetId(paps, comment.column_name, comment)
-                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
-                                                    {{ comment.comment }}
-                                                    <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p> -->
-                                                    <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
-                                                    <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p> -->
-                                                                        <!-- {{
-                                                                ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
-                                                                    ? comment.column_name
-                                                                    : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
-                                                            }} -->
-                                                </span>
-                                                <div v-html="comment.reply"></div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td style="border: none !important; vertical-align: top; text-align:left;">
+                                                    <!-- @click="scrollToSection(
+                                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                        )"  -->
+                                                    <p>{{ comment.user?.FullName }} commented: </p>
+                                                    <span
+                                                        class="clickable-comment"
+
+                                                        @click="scrollToSection(
+                                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                ? (
+                                                                    paps[comment.column_name] &&
+                                                                    paps[comment.column_name].includes(`${comment.id}_${comment.table_name}_${comment.column_name}`)
+                                                                        ? `${comment.id}_${comment.table_name}_${comment.column_name}`
+                                                                        : comment.column_name
+                                                                )
+                                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                        )"
+                                                        :class="'comment-rejected'"
+                                                        :title="['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                            ? comment.selected_text
+                                                            : ''"
+                                                    >
+                                                    <!-- Target id: {{  ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`
+                                                resolvePapsTargetId(paps, comment.column_name, commentcolumn name w)
+                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`  }} -->
+                                                        {{ comment.comment }}
+
+                                                        <!-- <p>{{comment.table_row_id}}_{{comment.table_name}}_{{comment.column_name}}</p> -->
+                                                         <!-- <p>{{comment.id}}_{{comment.table_name}}_{{comment.column_name}}</p>
+                                                        <p>globalid: {{ resolvePapsTargetId(paps, comment.column_name, comment) }}</p>
+                                                        <p>status: {{ comment}}</p>
+                                                                             {{
+                                                                    ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
+                                                                        ? comment.column_name
+                                                                        : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)
+                                                                }} -->
+                                                    </span>
+                                                    <div v-html="comment.reply"></div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
                                     </table>
 
-
+                                <!-- Action Buttons v-model="comment"-->
+                                 <!-- {{ id_comment_current }} -- {{comment.id}} -- show reply: {{ show_reply_bar }} -->
+                                <div class="text-end" v-if="id_comment_current==comment.id && show_reply_bar==true">
+                                    <div>
+                                        <textarea class="form-control" rows="5"
+                                            placeholder="Write your comment here..."></textarea>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-primary mt-2 text-white" @click="saveComment()">
+                                            Submit Comment
+                                        </button>
+                                    </div>
+                                </div>
                                 <!-- Action Buttons -->
-                                <div class="text-end" v-if="auth.user.department_code==='04'">
+                                <div class="text-end" >
+
+                                        <!-- <i class="bi bi-check-circle"></i> -->
+                                    <!-- <button class="btn btn-success btn-sm text-white"
+                                        @click="showReplyBar(comment.id, comment)"
+                                        title="Reply">
+                                            reply
+                                    </button> -->
                                     <button class="btn btn-success btn-sm text-white"
-                                        @click="submitAction('resolve', comment.id, index)"
-                                        title="Mark comment as Resolved">
+                                        @click="submitAction('resolve', comment.id, index, comment)"
+                                        title="Mark comment as Resolved" v-if="auth.user.department_code==='04'">
                                         <!-- <i class="bi bi-check-circle"></i> -->
                                             resolve
                                     </button>
@@ -2797,8 +3000,8 @@
                                     </button> -->
 
                                     <button class="btn btn-danger btn-sm text-white"
-                                        @click="submitAction('delete', comment.id, index)"
-                                        title="Delete this comment">
+                                        @click="submitAction('delete', comment.id, index, comment)"
+                                        title="Delete this comment" v-if="auth.user.department_code==='04'">
                                         <!-- <i class="bi bi-trash-fill"></i>-->
                                             delete
                                     </button>
@@ -2830,6 +3033,7 @@
                                     :class="'comment-approved'"
                                 >
                                     <table style="border-collapse: collapse; border: none !important;">
+                                        <tbody>
                                         <tr style="border: none !important; vertical-align: top;">
                                             <td style="border: none !important; vertical-align: top; text-align:left;">
                                                 <!-- RESOLVED ICON -->
@@ -2842,6 +3046,7 @@
                                                 {{ comment.comment }}
                                             </td>
                                         </tr>
+                                        </tbody>
                                     </table>
 
 
@@ -3163,6 +3368,7 @@ import Pagination from "@/Shared/Pagination";
 import CommentModal from "@/Shared/ModalDynamicTitle";
 import SmallModalComments from "@/Shared/SmallModal";
 import SmallModalCommentActions from "@/Shared/SmallModal";
+import { Inertia } from '@inertiajs/inertia';
 export default {
     components: { Filtering, Pagination, CommentModal, SmallModalComments, SmallModalCommentActions },
     props: {
@@ -3370,6 +3576,8 @@ export default {
         return {
             unsaved: false,
             show_comment_modal: false,
+            id_comment_current: 0,
+            show_reply_bar: false,
             comment: '',
             comment_section: '',
             comment_subtitle: '',
@@ -3547,6 +3755,7 @@ export default {
             return has_comm;
         },
         handleClick(section, subtitle, data, column, table, obj, comments_obj) {
+        // alert("handle Cl;");
             this.comment_section = section;
             this.comment_subtitle = subtitle;
             this.comment_data = data;
@@ -3565,6 +3774,8 @@ export default {
             this.show_comment_modal = false;
             this.removeHighlights();
         },
+
+
         async saveComment() {
             // Logic to save the comment
             // This is just a placeholder, implement your actual saving logic here
@@ -3637,7 +3848,7 @@ export default {
                 payload.context_after = this.contextAfter;
             }
             console.log(payload);
-            alert(this.selectedStart+ " Selected Start");
+            // alert(this.selectedStart+ " Selected Start");
             console.log("selectedText: "+this.selectedText);
 
             console.log("selectedStart: "+this.selectedStart);
@@ -3645,11 +3856,29 @@ export default {
             console.log("contextBefore: "+this.contextBefore);
             console.log("contextAfter: "+this.contextAfter);
             await this.$nextTick();
-            this.$inertia.post('/revision-plan-comments/store', payload);
+            this.$inertia.post('/revision-plan-comments/store', payload, {
+                preserveScroll: true
+            });
             this.closeCommentModal();
             setTimeout(() => {
                 this.comment = "";
             }, 1000); // 1000 milliseconds = 1 second
+        },
+        // 'Title',paps.project_title,paps.project_title,'project_title','revision_plans', paps, paps.comments
+        showReplyBar(id_current, comment){
+            this.id_comment_current=id_current
+            this.show_reply_bar=true
+            this.comment_section = section;
+            this.comment_subtitle = subtitle;
+            this.comment_data = data;
+            this.comment_column = column;
+            this.comment_table = table;
+            this.comment_reference_object = obj;
+            // this.comments = comments_obj;
+
+            this.comments = comments_obj.filter(comment =>
+                comment.table_name === table && comment.column_name === column
+            );
         },
         // COMMENTS FOR RATIONALE, TARGET BENEFICIARIES, OBJECTIVES
         // Detect user highlighted text
@@ -3808,6 +4037,7 @@ export default {
             if (!confirm(`Are you sure you want to ${actionText[type]}?`)) {
                 return; // User cancelled
             }
+            // alert("index: "+index)
             var myurl = "/revision-plan-comments/action/done";
             this.$inertia.post(myurl, {
                 params: {
@@ -4064,7 +4294,7 @@ export default {
                 isDragging = false
                 document.body.classList.remove('dragging')
             })
-        }
+        },
         //RATIONALE COMMENTS
         // onHighlight() {
         //     const data = this.getHighlightIndexes();
@@ -4148,6 +4378,100 @@ export default {
         //     printWindow.print();
         //     printWindow.close();
         // }
+        // ATTRIBUTED AMOUNT**********************************************************
+        getGadAttributedAmount(overallBudget, hgdg_score) {
+            const score = parseFloat(hgdg_score) || 0;
+            const budget = parseFloat(overallBudget) || 0;
+
+            if (score < 4) {
+            return budget * 0;
+            } else if (score < 8) {
+            return budget * 0.25;
+            } else if (score < 15) {
+            return budget * 0.50;
+            } else if (score < 20) {
+            return budget * 0.75;
+            } else {
+            return budget * 1.00;
+            }
+        },
+        getGadClassification(hgdg_score) {
+            const score = parseFloat(hgdg_score) || 0;
+            // alert(hgdg_score)
+            if (score < 4) {
+            return 'GAD is invisible in the project';
+            } else if (score < 8) {
+            return 'Proposed project has promising GAD prospects';
+            } else if (score < 15) {
+            return 'Gender-sensitive';
+            } else if (score < 20) {
+            return 'Gender responsive';
+            } else {
+            return 'Fully gender responsive';
+            }
+        },
+        shouldDisplayQuantity(description){
+            if(!description) return false
+
+            const text = description.trim()
+
+            // 1. If description starts with a number → DO NOT display quantity
+            if(/^\d+/.test(text)){
+                return false
+            }
+
+            /*
+                2. If description follows:
+                <verb> <number> ...
+                OR
+                <verb1>, <verb2>, and <verbN> <number> ...
+
+                Example matches:
+                "Conduct 5 trainings"
+                "Prepare, review, and submit 3 reports"
+            */
+
+            const verbNumberPattern = /^[A-Za-z,\s]+?\s\d+\b/
+
+            if(verbNumberPattern.test(text)){
+                return false
+            }
+
+            // Otherwise, display quantity
+            return true
+        },
+
+        // RETURN/REVIEW/APPROVE
+        statusAction(revision_plan, newStatus, column) {
+            const actions = {
+                0: "Submit",
+                "-1": "Recall",
+                1: "Review",
+                2: "Approve",
+                "-2": "Return",
+                5: "Request for Return",
+                7: "Approve the request for return for"
+            };
+            const actionLabel = actions[newStatus];
+            const typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+
+            const confirmMessage = `Are you sure you want to ${actionLabel} the ${typeLabel} entitled "${revision_plan.project_title}"?`;
+            const actionlabelcomplete = actionLabel + ' ' + typeLabel;
+            if (!confirm(confirmMessage)) return;
+
+            Inertia.post(
+                `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
+                {
+                    remarks: this.remarks,   // ← SEND IT HERE
+                    column: column
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true   // ⭐ keeps pagination page
+                }
+            );
+        },
+
 
     }
 }

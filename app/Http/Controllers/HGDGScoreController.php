@@ -22,15 +22,18 @@ class HGDGScoreController extends Controller
     {
 
         $revplan = RevisionPlan::find($idrevplan);
-        // dd($revplan->status);
-        if($revplan->status>-1){
-            $status_words = [
-                '0'=>'Submitted',
-                '1'=>'Reviewed',
-                '2'=>'Locked'
-            ];
-            return redirect()->back()->with('error', 'Cannot access HGDG Evaluation. Revision Plan is already '.$status_words[$revplan->status].'.');
+        // dd($revplan);
+        if($revplan->checklist_id==null || $revplan->checklist_id==0){
+            return redirect()->back()->with('error', 'Cannot access HGDG Evaluation. No checklist assigned to this Revision Plan.');
         }
+        // dd($revplan->status);
+        // dd($request->source);
+        $allowedUsers = [
+            39, 406, 437, 489, 545, 586, 605, 681, 682, 683, 684, 685
+        ];
+
+
+        // dd(auth()->user()->recid);
         $checklist_id = $revplan->checklist_id;
         // dd($revplan->checklist_id);
         $count = $this->model->with('question')
@@ -46,6 +49,7 @@ class HGDGScoreController extends Controller
 
         $hgdg_checklist = HGDG_Checklist::find($checklist_id);
         $hgdg_questions = $this->getResults($request, $checklist_id);
+        // dd($hgdg_questions, $hgdg_checklist, $checklist_id, $revplan);
         $nr = [];
         if ($count < 1) {
             $nr = $this->setValues($hgdg_questions);
@@ -95,11 +99,41 @@ class HGDGScoreController extends Controller
                     "question_number" => $question->question_number
                 ];
             });
-        //dd($scores);
+        // dd($scores);
         $idpaps = $revplan->idpaps;
         $idmfo = $revplan->idmfo;
         $scope = $revplan->scope;
-        return inertia('hgdg_score/Index', [
+        $loc='hgdg_score/Index';
+        $can_edit=true;
+        // dd($revplan);
+        if (!in_array(auth()->user()->recid, $allowedUsers)) {
+
+            if($revplan->status>-1){
+                if($request->source=='rev_app'){
+                    if($revplan->status>0){
+                        $can_edit=false;
+                    }else{
+                        $can_edit=true;
+                    }
+                }else{
+                    $status_words = [
+                        '0'=>'Submitted',
+                        '1'=>'Reviewed',
+                        '2'=>'Locked'
+                    ];
+                    // $loc='hgdg_score/Uneditable';
+                    $can_edit=false;
+                    // return redirect()->back()->with('error', 'Cannot access HGDG Evaluation. Revision Plan is already '.$status_words[$revplan->status].'.');
+                }
+
+            }
+        }else{
+            if($revplan->status>-1){
+                $can_edit=false;
+            }
+        }
+        // dd($loc, $can_edit);
+        return inertia($loc, [
             "questions" => $scores,
             "checklist_id" => $checklist_id,
             "hgdg_checklist" => $hgdg_checklist,
@@ -109,6 +143,7 @@ class HGDGScoreController extends Controller
             "scope" => $scope,
             "FFUNCCOD" => $revplan->FFUNCCOD,
             "revision_plan" => $revplan,
+            "can_edit"=>$can_edit,
             "can" => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -279,14 +314,27 @@ class HGDGScoreController extends Controller
 
     public function getHgdgScoreSum($idrevplan)
     {
-        $totalScore = DB::table('hgdg_score')
-            ->where('idrevplan', $idrevplan)
+        // $totalScore = DB::table('hgdg_score')
+        //     ->where('idrevplan', $idrevplan)
+        //     ->sum('score');
+        $totalScore = HGDGScore::with(['question','question.checklist'])->where('idrevplan', $idrevplan)
+            ->whereHas('question', function ($query) use($idrevplan) {
+                $query->where('checklist_id', function ($query) use($idrevplan) {
+                    $query->select('checklist_id')
+                        ->from('revision_plans')
+                        ->where('id', $idrevplan);
+                });
+            })
             ->sum('score');
-
+        // dd($totalScore);
         return $totalScore;
     }
     public function store_one(Request $request, $id, $score)
     {
+        // dd($request->can_edit);
+        if (!$request->boolean('can_edit')) {
+            return redirect()->back()->with('message', 'Editing not allowed');
+        }
         $clean = trim($id, '{}"'); // removes {, }, and " if present
         $value = (int) $clean;
         $cleanscore = trim($score, '{}"');
@@ -318,5 +366,55 @@ class HGDGScoreController extends Controller
         $hg_score->save();
         return redirect()->back();
         // dd($comment, $id);
+    }
+
+    public function print_hgdg_score(Request $request){
+        $idrevplan=$request->idrevplan;
+        $revplan =RevisionPlan::with(['boxNumber'])->where('id', $idrevplan)->first();
+        // dd($revplan);
+        $checklist_id = optional($revplan)->checklist_id;
+        $scores = HGDGScore::with(['question'])
+        // select(
+        //     'hgdg_score.id',
+        //     'hgdg_score.idrevplan',
+        //     'hgdg_score.question_id',
+        //     'hgdg_score.score',
+        //     'hgdg_score.result_comment'
+        // )
+            // ->join(DB::raw("hgdg_questions"), "hgdg_questions.id", "hgdg_score.question_id")
+            ->where("hgdg_score.idrevplan", $idrevplan)
+            // ->where("hgdg_questions.checklist_id", $checklist_id)
+            ->whereHas('question', function($q)use($checklist_id){
+                $q->where('checklist_id', $checklist_id);
+            })
+            ->get()
+            ->map(function ($item) use ($idrevplan, $revplan) {
+                $question = $item->question;
+                // dd($revplan);
+                // HGDGQuestion::where('id', $item->question_id)->first();
+                // $scory = floatval($item->score);
+                // $scoor = floatval($question->score);
+                // $scoor2 = floatval($question->score) * 2;
+                $scory = round(floatval($item->score), 8);
+                $scoor = round(floatval($question->score), 8);
+                $scoor2 = round((floatval($question->score) * 2), 8);
+                return [
+                    "id" => $item->id,
+                    "idrevplan" => $item->idrevplan,
+                    "question_id" => $item->question_id,
+                    "score" => $scory,
+                    "result_comment" => $item->result_comment,
+                    "has_subquestion" => $question->has_subquestion,
+                    "question" => $question->question,
+                    "q_score" => $scoor,
+                    "q_score2" => $scoor2,
+                    "question_number" => $question->question_number,
+                    "project_title"=>$revplan->project_title,
+                    "hgdg_score"=>$revplan->hgdg_score,
+                    "box_number"=>optional(optional($revplan)->boxNumber)->box_number,
+                    "sector"=>optional(optional($revplan)->boxNumber)->sector
+                ];
+            });
+        return count($scores)>0?$scores:[];
     }
 }

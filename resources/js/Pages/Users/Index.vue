@@ -50,7 +50,11 @@
                                     </button>
                                     <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                         <li>
-                                            <Link class="dropdown-item" :href="`/users/${user.recid}/edit`">Edit recid;{{ user.recid }}</Link>
+                                            <!-- recid;{{ user.recid }} -->
+                                            <Link class="dropdown-item" :href="`/users/${user.recid}/edit`">Edit </Link>
+                                        </li>
+                                        <li v-if="user.department_code">
+                                            <Link class="dropdown-item" :href="`/users/${user.recid}/impersonate`">Impersonate</Link>
                                         </li>
                                     </ul>
                                 </div>

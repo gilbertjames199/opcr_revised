@@ -19,6 +19,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// import ModalPrint from "@/Shared/PrintModalPrint";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     opcr_id: String,
@@ -36,10 +37,12 @@ __webpack_require__.r(__webpack_exports__);
       total_ave: 0,
       total_comp: 0,
       displayModal: false,
+      displayModalPrint: false,
       // total_divisor: 0,
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         opcrs: []
-      })
+      }),
+      my_link: ''
     };
   },
   computed: {},
@@ -47,6 +50,7 @@ __webpack_require__.r(__webpack_exports__);
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_2__["default"],
     Filtering: _Shared_Filter__WEBPACK_IMPORTED_MODULE_1__["default"],
     Modal: _Shared_PrintModal__WEBPACK_IMPORTED_MODULE_3__["default"]
+    // , ModalPrint
   },
   // beforeMount() {
   //     this.form.opcrs = this.opcrs
@@ -663,7 +667,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary text-white\" @click=\"submitAction('1')\" v-if=\"emp_status === '0'\">\r\n                        Review\r\n                    </button>\r\n                    <button class=\"btn btn-primary text-white\" @click=\"submitAction('2')\" v-if=\"emp_status === '1'\">\r\n                        Approve\r\n                    </button>&nbsp;\r\n                    <button class=\"btn btn-danger text-white\" @click=\"showModal3()\">\r\n                        Return\r\n                    </button> ")], -1 /* CACHED */))])];
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 64 /* STABLE_FRAGMENT */);
+  }, 8 /* PROPS */, ["onCloseModalEvent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <ModalPrint v-if=\"displayModalPrint\" @close-modal-event=\"hideModalPrint\">\r\n            <div class=\"d-flex justify-content-center\">\r\n                {{ my_link }}\r\n                <iframe :src=\"my_link\" style=\"width:100%; height:400px\" />\r\n            </div>\r\n        </ModalPrint> ")])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ },

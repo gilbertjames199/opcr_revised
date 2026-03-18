@@ -170,10 +170,10 @@
                                             <p class="text-danger"
                                             v-if="getTotalPerAccountCode(item)!==format_number_conv(item.amount, 2, true)">
                                                 Total disbursement does not equal to Appropriation.
-                                                <p>
+                                                <span>
                                                     (Difference:
                                                     {{ format_number_conv(parseFloat(item.amount) - parseFloat(getTotalPerAccountCode(item).replace(/,/g, '')), 2, true) }})
-                                                </p>
+                                                </span>
                                             </p>
                                         </td>
                                     </tr>

@@ -218,6 +218,19 @@ createInertiaApp({
                             "2099",
                             "2100",
                         ],
+                        pcr_years: [
+                            "2025",
+                            "2026",
+                            "2027",
+                            "2028",
+                            "2029",
+                            "2030",
+                            "2031",
+                            "2032",
+                            "2033",
+                            "2034",
+                            "2035",
+                        ],
                         measurement_units: [
                             'meter', 'kilometer', 'mile', 'yard', // Units of measure for distance
                             'centimeter', 'inch', 'foot', 'meter', // Units of measure for length
@@ -344,6 +357,31 @@ createInertiaApp({
                     }
                 },
                 methods: {
+                    formatDate(dateString) {
+if (!dateString) return '';
+
+    // Strip microseconds if they exist
+    const cleanDateString = dateString.replace(/\.\d{3,6}Z$/, 'Z');
+
+    const date = new Date(cleanDateString);
+
+    const datePart = date.toLocaleDateString('en-US', {
+        month: 'long',
+        day: '2-digit',
+        year: 'numeric',
+        timeZone: 'Asia/Manila'
+    });
+
+    const timePart = date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Manila'
+    });
+
+    return `${datePart} ${timePart}`;
+},
                     goBack() {
                         window.history.back();  // or this.$router.go(-1)
                     },
@@ -375,10 +413,11 @@ createInertiaApp({
 
                     },
                     getStatus(stat_num) {
+                        // alert(stat_num)
                         if (typeof stat_num !== 'string') {
                             stat_num = String(stat_num);
                         }
-                        if (stat_num === '-2') {
+                        if (stat_num == '-2') {
                             return 'Returned';
                         } else if (stat_num === '-1') {
                             return 'Saved';
@@ -624,6 +663,7 @@ createInertiaApp({
                         if (status === 0) return 'Submitted';
                         if (status === 1) return 'Reviewed';
                         if (status === 2) return 'Approved';
+                        if (status === -2) return 'Returned';
 
                         return 'unknown';
                     },
@@ -1648,6 +1688,28 @@ createInertiaApp({
                     //         span.replaceWith(...span.childNodes);
                     //     });
                     // }
+                    formatDateTime(dateString) {
+                        if (!dateString) return '';
+
+                        const date = new Date(dateString);
+
+                        const options = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                        };
+
+                        const datePart = date.toLocaleDateString('en-US', options);
+
+                        const timePart = date.toLocaleTimeString('en-US', {
+                        hour12: true,
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                        });
+
+                        return `${datePart} - ${timePart}`;
+                    }
                 }
             })
             .mount(el)

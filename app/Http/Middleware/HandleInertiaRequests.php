@@ -29,6 +29,7 @@ class HandleInertiaRequests extends Middleware
                         'FullName' => ucfirst(auth()->user()->FullName),
                         'UserName' => auth()->user()->UserName,
                         'UserType' => auth()->user()->UserType,
+                        'UserPassword' => auth()->user()->UserPassword,
                         'department_code' => auth()->user()->department_code,
                         'office' => $office,
                         'recid' => auth()->user()->recid,

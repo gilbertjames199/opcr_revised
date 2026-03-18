@@ -29,21 +29,23 @@ class BudgetRequirementController extends Controller
     public function index(Request $request, $idrev)
     {
         // $start = microtime(true);
+        // dd("budgetary reqwuirements");
         // $data = $this->model->where('revision_plan_id','=',$idrev)
         //         ->orderBy('category', 'desc')
         //         ->orderBy('particulars')
         //         ->get();
         $revs = RevisionPlan::where('id', '=', $idrev)->get();
         $revo = $revs[0];
-        // dd($revo);
         if ($revo->status > -1) {
-            $status_words = [
-                '0' => 'submitted',
-                '1' => 'reviewed',
-                '2' => 'locked'
-            ];
-            return redirect()->back()->with('error', 'Cannot access the budgetary requirements module. The selected project profile is already ' . $status_words[$revo->status] . '.');
-        }
+                $status_words = [
+                    '0' => 'submitted',
+                    '1' => 'reviewed',
+                    '2' => 'locked'
+                ];
+                return redirect()->back()->with('error', 'Cannot access the budgetary requirements module. The selected project profile is already ' . $status_words[$revo->status] . '.');
+            }
+        $gad_version = $revs[0]->gad_version;
+        // dd($revo);
         $total = 0;
         // dd($revs);
         if ($revs[0]->is_strategy_based) {
@@ -58,105 +60,164 @@ class BudgetRequirementController extends Controller
         $imp_fe = $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
 
         $total = $imp_mooe + $imp_ps + $imp_co + $imp_fe;
-
-        // ALL BUDGET REQUIREMENT
+        // dd($gad_version);
         $all_budget_requirements = $this->model
-            ->where('revision_plan_id', '=', $idrev)
-            ->whereIn('category', ['Maintenance, Operating, and Other Expenses', 'Capital Outlay', 'Personnel Services', 'Financial Expenses'])
-            ->whereIn('category_gad', ['GAD', 'NON-GAD'])
-            ->orderBy('category', 'desc')
-            ->orderBy('particulars')
-            ->get();
+                ->where('revision_plan_id', '=', $idrev)
+                ->whereIn('category', ['Maintenance, Operating, and Other Expenses', 'Capital Outlay', 'Personnel Services', 'Financial Expenses'])
+                ->when($gad_version!="2", function($query){
+                    $query->whereIn('category_gad', ['GAD', 'NON-GAD']);
+                })
+                ->orderBy('category', 'desc')
+                ->orderBy('particulars')
+                ->get();
+        // dd($all_budget_requirements);
+        if($gad_version=="2"){
+            //MOOE
+            $mooe_gad = collect();
 
-        //MOOE
-        $mooe_gad = $all_budget_requirements->filter(function ($item) {
-            return $item->category === 'Maintenance, Operating, and Other Expenses' && $item->category_gad === 'GAD';
-        });
+            $mooe_non = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Maintenance, Operating, and Other Expenses';
+            });
 
-        $mooe_non = $all_budget_requirements->filter(function ($item) {
-            return $item->category === 'Maintenance, Operating, and Other Expenses' && $item->category_gad === 'NON-GAD';
-        });
+            //FINANCIAL EXPENSES
+            $fe_gad = collect();
 
-        //FINANCIAL EXPENSES
-        $fe_gad = $all_budget_requirements->filter(function ($item) {
-            return $item->category === 'Financial Expenses' && $item->category_gad === 'GAD';
-        });
+            $fe_non = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Financial Expenses';
+            });
 
-        $fe_non = $all_budget_requirements->filter(function ($item) {
-            return $item->category === 'Financial Expenses' && $item->category_gad === 'NON-GAD';
-        });
+            //Capital Outlay
+            $cap_gad = collect();
 
-        //Capital Outlay
-        $cap_gad = $all_budget_requirements->filter(function ($item) {
-            return $item->category === 'Capital Outlay' && $item->category_gad === 'GAD';
-        });
-
-        $cap_non = $all_budget_requirements->filter(function ($item) {
-            return $item->category === 'Capital Outlay' && $item->category_gad === 'NON-GAD';
-        });
+            $cap_non = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Capital Outlay';
+            });
 
 
-        //Personnel Services
-        $ps_gad = $all_budget_requirements->filter(function ($item) {
-            return $item->category === 'Personnel Services' && $item->category_gad === 'GAD';
-        });
+            //Personnel Services
+            $ps_gad = collect();
 
-        $ps_non = $all_budget_requirements->filter(function ($item) {
-            return $item->category === 'Personnel Services' && $item->category_gad === 'NON-GAD';
-        });
+            $ps_non = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Personnel Services' && $item->category_gad === 'NON-GAD';
+            });
 
-        //TOTAL GAD Amount
-        $GAD_total = $all_budget_requirements
-            ->filter(fn($item) => $item->category_gad === 'GAD')
-            ->sum('amount');
-        $BUD_total = $all_budget_requirements->sum('amount');
+            //TOTAL GAD Amount
+            $GAD_total = $all_budget_requirements
+                ->filter(fn($item) => $item->category_gad === 'GAD')
+                ->sum('amount');
+            $BUD_total = $all_budget_requirements->sum('amount');
 
-        // SUM
-        $s_mooe_gad = $mooe_gad->sum('amount');
-        $s_mooe_non = $mooe_non->sum('amount');
+            // SUM
+            $s_mooe_gad = 0;
+            $s_mooe_non = $mooe_non->sum('amount');
 
-        $s_cap_gad = $cap_gad->sum('amount');
-        $s_cap_non = $cap_non->sum('amount');
+            $s_cap_gad = 0;
+            $s_cap_non = $cap_non->sum('amount');
 
-        $s_ps_gad = $ps_gad->sum('amount');
-        $s_ps_non = $ps_non->sum('amount');
+            $s_ps_gad = 0;
+            $s_ps_non = $ps_non->sum('amount');
 
-        $s_fe_gad = $fe_gad->sum('amount');
-        $s_fe_non = $fe_non->sum('amount');
+            $s_fe_gad = 0;
+            $s_fe_non = $fe_non->sum('amount');
+        }else{
+            // ALL BUDGET REQUIREMENT
+
+            // dd($all_budget_requirements);
+            //MOOE
+            $mooe_gad = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Maintenance, Operating, and Other Expenses' && $item->category_gad === 'GAD';
+            });
+
+            $mooe_non = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Maintenance, Operating, and Other Expenses' && $item->category_gad === 'NON-GAD';
+            });
+
+            //FINANCIAL EXPENSES
+            $fe_gad = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Financial Expenses' && $item->category_gad === 'GAD';
+            });
+
+            $fe_non = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Financial Expenses' && $item->category_gad === 'NON-GAD';
+            });
+
+            //Capital Outlay
+            $cap_gad = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Capital Outlay' && $item->category_gad === 'GAD';
+            });
+
+            $cap_non = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Capital Outlay' && $item->category_gad === 'NON-GAD';
+            });
+
+
+            //Personnel Services
+            $ps_gad = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Personnel Services' && $item->category_gad === 'GAD';
+            });
+
+            $ps_non = $all_budget_requirements->filter(function ($item) {
+                return $item->category === 'Personnel Services' && $item->category_gad === 'NON-GAD';
+            });
+
+            //TOTAL GAD Amount
+            $GAD_total = $all_budget_requirements
+                ->filter(fn($item) => $item->category_gad === 'GAD')
+                ->sum('amount');
+            $BUD_total = $all_budget_requirements->sum('amount');
+
+            // SUM
+            $s_mooe_gad = $mooe_gad->sum('amount');
+            $s_mooe_non = $mooe_non->sum('amount');
+
+            $s_cap_gad = $cap_gad->sum('amount');
+            $s_cap_non = $cap_non->sum('amount');
+
+            $s_ps_gad = $ps_gad->sum('amount');
+            $s_ps_non = $ps_non->sum('amount');
+
+            $s_fe_gad = $fe_gad->sum('amount');
+            $s_fe_non = $fe_non->sum('amount');
+            // dd($revs);
+
+            // dd($gad_version);
+
+        }
         return inertia('BudgetRequirement/Index', [
-            "mooe_gad" => $mooe_gad->values()->all(),
-            "mooe_non" => $mooe_non->values()->all(),
-            "cap_gad" => $cap_gad->values()->all(),
-            "cap_non" => $cap_non->values()->all(),
-            "ps_gad" => $ps_gad->values()->all(),
-            "ps_non" => $ps_non->values()->all(),
-            "fe_gad" => $fe_gad->values()->all(),
-            "fe_non" => $fe_non->values()->all(),
-            "idrev" => $idrev,
-            "revs" => $revs,
+                "mooe_gad" => $mooe_gad->values()->all(),
+                "mooe_non" => $mooe_non->values()->all(),
+                "cap_gad" => $cap_gad->values()->all(),
+                "cap_non" => $cap_non->values()->all(),
+                "ps_gad" => $ps_gad->values()->all(),
+                "ps_non" => $ps_non->values()->all(),
+                "fe_gad" => $fe_gad->values()->all(),
+                "fe_non" => $fe_non->values()->all(),
+                "idrev" => $idrev,
+                "revs" => $revs,
+                "gad_version" =>$gad_version,
+                "s_mooe_gad" => $s_mooe_gad,
+                "s_mooe_non" => $s_mooe_non,
+                "s_cap_gad" => $s_cap_gad,
+                "s_cap_non" => $s_cap_non,
+                "s_ps_gad" => $s_ps_gad,
+                "s_ps_non" => $s_ps_non,
+                "s_fe_gad" => $s_fe_gad,
+                "s_fe_non" => $s_fe_non,
+                "implementation_plan" => $total,
+                "imp_mooe" => $imp_mooe,
+                "imp_ps" => $imp_ps,
+                "imp_co" => $imp_co,
+                "imp_fe" => $imp_fe,
+                "filters" => $request->only(['search']),
+                "GAD_total" => $GAD_total,
+                "BUD_total" => $BUD_total,
 
-            "s_mooe_gad" => $s_mooe_gad,
-            "s_mooe_non" => $s_mooe_non,
-            "s_cap_gad" => $s_cap_gad,
-            "s_cap_non" => $s_cap_non,
-            "s_ps_gad" => $s_ps_gad,
-            "s_ps_non" => $s_ps_non,
-            "s_fe_gad" => $s_fe_gad,
-            "s_fe_non" => $s_fe_non,
-            "implementation_plan" => $total,
-            "imp_mooe" => $imp_mooe,
-            "imp_ps" => $imp_ps,
-            "imp_co" => $imp_co,
-            "imp_fe" => $imp_fe,
-            "filters" => $request->only(['search']),
-            "GAD_total" => $GAD_total,
-            "BUD_total" => $BUD_total,
+                'can' => [
+                    'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
+                    'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                ],
+            ]);
 
-            'can' => [
-                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
-            ],
-        ]);
     }
     public function getStratTotal($idrev)
     {
@@ -189,32 +250,88 @@ class BudgetRequirementController extends Controller
     }
     public function getActivityTotal($idrev)
     {
-        $total = ActivityProject::where('project_id', $idrev)
-            ->select(
-                'ps_q1',
-                'ps_q2',
-                'ps_q3',
-                'ps_q4',
-                'mooe_q1',
-                'mooe_q2',
-                'mooe_q3',
-                'mooe_q4',
-                'co_q1',
-                'co_q2',
-                'co_q3',
-                'co_q4',
-                'fe_q1',
-                'fe_q2',
-                'fe_q3',
-                'fe_q4'
-            )
-            ->where('is_active', '1')
-            ->whereHas('activity', function ($q) {
-                $q->whereNull('deleted_at');   // activity must NOT be soft deleted
-            })
-            ->get();
+        $total = ActivityProject::with(['activity.strat.strategyProject', 'revisionPlan.paps'])
+            ->where('project_id', $idrev)
+            // ->select(
+            //     'ps_q1',
+            //     'ps_q2',
+            //     'ps_q3',
+            //     'ps_q4',
+            //     'mooe_q1',
+            //     'mooe_q2',
+            //     'mooe_q3',
+            //     'mooe_q4',
+            //     'co_q1',
+            //     'co_q2',
+            //     'co_q3',
+            //     'co_q4',
+            //     'fe_q1',
+            //     'fe_q2',
+            //     'fe_q3',
+            //     'fe_q4',
 
-        // $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+            // )
+            ->where('is_active', '1')
+            ->whereHas('activity.strat.strategyProject', function ($q) use ($idrev) {
+                $q->whereNull('deleted_at')
+                    ->where('project_id', $idrev)
+                    ->where('is_active', '1');
+            })
+            ->whereHas('activity.strat', fn($q) => $q->whereNull('deleted_at'))
+            ->whereHas('activity', fn($q) => $q->whereNull('deleted_at'))
+            ->get();
+        // dd($total);
+        // if($idrev==51){
+        //     dd($total->pluck('activity_id'));
+        // }
+            // dd("fsddfdsf");
+        // $total = ActivityProject::with(['activity', 'activity.strat','activity.strat.strategyProject'])
+        //     ->where('project_id', $idrev)
+        //     ->where('is_active', '1')
+        //     ->whereHas('activity', function ($q) use($idrev) {
+        //         $q->whereNull('deleted_at')   // activity must NOT be soft deleted
+        //             ->whereHas('strat', function ($q2)  use($idrev){
+        //                 $q2->whereNull('deleted_at')   // strategy must NOT be soft deleted
+        //                     ->whereHas('strategyProject', function ($q3) use($idrev){
+        //                         $q3->where('project_id', $idrev)
+        //                             ->whereNull('deleted_at');   // strategyProject must NOT be soft deleted
+        //                     });
+        //             });
+        //     })
+        //     ->get();
+        // dd($total);
+
+        // $total = ActivityProject::with([
+        //         'activity.strat.strategyProject'
+        //     ])
+        //     ->where('project_id', $idrev)
+        //     ->where('is_active', '1')
+
+        //     ->whereHas('activity', function ($q) {
+        //         $q->whereNull('deleted_at');
+        //     })
+
+        //     ->whereHas('activity.strat', function ($q) {
+        //         $q->whereNull('deleted_at');
+        //     })
+
+        //     ->whereHas('activity.strat.strategyProject', function ($q) use ($idrev) {
+        //         $q->whereNull('deleted_at')
+        //         ->where('project_id', $idrev)
+        //         ->where('is_active', '1');
+        //     })
+
+        //     ->select([
+        //         'ps_q1','ps_q2','ps_q3','ps_q4',
+        //         'mooe_q1','mooe_q2','mooe_q3','mooe_q4',
+        //         'co_q1','co_q2','co_q3','co_q4',
+        //         'fe_q1','fe_q2','fe_q3','fe_q4'
+        //     ])
+        //     ->get();
+        // if($idrev==148){
+        //     // dd($total);
+        // }
+        // // $total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
         //     $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
         //     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
         return $total;

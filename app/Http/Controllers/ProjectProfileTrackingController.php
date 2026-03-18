@@ -33,7 +33,7 @@ class ProjectProfileTrackingController extends Controller
     public function status_update(Request $request, $id, $type, $new_status)
     {
         if ($new_status == "7") {
-            dd("seven jud siya:", $id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
+            // dd("seven jud siya:", $id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
         }
         // dd($id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
         $rrt = "";
@@ -44,20 +44,34 @@ class ProjectProfileTrackingController extends Controller
         // dd($us);
         $revplan = RevisionPlan::where('id', $id)->first();
         if (!$revplan) {
-            return redirect()->back()->with('error', 'Revision Plan not found.');
+            return redirect()->back()->with('error', 'Revision Plan not found.')->withQueryString();
         }
-
+    // dd(auth()->user(), $revplan);
         // Only apply this check if submitting (new_status = 0)
         if ($new_status == 0) {
             $idpaps = $revplan->idpaps;
-
+            // dd($idpaps);
+            // if($idpaps == 0){
+            //     dd("0 si idpaps");
+            // }else{
+            //     dd("dili 0 si idpaps: ", $idpaps);
+            // }
+            $year = $revplan->year_period;
+            // dd($revplan);
             // Check if any other revision plans of this idpaps are already submitted, reviewed, or approved , '1', '2'
-            $otherPlans = RevisionPlan::where('idpaps', $idpaps)
+            $otherPlans = RevisionPlan::when($idpaps!=0, function($query) use ($idpaps, $id, $year){
+                $query->where('idpaps', $idpaps);
+            })
                 ->where('id', '!=', $id)
+                ->whereYear('date_start', $year)
+                // ->where('year_period', $year)
                 ->whereIn('status', ['0'])
                 ->count();
-
-            if ($otherPlans > 0) {
+            // dd($otherPlans = RevisionPlan::where('idpaps', $idpaps)
+            //     ->where('id', '!=', $id)
+            //     ->whereYear('date_start', $year)
+            //     ->whereIn('status', ['0'])->get(), $revplan, $id, $year);
+            if ($otherPlans > 0 && $idpaps != 0) {
                 return redirect()->back()->with('error', 'Cannot submit this Revision Plan because other plans for this PAP are already submitted, reviewed, or approved.');
             }
         }
@@ -68,7 +82,7 @@ class ProjectProfileTrackingController extends Controller
             $revplan->return_request_status = 0;
         } else if ($new_status == "7") {
             $revplan->return_request_status = "-1";
-            $this->service->generate($id);
+            // $this->service->generate($id);
         } else {
             if ($request->column == 'gad_status') {
                 $revplan->gad_status = $new_status;
@@ -105,11 +119,15 @@ class ProjectProfileTrackingController extends Controller
         //         ->with('message','Project Profile '.$actionText.' successfully.');
         // }
         // Submit (0) OR Recall (-1) → go back to same page
-        if ($new_status == 0 || $new_status == -1 || $new_status == "5") {
-            return redirect()->back()
-                ->with('message', $type . " {$actionText} successfully.");
+        if ($new_status == 0 || $new_status == -1 || $new_status == "5" || $new_status == -2) {
+            // return redirect()->back();
+            return redirect()->to(url()->previous());
+            // ->withQueryString()
+                // ->with('message', $type . " {$actionText} successfully.");
         }
-
+        if($new_status==1){
+            return redirect()->to(url()->previous());
+        }
         // Review (1), Approve (2), Return (-2) → go to revision list
         return redirect('/revision_plans?source=rev_app')
             ->with('message', $typpe . " {$actionText} successfully.");
@@ -311,5 +329,37 @@ class ProjectProfileTrackingController extends Controller
             ->groupBy('raaohs.idprogram')
             ->get();
         return $programs;
+    }
+
+    public function tracking(Request $request){
+        // dd($request);
+        $uid = auth()->user()->recid;
+        // dd($uid);
+        $data = ProjectProfileTracking::with(['revisionPlan' => function ($query) {
+        $query->withTrashed();
+            //   ->with(['projectProfileTrackings' => function ($q) {
+            //       $q->withTrashed();
+            }])
+            // }
+            // , 'revisionPlan.projectProfileTrackings'
+            // ])
+
+                ->where('action_by', $uid)
+                ->orderBy('created_at','desc')
+                ->get()
+                ->map(function($item){
+                    return [
+                        "action_type"=>$item->action_type,
+                        "revision_plan_id"=>$item->revision_plan_id,
+                        "revision_plan"=>$item->revisionPlan,
+                        "created_at"=>$item->created_at,
+                        "accordion_visible"=>false
+                        // "profile_trac"
+                    ];
+                });
+        // dd($data);
+        return inertia("RevisionPlans/Tracking/Index", [
+            "data"=>$data
+        ]);
     }
 }

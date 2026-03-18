@@ -343,37 +343,86 @@ var _hoisted_2 = {
   }
 };
 var _hoisted_3 = {
-  "class": "nav-right"
+  key: 0,
+  "class": "nav-left"
 };
 var _hoisted_4 = {
-  "class": "dropdown"
+  id: "sidebar-toggle",
+  "class": "sidebar-toggle"
 };
 var _hoisted_5 = {
+  "class": "text-danger"
+};
+var _hoisted_6 = {
+  key: 1,
+  "class": "nav-right"
+};
+var _hoisted_7 = {
+  "class": "nav-right"
+};
+var _hoisted_8 = {
+  key: 0,
+  "class": "nav-right"
+};
+var _hoisted_9 = {
+  "class": "dropdown"
+};
+var _hoisted_10 = {
   href: "",
   "class": "dropdown-toggle no-after peers fxw-nw ai-c lh-1",
   "data-bs-toggle": "dropdown"
 };
-var _hoisted_6 = {
+var _hoisted_11 = {
   "class": "peer"
 };
-var _hoisted_7 = {
+var _hoisted_12 = {
   "class": "fsz-sm",
   style: {
     "color": "#FFD700",
     "font-weight": "bold"
   }
 };
-var _hoisted_8 = {
+var _hoisted_13 = {
   "class": "dropdown-menu fsz-sm dropdown-menu-c"
 };
-var _hoisted_9 = {
+var _hoisted_14 = {
   key: 0
+};
+var _hoisted_15 = {
+  key: 1
+};
+var _hoisted_16 = {
+  key: 2,
+  role: "separator",
+  "class": "divider"
+};
+var _hoisted_17 = {
+  key: 3
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<ul class=\"nav-left\"><li><a id=\"sidebar-toggle\" class=\"sidebar-toggle\" href=\"javascript:void(0);\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"#FFD700\" class=\"bi bi-list\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z\"></path></svg></a></li><li class=\"search-input\"><input class=\"form-control\" type=\"text\" placeholder=\"Search...\"></li></ul>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_5, [_cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<ul class=\"nav-left\"><li><a id=\"sidebar-toggle\" class=\"sidebar-toggle\" href=\"javascript:void(0);\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"#FFD700\" class=\"bi bi-list\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z\"></path></svg></a></li><li class=\"search-input\"><input class=\"form-control\" type=\"text\" placeholder=\"Search...\"></li></ul>", 1)), _ctx.$page.props.flash.impersonating ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ul", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_5, [_cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("You are impersonating ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("u", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.auth.user.FullName), 1 /* TEXT */)])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.flash.impersonating ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ul", _hoisted_6, _toConsumableArray(_cache[2] || (_cache[2] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a id=\"sidebar-toggle\" class=\"sidebar-toggle\">\r\n                        <span class=\"text-danger\">You are impersonating <b><u>{{\r\n                        $page.props.auth.user.FullName\r\n                    }}</u></b></span>\r\n                    </a> ")], -1 /* CACHED */)])))) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_7, [_ctx.$page.props.flash.impersonating ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    href: "/users/stop-impersonate",
+    "class": "btn btn-sm btn-danger text-white px-3 py-1"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return _toConsumableArray(_cache[3] || (_cache[3] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "14",
+        height: "14",
+        fill: "currentColor",
+        "class": "bi bi-exclamation-circle",
+        viewBox: "0 0 16 16"
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+        d: "M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+        d: "m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
+      })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "   Stop Impersonating", -1 /* CACHED */)]));
+    }),
+    _: 1 /* STABLE */
+  })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_10, [_cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "peer mR-10"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\n                                <img\n                                class=\"w-2r bdrs-50p\"\n                                :src=\"$page.props.auth.user.photo\"\n                                alt=\"\"\n                            />\n                            ")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.auth.user.FullName), 1 /* TEXT */)]), _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                                <img\r\n                                class=\"w-2r bdrs-50p\"\r\n                                :src=\"$page.props.auth.user.photo\"\r\n                                alt=\"\"\r\n                            />\r\n                            ")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.auth.user.FullName), 1 /* TEXT */)]), _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "12",
     height: "12",
@@ -382,12 +431,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     viewBox: "0 0 16 16"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
     d: "M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
-  })], -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  })], -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/users/settings",
     "class": "d-b td-n pY-5 bgcH-grey-100 c-grey-700"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[3] || (_cache[3] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      return _toConsumableArray(_cache[6] || (_cache[6] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         width: "14",
         height: "14",
@@ -405,7 +454,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "d-b td-n pY-5 bgcH-grey-100 c-grey-700"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[4] || (_cache[4] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      return _toConsumableArray(_cache[7] || (_cache[7] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         width: "14",
         height: "14",
@@ -419,12 +468,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Change Password", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  })]), _ctx.$page.props.auth.user.office.department_code == '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  })]), _ctx.$page.props.auth.user.office.department_code == '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/users",
     "class": "d-b td-n pY-5 bgcH-grey-100 c-grey-700"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[5] || (_cache[5] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      return _toConsumableArray(_cache[8] || (_cache[8] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         width: "14",
         height: "14",
@@ -436,16 +485,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "   Users", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
-    role: "separator",
-    "class": "divider"
-  }, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.flash.impersonating ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    href: "/users/stop-impersonate",
+    "class": "d-b td-n pY-5 bgcH-grey-100 c-danger"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return _toConsumableArray(_cache[9] || (_cache[9] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "14",
+        height: "14",
+        fill: "currentColor",
+        "class": "bi bi-exclamation-circle",
+        viewBox: "0 0 16 16"
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+        d: "M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+        d: "m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
+      })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "   Stop Impersonating", -1 /* CACHED */)]));
+    }),
+    _: 1 /* STABLE */
+  })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !_ctx.$page.props.flash.impersonating ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_16)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !_ctx.$page.props.flash.impersonating ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.logout();
     }),
     href: "",
     "class": "d-b td-n pY-5 bgcH-grey-100 c-grey-700"
-  }, _toConsumableArray(_cache[6] || (_cache[6] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  }, _toConsumableArray(_cache[10] || (_cache[10] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "14",
     height: "14",
@@ -458,7 +523,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
     "fill-rule": "evenodd",
     d: "M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-  })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Logout", -1 /* CACHED */)])))])])])])])]);
+  })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Logout", -1 /* CACHED */)])))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])]);
 }
 
 /***/ },
@@ -554,6 +619,7 @@ var _hoisted_11 = {
   "class": "nav-item"
 };
 var _hoisted_12 = {
+  key: 0,
   "class": "nav-item"
 };
 var _hoisted_13 = {
@@ -579,7 +645,7 @@ var _hoisted_19 = {
   key: 2
 };
 var _hoisted_20 = {
-  key: 0,
+  key: 1,
   "class": "nav-item dropdown"
 };
 var _hoisted_21 = {
@@ -592,11 +658,24 @@ var _hoisted_23 = {
   key: 1
 };
 var _hoisted_24 = {
+  key: 2
+};
+var _hoisted_25 = {
+  key: 3
+};
+var _hoisted_26 = {
   "class": "nav-item"
 };
+var _hoisted_27 = {
+  "class": "nav-item"
+};
+var _hoisted_28 = {
+  "class": "nav-item"
+};
+var _hoisted_29 = ["href"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ### $Sidebar Header ### "), _cache[35] || (_cache[35] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"sidebar-logo\"><div class=\"peers ai-c fxw-nw\"><div class=\"peer peer-greed\"><a class=\"sidebar-link td-n\" href=\"/\"><div class=\"peers ai-c fxw-nw\"><div class=\"peer\"><div class=\"logo\"><img src=\"/images/logo.png\" alt=\"\" class=\"img-fluid p-5\"></div></div><div class=\"peer peer-greed\"><h5 class=\"lh-1 mB-0 logo-text\"><span style=\"color:#FFD700;font-size:medium;\"> Planning and Budgeting System </span></h5></div></div></a></div><div class=\"peer\"><div class=\"mobile-toggle sidebar-toggle\"><a href=\"\" class=\"td-n\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"black\" class=\"bi bi-list\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z\"></path></svg></a></div></div></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ### $Sidebar Menu ### "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_3, [_cache[32] || (_cache[32] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<li class=\"nav-item mT-30 actived\">\r\n                    <Link class=\"sidebar-link\" href=\"/\"\r\n                        ><span class=\"icon-holder\"\r\n                            ><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-house-door\" viewBox=\"0 0 16 16\">\r\n                              <path d=\"M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z\"/>\r\n                            </svg>\r\n                        </span\r\n                        ><span class=\"title\">Dashboard</span></Link\r\n                    >\r\n                </li>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_4, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"23\" height=\"23\" fill=\"currentColor\" class=\"bi bi-border-outer\" viewBox=\"0 0 16 16\"><path d=\"M7.5 1.906v.938h1v-.938h-1zm0 1.875v.938h1V3.78h-1zm0 1.875v.938h1v-.938h-1zM1.906 8.5h.938v-1h-.938v1zm1.875 0h.938v-1H3.78v1zm1.875 0h.938v-1h-.938v1zm2.813 0v-.031H8.5V7.53h-.031V7.5H7.53v.031H7.5v.938h.031V8.5h.938zm.937 0h.938v-1h-.938v1zm1.875 0h.938v-1h-.938v1zm1.875 0h.938v-1h-.938v1zM7.5 9.406v.938h1v-.938h-1zm0 1.875v.938h1v-.938h-1zm0 1.875v.938h1v-.938h-1z\"></path><path d=\"M0 0v16h16V0H0zm1 1h14v14H1V1z\"></path></svg></span><span class=\"title\">Logframe</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ### $Sidebar Header ### "), _cache[39] || (_cache[39] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"sidebar-logo\"><div class=\"peers ai-c fxw-nw\"><div class=\"peer peer-greed\"><a class=\"sidebar-link td-n\" href=\"/\"><div class=\"peers ai-c fxw-nw\"><div class=\"peer\"><div class=\"logo\"><img src=\"/images/logo.png\" alt=\"\" class=\"img-fluid p-5\"></div></div><div class=\"peer peer-greed\"><h5 class=\"lh-1 mB-0 logo-text\"><span style=\"color:#FFD700;font-size:medium;\"> Planning and Budgeting System </span></h5></div></div></a></div><div class=\"peer\"><div class=\"mobile-toggle sidebar-toggle\"><a href=\"\" class=\"td-n\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"black\" class=\"bi bi-list\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z\"></path></svg></a></div></div></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ### $Sidebar Menu ### "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_3, [_cache[36] || (_cache[36] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<li class=\"nav-item mT-30 actived\">\r\n                    <Link class=\"sidebar-link\" href=\"/\"\r\n                        ><span class=\"icon-holder\"\r\n                            ><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-house-door\" viewBox=\"0 0 16 16\">\r\n                              <path d=\"M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z\"/>\r\n                            </svg>\r\n                        </span\r\n                        ><span class=\"title\">Dashboard</span></Link\r\n                    >\r\n                </li>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_4, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"23\" height=\"23\" fill=\"currentColor\" class=\"bi bi-border-outer\" viewBox=\"0 0 16 16\"><path d=\"M7.5 1.906v.938h1v-.938h-1zm0 1.875v.938h1V3.78h-1zm0 1.875v.938h1v-.938h-1zM1.906 8.5h.938v-1h-.938v1zm1.875 0h.938v-1H3.78v1zm1.875 0h.938v-1h-.938v1zm2.813 0v-.031H8.5V7.53h-.031V7.5H7.53v.031H7.5v.938h.031V8.5h.938zm.937 0h.938v-1h-.938v1zm1.875 0h.938v-1h-.938v1zm1.875 0h.938v-1h-.938v1zM7.5 9.406v.938h1v-.938h-1zm0 1.875v.938h1v-.938h-1zm0 1.875v.938h1v-.938h-1z\"></path><path d=\"M0 0v16h16V0H0zm1 1h14v14H1V1z\"></path></svg></span><span class=\"title\">Logframe</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/Societal'
     }]),
@@ -765,7 +844,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, "SIP", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/IPCR/direct\" :class=\"{ 'active': $page.url === '/IPCR/direct' }\">\r\n                    <span></span>\r\n                    <span class=\"icon-holder\">\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                            class=\"bi bi-filter-square-fill\" viewBox=\"0 0 16 16\">\r\n                            <path\r\n                                d=\"M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm.5 5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1 0-1zM4 8.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm2 3a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5z\" />\r\n                        </svg>\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg>\r\n                    </span>\r\n                    <span class=\"title\">IPCR</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/AIP/\" :class=\"{'active': $page.url === '/AIP/'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-graph-up-arrow\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z\"/>\r\n                            </svg> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ********************LBP Form "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                    <Link class=\"sidebar-link\" href=\"/AIP/direct\" :class=\"{ 'active': $page.url === '/AIP/direct' }\">\r\n                    <span></span>\r\n                    <span class=\"icon-holder\">\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                            class=\"bi bi-card-text\" viewBox=\"0 0 16 16\">\r\n                            <path\r\n                                d=\"M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z\" />\r\n                            <path\r\n                                d=\"M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z\" />\r\n                        </svg>\r\n                    </span>\r\n                    <span class=\"title\">LBP Form</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link class=\"sidebar-link\" href=\"/AIP/direct\" :class=\"{ 'active': $page.url === '/AIP/direct' }\">\r\n                    <span></span>\r\n                    <span class=\"icon-holder\">\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                            class=\"bi bi-card-text\" viewBox=\"0 0 16 16\">\r\n                            <path\r\n                                d=\"M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z\" />\r\n                            <path\r\n                                d=\"M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z\" />\r\n                        </svg>\r\n                    </span>\r\n                    <span class=\"title\">LBP Form</span>\r\n                </Link> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                    <Link class=\"sidebar-link\" href=\"/annual-investment-plans\" :class=\"{ 'active': $page.url === '/annual-investment-plans' }\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                                class=\"bi bi-card-text\" viewBox=\"0 0 16 16\">\r\n                                <path\r\n                                    d=\"M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z\" />\r\n                                <path\r\n                                    d=\"M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z\" />\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Annual Investment Plan</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/DailyAccomplishment/direct\" :class=\"{'active': $page.url === '/DailyAccomplishment/direct'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-calendar-fill\" viewBox=\"0 0 16 16\">\r\n                                 <path d=\"M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z\"/>\r\n                                    </svg>\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Accomplishment Report</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/AddAccomplishment/\"\r\n                        :class=\"{ 'active': $page.url === '/AddAccomplishment/' }\">\r\n                    <span></span>\r\n                    <span class=\"icon-holder\">\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                            class=\"bi bi-calendar-fill\" viewBox=\"0 0 16 16\">\r\n                            <path\r\n                                d=\"M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z\" />\r\n                        </svg>\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg>\r\n                    </span>\r\n                    <span class=\"title\">Accomplishment Report</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_12, [_ctx.$page.props.auth.user.department_code == '04' || _ctx.$page.props.auth.user.office.empl_id == '1399' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
+  }, 8 /* PROPS */, ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/IPCR/direct\" :class=\"{ 'active': $page.url === '/IPCR/direct' }\">\r\n                    <span></span>\r\n                    <span class=\"icon-holder\">\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                            class=\"bi bi-filter-square-fill\" viewBox=\"0 0 16 16\">\r\n                            <path\r\n                                d=\"M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm.5 5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1 0-1zM4 8.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm2 3a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5z\" />\r\n                        </svg>\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg>\r\n                    </span>\r\n                    <span class=\"title\">IPCR</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/AIP/\" :class=\"{'active': $page.url === '/AIP/'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-graph-up-arrow\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z\"/>\r\n                            </svg> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ********************LBP Form "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                    <Link class=\"sidebar-link\" href=\"/AIP/direct\" :class=\"{ 'active': $page.url === '/AIP/direct' }\">\r\n                    <span></span>\r\n                    <span class=\"icon-holder\">\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                            class=\"bi bi-card-text\" viewBox=\"0 0 16 16\">\r\n                            <path\r\n                                d=\"M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z\" />\r\n                            <path\r\n                                d=\"M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z\" />\r\n                        </svg>\r\n                    </span>\r\n                    <span class=\"title\">LBP Form</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link class=\"sidebar-link\" href=\"/AIP/direct\" :class=\"{ 'active': $page.url === '/AIP/direct' }\">\r\n                    <span></span>\r\n                    <span class=\"icon-holder\">\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                            class=\"bi bi-card-text\" viewBox=\"0 0 16 16\">\r\n                            <path\r\n                                d=\"M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z\" />\r\n                            <path\r\n                                d=\"M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z\" />\r\n                        </svg>\r\n                    </span>\r\n                    <span class=\"title\">LBP Form</span>\r\n                </Link> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                    <Link class=\"sidebar-link\" href=\"/annual-investment-plans\" :class=\"{ 'active': $page.url === '/annual-investment-plans' }\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                                class=\"bi bi-card-text\" viewBox=\"0 0 16 16\">\r\n                                <path\r\n                                    d=\"M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z\" />\r\n                                <path\r\n                                    d=\"M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z\" />\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Annual Investment Plan</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/DailyAccomplishment/direct\" :class=\"{'active': $page.url === '/DailyAccomplishment/direct'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-calendar-fill\" viewBox=\"0 0 16 16\">\r\n                                 <path d=\"M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z\"/>\r\n                                    </svg>\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Accomplishment Report</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/AddAccomplishment/\"\r\n                        :class=\"{ 'active': $page.url === '/AddAccomplishment/' }\">\r\n                    <span></span>\r\n                    <span class=\"icon-holder\">\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\"\r\n                            class=\"bi bi-calendar-fill\" viewBox=\"0 0 16 16\">\r\n                            <path\r\n                                d=\"M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z\" />\r\n                        </svg>\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg>\r\n                    </span>\r\n                    <span class=\"title\">Accomplishment Report</span>\r\n                    </Link>\r\n                </li> "), _ctx.$page.props.auth.user.department_code == '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_12, [_ctx.$page.props.auth.user.department_code == '04' || _ctx.$page.props.auth.user.office.empl_id == '1399' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
     key: 0,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/revision_plans?source=direct'
@@ -789,7 +868,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, "IPP (All Offices)", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["class"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, 8 /* PROPS */, ["class"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/revision_plans?source=budget'
     }]),
@@ -814,7 +893,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, "Budget Proposal", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/revision_plans?source=proposed\"\r\n                        :class=\"{ 'active': $page.url === '/revision_plans?source=proposed' }\"\r\n                    >\r\n                    <span></span>\r\n                    <span class=\"icon-holder\">\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-receipt\" viewBox=\"0 0 16 16\">\r\n                            <path d=\"M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27m.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0z\"/>\r\n                            <path d=\"M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5\"/>\r\n                        </svg>\r\n\r\n                    </span>\r\n                    <span class=\"title\">Budget Proposed</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Outcomes"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/outcome\" :class=\"{'active': $page.url === '/outcome'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-person-rolodex\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z\"/>\r\n                                <path d=\"M1 1a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h.5a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h.5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6.707L6 1.293A1 1 0 0 0 5.293 1H1Zm0 1h4.293L6 2.707A1 1 0 0 0 6.707 3H15v10h-.085a1.5 1.5 0 0 0-2.4-.63C11.885 11.223 10.554 10 8 10c-2.555 0-3.886 1.224-4.514 2.37a1.5 1.5 0 0 0-2.4.63H1V2Z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Outcomes</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                <li class=\"nav-item\" v-if=\"$page.props.can.can_access_indicators\">\r\n                    <Link class=\"sidebar-link\" href=\"/indicators\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-bezier2\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M1 2.5A1.5 1.5 0 0 1 2.5 1h1A1.5 1.5 0 0 1 5 2.5h4.134a1 1 0 1 1 0 1h-2.01c.18.18.34.381.484.605.638.992.892 2.354.892 3.895 0 1.993.257 3.092.713 3.7.356.476.895.721 1.787.784A1.5 1.5 0 0 1 12.5 11h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H6.866a1 1 0 1 1 0-1h1.711a2.839 2.839 0 0 1-.165-.2C7.743 11.407 7.5 10.007 7.5 8c0-1.46-.246-2.597-.733-3.355-.39-.605-.952-1-1.767-1.112A1.5 1.5 0 0 1 3.5 5h-1A1.5 1.5 0 0 1 1 3.5v-1zM2.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10 10a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Indicators</span>\r\n                    </Link>\r\n                </li>\r\n                "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("GOALS"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/Organization\" :class=\"{'active': $page.url === '/Organization'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-diagram-3\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Organizational Goals</span>\r\n                    </Link>\r\n                </li>\r\n\r\n                <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/Sectoral\" :class=\"{'active': $page.url === '/Sectoral'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-pie-chart-fill\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Sectoral Goals</span>\r\n                    </Link>\r\n                </li>\r\n                "), _cache[33] || (_cache[33] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Agenda/Goals"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Other Libraries"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_14, [_cache[25] || (_cache[25] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"22\" height=\"22\" fill=\"currentColor\" class=\"bi bi-book-fill\" viewBox=\"0 0 16 16\"><path d=\"M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z\"></path></svg></span><span class=\"title\">Libraries</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_15, [_ctx.$page.props.auth.user.department_code == '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_16, [_cache[19] || (_cache[19] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"title\">Agenda</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, 8 /* PROPS */, ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/revision_plans?source=proposed\"\r\n                        :class=\"{ 'active': $page.url === '/revision_plans?source=proposed' }\"\r\n                    >\r\n                    <span></span>\r\n                    <span class=\"icon-holder\">\r\n                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-receipt\" viewBox=\"0 0 16 16\">\r\n                            <path d=\"M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27m.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0z\"/>\r\n                            <path d=\"M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5\"/>\r\n                        </svg>\r\n\r\n                    </span>\r\n                    <span class=\"title\">Budget Proposed</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Outcomes"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/outcome\" :class=\"{'active': $page.url === '/outcome'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-person-rolodex\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z\"/>\r\n                                <path d=\"M1 1a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h.5a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h.5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6.707L6 1.293A1 1 0 0 0 5.293 1H1Zm0 1h4.293L6 2.707A1 1 0 0 0 6.707 3H15v10h-.085a1.5 1.5 0 0 0-2.4-.63C11.885 11.223 10.554 10 8 10c-2.555 0-3.886 1.224-4.514 2.37a1.5 1.5 0 0 0-2.4.63H1V2Z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Outcomes</span>\r\n                    </Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                <li class=\"nav-item\" v-if=\"$page.props.can.can_access_indicators\">\r\n                    <Link class=\"sidebar-link\" href=\"/indicators\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-bezier2\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M1 2.5A1.5 1.5 0 0 1 2.5 1h1A1.5 1.5 0 0 1 5 2.5h4.134a1 1 0 1 1 0 1h-2.01c.18.18.34.381.484.605.638.992.892 2.354.892 3.895 0 1.993.257 3.092.713 3.7.356.476.895.721 1.787.784A1.5 1.5 0 0 1 12.5 11h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H6.866a1 1 0 1 1 0-1h1.711a2.839 2.839 0 0 1-.165-.2C7.743 11.407 7.5 10.007 7.5 8c0-1.46-.246-2.597-.733-3.355-.39-.605-.952-1-1.767-1.112A1.5 1.5 0 0 1 3.5 5h-1A1.5 1.5 0 0 1 1 3.5v-1zM2.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10 10a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Indicators</span>\r\n                    </Link>\r\n                </li>\r\n                "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("GOALS"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\r\n                <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/Organization\" :class=\"{'active': $page.url === '/Organization'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-diagram-3\" viewBox=\"0 0 16 16\">\r\n                                <path fill-rule=\"evenodd\" d=\"M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Organizational Goals</span>\r\n                    </Link>\r\n                </li>\r\n\r\n                <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/Sectoral\" :class=\"{'active': $page.url === '/Sectoral'}\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-pie-chart-fill\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Sectoral Goals</span>\r\n                    </Link>\r\n                </li>\r\n                "), _cache[37] || (_cache[37] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Agenda/Goals"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Other Libraries"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_14, [_cache[25] || (_cache[25] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"22\" height=\"22\" fill=\"currentColor\" class=\"bi bi-book-fill\" viewBox=\"0 0 16 16\"><path d=\"M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z\"></path></svg></span><span class=\"title\">Libraries</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_15, [_ctx.$page.props.auth.user.department_code == '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_16, [_cache[19] || (_cache[19] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"title\">Agenda</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/ChiefAgenda'
     }]),
@@ -934,7 +1013,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, "Employees", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                            <Link class=\"sidebar-link\" href=\"/indicators\" :class=\"{'active': $page.url === '/indicators'}\">\r\n                                <span class=\"title\">Divisions</span>\r\n                            </Link>\r\n                        </li> ")])]), _cache[34] || (_cache[34] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" department_code: {{ $page.props.auth.user.department_code }} "), _ctx.$page.props.auth.user.department_code == '04' || _ctx.$page.props.auth.user.department_code == '02' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_20, [_cache[30] || (_cache[30] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"23\" height=\"23\" fill=\"currentColor\" class=\"bi bi-hand-thumbs-up-fill\" viewBox=\"0 0 16 16\"><path d=\"M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z\"></path></svg></span><span class=\"title\">Review/Approve</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, 8 /* PROPS */, ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                            <Link class=\"sidebar-link\" href=\"/indicators\" :class=\"{'active': $page.url === '/indicators'}\">\r\n                                <span class=\"title\">Divisions</span>\r\n                            </Link>\r\n                        </li> ")])]), _cache[38] || (_cache[38] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" department_code: {{ $page.props.auth.user.department_code }} "), _ctx.$page.props.auth.user.department_code == '04' || _ctx.$page.props.auth.user.department_code == '02' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_20, [_cache[32] || (_cache[32] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<a class=\"dropdown-toggle\" href=\"javascript:void(0);\"><span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"23\" height=\"23\" fill=\"currentColor\" class=\"bi bi-hand-thumbs-up-fill\" viewBox=\"0 0 16 16\"><path d=\"M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z\"></path></svg></span><span class=\"title\">Review/Approve</span><span class=\"arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-chevron-right\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z\"></path></svg></span></a>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/review-approve/targets/'
     }]),
@@ -960,36 +1039,60 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1 /* STABLE */
   }, 8 /* PROPS */, ["class"])]), _ctx.$page.props.auth.user.department_code == '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
+      'active': _ctx.$page.url === '/review-approve/ratings?source=ppdo_approval'
+    }]),
+    href: "/review-approve/ratings?source=ppdo_approval"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return _toConsumableArray(_cache[28] || (_cache[28] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+        "class": "title"
+      }, "Rating (For Approval)", -1 /* CACHED */)]));
+    }),
+    _: 1 /* STABLE */
+  }, 8 /* PROPS */, ["class"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li v-if=\"$page.props.auth.user.department_code == '04'\">\r\n                            <Link class=\"sidebar-link\" href=\"/review-approve/ratings?source=approved\"\r\n                                :class=\"{ 'active': $page.url === '/review-approve/ratings?source=approved' }\">\r\n                            <span class=\"title\">Rating (Approved)</span>\r\n                            </Link>\r\n                        </li> "), _ctx.$page.props.auth.user.department_code == '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/revision_plans?source=rev_app'
     }]),
     href: "/revision_plans?source=rev_app"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[28] || (_cache[28] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+      return _toConsumableArray(_cache[29] || (_cache[29] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
         "class": "title"
       }, "Project Profile", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["class"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.auth.user.department_code == '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, 8 /* PROPS */, ["class"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.auth.user.department_code == '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
+      'active': _ctx.$page.url === '/revision_plans?source=approved'
+    }]),
+    href: "/revision_plans?source=approved"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return _toConsumableArray(_cache[30] || (_cache[30] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+        "class": "title"
+      }, "Project Profile (Approved)", -1 /* CACHED */)]));
+    }),
+    _: 1 /* STABLE */
+  }, 8 /* PROPS */, ["class"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.auth.user.department_code == '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/institutional_aip'
     }]),
     href: "/institutional_aip"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[29] || (_cache[29] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+      return _toConsumableArray(_cache[31] || (_cache[31] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
         "class": "title"
       }, "AIP", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["class"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, 8 /* PROPS */, ["class"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url === '/review-approve/'
     }]),
     href: "/manual"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[31] || (_cache[31] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+      return _toConsumableArray(_cache[33] || (_cache[33] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
         "class": "icon-holder"
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
@@ -1005,7 +1108,37 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, "IPP Manual", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["class"])])])])]);
+  }, 8 /* PROPS */, ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
+      'active': _ctx.$page.url === '/project-profile-tracking'
+    }]),
+    href: "/project-profile-tracking"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return _toConsumableArray(_cache[34] || (_cache[34] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+        "class": "icon-holder"
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        fill: "currentColor",
+        "class": "bi bi-calendar-fill",
+        viewBox: "0 0 16 16"
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+        d: "M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z"
+      })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" class=\"bi bi-border-style\" viewBox=\"0 0 16 16\">\r\n                                <path d=\"M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z\"/>\r\n                            </svg> ")], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+        "class": "title"
+      }, "IPP Tracking", -1 /* CACHED */)]));
+    }),
+    _: 1 /* STABLE */
+  }, 8 /* PROPS */, ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" :href=\"`http://192.168.80.88/login/authentication?username=${$page.props.auth.user.UserName}&password=${$page.props.auth.user.UserPassword}`\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" :href=\"`generate/token/for/accomplishments`\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
+      'active': _ctx.$page.url === '/revision/0?source=sip'
+    }]),
+    href: "https://accomplishment.davaodeoro.gov.ph/login/authentication?username=".concat(_ctx.$page.props.auth.user.UserName, "&password=").concat(_ctx.$page.props.auth.user.UserPassword),
+    target: "_blank",
+    rel: "noopener noreferrer"
+  }, _toConsumableArray(_cache[35] || (_cache[35] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<span></span><span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M4 2h12v20H4z\"></path><path d=\"M6 6h8\"></path><path d=\"M6 10h8\"></path><circle cx=\"8\" cy=\"16\" r=\"2\"></circle></svg></span><span class=\"title\">Monthly Accomplishments</span>", 3)])), 10 /* CLASS, PROPS */, _hoisted_29)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <a class=\"sidebar-link\" href=\"192.168.80.88/login/authentication?username=GingGing&password=fd2d9096fd18e9d5bc3d800ed3020546\" :class=\"{ 'active': $page.url === '/revision/0?source=sip' }\">\r\n                        <span></span>\r\n                        <span class=\"icon-holder\">\r\n\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\r\n                                <path d=\"M4 2h12v20H4z\"/>\r\n                                <path d=\"M6 6h8\"/>\r\n                                <path d=\"M6 10h8\"/>\r\n                                <circle cx=\"8\" cy=\"16\" r=\"2\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Accomplishments</span>\r\n                    </a>\r\n                </li> ")])])]);
 }
 
 /***/ },
@@ -1073,1628 +1206,2043 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 var map = {
 	"./AIP/Index": [
 		"./resources/js/Pages/AIP/Index.vue",
+		9,
 		"resources_js_Pages_AIP_Index_vue"
 	],
 	"./AIP/Index.vue": [
 		"./resources/js/Pages/AIP/Index.vue",
+		9,
 		"resources_js_Pages_AIP_Index_vue"
 	],
 	"./AIP/LBP_Form_2/Create": [
 		"./resources/js/Pages/AIP/LBP_Form_2/Create.vue",
+		9,
 		"resources_js_Pages_AIP_LBP_Form_2_Create_vue"
 	],
 	"./AIP/LBP_Form_2/Create.vue": [
 		"./resources/js/Pages/AIP/LBP_Form_2/Create.vue",
+		9,
 		"resources_js_Pages_AIP_LBP_Form_2_Create_vue"
 	],
 	"./AIP/LBP_Form_2/Index": [
 		"./resources/js/Pages/AIP/LBP_Form_2/Index.vue",
+		9,
 		"resources_js_Pages_AIP_LBP_Form_2_Index_vue"
 	],
 	"./AIP/LBP_Form_2/Index.vue": [
 		"./resources/js/Pages/AIP/LBP_Form_2/Index.vue",
+		9,
 		"resources_js_Pages_AIP_LBP_Form_2_Index_vue"
 	],
 	"./AIP_Code/Create": [
 		"./resources/js/Pages/AIP_Code/Create.vue",
+		9,
 		"resources_js_Pages_AIP_Code_Create_vue"
 	],
 	"./AIP_Code/Create.vue": [
 		"./resources/js/Pages/AIP_Code/Create.vue",
+		9,
 		"resources_js_Pages_AIP_Code_Create_vue"
 	],
 	"./AIP_Code/Index": [
 		"./resources/js/Pages/AIP_Code/Index.vue",
+		9,
 		"resources_js_Pages_AIP_Code_Index_vue"
 	],
 	"./AIP_Code/Index.vue": [
 		"./resources/js/Pages/AIP_Code/Index.vue",
+		9,
 		"resources_js_Pages_AIP_Code_Index_vue"
 	],
 	"./Accomplishments/Create": [
 		"./resources/js/Pages/Accomplishments/Create.vue",
+		9,
 		"resources_js_Pages_Accomplishments_Create_vue"
 	],
 	"./Accomplishments/Create.vue": [
 		"./resources/js/Pages/Accomplishments/Create.vue",
+		9,
 		"resources_js_Pages_Accomplishments_Create_vue"
 	],
 	"./Accomplishments/Index": [
 		"./resources/js/Pages/Accomplishments/Index.vue",
+		9,
 		"resources_js_Pages_Accomplishments_Index_vue"
 	],
 	"./Accomplishments/Index.vue": [
 		"./resources/js/Pages/Accomplishments/Index.vue",
+		9,
 		"resources_js_Pages_Accomplishments_Index_vue"
 	],
 	"./Accomplishments/ValidationModal": [
 		"./resources/js/Pages/Accomplishments/ValidationModal.vue",
+		9,
 		"resources_js_Pages_Accomplishments_ValidationModal_vue"
 	],
 	"./Accomplishments/ValidationModal.vue": [
 		"./resources/js/Pages/Accomplishments/ValidationModal.vue",
+		9,
 		"resources_js_Pages_Accomplishments_ValidationModal_vue"
 	],
 	"./Accomplishments2/Create": [
 		"./resources/js/Pages/Accomplishments2/Create.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_Create_vue"
 	],
 	"./Accomplishments2/Create.vue": [
 		"./resources/js/Pages/Accomplishments2/Create.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_Create_vue"
 	],
 	"./Accomplishments2/Create2": [
 		"./resources/js/Pages/Accomplishments2/Create2.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_Create2_vue"
 	],
 	"./Accomplishments2/Create2.vue": [
 		"./resources/js/Pages/Accomplishments2/Create2.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_Create2_vue"
 	],
 	"./Accomplishments2/Index": [
 		"./resources/js/Pages/Accomplishments2/Index.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_Index_vue"
 	],
 	"./Accomplishments2/Index.vue": [
 		"./resources/js/Pages/Accomplishments2/Index.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_Index_vue"
 	],
 	"./Accomplishments2/Index2Backup": [
 		"./resources/js/Pages/Accomplishments2/Index2Backup.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_Index2Backup_vue"
 	],
 	"./Accomplishments2/Index2Backup.vue": [
 		"./resources/js/Pages/Accomplishments2/Index2Backup.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_Index2Backup_vue"
 	],
 	"./Accomplishments2/IndexBackUp": [
 		"./resources/js/Pages/Accomplishments2/IndexBackUp.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_IndexBackUp_vue"
 	],
 	"./Accomplishments2/IndexBackUp.vue": [
 		"./resources/js/Pages/Accomplishments2/IndexBackUp.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_IndexBackUp_vue"
 	],
 	"./Accomplishments2/ValidationModal": [
 		"./resources/js/Pages/Accomplishments2/ValidationModal.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_ValidationModal_vue"
 	],
 	"./Accomplishments2/ValidationModal.vue": [
 		"./resources/js/Pages/Accomplishments2/ValidationModal.vue",
+		9,
 		"resources_js_Pages_Accomplishments2_ValidationModal_vue"
 	],
 	"./Activities/Create": [
 		"./resources/js/Pages/Activities/Create.vue",
+		9,
 		"resources_js_Pages_Activities_Create_vue"
 	],
 	"./Activities/Create.vue": [
 		"./resources/js/Pages/Activities/Create.vue",
+		9,
 		"resources_js_Pages_Activities_Create_vue"
 	],
 	"./Activities/Index": [
 		"./resources/js/Pages/Activities/Index.vue",
+		9,
 		"resources_js_Pages_Activities_Index_vue"
 	],
 	"./Activities/Index.vue": [
 		"./resources/js/Pages/Activities/Index.vue",
+		9,
 		"resources_js_Pages_Activities_Index_vue"
 	],
 	"./AnnualInvestmentPlan/Appropriations/Create": [
 		"./resources/js/Pages/AnnualInvestmentPlan/Appropriations/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_AnnualInvestmentPlan_Appropriations_Create_vue"
 	],
 	"./AnnualInvestmentPlan/Appropriations/Create.vue": [
 		"./resources/js/Pages/AnnualInvestmentPlan/Appropriations/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_AnnualInvestmentPlan_Appropriations_Create_vue"
 	],
 	"./AnnualInvestmentPlan/Appropriations/Index": [
 		"./resources/js/Pages/AnnualInvestmentPlan/Appropriations/Index.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_Appropriations_Index_vue"
 	],
 	"./AnnualInvestmentPlan/Appropriations/Index.vue": [
 		"./resources/js/Pages/AnnualInvestmentPlan/Appropriations/Index.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_Appropriations_Index_vue"
 	],
 	"./AnnualInvestmentPlan/Create": [
 		"./resources/js/Pages/AnnualInvestmentPlan/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_AnnualInvestmentPlan_Create_vue"
 	],
 	"./AnnualInvestmentPlan/Create.vue": [
 		"./resources/js/Pages/AnnualInvestmentPlan/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_AnnualInvestmentPlan_Create_vue"
 	],
 	"./AnnualInvestmentPlan/ExpectedOutput/Create": [
 		"./resources/js/Pages/AnnualInvestmentPlan/ExpectedOutput/Create.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_ExpectedOutput_Create_vue"
 	],
 	"./AnnualInvestmentPlan/ExpectedOutput/Create.vue": [
 		"./resources/js/Pages/AnnualInvestmentPlan/ExpectedOutput/Create.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_ExpectedOutput_Create_vue"
 	],
 	"./AnnualInvestmentPlan/ExpectedOutput/Index": [
 		"./resources/js/Pages/AnnualInvestmentPlan/ExpectedOutput/Index.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_ExpectedOutput_Index_vue"
 	],
 	"./AnnualInvestmentPlan/ExpectedOutput/Index.vue": [
 		"./resources/js/Pages/AnnualInvestmentPlan/ExpectedOutput/Index.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_ExpectedOutput_Index_vue"
 	],
 	"./AnnualInvestmentPlan/Index": [
 		"./resources/js/Pages/AnnualInvestmentPlan/Index.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_Index_vue"
 	],
 	"./AnnualInvestmentPlan/Index.vue": [
 		"./resources/js/Pages/AnnualInvestmentPlan/Index.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_Index_vue"
 	],
 	"./AnnualInvestmentPlan/Institutional/Index": [
 		"./resources/js/Pages/AnnualInvestmentPlan/Institutional/Index.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_Institutional_Index_vue"
 	],
 	"./AnnualInvestmentPlan/Institutional/Index.vue": [
 		"./resources/js/Pages/AnnualInvestmentPlan/Institutional/Index.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_Institutional_Index_vue"
 	],
 	"./AnnualInvestmentPlan/OfficeAIPCode/Create": [
 		"./resources/js/Pages/AnnualInvestmentPlan/OfficeAIPCode/Create.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_OfficeAIPCode_Create_vue"
 	],
 	"./AnnualInvestmentPlan/OfficeAIPCode/Create.vue": [
 		"./resources/js/Pages/AnnualInvestmentPlan/OfficeAIPCode/Create.vue",
+		9,
 		"resources_js_Pages_AnnualInvestmentPlan_OfficeAIPCode_Create_vue"
 	],
 	"./Appropriations/Create": [
 		"./resources/js/Pages/Appropriations/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Appropriations_Create_vue"
 	],
 	"./Appropriations/Create.vue": [
 		"./resources/js/Pages/Appropriations/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Appropriations_Create_vue"
 	],
 	"./Appropriations/Index": [
 		"./resources/js/Pages/Appropriations/Index.vue",
+		9,
 		"resources_js_Pages_Appropriations_Index_vue"
 	],
 	"./Appropriations/Index.vue": [
 		"./resources/js/Pages/Appropriations/Index.vue",
+		9,
 		"resources_js_Pages_Appropriations_Index_vue"
 	],
 	"./Authentication/LogIn": [
 		"./resources/js/Pages/Authentication/LogIn.vue",
+		9,
 		"resources_js_Pages_Authentication_LogIn_vue"
 	],
 	"./Authentication/LogIn.vue": [
 		"./resources/js/Pages/Authentication/LogIn.vue",
+		9,
 		"resources_js_Pages_Authentication_LogIn_vue"
 	],
 	"./BudgetRequirement/Create": [
 		"./resources/js/Pages/BudgetRequirement/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_BudgetRequirement_Create_vue"
 	],
 	"./BudgetRequirement/Create.vue": [
 		"./resources/js/Pages/BudgetRequirement/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_BudgetRequirement_Create_vue"
 	],
 	"./BudgetRequirement/Index": [
 		"./resources/js/Pages/BudgetRequirement/Index.vue",
+		9,
 		"resources_js_Pages_BudgetRequirement_Index_vue"
 	],
 	"./BudgetRequirement/Index.vue": [
 		"./resources/js/Pages/BudgetRequirement/Index.vue",
+		9,
 		"resources_js_Pages_BudgetRequirement_Index_vue"
 	],
 	"./CashDisbursementForecast/Index": [
 		"./resources/js/Pages/CashDisbursementForecast/Index.vue",
+		9,
 		"resources_js_Pages_CashDisbursementForecast_Index_vue"
 	],
 	"./CashDisbursementForecast/Index.vue": [
 		"./resources/js/Pages/CashDisbursementForecast/Index.vue",
+		9,
 		"resources_js_Pages_CashDisbursementForecast_Index_vue"
 	],
 	"./ChiefAgenda/Appropriations/Create": [
 		"./resources/js/Pages/ChiefAgenda/Appropriations/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_ChiefAgenda_Appropriations_Create_vue"
 	],
 	"./ChiefAgenda/Appropriations/Create.vue": [
 		"./resources/js/Pages/ChiefAgenda/Appropriations/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_ChiefAgenda_Appropriations_Create_vue"
 	],
 	"./ChiefAgenda/Appropriations/Index": [
 		"./resources/js/Pages/ChiefAgenda/Appropriations/Index.vue",
+		9,
 		"resources_js_Pages_ChiefAgenda_Appropriations_Index_vue"
 	],
 	"./ChiefAgenda/Appropriations/Index.vue": [
 		"./resources/js/Pages/ChiefAgenda/Appropriations/Index.vue",
+		9,
 		"resources_js_Pages_ChiefAgenda_Appropriations_Index_vue"
 	],
 	"./ChiefAgenda/Index": [
 		"./resources/js/Pages/ChiefAgenda/Index.vue",
+		9,
 		"resources_js_Pages_ChiefAgenda_Index_vue"
 	],
 	"./ChiefAgenda/Index.vue": [
 		"./resources/js/Pages/ChiefAgenda/Index.vue",
+		9,
 		"resources_js_Pages_ChiefAgenda_Index_vue"
 	],
 	"./ChiefAgenda/addAgenda": [
 		"./resources/js/Pages/ChiefAgenda/addAgenda.vue",
+		9,
 		"resources_js_Pages_ChiefAgenda_addAgenda_vue"
 	],
 	"./ChiefAgenda/addAgenda.vue": [
 		"./resources/js/Pages/ChiefAgenda/addAgenda.vue",
+		9,
 		"resources_js_Pages_ChiefAgenda_addAgenda_vue"
 	],
 	"./DailyAccomplishment/Create": [
 		"./resources/js/Pages/DailyAccomplishment/Create.vue",
+		9,
 		"resources_js_Pages_DailyAccomplishment_Create_vue"
 	],
 	"./DailyAccomplishment/Create.vue": [
 		"./resources/js/Pages/DailyAccomplishment/Create.vue",
+		9,
 		"resources_js_Pages_DailyAccomplishment_Create_vue"
 	],
 	"./DailyAccomplishment/Index": [
 		"./resources/js/Pages/DailyAccomplishment/Index.vue",
+		9,
 		"resources_js_Pages_DailyAccomplishment_Index_vue"
 	],
 	"./DailyAccomplishment/Index.vue": [
 		"./resources/js/Pages/DailyAccomplishment/Index.vue",
+		9,
 		"resources_js_Pages_DailyAccomplishment_Index_vue"
 	],
 	"./Daily_Accomplishment/Direct": [
 		"./resources/js/Pages/Daily_Accomplishment/Direct.vue",
+		9,
 		"resources_js_Pages_Daily_Accomplishment_Direct_vue"
 	],
 	"./Daily_Accomplishment/Direct.vue": [
 		"./resources/js/Pages/Daily_Accomplishment/Direct.vue",
+		9,
 		"resources_js_Pages_Daily_Accomplishment_Direct_vue"
 	],
 	"./Division/Create": [
 		"./resources/js/Pages/Division/Create.vue",
+		9,
 		"resources_js_Pages_Division_Create_vue"
 	],
 	"./Division/Create.vue": [
 		"./resources/js/Pages/Division/Create.vue",
+		9,
 		"resources_js_Pages_Division_Create_vue"
 	],
 	"./Division/Index": [
 		"./resources/js/Pages/Division/Index.vue",
+		9,
 		"resources_js_Pages_Division_Index_vue"
 	],
 	"./Division/Index.vue": [
 		"./resources/js/Pages/Division/Index.vue",
+		9,
 		"resources_js_Pages_Division_Index_vue"
 	],
 	"./Division/Outputs/Create": [
 		"./resources/js/Pages/Division/Outputs/Create.vue",
+		9,
 		"resources_js_Pages_Division_Outputs_Create_vue"
 	],
 	"./Division/Outputs/Create.vue": [
 		"./resources/js/Pages/Division/Outputs/Create.vue",
+		9,
 		"resources_js_Pages_Division_Outputs_Create_vue"
 	],
 	"./Division/Outputs/Index": [
 		"./resources/js/Pages/Division/Outputs/Index.vue",
+		9,
 		"resources_js_Pages_Division_Outputs_Index_vue"
 	],
 	"./Division/Outputs/Index.vue": [
 		"./resources/js/Pages/Division/Outputs/Index.vue",
+		9,
 		"resources_js_Pages_Division_Outputs_Index_vue"
 	],
 	"./ELA/Create": [
 		"./resources/js/Pages/ELA/Create.vue",
+		9,
 		"resources_js_Pages_ELA_Create_vue"
 	],
 	"./ELA/Create.vue": [
 		"./resources/js/Pages/ELA/Create.vue",
+		9,
 		"resources_js_Pages_ELA_Create_vue"
 	],
 	"./ELA/Index": [
 		"./resources/js/Pages/ELA/Index.vue",
+		9,
 		"resources_js_Pages_ELA_Index_vue"
 	],
 	"./ELA/Index.vue": [
 		"./resources/js/Pages/ELA/Index.vue",
+		9,
 		"resources_js_Pages_ELA_Index_vue"
 	],
 	"./EconomicAgenda/Index": [
 		"./resources/js/Pages/EconomicAgenda/Index.vue",
+		9,
 		"resources_js_Pages_EconomicAgenda_Index_vue"
 	],
 	"./EconomicAgenda/Index.vue": [
 		"./resources/js/Pages/EconomicAgenda/Index.vue",
+		9,
 		"resources_js_Pages_EconomicAgenda_Index_vue"
 	],
 	"./EconomicAgenda/addAgenda": [
 		"./resources/js/Pages/EconomicAgenda/addAgenda.vue",
+		9,
 		"resources_js_Pages_EconomicAgenda_addAgenda_vue"
 	],
 	"./EconomicAgenda/addAgenda.vue": [
 		"./resources/js/Pages/EconomicAgenda/addAgenda.vue",
+		9,
 		"resources_js_Pages_EconomicAgenda_addAgenda_vue"
 	],
 	"./EvaluationMechanismTool/Create": [
 		"./resources/js/Pages/EvaluationMechanismTool/Create.vue",
+		9,
 		"resources_js_Pages_EvaluationMechanismTool_Create_vue"
 	],
 	"./EvaluationMechanismTool/Create.vue": [
 		"./resources/js/Pages/EvaluationMechanismTool/Create.vue",
+		9,
 		"resources_js_Pages_EvaluationMechanismTool_Create_vue"
 	],
 	"./EvaluationMechanismTool/Index": [
 		"./resources/js/Pages/EvaluationMechanismTool/Index.vue",
+		9,
 		"resources_js_Pages_EvaluationMechanismTool_Index_vue"
 	],
 	"./EvaluationMechanismTool/Index.vue": [
 		"./resources/js/Pages/EvaluationMechanismTool/Index.vue",
+		9,
 		"resources_js_Pages_EvaluationMechanismTool_Index_vue"
 	],
 	"./ExpectedOutcomeRevised/Create": [
 		"./resources/js/Pages/ExpectedOutcomeRevised/Create.vue",
+		9,
 		"resources_js_Pages_ExpectedOutcomeRevised_Create_vue"
 	],
 	"./ExpectedOutcomeRevised/Create.vue": [
 		"./resources/js/Pages/ExpectedOutcomeRevised/Create.vue",
+		9,
 		"resources_js_Pages_ExpectedOutcomeRevised_Create_vue"
 	],
 	"./ExpectedOutcomeRevised/Index": [
 		"./resources/js/Pages/ExpectedOutcomeRevised/Index.vue",
+		9,
 		"resources_js_Pages_ExpectedOutcomeRevised_Index_vue"
 	],
 	"./ExpectedOutcomeRevised/Index.vue": [
 		"./resources/js/Pages/ExpectedOutcomeRevised/Index.vue",
+		9,
 		"resources_js_Pages_ExpectedOutcomeRevised_Index_vue"
 	],
 	"./ExpectedOutputRevised/Create": [
 		"./resources/js/Pages/ExpectedOutputRevised/Create.vue",
+		9,
 		"resources_js_Pages_ExpectedOutputRevised_Create_vue"
 	],
 	"./ExpectedOutputRevised/Create.vue": [
 		"./resources/js/Pages/ExpectedOutputRevised/Create.vue",
+		9,
 		"resources_js_Pages_ExpectedOutputRevised_Create_vue"
 	],
 	"./ExpectedOutputRevised/Index": [
 		"./resources/js/Pages/ExpectedOutputRevised/Index.vue",
+		9,
 		"resources_js_Pages_ExpectedOutputRevised_Index_vue"
 	],
 	"./ExpectedOutputRevised/Index.vue": [
 		"./resources/js/Pages/ExpectedOutputRevised/Index.vue",
+		9,
 		"resources_js_Pages_ExpectedOutputRevised_Index_vue"
 	],
 	"./Forbidden/Index": [
 		"./resources/js/Pages/Forbidden/Index.vue",
+		9,
 		"resources_js_Pages_Forbidden_Index_vue"
 	],
 	"./Forbidden/Index.vue": [
 		"./resources/js/Pages/Forbidden/Index.vue",
+		9,
 		"resources_js_Pages_Forbidden_Index_vue"
 	],
 	"./HPCR/Create": [
 		"./resources/js/Pages/HPCR/Create.vue",
+		9,
 		"resources_js_Pages_HPCR_Create_vue"
 	],
 	"./HPCR/Create.vue": [
 		"./resources/js/Pages/HPCR/Create.vue",
+		9,
 		"resources_js_Pages_HPCR_Create_vue"
 	],
 	"./HPCR/Index": [
 		"./resources/js/Pages/HPCR/Index.vue",
+		9,
 		"resources_js_Pages_HPCR_Index_vue"
 	],
 	"./HPCR/Index.vue": [
 		"./resources/js/Pages/HPCR/Index.vue",
+		9,
 		"resources_js_Pages_HPCR_Index_vue"
 	],
 	"./HPCR_Division/Create": [
 		"./resources/js/Pages/HPCR_Division/Create.vue",
+		9,
 		"resources_js_Pages_HPCR_Division_Create_vue"
 	],
 	"./HPCR_Division/Create.vue": [
 		"./resources/js/Pages/HPCR_Division/Create.vue",
+		9,
 		"resources_js_Pages_HPCR_Division_Create_vue"
 	],
 	"./HPCR_Division/Index": [
 		"./resources/js/Pages/HPCR_Division/Index.vue",
+		9,
 		"resources_js_Pages_HPCR_Division_Index_vue"
 	],
 	"./HPCR_Division/Index.vue": [
 		"./resources/js/Pages/HPCR_Division/Index.vue",
+		9,
 		"resources_js_Pages_HPCR_Division_Index_vue"
 	],
 	"./HPCR_Individual/Create": [
 		"./resources/js/Pages/HPCR_Individual/Create.vue",
+		9,
 		"resources_js_Pages_HPCR_Individual_Create_vue"
 	],
 	"./HPCR_Individual/Create.vue": [
 		"./resources/js/Pages/HPCR_Individual/Create.vue",
+		9,
 		"resources_js_Pages_HPCR_Individual_Create_vue"
 	],
 	"./HPCR_Individual/Index": [
 		"./resources/js/Pages/HPCR_Individual/Index.vue",
+		9,
 		"resources_js_Pages_HPCR_Individual_Index_vue"
 	],
 	"./HPCR_Individual/Index.vue": [
 		"./resources/js/Pages/HPCR_Individual/Index.vue",
+		9,
 		"resources_js_Pages_HPCR_Individual_Index_vue"
 	],
 	"./HPCR_Section/Create": [
 		"./resources/js/Pages/HPCR_Section/Create.vue",
+		9,
 		"resources_js_Pages_HPCR_Section_Create_vue"
 	],
 	"./HPCR_Section/Create.vue": [
 		"./resources/js/Pages/HPCR_Section/Create.vue",
+		9,
 		"resources_js_Pages_HPCR_Section_Create_vue"
 	],
 	"./HPCR_Section/Index": [
 		"./resources/js/Pages/HPCR_Section/Index.vue",
+		9,
 		"resources_js_Pages_HPCR_Section_Index_vue"
 	],
 	"./HPCR_Section/Index.vue": [
 		"./resources/js/Pages/HPCR_Section/Index.vue",
+		9,
 		"resources_js_Pages_HPCR_Section_Index_vue"
 	],
 	"./Home": [
 		"./resources/js/Pages/Home.vue",
+		9,
 		"resources_js_Pages_Home_vue"
 	],
 	"./Home.vue": [
 		"./resources/js/Pages/Home.vue",
+		9,
 		"resources_js_Pages_Home_vue"
 	],
 	"./IPCR/Index": [
 		"./resources/js/Pages/IPCR/Index.vue",
+		9,
 		"resources_js_Pages_IPCR_Index_vue"
 	],
 	"./IPCR/Index.vue": [
 		"./resources/js/Pages/IPCR/Index.vue",
+		9,
 		"resources_js_Pages_IPCR_Index_vue"
 	],
 	"./Implementation/Create": [
 		"./resources/js/Pages/Implementation/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Implementation_Create_vue"
 	],
 	"./Implementation/Create.vue": [
 		"./resources/js/Pages/Implementation/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Implementation_Create_vue"
 	],
 	"./Implementation/Create_A": [
 		"./resources/js/Pages/Implementation/Create_A.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Implementation_Create_A_vue"
 	],
 	"./Implementation/Create_A.vue": [
 		"./resources/js/Pages/Implementation/Create_A.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Implementation_Create_A_vue"
 	],
 	"./Implementation/Index": [
 		"./resources/js/Pages/Implementation/Index.vue",
+		9,
 		"resources_js_Pages_Implementation_Index_vue"
 	],
 	"./Implementation/Index.vue": [
 		"./resources/js/Pages/Implementation/Index.vue",
+		9,
 		"resources_js_Pages_Implementation_Index_vue"
 	],
 	"./ImplementationPlan/Strategy/Create": [
 		"./resources/js/Pages/ImplementationPlan/Strategy/Create.vue",
+		9,
 		"resources_js_Pages_ImplementationPlan_Strategy_Create_vue"
 	],
 	"./ImplementationPlan/Strategy/Create.vue": [
 		"./resources/js/Pages/ImplementationPlan/Strategy/Create.vue",
+		9,
 		"resources_js_Pages_ImplementationPlan_Strategy_Create_vue"
 	],
 	"./ImplementationPlan/Strategy/Index": [
 		"./resources/js/Pages/ImplementationPlan/Strategy/Index.vue",
+		9,
 		"resources_js_Pages_ImplementationPlan_Strategy_Index_vue"
 	],
 	"./ImplementationPlan/Strategy/Index.vue": [
 		"./resources/js/Pages/ImplementationPlan/Strategy/Index.vue",
+		9,
 		"resources_js_Pages_ImplementationPlan_Strategy_Index_vue"
 	],
 	"./ImplementingTeam/Create": [
 		"./resources/js/Pages/ImplementingTeam/Create.vue",
+		9,
 		"resources_js_Pages_ImplementingTeam_Create_vue"
 	],
 	"./ImplementingTeam/Create.vue": [
 		"./resources/js/Pages/ImplementingTeam/Create.vue",
+		9,
 		"resources_js_Pages_ImplementingTeam_Create_vue"
 	],
 	"./ImplementingTeam/Index": [
 		"./resources/js/Pages/ImplementingTeam/Index.vue",
+		9,
 		"resources_js_Pages_ImplementingTeam_Index_vue"
 	],
 	"./ImplementingTeam/Index.vue": [
 		"./resources/js/Pages/ImplementingTeam/Index.vue",
+		9,
 		"resources_js_Pages_ImplementingTeam_Index_vue"
 	],
 	"./ImplementingTeamRevision/Create": [
 		"./resources/js/Pages/ImplementingTeamRevision/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_ImplementingTeamRevision_Create_vue"
 	],
 	"./ImplementingTeamRevision/Create.vue": [
 		"./resources/js/Pages/ImplementingTeamRevision/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_ImplementingTeamRevision_Create_vue"
 	],
 	"./ImplementingTeamRevision/Index": [
 		"./resources/js/Pages/ImplementingTeamRevision/Index.vue",
+		9,
 		"resources_js_Pages_ImplementingTeamRevision_Index_vue"
 	],
 	"./ImplementingTeamRevision/Index.vue": [
 		"./resources/js/Pages/ImplementingTeamRevision/Index.vue",
+		9,
 		"resources_js_Pages_ImplementingTeamRevision_Index_vue"
 	],
 	"./Indicators/Create": [
 		"./resources/js/Pages/Indicators/Create.vue",
+		9,
 		"resources_js_Pages_Indicators_Create_vue"
 	],
 	"./Indicators/Create.vue": [
 		"./resources/js/Pages/Indicators/Create.vue",
+		9,
 		"resources_js_Pages_Indicators_Create_vue"
 	],
 	"./Indicators/Index": [
 		"./resources/js/Pages/Indicators/Index.vue",
+		9,
 		"resources_js_Pages_Indicators_Index_vue"
 	],
 	"./Indicators/Index.vue": [
 		"./resources/js/Pages/Indicators/Index.vue",
+		9,
 		"resources_js_Pages_Indicators_Index_vue"
 	],
 	"./IndividualOutputs/Create": [
 		"./resources/js/Pages/IndividualOutputs/Create.vue",
+		9,
 		"resources_js_Pages_IndividualOutputs_Create_vue"
 	],
 	"./IndividualOutputs/Create.vue": [
 		"./resources/js/Pages/IndividualOutputs/Create.vue",
+		9,
 		"resources_js_Pages_IndividualOutputs_Create_vue"
 	],
 	"./IndividualOutputs/Index": [
 		"./resources/js/Pages/IndividualOutputs/Index.vue",
+		9,
 		"resources_js_Pages_IndividualOutputs_Index_vue"
 	],
 	"./IndividualOutputs/Index.vue": [
 		"./resources/js/Pages/IndividualOutputs/Index.vue",
+		9,
 		"resources_js_Pages_IndividualOutputs_Index_vue"
 	],
 	"./InterOutcome/Create": [
 		"./resources/js/Pages/InterOutcome/Create.vue",
+		9,
 		"resources_js_Pages_InterOutcome_Create_vue"
 	],
 	"./InterOutcome/Create.vue": [
 		"./resources/js/Pages/InterOutcome/Create.vue",
+		9,
 		"resources_js_Pages_InterOutcome_Create_vue"
 	],
 	"./InterOutcome/Index": [
 		"./resources/js/Pages/InterOutcome/Index.vue",
+		9,
 		"resources_js_Pages_InterOutcome_Index_vue"
 	],
 	"./InterOutcome/Index.vue": [
 		"./resources/js/Pages/InterOutcome/Index.vue",
+		9,
 		"resources_js_Pages_InterOutcome_Index_vue"
 	],
 	"./Issues/Create": [
 		"./resources/js/Pages/Issues/Create.vue",
+		9,
 		"resources_js_Pages_Issues_Create_vue"
 	],
 	"./Issues/Create.vue": [
 		"./resources/js/Pages/Issues/Create.vue",
+		9,
 		"resources_js_Pages_Issues_Create_vue"
 	],
 	"./Issues/Index": [
 		"./resources/js/Pages/Issues/Index.vue",
+		9,
 		"resources_js_Pages_Issues_Index_vue"
 	],
 	"./Issues/Index.vue": [
 		"./resources/js/Pages/Issues/Index.vue",
+		9,
 		"resources_js_Pages_Issues_Index_vue"
 	],
 	"./LogFrame/Index": [
 		"./resources/js/Pages/LogFrame/Index.vue",
+		9,
 		"resources_js_Pages_LogFrame_Index_vue"
 	],
 	"./LogFrame/Index.vue": [
 		"./resources/js/Pages/LogFrame/Index.vue",
+		9,
 		"resources_js_Pages_LogFrame_Index_vue"
 	],
 	"./LogFrame/logframe": [
 		"./resources/js/Pages/LogFrame/logframe.vue",
+		9,
 		"resources_js_Pages_LogFrame_logframe_vue"
 	],
 	"./LogFrame/logframe.vue": [
 		"./resources/js/Pages/LogFrame/logframe.vue",
+		9,
 		"resources_js_Pages_LogFrame_logframe_vue"
 	],
 	"./MFOs/Create": [
 		"./resources/js/Pages/MFOs/Create.vue",
+		9,
 		"resources_js_Pages_MFOs_Create_vue"
 	],
 	"./MFOs/Create.vue": [
 		"./resources/js/Pages/MFOs/Create.vue",
+		9,
 		"resources_js_Pages_MFOs_Create_vue"
 	],
 	"./MFOs/Direct": [
 		"./resources/js/Pages/MFOs/Direct.vue",
+		9,
 		"resources_js_Pages_MFOs_Direct_vue"
 	],
 	"./MFOs/Direct.vue": [
 		"./resources/js/Pages/MFOs/Direct.vue",
+		9,
 		"resources_js_Pages_MFOs_Direct_vue"
 	],
 	"./MFOs/Index": [
 		"./resources/js/Pages/MFOs/Index.vue",
+		9,
 		"resources_js_Pages_MFOs_Index_vue"
 	],
 	"./MFOs/Index.vue": [
 		"./resources/js/Pages/MFOs/Index.vue",
+		9,
 		"resources_js_Pages_MFOs_Index_vue"
 	],
 	"./MFOs/SubMFO/Create": [
 		"./resources/js/Pages/MFOs/SubMFO/Create.vue",
+		9,
 		"resources_js_Pages_MFOs_SubMFO_Create_vue"
 	],
 	"./MFOs/SubMFO/Create.vue": [
 		"./resources/js/Pages/MFOs/SubMFO/Create.vue",
+		9,
 		"resources_js_Pages_MFOs_SubMFO_Create_vue"
 	],
 	"./MFOs/SubMFO/Direct": [
 		"./resources/js/Pages/MFOs/SubMFO/Direct.vue",
+		9,
 		"resources_js_Pages_MFOs_SubMFO_Direct_vue"
 	],
 	"./MFOs/SubMFO/Direct.vue": [
 		"./resources/js/Pages/MFOs/SubMFO/Direct.vue",
+		9,
 		"resources_js_Pages_MFOs_SubMFO_Direct_vue"
 	],
 	"./Manual/Index": [
 		"./resources/js/Pages/Manual/Index.vue",
+		9,
 		"resources_js_Pages_Manual_Index_vue"
 	],
 	"./Manual/Index.vue": [
 		"./resources/js/Pages/Manual/Index.vue",
+		9,
 		"resources_js_Pages_Manual_Index_vue"
 	],
 	"./Monitoring/Create": [
 		"./resources/js/Pages/Monitoring/Create.vue",
+		9,
 		"resources_js_Pages_Monitoring_Create_vue"
 	],
 	"./Monitoring/Create.vue": [
 		"./resources/js/Pages/Monitoring/Create.vue",
+		9,
 		"resources_js_Pages_Monitoring_Create_vue"
 	],
 	"./Monitoring/Index": [
 		"./resources/js/Pages/Monitoring/Index.vue",
+		9,
 		"resources_js_Pages_Monitoring_Index_vue"
 	],
 	"./Monitoring/Index.vue": [
 		"./resources/js/Pages/Monitoring/Index.vue",
+		9,
 		"resources_js_Pages_Monitoring_Index_vue"
 	],
 	"./NotFound/Index": [
 		"./resources/js/Pages/NotFound/Index.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_NotFound_Index_vue"
 	],
 	"./NotFound/Index.vue": [
 		"./resources/js/Pages/NotFound/Index.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_NotFound_Index_vue"
 	],
 	"./NotFound/dribbble_1.gif": [
 		"./resources/js/Pages/NotFound/dribbble_1.gif",
+		9,
 		"resources_js_Pages_NotFound_dribbble_1_gif"
 	],
 	"./NotFound/not_found.jpg": [
 		"./resources/js/Pages/NotFound/not_found.jpg",
+		9,
 		"resources_js_Pages_NotFound_not_found_jpg"
 	],
 	"./OPCR/Accomplishment/Create": [
 		"./resources/js/Pages/OPCR/Accomplishment/Create.vue",
+		9,
 		"resources_js_Pages_OPCR_Accomplishment_Create_vue"
 	],
 	"./OPCR/Accomplishment/Create.vue": [
 		"./resources/js/Pages/OPCR/Accomplishment/Create.vue",
+		9,
 		"resources_js_Pages_OPCR_Accomplishment_Create_vue"
 	],
 	"./OPCR/Accomplishment/Index": [
 		"./resources/js/Pages/OPCR/Accomplishment/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_Accomplishment_Index_vue"
 	],
 	"./OPCR/Accomplishment/Index.vue": [
 		"./resources/js/Pages/OPCR/Accomplishment/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_Accomplishment_Index_vue"
 	],
 	"./OPCR/Form/Create": [
 		"./resources/js/Pages/OPCR/Form/Create.vue",
+		9,
 		"resources_js_Pages_OPCR_Form_Create_vue"
 	],
 	"./OPCR/Form/Create.vue": [
 		"./resources/js/Pages/OPCR/Form/Create.vue",
+		9,
 		"resources_js_Pages_OPCR_Form_Create_vue"
 	],
 	"./OPCR/Form/Index": [
 		"./resources/js/Pages/OPCR/Form/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_Form_Index_vue"
 	],
 	"./OPCR/Form/Index.vue": [
 		"./resources/js/Pages/OPCR/Form/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_Form_Index_vue"
 	],
 	"./OPCR/Form/Index2": [
 		"./resources/js/Pages/OPCR/Form/Index2.vue",
+		9,
 		"resources_js_Pages_OPCR_Form_Index2_vue"
 	],
 	"./OPCR/Form/Index2.vue": [
 		"./resources/js/Pages/OPCR/Form/Index2.vue",
+		9,
 		"resources_js_Pages_OPCR_Form_Index2_vue"
 	],
 	"./OPCR/Form/Print": [
 		"./resources/js/Pages/OPCR/Form/Print.vue",
+		9,
 		"resources_js_Pages_OPCR_Form_Print_vue"
 	],
 	"./OPCR/Form/Print.vue": [
 		"./resources/js/Pages/OPCR/Form/Print.vue",
+		9,
 		"resources_js_Pages_OPCR_Form_Print_vue"
 	],
 	"./OPCR/Index": [
 		"./resources/js/Pages/OPCR/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_Index_vue"
 	],
 	"./OPCR/Index.vue": [
 		"./resources/js/Pages/OPCR/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_Index_vue"
 	],
 	"./OPCR/List/Create": [
 		"./resources/js/Pages/OPCR/List/Create.vue",
+		9,
 		"resources_js_Pages_OPCR_List_Create_vue"
 	],
 	"./OPCR/List/Create.vue": [
 		"./resources/js/Pages/OPCR/List/Create.vue",
+		9,
 		"resources_js_Pages_OPCR_List_Create_vue"
 	],
 	"./OPCR/List/Index": [
 		"./resources/js/Pages/OPCR/List/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_List_Index_vue"
 	],
 	"./OPCR/List/Index.vue": [
 		"./resources/js/Pages/OPCR/List/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_List_Index_vue"
 	],
 	"./OPCR/OPCR": [
 		"./resources/js/Pages/OPCR/OPCR.vue",
+		9,
 		"resources_js_Pages_OPCR_OPCR_vue"
 	],
 	"./OPCR/OPCR.vue": [
 		"./resources/js/Pages/OPCR/OPCR.vue",
+		9,
 		"resources_js_Pages_OPCR_OPCR_vue"
 	],
 	"./OPCR/Target/Create": [
 		"./resources/js/Pages/OPCR/Target/Create.vue",
+		9,
 		"resources_js_Pages_OPCR_Target_Create_vue"
 	],
 	"./OPCR/Target/Create.vue": [
 		"./resources/js/Pages/OPCR/Target/Create.vue",
+		9,
 		"resources_js_Pages_OPCR_Target_Create_vue"
 	],
 	"./OPCR/Target/Index": [
 		"./resources/js/Pages/OPCR/Target/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_Target_Index_vue"
 	],
 	"./OPCR/Target/Index.vue": [
 		"./resources/js/Pages/OPCR/Target/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_Target_Index_vue"
 	],
 	"./OPCR/Target/New/Index": [
 		"./resources/js/Pages/OPCR/Target/New/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_Target_New_Index_vue"
 	],
 	"./OPCR/Target/New/Index.vue": [
 		"./resources/js/Pages/OPCR/Target/New/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_Target_New_Index_vue"
 	],
 	"./OPCR/TargetBudget/Create": [
 		"./resources/js/Pages/OPCR/TargetBudget/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_OPCR_TargetBudget_Create_vue"
 	],
 	"./OPCR/TargetBudget/Create.vue": [
 		"./resources/js/Pages/OPCR/TargetBudget/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_OPCR_TargetBudget_Create_vue"
 	],
 	"./OPCR/TargetBudget/CreateBackup": [
 		"./resources/js/Pages/OPCR/TargetBudget/CreateBackup.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_OPCR_TargetBudget_CreateBackup_vue"
 	],
 	"./OPCR/TargetBudget/CreateBackup.vue": [
 		"./resources/js/Pages/OPCR/TargetBudget/CreateBackup.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_OPCR_TargetBudget_CreateBackup_vue"
 	],
 	"./OPCR/TargetBudget/Index": [
 		"./resources/js/Pages/OPCR/TargetBudget/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_TargetBudget_Index_vue"
 	],
 	"./OPCR/TargetBudget/Index.vue": [
 		"./resources/js/Pages/OPCR/TargetBudget/Index.vue",
+		9,
 		"resources_js_Pages_OPCR_TargetBudget_Index_vue"
 	],
 	"./OPCRPaps/Create": [
 		"./resources/js/Pages/OPCRPaps/Create.vue",
+		9,
 		"resources_js_Pages_OPCRPaps_Create_vue"
 	],
 	"./OPCRPaps/Create.vue": [
 		"./resources/js/Pages/OPCRPaps/Create.vue",
+		9,
 		"resources_js_Pages_OPCRPaps_Create_vue"
 	],
 	"./OPCRPaps/Direct": [
 		"./resources/js/Pages/OPCRPaps/Direct.vue",
+		9,
 		"resources_js_Pages_OPCRPaps_Direct_vue"
 	],
 	"./OPCRPaps/Direct.vue": [
 		"./resources/js/Pages/OPCRPaps/Direct.vue",
+		9,
 		"resources_js_Pages_OPCRPaps_Direct_vue"
 	],
 	"./OfficeAccountable/Create": [
 		"./resources/js/Pages/OfficeAccountable/Create.vue",
+		9,
 		"resources_js_Pages_OfficeAccountable_Create_vue"
 	],
 	"./OfficeAccountable/Create.vue": [
 		"./resources/js/Pages/OfficeAccountable/Create.vue",
+		9,
 		"resources_js_Pages_OfficeAccountable_Create_vue"
 	],
 	"./OfficeAccountable/Index": [
 		"./resources/js/Pages/OfficeAccountable/Index.vue",
+		9,
 		"resources_js_Pages_OfficeAccountable_Index_vue"
 	],
 	"./OfficeAccountable/Index.vue": [
 		"./resources/js/Pages/OfficeAccountable/Index.vue",
+		9,
 		"resources_js_Pages_OfficeAccountable_Index_vue"
 	],
 	"./Organizational/Index": [
 		"./resources/js/Pages/Organizational/Index.vue",
+		9,
 		"resources_js_Pages_Organizational_Index_vue"
 	],
 	"./Organizational/Index.vue": [
 		"./resources/js/Pages/Organizational/Index.vue",
+		9,
 		"resources_js_Pages_Organizational_Index_vue"
 	],
 	"./Organizational/addOrganizational": [
 		"./resources/js/Pages/Organizational/addOrganizational.vue",
+		9,
 		"resources_js_Pages_Organizational_addOrganizational_vue"
 	],
 	"./Organizational/addOrganizational.vue": [
 		"./resources/js/Pages/Organizational/addOrganizational.vue",
+		9,
 		"resources_js_Pages_Organizational_addOrganizational_vue"
 	],
 	"./Outcome/Create": [
 		"./resources/js/Pages/Outcome/Create.vue",
+		9,
 		"resources_js_Pages_Outcome_Create_vue"
 	],
 	"./Outcome/Create.vue": [
 		"./resources/js/Pages/Outcome/Create.vue",
+		9,
 		"resources_js_Pages_Outcome_Create_vue"
 	],
 	"./Outcome/Index": [
 		"./resources/js/Pages/Outcome/Index.vue",
+		9,
 		"resources_js_Pages_Outcome_Index_vue"
 	],
 	"./Outcome/Index.vue": [
 		"./resources/js/Pages/Outcome/Index.vue",
+		9,
 		"resources_js_Pages_Outcome_Index_vue"
 	],
 	"./Outputs/Create": [
 		"./resources/js/Pages/Outputs/Create.vue",
+		9,
 		"resources_js_Pages_Outputs_Create_vue"
 	],
 	"./Outputs/Create.vue": [
 		"./resources/js/Pages/Outputs/Create.vue",
+		9,
 		"resources_js_Pages_Outputs_Create_vue"
 	],
 	"./Outputs/Index": [
 		"./resources/js/Pages/Outputs/Index.vue",
+		9,
 		"resources_js_Pages_Outputs_Index_vue"
 	],
 	"./Outputs/Index.vue": [
 		"./resources/js/Pages/Outputs/Index.vue",
+		9,
 		"resources_js_Pages_Outputs_Index_vue"
 	],
 	"./PAPS/Create": [
 		"./resources/js/Pages/PAPS/Create.vue",
+		9,
 		"resources_js_Pages_PAPS_Create_vue"
 	],
 	"./PAPS/Create.vue": [
 		"./resources/js/Pages/PAPS/Create.vue",
+		9,
 		"resources_js_Pages_PAPS_Create_vue"
 	],
 	"./PAPS/Direct": [
 		"./resources/js/Pages/PAPS/Direct.vue",
+		9,
 		"resources_js_Pages_PAPS_Direct_vue"
 	],
 	"./PAPS/Direct.vue": [
 		"./resources/js/Pages/PAPS/Direct.vue",
+		9,
 		"resources_js_Pages_PAPS_Direct_vue"
 	],
 	"./PAPS/Index": [
 		"./resources/js/Pages/PAPS/Index.vue",
+		9,
 		"resources_js_Pages_PAPS_Index_vue"
 	],
 	"./PAPS/Index.vue": [
 		"./resources/js/Pages/PAPS/Index.vue",
+		9,
 		"resources_js_Pages_PAPS_Index_vue"
 	],
 	"./Performance/Create": [
 		"./resources/js/Pages/Performance/Create.vue",
+		9,
 		"resources_js_Pages_Performance_Create_vue"
 	],
 	"./Performance/Create.vue": [
 		"./resources/js/Pages/Performance/Create.vue",
+		9,
 		"resources_js_Pages_Performance_Create_vue"
 	],
 	"./Performance/Index": [
 		"./resources/js/Pages/Performance/Index.vue",
+		9,
 		"resources_js_Pages_Performance_Index_vue"
 	],
 	"./Performance/Index.vue": [
 		"./resources/js/Pages/Performance/Index.vue",
+		9,
 		"resources_js_Pages_Performance_Index_vue"
 	],
 	"./Places": [
 		"./resources/js/Pages/Places.vue",
+		9,
 		"resources_js_Pages_Places_vue"
 	],
 	"./Places.vue": [
 		"./resources/js/Pages/Places.vue",
+		9,
 		"resources_js_Pages_Places_vue"
 	],
 	"./Poles/Index": [
 		"./resources/js/Pages/Poles/Index.vue",
+		9,
 		"resources_js_Pages_Poles_Index_vue"
 	],
 	"./Poles/Index.vue": [
 		"./resources/js/Pages/Poles/Index.vue",
+		9,
 		"resources_js_Pages_Poles_Index_vue"
 	],
 	"./Posts/Index": [
 		"./resources/js/Pages/Posts/Index.vue",
+		9,
 		"resources_js_Pages_Posts_Index_vue"
 	],
 	"./Posts/Index.vue": [
 		"./resources/js/Pages/Posts/Index.vue",
+		9,
 		"resources_js_Pages_Posts_Index_vue"
 	],
 	"./ProjectProfile/Create": [
 		"./resources/js/Pages/ProjectProfile/Create.vue",
+		9,
 		"resources_js_Pages_ProjectProfile_Create_vue"
 	],
 	"./ProjectProfile/Create.vue": [
 		"./resources/js/Pages/ProjectProfile/Create.vue",
+		9,
 		"resources_js_Pages_ProjectProfile_Create_vue"
 	],
 	"./ProjectProfile/Index": [
 		"./resources/js/Pages/ProjectProfile/Index.vue",
+		9,
 		"resources_js_Pages_ProjectProfile_Index_vue"
 	],
 	"./ProjectProfile/Index.vue": [
 		"./resources/js/Pages/ProjectProfile/Index.vue",
+		9,
 		"resources_js_Pages_ProjectProfile_Index_vue"
 	],
 	"./ProjectProfile/Strategies/Create": [
 		"./resources/js/Pages/ProjectProfile/Strategies/Create.vue",
+		9,
 		"resources_js_Pages_ProjectProfile_Strategies_Create_vue"
 	],
 	"./ProjectProfile/Strategies/Create.vue": [
 		"./resources/js/Pages/ProjectProfile/Strategies/Create.vue",
+		9,
 		"resources_js_Pages_ProjectProfile_Strategies_Create_vue"
 	],
 	"./Quality/Create": [
 		"./resources/js/Pages/Quality/Create.vue",
+		9,
 		"resources_js_Pages_Quality_Create_vue"
 	],
 	"./Quality/Create.vue": [
 		"./resources/js/Pages/Quality/Create.vue",
+		9,
 		"resources_js_Pages_Quality_Create_vue"
 	],
 	"./Quality/Index": [
 		"./resources/js/Pages/Quality/Index.vue",
+		9,
 		"resources_js_Pages_Quality_Index_vue"
 	],
 	"./Quality/Index.vue": [
 		"./resources/js/Pages/Quality/Index.vue",
+		9,
 		"resources_js_Pages_Quality_Index_vue"
 	],
 	"./QualityRemarks/Create": [
 		"./resources/js/Pages/QualityRemarks/Create.vue",
+		9,
 		"resources_js_Pages_QualityRemarks_Create_vue"
 	],
 	"./QualityRemarks/Create.vue": [
 		"./resources/js/Pages/QualityRemarks/Create.vue",
+		9,
 		"resources_js_Pages_QualityRemarks_Create_vue"
 	],
 	"./QualityRemarks/Index": [
 		"./resources/js/Pages/QualityRemarks/Index.vue",
+		9,
 		"resources_js_Pages_QualityRemarks_Index_vue"
 	],
 	"./QualityRemarks/Index.vue": [
 		"./resources/js/Pages/QualityRemarks/Index.vue",
+		9,
 		"resources_js_Pages_QualityRemarks_Index_vue"
 	],
 	"./RAAO/Index": [
 		"./resources/js/Pages/RAAO/Index.vue",
+		9,
 		"resources_js_Pages_RAAO_Index_vue"
 	],
 	"./RAAO/Index.vue": [
 		"./resources/js/Pages/RAAO/Index.vue",
+		9,
 		"resources_js_Pages_RAAO_Index_vue"
 	],
 	"./Rating/Create": [
 		"./resources/js/Pages/Rating/Create.vue",
+		9,
 		"resources_js_Pages_Rating_Create_vue"
 	],
 	"./Rating/Create.vue": [
 		"./resources/js/Pages/Rating/Create.vue",
+		9,
 		"resources_js_Pages_Rating_Create_vue"
 	],
 	"./Rating/Index": [
 		"./resources/js/Pages/Rating/Index.vue",
+		9,
 		"resources_js_Pages_Rating_Index_vue"
 	],
 	"./Rating/Index.vue": [
 		"./resources/js/Pages/Rating/Index.vue",
+		9,
 		"resources_js_Pages_Rating_Index_vue"
 	],
 	"./RatingRemarks/Create": [
 		"./resources/js/Pages/RatingRemarks/Create.vue",
+		9,
 		"resources_js_Pages_RatingRemarks_Create_vue"
 	],
 	"./RatingRemarks/Create.vue": [
 		"./resources/js/Pages/RatingRemarks/Create.vue",
+		9,
 		"resources_js_Pages_RatingRemarks_Create_vue"
 	],
 	"./RatingRemarks/Index": [
 		"./resources/js/Pages/RatingRemarks/Index.vue",
+		9,
 		"resources_js_Pages_RatingRemarks_Index_vue"
 	],
 	"./RatingRemarks/Index.vue": [
 		"./resources/js/Pages/RatingRemarks/Index.vue",
+		9,
 		"resources_js_Pages_RatingRemarks_Index_vue"
 	],
 	"./ResearchAgenda/Create": [
 		"./resources/js/Pages/ResearchAgenda/Create.vue",
+		9,
 		"resources_js_Pages_ResearchAgenda_Create_vue"
 	],
 	"./ResearchAgenda/Create.vue": [
 		"./resources/js/Pages/ResearchAgenda/Create.vue",
+		9,
 		"resources_js_Pages_ResearchAgenda_Create_vue"
 	],
 	"./ResearchAgenda/Index": [
 		"./resources/js/Pages/ResearchAgenda/Index.vue",
+		9,
 		"resources_js_Pages_ResearchAgenda_Index_vue"
 	],
 	"./ResearchAgenda/Index.vue": [
 		"./resources/js/Pages/ResearchAgenda/Index.vue",
+		9,
 		"resources_js_Pages_ResearchAgenda_Index_vue"
 	],
 	"./Review-Approve/OPCR/Ratings/Index": [
 		"./resources/js/Pages/Review-Approve/OPCR/Ratings/Index.vue",
+		9,
 		"resources_js_Pages_Review-Approve_OPCR_Ratings_Index_vue"
 	],
 	"./Review-Approve/OPCR/Ratings/Index.vue": [
 		"./resources/js/Pages/Review-Approve/OPCR/Ratings/Index.vue",
+		9,
 		"resources_js_Pages_Review-Approve_OPCR_Ratings_Index_vue"
 	],
 	"./Review-Approve/OPCR/Targets/Index": [
 		"./resources/js/Pages/Review-Approve/OPCR/Targets/Index.vue",
+		9,
 		"resources_js_Pages_Review-Approve_OPCR_Targets_Index_vue"
 	],
 	"./Review-Approve/OPCR/Targets/Index.vue": [
 		"./resources/js/Pages/Review-Approve/OPCR/Targets/Index.vue",
+		9,
 		"resources_js_Pages_Review-Approve_OPCR_Targets_Index_vue"
 	],
 	"./RevisionPlans/Create": [
 		"./resources/js/Pages/RevisionPlans/Create.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_Create_vue"
 	],
 	"./RevisionPlans/Create.vue": [
 		"./resources/js/Pages/RevisionPlans/Create.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_Create_vue"
 	],
 	"./RevisionPlans/Direct": [
 		"./resources/js/Pages/RevisionPlans/Direct.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_Direct_vue"
 	],
 	"./RevisionPlans/Direct.vue": [
 		"./resources/js/Pages/RevisionPlans/Direct.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_Direct_vue"
 	],
 	"./RevisionPlans/GAS/Create": [
 		"./resources/js/Pages/RevisionPlans/GAS/Create.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_GAS_Create_vue"
 	],
 	"./RevisionPlans/GAS/Create.vue": [
 		"./resources/js/Pages/RevisionPlans/GAS/Create.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_GAS_Create_vue"
 	],
 	"./RevisionPlans/GAS/Index": [
 		"./resources/js/Pages/RevisionPlans/GAS/Index.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_GAS_Index_vue"
 	],
 	"./RevisionPlans/GAS/Index.vue": [
 		"./resources/js/Pages/RevisionPlans/GAS/Index.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_GAS_Index_vue"
 	],
 	"./RevisionPlans/GAS/View": [
 		"./resources/js/Pages/RevisionPlans/GAS/View.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_GAS_View_vue"
 	],
 	"./RevisionPlans/GAS/View.vue": [
 		"./resources/js/Pages/RevisionPlans/GAS/View.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_GAS_View_vue"
 	],
 	"./RevisionPlans/Index": [
 		"./resources/js/Pages/RevisionPlans/Index.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_Index_vue"
 	],
 	"./RevisionPlans/Index.vue": [
 		"./resources/js/Pages/RevisionPlans/Index.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_Index_vue"
 	],
 	"./RevisionPlans/MFO/Create": [
 		"./resources/js/Pages/RevisionPlans/MFO/Create.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_MFO_Create_vue"
 	],
 	"./RevisionPlans/MFO/Create.vue": [
 		"./resources/js/Pages/RevisionPlans/MFO/Create.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_MFO_Create_vue"
 	],
 	"./RevisionPlans/MFO/Index": [
 		"./resources/js/Pages/RevisionPlans/MFO/Index.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_MFO_Index_vue"
 	],
 	"./RevisionPlans/MFO/Index.vue": [
 		"./resources/js/Pages/RevisionPlans/MFO/Index.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_MFO_Index_vue"
 	],
 	"./RevisionPlans/ProjectProfile/Create": [
 		"./resources/js/Pages/RevisionPlans/ProjectProfile/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_RevisionPlans_ProjectProfile_Create_vue"
 	],
 	"./RevisionPlans/ProjectProfile/Create.vue": [
 		"./resources/js/Pages/RevisionPlans/ProjectProfile/Create.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_RevisionPlans_ProjectProfile_Create_vue"
 	],
 	"./RevisionPlans/ProjectProfile/Createv2": [
 		"./resources/js/Pages/RevisionPlans/ProjectProfile/Createv2.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_RevisionPlans_ProjectProfile_Createv2_vue"
 	],
 	"./RevisionPlans/ProjectProfile/Createv2.vue": [
 		"./resources/js/Pages/RevisionPlans/ProjectProfile/Createv2.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_RevisionPlans_ProjectProfile_Createv2_vue"
 	],
 	"./RevisionPlans/ProjectProfile/test": [
 		"./resources/js/Pages/RevisionPlans/ProjectProfile/test.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_ProjectProfile_test_vue"
 	],
 	"./RevisionPlans/ProjectProfile/test.vue": [
 		"./resources/js/Pages/RevisionPlans/ProjectProfile/test.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_ProjectProfile_test_vue"
+	],
+	"./RevisionPlans/Tracking/Index": [
+		"./resources/js/Pages/RevisionPlans/Tracking/Index.vue",
+		9,
+		"resources_js_Pages_RevisionPlans_Tracking_Index_vue"
+	],
+	"./RevisionPlans/Tracking/Index.vue": [
+		"./resources/js/Pages/RevisionPlans/Tracking/Index.vue",
+		9,
+		"resources_js_Pages_RevisionPlans_Tracking_Index_vue"
+	],
+	"./RevisionPlans/Tracking/TrackingByProject": [
+		"./resources/js/Pages/RevisionPlans/Tracking/TrackingByProject",
+		7,
+		"resources_js_Pages_RevisionPlans_Tracking_TrackingByProject"
 	],
 	"./RevisionPlans/View": [
 		"./resources/js/Pages/RevisionPlans/View.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_View_vue"
 	],
 	"./RevisionPlans/View copy": [
 		"./resources/js/Pages/RevisionPlans/View copy.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_View_copy_vue"
 	],
 	"./RevisionPlans/View copy.vue": [
 		"./resources/js/Pages/RevisionPlans/View copy.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_View_copy_vue"
 	],
 	"./RevisionPlans/View.vue": [
 		"./resources/js/Pages/RevisionPlans/View.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_View_vue"
 	],
 	"./RevisionPlans/View2": [
 		"./resources/js/Pages/RevisionPlans/View2.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_View2_vue"
 	],
 	"./RevisionPlans/View2.vue": [
 		"./resources/js/Pages/RevisionPlans/View2.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_View2_vue"
 	],
 	"./RevisionPlans/View3": [
 		"./resources/js/Pages/RevisionPlans/View3.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_View3_vue"
 	],
 	"./RevisionPlans/View3.vue": [
 		"./resources/js/Pages/RevisionPlans/View3.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_View3_vue"
 	],
 	"./RevisionPlans/ViewBackup": [
 		"./resources/js/Pages/RevisionPlans/ViewBackup.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_ViewBackup_vue"
 	],
 	"./RevisionPlans/ViewBackup.vue": [
 		"./resources/js/Pages/RevisionPlans/ViewBackup.vue",
+		9,
 		"resources_js_Pages_RevisionPlans_ViewBackup_vue"
 	],
 	"./RiskManagement/Create": [
 		"./resources/js/Pages/RiskManagement/Create.vue",
+		9,
 		"resources_js_Pages_RiskManagement_Create_vue"
 	],
 	"./RiskManagement/Create.vue": [
 		"./resources/js/Pages/RiskManagement/Create.vue",
+		9,
 		"resources_js_Pages_RiskManagement_Create_vue"
 	],
 	"./RiskManagement/Index": [
 		"./resources/js/Pages/RiskManagement/Index.vue",
+		9,
 		"resources_js_Pages_RiskManagement_Index_vue"
 	],
 	"./RiskManagement/Index.vue": [
 		"./resources/js/Pages/RiskManagement/Index.vue",
+		9,
 		"resources_js_Pages_RiskManagement_Index_vue"
 	],
 	"./SDG/Create": [
 		"./resources/js/Pages/SDG/Create.vue",
+		9,
 		"resources_js_Pages_SDG_Create_vue"
 	],
 	"./SDG/Create.vue": [
 		"./resources/js/Pages/SDG/Create.vue",
+		9,
 		"resources_js_Pages_SDG_Create_vue"
 	],
 	"./SDG/Index": [
 		"./resources/js/Pages/SDG/Index.vue",
+		9,
 		"resources_js_Pages_SDG_Index_vue"
 	],
 	"./SDG/Index.vue": [
 		"./resources/js/Pages/SDG/Index.vue",
+		9,
 		"resources_js_Pages_SDG_Index_vue"
 	],
 	"./Sectoral/Index": [
 		"./resources/js/Pages/Sectoral/Index.vue",
+		9,
 		"resources_js_Pages_Sectoral_Index_vue"
 	],
 	"./Sectoral/Index.vue": [
 		"./resources/js/Pages/Sectoral/Index.vue",
+		9,
 		"resources_js_Pages_Sectoral_Index_vue"
 	],
 	"./Sectoral/addSector": [
 		"./resources/js/Pages/Sectoral/addSector.vue",
+		9,
 		"resources_js_Pages_Sectoral_addSector_vue"
 	],
 	"./Sectoral/addSector.vue": [
 		"./resources/js/Pages/Sectoral/addSector.vue",
+		9,
 		"resources_js_Pages_Sectoral_addSector_vue"
 	],
 	"./Signatories/Create": [
 		"./resources/js/Pages/Signatories/Create.vue",
+		9,
 		"resources_js_Pages_Signatories_Create_vue"
 	],
 	"./Signatories/Create.vue": [
 		"./resources/js/Pages/Signatories/Create.vue",
+		9,
 		"resources_js_Pages_Signatories_Create_vue"
 	],
 	"./Signatories/Index": [
 		"./resources/js/Pages/Signatories/Index.vue",
+		9,
 		"resources_js_Pages_Signatories_Index_vue"
 	],
 	"./Signatories/Index.vue": [
 		"./resources/js/Pages/Signatories/Index.vue",
+		9,
 		"resources_js_Pages_Signatories_Index_vue"
 	],
 	"./SocietalGoals/Index": [
 		"./resources/js/Pages/SocietalGoals/Index.vue",
+		9,
 		"resources_js_Pages_SocietalGoals_Index_vue"
 	],
 	"./SocietalGoals/Index.vue": [
 		"./resources/js/Pages/SocietalGoals/Index.vue",
+		9,
 		"resources_js_Pages_SocietalGoals_Index_vue"
 	],
 	"./SocietalGoals/addSocietalGoals": [
 		"./resources/js/Pages/SocietalGoals/addSocietalGoals.vue",
+		9,
 		"resources_js_Pages_SocietalGoals_addSocietalGoals_vue"
 	],
 	"./SocietalGoals/addSocietalGoals.vue": [
 		"./resources/js/Pages/SocietalGoals/addSocietalGoals.vue",
+		9,
 		"resources_js_Pages_SocietalGoals_addSocietalGoals_vue"
 	],
 	"./Strategies/Create": [
 		"./resources/js/Pages/Strategies/Create.vue",
+		9,
 		"resources_js_Pages_Strategies_Create_vue"
 	],
 	"./Strategies/Create.vue": [
 		"./resources/js/Pages/Strategies/Create.vue",
+		9,
 		"resources_js_Pages_Strategies_Create_vue"
 	],
 	"./Strategies/Index": [
 		"./resources/js/Pages/Strategies/Index.vue",
+		9,
 		"resources_js_Pages_Strategies_Index_vue"
 	],
 	"./Strategies/Index.vue": [
 		"./resources/js/Pages/Strategies/Index.vue",
+		9,
 		"resources_js_Pages_Strategies_Index_vue"
 	],
 	"./StrategyProject/Index": [
 		"./resources/js/Pages/StrategyProject/Index.vue",
+		9,
 		"resources_js_Pages_StrategyProject_Index_vue"
 	],
 	"./StrategyProject/Index.vue": [
 		"./resources/js/Pages/StrategyProject/Index.vue",
+		9,
 		"resources_js_Pages_StrategyProject_Index_vue"
 	],
 	"./StrategyProject/IndexB": [
 		"./resources/js/Pages/StrategyProject/IndexB.vue",
+		9,
 		"resources_js_Pages_StrategyProject_IndexB_vue"
 	],
 	"./StrategyProject/IndexB.vue": [
 		"./resources/js/Pages/StrategyProject/IndexB.vue",
+		9,
 		"resources_js_Pages_StrategyProject_IndexB_vue"
 	],
 	"./StrategyProject/test": [
 		"./resources/js/Pages/StrategyProject/test.vue",
+		9,
 		"resources_js_Pages_StrategyProject_test_vue"
 	],
 	"./StrategyProject/test.vue": [
 		"./resources/js/Pages/StrategyProject/test.vue",
+		9,
 		"resources_js_Pages_StrategyProject_test_vue"
 	],
 	"./SuccessIndicator/Create": [
 		"./resources/js/Pages/SuccessIndicator/Create.vue",
+		9,
 		"resources_js_Pages_SuccessIndicator_Create_vue"
 	],
 	"./SuccessIndicator/Create.vue": [
 		"./resources/js/Pages/SuccessIndicator/Create.vue",
+		9,
 		"resources_js_Pages_SuccessIndicator_Create_vue"
 	],
 	"./SuccessIndicator/Index": [
 		"./resources/js/Pages/SuccessIndicator/Index.vue",
+		9,
 		"resources_js_Pages_SuccessIndicator_Index_vue"
 	],
 	"./SuccessIndicator/Index.vue": [
 		"./resources/js/Pages/SuccessIndicator/Index.vue",
+		9,
 		"resources_js_Pages_SuccessIndicator_Index_vue"
 	],
 	"./Targets/Create": [
 		"./resources/js/Pages/Targets/Create.vue",
+		9,
 		"resources_js_Pages_Targets_Create_vue"
 	],
 	"./Targets/Create.vue": [
 		"./resources/js/Pages/Targets/Create.vue",
+		9,
 		"resources_js_Pages_Targets_Create_vue"
 	],
 	"./Targets/Direct": [
 		"./resources/js/Pages/Targets/Direct.vue",
+		9,
 		"resources_js_Pages_Targets_Direct_vue"
 	],
 	"./Targets/Direct.vue": [
 		"./resources/js/Pages/Targets/Direct.vue",
+		9,
 		"resources_js_Pages_Targets_Direct_vue"
 	],
 	"./Targets/Implementation/Create": [
 		"./resources/js/Pages/Targets/Implementation/Create.vue",
+		9,
 		"resources_js_Pages_Targets_Implementation_Create_vue"
 	],
 	"./Targets/Implementation/Create.vue": [
 		"./resources/js/Pages/Targets/Implementation/Create.vue",
+		9,
 		"resources_js_Pages_Targets_Implementation_Create_vue"
 	],
 	"./Targets/Implementation/Index": [
 		"./resources/js/Pages/Targets/Implementation/Index.vue",
+		9,
 		"resources_js_Pages_Targets_Implementation_Index_vue"
 	],
 	"./Targets/Implementation/Index.vue": [
 		"./resources/js/Pages/Targets/Implementation/Index.vue",
+		9,
 		"resources_js_Pages_Targets_Implementation_Index_vue"
 	],
 	"./Targets/Index": [
 		"./resources/js/Pages/Targets/Index.vue",
+		9,
 		"resources_js_Pages_Targets_Index_vue"
 	],
 	"./Targets/Index.vue": [
 		"./resources/js/Pages/Targets/Index.vue",
+		9,
 		"resources_js_Pages_Targets_Index_vue"
 	],
 	"./TimeRange/Create": [
 		"./resources/js/Pages/TimeRange/Create.vue",
+		9,
 		"resources_js_Pages_TimeRange_Create_vue"
 	],
 	"./TimeRange/Create.vue": [
 		"./resources/js/Pages/TimeRange/Create.vue",
+		9,
 		"resources_js_Pages_TimeRange_Create_vue"
 	],
 	"./TimeRange/Index": [
 		"./resources/js/Pages/TimeRange/Index.vue",
+		9,
 		"resources_js_Pages_TimeRange_Index_vue"
 	],
 	"./TimeRange/Index.vue": [
 		"./resources/js/Pages/TimeRange/Index.vue",
+		9,
 		"resources_js_Pages_TimeRange_Index_vue"
 	],
 	"./Time_Sheets/Index": [
 		"./resources/js/Pages/Time_Sheets/Index.vue",
+		9,
 		"resources_js_Pages_Time_Sheets_Index_vue"
 	],
 	"./Time_Sheets/Index.vue": [
 		"./resources/js/Pages/Time_Sheets/Index.vue",
+		9,
 		"resources_js_Pages_Time_Sheets_Index_vue"
 	],
 	"./Time_Sheets/New": [
 		"./resources/js/Pages/Time_Sheets/New.vue",
+		9,
 		"resources_js_Pages_Time_Sheets_New_vue"
 	],
 	"./Time_Sheets/New.vue": [
 		"./resources/js/Pages/Time_Sheets/New.vue",
+		9,
 		"resources_js_Pages_Time_Sheets_New_vue"
 	],
 	"./Timeliness/Create": [
 		"./resources/js/Pages/Timeliness/Create.vue",
+		9,
 		"resources_js_Pages_Timeliness_Create_vue"
 	],
 	"./Timeliness/Create.vue": [
 		"./resources/js/Pages/Timeliness/Create.vue",
+		9,
 		"resources_js_Pages_Timeliness_Create_vue"
 	],
 	"./Timeliness/Index": [
 		"./resources/js/Pages/Timeliness/Index.vue",
+		9,
 		"resources_js_Pages_Timeliness_Index_vue"
 	],
 	"./Timeliness/Index.vue": [
 		"./resources/js/Pages/Timeliness/Index.vue",
+		9,
 		"resources_js_Pages_Timeliness_Index_vue"
 	],
 	"./TimelinessRemarks/Create": [
 		"./resources/js/Pages/TimelinessRemarks/Create.vue",
+		9,
 		"resources_js_Pages_TimelinessRemarks_Create_vue"
 	],
 	"./TimelinessRemarks/Create.vue": [
 		"./resources/js/Pages/TimelinessRemarks/Create.vue",
+		9,
 		"resources_js_Pages_TimelinessRemarks_Create_vue"
 	],
 	"./TimelinessRemarks/Index": [
 		"./resources/js/Pages/TimelinessRemarks/Index.vue",
+		9,
 		"resources_js_Pages_TimelinessRemarks_Index_vue"
 	],
 	"./TimelinessRemarks/Index.vue": [
 		"./resources/js/Pages/TimelinessRemarks/Index.vue",
+		9,
 		"resources_js_Pages_TimelinessRemarks_Index_vue"
 	],
 	"./UserOffice/Set": [
 		"./resources/js/Pages/UserOffice/Set.vue",
+		9,
 		"resources_js_Pages_UserOffice_Set_vue"
 	],
 	"./UserOffice/Set.vue": [
 		"./resources/js/Pages/UserOffice/Set.vue",
+		9,
 		"resources_js_Pages_UserOffice_Set_vue"
 	],
 	"./Users/BootstrapModalNoJquery": [
 		"./resources/js/Pages/Users/BootstrapModalNoJquery.vue",
+		9,
 		"resources_js_Pages_Users_BootstrapModalNoJquery_vue"
 	],
 	"./Users/BootstrapModalNoJquery.vue": [
 		"./resources/js/Pages/Users/BootstrapModalNoJquery.vue",
+		9,
 		"resources_js_Pages_Users_BootstrapModalNoJquery_vue"
 	],
 	"./Users/ChangePassword": [
 		"./resources/js/Pages/Users/ChangePassword.vue",
+		9,
 		"resources_js_Pages_Users_ChangePassword_vue"
 	],
 	"./Users/ChangePassword.vue": [
 		"./resources/js/Pages/Users/ChangePassword.vue",
+		9,
 		"resources_js_Pages_Users_ChangePassword_vue"
 	],
 	"./Users/Create": [
 		"./resources/js/Pages/Users/Create.vue",
+		9,
 		"resources_js_Pages_Users_Create_vue"
 	],
 	"./Users/Create.vue": [
 		"./resources/js/Pages/Users/Create.vue",
+		9,
 		"resources_js_Pages_Users_Create_vue"
 	],
 	"./Users/Employees/Index": [
 		"./resources/js/Pages/Users/Employees/Index.vue",
+		9,
 		"resources_js_Pages_Users_Employees_Index_vue"
 	],
 	"./Users/Employees/Index.vue": [
 		"./resources/js/Pages/Users/Employees/Index.vue",
+		9,
 		"resources_js_Pages_Users_Employees_Index_vue"
 	],
 	"./Users/Index": [
 		"./resources/js/Pages/Users/Index.vue",
+		9,
 		"resources_js_Pages_Users_Index_vue"
 	],
 	"./Users/Index.vue": [
 		"./resources/js/Pages/Users/Index.vue",
+		9,
 		"resources_js_Pages_Users_Index_vue"
 	],
 	"./Users/PermissionsModal": [
 		"./resources/js/Pages/Users/PermissionsModal.vue",
+		9,
 		"resources_js_Pages_Users_PermissionsModal_vue"
 	],
 	"./Users/PermissionsModal.vue": [
 		"./resources/js/Pages/Users/PermissionsModal.vue",
+		9,
 		"resources_js_Pages_Users_PermissionsModal_vue"
 	],
 	"./Users/Settings": [
 		"./resources/js/Pages/Users/Settings.vue",
+		9,
 		"resources_js_Pages_Users_Settings_vue"
 	],
 	"./Users/Settings.vue": [
 		"./resources/js/Pages/Users/Settings.vue",
+		9,
 		"resources_js_Pages_Users_Settings_vue"
 	],
 	"./hgdg_checklist/Create": [
 		"./resources/js/Pages/hgdg_checklist/Create.vue",
+		9,
 		"resources_js_Pages_hgdg_checklist_Create_vue"
 	],
 	"./hgdg_checklist/Create.vue": [
 		"./resources/js/Pages/hgdg_checklist/Create.vue",
+		9,
 		"resources_js_Pages_hgdg_checklist_Create_vue"
 	],
 	"./hgdg_checklist/Index": [
 		"./resources/js/Pages/hgdg_checklist/Index.vue",
+		9,
 		"resources_js_Pages_hgdg_checklist_Index_vue"
 	],
 	"./hgdg_checklist/Index.vue": [
 		"./resources/js/Pages/hgdg_checklist/Index.vue",
+		9,
 		"resources_js_Pages_hgdg_checklist_Index_vue"
 	],
 	"./hgdg_question/Create": [
 		"./resources/js/Pages/hgdg_question/Create.vue",
+		9,
 		"resources_js_Pages_hgdg_question_Create_vue"
 	],
 	"./hgdg_question/Create.vue": [
 		"./resources/js/Pages/hgdg_question/Create.vue",
+		9,
 		"resources_js_Pages_hgdg_question_Create_vue"
 	],
 	"./hgdg_question/Index": [
 		"./resources/js/Pages/hgdg_question/Index.vue",
+		9,
 		"resources_js_Pages_hgdg_question_Index_vue"
 	],
 	"./hgdg_question/Index.vue": [
 		"./resources/js/Pages/hgdg_question/Index.vue",
+		9,
 		"resources_js_Pages_hgdg_question_Index_vue"
 	],
 	"./hgdg_score/Index": [
 		"./resources/js/Pages/hgdg_score/Index.vue",
+		9,
 		"resources_js_Pages_hgdg_score_Index_vue"
 	],
 	"./hgdg_score/Index.vue": [
 		"./resources/js/Pages/hgdg_score/Index.vue",
+		9,
 		"resources_js_Pages_hgdg_score_Index_vue"
 	]
 };
@@ -2708,8 +3256,8 @@ function webpackAsyncContext(req) {
 	}
 
 	var ids = map[req], id = ids[0];
-	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(() => {
-		return __webpack_require__(id);
+	return Promise.all(ids.slice(2).map(__webpack_require__.e)).then(() => {
+		return __webpack_require__.t(id, ids[1] | 16)
 	});
 }
 webpackAsyncContext.keys = () => (Object.keys(map));
@@ -3282,6 +3830,7 @@ setFavicon('/images/OPCR_ICON.png');
       data: function data() {
         return {
           my_years: ["2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039", "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050", "2051", "2052", "2053", "2054", "2055", "2056", "2057", "2058", "2059", "2060", "2061", "2062", "2063", "2064", "2065", "2066", "2067", "2068", "2069", "2070", "2071", "2072", "2073", "2074", "2075", "2076", "2077", "2078", "2079", "2080", "2081", "2082", "2083", "2084", "2085", "2086", "2087", "2088", "2089", "2090", "2091", "2092", "2093", "2094", "2095", "2096", "2097", "2098", "2099", "2100"],
+          pcr_years: ["2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033", "2034", "2035"],
           measurement_units: ['meter', 'kilometer', 'mile', 'yard',
           // Units of measure for distance
           'centimeter', 'inch', 'foot', 'meter',
@@ -3354,6 +3903,27 @@ setFavicon('/images/OPCR_ICON.png');
         };
       },
       methods: (_methods = {
+        formatDate: function formatDate(dateString) {
+          if (!dateString) return '';
+
+          // Strip microseconds if they exist
+          var cleanDateString = dateString.replace(/\.\d{3,6}Z$/, 'Z');
+          var date = new Date(cleanDateString);
+          var datePart = date.toLocaleDateString('en-US', {
+            month: 'long',
+            day: '2-digit',
+            year: 'numeric',
+            timeZone: 'Asia/Manila'
+          });
+          var timePart = date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'Asia/Manila'
+          });
+          return "".concat(datePart, " ").concat(timePart);
+        },
         goBack: function goBack() {
           window.history.back(); // or this.$router.go(-1)
         },
@@ -3389,10 +3959,11 @@ setFavicon('/images/OPCR_ICON.png');
           });
         },
         getStatus: function getStatus(stat_num) {
+          // alert(stat_num)
           if (typeof stat_num !== 'string') {
             stat_num = String(stat_num);
           }
-          if (stat_num === '-2') {
+          if (stat_num == '-2') {
             return 'Returned';
           } else if (stat_num === '-1') {
             return 'Saved';
@@ -3493,49 +4064,48 @@ setFavicon('/images/OPCR_ICON.png');
         getPlainTextWithoutTags: function getPlainTextWithoutTags(htmlString) {
           // Use a regular expression to remove HTML tags
           return htmlString.replace(/<[^>]+>/g, '');
-        },
-        formatDate: function formatDate(isoDate) {
-          var date = new Date(isoDate);
-          var options = {
-            year: 'numeric',
-            month: 'long',
-            day: '2-digit'
-          };
-          return date.toLocaleDateString('en-US', options);
-        },
-        getPreUploadFileIcon: function getPreUploadFileIcon(file_type) {
-          // if (!file?.file_type) {
-          //   return '/images/icons/file.png'; // default if missing type
-          // }
-
-          var type = file_type.toLowerCase();
-          var excelTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xlt', 'xltx', 'xltm'];
-          var wordTypes = ['doc', 'docx', 'dot', 'dotx', 'dotm'];
-          var imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
-          var pptTypes = ['ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'];
-          var multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];
-          if (excelTypes.includes(type)) {
-            return '/images/icons/excel.png';
-          } else if (type === 'pdf') {
-            return '/images/icons/pdf.png';
-          } else if (wordTypes.includes(type)) {
-            return '/images/icons/word.png';
-          } else if (pptTypes.includes(type)) {
-            return '/images/icons/ppt.png';
-          } else if (multimediaTypes.includes(type)) {
-            return '/images/icons/video.png';
-          } else if (imageTypes.includes(type)) {
-            return "/images/icons/images.png";
-          } else {
-            return '/images/icons/file.png'; // default icon
-          }
         }
-      }, _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_methods, "getStatus", function getStatus(number_status) {
+      }, _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_methods, "formatDate", function formatDate(isoDate) {
+        var date = new Date(isoDate);
+        var options = {
+          year: 'numeric',
+          month: 'long',
+          day: '2-digit'
+        };
+        return date.toLocaleDateString('en-US', options);
+      }), "getPreUploadFileIcon", function getPreUploadFileIcon(file_type) {
+        // if (!file?.file_type) {
+        //   return '/images/icons/file.png'; // default if missing type
+        // }
+
+        var type = file_type.toLowerCase();
+        var excelTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xlt', 'xltx', 'xltm'];
+        var wordTypes = ['doc', 'docx', 'dot', 'dotx', 'dotm'];
+        var imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+        var pptTypes = ['ppt', 'pptx', 'pptm', 'pot', 'potx', 'potm'];
+        var multimediaTypes = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'mp3'];
+        if (excelTypes.includes(type)) {
+          return '/images/icons/excel.png';
+        } else if (type === 'pdf') {
+          return '/images/icons/pdf.png';
+        } else if (wordTypes.includes(type)) {
+          return '/images/icons/word.png';
+        } else if (pptTypes.includes(type)) {
+          return '/images/icons/ppt.png';
+        } else if (multimediaTypes.includes(type)) {
+          return '/images/icons/video.png';
+        } else if (imageTypes.includes(type)) {
+          return "/images/icons/images.png";
+        } else {
+          return '/images/icons/file.png'; // default icon
+        }
+      }), "getStatus", function getStatus(number_status) {
         var status = parseFloat(number_status);
         if (status === -1) return 'Saved';
         if (status === 0) return 'Submitted';
         if (status === 1) return 'Reviewed';
         if (status === 2) return 'Approved';
+        if (status === -2) return 'Returned';
         return 'unknown';
       }), "startDrag", function startDrag(e) {
         if (e.target.closest("button")) return; // do NOT drag when clicking buttons
@@ -3718,7 +4288,7 @@ setFavicon('/images/OPCR_ICON.png');
             }
           }
         });
-      }), "cleanPartialHtmlEdges", function cleanPartialHtmlEdges(text) {
+      }), _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_methods, "cleanPartialHtmlEdges", function cleanPartialHtmlEdges(text) {
         if (!text) return text;
         return text
         // remove unfinished opening/closing tag fragments at START
@@ -4049,7 +4619,7 @@ setFavicon('/images/OPCR_ICON.png');
           //     console.log("end: "+ned)
           // }
         });
-      }), _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_methods, "renderCommentedText", function renderCommentedText(text, comments, columnName) {
+      }), "renderCommentedText", function renderCommentedText(text, comments, columnName) {
         if (!text || !comments) return text;
         var filtered = comments.filter(function (c) {
           return c.column_name === columnName;
@@ -4259,7 +4829,7 @@ setFavicon('/images/OPCR_ICON.png');
           console.warn("Complex selection – wrapping failed", e);
           return;
         }
-      }), "removeHighlights", function removeHighlights() {
+      }), _defineProperty(_defineProperty(_methods, "removeHighlights", function removeHighlights() {
         // Remove all highlights
         var highlights = document.querySelectorAll('.text-highlight');
         highlights.forEach(function (highlight) {
@@ -4269,6 +4839,22 @@ setFavicon('/images/OPCR_ICON.png');
 
         // Clear any existing text selection
         window.getSelection().removeAllRanges();
+      }), "formatDateTime", function formatDateTime(dateString) {
+        if (!dateString) return '';
+        var date = new Date(dateString);
+        var options = {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        };
+        var datePart = date.toLocaleDateString('en-US', options);
+        var timePart = date.toLocaleTimeString('en-US', {
+          hour12: true,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        });
+        return "".concat(datePart, " - ").concat(timePart);
       }))
     }).mount(el);
   },

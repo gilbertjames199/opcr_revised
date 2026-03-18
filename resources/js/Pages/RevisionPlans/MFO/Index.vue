@@ -13,7 +13,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/mforevision/create/${idmfo}`">Add Revision Plan</Link>
+                    <Link class="btn btn-primary btn-sm" :href="`/mforevision/create/${idmfo}`">Add Project Profile</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>

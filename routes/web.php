@@ -95,6 +95,7 @@ use App\Http\Controllers\MeansOfVerificationController;
 use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
 use App\Http\Controllers\ProjectDesignController;
+use App\Http\Controllers\ProjectProfileNextYearController;
 use App\Http\Controllers\ProjectProfileStreamlinedController;
 use App\Http\Controllers\ProjectProfileTrackingController;
 use App\Http\Controllers\ReviewApprove\TargetAccomplishmentReviewApproveController;
@@ -123,6 +124,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Carbon\Carbon;
+
 
 Auth::routes(['verify' => true]);
 
@@ -162,6 +164,8 @@ Route::middleware('auth')->group(function () {
         ///users/change-password
         Route::get('/change-password', [UserController::class, 'changePassword']);
         Route::post('/update-password', [UserController::class, 'updatePassword']);
+        Route::get('/{id}/impersonate', [UserController::class, 'impersonate'])->name('users.impersonate');
+        Route::get('/stop-impersonate', [UserController::class, 'stopImpersonate'])->name('users.stop-impersonate');
     });
     //UserOffice
     Route::prefix('/office')->group(function () {
@@ -431,6 +435,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProjectProfileController::class, 'index']);
         Route::get('/create', [ProjectProfileController::class, 'create']);
     });
+    // Project Profile Trackings
+    Route::prefix('/project-profile-tracking')->group(function () {
+        Route::get('/', [ProjectProfileTrackingController::class, 'tracking']);
+    });
     //Revision Plan
     Route::prefix('/revision')->group(function () {
         Route::get('/{id}', [RevisionPlanController::class, 'index']);
@@ -451,6 +459,7 @@ Route::middleware('auth')->group(function () {
         // /revision/streamlined/${table_name}/${column_here}/${id}/${new_data}/update
         Route::patch('/{id}/update', [ProjectProfileStreamlinedController::class, 'streamlined_update']);
         Route::delete('/{id}/{table}', [ProjectProfileStreamlinedController::class, 'streamlined_delete']);
+        Route::delete('/{id}/{table}/{project_id}', [ProjectProfileStreamlinedController::class, 'streamlined_delete_act_strat']);
         Route::post('/store', [ProjectProfileStreamlinedController::class, 'streamlined_store']);
         Route::get('/edit/{id}', [ProjectProfileStreamlinedController::class, 'streamlined_edit']);
         Route::patch('/update', [ProjectProfileStreamlinedController::class, 'streamlined_update']);
@@ -466,8 +475,12 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/project/design')->group(function () {
         Route::post('/generate/{id}', [ProjectDesignController::class, 'generateProjectDesign']);
     });
+    // Forward Next Year
+    Route::prefix('/project/next_year')->group(function () {
+        Route::post('/{sem_id}', [ProjectProfileNextYearController::class, 'index']);
+    });
     // Cash Disbursements Forecast
-    Route::prefix('/cdf')->group(function(){
+    Route::prefix('/cdf')->group(function () {
         Route::get('/{revision_plan_id}', [CashDisbursementForecastController::class, 'set_cdf']);
         Route::patch('/{revision_plan_id}', [CashDisbursementForecastController::class, 'updateCdf']);
         Route::patch('/signatories/{revision_plan_id}', [CashDisbursementForecastController::class, 'updateSignatories']);
@@ -951,6 +964,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/return/remarks/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'returnOpcrRating']);
             Route::post('/submit/opcr/{column}/{opcr_rating_id}/{item_score}', [TargetAccomplishmentReviewApproveController::class, 'update_rating_score']);
             Route::get('/{opcr_list_id}/view/opcr/rating/submission', [TargetAccomplishmentReviewApproveController::class, 'viewRating']);
+            Route::patch('/set/rating/type/{rating_type}/{id}', [TargetAccomplishmentReviewApproveController::class, 'updateRatingType']);
         });
         Route::prefix('/ipp')->group(function () {
             Route::get('/', [ProjectProfileTrackingController::class, 'index_ipp']);

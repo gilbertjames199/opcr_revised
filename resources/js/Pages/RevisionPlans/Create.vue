@@ -30,6 +30,7 @@
                         {{ pap.paps_desc }}
                     </option>
                 </select>
+                <!-- {{ paps_all }} -->
                 <!-- <div v-if="paps[0]" >
                     <label for="">PROGRAMS AND PROJECTS -Description</label>
                     <input type="text" v-model="paps[0].paps_desc" class="form-control" />
@@ -137,7 +138,8 @@
 
 
                 <label for="">RATIONALE</label>
-                 <QuillEditor theme="snow" v-model:content="form.rationale" @input="limitWords" contentType="html"
+                <!-- @input="limitWords"  -->
+                 <QuillEditor theme="snow" v-model:content="form.rationale" contentType="html"
                     toolbar="essential" />
                 <div class="fs-6 c-red-500" v-if="form.errors.baseline_total">{{ form.errors.baseline_total }}</div>
 

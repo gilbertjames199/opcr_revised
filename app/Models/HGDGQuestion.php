@@ -18,7 +18,10 @@ class HGDGQuestion extends Model
         'has_subquestion',
         'question_id',
     ];
-
+    public function checklist()
+    {
+        return $this->belongsTo(HGDG_Checklist::class, 'checklist_id');
+    }
     public function subQuestion()
     {
         return $this->hasMany(HGDGQuestion::class, 'question_id');

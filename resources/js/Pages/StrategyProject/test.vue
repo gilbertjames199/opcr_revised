@@ -86,12 +86,15 @@
                                             <div class="peers">
                                                 <div>
                                                     <table class="table table-sm table-bordered table-hover" style="border-color: #000; border-width: 2px;">
+                                                        <thead>
                                                         <tr class="bg-primary text-white">
                                                             <th>Quarter/Period&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                                             <th colspan="1">Personnel Services</th>
                                                             <th colspan="1">MOOE&nbsp;</th>
                                                             <th colspan="1">Capital Outlay</th>
                                                         </tr>
+                                                        </thead>
+                                                        <tbody>
                                                         <tr>
                                                             <th>Q1:&nbsp;&nbsp;</th>
                                                             <td><input v-model="strategy.ps_q1" @input="setUnsaved(true)"
@@ -130,6 +133,7 @@
                                                             <td><input v-model="strategy.mooe_total" class="form-control"/></td>
                                                             <td><input v-model="strategy.co_total" class="form-control"/></td>
                                                         </tr>
+                                                        </tbody>
                                                     </table>
                                                 </div>
 

@@ -18,8 +18,8 @@ use App\Models\Risk_manangement;
 use App\Models\Signatory;
 use App\Models\Strategy;
 use App\Models\StrategyProject;
-use App\Models\TeamPlan;
 use App\Models\User;
+use App\Models\TeamPlan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +33,27 @@ class ProjectProfileStreamlinedController extends Controller
         $this->rev_plan = $rev_plan;
     }
 
+    /**
+     * Check if user can perform an action
+     * @param string $ability
+     * @param mixed $arguments
+     * @return bool
+     */
+    private function userCan($ability, $arguments = null)
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+        if ($user) {
+            return $user->can($ability, $arguments);
+        }
+        return false;
+    }
+
     public function streamlined_create(Request $request, $idpaps)
     {
+         // SET USER DEPARTMENT CODE
+        $dept_code = auth()->user()->department_code;
+        // dd($request);
         // SET PAPS ID
         $id = $idpaps;
         $source = null;
@@ -42,14 +61,24 @@ class ProjectProfileStreamlinedController extends Controller
         // dd($idpaps);
 
         // SET PAPS VALUE
-        $paps = ProgramAndProject::with('MFO')->where('id', $id)->get();
-        $paps0 = $paps->first();
 
+        // dd($paps);
+        if($id!=0){
+            $paps = ProgramAndProject::with('MFO')->where('id', $id)->get();
+            $paps0 = $paps->first();
+        }else{
+            // dd(RevisionPlan::where('id', $request->idrevplan)->get());
+            $paps = ProgramAndProject::with('MFO')->where('type','GAS')
+                    ->where('department_code', $dept_code)
+                    ->first();
+                    $paps0 = $paps->first();
+        }
+
+        // dd($paps);
         // SET OFFICE OBJECT
         $office = Office::where('department_code', $paps0->department_code)->first();
         // dd($office);
-        // SET USER DEPARTMENT CODE
-        $dept_code = auth()->user()->department_code;
+
         $paps_all = [];
         // FOR BUDGETARY REQUIREMENTS
         $s_mooe_gad = 0;
@@ -81,13 +110,13 @@ class ProjectProfileStreamlinedController extends Controller
 
         // SET DUPLICATE DATA
         $duplicate = [];
-        if ($request->source == 'direct') {
+        if ($request->source == 'direct' || $request->source == 'rev_app') {
             $source = $request->source;
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $request->idrevplan)->first();
         } else {
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $max_id)->first();
         }
-
+        // dd($duplicate);
         // HGDG Checklist
         $hgdg = HGDG_Checklist::get();
 
@@ -237,8 +266,8 @@ class ProjectProfileStreamlinedController extends Controller
             "source" => $request->source,
             "ccet_codes" => $ccet_codes,
             "can" => [
-                'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
-                'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
+                'can_access_validation' => $this->userCan('can_access_validation', User::class),
+                'can_access_indicators' => $this->userCan('can_access_indicators', User::class)
             ],
         ]);
     }
@@ -363,9 +392,30 @@ class ProjectProfileStreamlinedController extends Controller
         $table = $request->input('table_name');
         $column = $request->input('column_name');
         $newData = urldecode($request->input('new_data'));
-
+        // dd(DB::table($table)->where('id', $id)->get());
         // Perform update
         // dd($request);
+        $restrictedColumns = [
+            'ps_q1','ps_q2','ps_q3','ps_q4',
+            'mooe_q1','mooe_q2','mooe_q3','mooe_q4',
+            'co_q1','co_q2','co_q3','co_q4',
+            'fe_q1','fe_q2','fe_q3','fe_q4',
+        ];
+
+        if ($table === 'activity_projects' && in_array($column, $restrictedColumns)) {
+
+            // Check if numeric and not less than -1
+            if (!is_numeric($newData) || $newData < -1) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid value. Must be numeric and not less than -1.'
+                ], 422);
+            }
+
+            // Optional: cast to float to ensure numeric type
+            $newData = (float) $newData;
+        }
+
         DB::table($table)
             ->where('id', $id)
             ->update([$column => $newData]);
@@ -500,13 +550,14 @@ class ProjectProfileStreamlinedController extends Controller
         }])
             ->select('id', 'revision_plan_id', 'particulars', 'account_code', 'amount', 'proposed_budget', 'category', 'category_gad', 'source', 'sip_number')
             ->where('revision_plan_id', $id)
+            ->orderBy('account_code')
             ->orderBy('category') // optional: keep some order
             ->orderBy('category_gad')
             ->get();
     }
     public function getImplementationPlan($id, $paps, $idpaps)
     {
-        return Strategy::with([
+        $imp= Strategy::with([
             'strategyProject' => function ($query) use ($id) {
                 $query->where('project_id', $id)
                     ->where('is_active', '1');
@@ -526,7 +577,8 @@ class ProjectProfileStreamlinedController extends Controller
             },
             'activity.activityProject' => function ($q) use ($id) {
                 $q->where('project_id', $id)
-                    ->where('is_active', '1');
+                    ->where('is_active', '1')
+                    ->orderBy('activity_id', 'asc');
             },
             'activity.activityProject.expected_output',
             'activity.activityProject.expected_output.comments',
@@ -534,10 +586,37 @@ class ProjectProfileStreamlinedController extends Controller
             'activity.activityProject.expected_outcome.comments',
             'activity.activityProject.comments',
             'activity.activityProject.comments.user'
-        ])->whereHas('strategyProject', function ($query) {
-            $query->where('is_active', '1');
+        ])->whereHas('strategyProject', function ($query)use ($id) {
+            $query->where('project_id', $id)->where('is_active', '1');
         })
+        // ->where(function ($q) use ($id) {
+        //     $q->whereHas('activity', function ($q2) use ($id) {
+        //         $q2->whereHas('activityProject', function ($q3) use ($id) {
+        //             $q3->where('project_id', $id)
+        //             ->where('is_active', '1');
+        //         });
+        //     })
+        //     ->orWhereDoesntHave('activity');
+        // })
+        // ->join('strategy_projects', function ($join) use ($id) {
+        //         $join->on('strategy_projects.strategy_id', '=', 'strategies.id')
+        //             ->where('strategy_projects.project_id', $id)
+        //             ->where('strategy_projects.is_active', '1');
+        //     })
+        // ->whereHas('activity', function($q)use ($id){
+        //     $q->whereHas('activityProject', function($q2)use ($id){
+        //         $q2->where('project_id', $id)->where('is_active','1')->orderBy('activity_id', 'asc');
+        //     });
+        // })
             ->where('idpaps', $idpaps)
+            // ->orderBy(
+            //     StrategyProject::select('seq_no')
+            //         ->whereColumn('strategy_projects.strategy_id', 'strategies.id')
+            //         ->where('project_id', $id)
+            //         ->where('is_active', '1')
+            //         ->limit(1),
+            //     'asc'
+            // )
             ->get()
             ->map(function ($item) {
                 // dd($item);
@@ -566,6 +645,7 @@ class ProjectProfileStreamlinedController extends Controller
                     $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
                     // dd($activity->activityProject);
                     return [
+                        "seq_no" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->seq_no : null,
                         "id" => $activity->id,
                         "date_from" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_from : null,
                         "date_to" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_to : null,
@@ -602,7 +682,9 @@ class ProjectProfileStreamlinedController extends Controller
                         "is_active" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->is_active : 0,
                         "comments" => $act_comments
                     ];
-                });
+                })
+                ->sortBy('seq_no')   // 👈 ORDER BY ASC
+                ->values();          // 👈 reset array indexes;
                 $ps_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q1 > 0 ? $item->strategyProject[0]->ps_q1 : 0) : 0;
                 $ps_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q2 > 0 ? $item->strategyProject[0]->ps_q2 : 0) : 0;
                 $ps_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q3 > 0 ? $item->strategyProject[0]->ps_q3 : 0) : 0;
@@ -629,6 +711,7 @@ class ProjectProfileStreamlinedController extends Controller
                 // dd($item->strategyProject[0]);
 
                 return [
+                    "seq_no" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->seq_no : null,
                     "id" => $item->id,
                     "description" => $item->description,
                     "target_indicator" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->target_indicator : null,
@@ -674,7 +757,12 @@ class ProjectProfileStreamlinedController extends Controller
                     "activity_visible" => 0,
                     "comments" => $comments
                 ];
-            });
+            })
+            ->sortBy('seq_no')   // 👈 sort AFTER mapping
+            ->values();          // 👈 reset indexes for Vue;
+
+        // dd($imp);
+        return $imp;
     }
 
     public function streamlined_delete($id, $table)
@@ -683,12 +771,9 @@ class ProjectProfileStreamlinedController extends Controller
         // if (!in_array($table, $allowedTables)) {
         //     abort(403, 'Table not allowed.');
         // }
-
-
-
         if ($table == 'strategies') {
-            $strat = Strategy::where('id', $id)->first();
-            $strat->delete();
+            // $strat = Strategy::where('id', $id)->first();
+            // $strat->delete();
 
             $strat_proj = StrategyProject::where('strategy_id', $id)->get();
             foreach ($strat_proj as $proj) {
@@ -702,8 +787,8 @@ class ProjectProfileStreamlinedController extends Controller
                     ->update(['is_active' => 0]);
             }
         } else if ($table == 'activities') {
-            $act = Activity::where('id', $id)->first();
-            $act->delete();
+            // $act = Activity::where('id', $id)->first();
+            // $act->delete();
 
             $act_proj = ActivityProject::where('activity_id', $id)->first();
             $act_proj->is_active = 0;
@@ -720,6 +805,37 @@ class ProjectProfileStreamlinedController extends Controller
         //     'deleted_id' => $id,
         //     'table' => $table
         // ]);
+    }
+    public function streamlined_delete_act_strat($id, $table, $project_id){
+        if ($table == 'strategies') {
+            // $strat = Strategy::where('id', $id)->first();
+            // $strat->delete();
+
+            $strat_proj = StrategyProject::where('strategy_id', $id)
+                ->where('project_id', $project_id)
+                ->get();
+            foreach ($strat_proj as $proj) {
+                $proj->is_active = 0;
+                $proj->save();
+            }
+
+            $activities = Activity::where('strategy_id', $id)->get();
+            foreach ($activities as $act) {
+                ActivityProject::where('activity_id', $act->id)
+                    ->where('project_id', $project_id)
+                    ->update(['is_active' => 0]);
+            }
+        } else if ($table == 'activities') {
+            // $act = Activity::where('id', $id)->first();
+            // $act->delete();
+
+            $act_proj = ActivityProject::where('activity_id', $id)
+                ->where('project_id', $project_id)
+                ->first();
+            $act_proj->is_active = 0;
+            $act_proj->save();
+        }
+        return redirect()->back()->with('message', 'Successfully deleted');
     }
     public function team_members($id)
     {

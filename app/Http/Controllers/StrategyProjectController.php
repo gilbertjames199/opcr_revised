@@ -40,7 +40,9 @@ class StrategyProjectController extends Controller
         // dd($revision_plan->idpaps);
         // dd($revision_plan);
         $scope = $revision_plan->scope;
+        // dd($scope);
         if ($scope == 'GAS') {
+            // return redirect('/revision/streamlined/create/0?source=direct&goto="workplan"&idrevplan=' . $idrevplan);
             $data = Strategy::with([
                 'strategyProject' => function ($query) use ($request) {
                     $query->where('project_id', $request->idrevplan);
@@ -52,12 +54,17 @@ class StrategyProjectController extends Controller
                     // ->where('is_active', '1');
                 }
             ])
-                ->where('idpaps', $revision_plan->idpaps)
+                // ->where('idpaps', $revision_plan->idpaps)
+                ->whereHas('strategyProject', function ($query) use ($request) {
+                    $query->where('project_id', $request->idrevplan)
+                    ;
+                })
                 ->get()
                 ->map(function ($item) {
 
                     $item->activity = $item->activity->map(function ($activity) {
                         $activity->is_selected = $activity->activityProject->count() > 0;
+                        $act_id = $activity->activityProject->count() > 0 ? $activity->activityProject[0]->id : null;
                         $ps_q1 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q1 > 0 ? $activity->activityProject[0]->ps_q1 : 0) : 0;
                         $ps_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q2 > 0 ? $activity->activityProject[0]->ps_q2 : 0) : 0;
                         $ps_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q3 > 0 ? $activity->activityProject[0]->ps_q3 : 0) : 0;
@@ -74,11 +81,51 @@ class StrategyProjectController extends Controller
                         $mooe_total = floatval($mooe_q1) + floatval($mooe_q2) + floatval($mooe_q3) + floatval($mooe_q4);
                         $co_total = floatval($co_q1) + floatval($co_q2) + floatval($co_q3) + floatval($co_q4);
                         // dd($activity->activityProject);
+
+                        $fe_q1 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q1 > 0 ? $activity->activityProject[0]->fe_q1 : 0) : 0;
+                        $fe_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q2 > 0 ? $activity->activityProject[0]->fe_q2 : 0) : 0;
+                        $fe_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q3 > 0 ? $activity->activityProject[0]->fe_q3 : 0) : 0;
+                        $fe_q4 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q4 > 0 ? $activity->activityProject[0]->fe_q4 : 0) : 0;
+                        $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
+
+                        // return [
+                        //     "id" => $activity->id,
+                        //     "description" => $activity->description,
+                        //     "target_indicator" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->target_indicator : null,
+                        //     "activity_id" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->activity_id : null,
+                        //     "project_id" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->project_id : null,
+                        //     "ps_q1" => $ps_q1,
+                        //     "ps_q2" => $ps_q2,
+                        //     "ps_q3" => $ps_q3,
+                        //     "ps_q4" => $ps_q4,
+                        //     "ps_total" => $ps_total,
+                        //     "mooe_q1" => $mooe_q1,
+                        //     "mooe_q2" => $mooe_q2,
+                        //     "mooe_q3" => $mooe_q3,
+                        //     "mooe_q4" => $mooe_q4,
+                        //     "mooe_total" => $mooe_total,
+                        //     "co_q1" => $co_q1,
+                        //     "co_q2" => $co_q2,
+                        //     "co_q3" => $co_q3,
+                        //     "co_q4" => $co_q4,
+
+                        //     "co_total" => $co_total,
+                        //     "gad_issue" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->gad_issue : null,
+                        //     "ccet_code" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->ccet_code : null,
+                        //     "responsible" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->responsible : null,
+                        //     "activityProject" => $activity->activityProject,
+                        //     "activity" => $activity->activity,
+                        //     "finance_visible" =>   0,
+                        //     "is_active" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->is_active : 0,
+                        // ];
+                        $activity->is_selected = $activity->activityProject->count() > 0;
                         return [
                             "id" => $activity->id,
                             "description" => $activity->description,
+                            "date_from" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_from : null,
+                            "date_to" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_to : null,
                             "target_indicator" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->target_indicator : null,
-                            "activity_id" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->activity_id : null,
+                            "activity_id" => $act_id,
                             "project_id" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->project_id : null,
                             "ps_q1" => $ps_q1,
                             "ps_q2" => $ps_q2,
@@ -95,6 +142,11 @@ class StrategyProjectController extends Controller
                             "co_q3" => $co_q3,
                             "co_q4" => $co_q4,
                             "co_total" => $co_total,
+                            "fe_q1" => $fe_q1,
+                            "fe_q2" => $fe_q2,
+                            "fe_q3" => $fe_q3,
+                            "fe_q4" => $fe_q4,
+                            "fe_total" => $fe_total,
                             "gad_issue" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->gad_issue : null,
                             "ccet_code" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->ccet_code : null,
                             "responsible" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->responsible : null,
@@ -116,15 +168,25 @@ class StrategyProjectController extends Controller
                     $co_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q2 > 0 ? $item->strategyProject[0]->co_q2 : 0) : 0;
                     $co_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q3 > 0 ? $item->strategyProject[0]->co_q3 : 0) : 0;
                     $co_q4 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q4 > 0 ? $item->strategyProject[0]->co_q4 : 0) : 0;
+                    $fe_01 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_01 > 0 ? $item->strategyProject[0]->fe_01 : 0) : 0;
+                    $fe_02 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_02 > 0 ? $item->strategyProject[0]->fe_02 : 0) : 0;
+                    $fe_03 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_03 > 0 ? $item->strategyProject[0]->fe_03 : 0) : 0;
+                    $fe_04 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_04 > 0 ? $item->strategyProject[0]->fe_04 : 0) : 0;
+                    $fe_total = floatval($fe_01) + floatval($fe_02) + floatval($fe_03) + floatval($fe_04);
                     $ps_total = floatval($ps_q1) + floatval($ps_q2) + floatval($ps_q3) + floatval($ps_q4);
                     $mooe_total = floatval($mooe_q1) + floatval($mooe_q2) + floatval($mooe_q3) + floatval($mooe_q4);
                     $co_total = floatval($co_q1) + floatval($co_q2) + floatval($co_q3) + floatval($co_q4);
 
+
+                    $strat_id = $item->strategyProject->count() > 0 ? $item->strategyProject[0]->id : null;
+                    $show_act = 1;
                     return [
                         "id" => $item->id,
                         "description" => $item->description,
+                        "date_from" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->date_from : null,
+                        "date_to" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->date_to : null,
                         "target_indicator" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->target_indicator : null,
-                        "strategy_id" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->id : null,
+                        "strategy_id" => $strat_id,
                         "project_id" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->project_id : null,
                         "date_from" => $item->strategyProject->count() > 0
                             ? ($item->strategyProject[0]->date_from
@@ -151,6 +213,11 @@ class StrategyProjectController extends Controller
                         "co_q3" => $co_q3,
                         "co_q4" => $co_q4,
                         "co_total" => $co_total,
+                        "fe_01" => $fe_01,
+                        "fe_02" => $fe_02,
+                        "fe_03" => $fe_03,
+                        "fe_04" => $fe_04,
+                        "fe_total" => $fe_total,
                         "gad_issue" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->gad_issue : null,
                         "ccet_code" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->ccet_code : null,
                         "responsible" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->responsible : null,
@@ -158,13 +225,22 @@ class StrategyProjectController extends Controller
                         "activity" => $item->activity,
                         "finance_visible" => 0,
                         "is_active" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->is_active : 0,
-                        "activity_visible" => 0,
+                        "activity_visible" => $show_act,
+                        // "expected_outcome" => $item->expected_outcome,
+                        // "expected_output" => $item->expected_output,
                     ];
                 });
+            // dd($data);
+                // dd($data, $this->getData($request, $revision_plan, $idrevplan));
+            if(count($data)<1){
+                $data = $this->getData($request, $revision_plan, $idrevplan);
+                // dd($data);
+            }
         } else {
             $data = $this->getData($request, $revision_plan, $idrevplan);
         }
 
+        // dd($data);
         // dd($revision_plan);
         return inertia('StrategyProject/Index', [
             'data' => $data,
@@ -182,7 +258,8 @@ class StrategyProjectController extends Controller
         if ($revision_plan) {
             $strat_base = intval($revision_plan->is_strategy_based);
         }
-        return Strategy::with([
+        // dd($revision_plan);
+        $strat= Strategy::with([
             'strategyProject' => function ($query) use ($request) {
                 $query->where('project_id', $request->idrevplan);
                 // ->where('is_active', '1');
@@ -202,7 +279,7 @@ class StrategyProjectController extends Controller
             ->where('idpaps', $revision_plan->idpaps)
             ->get()
             ->map(function ($item) use ($strat_base, $idrevplan) {
-                // dd($item);
+                // dd($item, 'expected output');
                 $strat_id = $item->strategyProject->count() > 0 ? $item->strategyProject[0]->id : null;
                 $show_act = 1;
                 if ($strat_base == 1) {
@@ -379,6 +456,8 @@ class StrategyProjectController extends Controller
                     // "expected_output" => $item->expected_output,
                 ];
             });
+            // dd($strat,'strat');
+        return $strat;
     }
     public function refresh(Request $request, $idrevplan)
     {

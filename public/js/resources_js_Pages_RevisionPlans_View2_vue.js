@@ -14,11 +14,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Filter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Shared/Filter */ "./resources/js/Shared/Filter.vue");
 /* harmony import */ var _Shared_Pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Shared/Pagination */ "./resources/js/Shared/Pagination.vue");
 /* harmony import */ var _Shared_ModalDynamicTitle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Shared/ModalDynamicTitle */ "./resources/js/Shared/ModalDynamicTitle.vue");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
 function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 function _readOnlyError(r) { throw new TypeError('"' + r + '" is read-only'); }
+
 
 
 
@@ -408,7 +410,9 @@ function _readOnlyError(r) { throw new TypeError('"' + r + '" is read-only'); }
               _context.n = 1;
               return _this3.$nextTick();
             case 1:
-              _this3.$inertia.post('/revision-plan-comments/store', payload);
+              _this3.$inertia.post('/revision-plan-comments/store', payload, {
+                preserveScroll: true
+              });
               _this3.closeCommentModal();
               setTimeout(function () {
                 _this3.comment = "";
@@ -757,6 +761,74 @@ function _readOnlyError(r) { throw new TypeError('"' + r + '" is read-only'); }
         end: endIndex,
         selected: selectedText
       };
+    },
+    shouldDisplayQuantity: function shouldDisplayQuantity(description) {
+      if (!description) return false;
+      var text = description.trim();
+
+      // 1. If description starts with a number → DO NOT display quantity
+      if (/^\d+/.test(text)) {
+        return false;
+      }
+
+      /*
+          2. If description follows:
+          <verb> <number> ...
+          OR
+          <verb1>, <verb2>, and <verbN> <number> ...
+            Example matches:
+          "Conduct 5 trainings"
+          "Prepare, review, and submit 3 reports"
+      */
+
+      var verbNumberPattern = /^[A-Za-z,\s]+?\s\d+\b/;
+      if (verbNumberPattern.test(text)) {
+        return false;
+      }
+
+      // Otherwise, display quantity
+      return true;
+    },
+    // ATTRIBUTED AMOUNT**********************************************************
+    getGadAttributedAmount: function getGadAttributedAmount(overallBudget, hgdg_score) {
+      var score = parseFloat(hgdg_score) || 0;
+      var budget = parseFloat(overallBudget) || 0;
+      if (score < 4) {
+        return budget * 0;
+      } else if (score < 8) {
+        return budget * 0.25;
+      } else if (score < 15) {
+        return budget * 0.50;
+      } else if (score < 20) {
+        return budget * 0.75;
+      } else {
+        return budget * 1.00;
+      }
+    },
+    // RETURN/REVIEW/APPROVE
+    statusAction: function statusAction(revision_plan, newStatus, column) {
+      var actions = {
+        0: "Submit",
+        "-1": "Recall",
+        1: "Review",
+        2: "Approve",
+        "-2": "Return",
+        5: "Request for Return",
+        7: "Approve the request for return for"
+      };
+      var actionLabel = actions[newStatus];
+      var typeLabel = revision_plan.type === 'p' ? 'Project Profile' : 'Project Design';
+      var confirmMessage = "Are you sure you want to ".concat(actionLabel, " the ").concat(typeLabel, " entitled \"").concat(revision_plan.project_title, "\"?");
+      var actionlabelcomplete = actionLabel + ' ' + typeLabel;
+      if (!confirm(confirmMessage)) return;
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__.Inertia.post("/status/revision/update/".concat(revision_plan.id, "/").concat(actionlabelcomplete, "/").concat(newStatus), {
+        remarks: this.remarks,
+        // ← SEND IT HERE
+        column: column
+      }, {
+        preserveScroll: true,
+        preserveState: true // ⭐ keeps pagination page
+      });
     }
   }
 });
@@ -975,69 +1047,67 @@ var _hoisted_26 = ["id"];
 var _hoisted_27 = ["id"];
 var _hoisted_28 = ["id"];
 var _hoisted_29 = ["id"];
-var _hoisted_30 = {
+var _hoisted_30 = ["id"];
+var _hoisted_31 = {
   key: 0
 };
-var _hoisted_31 = {
+var _hoisted_32 = {
   key: 1
 };
-var _hoisted_32 = ["id"];
-var _hoisted_33 = {
+var _hoisted_33 = ["id"];
+var _hoisted_34 = {
   "class": "bg-secondary text-white",
   colspan: "1"
 };
-var _hoisted_34 = ["id"];
-var _hoisted_35 = {
+var _hoisted_35 = ["id"];
+var _hoisted_36 = {
   key: 0
 };
-var _hoisted_36 = {
+var _hoisted_37 = {
   id: "rationale"
 };
-var _hoisted_37 = {
+var _hoisted_38 = {
   "class": "bgc-white p-20 bd"
 };
-var _hoisted_38 = ["innerHTML"];
-var _hoisted_39 = {
+var _hoisted_39 = ["innerHTML"];
+var _hoisted_40 = {
   key: 1
 };
-var _hoisted_40 = {
+var _hoisted_41 = {
   id: "objective"
 };
-var _hoisted_41 = {
+var _hoisted_42 = {
   "class": "bgc-white p-20 bd"
 };
-var _hoisted_42 = ["innerHTML"];
-var _hoisted_43 = {
+var _hoisted_43 = ["innerHTML"];
+var _hoisted_44 = {
   key: 2
 };
-var _hoisted_44 = {
+var _hoisted_45 = {
   id: "beneficiaries"
 };
-var _hoisted_45 = {
+var _hoisted_46 = {
   "class": "bgc-white p-20 bd"
 };
-var _hoisted_46 = ["innerHTML"];
-var _hoisted_47 = {
+var _hoisted_47 = ["innerHTML"];
+var _hoisted_48 = {
   key: 3
 };
-var _hoisted_48 = {
+var _hoisted_49 = {
   id: "implementation_workplan"
 };
-var _hoisted_49 = {
+var _hoisted_50 = {
   "class": "table table-hover table-bordered border-dark"
 };
-var _hoisted_50 = {
+var _hoisted_51 = {
   key: 0,
   style: {
     "background-color": "lightgrey",
     "font-weight": "bold"
   }
 };
-var _hoisted_51 = ["onClick"];
 var _hoisted_52 = ["onClick"];
-var _hoisted_53 = {
-  key: 0
-};
+var _hoisted_53 = ["onClick"];
 var _hoisted_54 = {
   key: 0
 };
@@ -1048,13 +1118,13 @@ var _hoisted_56 = {
   key: 0
 };
 var _hoisted_57 = {
-  key: 1
+  key: 0
 };
 var _hoisted_58 = {
-  key: 2
+  key: 1
 };
 var _hoisted_59 = {
-  key: 0
+  key: 2
 };
 var _hoisted_60 = {
   key: 0
@@ -1069,10 +1139,10 @@ var _hoisted_63 = {
   key: 0
 };
 var _hoisted_64 = {
-  "class": "text-end"
+  key: 0
 };
 var _hoisted_65 = {
-  key: 0
+  "class": "text-end"
 };
 var _hoisted_66 = {
   key: 0
@@ -1080,13 +1150,16 @@ var _hoisted_66 = {
 var _hoisted_67 = {
   key: 0
 };
-var _hoisted_68 = ["id"];
-var _hoisted_69 = ["onClick"];
+var _hoisted_68 = {
+  key: 0
+};
+var _hoisted_69 = ["id"];
 var _hoisted_70 = ["onClick"];
-var _hoisted_71 = ["id"];
-var _hoisted_72 = ["onClick"];
+var _hoisted_71 = ["onClick"];
+var _hoisted_72 = ["id"];
 var _hoisted_73 = ["onClick"];
-var _hoisted_74 = {
+var _hoisted_74 = ["onClick"];
+var _hoisted_75 = {
   colspan: "4",
   style: {
     "width": "32%",
@@ -1095,7 +1168,7 @@ var _hoisted_74 = {
     "vertical-align": "top"
   }
 };
-var _hoisted_75 = {
+var _hoisted_76 = {
   style: {
     "display": "flex",
     "flex-direction": "column",
@@ -1103,7 +1176,7 @@ var _hoisted_75 = {
     "min-height": "100%"
   }
 };
-var _hoisted_76 = {
+var _hoisted_77 = {
   key: 0,
   "class": "m-0",
   style: {
@@ -1114,32 +1187,32 @@ var _hoisted_76 = {
     "flex": "1 1 auto"
   }
 };
-var _hoisted_77 = ["id"];
-var _hoisted_78 = {
+var _hoisted_78 = ["id"];
+var _hoisted_79 = {
   key: 0
 };
-var _hoisted_79 = ["onClick"];
 var _hoisted_80 = ["onClick"];
-var _hoisted_81 = ["id", "rowspan"];
-var _hoisted_82 = {
+var _hoisted_81 = ["onClick"];
+var _hoisted_82 = ["id", "rowspan"];
+var _hoisted_83 = {
   key: 0
 };
-var _hoisted_83 = ["onClick"];
 var _hoisted_84 = ["onClick"];
-var _hoisted_85 = ["rowspan"];
-var _hoisted_86 = {
+var _hoisted_85 = ["onClick"];
+var _hoisted_86 = ["rowspan"];
+var _hoisted_87 = {
   key: 0
 };
-var _hoisted_87 = ["id"];
-var _hoisted_88 = ["onClick"];
+var _hoisted_88 = ["id"];
 var _hoisted_89 = ["onClick"];
-var _hoisted_90 = {
+var _hoisted_90 = ["onClick"];
+var _hoisted_91 = {
   key: 1
 };
-var _hoisted_91 = ["id"];
-var _hoisted_92 = ["onClick"];
+var _hoisted_92 = ["id"];
 var _hoisted_93 = ["onClick"];
-var _hoisted_94 = {
+var _hoisted_94 = ["onClick"];
+var _hoisted_95 = {
   "class": "align-top",
   style: {
     "width": "25%",
@@ -1147,16 +1220,16 @@ var _hoisted_94 = {
     "padding": "4px"
   }
 };
-var _hoisted_95 = ["id"];
-var _hoisted_96 = {
+var _hoisted_96 = ["id"];
+var _hoisted_97 = {
   key: 0
 };
-var _hoisted_97 = ["onClick"];
 var _hoisted_98 = ["onClick"];
-var _hoisted_99 = ["id"];
-var _hoisted_100 = ["onClick"];
+var _hoisted_99 = ["onClick"];
+var _hoisted_100 = ["id"];
 var _hoisted_101 = ["onClick"];
-var _hoisted_102 = {
+var _hoisted_102 = ["onClick"];
+var _hoisted_103 = {
   key: 1,
   "class": "m-0",
   style: {
@@ -1166,500 +1239,500 @@ var _hoisted_102 = {
     "table-layout": "fixed"
   }
 };
-var _hoisted_103 = ["id", "rowspan"];
-var _hoisted_104 = {
+var _hoisted_104 = ["id", "rowspan"];
+var _hoisted_105 = {
   key: 0
 };
-var _hoisted_105 = ["onClick"];
 var _hoisted_106 = ["onClick"];
-var _hoisted_107 = ["rowspan"];
-var _hoisted_108 = {
+var _hoisted_107 = ["onClick"];
+var _hoisted_108 = ["rowspan"];
+var _hoisted_109 = {
   key: 0
 };
-var _hoisted_109 = ["id"];
-var _hoisted_110 = ["onClick"];
+var _hoisted_110 = ["id"];
 var _hoisted_111 = ["onClick"];
-var _hoisted_112 = {
+var _hoisted_112 = ["onClick"];
+var _hoisted_113 = {
   key: 1
 };
-var _hoisted_113 = ["id"];
-var _hoisted_114 = ["onClick"];
+var _hoisted_114 = ["id"];
 var _hoisted_115 = ["onClick"];
-var _hoisted_116 = ["id"];
-var _hoisted_117 = {
+var _hoisted_116 = ["onClick"];
+var _hoisted_117 = ["id"];
+var _hoisted_118 = {
   key: 0
 };
-var _hoisted_118 = ["onClick"];
 var _hoisted_119 = ["onClick"];
-var _hoisted_120 = ["id"];
-var _hoisted_121 = {
+var _hoisted_120 = ["onClick"];
+var _hoisted_121 = ["id"];
+var _hoisted_122 = {
   key: 0
 };
-var _hoisted_122 = ["onClick"];
 var _hoisted_123 = ["onClick"];
-var _hoisted_124 = ["id"];
-var _hoisted_125 = {
+var _hoisted_124 = ["onClick"];
+var _hoisted_125 = ["id"];
+var _hoisted_126 = {
   key: 0
 };
-var _hoisted_126 = ["onClick"];
 var _hoisted_127 = ["onClick"];
-var _hoisted_128 = ["id"];
-var _hoisted_129 = {
+var _hoisted_128 = ["onClick"];
+var _hoisted_129 = ["id"];
+var _hoisted_130 = {
   key: 0
 };
-var _hoisted_130 = ["onClick"];
 var _hoisted_131 = ["onClick"];
-var _hoisted_132 = {
+var _hoisted_132 = ["onClick"];
+var _hoisted_133 = {
   key: 0
 };
-var _hoisted_133 = ["id"];
-var _hoisted_134 = {
+var _hoisted_134 = ["id"];
+var _hoisted_135 = {
   key: 0
 };
-var _hoisted_135 = ["onClick"];
 var _hoisted_136 = ["onClick"];
-var _hoisted_137 = ["id"];
-var _hoisted_138 = {
+var _hoisted_137 = ["onClick"];
+var _hoisted_138 = ["id"];
+var _hoisted_139 = {
   key: 0
 };
-var _hoisted_139 = ["onClick"];
 var _hoisted_140 = ["onClick"];
-var _hoisted_141 = ["id"];
+var _hoisted_141 = ["onClick"];
 var _hoisted_142 = ["id"];
 var _hoisted_143 = ["id"];
 var _hoisted_144 = ["id"];
 var _hoisted_145 = ["id"];
-var _hoisted_146 = {
+var _hoisted_146 = ["id"];
+var _hoisted_147 = {
   id: "budgetary_requirements"
 };
-var _hoisted_147 = {
+var _hoisted_148 = {
   "class": "table table-bordered"
 };
-var _hoisted_148 = {
+var _hoisted_149 = {
   key: 0,
   "class": "table-primary"
 };
-var _hoisted_149 = {
+var _hoisted_150 = {
   colspan: "8",
   "class": "fw-bold text-uppercase"
 };
-var _hoisted_150 = ["id"];
-var _hoisted_151 = ["onClick"];
-var _hoisted_152 = ["id"];
-var _hoisted_153 = ["onClick"];
-var _hoisted_154 = ["id"];
-var _hoisted_155 = ["onClick"];
-var _hoisted_156 = ["id"];
-var _hoisted_157 = ["onClick"];
-var _hoisted_158 = {
+var _hoisted_151 = ["id"];
+var _hoisted_152 = ["onClick"];
+var _hoisted_153 = ["id"];
+var _hoisted_154 = ["onClick"];
+var _hoisted_155 = ["id"];
+var _hoisted_156 = ["onClick"];
+var _hoisted_157 = ["id"];
+var _hoisted_158 = ["onClick"];
+var _hoisted_159 = {
   key: 1,
   "class": "fw-bold bg-light"
 };
-var _hoisted_159 = {
+var _hoisted_160 = {
   colspan: "2"
 };
-var _hoisted_160 = {
+var _hoisted_161 = {
   id: "implementing_team"
 };
-var _hoisted_161 = {
+var _hoisted_162 = {
   align: "justify",
   style: {
     "white-space": "pre-line"
   }
 };
-var _hoisted_162 = ["innerHTML"];
-var _hoisted_163 = {
+var _hoisted_163 = ["innerHTML"];
+var _hoisted_164 = {
   key: 4
 };
-var _hoisted_164 = {
+var _hoisted_165 = {
   table: "",
   name: "tabel",
   "class": "table table-hover table-bordered border-dark"
 };
-var _hoisted_165 = ["id"];
-var _hoisted_166 = ["onClick"];
+var _hoisted_166 = ["id"];
 var _hoisted_167 = ["onClick"];
-var _hoisted_168 = ["id"];
-var _hoisted_169 = ["onClick"];
+var _hoisted_168 = ["onClick"];
+var _hoisted_169 = ["id"];
 var _hoisted_170 = ["onClick"];
-var _hoisted_171 = ["id"];
-var _hoisted_172 = {
+var _hoisted_171 = ["onClick"];
+var _hoisted_172 = ["id"];
+var _hoisted_173 = {
   key: 0
 };
-var _hoisted_173 = {
+var _hoisted_174 = {
   key: 1
 };
-var _hoisted_174 = ["onClick"];
 var _hoisted_175 = ["onClick"];
-var _hoisted_176 = ["id"];
-var _hoisted_177 = ["onClick"];
+var _hoisted_176 = ["onClick"];
+var _hoisted_177 = ["id"];
 var _hoisted_178 = ["onClick"];
-var _hoisted_179 = {
+var _hoisted_179 = ["onClick"];
+var _hoisted_180 = {
   key: 5
 };
-var _hoisted_180 = {
+var _hoisted_181 = {
   style: {
     "color": "red",
     "font-weight": "bold"
   }
 };
-var _hoisted_181 = {
+var _hoisted_182 = {
   key: 6,
   id: "partnership_sustainability"
 };
-var _hoisted_182 = {
+var _hoisted_183 = {
   align: "justify",
   style: {
     "white-space": "pre-line"
   }
 };
-var _hoisted_183 = ["innerHTML"];
-var _hoisted_184 = {
+var _hoisted_184 = ["innerHTML"];
+var _hoisted_185 = {
   key: 7,
   id: "monitoring_evaluation"
 };
-var _hoisted_185 = {
+var _hoisted_186 = {
   align: "justify",
   style: {
     "white-space": "pre-line"
   }
 };
-var _hoisted_186 = ["innerHTML"];
-var _hoisted_187 = {
+var _hoisted_187 = ["innerHTML"];
+var _hoisted_188 = {
   key: 8
 };
-var _hoisted_188 = {
+var _hoisted_189 = {
   table: "",
   name: "tabel",
   "class": "table table-hover table-bordered border-dark"
 };
-var _hoisted_189 = ["id"];
-var _hoisted_190 = ["onClick"];
+var _hoisted_190 = ["id"];
 var _hoisted_191 = ["onClick"];
-var _hoisted_192 = ["id"];
-var _hoisted_193 = ["onClick"];
+var _hoisted_192 = ["onClick"];
+var _hoisted_193 = ["id"];
 var _hoisted_194 = ["onClick"];
-var _hoisted_195 = ["id"];
-var _hoisted_196 = ["onClick"];
+var _hoisted_195 = ["onClick"];
+var _hoisted_196 = ["id"];
 var _hoisted_197 = ["onClick"];
-var _hoisted_198 = ["id"];
-var _hoisted_199 = ["onClick"];
+var _hoisted_198 = ["onClick"];
+var _hoisted_199 = ["id"];
 var _hoisted_200 = ["onClick"];
-var _hoisted_201 = {
+var _hoisted_201 = ["onClick"];
+var _hoisted_202 = {
   key: 9
 };
-var _hoisted_202 = {
+var _hoisted_203 = {
   style: {
     "color": "red",
     "font-weight": "bold"
   }
 };
-var _hoisted_203 = {
+var _hoisted_204 = {
   key: 10,
   id: "risk_management"
 };
-var _hoisted_204 = {
+var _hoisted_205 = {
   align: "justify",
   style: {
     "white-space": "pre-line"
   }
 };
-var _hoisted_205 = ["innerHTML"];
-var _hoisted_206 = {
+var _hoisted_206 = ["innerHTML"];
+var _hoisted_207 = {
   key: 11
 };
-var _hoisted_207 = {
+var _hoisted_208 = {
   table: "",
   name: "tabel",
   "class": "table table-hover table-bordered border-dark"
 };
-var _hoisted_208 = ["id"];
-var _hoisted_209 = ["innerHTML"];
-var _hoisted_210 = ["onClick"];
+var _hoisted_209 = ["id"];
+var _hoisted_210 = ["innerHTML"];
 var _hoisted_211 = ["onClick"];
-var _hoisted_212 = ["id"];
-var _hoisted_213 = ["innerHTML"];
-var _hoisted_214 = ["onClick"];
+var _hoisted_212 = ["onClick"];
+var _hoisted_213 = ["id"];
+var _hoisted_214 = ["innerHTML"];
 var _hoisted_215 = ["onClick"];
-var _hoisted_216 = ["id"];
-var _hoisted_217 = ["innerHTML"];
-var _hoisted_218 = ["onClick"];
+var _hoisted_216 = ["onClick"];
+var _hoisted_217 = ["id"];
+var _hoisted_218 = ["innerHTML"];
 var _hoisted_219 = ["onClick"];
-var _hoisted_220 = {
+var _hoisted_220 = ["onClick"];
+var _hoisted_221 = {
   key: 12
 };
-var _hoisted_221 = {
+var _hoisted_222 = {
   style: {
     "color": "red",
     "font-weight": "bold"
   }
 };
-var _hoisted_222 = {
+var _hoisted_223 = {
   id: "signatories",
   "class": "signatory-grid"
 };
-var _hoisted_223 = ["id"];
-var _hoisted_224 = {
+var _hoisted_224 = ["id"];
+var _hoisted_225 = {
   key: 0
 };
-var _hoisted_225 = ["onClick"];
 var _hoisted_226 = ["onClick"];
-var _hoisted_227 = ["id"];
-var _hoisted_228 = ["onClick"];
+var _hoisted_227 = ["onClick"];
+var _hoisted_228 = ["id"];
 var _hoisted_229 = ["onClick"];
-var _hoisted_230 = ["id"];
-var _hoisted_231 = ["onClick"];
+var _hoisted_230 = ["onClick"];
+var _hoisted_231 = ["id"];
 var _hoisted_232 = ["onClick"];
-var _hoisted_233 = {
+var _hoisted_233 = ["onClick"];
+var _hoisted_234 = {
   "class": "col-3"
 };
-var _hoisted_234 = {
+var _hoisted_235 = {
   key: 0,
   "class": "sticky-comments"
 };
-var _hoisted_235 = {
+var _hoisted_236 = {
   key: 0,
   style: {
     "color": "red"
   },
   "class": "blink"
 };
-var _hoisted_236 = {
+var _hoisted_237 = {
   key: 1,
   "class": "p-20 bd sticky-comments",
   style: {
     "background": "rgba(255, 255, 255, 0.7)"
   }
 };
-var _hoisted_237 = {
+var _hoisted_238 = {
   "class": "d-flex justify-content-end"
 };
-var _hoisted_238 = {
+var _hoisted_239 = {
   "class": "tab"
 };
-var _hoisted_239 = {
+var _hoisted_240 = {
   key: 0,
   style: {
     "color": "red"
   },
   "class": "blink"
 };
-var _hoisted_240 = {
+var _hoisted_241 = {
   key: 0
 };
-var _hoisted_241 = {
+var _hoisted_242 = {
   "class": "scrollable-text",
   style: {
     "background": "rgba(255, 255, 255, 0.7)"
   }
 };
-var _hoisted_242 = {
+var _hoisted_243 = {
   key: 0
 };
-var _hoisted_243 = {
-  "class": "list-unstyled"
-};
 var _hoisted_244 = {
-  style: {
-    "border-collapse": "collapse",
-    "border": "none !important"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_245 = {
   style: {
-    "border": "none !important",
-    "vertical-align": "top"
+    "border-collapse": "collapse",
+    "border": "none !important"
   }
 };
 var _hoisted_246 = {
   style: {
     "border": "none !important",
-    "vertical-align": "top",
-    "text-align": "left"
+    "vertical-align": "top"
   }
 };
-var _hoisted_247 = ["onClick"];
-var _hoisted_248 = {
+var _hoisted_247 = {
   style: {
     "border": "none !important",
     "vertical-align": "top",
     "text-align": "left"
   }
 };
-var _hoisted_249 = ["onClick"];
-var _hoisted_250 = ["innerHTML"];
-var _hoisted_251 = {
+var _hoisted_248 = ["disabled", "onClick"];
+var _hoisted_249 = {
+  style: {
+    "border": "none !important",
+    "vertical-align": "top",
+    "text-align": "left"
+  }
+};
+var _hoisted_250 = ["onClick"];
+var _hoisted_251 = ["innerHTML"];
+var _hoisted_252 = {
   key: 0,
   "class": "text-end"
 };
-var _hoisted_252 = ["onClick"];
 var _hoisted_253 = ["onClick"];
-var _hoisted_254 = {
+var _hoisted_254 = ["onClick"];
+var _hoisted_255 = {
   key: 1
 };
-var _hoisted_255 = {
+var _hoisted_256 = {
   "class": "list-unstyled"
 };
-var _hoisted_256 = ["onClick"];
-var _hoisted_257 = {
+var _hoisted_257 = ["onClick"];
+var _hoisted_258 = {
   style: {
     "border-collapse": "collapse",
     "border": "none !important"
   }
 };
-var _hoisted_258 = {
+var _hoisted_259 = {
   style: {
     "border": "none !important",
     "vertical-align": "top"
   }
 };
-var _hoisted_259 = {
+var _hoisted_260 = {
   style: {
     "border": "none !important",
     "vertical-align": "top",
     "text-align": "left"
   }
 };
-var _hoisted_260 = {
+var _hoisted_261 = {
   key: 0,
   "class": "text-end"
 };
-var _hoisted_261 = ["onClick"];
 var _hoisted_262 = ["onClick"];
-var _hoisted_263 = {
+var _hoisted_263 = ["onClick"];
+var _hoisted_264 = {
   key: 1
 };
-var _hoisted_264 = {
+var _hoisted_265 = {
   "class": "scrollable-text",
   style: {
     "background": "rgba(255, 255, 255, 0.7)",
     "cursor": "pointer"
   }
 };
-var _hoisted_265 = {
-  "class": "list-unstyled"
-};
 var _hoisted_266 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_267 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_268 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_269 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_270 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_271 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_272 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_273 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_274 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_275 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_276 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_277 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_278 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_279 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_280 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_281 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_282 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
+  "class": "list-unstyled"
 };
 var _hoisted_283 = {
-  "class": "list-unstyled"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_284 = {
-  "class": "mb-2",
-  style: {
-    "color": "blue"
-  }
-};
-var _hoisted_285 = {
   "class": "list-unstyled"
 };
-var _hoisted_286 = {
+var _hoisted_285 = {
   "class": "mb-2",
   style: {
     "color": "blue"
   }
 };
+var _hoisted_286 = {
+  "class": "list-unstyled"
+};
 var _hoisted_287 = {
-  "class": "col-3"
+  "class": "mb-2",
+  style: {
+    "color": "blue"
+  }
 };
 var _hoisted_288 = {
+  "class": "col-3"
+};
+var _hoisted_289 = {
   key: 0,
   "class": "p-20 bd sticky-comments",
   style: {
     "background": "rgba(255, 255, 255, 0.7)"
   }
 };
-var _hoisted_289 = {
+var _hoisted_290 = {
   "class": "d-flex justify-content-end"
 };
-var _hoisted_290 = {
+var _hoisted_291 = {
   key: 0
 };
-var _hoisted_291 = ["innerHTML"];
 var _hoisted_292 = ["innerHTML"];
-var _hoisted_293 = {
-  key: 0
-};
+var _hoisted_293 = ["innerHTML"];
 var _hoisted_294 = {
-  key: 1
+  key: 0
 };
 var _hoisted_295 = {
+  key: 1
+};
+var _hoisted_296 = {
   key: 2
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -1668,15 +1741,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Head, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[67] || (_cache[67] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("title", null, "View PAPS", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[75] || (_cache[75] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("title", null, "View PAPS", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("class=\"peers fxw-nw jc-sb ai-c\""), _cache[200] || (_cache[200] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", null, "v2", -1 /* CACHED */)), $props.src !== 'budget' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [$props.paps.scope === 'GAS' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("class=\"peers fxw-nw jc-sb ai-c\""), _cache[209] || (_cache[209] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", null, "v2", -1 /* CACHED */)), $props.src !== 'budget' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [$props.paps.scope === 'GAS' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
     key: 0,
     href: $props.src !== 'direct' || $props.department_code_user === $props.department_code_project ? "/revision/general/administration/services/".concat($props.paps.FFUNCCOD, "/plan") : "/revision_plans"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[68] || (_cache[68] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      return _toConsumableArray(_cache[76] || (_cache[76] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         width: "25",
         height: "25",
@@ -1697,7 +1770,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: $props.src !== 'direct' || $props.department_code_user === $props.department_code_project ? "/revision/".concat($props.paps.idpaps) : "/revision_plans"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[69] || (_cache[69] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      return _toConsumableArray(_cache[77] || (_cache[77] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         width: "25",
         height: "25",
@@ -1718,7 +1791,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: $props.src !== 'direct' || $props.department_code_user === $props.department_code_project ? "/mforevision/".concat($props.paps.idmfo) : "/revision_plans"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[70] || (_cache[70] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      return _toConsumableArray(_cache[78] || (_cache[78] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         width: "25",
         height: "25",
@@ -1739,7 +1812,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/revision_plans?source=rev_app"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[71] || (_cache[71] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      return _toConsumableArray(_cache[79] || (_cache[79] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         width: "25",
         height: "25",
@@ -1760,7 +1833,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/revision_plans?source=budget"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[72] || (_cache[72] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      return _toConsumableArray(_cache[80] || (_cache[80] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         width: "25",
         height: "25",
@@ -1781,7 +1854,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/revision_plans?source=budget"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[73] || (_cache[73] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      return _toConsumableArray(_cache[81] || (_cache[81] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         width: "25",
         height: "25",
@@ -1802,7 +1875,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/revision_plans?source=budget"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[74] || (_cache[74] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      return _toConsumableArray(_cache[82] || (_cache[82] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         width: "25",
         height: "25",
@@ -1826,22 +1899,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "width": "100px",
       "height": "100px"
     }
-  }, null, 8 /* PROPS */, _hoisted_7)]), _cache[75] || (_cache[75] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, null, 8 /* PROPS */, _hoisted_7)]), _cache[83] || (_cache[83] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "d-flex justify-content-center"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" REPUBLIC OF THE PHILIPPINES "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" PROVINCE OF DAVAO DE ORO ")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.office), 1 /* TEXT */)];
     }),
     _: 1 /* STABLE */
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", _hoisted_10, [$props.paps.type === 'p' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, "PROJECT PROFILE")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, "PROJECT DESIGN"))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("MAIN TABLE"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [_cache[77] || (_cache[77] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("I.    ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", _hoisted_10, [$props.paps.type === 'p' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, "PROJECT PROFILE")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, "PROJECT DESIGN"))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("MAIN TABLE"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [_cache[85] || (_cache[85] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("I.    ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: $props.department_code_user === '04' || $props.department_code_user === $props.department_code_project ? "/revision/edit/".concat($props.paps.id) : null,
     target: "_blank"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[76] || (_cache[76] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Title", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[84] || (_cache[84] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Title", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TITLE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[78] || (_cache[78] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, 8 /* PROPS */, ["href"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TITLE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[86] || (_cache[86] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     "class": "bg-secondary text-white",
     colspan: "1"
   }, "Title", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
@@ -1862,7 +1935,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[1] || (_cache[1] = function ($event) {
       return $options.handleClick('Title', $props.paps.project_title, $props.paps.project_title, 'project_title', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_18)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" PROJECT LOCATION "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[79] || (_cache[79] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_18)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" PROJECT LOCATION "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[87] || (_cache[87] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     "class": "bg-secondary text-white",
     colspan: "1"
   }, "Project Location", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
@@ -1883,10 +1956,31 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[3] || (_cache[3] = function ($event) {
       return $options.handleClick('Title', $props.paps.project_location, $props.paps.project_location, 'project_location', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_19)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" IMPLEMENTATION SCHEDULE -FROM-TO "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[80] || (_cache[80] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_19)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" LIST OF LGUs COVERED "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[88] || (_cache[88] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     "class": "bg-secondary text-white",
     colspan: "1"
-  }, "Implementation Schedule", -1 /* CACHED */)), _cache[81] || (_cache[81] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "List of LGUs Covered", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    colspan: "6",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+      'text-danger': $options.has_comment('Title', $props.paps.project_location, $props.paps.list_of_lgu_covered, 'list_of_lgu_covered', 'revision_plans', $props.paps, $props.paps.comments)
+    }),
+    id: $props.paps.id + '_revision_plans_list_of_lgu_covered'
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.paps.list_of_lgu_covered) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
+    "class": "superscript-btn",
+    onClick: _cache[4] || (_cache[4] = function ($event) {
+      return $options.handleClick('Title', $props.paps.list_of_lgu_covered, $props.paps.list_of_lgu_covered, 'list_of_lgu_covered', 'revision_plans', $props.paps, $props.paps.comments);
+    })
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', $props.paps.list_of_lgu_covered, $props.paps.list_of_lgu_covered, 'list_of_lgu_covered', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 1,
+    "class": "superscript-btn",
+    onClick: _cache[5] || (_cache[5] = function ($event) {
+      return $options.handleClick('Title', $props.paps.list_of_lgu_covered, $props.paps.list_of_lgu_covered, 'list_of_lgu_covered', 'revision_plans', $props.paps, $props.paps.comments);
+    })
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_20)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" IMPLEMENTATION SCHEDULE -FROM-TO "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[89] || (_cache[89] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    "class": "bg-secondary text-white",
+    colspan: "1"
+  }, "Implementation Schedule", -1 /* CACHED */)), _cache[90] || (_cache[90] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "1"
   }, "Start", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "2",
@@ -1897,16 +1991,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear($props.paps.date_start)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[4] || (_cache[4] = function ($event) {
+    onClick: _cache[6] || (_cache[6] = function ($event) {
       return $options.handleClick('Title', $props.paps.date_start, $props.paps.date_start, 'date_start', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', $props.paps.date_start, $props.paps.date_start, 'date_start', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[5] || (_cache[5] = function ($event) {
+    onClick: _cache[7] || (_cache[7] = function ($event) {
       return $options.handleClick('Title', $props.paps.date_start, $props.paps.date_start, 'date_start', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_20), _cache[82] || (_cache[82] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_21), _cache[91] || (_cache[91] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "1"
   }, "End", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "2",
@@ -1917,19 +2011,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear($props.paps.date_end)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[6] || (_cache[6] = function ($event) {
+    onClick: _cache[8] || (_cache[8] = function ($event) {
       return $options.handleClick('Title', $props.paps.date_end, $props.paps.date_end, 'date_end', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', $props.paps.date_end, $props.paps.date_end, 'date_end', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[7] || (_cache[7] = function ($event) {
+    onClick: _cache[9] || (_cache[9] = function ($event) {
       return $options.handleClick('Title', $props.paps.date_end, $props.paps.date_end, 'date_end', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_21)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" INTENDED BENEFICIARIES "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[83] || (_cache[83] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_22)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" INTENDED BENEFICIARIES "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[92] || (_cache[92] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     "class": "bg-secondary text-white",
     colspan: "1"
-  }, "Intended Beneficiaries", -1 /* CACHED */)), _cache[84] || (_cache[84] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "Intended Beneficiaries", -1 /* CACHED */)), _cache[93] || (_cache[93] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "1"
   }, "Male", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "1",
@@ -1940,16 +2034,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($props.paps.beneficiary_male, 0, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[8] || (_cache[8] = function ($event) {
+    onClick: _cache[10] || (_cache[10] = function ($event) {
       return $options.handleClick('Title', $props.paps.beneficiary_male, $props.paps.beneficiary_male, 'beneficiary_male', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', $props.paps.beneficiary_male, $props.paps.beneficiary_male, 'beneficiary_male', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[9] || (_cache[9] = function ($event) {
+    onClick: _cache[11] || (_cache[11] = function ($event) {
       return $options.handleClick('Title', $props.paps.beneficiary_male, $props.paps.beneficiary_male, 'beneficiary_male', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_22), _cache[85] || (_cache[85] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_23), _cache[94] || (_cache[94] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "1"
   }, "Female", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "1",
@@ -1960,16 +2054,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($props.paps.beneficiary_female, 0, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[10] || (_cache[10] = function ($event) {
+    onClick: _cache[12] || (_cache[12] = function ($event) {
       return $options.handleClick('Title', $props.paps.beneficiary_female, $props.paps.beneficiary_female, 'beneficiary_female', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', $props.paps.beneficiary_female, $props.paps.beneficiary_female, 'beneficiary_female', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[11] || (_cache[11] = function ($event) {
+    onClick: _cache[13] || (_cache[13] = function ($event) {
       return $options.handleClick('Title', $props.paps.beneficiary_female, $props.paps.beneficiary_female, 'beneficiary_female', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_23), _cache[86] || (_cache[86] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_24), _cache[95] || (_cache[95] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "1"
   }, "Total", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "1",
@@ -1980,19 +2074,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($props.paps.beneficiary_male + $props.paps.beneficiary_female, 0, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[12] || (_cache[12] = function ($event) {
+    onClick: _cache[14] || (_cache[14] = function ($event) {
       return $options.handleClick('Title', _ctx.format_number_conv($props.paps.beneficiary_male + $props.paps.beneficiary_female, 0, true), _ctx.format_number_conv($props.paps.beneficiary_male + $props.paps.beneficiary_female, 0, true), 'beneficiary_total', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', _ctx.format_number_conv($props.paps.beneficiary_male + $props.paps.beneficiary_female, 0, true), _ctx.format_number_conv($props.paps.beneficiary_male + $props.paps.beneficiary_female, 0, true), 'beneficiary_total', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[13] || (_cache[13] = function ($event) {
+    onClick: _cache[15] || (_cache[15] = function ($event) {
       return $options.handleClick('Title', _ctx.format_number_conv($props.paps.beneficiary_male + $props.paps.beneficiary_female, 0, true), _ctx.format_number_conv($props.paps.beneficiary_male + $props.paps.beneficiary_female, 0, true), 'beneficiary_total', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_24)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BASELINE DISAGGREGATED DATA "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[87] || (_cache[87] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_25)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BASELINE DISAGGREGATED DATA "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[96] || (_cache[96] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     "class": "bg-secondary text-white",
     colspan: "1"
-  }, "Baseline Disaggregated Data", -1 /* CACHED */)), _cache[88] || (_cache[88] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "Baseline Disaggregated Data", -1 /* CACHED */)), _cache[97] || (_cache[97] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "1"
   }, "Male", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "1",
@@ -2003,16 +2097,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($props.paps.baseline_male, 0, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[14] || (_cache[14] = function ($event) {
+    onClick: _cache[16] || (_cache[16] = function ($event) {
       return $options.handleClick('Title', $props.paps.baseline_male, $props.paps.baseline_male, 'baseline_male', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', $props.paps.baseline_male, $props.paps.baseline_male, 'baseline_male', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[15] || (_cache[15] = function ($event) {
+    onClick: _cache[17] || (_cache[17] = function ($event) {
       return $options.handleClick('Title', $props.paps.baseline_male, $props.paps.baseline_male, 'baseline_male', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_25), _cache[89] || (_cache[89] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_26), _cache[98] || (_cache[98] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "1"
   }, "Female", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "1",
@@ -2023,16 +2117,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($props.paps.baseline_female, 0, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[16] || (_cache[16] = function ($event) {
+    onClick: _cache[18] || (_cache[18] = function ($event) {
       return $options.handleClick('Title', $props.paps.baseline_female, $props.paps.baseline_female, 'baseline_female', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', $props.paps.baseline_female, $props.paps.baseline_female, 'baseline_female', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[17] || (_cache[17] = function ($event) {
+    onClick: _cache[19] || (_cache[19] = function ($event) {
       return $options.handleClick('Title', $props.paps.baseline_female, $props.paps.baseline_female, 'baseline_female', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_26), _cache[90] || (_cache[90] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_27), _cache[99] || (_cache[99] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "1"
   }, "Data Source", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "1",
@@ -2043,19 +2137,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.paps.data_source) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[18] || (_cache[18] = function ($event) {
+    onClick: _cache[20] || (_cache[20] = function ($event) {
       return $options.handleClick('Title', $props.paps.data_source, $props.paps.data_source, 'data_source', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', $props.paps.data_source, $props.paps.data_source, 'data_source', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[19] || (_cache[19] = function ($event) {
+    onClick: _cache[21] || (_cache[21] = function ($event) {
       return $options.handleClick('Title', $props.paps.data_source, $props.paps.data_source, 'data_source', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_27), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th colspan=\"1\">Total</th>\r\n                                <td colspan=\"1\" :class=\"{\r\n                                    'text-danger': has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\r\n                                }\">{{ format_number_conv(paps.baseline_male + paps.baseline_female, 0, true) }}\r\n                                    <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                        @click=\"handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\">*\r\n                                    </button>\r\n                                    <button v-if=\"has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\" class=\"superscript-btn\"\r\n                                        @click=\"handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\">*\r\n                                    </button>\r\n                                </td> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" COST OF PROGRAM "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[91] || (_cache[91] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_28), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th colspan=\"1\">Total</th>\r\n                                <td colspan=\"1\" :class=\"{\r\n                                    'text-danger': has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\r\n                                }\">{{ format_number_conv(paps.baseline_male + paps.baseline_female, 0, true) }}\r\n                                    <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                        @click=\"handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\">*\r\n                                    </button>\r\n                                    <button v-if=\"has_comment('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\" class=\"superscript-btn\"\r\n                                        @click=\"handleClick('Title',(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),(format_number_conv(paps.baseline_male + paps.baseline_female, 0, true)),'baseline_total','revision_plans', paps, paps.comments)\">*\r\n                                    </button>\r\n                                </td> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" COST OF PROGRAM "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[100] || (_cache[100] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     "class": "bg-secondary text-white",
     colspan: "1"
-  }, "Cost of Program", -1 /* CACHED */)), _cache[92] || (_cache[92] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "Cost of Program", -1 /* CACHED */)), _cache[101] || (_cache[101] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "1"
   }, "Amount (Php)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "2",
@@ -2066,16 +2160,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($props.imp_amount, 2, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[20] || (_cache[20] = function ($event) {
+    onClick: _cache[22] || (_cache[22] = function ($event) {
       return $options.handleClick('Title', 'Amount', $props.imp_amount, 'amount', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', 'Amount', $props.imp_amount, 'amount', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[21] || (_cache[21] = function ($event) {
+    onClick: _cache[23] || (_cache[23] = function ($event) {
       return $options.handleClick('Title', 'Amount', $props.imp_amount, 'amount', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_28), _cache[93] || (_cache[93] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_29), _cache[102] || (_cache[102] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "1"
   }, "Attributed GAD Budget (Php) ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "2",
@@ -2083,19 +2177,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-end", {
       'text-danger': $options.has_comment('Title', 'GAD Attributed Amount', $props.imp_amount, 'attributed_amount', 'revision_plans', $props.paps, $props.paps.comments)
     }])
-  }, [parseFloat($props.paps.hgdg_score) > 4 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($props.imp_amount * ($props.paps.hgdg_score / 20), 2, true)), 1 /* TEXT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_31, "0.00")), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }, [parseFloat($props.paps.hgdg_score) > 4 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($props.imp_amount * ($props.paps.hgdg_score / 20), 2, true)) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ format_number_conv(getGadAttributedAmount(imp_amount, paps.hgdg_score), 2, true) }} ")])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_32, "0.00")), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 2,
     "class": "superscript-btn",
-    onClick: _cache[22] || (_cache[22] = function ($event) {
+    onClick: _cache[24] || (_cache[24] = function ($event) {
       return $options.handleClick('Title', 'GAD Attributed Amount', _ctx.format_number_conv($props.imp_amount * ($props.paps.hgdg_score / 20), 2, true), 'attributed_amount', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', 'GAD Attributed Amount', _ctx.format_number_conv($props.imp_amount * ($props.paps.hgdg_score / 20), 2, true), 'attributed_amount', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 3,
     "class": "superscript-btn",
-    onClick: _cache[23] || (_cache[23] = function ($event) {
+    onClick: _cache[25] || (_cache[25] = function ($event) {
       return $options.handleClick('Title', 'GAD Attributed Amount', _ctx.format_number_conv($props.imp_amount * ($props.paps.hgdg_score / 20), 2, true), 'attributed_amount', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_29)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" HGDG CHECKLIST "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[95] || (_cache[95] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_30)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" HGDG CHECKLIST "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[104] || (_cache[104] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     "class": "bg-secondary text-white",
     colspan: "1"
   }, "HGDG Checklist", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
@@ -2109,23 +2203,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" GAD " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$paps$checklis = $props.paps.checklist) === null || _$props$paps$checklis === void 0 ? void 0 : _$props$paps$checklis.box_number) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$paps$checklis2 = $props.paps.checklist) === null || _$props$paps$checklis2 === void 0 ? void 0 : _$props$paps$checklis2.sector) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[24] || (_cache[24] = function ($event) {
+    onClick: _cache[26] || (_cache[26] = function ($event) {
       return $options.handleClick('Title', 'HGDG Checklist', $props.paps.checklist.box_number + ' ' + $props.paps.checklist.sector, 'HGDG Checklist', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', 'HGDG Checklist', $props.paps.checklist.box_number + ' ' + $props.paps.checklist.sector, 'HGDG Checklist', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[25] || (_cache[25] = function ($event) {
+    onClick: _cache[27] || (_cache[27] = function ($event) {
       return $options.handleClick('Title', 'HGDG Checklist', $props.paps.checklist.box_number + ' ' + $props.paps.checklist.sector, 'HGDG Checklist', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_32), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_33), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/HGDGScore/".concat($props.paps.id),
     style: {
       "color": "white"
     }
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[94] || (_cache[94] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("HGDG Score ", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[103] || (_cache[103] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("HGDG Score ", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
   }, 8 /* PROPS */, ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
@@ -2137,20 +2231,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.paps.hgdg_score) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[26] || (_cache[26] = function ($event) {
+    onClick: _cache[28] || (_cache[28] = function ($event) {
       return $options.handleClick('Title', 'HGDG Score', $props.paps.hgdg_score, 'hgdg_score', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Title', 'HGDG Score', $props.paps.hgdg_score, 'hgdg_score', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[27] || (_cache[27] = function ($event) {
+    onClick: _cache[29] || (_cache[29] = function ($event) {
       return $options.handleClick('Title', 'HGDG Score', $props.paps.hgdg_score, 'hgdg_score', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_34)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" RATIONALE "), $props.paps.rationale ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_35)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" RATIONALE "), $props.paps.rationale ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-danger': $options.has_comment('Rationale', 'rationale', $props.paps.rationale, 'rationale', 'revision_plans', $props.paps, $props.paps.comments)
     })
-  }, [_cache[97] || (_cache[97] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("II. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, [_cache[106] || (_cache[106] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("II. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: $props.department_code_user === '04' || $props.department_code_user === $props.department_code_project ? "/revision/edit/".concat($props.paps.id) : null,
     target: "_blank",
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
@@ -2158,32 +2252,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[96] || (_cache[96] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Rationale ", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[105] || (_cache[105] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Rationale ", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
   }, 8 /* PROPS */, ["href", "class"]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[28] || (_cache[28] = function ($event) {
+    onClick: _cache[30] || (_cache[30] = function ($event) {
       return $options.handleClick('Rationale', 'rationale', $props.paps.rationale, 'rationale', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Rationale', 'rationale', $props.paps.rationale, 'rationale', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[29] || (_cache[29] = function ($event) {
+    onClick: _cache[31] || (_cache[31] = function ($event) {
       return $options.handleClick('Rationale', 'rationale', $props.paps.rationale, 'rationale', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)]), _cache[98] || (_cache[98] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.rationale\"\r\n                                style=\"white-space: pre-line\"\r\n                                ref=\"rationaleDiv\"\r\n                                @mouseup=\"onHighlight\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)]), _cache[107] || (_cache[107] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.rationale\"\r\n                                style=\"white-space: pre-line\"\r\n                                ref=\"rationaleDiv\"\r\n                                @mouseup=\"onHighlight\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     ref: "rationaleEl",
-    onMouseup: _cache[30] || (_cache[30] = function ($event) {
+    onMouseup: _cache[32] || (_cache[32] = function ($event) {
       return $options.handleSelection('rationale');
     }),
     innerHTML: $props.paps.rationale
-  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_38)]), _cache[99] || (_cache[99] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" OBJECTIVES "), $props.paps.objective ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_39)]), _cache[108] || (_cache[108] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" OBJECTIVES "), $props.paps.objective ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-danger': $options.has_comment('Objectives', 'objective', $props.paps.objective, 'objective', 'revision_plans', $props.paps, $props.paps.comments)
     })
-  }, [_cache[101] || (_cache[101] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("III. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, [_cache[110] || (_cache[110] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("III. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: $props.department_code_user === '04' || $props.department_code_user === $props.department_code_project ? "/revision/edit/".concat($props.paps.id) : null,
     target: "_blank",
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
@@ -2191,32 +2285,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[100] || (_cache[100] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Objectives ", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[109] || (_cache[109] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Objectives ", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
   }, 8 /* PROPS */, ["href", "class"]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[31] || (_cache[31] = function ($event) {
+    onClick: _cache[33] || (_cache[33] = function ($event) {
       return $options.handleClick('Objectives', 'objective', $props.paps.objective, 'objective', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Objectives', 'objective', $props.paps.objective, 'objective', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[32] || (_cache[32] = function ($event) {
+    onClick: _cache[34] || (_cache[34] = function ($event) {
       return $options.handleClick('Objectives', 'objective', $props.paps.objective, 'objective', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)]), _cache[102] || (_cache[102] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.objective\" style=\"white-space: pre-line\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)]), _cache[111] || (_cache[111] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.objective\" style=\"white-space: pre-line\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     ref: "objectiveEl",
-    onMouseup: _cache[33] || (_cache[33] = function ($event) {
+    onMouseup: _cache[35] || (_cache[35] = function ($event) {
       return $options.handleSelection('objective');
     }),
     innerHTML: $props.paps.objective
-  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_42)]), _cache[103] || (_cache[103] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Target Beneficiaries "), $props.paps.beneficiaries ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_43)]), _cache[112] || (_cache[112] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Target Beneficiaries "), $props.paps.beneficiaries ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-danger': $options.has_comment('Beneficiaries', 'beneficiaries', $props.paps.beneficiaries, 'beneficiaries', 'revision_plans', $props.paps, $props.paps.comments)
     })
-  }, [_cache[105] || (_cache[105] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("IV. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, [_cache[114] || (_cache[114] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("IV. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: $props.department_code_user === '04' || $props.department_code_user === $props.department_code_project ? "/revision/edit/".concat($props.paps.id) : null,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-danger': $options.has_comment('Beneficiaries', 'beneficiaries', $props.paps.beneficiaries, 'beneficiaries', 'revision_plans', $props.paps, $props.paps.comments)
@@ -2224,36 +2318,36 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     target: "_blank"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[104] || (_cache[104] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Target Beneficiaries ", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[113] || (_cache[113] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Target Beneficiaries ", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
   }, 8 /* PROPS */, ["href", "class"]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[34] || (_cache[34] = function ($event) {
+    onClick: _cache[36] || (_cache[36] = function ($event) {
       return $options.handleClick('Beneficiaries', 'beneficiaries', $props.paps.beneficiaries, 'beneficiaries', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Beneficiaries', 'beneficiaries', $props.paps.beneficiaries, 'beneficiaries', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[35] || (_cache[35] = function ($event) {
+    onClick: _cache[37] || (_cache[37] = function ($event) {
       return $options.handleClick('Beneficiaries', 'beneficiaries', $props.paps.beneficiaries, 'beneficiaries', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)]), _cache[106] || (_cache[106] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.beneficiaries\" style=\"white-space: pre-line\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)]), _cache[115] || (_cache[115] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-html=\"paps.beneficiaries\" style=\"white-space: pre-line\"></div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     ref: "beneficiariesEl",
-    onMouseup: _cache[36] || (_cache[36] = function ($event) {
+    onMouseup: _cache[38] || (_cache[38] = function ($event) {
       return $options.handleSelection('beneficiaries');
     }),
     innerHTML: $props.paps.beneficiaries
-  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_46)]), _cache[107] || (_cache[107] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("IMPLEMENTATION PLAN"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-if=\"implementation\">\r\n\r\n                        <table class=\"table table-hover table-bordered border-dark\">\r\n                            <thead>\r\n                                <tr class=\"bg-secondary text-white\">\r\n                                    <th>Strategies/Activities</th>\r\n                                    <th>Performance Target Indicators</th>\r\n                                    <th>Gender Issues to be Addressed</th>\r\n                                    <th>Timeline</th>\r\n                                    <th>Expected Output</th>\r\n                                    <th>Budget</th>\r\n                                    <th>Climate Change Topology Code</th>\r\n                                    <th>Person Responsible</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <template v-for=\"(dat, index) in implementation\" :key=\"dat.id\">\r\n                                    <tr style=\"background-color:lightgrey; font-weight: bold;\">\r\n\r\n                                        <td><b>{{ dat.strategy }}</b></td>\r\n                                        <td>\r\n                                            <div v-for=\"target in dat.targets.data\">\r\n                                                {{ target.indicator_description }}\r\n                                            </div>\r\n                                        </td>\r\n                                        <td>{{ dat.issue }}</td>\r\n                                        <td>\r\n\r\n                                        </td>\r\n                                        <td></td>\r\n                                        <td></td>\r\n                                        <td>{{ dat.cc_topology }}</td>\r\n                                        <td>{{ dat.person_responsible }}</td>\r\n\r\n                                    </tr>\r\n                                    <template v-if=\"dat.activity_implementation\">\r\n                                        <tr v-for=\"(act, subIndex) in dat.activity_implementation\" :key=\"act.id\">\r\n\r\n                                            <td>{{ act.activity }}</td>\r\n                                            <td>\r\n\r\n                                            </td>\r\n                                            <td>{{ act.issue }}</td>\r\n                                            <td>\r\n                                                <div v-if=\"act.date_from\">\r\n                                                    {{ act.date_from }} - {{ act.date_to }}\r\n                                                </div>\r\n                                            </td>\r\n                                            <td>\r\n\r\n                                            </td>\r\n                                            <td>\r\n\r\n                                            </td>\r\n                                            <td>{{ act.cc_topology }}</td>\r\n                                            <td>{{ act.person_responsible }}</td>\r\n\r\n                                        </tr>\r\n                                    </template>\r\n\r\n                                </template>\r\n                                <tr>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td colspan=\"2\"><b>TOTAL BUDGET/COST</b> (Php)</td>\r\n                                    <td>{{ format_number_conv(imp_amount, 2, true) }}</td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div> "), $props.implementation ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /strategies-and-activities/${dat.id} "), _cache[109] || (_cache[109] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" V. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_47)]), _cache[116] || (_cache[116] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("IMPLEMENTATION PLAN"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-if=\"implementation\">\r\n\r\n                        <table class=\"table table-hover table-bordered border-dark\">\r\n                            <thead>\r\n                                <tr class=\"bg-secondary text-white\">\r\n                                    <th>Strategies/Activities</th>\r\n                                    <th>Performance Target Indicators</th>\r\n                                    <th>Gender Issues to be Addressed</th>\r\n                                    <th>Timeline</th>\r\n                                    <th>Expected Output</th>\r\n                                    <th>Budget</th>\r\n                                    <th>Climate Change Topology Code</th>\r\n                                    <th>Person Responsible</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <template v-for=\"(dat, index) in implementation\" :key=\"dat.id\">\r\n                                    <tr style=\"background-color:lightgrey; font-weight: bold;\">\r\n\r\n                                        <td><b>{{ dat.strategy }}</b></td>\r\n                                        <td>\r\n                                            <div v-for=\"target in dat.targets.data\">\r\n                                                {{ target.indicator_description }}\r\n                                            </div>\r\n                                        </td>\r\n                                        <td>{{ dat.issue }}</td>\r\n                                        <td>\r\n\r\n                                        </td>\r\n                                        <td></td>\r\n                                        <td></td>\r\n                                        <td>{{ dat.cc_topology }}</td>\r\n                                        <td>{{ dat.person_responsible }}</td>\r\n\r\n                                    </tr>\r\n                                    <template v-if=\"dat.activity_implementation\">\r\n                                        <tr v-for=\"(act, subIndex) in dat.activity_implementation\" :key=\"act.id\">\r\n\r\n                                            <td>{{ act.activity }}</td>\r\n                                            <td>\r\n\r\n                                            </td>\r\n                                            <td>{{ act.issue }}</td>\r\n                                            <td>\r\n                                                <div v-if=\"act.date_from\">\r\n                                                    {{ act.date_from }} - {{ act.date_to }}\r\n                                                </div>\r\n                                            </td>\r\n                                            <td>\r\n\r\n                                            </td>\r\n                                            <td>\r\n\r\n                                            </td>\r\n                                            <td>{{ act.cc_topology }}</td>\r\n                                            <td>{{ act.person_responsible }}</td>\r\n\r\n                                        </tr>\r\n                                    </template>\r\n\r\n                                </template>\r\n                                <tr>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td colspan=\"2\"><b>TOTAL BUDGET/COST</b> (Php)</td>\r\n                                    <td>{{ format_number_conv(imp_amount, 2, true) }}</td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div> "), $props.implementation ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /strategies-and-activities/${dat.id} "), _cache[118] || (_cache[118] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" V. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: $props.department_code_user === '04' || $props.department_code_user === $props.department_code_project ? "/strategies-and-activities/".concat($props.paps.id) : null,
     target: "_blank"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[108] || (_cache[108] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Implementation Plan ", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[117] || (_cache[117] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Implementation Plan ", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_49, [_cache[119] || (_cache[119] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+  }, 8 /* PROPS */, ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_50, [_cache[128] || (_cache[128] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
     "class": "bg-secondary text-white"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     style: {
@@ -2316,9 +2410,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "text-align": "center"
     }
   }, "Person Responsible")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.implementation, function (dat, index) {
+    var _dat$strategyProject$, _dat$strategyProject$2;
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
       key: dat.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" STRATEGIES***************************************************************************************************** "), $props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" STRATEGIES***************************************************************************************************** "), $props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Implementation Plan', 'strategies', dat.description, 'strategy', 'strategy_projects', dat, dat.comments)
       })
@@ -2328,25 +2423,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Implementation Plan', 'strategies', dat.description, 'strategy', 'strategy_projects', dat, dat.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_51)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'strategies', dat.description, 'strategy', 'strategy_projects', dat, dat.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_52)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'strategies', dat.description, 'strategy', 'strategy_projects', dat, dat.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Implementation Plan', 'strategies', dat.description, 'strategy', 'strategy_projects', dat, dat.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_52)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, "* ", 8 /* PROPS */, _hoisted_53)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Implementation Plan', 'strategies', dat.description, 'target_indicator', 'strategy_projects', dat, dat.comments)
       })
-    }, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_53, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.target_indicator), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.gad_issue), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_55, [dat.date_from ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_56, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(dat.date_from)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), dat.date_from && dat.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_57, " to ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), dat.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_58, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(dat.date_to)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_59, [dat.strategyProject[0] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    }, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.target_indicator), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.gad_issue), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_56, [dat.date_from ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_57, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(dat.date_from)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), dat.date_from && dat.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_58, " to ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), dat.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(dat.date_to)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_60, [dat.strategyProject[0] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
       key: 0
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(dat.strategyProject[0].expected_output, function (eo) {
-      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(eo.description), 1 /* TEXT */), _cache[110] || (_cache[110] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */))]);
-    }), 256 /* UNKEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), dat.strategyProject[0] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-      key: 1
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(dat.strategyProject[0].expected_outcome, function (eo) {
-      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(eo.description), 1 /* TEXT */), _cache[111] || (_cache[111] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */))]);
-    }), 256 /* UNKEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_60, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(dat.ps_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_61, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(dat.ps_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_62, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(dat.ps_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_63)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_64, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_65, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(dat.ps_total) + parseFloat(dat.mooe_total) + parseFloat(dat.co_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_66, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.ccet_code), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.responsible), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+    }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(((_dat$strategyProject$ = dat.strategyProject[0]) === null || _dat$strategyProject$ === void 0 ? void 0 : _dat$strategyProject$.expected_output) || [], function (eo) {
+      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(eo.description), 1 /* TEXT */), _cache[119] || (_cache[119] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */))]);
+    }), 256 /* UNKEYED_FRAGMENT */)), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(((_dat$strategyProject$2 = dat.strategyProject[0]) === null || _dat$strategyProject$2 === void 0 ? void 0 : _dat$strategyProject$2.expected_outcome) || [], function (eo) {
+      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(eo.description), 1 /* TEXT */), _cache[120] || (_cache[120] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */))]);
+    }), 256 /* UNKEYED_FRAGMENT */))], 64 /* STABLE_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_61, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(dat.ps_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_62, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(dat.ps_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(dat.ps_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_64)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_65, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_66, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(dat.ps_total) + parseFloat(dat.mooe_total) + parseFloat(dat.co_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.ccet_code), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_68, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dat.responsible), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: 1,
       id: dat.id + '_strategy_projects_strategy',
       style: {
@@ -2364,13 +2457,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Implementation Plan', 'strategies', dat.description, 'strategy', 'strategy_projects', dat, dat.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_69)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'strategies', dat.description, 'strategy', 'strategy_projects', dat, dat.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_70)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'strategies', dat.description, 'strategy', 'strategy_projects', dat, dat.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Implementation Plan', 'strategies', dat.description, 'strategy', 'strategy_projects', dat, dat.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_70)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)], 8 /* PROPS */, _hoisted_68)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ACTIVITIES **************************************************************************************************** "), dat.activity && $props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    }, "* ", 8 /* PROPS */, _hoisted_71)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)], 8 /* PROPS */, _hoisted_69)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ACTIVITIES **************************************************************************************************** "), dat.activity && $props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
       key: 2
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(dat.activity, function (act, subIndex) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
@@ -2389,13 +2482,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activities', act.description, 'activities', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_72)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activities', act.description, 'activities', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_73)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activities', act.description, 'activities', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activities', act.description, 'activities', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_73)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_71), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TARGET INDICATOR "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td :class=\"{\r\n                                                'text-danger': has_comment('Implementation Plan','activity target indicator',act.target_indicator,'activity target indicator','activity_projects', act, act.comments)\r\n                                            }\">\r\n                                                    <div v-if=\"act.activityProject[0]\" v-for=\"(eo,index) in act.activityProject[0].expected_output\" :key=\"index\">\r\n                                                        <div>{{ eo.target_indicator }}\r\n                                                            <span v-if=\"paps.is_strategy_based==0\">{{ act.target_indicator }}\r\n                                                                <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                                                    @click=\"handleClick('Implementation Plan','activity target indicator',eo.target_indicator,'activity target indicator','expected_revised_outputs', eo, eo.comments)\">*\r\n                                                                </button>\r\n                                                                <button v-if=\"has_comment('Implementation Plan','activity target indicator',eo.target_indicator,'activity target indicator','expected_revised_outputs', eo, eo.comments)\" class=\"superscript-btn\"\r\n                                                                    @click=\"handleClick('Implementation Plan','activity target indicator',eo.target_indicator,'activity target indicator','expected_revised_outputs', eo, eo.comments)\">*\r\n                                                                </button>\r\n                                                                <hr>\r\n                                                            </span>\r\n                                                        </div>\r\n                                                        <hr>\r\n                                                    </div>\r\n                                                    <tr v-if=\"act.activityProject[0]\" v-for=\"eo in act.activityProject[0].expected_outcome\">\r\n                                                        <div>{{ eo.description }} </div>\r\n                                                        <hr>\r\n                                                    </tr>\r\n                                            </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" GAD ISSUE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" MERGED "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TARGET/INDICATORs, EXPECTED OUTPUTS, GAD ISSUE, IMPLEMENTATION DATES"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_74, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_75, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" style=\"border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;\" "), $options.getPairedOutputs(act.activityProject[0]) && $options.getPairedOutputs(act.activityProject[0]).length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_76, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.getPairedOutputs(act.activityProject[0]), function (pair, i) {
+      }, "* ", 8 /* PROPS */, _hoisted_74)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_72), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TARGET INDICATOR "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td :class=\"{\r\n                                                'text-danger': has_comment('Implementation Plan','activity target indicator',act.target_indicator,'activity target indicator','activity_projects', act, act.comments)\r\n                                            }\">\r\n                                                    <div v-if=\"act.activityProject[0]\" v-for=\"(eo,index) in act.activityProject[0].expected_output\" :key=\"index\">\r\n                                                        <div>{{ eo.target_indicator }}\r\n                                                            <span v-if=\"paps.is_strategy_based==0\">{{ act.target_indicator }}\r\n                                                                <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                                                    @click=\"handleClick('Implementation Plan','activity target indicator',eo.target_indicator,'activity target indicator','expected_revised_outputs', eo, eo.comments)\">*\r\n                                                                </button>\r\n                                                                <button v-if=\"has_comment('Implementation Plan','activity target indicator',eo.target_indicator,'activity target indicator','expected_revised_outputs', eo, eo.comments)\" class=\"superscript-btn\"\r\n                                                                    @click=\"handleClick('Implementation Plan','activity target indicator',eo.target_indicator,'activity target indicator','expected_revised_outputs', eo, eo.comments)\">*\r\n                                                                </button>\r\n                                                                <hr>\r\n                                                            </span>\r\n                                                        </div>\r\n                                                        <hr>\r\n                                                    </div>\r\n                                                    <tr v-if=\"act.activityProject[0]\" v-for=\"eo in act.activityProject[0].expected_outcome\">\r\n                                                        <div>{{ eo.description }} </div>\r\n                                                        <hr>\r\n                                                    </tr>\r\n                                            </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" GAD ISSUE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" MERGED "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TARGET/INDICATORs, EXPECTED OUTPUTS, GAD ISSUE, IMPLEMENTATION DATES"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_75, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_76, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" style=\"border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;\" "), $options.getPairedOutputs(act.activityProject[0]) && $options.getPairedOutputs(act.activityProject[0]).length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_77, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.getPairedOutputs(act.activityProject[0]), function (pair, i) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
           key: i,
           style: {
@@ -2415,19 +2508,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
             'text-danger': $options.has_comment('Implementation Plan', 'Target/Indicator', pair.target_indicator, 'target_indicator', 'expected_revised_outputs', pair, pair.comments) || $options.has_comment('Implementation Plan', 'Target/Indicator', pair.target_indicator, 'target_indicator', 'expected_revised_outputs', pair, pair.comments)
           })
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(pair.target_indicator) + " ", 1 /* TEXT */), pair.quantity > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_78, " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(pair.quantity), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _cache[112] || (_cache[112] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[113] || (_cache[113] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(pair.target_indicator) + " ", 1 /* TEXT */), pair.quantity > 0 && !/\d+(\s*[a-zA-Z]+)?$/.test(pair.target_indicator) && !/-\s*\d{1,3}(,\d{3})*/.test(pair.target_indicator) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_79, " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(pair.quantity), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _cache[121] || (_cache[121] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[122] || (_cache[122] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 1,
           "class": "superscript-btn",
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'Target/Indicator', pair.target_indicator, 'target_indicator', pair.table, pair, pair.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_79)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'Target/Indicator', pair.target_indicator, 'target_indicator', pair.table, pair, pair.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        }, "* ", 8 /* PROPS */, _hoisted_80)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'Target/Indicator', pair.target_indicator, 'target_indicator', pair.table, pair, pair.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 2,
           "class": "superscript-btn",
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'Target/Indicator', pair.target_indicator, 'target_indicator', pair.table, pair, pair.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_80)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_77), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" GAD Issue "), i === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", {
+        }, "* ", 8 /* PROPS */, _hoisted_81)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_78), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" GAD Issue "), i === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", {
           key: 0,
           "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["align-top", {
             'text-danger': $options.has_comment('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments)
@@ -2439,19 +2532,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "padding": "4px"
           },
           rowspan: $options.getPairedOutputs(act.activityProject[0]).length
-        }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_82, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.gad_issue) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_83, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.gad_issue) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 0,
           "class": "superscript-btn",
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_83)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        }, "* ", 8 /* PROPS */, _hoisted_84)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 1,
           "class": "superscript-btn",
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_84)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_81)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Timeline "), i === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", {
+        }, "* ", 8 /* PROPS */, _hoisted_85)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_82)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Timeline "), i === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", {
           key: 1,
           style: {
             "width": "25%",
@@ -2462,7 +2555,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             'text-danger': $options.has_comment('Implementation Plan', 'activity Date From', act.date_from, 'date_from', 'activity_projects', act, act.comments) || $options.has_comment('Implementation Plan', 'activity Date To', act.date_to, 'date_to', 'activity_projects', act, act.comments)
           }]),
           rowspan: $options.getPairedOutputs(act.activityProject[0]).length
-        }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_86, [act.date_from ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+        }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_87, [act.date_from ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
           key: 0,
           id: act.activity_id + '_activity_projects_date_from'
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(act.date_from)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
@@ -2471,13 +2564,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'activity Date From', act.date_from, 'date_from', 'activity_projects', act, act.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_88)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Date From', act.date_from, 'date_from', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        }, "* ", 8 /* PROPS */, _hoisted_89)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Date From', act.date_from, 'date_from', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 1,
           "class": "superscript-btn",
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'activity Date From', act.date_from, 'date_from', 'activity_projects', act, act.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_89)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_87)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), act.date_from && act.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_90, " to ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), act.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+        }, "* ", 8 /* PROPS */, _hoisted_90)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_88)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), act.date_from && act.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_91, " to ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), act.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
           key: 2,
           id: act.activity_id + '_activity_projects_date_to'
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(act.date_to)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
@@ -2486,30 +2579,30 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'activity Date To', act.date_to, 'date_to', 'activity_projects', act, act.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_92)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Date To', act.date_to, 'date_to', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        }, "* ", 8 /* PROPS */, _hoisted_93)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Date To', act.date_to, 'date_to', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 1,
           "class": "superscript-btn",
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'activity Date To', act.date_to, 'date_to', 'activity_projects', act, act.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_93)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_91)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_85)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Expected Outputs/Outcomes "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_94, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" OUTPUTS*********************************************************************** "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+        }, "* ", 8 /* PROPS */, _hoisted_94)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_92)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_86)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Expected Outputs/Outcomes "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_95, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" OUTPUTS*********************************************************************** "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
           "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
             'text-danger': $options.has_comment('Implementation Plan', 'output_description', pair.output_description, 'output_description', 'expected_revised_outputs', pair, pair.comments) || $options.has_comment('Implementation Plan', 'output_description', pair.output_description, 'output_description', 'expected_revised_outputs', pair, pair.comments)
           }),
           id: pair.id + '_expected_revised_outputs_output_description'
-        }, [pair.quantity > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_96, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(pair.quantity), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(pair.output_description) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        }, [pair.quantity > 0 && $options.shouldDisplayQuantity(pair.output_description) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_97, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(pair.quantity), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(pair.output_description) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 1,
           "class": "superscript-btn",
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'output_description', pair.output_description, 'output_description', 'expected_revised_outputs', pair, pair.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_97)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'output_description', pair.output_description, 'output_description', 'expected_revised_outputs', pair, pair.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        }, "* ", 8 /* PROPS */, _hoisted_98)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'output_description', pair.output_description, 'output_description', 'expected_revised_outputs', pair, pair.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 2,
           "class": "superscript-btn",
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'output_description', pair.output_description, 'output_description', 'expected_revised_outputs', pair, pair.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_98)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_95), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" OUTCOMES*********************************************************************** "), pair.outcome_description ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+        }, "* ", 8 /* PROPS */, _hoisted_99)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_96), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" OUTCOMES*********************************************************************** "), pair.outcome_description ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
           key: 0,
           "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
             'text-danger': $options.has_comment('Implementation Plan', 'outcome_description', pair.outcome_description, 'outcome_description', 'expected_revised_outcomes', pair, pair.comments) || $options.has_comment('Implementation Plan', 'outcome_description', pair.output_description, 'outcome_description', 'expected_revised_outcomes', pair, pair.comments)
@@ -2521,14 +2614,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'outcome_description', pair.outcome_description, 'outcome_description', 'expected_revised_outcomes', pair, pair.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_100)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'outcome_description', pair.outcome_description, 'outcome_description', 'expected_revised_outcomes', pair, pair.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+        }, "* ", 8 /* PROPS */, _hoisted_101)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'outcome_description', pair.outcome_description, 'outcome_description', 'expected_revised_outcomes', pair, pair.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
           key: 1,
           "class": "superscript-btn",
           onClick: function onClick($event) {
             return $options.handleClick('Implementation Plan', 'outcome_description', pair.outcome_description, 'outcome_description', 'expected_revised_outcomes', pair, pair.comments);
           }
-        }, "* ", 8 /* PROPS */, _hoisted_101)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_99)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
-      }), 128 /* KEYED_FRAGMENT */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_102, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("template", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[114] || (_cache[114] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" GAD Issue "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+        }, "* ", 8 /* PROPS */, _hoisted_102)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_100)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
+      }), 128 /* KEYED_FRAGMENT */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_103, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template > "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[123] || (_cache[123] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" GAD Issue "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["align-top", {
           'text-danger': $options.has_comment('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments)
         }]),
@@ -2539,19 +2632,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "padding": "4px"
         },
         rowspan: $options.getPairedOutputs(act.activityProject[0]).length
-      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_104, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.gad_issue) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_105, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.gad_issue) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 0,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_105)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_106)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity GAD issue', act.gad_issue, 'gad_issue', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_106)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_103), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Timeline "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "* ", 8 /* PROPS */, _hoisted_107)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_104), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Timeline "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         style: {
           "width": "25%",
           "border": "1px solid #000",
@@ -2561,7 +2654,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           'text-danger': $options.has_comment('Implementation Plan', 'activity Date From', act.date_from, 'date_from', 'activity_projects', act, act.comments) || $options.has_comment('Implementation Plan', 'activity Date To', act.date_to, 'date_to', 'activity_projects', act, act.comments)
         }]),
         rowspan: $options.getPairedOutputs(act.activityProject[0]).length
-      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_108, [act.date_from ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_109, [act.date_from ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
         key: 0,
         id: act.activity_id + '_activity_projects_date_from'
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(act.date_from)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
@@ -2570,13 +2663,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Date From', act.date_from, 'date_from', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_110)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Date From', act.date_from, 'date_from', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_111)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Date From', act.date_from, 'date_from', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Date From', act.date_from, 'date_from', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_111)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_109)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), act.date_from && act.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_112, " to ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), act.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+      }, "* ", 8 /* PROPS */, _hoisted_112)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_110)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), act.date_from && act.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_113, " to ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), act.date_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
         key: 2,
         id: act.activity_id + '_activity_projects_date_to'
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formatMonthYear(act.date_to)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
@@ -2585,117 +2678,117 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Date To', act.date_to, 'date_to', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_114)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Date To', act.date_to, 'date_to', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_115)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Date To', act.date_to, 'date_to', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Date To', act.date_to, 'date_to', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_115)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_113)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_107), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Expected Outcome "), _cache[115] || (_cache[115] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])]))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" PERSONNEL SERVICES "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "* ", 8 /* PROPS */, _hoisted_116)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8 /* PROPS */, _hoisted_114)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_108), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Expected Outcome "), _cache[124] || (_cache[124] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" </template> ")])]))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" PERSONNEL SERVICES "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Implementation Plan', 'activity Personnel Services', act.ps_total, 'ps_total', 'activity_projects', act, act.comments)
         }),
         id: act.activity_id + '_activity_projects_ps_total'
-      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_117, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(act.ps_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_118, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(act.ps_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Personnel Services', act.ps_total, 'ps_total', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_118)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Personnel Services', act.ps_total, 'ps_total', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_119)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Personnel Services', act.ps_total, 'ps_total', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 2,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Personnel Services', act.ps_total, 'ps_total', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_119)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_116), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" MAINTENANCE, OPERATING, AND OTHER EXPENSES "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "* ", 8 /* PROPS */, _hoisted_120)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_117), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" MAINTENANCE, OPERATING, AND OTHER EXPENSES "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Implementation Plan', 'activity MOOE', act.mooe_total, 'mooe_total', 'activity_projects', act, act.comments)
         }),
         id: act.activity_id + '_activity_projects_mooe_total'
-      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_121, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(act.mooe_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_122, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(act.mooe_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity MOOE', act.mooe_total, 'mooe_total', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_122)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity MOOE', act.mooe_total, 'mooe_total', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_123)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity MOOE', act.mooe_total, 'mooe_total', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 2,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity MOOE', act.mooe_total, 'mooe_total', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_123)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_120), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FINANCIAL EXPENSES "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "* ", 8 /* PROPS */, _hoisted_124)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_121), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FINANCIAL EXPENSES "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Implementation Plan', 'activity Financial Expenses', act.fe_total, 'fe_total', 'activity_projects', act, act.comments)
         }),
         id: act.activity_id + '_activity_projects_fe_total'
-      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_125, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(act.fe_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_126, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(act.fe_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Financial Expenses', act.fe_total, 'fe_total', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_126)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Financial Expenses', act.fe_total, 'fe_total', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_127)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Financial Expenses', act.fe_total, 'fe_total', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 2,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Financial Expenses', act.fe_total, 'fe_total', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_127)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_124), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" CAPITAL OUTLAY "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "* ", 8 /* PROPS */, _hoisted_128)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_125), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" CAPITAL OUTLAY "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Implementation Plan', 'activity Capital Outlay', act.co_total, 'co_total', 'activity_projects', act, act.comments)
         }),
         id: act.activity_id + '_activity_projects_co_total'
-      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_129, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(act.co_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_130, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(act.co_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Capital Outlay', act.co_total, 'co_total', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_130)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Capital Outlay', act.co_total, 'co_total', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_131)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Capital Outlay', act.co_total, 'co_total', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 2,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Capital Outlay', act.co_total, 'co_total', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_131)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_128), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TOTAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_132, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(act.ps_total) + parseFloat(act.mooe_total) + parseFloat(act.co_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" CCET Code "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "* ", 8 /* PROPS */, _hoisted_132)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_129), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TOTAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_133, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv(parseFloat(act.ps_total) + parseFloat(act.mooe_total) + parseFloat(act.co_total), 2, true)), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" CCET Code "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Implementation Plan', 'activity CCET Code', act.ccet_code, 'ccet_code', 'activity_projects', act, act.comments)
         }),
         id: act.activity_id + '_activity_projects_ccet_code'
-      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_134, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.ccet_code && act.ccet_code !== 'null' ? act.ccet_code : ''), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_135, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.ccet_code && act.ccet_code !== 'null' ? act.ccet_code : ''), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity CCET Code', act.ccet_code, 'ccet_code', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_135)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity CCET Code', act.ccet_code, 'ccet_code', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_136)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity CCET Code', act.ccet_code, 'ccet_code', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 2,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity CCET Code', act.ccet_code, 'ccet_code', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_136)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_133), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" RESPONSIBLE INDIVIDUAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "* ", 8 /* PROPS */, _hoisted_137)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_134), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" RESPONSIBLE INDIVIDUAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Implementation Plan', 'activity Person Responsible', act.responsible, 'responsible', 'activity_projects', act, act.comments)
         }),
         id: act.activity_id + '_activity_projects_responsible'
-      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_138, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.responsible), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, [$props.paps.is_strategy_based == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_139, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(act.responsible), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Person Responsible', act.responsible, 'responsible', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_139)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Person Responsible', act.responsible, 'responsible', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_140)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', 'activity Person Responsible', act.responsible, 'responsible', 'activity_projects', act, act.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 2,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Implementation Plan', 'activity Person Responsible', act.responsible, 'responsible', 'activity_projects', act, act.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_140)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_137)]);
+      }, "* ", 8 /* PROPS */, _hoisted_141)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_138)]);
     }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
-  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TOTALS*********************************************************************************** "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[116] || (_cache[116] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TOTALS*********************************************************************************** "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[125] || (_cache[125] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "5"
   }, "TOTAL", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" PS TOTAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
@@ -2705,16 +2798,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($data.v_imp_ps, 2, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[37] || (_cache[37] = function ($event) {
+    onClick: _cache[39] || (_cache[39] = function ($event) {
       return $options.handleClick('Implementation Plan', _ctx.format_number_conv($data.v_imp_ps, 2, true), _ctx.format_number_conv($data.v_imp_ps, 2, true), 'imp_ps', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', _ctx.format_number_conv($data.v_imp_ps, 2, true), _ctx.format_number_conv($data.v_imp_ps, 2, true), 'imp_ps', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[38] || (_cache[38] = function ($event) {
+    onClick: _cache[40] || (_cache[40] = function ($event) {
       return $options.handleClick('Implementation Plan', _ctx.format_number_conv($data.v_imp_ps, 2, true), _ctx.format_number_conv($data.v_imp_ps, 2, true), 'imp_ps', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_141), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" MOOE TOTAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_142), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" MOOE TOTAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-danger': $options.has_comment('Implementation Plan', _ctx.format_number_conv($data.v_imp_mooe, 2, true), _ctx.format_number_conv($data.v_imp_mooe, 2, true), 'imp_mooe', 'revision_plans', $props.paps, $props.paps.comments)
     }),
@@ -2722,16 +2815,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($data.v_imp_mooe, 2, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[39] || (_cache[39] = function ($event) {
+    onClick: _cache[41] || (_cache[41] = function ($event) {
       return $options.handleClick('Implementation Plan', _ctx.format_number_conv($data.v_imp_mooe, 2, true), _ctx.format_number_conv($data.v_imp_mooe, 2, true), 'imp_mooe', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', _ctx.format_number_conv($data.v_imp_mooe, 2, true), _ctx.format_number_conv($data.v_imp_mooe, 2, true), 'imp_mooe', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[40] || (_cache[40] = function ($event) {
+    onClick: _cache[42] || (_cache[42] = function ($event) {
       return $options.handleClick('Implementation Plan', _ctx.format_number_conv($data.v_imp_mooe, 2, true), _ctx.format_number_conv($data.v_imp_mooe, 2, true), 'imp_mooe', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_142), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FE TOTAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_143), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FE TOTAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-danger': $options.has_comment('Implementation Plan', _ctx.format_number_conv($data.v_imp_fe, 2, true), _ctx.format_number_conv($data.v_imp_fe, 2, true), 'imp_fe', 'revision_plans', $props.paps, $props.paps.comments)
     }),
@@ -2739,16 +2832,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($data.v_imp_fe, 2, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[41] || (_cache[41] = function ($event) {
+    onClick: _cache[43] || (_cache[43] = function ($event) {
       return $options.handleClick('Implementation Plan', _ctx.format_number_conv($data.v_imp_fe, 2, true), _ctx.format_number_conv($data.v_imp_fe, 2, true), 'imp_fe', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', _ctx.format_number_conv($data.v_imp_fe, 2, true), _ctx.format_number_conv($data.v_imp_fe, 2, true), 'imp_fe', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[42] || (_cache[42] = function ($event) {
+    onClick: _cache[44] || (_cache[44] = function ($event) {
       return $options.handleClick('Implementation Plan', _ctx.format_number_conv($data.v_imp_fe, 2, true), _ctx.format_number_conv($data.v_imp_fe, 2, true), 'imp_fe', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_143), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" CO TOTAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_144), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" CO TOTAL "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-danger': $options.has_comment('Implementation Plan', _ctx.format_number_conv($data.v_imp_co, 2, true), _ctx.format_number_conv($data.v_imp_co, 2, true), 'imp_co', 'revision_plans', $props.paps, $props.paps.comments)
     }),
@@ -2756,16 +2849,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($data.v_imp_co, 2, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[43] || (_cache[43] = function ($event) {
+    onClick: _cache[45] || (_cache[45] = function ($event) {
       return $options.handleClick('Implementation Plan', _ctx.format_number_conv($data.v_imp_co, 2, true), _ctx.format_number_conv($data.v_imp_co, 2, true), 'imp_co', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', _ctx.format_number_conv($data.v_imp_co, 2, true), _ctx.format_number_conv($data.v_imp_co, 2, true), 'imp_co', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[44] || (_cache[44] = function ($event) {
+    onClick: _cache[46] || (_cache[46] = function ($event) {
       return $options.handleClick('Implementation Plan', _ctx.format_number_conv($data.v_imp_co, 2, true), _ctx.format_number_conv($data.v_imp_co, 2, true), 'imp_co', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_144), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_145), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-end", {
       'text-danger': $options.has_comment('Implementation Plan', _ctx.format_number_conv($props.imp_amount, 2, true), _ctx.format_number_conv($props.imp_amount, 2, true), 'total_imp_amount', 'revision_plans', $props.paps, $props.paps.comments)
     }]),
@@ -2773,31 +2866,31 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.format_number_conv($props.imp_amount, 2, true)) + " ", 1 /* TEXT */), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[45] || (_cache[45] = function ($event) {
+    onClick: _cache[47] || (_cache[47] = function ($event) {
       return $options.handleClick('Implementation Plan', _ctx.format_number_conv($props.imp_amount, 2, true), _ctx.format_number_conv($props.imp_amount, 2, true), 'total_imp_amount', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementation Plan', _ctx.format_number_conv($props.imp_amount, 2, true), _ctx.format_number_conv($props.imp_amount, 2, true), 'total_imp_amount', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[46] || (_cache[46] = function ($event) {
+    onClick: _cache[48] || (_cache[48] = function ($event) {
       return $options.handleClick('Implementation Plan', _ctx.format_number_conv($props.imp_amount, 2, true), _ctx.format_number_conv($props.imp_amount, 2, true), 'total_imp_amount', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_145), _cache[117] || (_cache[117] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[118] || (_cache[118] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ implementation }} ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _cache[172] || (_cache[172] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("BUDGETARY REQUIREMENTS"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" v-if=\"b_mooe.length>0 || b_capital.length>0 || b_ps.length>0\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_146, [_cache[121] || (_cache[121] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" VI. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_146), _cache[126] || (_cache[126] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[127] || (_cache[127] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ implementation }} ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _cache[181] || (_cache[181] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("BUDGETARY REQUIREMENTS"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" v-if=\"b_mooe.length>0 || b_capital.length>0 || b_ps.length>0\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_147, [_cache[130] || (_cache[130] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" VI. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: $props.department_code_user === '04' || $props.department_code_user === $props.department_code_project ? "/budget/".concat($props.paps.id) : null
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[120] || (_cache[120] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Estimated Cost/Budgetary Requirements ", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[129] || (_cache[129] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Estimated Cost/Budgetary Requirements ", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ capitalOutlay }}\r\n                        showBudgetTable: {{ showBudgetTable() }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <table v-if=\"showBudgetTable()\" class=\"table table-hover table-bordered border-dark\">\r\n                            <thead>\r\n                                <tr class=\"bg-secondary text-white\">\r\n                                    <th colspan=\"3\">Particular</th>\r\n                                    <th>Account Code</th>\r\n                                    <th>GAD Amount (Php)</th>\r\n                                    <th>Non-GAD Amount (Php)</th>\r\n                                    <th>Amount (Php)</th>\r\n                                    <th>Source</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr v-if=\"(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0\"\r\n\r\n                                >\r\n                                    <td colspan=\"8\"><b>MAINTENANCE, OPERATING, AND OTHER EXPENSES</b></td>\r\n                                </tr>\r\n                                <tr v-if=\"(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0\" v-for=\"mooe in maintenanceOperating\">\r\n                                    <td ></td>\r\n                                    MOOE -PARTICULARS\r\n                                    <td colspan=\"2\"\r\n                                    :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.particulars,'particulars','budget_requirements', mooe, mooe.comments)\r\n                                            }\" :id=\"mooe.id + '_budget_requirements_particulars'\"\r\n                                    >{{ mooe.particulars }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.particulars,'particulars','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','MOOE',mooe.particulars,'particulars','budget_requirements', mooe, mooe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.particulars,'particulars','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    MOOE -ACCOUNT CODE\r\n                                    <td :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.account_code,'account_code','budget_requirements', mooe, mooe.comments)\r\n                                            }\" :id=\"mooe.id + '_budget_requirements_account_code'\"\r\n                                    >{{ mooe.account_code }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.account_code,'account_code','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','MOOE',mooe.account_code,'account_code','budget_requirements', mooe, mooe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.account_code,'account_code','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    MOOE GAD Attirbuted\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.GAD_amount,'GAD_amount','budget_requirements', mooe, mooe.comments)\r\n                                            }\" :id=\"mooe.id + '_budget_requirements_GAD_amount'\">{{ format_number_conv(mooe.GAD_amount,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.GAD_amount,'GAD_amount','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','MOOE',mooe.GAD_amount,'GAD_amount','budget_requirements', mooe, mooe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.GAD_amount,'GAD_amount','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     MOOE NON-GAD\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.NONGAD_amount,'NONGAD_amount','budget_requirements', mooe, mooe.comments)\r\n                                            }\" :id=\"mooe.id + '_budget_requirements_NONGAD_amount'\">\r\n                                        {{ format_number_conv(mooe.NONGAD_amount,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.NONGAD_amount,'NONGAD_amount','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','MOOE',mooe.NONGAD_amount,'NONGAD_amount','budget_requirements', mooe, mooe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.NONGAD_amount,'NONGAD_amount','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     MOOE Total\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.Total,'Total','budget_requirements', mooe, mooe.comments)\r\n                                            }\" :id=\"mooe.id + '_budget_requirements_Total'\">{{ format_number_conv(mooe.Total,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.Total,'Total','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','MOOE',mooe.Total,'Total','budget_requirements', mooe, mooe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.Total,'Total','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    MOOE Source\r\n                                    <td :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','MOOE',mooe.Source,'Source','budget_requirements', mooe, mooe.comments)\r\n                                            }\" :id=\"mooe.id + '_budget_requirements_Source'\">{{ mooe.Source }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.Source,'Source','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','MOOE',mooe.Source,'Source','budget_requirements', mooe, mooe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','MOOE',mooe.Source,'Source','budget_requirements', mooe, mooe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                </tr>\r\n                                <tr v-if=\"(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non))>0\">\r\n                                    <td ></td>\r\n                                    <td colspan=\"3\">\r\n                                        SUB-TOTAL (MOOE)\r\n                                    </td>\r\n                                    MOOE GAD ******************************************************************************************************************\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements', format_number_conv(s_mooe_gad,2,true), format_number_conv(s_mooe_gad,2,true), 'budgetary_mooe_gad', 'revision_plans', paps, paps.comments)\r\n                                    }\">\r\n                                        {{ format_number_conv(s_mooe_gad,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',format_number_conv(s_mooe_gad,2,true),format_number_conv(s_mooe_gad,2,true),'budgetary_mooe_gad','revision_plans', paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',format_number_conv(s_mooe_gad,2,true),format_number_conv(s_mooe_gad,2,true),'budgetary_mooe_gad','revision_plans', paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',format_number_conv(s_mooe_gad,2,true),format_number_conv(s_mooe_gad,2,true),'budgetary_mooe_gad','revision_plans', paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    MOOE NON-GAD ******************************************************************************************************************\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)\r\n                                    }\">\r\n                                        {{ format_number_conv(s_mooe_non,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements', format_number_conv(s_mooe_non,2,true), format_number_conv(s_mooe_non,2,true), 'budgetary_mooe_non', 'revision_plans', paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    MOOE TOTAL ******************************************************************************************************************\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements', format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true), format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true),\r\n                                        'budgetary_mooe_total', 'revision_plans', paps, paps.comments)\r\n                                    }\">\r\n                                        {{ format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements', format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true), format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true),\r\n                                        'budgetary_mooe_total', 'revision_plans', paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements', format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true), format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true),\r\n                                        'budgetary_mooe_total', 'revision_plans', paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements', format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true), format_number_conv(parseFloat(s_mooe_gad) + parseFloat(s_mooe_non), 2,true),\r\n                                        'budgetary_mooe_total', 'revision_plans', paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                 <tr v-if=\"(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0\">\r\n                                    <td colspan=\"8\"><b>PERSONNEL SERVICES</b></td>\r\n                                </tr>\r\n                                <tr  v-if=\"(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0\" v-for=\"ps in personnelServices\">\r\n                                    <td :id=\"ps.id + '_budget_requirements'\"></td>\r\n                                    PS Particular\r\n                                    <td colspan=\"2\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.particulars,'particulars','budget_requirements', ps, ps.comments)\r\n                                            }\" :id=\"ps.id + '_budget_requirements_particulars'\">{{ ps.particulars }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.particulars,'particulars','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Personnel Services',ps.particulars,'particulars','budget_requirements', ps, ps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.particulars,'particulars','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    PS Account Code\r\n                                    <td :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.account_code,'account_code','budget_requirements', ps, ps.comments)\r\n                                            }\" :id=\"ps.id + '_budget_requirements_account_code'\">{{ ps.account_code }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.account_code,'account_code','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Personnel Services',ps.account_code,'account_code','budget_requirements', ps, ps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.account_code,'account_code','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     PS GAD Amount\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.GAD_amount,'GAD_amount','budget_requirements', ps, ps.comments)\r\n                                            }\" :id=\"ps.id + '_budget_requirements_GAD_amount'\">{{ format_number_conv(ps.GAD_amount,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.GAD_amount,'GAD_amount','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Personnel Services',ps.GAD_amount,'GAD_amount','budget_requirements', ps, ps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.GAD_amount,'GAD_amount','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    PS NONGAD Amount\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.NONGAD_amount,'NONGAD_amount','budget_requirements', ps, ps.comments)\r\n                                            }\" :id=\"ps.id + '_budget_requirements_NONGAD_amount'\">\r\n                                        {{ format_number_conv(ps.NONGAD_amount,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.NONGAD_amount,'NONGAD_amount','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Personnel Services',ps.NONGAD_amount,'NONGAD_amount','budget_requirements', ps, ps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.NONGAD_amount,'NONGAD_amount','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     PS Total\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.Total,'Total','budget_requirements', ps, ps.comments)\r\n                                            }\" :id=\"ps.id + '_budget_requirements_Total'\">{{ format_number_conv(ps.Total,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.Total,'Total','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Personnel Services',ps.Total,'Total','budget_requirements', ps, ps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.Total,'Total','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     PS Source\r\n                                    <td :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Personnel Services',ps.Source,'Source','budget_requirements', ps, ps.comments)\r\n                                            }\" :id=\"ps.id + '_budget_requirements_Source'\">{{ ps.Source }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.Source,'Source','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Personnel Services',ps.Source,'Source','budget_requirements', ps, ps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Personnel Services',ps.Source,'Source','budget_requirements', ps, ps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                </tr>\r\n                                <tr v-if=\"(parseFloat(s_ps_gad) + parseFloat(s_ps_non))>0\">\r\n                                    <td ></td>\r\n                                    <td colspan=\"3\">SUB-TOTAL (PS)</td>\r\n                                     PS GAD ******************************************************************************************************************\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements',\r\n                                        format_number_conv(s_ps_gad,2,true),\r\n                                        format_number_conv(s_ps_gad,2,true),\r\n                                        'budgetary_ps_gad', 'revision_plans',\r\n                                        paps, paps.comments)\r\n                                    }\">{{ format_number_conv(s_ps_gad,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            format_number_conv(s_ps_gad,2,true),\r\n                                            format_number_conv(s_ps_gad,2,true),\r\n                                            'budgetary_ps_gad', 'revision_plans',\r\n                                        paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            format_number_conv(s_ps_gad,2,true),\r\n                                            format_number_conv(s_ps_gad,2,true),\r\n                                            'budgetary_ps_gad', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            format_number_conv(s_ps_gad,2,true),\r\n                                            format_number_conv(s_ps_gad,2,true),\r\n                                            'budgetary_ps_gad', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    PS NON-GAD ******************************************************************************************************************\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements',\r\n                                        format_number_conv(s_ps_non,2,true),\r\n                                        format_number_conv(s_ps_non,2,true),\r\n                                        'budgetary_ps_non', 'revision_plans',\r\n                                        paps, paps.comments)\r\n                                    }\">{{ format_number_conv(s_ps_non,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            format_number_conv(s_ps_non,2,true),\r\n                                            format_number_conv(s_ps_non,2,true),\r\n                                            'budgetary_ps_non', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            format_number_conv(s_ps_non,2,true),\r\n                                            format_number_conv(s_ps_non,2,true),\r\n                                            'budgetary_ps_non', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            format_number_conv(s_ps_non,2,true),\r\n                                            format_number_conv(s_ps_non,2,true),\r\n                                            'budgetary_ps_non', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    PS TOTAL ******************************************************************************************************************\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements',\r\n                                        format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),\r\n                                        format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),\r\n                                        'budgetary_ps_total', 'revision_plans',\r\n                                        paps, paps.comments)\r\n                                    }\"\r\n                                    >{{ format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),\r\n                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),\r\n                                            'budgetary_ps_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),\r\n                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),\r\n                                            'budgetary_ps_total', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),\r\n                                            format_number_conv(parseFloat(s_ps_gad) + parseFloat(s_ps_non), 2,true),\r\n                                            'budgetary_ps_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"(parseFloat(s_fe_gad) + parseFloat(s_fe_non))>0\">\r\n                                    <td colspan=\"8\"><b>FINANCIAL EXPENSES</b></td>\r\n                                </tr>\r\n                                <tr v-if=\"(parseFloat(s_fe_gad) + parseFloat(s_fe_non))>0\" v-for=\"fe in financialExpenses\">\r\n                                    <td :id=\"fe.id + '_budget_requirements'\"></td>\r\n                                    Financial Expenses Particulars\r\n\r\n                                    <td colspan=\"2\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.particulars,'particulars','budget_requirements', fe, fe.comments)\r\n                                            }\" :id=\"fe.id + '_budget_requirements_particulars'\">{{ fe.particulars }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.particulars,'particulars','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Financial Expenses',fe.particulars,'particulars','budget_requirements', fe, fe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.particulars,'particulars','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     Financial Expenses Account Code\r\n                                    <td :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.account_code,'account_code','budget_requirements', fe, fe.comments)\r\n                                            }\" :id=\"fe.id + '_budget_requirements_account_code'\">{{ fe.account_code }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.account_code,'account_code','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Financial Expenses',fe.account_code,'account_code','budget_requirements', fe, fe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.account_code,'account_code','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     Financial Expenses GAD Attributed\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.GAD_amount,'GAD_amount','budget_requirements', fe, fe.comments)\r\n                                            }\" :id=\"fe.id + '_budget_requirements_GAD_amount'\">{{ format_number_conv(fe.GAD_amount,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.GAD_amount,'GAD_amount','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Financial Expenses',fe.GAD_amount,'GAD_amount','budget_requirements', fe, fe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.GAD_amount,'GAD_amount','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     Financial Expenses NON-GAD Amount\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.NONGAD_amount,'NONGAD_amount','budget_requirements', fe, fe.comments)\r\n                                            }\" :id=\"fe.id + '_budget_requirements_NONGAD_amount'\">{{ format_number_conv(fe.NONGAD_amount,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.NONGAD_amount,'NONGAD_amount','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Financial Expenses',fe.NONGAD_amount,'NONGAD_amount','budget_requirements', fe, fe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.NONGAD_amount,'NONGAD_amount','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    Financial Expenses Total\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.Total,'Total','budget_requirements', fe, fe.comments)\r\n                                            }\" :id=\"fe.id + '_budget_requirements_Total'\">{{ format_number_conv(fe.Total,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.Total,'Total','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Financial Expenses',fe.Total,'Total','budget_requirements', fe, fe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.Total,'Total','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    Financial Expenses Source\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Financial Expenses',fe.Source,'Source','budget_requirements', fe, fe.comments)\r\n                                            }\" :id=\"fe.id + '_budget_requirements_Source'\">{{ fe.Source }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.Source,'Source','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Financial Expenses',fe.Source,'Source','budget_requirements', fe, fe.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Financial Expenses',fe.Source,'Source','budget_requirements', fe, fe.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                </tr>\r\n                                <tr v-if=\"(parseFloat(s_fe_gad) + parseFloat(s_fe_non))>0\">\r\n                                    <td ></td>\r\n                                    <td colspan=\"3\">SUB-TOTAL (Financial Expenses)</td>\r\n                                     FE GAD ******************************************************************************************************************\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements',\r\n                                        format_number_conv(s_fe_gad,2,true),\r\n                                        format_number_conv(s_fe_gad,2,true),\r\n                                        'budgetary_fe_gad', 'revision_plans',\r\n                                        paps, paps.comments)\r\n                                    }\">\r\n                                        {{ format_number_conv(s_fe_gad,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            format_number_conv(s_fe_gad,2,true),\r\n                                            format_number_conv(s_fe_gad,2,true),\r\n                                            'budgetary_fe_gad', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            format_number_conv(s_fe_gad,2,true),\r\n                                            format_number_conv(s_fe_gad,2,true),\r\n                                            'budgetary_fe_gad', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            format_number_conv(s_fe_gad,2,true),\r\n                                            format_number_conv(s_fe_gad,2,true),\r\n                                            'budgetary_fe_gad', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    FE NON-GAD ******************************************************************************************************************\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements',\r\n                                        format_number_conv(s_fe_non,2,true),\r\n                                        format_number_conv(s_fe_non,2,true),\r\n                                        'budgetary_fe_non', 'revision_plans',\r\n                                        paps, paps.comments)\r\n                                    }\">{{ format_number_conv(s_fe_non,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            format_number_conv(s_fe_non,2,true),\r\n                                            format_number_conv(s_fe_non,2,true),\r\n                                            'budgetary_fe_non', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            format_number_conv(s_fe_non,2,true),\r\n                                            format_number_conv(s_fe_non,2,true),\r\n                                            'budgetary_fe_non', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            format_number_conv(s_fe_non,2,true),\r\n                                            format_number_conv(s_fe_non,2,true),\r\n                                            'budgetary_fe_non', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     FE TOTAL ******************************************************************************************************************\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements',\r\n                                            'TOTAL FINANCIAL EXPENSES',\r\n                                            format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true),\r\n                                            'budgetary_fe_totl', 'revision_plans',\r\n                                            paps, paps.comments)\r\n                                        }\">{{ format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'TOTAL FINANCIAL EXPENSES',\r\n                                            format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true),\r\n                                            'budgetary_fe_totl', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            'TOTAL FINANCIAL EXPENSES',\r\n                                            format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true),\r\n                                            'budgetary_fe_totl', 'revision_plans',\r\n                                        paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'TOTAL FINANCIAL EXPENSES',\r\n                                            format_number_conv(parseFloat(s_fe_gad) + parseFloat(s_fe_non), 2,true),\r\n                                            'budgetary_fe_totl', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0\">\r\n                                    <td colspan=\"8\"><b>CAPITAL OUTLAY</b></td>\r\n                                </tr>\r\n                                <tr v-if=\"(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0\" v-for=\"cap in capitalOutlay\">\r\n                                    <td ></td>\r\n                                     Capital Outlay Particulars\r\n                                    <td colspan=\"2\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.particulars,'particulars','budget_requirements', cap, cap.comments)\r\n                                            }\" :id=\"cap.id + '_budget_requirements_particulars'\">{{ cap.particulars }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.particulars,'particulars','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Capital Outlay',cap.particulars,'particulars','budget_requirements', cap, cap.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.particulars,'particulars','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     Capital Outlay Account Code\r\n                                    <td :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.account_code,'account_code','budget_requirements', cap, cap.comments)\r\n                                            }\" :id=\"cap.id + '_budget_requirements_account_code'\">{{ cap.account_code }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.account_code,'account_code','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Capital Outlay',cap.account_code,'account_code','budget_requirements', cap, cap.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.account_code,'account_code','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     Capital Outlay GAD Attributed\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.GAD_amount,'GAD_amount','budget_requirements', cap, cap.comments)\r\n                                            }\" :id=\"cap.id + '_budget_requirements_GAD_amount'\">{{ format_number_conv(cap.GAD_amount,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.GAD_amount,'GAD_amount','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Capital Outlay',cap.GAD_amount,'GAD_amount','budget_requirements', cap, cap.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.GAD_amount,'GAD_amount','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     Capital Outlay NON-GAD Amount\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.NONGAD_amount,'NONGAD_amount','budget_requirements', cap, cap.comments)\r\n                                            }\" :id=\"cap.id + '_budget_requirements_NONGAD_amount'\">{{ format_number_conv(cap.NONGAD_amount,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.NONGAD_amount,'NONGAD_amount','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Capital Outlay',cap.NONGAD_amount,'NONGAD_amount','budget_requirements', cap, cap.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.NONGAD_amount,'NONGAD_amount','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    Capital Outlay Total\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.Total,'Total','budget_requirements', cap, cap.comments)\r\n                                            }\" :id=\"cap.id + '_budget_requirements_Total'\">{{ format_number_conv(cap.Total,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.Total,'Total','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Capital Outlay',cap.Total,'Total','budget_requirements', cap, cap.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.Total,'Total','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     Capital Outlay Source\r\n                                    <td :class=\"{\r\n                                                'text-danger': has_comment('Budgetary Requirements','Capital Outlay',cap.Source,'Source','budget_requirements', cap, cap.comments)\r\n                                            }\" :id=\"cap.id + '_budget_requirements_Source'\">{{ cap.Source }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.Source,'Source','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements','Capital Outlay',cap.Source,'Source','budget_requirements', cap, cap.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements','Capital Outlay',cap.Source,'Source','budget_requirements', cap, cap.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                </tr>\r\n                                <tr v-if=\"(parseFloat(s_cap_gad) + parseFloat(s_cap_non))>0\">\r\n                                    <td ></td>\r\n                                    <td colspan=\"3\">SUB-TOTAL (Capital Outlay)</td>\r\n                                    CAPITAL OUTLAY GAD ******************************************************************************************************************--\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements',\r\n                                        'Capital Outlay GAD -Total',\r\n                                        format_number_conv(s_cap_gad,2,true),\r\n                                        'budgetary_cap_gad', 'revision_plans',\r\n                                        paps, paps.comments)\r\n                                    }\">{{ format_number_conv(s_cap_gad,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'Capital Outlay GAD -Total',\r\n                                            format_number_conv(s_cap_gad,2,true),\r\n                                            'budgetary_cap_gad', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            'Capital Outlay GAD -Total',\r\n                                            format_number_conv(s_cap_gad,2,true),\r\n                                            'budgetary_cap_gad', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'Capital Outlay GAD -Total',\r\n                                            format_number_conv(s_cap_gad,2,true),\r\n                                            'budgetary_cap_gad', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    -- CAPITAL OUTLAY NON-GAD ******************************************************************************************************************--\r\n                                     <td class=\"text-end\" :class=\"{\r\n                                        'text-danger': has_comment('Budgetary Requirements',\r\n                                        'Capital Outlay Non-GAD -Total',\r\n                                        format_number_conv(s_cap_non,2,true),\r\n                                        'budgetary_cap_non', 'revision_plans',\r\n                                        paps, paps.comments)\r\n                                    }\">{{ format_number_conv(s_cap_non,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'Capital Outlay Non-GAD -Total',\r\n                                            format_number_conv(s_cap_non,2,true),\r\n                                            'budgetary_cap_non', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            'Capital Outlay Non-GAD -Total',\r\n                                            format_number_conv(s_cap_non,2,true),\r\n                                            'budgetary_cap_non', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'Capital Outlay Non-GAD -Total',\r\n                                            format_number_conv(s_cap_non,2,true),\r\n                                            'budgetary_cap_non', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                     -- CAPITAL OUTLAY TOTAL ******************************************************************************************************************-\r\n                                    <td class=\"text-end\" :class=\"{\r\n                                            'text-danger': has_comment('Budgetary Requirements',\r\n                                            'Capital Outlay -Total',\r\n                                            format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true),\r\n                                            'budgetary_cap_total', 'revision_plans',\r\n                                            paps, paps.comments)\r\n                                        }\">{{ format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'Capital Outlay -Total',\r\n                                            format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true),\r\n                                            'budgetary_cap_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            'Capital Outlay -Total',\r\n                                            format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true),\r\n                                            'budgetary_cap_total', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'Capital Outlay -Total',\r\n                                            format_number_conv(parseFloat(s_cap_gad) + parseFloat(s_cap_non), 2,true),\r\n                                            'budgetary_cap_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td colspan=\"4\">TOTAL</td>\r\n                                    <td class=\"text-end\"\r\n                                        :class=\"{\r\n                                            'text-danger': has_comment('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\r\n                                        }\"\r\n                                        :id=\"paps.id + '_revision_plans_gad_total'\"\r\n                                    >{{  format_number_conv(tot_gad,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    <td class=\"text-end\"\r\n                                        :class=\"{\r\n                                            'text-danger': has_comment('Budgetary Requirements',\r\n                                            'Non-GAD Grand Total',\r\n                                            format_number_conv(tot_non,2,true),\r\n                                            'non_total', 'revision_plans',\r\n                                            paps, paps.comments)\r\n                                        }\"\r\n                                        :id=\"paps.id + '_revision_plans_non_total'\"\r\n                                    >{{ format_number_conv(tot_non,2,true) }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'Non-GAD Grand Total',\r\n                                            format_number_conv(tot_non,2,true),\r\n                                            'non_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            'Non-GAD Grand Total',\r\n                                            format_number_conv(tot_non,2,true),\r\n                                            'non_total', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'Non-GAD Grand Total',\r\n                                            format_number_conv(tot_non,2,true),\r\n                                            'non_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    <td class=\"text-end\"\r\n                                        :class=\"{\r\n                                            'text-danger': has_comment('Budgetary Requirements',\r\n                                            'Overall Grand Total',\r\n                                            format_number_conv(grand_total,2,true),\r\n                                            'grand_total', 'revision_plans',\r\n                                            paps, paps.comments)\r\n                                        }\"\r\n                                        :id=\"paps.id + '_revision_plans_grand_total'\"\r\n                                    >{{ format_number_conv((parseFloat(s_cap_gad) + parseFloat(s_cap_non) + parseFloat(s_ps_gad)\r\n                                    + parseFloat(s_ps_non) + parseFloat(s_mooe_gad) + parseFloat(s_mooe_non) + parseFloat(s_fe_gad) + parseFloat(s_fe_non))\r\n                                    , 2,true)\r\n                                    }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'Overall Grand Total',\r\n                                            format_number_conv(grand_total,2,true),\r\n                                            'grand_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            'Overall Grand Total',\r\n                                            format_number_conv(grand_total,2,true),\r\n                                            'grand_total', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'Overall Grand Total',\r\n                                            format_number_conv(grand_total,2,true),\r\n                                            'grand_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                    </td>\r\n                                    <td></td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_147, [_cache[129] || (_cache[129] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, 8 /* PROPS */, ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ capitalOutlay }}\r\n                        showBudgetTable: {{ showBudgetTable() }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_148, [_cache[138] || (_cache[138] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "3"
   }, "Particulars"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Account Code"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Amount"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Source")])], -1 /* CACHED */)), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.groupedBudget, function (rows, category) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", {
       key: category
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" CATEGORY HEADER "), rows.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_148, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_149, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatCategory(category)), 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DATA ROWS "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(rows, function (row) {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" CATEGORY HEADER "), rows.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_149, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_150, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatCategory(category)), 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DATA ROWS "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(rows, function (row) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
         key: row.id
-      }, [_cache[122] || (_cache[122] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[123] || (_cache[123] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" PARTICULARS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, [_cache[131] || (_cache[131] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[132] || (_cache[132] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" PARTICULARS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Budgetary Requirements', 'Particulars', row.particulars, 'particulars', 'budget_requirements', row, row.comments)
         }),
@@ -2808,7 +2901,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Particulars', row.particulars, 'particulars', 'budget_requirements', row, row.comments);
         }
-      }, " * ", 8 /* PROPS */, _hoisted_151)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_150), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ACCOUNT CODE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, " * ", 8 /* PROPS */, _hoisted_152)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_151), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ACCOUNT CODE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Budgetary Requirements', 'Account Code', row.account_code, 'account_code', 'budget_requirements', row, row.comments)
         }),
@@ -2819,7 +2912,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Account Code', row.account_code, 'account_code', 'budget_requirements', row, row.comments);
         }
-      }, " * ", 8 /* PROPS */, _hoisted_153)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_152), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" AMOUNT "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, " * ", 8 /* PROPS */, _hoisted_154)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_153), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" AMOUNT "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Budgetary Requirements', 'Amount', row.amount, 'amount', 'budget_requirements', row, row.comments)
         }),
@@ -2830,7 +2923,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Amount', row.amount, 'amount', 'budget_requirements', row, row.comments);
         }
-      }, " * ", 8 /* PROPS */, _hoisted_155)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_154), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SOURCE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, " * ", 8 /* PROPS */, _hoisted_156)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_155), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SOURCE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments)
         }),
@@ -2841,17 +2934,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments);
         }
-      }, " * ", 8 /* PROPS */, _hoisted_157)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_156)]);
-    }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TOTAL ROW "), rows.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_158, [_cache[124] || (_cache[124] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_159, "TOTAL " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatCategory(category)), 1 /* TEXT */), _cache[125] || (_cache[125] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, " ₱ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(rows.reduce(function (sum, r) {
+      }, " * ", 8 /* PROPS */, _hoisted_158)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_157)]);
+    }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TOTAL ROW "), rows.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_159, [_cache[133] || (_cache[133] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_160, "TOTAL " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatCategory(category)), 1 /* TEXT */), _cache[134] || (_cache[134] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, " ₱ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(rows.reduce(function (sum, r) {
       return sum + Number(r.amount);
-    }, 0).toLocaleString()), 1 /* TEXT */), _cache[126] || (_cache[126] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, 0).toLocaleString()), 1 /* TEXT */), _cache[135] || (_cache[135] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       colspan: "3"
     }, null, -1 /* CACHED */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
-  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr >\r\n                                <td colspan=\"4\"><h5>GAD TOTAL</h5></td>\r\n                                <td :class=\"{\r\n                                            'text-danger': has_comment('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\r\n                                        }\"\r\n                                        :id=\"paps.id + '_revision_plans_gad_total'\">\r\n                                        ₱ {{ gadBudgetTotal.toLocaleString() }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                </td>\r\n                                <td colspan=\"3\"></td>\r\n                            </tr> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[127] || (_cache[127] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr >\r\n                                <td colspan=\"4\"><h5>GAD TOTAL</h5></td>\r\n                                <td :class=\"{\r\n                                            'text-danger': has_comment('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\r\n                                        }\"\r\n                                        :id=\"paps.id + '_revision_plans_gad_total'\">\r\n                                        ₱ {{ gadBudgetTotal.toLocaleString() }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Budgetary Requirements',\r\n                                            'GAD Grand Total',\r\n                                            format_number_conv(tot_gad,2,true),\r\n                                            'gad_total', 'revision_plans',\r\n                                            paps, paps.comments)\">*\r\n                                        </button>\r\n                                </td>\r\n                                <td colspan=\"3\"></td>\r\n                            </tr> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[136] || (_cache[136] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "4"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, "TOTAL")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "₱ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.overallBudget.toLocaleString()), 1 /* TEXT */), _cache[128] || (_cache[128] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, "TOTAL")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "₱ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.overallBudget.toLocaleString()), 1 /* TEXT */), _cache[137] || (_cache[137] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "3"
-  }, null, -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr>\r\n                                    <td colspan=\"4\"><h4>TOTAL</h4></td>\r\n                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>\r\n                                    <td colspan=\"3\"></td>\r\n                                </tr>")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <table v-if=\"showBudgetTable()\" class=\"table table-hover table-bordered border-dark\">\r\n                            <thead>\r\n                                <tr class=\"bg-secondary text-white\">\r\n                                    <th colspan=\"3\">Particular</th>\r\n                                    <th>Account Code</th>\r\n                                    <th>Amount (Php)</th>\r\n                                    <th>Source</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr v-if=\"mooe_gad.length > 0 || mooe_non.length > 0\">\r\n                                    <th colspan=\"3\">Maintenance, Operating, and Other Expenses</th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"mooe_gad.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">GAD </th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"mooe_gad.length > 0\" v-for=\"dat in mooe_gad\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                <tr v-if=\"mooe_gad.length > 0\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_mooe_gad, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"mooe_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">NON-GAD </th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"mooe_non.length > 0\" v-for=\"dat in mooe_non\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                <tr v-if=\"mooe_non.length > 0\" class=\"text-bg-dark\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (NON-GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_mooe_non, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"mooe_gad.length > 0 || mooe_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"3\">SUB TOTAL (MOOE) </th>\r\n                                    <th class=\"text-end\">{{ getSum(s_mooe_gad, s_mooe_non) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_gad.length > 0 || cap_non.length > 0\">\r\n                                    <th colspan=\"3\">Capital Outlay</th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_gad.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">GAD </th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_gad.length > 0\" v-for=\"dat in cap_gad\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_gad.length > 0\" class=\"text-bg-dark\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_cap_gad, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">NON-GAD </th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_non.length > 0\" v-for=\"dat in cap_non\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_non.length > 0\" class=\"text-bg-dark\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (NON-GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_cap_non, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_gad.length > 0 || cap_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"3\">SUB TOTAL (Capital Outlay) </th>\r\n                                    <th class=\"text-end\">{{ getSum(s_cap_gad, s_cap_non) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_gad.length > 0 || ps_non.length > 0\">\r\n                                    <th colspan=\"3\">Personnel Services</th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_gad.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">GAD </th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_gad.length > 0\" v-for=\"dat in ps_gad\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_gad.length > 0\" class=\"text-bg-dark\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_ps_gad, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">NON-GAD</th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_non.length > 0\" v-for=\"dat in ps_non\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_non.length > 0\" class=\"text-bg-dark\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (NON-GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_ps_non, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_gad.length > 0 || ps_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"3\">SUB TOTAL (Personnel Services) </th>\r\n                                    <th class=\"text-end\">{{ getSum(s_ps_gad, s_ps_non) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <th colspan=\"4\">GRAND TOTAL</th>\r\n                                    <th class=\"text-end\">{{ getBudgetTotal() }}</th>\r\n                                    <th></th>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-else>\r\n                            <span style=\"color:red; font-weight: bold;\">\r\n                                This Project has no budgetary requirements! <br>\r\n                                Click\r\n                                <Link :href=\"`/budget/${paps.id}`\">here</Link> to edit budgetary requirements.\r\n                            </span>\r\n                        </div> "), _cache[130] || (_cache[130] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("IMPLEMENTING TEAM v-if=\"team_members.length > 0 || paps.implementing_team !== null\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_160, [_cache[132] || (_cache[132] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" VII. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, null, -1 /* CACHED */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr>\r\n                                    <td colspan=\"4\"><h4>TOTAL</h4></td>\r\n                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>\r\n                                    <td colspan=\"3\"></td>\r\n                                </tr>")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <table v-if=\"showBudgetTable()\" class=\"table table-hover table-bordered border-dark\">\r\n                            <thead>\r\n                                <tr class=\"bg-secondary text-white\">\r\n                                    <th colspan=\"3\">Particular</th>\r\n                                    <th>Account Code</th>\r\n                                    <th>Amount (Php)</th>\r\n                                    <th>Source</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr v-if=\"mooe_gad.length > 0 || mooe_non.length > 0\">\r\n                                    <th colspan=\"3\">Maintenance, Operating, and Other Expenses</th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"mooe_gad.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">GAD </th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <template v-if=\"mooe_gad.length > 0\">\r\n                                <tr v-for=\"dat in mooe_gad\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                </template>\r\n                                <tr v-if=\"mooe_gad.length > 0\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_mooe_gad, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"mooe_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">NON-GAD </th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <template v-if=\"mooe_non.length > 0\">\r\n                                <tr v-for=\"dat in mooe_non\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                </template>\r\n                                <tr v-if=\"mooe_non.length > 0\" class=\"text-bg-dark\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (NON-GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_mooe_non, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"mooe_gad.length > 0 || mooe_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"3\">SUB TOTAL (MOOE) </th>\r\n                                    <th class=\"text-end\">{{ getSum(s_mooe_gad, s_mooe_non) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_gad.length > 0 || cap_non.length > 0\">\r\n                                    <th colspan=\"3\">Capital Outlay</th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_gad.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">GAD </th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <template v-if=\"cap_gad.length > 0\">\r\n                                <tr v-for=\"dat in cap_gad\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                </template>\r\n                                <tr v-if=\"cap_gad.length > 0\" class=\"text-bg-dark\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_cap_gad, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">NON-GAD </th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <template v-if=\"cap_non.length > 0\">\r\n                                <tr v-for=\"dat in cap_non\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                </template>\r\n                                <tr v-if=\"cap_non.length > 0\" class=\"text-bg-dark\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (NON-GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_cap_non, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"cap_gad.length > 0 || cap_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"3\">SUB TOTAL (Capital Outlay) </th>\r\n                                    <th class=\"text-end\">{{ getSum(s_cap_gad, s_cap_non) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_gad.length > 0 || ps_non.length > 0\">\r\n                                    <th colspan=\"3\">Personnel Services</th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_gad.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">GAD </th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <template v-if=\"ps_gad.length > 0\">\r\n                                <tr v-for=\"dat in ps_gad\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                </template>\r\n                                <tr v-if=\"ps_gad.length > 0\" class=\"text-bg-dark\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_ps_gad, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">NON-GAD</th>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <template v-if=\"ps_non.length > 0\">\r\n                                <tr v-for=\"dat in ps_non\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td>{{ dat.particulars }}</td>\r\n                                    <td>{{ dat.account_code }}</td>\r\n                                    <td class=\"text-end\">{{ format_number_conv(dat.amount, 2, true) }}</td>\r\n                                    <td>{{ dat.source }}</td>\r\n                                </tr>\r\n                                </template>\r\n                                <tr v-if=\"ps_non.length > 0\" class=\"text-bg-dark\">\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <th colspan=\"2\">SUB TOTAL (NON-GAD) </th>\r\n                                    <th class=\"text-end\">{{ format_number_conv(s_ps_non, 2, true) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr v-if=\"ps_gad.length > 0 || ps_non.length > 0\">\r\n                                    <td></td>\r\n                                    <th colspan=\"3\">SUB TOTAL (Personnel Services) </th>\r\n                                    <th class=\"text-end\">{{ getSum(s_ps_gad, s_ps_non) }}</th>\r\n                                    <td></td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <th colspan=\"4\">GRAND TOTAL</th>\r\n                                    <th class=\"text-end\">{{ getBudgetTotal() }}</th>\r\n                                    <th></th>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-else>\r\n                            <span style=\"color:red; font-weight: bold;\">\r\n                                This Project has no budgetary requirements! <br>\r\n                                Click\r\n                                <Link :href=\"`/budget/${paps.id}`\">here</Link> to edit budgetary requirements.\r\n                            </span>\r\n                        </div> "), _cache[139] || (_cache[139] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("IMPLEMENTING TEAM v-if=\"team_members.length > 0 || paps.implementing_team !== null\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_161, [_cache[141] || (_cache[141] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" VII. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: $props.department_code_user === '04' || $props.department_code_user === $props.department_code_project ? "/team/".concat($props.paps.id, "/revision/plan/team") : null,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-danger': $options.has_comment('Implementing Team', 'implementing team', $props.paps.rationale, 'implementing_team', 'revision_plans', $props.paps, $props.paps.comments)
@@ -2859,24 +2952,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: $props.paps.id + '_revision_plans_implementing_team'
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[131] || (_cache[131] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Implementing Team", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[140] || (_cache[140] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Implementing Team", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
   }, 8 /* PROPS */, ["href", "class", "id"]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "superscript-btn",
-    onClick: _cache[47] || (_cache[47] = function ($event) {
+    onClick: _cache[49] || (_cache[49] = function ($event) {
       return $options.handleClick('Implementing Team', 'implementing team', $props.paps.implementing_team, 'implementing_team', 'revision_plans', $props.paps, $props.paps.comments);
     })
   }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Implementing Team', 'implementing team', $props.paps.implementing_team, 'implementing_team', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "superscript-btn",
-    onClick: _cache[48] || (_cache[48] = function ($event) {
+    onClick: _cache[50] || (_cache[50] = function ($event) {
       return $options.handleClick('Implementing Team', 'implementing team', $props.paps.implementing_team, 'implementing_team', 'revision_plans', $props.paps, $props.paps.comments);
     })
-  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_161, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ paps.implementing_team }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_162, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ paps.implementing_team }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     innerHTML: $props.paps.implementing_team
-  }, null, 8 /* PROPS */, _hoisted_162), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td colspan=\"6\" :class=\"{\r\n                            'text-danger': has_comment('Title', paps.project_title, paps.project_title, 'project_title', 'revision_plans', paps, paps.comments)\r\n                        }\">\r\n                            {{ paps.project_title }}\r\n                            <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                @click=\"handleClick('Title',paps.project_title,paps.project_title,'project_title','revision_plans', paps, paps.comments)\">*\r\n                            </button>\r\n                            <button v-if=\"has_comment('Title',paps.project_title,paps.project_title,'project_title','revision_plans', paps, paps.comments)\" class=\"superscript-btn\"\r\n                                @click=\"handleClick('Title',paps.project_title,paps.project_title,'project_title','revision_plans', paps, paps.comments)\">*\r\n                            </button>\r\n                        </td> ")]), $props.team_members.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_163, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_164, [_cache[133] || (_cache[133] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+  }, null, 8 /* PROPS */, _hoisted_163), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td colspan=\"6\" :class=\"{\r\n                            'text-danger': has_comment('Title', paps.project_title, paps.project_title, 'project_title', 'revision_plans', paps, paps.comments)\r\n                        }\">\r\n                            {{ paps.project_title }}\r\n                            <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                @click=\"handleClick('Title',paps.project_title,paps.project_title,'project_title','revision_plans', paps, paps.comments)\">*\r\n                            </button>\r\n                            <button v-if=\"has_comment('Title',paps.project_title,paps.project_title,'project_title','revision_plans', paps, paps.comments)\" class=\"superscript-btn\"\r\n                                @click=\"handleClick('Title',paps.project_title,paps.project_title,'project_title','revision_plans', paps, paps.comments)\">*\r\n                            </button>\r\n                        </td> ")]), $props.team_members.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_164, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_165, [_cache[142] || (_cache[142] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
     "class": "bg-secondary text-white"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "No."), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Name"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gender"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Position"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Employment Status"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th>Role</th> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "GAD-related trainings")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.team_members, function (team_member, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
@@ -2892,13 +2985,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Team Plan', 'Name', team_member.name, 'name', 'team_plans', team_member, team_member.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_166)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Team Plan', 'Name', team_member.name, 'name', 'team_plans', team_member, team_member.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_167)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Team Plan', 'Name', team_member.name, 'name', 'team_plans', team_member, team_member.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Team Plan', 'Name', team_member.name, 'name', 'team_plans', team_member, team_member.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_167)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_165), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Gender "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(team_member.gender), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Position "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, "* ", 8 /* PROPS */, _hoisted_168)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_166), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Gender "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(team_member.gender), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Position "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       id: team_member.id + '_team_plans_position',
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Team Plan', 'Position', team_member.position, 'position', 'team_plans', team_member, team_member.comments)
@@ -2909,30 +3002,30 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Team Plan', 'Position', team_member.position, 'position', 'team_plans', team_member, team_member.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_169)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Team Plan', 'Position', team_member.position, 'position', 'team_plans', team_member, team_member.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_170)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Team Plan', 'Position', team_member.position, 'position', 'team_plans', team_member, team_member.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Team Plan', 'Position', team_member.position, 'position', 'team_plans', team_member, team_member.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_170)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_168), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Employment Status "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, "* ", 8 /* PROPS */, _hoisted_171)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_169), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Employment Status "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       id: team_member.id + '_team_plans_status',
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Team Plan', 'status', team_member.status, 'status', 'team_plans', team_member, team_member.comments)
       })
-    }, [team_member.status === 'Regular' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_172, "Permanent")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_173, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(team_member.status), 1 /* TEXT */)), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, [team_member.status === 'Regular' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_173, "Permanent")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_174, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(team_member.status), 1 /* TEXT */)), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 2,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Team Plan', 'status', team_member.status, 'status', 'team_plans', team_member, team_member.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_174)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Team Plan', 'status', team_member.status, 'status', 'team_plans', team_member, team_member.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_175)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Team Plan', 'status', team_member.status, 'status', 'team_plans', team_member, team_member.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 3,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Team Plan', 'status', team_member.status, 'status', 'team_plans', team_member, team_member.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_175)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_171), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Competency "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td :class=\"{\r\n                                                'text-danger': has_comment('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)\r\n                                            }\">{{ team_member.competency }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)\">*\r\n                                        </button>\r\n                                    </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td :class=\"{\r\n                                                'text-danger': has_comment('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)\r\n                                            }\">{{ team_member.role }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)\">*\r\n                                        </button>\r\n                                    </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, "* ", 8 /* PROPS */, _hoisted_176)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_172), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Competency "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td :class=\"{\r\n                                                'text-danger': has_comment('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)\r\n                                            }\">{{ team_member.competency }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Team Plan','competency',team_member.competency,'competency','team_plans', team_member, team_member.comments)\">*\r\n                                        </button>\r\n                                    </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td :class=\"{\r\n                                                'text-danger': has_comment('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)\r\n                                            }\">{{ team_member.role }}\r\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)\">*\r\n                                        </button>\r\n                                        <button v-if=\"has_comment('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)\" class=\"superscript-btn\"\r\n                                            @click=\"handleClick('Team Plan','role',team_member.role,'role','team_plans', team_member, team_member.comments)\">*\r\n                                        </button>\r\n                                    </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Team Plan', 'with_gad_training', team_member.with_gad_training, 'with_gad_training', 'team_plans', team_member, team_member.comments)
       }),
@@ -2943,37 +3036,69 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Team Plan', 'with_gad_training', team_member.with_gad_training, 'with_gad_training', 'team_plans', team_member, team_member.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_177)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Team Plan', 'with_gad_training', team_member.with_gad_training, 'with_gad_training', 'team_plans', team_member, team_member.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_178)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Team Plan', 'with_gad_training', team_member.with_gad_training, 'with_gad_training', 'team_plans', team_member, team_member.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Team Plan', 'with_gad_training', team_member.with_gad_training, 'with_gad_training', 'team_plans', team_member, team_member.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_178)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_176)]);
-  }), 128 /* KEYED_FRAGMENT */))])]), _cache[134] || (_cache[134] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_179, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_180, [_cache[136] || (_cache[136] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" This Project has no recorded members of the implementation team! ", -1 /* CACHED */)), _cache[137] || (_cache[137] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[138] || (_cache[138] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Click ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    }, "* ", 8 /* PROPS */, _hoisted_179)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_177)]);
+  }), 128 /* KEYED_FRAGMENT */))])]), _cache[143] || (_cache[143] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_180, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_181, [_cache[145] || (_cache[145] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" This Project has no recorded members of the implementation team! ", -1 /* CACHED */)), _cache[146] || (_cache[146] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[147] || (_cache[147] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Click ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/team/".concat($props.paps.id, "/revision/plan/team")
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[135] || (_cache[135] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("here", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[144] || (_cache[144] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("here", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"]), _cache[139] || (_cache[139] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" to edit implementation team. ", -1 /* CACHED */))]), _cache[140] || (_cache[140] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])), _cache[173] || (_cache[173] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("PARTNERSHIP & SUSTAINABILITY"), $props.paps.partnership !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_181, [_cache[142] || (_cache[142] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" VIII. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, null, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[141] || (_cache[141] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Partnership and Sustainability", -1 /* CACHED */)]));
+  }, 8 /* PROPS */, ["href"]), _cache[148] || (_cache[148] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" to edit implementation team. ", -1 /* CACHED */))]), _cache[149] || (_cache[149] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])), _cache[182] || (_cache[182] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("PARTNERSHIP & SUSTAINABILITY"), $props.paps.partnership !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_182, [_cache[151] || (_cache[151] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" VIII. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+      'text-danger': $options.has_comment('Partnership and Sustainability', 'Partnership and Sustainability', $props.paps.partnership, 'partnership', 'revision_plans', $props.paps, $props.paps.comments)
     }),
-    _: 1 /* STABLE */
-  })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_182, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    innerHTML: $props.paps.partnership
-  }, null, 8 /* PROPS */, _hoisted_183)]), _cache[174] || (_cache[174] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[175] || (_cache[175] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("MONITORING & EVALUATION"), $props.monitors.length > 0 || $props.paps.monitoring !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_184, [_cache[144] || (_cache[144] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" IX. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    href: $props.department_code_user === '04' || $props.department_code_user === $props.department_code_project ? "/EvaluationMechanismTool/".concat($props.paps.id) : null
+    id: $props.paps.id + '_revision_plans_partnership'
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[143] || (_cache[143] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Monitoring and Evaluation", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[150] || (_cache[150] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Partnership and Sustainability", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_185, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, 8 /* PROPS */, ["class", "id"]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
+    "class": "superscript-btn",
+    onClick: _cache[51] || (_cache[51] = function ($event) {
+      return $options.handleClick('Partnership and Sustainability', 'Partnership and Sustainability', $props.paps.partnership, 'partnership', 'revision_plans', $props.paps, $props.paps.comments);
+    })
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Partnership and Sustainability', 'Partnership and Sustainability', $props.paps.partnership, 'partnership', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 1,
+    "class": "superscript-btn",
+    onClick: _cache[52] || (_cache[52] = function ($event) {
+      return $options.handleClick('Partnership and Sustainability', 'Partnership and Sustainability', $props.paps.partnership, 'partnership', 'revision_plans', $props.paps, $props.paps.comments);
+    })
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_183, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    innerHTML: $props.paps.partnership
+  }, null, 8 /* PROPS */, _hoisted_184)]), _cache[183] || (_cache[183] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[184] || (_cache[184] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("MONITORING & EVALUATION"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <h3 id=\"monitoring_evaluation\" v-if=\"monitors.length > 0 || paps.monitoring !== null\">\r\n                        IX. <Link :href=\"(department_code_user === '04' || department_code_user === department_code_project)\r\n                            ? `/EvaluationMechanismTool/${paps.id}`:null\">Monitoring and Evaluation</Link>\r\n                    </h3> "), $props.monitors.length > 0 || $props.paps.monitoring !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_185, [_cache[153] || (_cache[153] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" IX. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    id: $props.paps.id + '_revision_plans_monitoring',
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+      'text-danger': $options.has_comment('Monitoring and Evaluation', 'Monitoring and Evaluation', $props.paps.monitoring, 'monitoring', 'revision_plans', $props.paps, $props.paps.comments)
+    })
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return _toConsumableArray(_cache[152] || (_cache[152] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Monitoring and Evaluation", -1 /* CACHED */)]));
+    }),
+    _: 1 /* STABLE */
+  }, 8 /* PROPS */, ["id", "class"]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
+    "class": "superscript-btn",
+    onClick: _cache[53] || (_cache[53] = function ($event) {
+      return $options.handleClick('Monitoring and Evaluation', 'Monitoring and Evaluation', $props.paps.monitoring, 'monitoring', 'revision_plans', $props.paps, $props.paps.comments);
+    })
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Monitoring and Evaluation', 'Monitoring and Evaluation', $props.paps.monitoring, 'monitoring', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 1,
+    "class": "superscript-btn",
+    onClick: _cache[54] || (_cache[54] = function ($event) {
+      return $options.handleClick('Monitoring and Evaluation', 'Monitoring and Evaluation', $props.paps.monitoring, 'monitoring', 'revision_plans', $props.paps, $props.paps.comments);
+    })
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_186, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     innerHTML: $props.paps.monitoring
-  }, null, 8 /* PROPS */, _hoisted_186)]), $props.monitors.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_187, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_188, [_cache[145] || (_cache[145] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+  }, null, 8 /* PROPS */, _hoisted_187)]), $props.monitors.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_188, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_189, [_cache[154] || (_cache[154] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
     "class": "bg-secondary text-white"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Evaluation Mechanism/Tools"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "OPR and their Roles"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Target Beneficiaries"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Need for External M&E Team or GAD Expert/Consultant")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.monitors, function (monitor) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" M&E Evaluation Mechanism Tool "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
@@ -2987,13 +3112,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Monitoring and Evaluation', 'Evaluation Mechanism Tool', monitor.evaluation_mechanism_tool, 'evaluation_mechanism_tool', 'monitoring_and_evaluations', monitor, monitor.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_190)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Monitoring and Evaluation', 'Evaluation Mechanism Tool', monitor.evaluation_mechanism_tool, 'evaluation_mechanism_tool', 'monitoring_and_evaluations', monitor, monitor.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_191)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Monitoring and Evaluation', 'Evaluation Mechanism Tool', monitor.evaluation_mechanism_tool, 'evaluation_mechanism_tool', 'monitoring_and_evaluations', monitor, monitor.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Monitoring and Evaluation', 'Evaluation Mechanism Tool', monitor.evaluation_mechanism_tool, 'evaluation_mechanism_tool', 'monitoring_and_evaluations', monitor, monitor.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_191)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_189), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" M&E OPR and their roles "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, "* ", 8 /* PROPS */, _hoisted_192)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_190), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" M&E OPR and their roles "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Monitoring and Evaluation', 'OPCR & their roles', monitor.opr, 'opr', 'monitoring_and_evaluations', monitor, monitor.comments)
       }),
@@ -3004,13 +3129,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Monitoring and Evaluation', 'OPCR & their roles', monitor.opr, 'opr', 'monitoring_and_evaluations', monitor, monitor.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_193)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Monitoring and Evaluation', 'OPCR & their roles', monitor.opr, 'opr', 'monitoring_and_evaluations', monitor, monitor.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_194)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Monitoring and Evaluation', 'OPCR & their roles', monitor.opr, 'opr', 'monitoring_and_evaluations', monitor, monitor.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Monitoring and Evaluation', 'OPCR & their roles', monitor.opr, 'opr', 'monitoring_and_evaluations', monitor, monitor.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_194)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_192), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" M&E Target Beneficiaries "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, "* ", 8 /* PROPS */, _hoisted_195)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_193), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" M&E Target Beneficiaries "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Monitoring and Evaluation', 'Target Beneficiaries', monitor.target_beneficiaries, 'target_beneficiaries', 'monitoring_and_evaluations', monitor, monitor.comments)
       }),
@@ -3021,13 +3146,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Monitoring and Evaluation', 'Target Beneficiaries', monitor.target_beneficiaries, 'target_beneficiaries', 'monitoring_and_evaluations', monitor, monitor.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_196)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Monitoring and Evaluation', 'Target Beneficiaries', monitor.target_beneficiaries, 'target_beneficiaries', 'monitoring_and_evaluations', monitor, monitor.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_197)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Monitoring and Evaluation', 'Target Beneficiaries', monitor.target_beneficiaries, 'target_beneficiaries', 'monitoring_and_evaluations', monitor, monitor.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Monitoring and Evaluation', 'Target Beneficiaries', monitor.target_beneficiaries, 'target_beneficiaries', 'monitoring_and_evaluations', monitor, monitor.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_197)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_195), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" M&E GAD Expert/Consultant "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, "* ", 8 /* PROPS */, _hoisted_198)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_196), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" M&E GAD Expert/Consultant "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Monitoring and Evaluation', 'Target Beneficiaries', monitor.gad, 'gad', 'monitoring_and_evaluations', monitor, monitor.comments)
       }),
@@ -3038,30 +3163,46 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Monitoring and Evaluation', 'Target Beneficiaries', monitor.gad, 'gad', 'monitoring_and_evaluations', monitor, monitor.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_199)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Monitoring and Evaluation', 'Target Beneficiaries', monitor.gad, 'gad', 'monitoring_and_evaluations', monitor, monitor.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_200)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Monitoring and Evaluation', 'Target Beneficiaries', monitor.gad, 'gad', 'monitoring_and_evaluations', monitor, monitor.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Monitoring and Evaluation', 'Target Beneficiaries', monitor.gad, 'gad', 'monitoring_and_evaluations', monitor, monitor.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_200)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_198)]);
-  }), 256 /* UNKEYED_FRAGMENT */))])]), _cache[146] || (_cache[146] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_201, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_202, [_cache[148] || (_cache[148] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" The project has no recorded data for monitoring and evaluation! ", -1 /* CACHED */)), _cache[149] || (_cache[149] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[150] || (_cache[150] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Click ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    }, "* ", 8 /* PROPS */, _hoisted_201)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_199)]);
+  }), 256 /* UNKEYED_FRAGMENT */))])]), _cache[155] || (_cache[155] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_202, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_203, [_cache[157] || (_cache[157] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" The project has no recorded data for monitoring and evaluation! ", -1 /* CACHED */)), _cache[158] || (_cache[158] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[159] || (_cache[159] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Click ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/EvaluationMechanismTool/".concat($props.paps.id)
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[147] || (_cache[147] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("here", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[156] || (_cache[156] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("here", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"]), _cache[151] || (_cache[151] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" to edit monitoring and evaluation. ", -1 /* CACHED */))]), _cache[152] || (_cache[152] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[153] || (_cache[153] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("RISK MANAGEMENT"), $props.risks.length > 0 || $props.paps.risk_management !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_203, [_cache[155] || (_cache[155] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" X. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    href: $props.department_code_user === '04' || $props.department_code_user === $props.department_code_project ? "/RiskManagement/".concat($props.paps.id) : null
+  }, 8 /* PROPS */, ["href"]), _cache[160] || (_cache[160] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" to edit monitoring and evaluation. ", -1 /* CACHED */))]), _cache[161] || (_cache[161] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[162] || (_cache[162] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("RISK MANAGEMENT"), $props.risks.length > 0 || $props.paps.risk_management !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_204, [_cache[164] || (_cache[164] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" X. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    href: $props.department_code_user === '04' || $props.department_code_user === $props.department_code_project ? "/RiskManagement/".concat($props.paps.id) : null,
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+      'text-danger': $options.has_comment('Risk Management', 'Risk Management', $props.paps.risk_management, 'risk_management', 'revision_plans', $props.paps, $props.paps.comments)
+    }),
+    id: $props.paps.id + '_revision_plans_risk_management'
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[154] || (_cache[154] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Risk Management", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[163] || (_cache[163] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Risk Management", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_204, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, 8 /* PROPS */, ["href", "class", "id"]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
+    "class": "superscript-btn",
+    onClick: _cache[55] || (_cache[55] = function ($event) {
+      return $options.handleClick('Risk Management', 'Risk Management', $props.paps.risk_management, 'risk_management', 'revision_plans', $props.paps, $props.paps.comments);
+    })
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Risk Management', 'Risk Management', $props.paps.risk_management, 'risk_management', 'revision_plans', $props.paps, $props.paps.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 1,
+    "class": "superscript-btn",
+    onClick: _cache[56] || (_cache[56] = function ($event) {
+      return $options.handleClick('Risk Management', 'Risk Management', $props.paps.risk_management, 'risk_management', 'revision_plans', $props.paps, $props.paps.comments);
+    })
+  }, "* ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_205, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     innerHTML: $props.paps.risk_management
-  }, null, 8 /* PROPS */, _hoisted_205)]), $props.risks.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_206, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_207, [_cache[156] || (_cache[156] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+  }, null, 8 /* PROPS */, _hoisted_206)]), $props.risks.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_207, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_208, [_cache[165] || (_cache[165] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
     "class": "bg-secondary text-white"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Prospective Possible Risks"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Preventive Measures"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Mechanisms to monitor")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.risks, function (risk) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Risk Management -Possible Risks "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
@@ -3072,65 +3213,65 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ has_comment('Risk Management','Possible Risks',risk.possible_risk,'possible_risk','risk_manangements', risk, risk.comments) }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <span v-html=\"risk.possible_risk\"></span> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       innerHTML: risk.possible_risk,
       style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)($options.has_comment('Risk Management', 'Possible Risks', risk.possible_risk, 'possible_risk', 'risk_manangements', risk, risk.comments) ? 'color:red !important;' : '')
-    }, null, 12 /* STYLE, PROPS */, _hoisted_209), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, null, 12 /* STYLE, PROPS */, _hoisted_210), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Risk Management', 'Possible Risks', risk.possible_risk, 'possible_risk', 'risk_manangements', risk, risk.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_210)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Risk Management', 'Possible Risks', risk.possible_risk, 'possible_risk', 'risk_manangements', risk, risk.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_211)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Risk Management', 'Possible Risks', risk.possible_risk, 'possible_risk', 'risk_manangements', risk, risk.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Risk Management', 'Possible Risks', risk.possible_risk, 'possible_risk', 'risk_manangements', risk, risk.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_211)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_208), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Risk Management -Person Affected "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, "* ", 8 /* PROPS */, _hoisted_212)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_209), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Risk Management -Person Affected "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Risk Management', 'Person Affected', risk.person_affected, 'person_affected', 'risk_manangements', risk, risk.comments)
       }),
       id: risk.id + '_risk_manangements_person_affected'
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       innerHTML: risk.person_affected
-    }, null, 8 /* PROPS */, _hoisted_213), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, null, 8 /* PROPS */, _hoisted_214), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Risk Management', 'Person Affected', risk.person_affected, 'person_affected', 'risk_manangements', risk, risk.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_214)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Risk Management', 'Person Affected', risk.person_affected, 'person_affected', 'risk_manangements', risk, risk.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_215)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Risk Management', 'Person Affected', risk.person_affected, 'person_affected', 'risk_manangements', risk, risk.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Risk Management', 'Person Affected', risk.person_affected, 'person_affected', 'risk_manangements', risk, risk.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_215)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_212), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Risk Management -Management "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, "* ", 8 /* PROPS */, _hoisted_216)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_213), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Risk Management -Management "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Risk Management', 'Management', risk.management, 'management', 'risk_manangements', risk, risk.comments)
       }),
       id: risk.id + '_risk_manangements_management'
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       innerHTML: risk.management
-    }, null, 8 /* PROPS */, _hoisted_217), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, null, 8 /* PROPS */, _hoisted_218), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Risk Management', 'Management', risk.management, 'management', 'risk_manangements', risk, risk.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_218)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Risk Management', 'Management', risk.management, 'management', 'risk_manangements', risk, risk.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_219)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Risk Management', 'Management', risk.management, 'management', 'risk_manangements', risk, risk.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Risk Management', 'Management', risk.management, 'management', 'risk_manangements', risk, risk.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_219)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_216)]);
-  }), 256 /* UNKEYED_FRAGMENT */))])]), _cache[157] || (_cache[157] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_220, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_221, [_cache[159] || (_cache[159] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" The project has no recorded data for risk management! ", -1 /* CACHED */)), _cache[160] || (_cache[160] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[161] || (_cache[161] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Click ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    }, "* ", 8 /* PROPS */, _hoisted_220)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_217)]);
+  }), 256 /* UNKEYED_FRAGMENT */))])]), _cache[166] || (_cache[166] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_221, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_222, [_cache[168] || (_cache[168] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" The project has no recorded data for risk management! ", -1 /* CACHED */)), _cache[169] || (_cache[169] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[170] || (_cache[170] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Click ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/RiskManagement/".concat($props.paps.id)
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _toConsumableArray(_cache[158] || (_cache[158] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("here", -1 /* CACHED */)]));
+      return _toConsumableArray(_cache[167] || (_cache[167] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("here", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"]), _cache[162] || (_cache[162] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" to edit risk management. ", -1 /* CACHED */))]), _cache[163] || (_cache[163] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[164] || (_cache[164] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("SIGNATORIES class=\"signatory-card\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_222, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.signatories, function (signatory, index) {
+  }, 8 /* PROPS */, ["href"]), _cache[171] || (_cache[171] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" to edit risk management. ", -1 /* CACHED */))]), _cache[172] || (_cache[172] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[173] || (_cache[173] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("SIGNATORIES class=\"signatory-card\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_223, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.signatories, function (signatory, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['signatory-card', signatory.acted !== 'Prepared' && signatory.acted !== 'Reviewed' ? 'signatory-card-full' : 'signatory-card'])
@@ -3139,19 +3280,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         'text-danger': $options.has_comment('Signatories', 'Acted', signatory.acted, 'acted', 'signatories', signatory, signatory.comments)
       }),
       id: signatory.id + '_signatories_acted'
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(signatory.acted) + " ", 1 /* TEXT */), signatory.acted === 'Prepared' || signatory.acted === 'Reviewed' || signatory.acted === 'Noted' || signatory.acted === 'Approved' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_224, "by: ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(signatory.acted) + " ", 1 /* TEXT */), signatory.acted === 'Prepared' || signatory.acted === 'Reviewed' || signatory.acted === 'Noted' || signatory.acted === 'Approved' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_225, "by: ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Signatories', 'Acted', signatory.acted, 'acted', 'signatories', signatory, signatory.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_225)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Signatories', 'Acted', signatory.acted, 'acted', 'signatories', signatory, signatory.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_226)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Signatories', 'Acted', signatory.acted, 'acted', 'signatories', signatory, signatory.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 2,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Signatories', 'Acted', signatory.acted, 'acted', 'signatories', signatory, signatory.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_226)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _cache[165] || (_cache[165] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[166] || (_cache[166] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))], 10 /* CLASS, PROPS */, _hoisted_223), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    }, "* ", 8 /* PROPS */, _hoisted_227)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _cache[174] || (_cache[174] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[175] || (_cache[175] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))], 10 /* CLASS, PROPS */, _hoisted_224), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-decoration-underline", {
         'text-danger': $options.has_comment('Signatories', 'Name', signatory.name, 'name', 'signatories', signatory, signatory.comments)
       }]),
@@ -3162,13 +3303,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Signatories', 'Name', signatory.name, 'name', 'signatories', signatory, signatory.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_228)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Signatories', 'Name', signatory.name, 'name', 'signatories', signatory, signatory.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_229)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Signatories', 'Name', signatory.name, 'name', 'signatories', signatory, signatory.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Signatories', 'Name', signatory.name, 'name', 'signatories', signatory, signatory.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_229)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_227), _cache[167] || (_cache[167] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    }, "* ", 8 /* PROPS */, _hoisted_230)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_228), _cache[176] || (_cache[176] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'text-danger': $options.has_comment('Signatories', 'Position', signatory.position, 'position', 'signatories', signatory, signatory.comments)
       }),
@@ -3179,19 +3320,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.handleClick('Signatories', 'Position', signatory.position, 'position', 'signatories', signatory, signatory.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_231)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Signatories', 'Position', signatory.position, 'position', 'signatories', signatory, signatory.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_232)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Signatories', 'Position', signatory.position, 'position', 'signatories', signatory, signatory.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 1,
       "class": "superscript-btn",
       onClick: function onClick($event) {
         return $options.handleClick('Signatories', 'Position', signatory.position, 'position', 'signatories', signatory, signatory.comments);
       }
-    }, "* ", 8 /* PROPS */, _hoisted_232)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_230), _cache[168] || (_cache[168] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[169] || (_cache[169] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[170] || (_cache[170] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[171] || (_cache[171] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))], 2 /* CLASS */);
-  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-if=\"paps.type === 'p'\">\r\n                        <table class=\"table table-borderless no-border-table\">\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>\r\n                                        <span v-if=\"sig_prep\">\r\n                                            Prepared by:<br><br>\r\n                                            <span v-if=\"sig_prep\" class=\"text-decoration-underline\"><b>{{ sig_prep.name\r\n                                            }}</b></span>\r\n                                            <br>{{ sig_prep.position }}\r\n                                        </span>\r\n                                    </td>\r\n                                    <td>\r\n                                        <span v-if=\"sig_rev\">\r\n                                            Reviewed by:<br><br>\r\n                                            <span v-if=\"sig_rev\" class=\"text-decoration-underline\"><b>{{ sig_rev.name\r\n                                            }}</b></span>\r\n                                            <br>{{ sig_rev.position }}\r\n                                        </span>\r\n                                    </td>\r\n                                </tr>\r\n\r\n\r\n                                <tr>\r\n                                    <td>\r\n                                        <span v-if=\"Object.keys(sig_app).length > 0\">\r\n                                            <br><br>\r\n                                            Approved by:<br><br>\r\n                                            <span v-if=\"sig_app\" class=\"text-decoration-underline\"><b>{{ sig_app[0].name\r\n                                            }}</b>\r\n                                            </span>\r\n                                            <br>{{ sig_app[0].position }}\r\n                                        </span>\r\n                                    </td>\r\n                                    <td>\r\n                                        <span v-if=\"Object.keys(sig_app).length > 1\">\r\n                                            <br><br>\r\n                                            <span v-if=\"Object.keys(sig_app).length > 1\">\r\n                                                Approved by:<br><br>\r\n                                                <span v-if=\"sig_app\" class=\"text-decoration-underline\"><b>{{ sig_app[1].name\r\n                                                }}</b></span>\r\n                                                <br>{{ sig_app[1].position }}\r\n                                            </span>\r\n                                        </span>\r\n                                    </td>\r\n                                </tr>\r\n\r\n                            </tbody>\r\n                        </table>\r\n                    </div> ")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" NAVIGATION -COMMENTS/SECTIONS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_233, [!$data.showComments ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_234, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, "* ", 8 /* PROPS */, _hoisted_233)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_231), _cache[177] || (_cache[177] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[178] || (_cache[178] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[179] || (_cache[179] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[180] || (_cache[180] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */))], 2 /* CLASS */);
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-if=\"paps.type === 'p'\">\r\n                        <table class=\"table table-borderless no-border-table\">\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>\r\n                                        <span v-if=\"sig_prep\">\r\n                                            Prepared by:<br><br>\r\n                                            <span v-if=\"sig_prep\" class=\"text-decoration-underline\"><b>{{ sig_prep.name\r\n                                            }}</b></span>\r\n                                            <br>{{ sig_prep.position }}\r\n                                        </span>\r\n                                    </td>\r\n                                    <td>\r\n                                        <span v-if=\"sig_rev\">\r\n                                            Reviewed by:<br><br>\r\n                                            <span v-if=\"sig_rev\" class=\"text-decoration-underline\"><b>{{ sig_rev.name\r\n                                            }}</b></span>\r\n                                            <br>{{ sig_rev.position }}\r\n                                        </span>\r\n                                    </td>\r\n                                </tr>\r\n\r\n\r\n                                <tr>\r\n                                    <td>\r\n                                        <span v-if=\"Object.keys(sig_app).length > 0\">\r\n                                            <br><br>\r\n                                            Approved by:<br><br>\r\n                                            <span v-if=\"sig_app\" class=\"text-decoration-underline\"><b>{{ sig_app[0].name\r\n                                            }}</b>\r\n                                            </span>\r\n                                            <br>{{ sig_app[0].position }}\r\n                                        </span>\r\n                                    </td>\r\n                                    <td>\r\n                                        <span v-if=\"Object.keys(sig_app).length > 1\">\r\n                                            <br><br>\r\n                                            <span v-if=\"Object.keys(sig_app).length > 1\">\r\n                                                Approved by:<br><br>\r\n                                                <span v-if=\"sig_app\" class=\"text-decoration-underline\"><b>{{ sig_app[1].name\r\n                                                }}</b></span>\r\n                                                <br>{{ sig_app[1].position }}\r\n                                            </span>\r\n                                        </span>\r\n                                    </td>\r\n                                </tr>\r\n\r\n                            </tbody>\r\n                        </table>\r\n                    </div> ")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" NAVIGATION -COMMENTS/SECTIONS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_234, [!$data.showComments ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_235, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "close-btn text-danger",
-    onClick: _cache[49] || (_cache[49] = function () {
+    onClick: _cache[57] || (_cache[57] = function () {
       return $options.toggleShowCommentPanel && $options.toggleShowCommentPanel.apply($options, arguments);
     })
-  }, [_cache[176] || (_cache[176] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  }, [_cache[185] || (_cache[185] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "20",
     height: "20",
@@ -3200,12 +3341,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     viewBox: "0 0 16 16"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
     d: "M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"
-  })], -1 /* CACHED */)), _cache[177] || (_cache[177] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  ", -1 /* CACHED */)), $options.countUnresolvedComments > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_235, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.countUnresolvedComments) + " unresolved " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.countUnresolvedComments > 1 ? 'updates' : 'update') + " — click to review ", 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" p-20  "), $data.showComments ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_236, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_237, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  })], -1 /* CACHED */)), _cache[186] || (_cache[186] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  ", -1 /* CACHED */)), $options.countUnresolvedComments > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_236, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.countUnresolvedComments) + " unresolved " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.countUnresolvedComments > 1 ? 'updates' : 'update') + " — click to review ", 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" p-20  "), $data.showComments ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_237, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_238, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "close-btn text-danger",
-    onClick: _cache[50] || (_cache[50] = function () {
+    onClick: _cache[58] || (_cache[58] = function () {
       return $options.toggleShowCommentPanel && $options.toggleShowCommentPanel.apply($options, arguments);
     })
-  }, _toConsumableArray(_cache[178] || (_cache[178] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  }, _toConsumableArray(_cache[187] || (_cache[187] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "20",
     height: "20",
@@ -3214,46 +3355,48 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     viewBox: "0 0 16 16"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
     d: "M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
-  })], -1 /* CACHED */)])))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_238, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  })], -1 /* CACHED */)])))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_239, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["button", {
       active: $data.open_tab === 'Navigation'
     }]),
-    onClick: _cache[51] || (_cache[51] = function ($event) {
+    onClick: _cache[59] || (_cache[59] = function ($event) {
       return $options.openTab('Navigation');
     })
   }, "Sections", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["button", {
       active: $data.open_tab === 'Comments'
     }]),
-    onClick: _cache[52] || (_cache[52] = function ($event) {
+    onClick: _cache[60] || (_cache[60] = function ($event) {
       return $options.openTab('Comments');
     })
-  }, [_cache[179] || (_cache[179] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Comments ", -1 /* CACHED */)), $options.countUnresolvedComments > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_239, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, " (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.countUnresolvedComments) + " unresolved) ", 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)]), $data.open_tab === 'Comments' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_240, [_cache[188] || (_cache[188] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, [_cache[188] || (_cache[188] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Comments ", -1 /* CACHED */)), $options.countUnresolvedComments > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_240, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, " (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.countUnresolvedComments) + " unresolved) ", 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)]), $data.open_tab === 'Comments' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_241, [_cache[197] || (_cache[197] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "comments-header"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "COMMENTS ... ")], -1 /* CACHED */)), _cache[189] || (_cache[189] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Click a comment and follow the "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "COMMENTS ... ")], -1 /* CACHED */)), _cache[198] || (_cache[198] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Click a comment and follow the "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     style: {
       "color": "red"
     }
-  }, "red"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" arrow")])], -1 /* CACHED */)), _cache[190] || (_cache[190] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_241, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("********************************************************************************************************"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 🔴 UNRESOLVED COMMENTS "), $options.unresolvedComments.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_242, [_cache[183] || (_cache[183] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, "red"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" arrow")])], -1 /* CACHED */)), _cache[199] || (_cache[199] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_242, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("********************************************************************************************************"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 🔴 UNRESOLVED COMMENTS "), $options.unresolvedComments.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_243, [_cache[192] || (_cache[192] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "p-2 mb-2",
     style: {
       "background": "#ffe5e5",
       "border-radius": "4px"
     }
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Unresolved Comments")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_243, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.unresolvedComments, function (comment, index) {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Unresolved Comments")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_244, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.unresolvedComments, function (comment, index) {
+    var _comment$user;
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       key: 'r-' + index,
       "class": "mb-2",
       style: {
         "cursor": "pointer"
       }
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_244, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_245, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_246, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_245, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_246, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_247, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn p-0 border-0 bg-transparent",
+      disabled: $props.auth.user.department_code !== '04',
       onClick: function onClick($event) {
         return $options.submitAction('delete', comment.id, index);
       },
       title: "Delete this comment"
-    }, _toConsumableArray(_cache[180] || (_cache[180] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+    }, _toConsumableArray(_cache[189] || (_cache[189] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
       xmlns: "http://www.w3.org/2000/svg",
       width: "16",
       height: "16",
@@ -3262,33 +3405,33 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       viewBox: "0 0 16 16"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
       d: "M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"
-    })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("    ", -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_247)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" comment.column_name "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_248, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("    ", -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_248)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" comment.column_name "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_249, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" @click=\"scrollToSection(\r\n                                                            ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\r\n                                                                ? `${comment.id}_${comment.table_name}_${comment.column_name}`\r\n                                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\r\n                                                        )\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_comment$user = comment.user) === null || _comment$user === void 0 ? void 0 : _comment$user.FullName) + " commented: ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["clickable-comment", 'comment-rejected']),
       onClick: function onClick($event) {
-        return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? "".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
+        return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? $props.paps[comment.column_name] && $props.paps[comment.column_name].includes("".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name)) ? "".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name) : comment.column_name : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
       }
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{\r\n                                                                    ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\r\n                                                                        ? comment.column_name\r\n                                                                        : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)\r\n                                                                }} ")], 8 /* PROPS */, _hoisted_249), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p>{{comment.table_row_id}}_{{comment.table_name}}_{{comment.column_name}}</p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{\r\n                                                                    ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\r\n                                                                        ? comment.column_name\r\n                                                                        : (comment.table_row_id + '_' + comment.table_name + '_' + comment.column_name)\r\n                                                                }} ")], 8 /* PROPS */, _hoisted_250), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       innerHTML: comment.reply
-    }, null, 8 /* PROPS */, _hoisted_250)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Action Buttons "), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_251, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, null, 8 /* PROPS */, _hoisted_251)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Action Buttons "), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_252, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-success btn-sm text-white",
       onClick: function onClick($event) {
         return $options.submitAction('resolve', comment.id, index);
       },
       title: "Mark comment as Resolved"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <i class=\"bi bi-check-circle\"></i> "), _cache[181] || (_cache[181] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" resolve ", -1 /* CACHED */))], 8 /* PROPS */, _hoisted_252), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary btn-sm text-white\"\r\n                                                @click=\"submitAction('reset', comment.id, index)\"\r\n                                                title=\"Reset to Unresolved\">\r\n                                                <i class=\"bi bi-arrow-counterclockwise\"></i>\r\n                                                 reset\r\n                                            </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <i class=\"bi bi-check-circle\"></i> "), _cache[190] || (_cache[190] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" resolve ", -1 /* CACHED */))], 8 /* PROPS */, _hoisted_253), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary btn-sm text-white\"\r\n                                            @click=\"submitAction('reset', comment.id, index)\"\r\n                                            title=\"Reset to Unresolved\">\r\n                                            <i class=\"bi bi-arrow-counterclockwise\"></i>\r\n                                                reset\r\n                                        </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-danger btn-sm text-white",
       onClick: function onClick($event) {
         return $options.submitAction('delete', comment.id, index);
       },
       title: "Delete this comment"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <i class=\"bi bi-trash-fill\"></i>"), _cache[182] || (_cache[182] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" delete ", -1 /* CACHED */))], 8 /* PROPS */, _hoisted_253)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
-  }), 128 /* KEYED_FRAGMENT */))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("END OF UNRESOLVED"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 🟢 RESOLVED COMMENTS "), $options.resolvedComments.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_254, [_cache[187] || (_cache[187] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <i class=\"bi bi-trash-fill\"></i>"), _cache[191] || (_cache[191] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" delete ", -1 /* CACHED */))], 8 /* PROPS */, _hoisted_254)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }), 128 /* KEYED_FRAGMENT */))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("END OF UNRESOLVED"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 🟢 RESOLVED COMMENTS "), $options.resolvedComments.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_255, [_cache[196] || (_cache[196] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "p-2 mt-4 mb-2",
     style: {
       "background": "#e8ffe8",
       "border-radius": "4px"
     }
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Resolved Comments")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_255, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.resolvedComments, function (comment, index) {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Resolved Comments")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_256, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.resolvedComments, function (comment, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       key: 'r-' + index,
       "class": "mb-2",
@@ -3300,7 +3443,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.scrollToSection(['beneficiaries', 'objective', 'rationale'].includes(comment.column_name) ? "".concat(comment.id, "_").concat(comment.table_name, "_").concat(comment.column_name) : "".concat(comment.table_row_id, "_").concat(comment.table_name, "_").concat(comment.column_name));
       }
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_257, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_258, [_cache[184] || (_cache[184] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_258, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_259, [_cache[193] || (_cache[193] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       style: {
         "border": "none !important",
         "vertical-align": "top",
@@ -3315,84 +3458,84 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       viewBox: "0 0 16 16"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
       d: "M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"
-    })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("    ")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_259, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment), 1 /* TEXT */)])])], 8 /* PROPS */, _hoisted_256), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_260, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-success btn-sm text-white\"\r\n                                                @click=\"submitAction('resolve', comment.id, index)\"\r\n                                                title=\"Mark comment as Resolved\">\r\n                                                <i class=\"bi bi-check-circle\"></i>\r\n                                                 resolve\r\n                                            </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("    ")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_260, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(comment.comment), 1 /* TEXT */)])])])], 8 /* PROPS */, _hoisted_257), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_261, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-success btn-sm text-white\"\r\n                                            @click=\"submitAction('resolve', comment.id, index)\"\r\n                                            title=\"Mark comment as Resolved\">\r\n                                            <i class=\"bi bi-check-circle\"></i>\r\n                                                resolve\r\n                                        </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-primary btn-sm text-white",
       onClick: function onClick($event) {
         return $options.submitAction('reset', comment.id, index);
       },
       title: "Reset to Unresolved"
-    }, _toConsumableArray(_cache[185] || (_cache[185] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    }, _toConsumableArray(_cache[194] || (_cache[194] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
       "class": "bi bi-arrow-counterclockwise"
-    }, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" reset ", -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_261), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" reset ", -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_262), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-danger btn-sm text-white",
       onClick: function onClick($event) {
         return $options.submitAction('delete', comment.id, index);
       },
       title: "Delete this comment"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <i class=\"bi bi-trash-fill\"></i>"), _cache[186] || (_cache[186] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" delete ", -1 /* CACHED */))], 8 /* PROPS */, _hoisted_262)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
-  }), 128 /* KEYED_FRAGMENT */))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("END OF RESOLVED"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\r\n                                        ? comment.column_name\r\n                                            : (\r\n                                            ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)\r\n                                                ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\r\n                                                : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\r\n                                        )  }} ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.open_tab === 'Navigation' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_263, [_cache[191] || (_cache[191] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <i class=\"bi bi-trash-fill\"></i>"), _cache[195] || (_cache[195] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" delete ", -1 /* CACHED */))], 8 /* PROPS */, _hoisted_263)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }), 128 /* KEYED_FRAGMENT */))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("END OF RESOLVED"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)\r\n                                    ? comment.column_name\r\n                                        : (\r\n                                        ['expected_revised_outputs', 'expected_revised_outcomes'].includes(comment.table_name)\r\n                                            ? `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\r\n                                            : `${comment.table_row_id}_${comment.table_name}_${comment.column_name}`\r\n                                    )  }} ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.open_tab === 'Navigation' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_264, [_cache[200] || (_cache[200] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "comments-header"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "NAVIGATION ...")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_264, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_265, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_266, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "clickable-comment",
-    onClick: _cache[53] || (_cache[53] = function ($event) {
-      return $options.scrollToSection('revision_plans');
-    })
-  }, " I. Title ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_267, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_268, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "clickable-comment",
-    onClick: _cache[54] || (_cache[54] = function ($event) {
-      return $options.scrollToSection('rationale');
-    })
-  }, " II. Rationale ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_269, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_270, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "clickable-comment",
-    onClick: _cache[55] || (_cache[55] = function ($event) {
-      return $options.scrollToSection('objective');
-    })
-  }, " III. Objectives ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_271, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_272, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "clickable-comment",
-    onClick: _cache[56] || (_cache[56] = function ($event) {
-      return $options.scrollToSection('beneficiaries');
-    })
-  }, " IV. Target Beneficiaries ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_273, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_274, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "clickable-comment",
-    onClick: _cache[57] || (_cache[57] = function ($event) {
-      return $options.scrollToSection('implementation_workplan');
-    })
-  }, " V. Implementation Schedule/Workplan ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_275, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_276, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "clickable-comment",
-    onClick: _cache[58] || (_cache[58] = function ($event) {
-      return $options.scrollToSection('budgetary_requirements');
-    })
-  }, " VI. Estimated Cost/Budgetary Requirements ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_277, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_278, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "clickable-comment",
-    onClick: _cache[59] || (_cache[59] = function ($event) {
-      return $options.scrollToSection('implementing_team');
-    })
-  }, " VII. Implementing Team ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" partnership_sustainability "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_279, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_280, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "clickable-comment",
-    onClick: _cache[60] || (_cache[60] = function ($event) {
-      return $options.scrollToSection('partnership_sustainability');
-    })
-  }, " VIII. Partnership and Sustainability ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_281, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_282, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "NAVIGATION ...")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_265, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_266, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_267, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[61] || (_cache[61] = function ($event) {
-      return $options.scrollToSection('monitoring_evaluation');
+      return $options.scrollToSection('revision_plans');
     })
-  }, " XI. Monitoring and Evaluation ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_283, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_284, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " I. Title ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_268, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_269, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[62] || (_cache[62] = function ($event) {
-      return $options.scrollToSection('risk_management');
+      return $options.scrollToSection('rationale');
     })
-  }, " X. Risk Management ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_285, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_286, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " II. Rationale ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_270, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_271, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "clickable-comment",
     onClick: _cache[63] || (_cache[63] = function ($event) {
+      return $options.scrollToSection('objective');
+    })
+  }, " III. Objectives ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_272, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_273, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "clickable-comment",
+    onClick: _cache[64] || (_cache[64] = function ($event) {
+      return $options.scrollToSection('beneficiaries');
+    })
+  }, " IV. Target Beneficiaries ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_274, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_275, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "clickable-comment",
+    onClick: _cache[65] || (_cache[65] = function ($event) {
+      return $options.scrollToSection('implementation_workplan');
+    })
+  }, " V. Implementation Schedule/Workplan ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_276, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_277, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "clickable-comment",
+    onClick: _cache[66] || (_cache[66] = function ($event) {
+      return $options.scrollToSection('budgetary_requirements');
+    })
+  }, " VI. Estimated Cost/Budgetary Requirements ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_278, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_279, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "clickable-comment",
+    onClick: _cache[67] || (_cache[67] = function ($event) {
+      return $options.scrollToSection('implementing_team');
+    })
+  }, " VII. Implementing Team ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" partnership_sustainability "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_280, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_281, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "clickable-comment",
+    onClick: _cache[68] || (_cache[68] = function ($event) {
+      return $options.scrollToSection('partnership_sustainability');
+    })
+  }, " VIII. Partnership and Sustainability ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_282, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_283, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "clickable-comment",
+    onClick: _cache[69] || (_cache[69] = function ($event) {
+      return $options.scrollToSection('monitoring_evaluation');
+    })
+  }, " XI. Monitoring and Evaluation ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_284, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_285, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "clickable-comment",
+    onClick: _cache[70] || (_cache[70] = function ($event) {
+      return $options.scrollToSection('risk_management');
+    })
+  }, " X. Risk Management ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_286, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_287, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "clickable-comment",
+    onClick: _cache[71] || (_cache[71] = function ($event) {
       return $options.scrollToSection('signatories');
     })
-  }, " XI. Signatories ")])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" COMMENTING ******************************************************************************************************* "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_287, [$data.show_comment_modal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_288, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_289, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, " XI. Signatories ")])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" COMMENTING ******************************************************************************************************* "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_288, [$data.show_comment_modal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_289, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_290, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "close-btn text-danger",
-    onClick: _cache[64] || (_cache[64] = function () {
+    onClick: _cache[72] || (_cache[72] = function () {
       return $options.closeCommentModal && $options.closeCommentModal.apply($options, arguments);
     })
-  }, _toConsumableArray(_cache[192] || (_cache[192] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  }, _toConsumableArray(_cache[201] || (_cache[201] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "20",
     height: "20",
@@ -3401,23 +3544,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     viewBox: "0 0 16 16"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
     d: "M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
-  })], -1 /* CACHED */)])))]), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_290, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+  })], -1 /* CACHED */)])))]), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_291, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     "class": "form-control",
     rows: "5",
-    "onUpdate:modelValue": _cache[65] || (_cache[65] = function ($event) {
+    "onUpdate:modelValue": _cache[73] || (_cache[73] = function ($event) {
       return $data.comment = $event;
     }),
     placeholder: "Write your comment here..."
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.comment]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary mt-2 text-white",
-    onClick: _cache[66] || (_cache[66] = function ($event) {
+    onClick: _cache[74] || (_cache[74] = function ($event) {
       return $options.saveComment();
     })
-  }, " Submit Comment ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[193] || (_cache[193] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Section: ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_section), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[194] || (_cache[194] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Subtitle:", -1 /* CACHED */)), _cache[195] || (_cache[195] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)()), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, " Submit Comment ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[202] || (_cache[202] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Section: ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_section), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[203] || (_cache[203] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Subtitle:", -1 /* CACHED */)), _cache[204] || (_cache[204] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)()), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     innerHTML: $data.comment_subtitle
-  }, null, 8 /* PROPS */, _hoisted_291)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[196] || (_cache[196] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Data:", -1 /* CACHED */)), _cache[197] || (_cache[197] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)()), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, null, 8 /* PROPS */, _hoisted_292)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[205] || (_cache[205] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Data:", -1 /* CACHED */)), _cache[206] || (_cache[206] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)()), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     innerHTML: $data.comment_data
-  }, null, 8 /* PROPS */, _hoisted_292)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[198] || (_cache[198] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Column:", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_column) + " ", 1 /* TEXT */), $data.comment_column == 'Person Affected' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_293, "Preventive Measures")) : $data.comment_column == 'Management' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_294, "Mechanisms to monitor")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_295, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_column), 1 /* TEXT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[199] || (_cache[199] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Table:", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_table), 1 /* TEXT */)])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <CommentModal v-if=\"show_comment_modal\" @close-modal-event=\"closeCommentModal\" title=\"COMMENTS\">\r\n            <div class=\"d-flex justify-content-center\">\r\n            </div>\r\n            <div>\r\n                <span v-if=\"auth.user.department_code==='04'\">\r\n                    <div>\r\n                        <textarea class=\"form-control\" rows=\"5\" v-model=\"comment\"\r\n                            placeholder=\"Write your comment here...\"></textarea>\r\n                    </div>\r\n                    <div>\r\n                        <button class=\"btn btn-primary mt-2 text-white\" @click=\"saveComment()\">\r\n                            Submit Comment\r\n                        </button>\r\n                    </div>\r\n                </span>\r\n\r\n                <div><b>Section: </b>{{ comment_section }}</div>\r\n                <div><b>Subtitle:</b> <span v-html=\"comment_subtitle\"></span></div>\r\n                <div><b>Data:</b> <span v-html=\"comment_data\"></span></div>\r\n                <div><b>Column:</b> {{ comment_column }}\r\n                    <span v-if=\"comment_column=='Person Affected'\">Preventive Measures</span>\r\n                    <span v-else-if=\"comment_column=='Management'\">Mechanisms to monitor</span>\r\n                    <span v-else>{{ comment_colun }}</span>\r\n                </div>\r\n                <div><b>Table:</b> {{ comment_table }}</div>\r\n\r\n                <div class=\"col-9\">\r\n                    <table class=\"table table-hover table-bordered border-dark\">\r\n                        <thead>\r\n                            <tr>\r\n                                <th class=\"bg-secondary text-white\">Comment</th>\r\n                                <th class=\"bg-secondary text-white\">Status&nbsp;&nbsp;</th>\r\n                                <th class=\"bg-secondary text-white\" v-if=\"auth.user.department_code==='04'\">Actions&nbsp;&nbsp;</th>\r\n                                <th class=\"bg-secondary text-white\" v-if=\"auth.user.department_code==='04'\">Actions&nbsp;&nbsp;</th>\r\n                                <th class=\"bg-secondary text-white\">Comment by&nbsp;&nbsp;</th>\r\n\r\n                                <th class=\"bg-secondary text-white\">Date</th>\r\n                            </tr>\r\n                        </thead>\r\n                        <tbody>\r\n                            <tr v-for=\"(comment,index) in comments\">\r\n                                <td>\r\n                                    <h6 v-if=\"comment.user\">{{ comment.user.FullName }}&nbsp;commented:&nbsp;&nbsp;</h6>\r\n                                    <h5 class=\"bg-white p-3 rounded border\"><i>{{ comment.comment}}</i></h5>\r\n                                    <br>\r\n                                    <div v-html=\"comment.reply\"></div>\r\n                                    <button class=\"btn btn-link p-0\" v-if=\"comment.show_comment_box==false\" @click=\"showCommentBox(index)\">reply</button>\r\n                                    <textarea class=\"form-control\"\r\n                                        type=\"text\"\r\n                                        v-if=\"comment.show_comment_box\"\r\n                                        v-model=\"reply_concat\"\r\n                                    >\r\n                                    </textarea>\r\n                                    <button :disabled=\"!reply_concat || reply_concat.trim() === ''\" class=\"btn btn-primary text-white\" v-if=\"comment.show_comment_box\" @click=\"updateComment(comment.id, comment, index)\" >Send</button>\r\n                                    <button class=\"btn btn-danger text-white\" v-if=\"comment.show_comment_box\" @click=\"showCommentBox(index)\">Cancel</button>\r\n                                </td>\r\n                                <td :style=\"{ backgroundColor: comment.comment_status === '0' ? '#fecaca' : '#bbf7d0',\r\n                                    color: comment.comment_status === '0' ? '#991b1b' : '#065f46' }\" class=\"px-2 py-1 rounded\">\r\n                                    <b>{{ comment.comment_status === '0' ? 'Unresolved' : 'OK' }}</b>\r\n                                </td>\r\n                                <td v-if=\"auth.user.department_code==='04'\">\r\n                                    <div >\r\n                                        <button class=\"btn btn-success text-white\"\r\n                                        @click=\"submitAction('resolve', comment.id, index)\"\r\n                                        title=\"Mark comment as Resolved\">\r\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-check-circle\" viewBox=\"0 0 16 16\">\r\n                                                <path d=\"M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16\"/>\r\n                                                <path d=\"m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05\"/>\r\n                                            </svg>\r\n                                        </button>&nbsp;\r\n                                        <button class=\"btn btn-primary text-white\"\r\n                                        @click=\"submitAction('reset', comment.id, index)\"\r\n                                        title=\"Reset to Unresolved\">\r\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-counterclockwise\" viewBox=\"0 0 16 16\">\r\n                                                <path fill-rule=\"evenodd\" d=\"M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z\"/>\r\n                                                <path d=\"M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466\"/>\r\n                                            </svg>\r\n                                        </button>&nbsp;\r\n                                        <button class=\"btn btn-danger text-white\"\r\n                                        @click=\"submitAction('delete', comment.id, index)\"\r\n                                        title=\"Delete this comment\"\r\n                                        >\r\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-trash-fill\" viewBox=\"0 0 16 16\">\r\n                                                <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\r\n                                            </svg>\r\n                                        </button>&nbsp;\r\n                                    </div>\r\n                                </td>\r\n                                <td>\r\n                                    <span v-if=\"comment.user\">{{ comment.user.FullName }}</span>\r\n                                    <span v-else>Not recorded</span>\r\n                                </td>\r\n\r\n                                <td>{{ formatDate(comment.created_at) }}</td>\r\n                            </tr>\r\n                        </tbody>\r\n                    </table>\r\n                </div>\r\n\r\n            </div>\r\n            <br>\r\n        </CommentModal> "), _cache[201] || (_cache[201] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, null, 8 /* PROPS */, _hoisted_293)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[207] || (_cache[207] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Column:", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_column) + " ", 1 /* TEXT */), $data.comment_column == 'Person Affected' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_294, "Preventive Measures")) : $data.comment_column == 'Management' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_295, "Mechanisms to monitor")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_296, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_column), 1 /* TEXT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[208] || (_cache[208] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Table:", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.comment_table), 1 /* TEXT */)])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <CommentModal v-if=\"show_comment_modal\" @close-modal-event=\"closeCommentModal\" title=\"COMMENTS\">\r\n            <div class=\"d-flex justify-content-center\">\r\n            </div>\r\n            <div>\r\n                <span v-if=\"auth.user.department_code==='04'\">\r\n                    <div>\r\n                        <textarea class=\"form-control\" rows=\"5\" v-model=\"comment\"\r\n                            placeholder=\"Write your comment here...\"></textarea>\r\n                    </div>\r\n                    <div>\r\n                        <button class=\"btn btn-primary mt-2 text-white\" @click=\"saveComment()\">\r\n                            Submit Comment\r\n                        </button>\r\n                    </div>\r\n                </span>\r\n\r\n                <div><b>Section: </b>{{ comment_section }}</div>\r\n                <div><b>Subtitle:</b> <span v-html=\"comment_subtitle\"></span></div>\r\n                <div><b>Data:</b> <span v-html=\"comment_data\"></span></div>\r\n                <div><b>Column:</b> {{ comment_column }}\r\n                    <span v-if=\"comment_column=='Person Affected'\">Preventive Measures</span>\r\n                    <span v-else-if=\"comment_column=='Management'\">Mechanisms to monitor</span>\r\n                    <span v-else>{{ comment_colun }}</span>\r\n                </div>\r\n                <div><b>Table:</b> {{ comment_table }}</div>\r\n\r\n                <div class=\"col-9\">\r\n                    <table class=\"table table-hover table-bordered border-dark\">\r\n                        <thead>\r\n                            <tr>\r\n                                <th class=\"bg-secondary text-white\">Comment</th>\r\n                                <th class=\"bg-secondary text-white\">Status&nbsp;&nbsp;</th>\r\n                                <th class=\"bg-secondary text-white\" v-if=\"auth.user.department_code==='04'\">Actions&nbsp;&nbsp;</th>\r\n                                <th class=\"bg-secondary text-white\" v-if=\"auth.user.department_code==='04'\">Actions&nbsp;&nbsp;</th>\r\n                                <th class=\"bg-secondary text-white\">Comment by&nbsp;&nbsp;</th>\r\n\r\n                                <th class=\"bg-secondary text-white\">Date</th>\r\n                            </tr>\r\n                        </thead>\r\n                        <tbody>\r\n                            <tr v-for=\"(comment,index) in comments\">\r\n                                <td>\r\n                                    <h6 v-if=\"comment.user\">{{ comment.user.FullName }}&nbsp;commented:&nbsp;&nbsp;</h6>\r\n                                    <h5 class=\"bg-white p-3 rounded border\"><i>{{ comment.comment}}</i></h5>\r\n                                    <br>\r\n                                    <div v-html=\"comment.reply\"></div>\r\n                                    <button class=\"btn btn-link p-0\" v-if=\"comment.show_comment_box==false\" @click=\"showCommentBox(index)\">reply</button>\r\n                                    <textarea class=\"form-control\"\r\n                                        type=\"text\"\r\n                                        v-if=\"comment.show_comment_box\"\r\n                                        v-model=\"reply_concat\"\r\n                                    >\r\n                                    </textarea>\r\n                                    <button :disabled=\"!reply_concat || reply_concat.trim() === ''\" class=\"btn btn-primary text-white\" v-if=\"comment.show_comment_box\" @click=\"updateComment(comment.id, comment, index)\" >Send</button>\r\n                                    <button class=\"btn btn-danger text-white\" v-if=\"comment.show_comment_box\" @click=\"showCommentBox(index)\">Cancel</button>\r\n                                </td>\r\n                                <td :style=\"{ backgroundColor: comment.comment_status === '0' ? '#fecaca' : '#bbf7d0',\r\n                                    color: comment.comment_status === '0' ? '#991b1b' : '#065f46' }\" class=\"px-2 py-1 rounded\">\r\n                                    <b>{{ comment.comment_status === '0' ? 'Unresolved' : 'OK' }}</b>\r\n                                </td>\r\n                                <td v-if=\"auth.user.department_code==='04'\">\r\n                                    <div >\r\n                                        <button class=\"btn btn-success text-white\"\r\n                                        @click=\"submitAction('resolve', comment.id, index)\"\r\n                                        title=\"Mark comment as Resolved\">\r\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-check-circle\" viewBox=\"0 0 16 16\">\r\n                                                <path d=\"M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16\"/>\r\n                                                <path d=\"m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05\"/>\r\n                                            </svg>\r\n                                        </button>&nbsp;\r\n                                        <button class=\"btn btn-primary text-white\"\r\n                                        @click=\"submitAction('reset', comment.id, index)\"\r\n                                        title=\"Reset to Unresolved\">\r\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-counterclockwise\" viewBox=\"0 0 16 16\">\r\n                                                <path fill-rule=\"evenodd\" d=\"M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z\"/>\r\n                                                <path d=\"M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466\"/>\r\n                                            </svg>\r\n                                        </button>&nbsp;\r\n                                        <button class=\"btn btn-danger text-white\"\r\n                                        @click=\"submitAction('delete', comment.id, index)\"\r\n                                        title=\"Delete this comment\"\r\n                                        >\r\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-trash-fill\" viewBox=\"0 0 16 16\">\r\n                                                <path d=\"M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0\"/>\r\n                                            </svg>\r\n                                        </button>&nbsp;\r\n                                    </div>\r\n                                </td>\r\n                                <td>\r\n                                    <span v-if=\"comment.user\">{{ comment.user.FullName }}</span>\r\n                                    <span v-else>Not recorded</span>\r\n                                </td>\r\n\r\n                                <td>{{ formatDate(comment.created_at) }}</td>\r\n                            </tr>\r\n                        </tbody>\r\n                    </table>\r\n                </div>\r\n\r\n            </div>\r\n            <br>\r\n        </CommentModal> "), _cache[210] || (_cache[210] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "d-flex justify-content-center"
   }, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{paps}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ department_code_project }}\r\n        {{ department_code_user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user }}\r\n        {{ paps.is_strategy_based }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Sa class=\"row gap-10\" ni"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{budget_requirements}} ")])], 64 /* STABLE_FRAGMENT */);
 }

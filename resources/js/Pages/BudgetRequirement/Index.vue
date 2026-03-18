@@ -36,6 +36,9 @@
                 </a>
             </div>
         </div>
+        <div>
+            <b>GAD Version:</b>&nbsp;<u>{{ gad_version }}</u>
+        </div>
         <div class="peers fxw-nw jc-sb ai-c">
             <h4>Budgetary Requirements </h4>
             <div class="peers">
@@ -148,7 +151,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <td>GAD Attributed Amount </td>
+                        <td>GAD Attributed Amount {{gad_version}}</td>
                         <td>{{ format_number_conv(revs_attributed,2,true) }}</td>
                         <td>{{ format_number_conv(GAD_total,2,true) }}</td>
                         <td>
@@ -190,7 +193,7 @@
                             </thead>
                             <tbody>
                                 <!--MOOE-->
-                                <tr v-if="mooe_gad.length>0 || mooe_non.length>0">
+                                <tr v-if="(mooe_gad.length>0 || mooe_non.length>0) ">
                                     <th colspan="3" >Maintenance, Operating, and Other Expenses</th>
                                     <td></td>
                                     <td></td>
@@ -198,7 +201,7 @@
                                     <td></td>
                                 </tr>
                                 <!--MOOE-GAD-->
-                                <tr v-if="mooe_gad.length>0" >
+                                <tr v-if="mooe_gad.length>0 & gad_version=='1'" >
                                     <td></td>
                                     <th colspan="2" >GAD </th>
                                     <td></td>
@@ -206,7 +209,7 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr v-if="mooe_gad.length>0" v-for="dat in mooe_gad">
+                                <tr v-if="mooe_gad.length>0  & gad_version=='1'" v-for="dat in mooe_gad">
                                     <td></td>
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
@@ -229,7 +232,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr v-if="mooe_gad.length>0" >
+                                <tr v-if="mooe_gad.length>0  & gad_version=='1'" >
                                     <td></td>
                                     <td></td>
                                     <th colspan="2" >SUB TOTAL (GAD) </th>
@@ -238,7 +241,7 @@
                                     <td></td>
                                 </tr>
                                 <!--MOOE-NON-GAD-->
-                                <tr v-if="mooe_non.length>0" >
+                                <tr v-if="mooe_non.length>0  & gad_version=='1'" >
                                     <td></td>
                                     <th colspan="2" >NON-GAD </th>
                                     <td></td>
@@ -269,7 +272,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr v-if="mooe_non.length>0" class="text-bg-dark">
+                                <tr v-if="mooe_non.length>0  & gad_version=='1'" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2" >SUB TOTAL (NON-GAD) </th>
@@ -294,7 +297,7 @@
                                     <td></td>
                                 </tr>
                                 <!--Capital Outlay GAD-->
-                                <tr v-if="cap_gad.length>0" >
+                                <tr v-if="cap_gad.length>0  & gad_version=='1'" >
                                     <td></td>
                                     <th colspan="2" >GAD </th>
                                     <td></td>
@@ -302,7 +305,7 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr v-if="cap_gad.length>0" v-for="dat in cap_gad">
+                                <tr v-if="cap_gad.length>0  & gad_version=='1'" v-for="dat in cap_gad">
                                     <td></td>
                                     <td></td>
                                     <td>{{ dat.particulars }}</td>
@@ -325,7 +328,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr v-if="cap_gad.length>0" class="text-bg-dark">
+                                <tr v-if="cap_gad.length>0  & gad_version=='1'" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2" >SUB TOTAL (GAD) </th>
@@ -334,7 +337,7 @@
                                     <td></td>
                                 </tr>
                                 <!--Capital Outlay NON-GAD-->
-                                <tr v-if="cap_non.length>0" >
+                                <tr v-if="cap_non.length>0  & gad_version=='1'" >
                                     <td></td>
                                     <th colspan="2" >NON-GAD </th>
                                     <td></td>
@@ -365,7 +368,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr v-if="cap_non.length>0" class="text-bg-dark">
+                                <tr v-if="cap_non.length>0  & gad_version=='1'" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2" >SUB TOTAL (NON-GAD) </th>
@@ -390,7 +393,7 @@
                                     <td></td>
                                 </tr>
                                 <!--Personnel Services GAD-->
-                                <tr v-if="ps_gad.length>0" >
+                                <tr v-if="ps_gad.length>0  & gad_version=='1'" >
                                     <td></td>
                                     <th colspan="2" >GAD </th>
                                     <td></td>
@@ -421,7 +424,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr v-if="ps_gad.length>0" class="text-bg-dark">
+                                <tr v-if="ps_gad.length>0  & gad_version=='1'" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2" >SUB TOTAL (GAD) </th>
@@ -430,7 +433,7 @@
                                     <td></td>
                                 </tr>
                                 <!--Personnel Services NON-GAD-->
-                                <tr v-if="ps_non.length>0" >
+                                <tr v-if="ps_non.length>0  & gad_version=='1'" >
                                     <td></td>
                                     <th colspan="2" >NON-GAD</th>
                                     <td></td>
@@ -461,7 +464,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr v-if="ps_non.length>0" class="text-bg-dark">
+                                <tr v-if="ps_non.length>0  & gad_version=='1'" class="text-bg-dark">
                                     <td></td>
                                     <td></td>
                                     <th colspan="2" >SUB TOTAL (NON-GAD) </th>
@@ -629,6 +632,7 @@ export default {
         s_ps_non: Number,
         s_fe_gad: Number,
         s_fe_non: Number,
+        gad_version: String,
     },
     data() {
         return{

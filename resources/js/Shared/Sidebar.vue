@@ -285,7 +285,7 @@
                     <span class="title">Accomplishment Report</span>
                     </Link>
                 </li> -->
-                <li class="nav-item">
+                <li class="nav-item" v-if="$page.props.auth.user.department_code == '04'">
                     <Link class="sidebar-link" href="/revision_plans?source=direct"
                         :class="{ 'active': $page.url === '/revision_plans?source=direct' }"
                         v-if="($page.props.auth.user.department_code == '04' || $page.props.auth.user.office.empl_id == '1399')"
@@ -544,9 +544,27 @@
                             </Link>
                         </li>
                         <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/review-approve/ratings?source=ppdo_approval"
+                                :class="{ 'active': $page.url === '/review-approve/ratings?source=ppdo_approval' }">
+                            <span class="title">Rating (For Approval)</span>
+                            </Link>
+                        </li>
+                        <!-- <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/review-approve/ratings?source=approved"
+                                :class="{ 'active': $page.url === '/review-approve/ratings?source=approved' }">
+                            <span class="title">Rating (Approved)</span>
+                            </Link>
+                        </li> -->
+                        <li v-if="$page.props.auth.user.department_code == '04'">
                             <Link class="sidebar-link" href="/revision_plans?source=rev_app"
                                 :class="{ 'active': $page.url === '/revision_plans?source=rev_app' }">
                             <span class="title">Project Profile</span>
+                            </Link>
+                        </li>
+                        <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/revision_plans?source=approved"
+                                :class="{ 'active': $page.url === '/revision_plans?source=approved' }">
+                            <span class="title">Project Profile (Approved)</span>
                             </Link>
                         </li>
                         <li v-if="$page.props.auth.user.department_code == '04'">
@@ -575,6 +593,63 @@
                     <span class="title">IPP Manual</span>
                     </Link>
                 </li>
+
+                <li class="nav-item">
+                    <Link class="sidebar-link" href="/project-profile-tracking"
+                        :class="{ 'active': $page.url === '/project-profile-tracking' }">
+                    <span></span>
+                    <span class="icon-holder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-calendar-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z" />
+                        </svg>
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
+                                <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1z"/>
+                            </svg> -->
+                    </span>
+                    <span class="title">IPP Tracking</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
+                    <!-- :href="`http://192.168.80.88/login/authentication?username=${$page.props.auth.user.UserName}&password=${$page.props.auth.user.UserPassword}`" -->
+
+                        <!-- :href="`generate/token/for/accomplishments`" -->
+                    <a
+                        class="sidebar-link"
+                        :href="`https://accomplishment.davaodeoro.gov.ph/login/authentication?username=${$page.props.auth.user.UserName}&password=${$page.props.auth.user.UserPassword}`"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        :class="{ 'active': $page.url === '/revision/0?source=sip' }"
+                    >
+                        <span></span>
+                        <span class="icon-holder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 2h12v20H4z"/>
+                                <path d="M6 6h8"/>
+                                <path d="M6 10h8"/>
+                                <circle cx="8" cy="16" r="2"/>
+                            </svg>
+                        </span>
+                        <span class="title">Monthly Accomplishments</span>
+                    </a>
+                </li>
+
+                <!-- <li class="nav-item">
+                    <a class="sidebar-link" href="192.168.80.88/login/authentication?username=GingGing&password=fd2d9096fd18e9d5bc3d800ed3020546" :class="{ 'active': $page.url === '/revision/0?source=sip' }">
+                        <span></span>
+                        <span class="icon-holder">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 2h12v20H4z"/>
+                                <path d="M6 6h8"/>
+                                <path d="M6 10h8"/>
+                                <circle cx="8" cy="16" r="2"/>
+                            </svg>
+                        </span>
+                        <span class="title">Accomplishments</span>
+                    </a>
+                </li> -->
             </ul>
         </div>
     </div>

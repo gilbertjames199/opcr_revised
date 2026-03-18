@@ -62,12 +62,15 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.source">{{ form.errors.source }}</div>
 
                 <!--style="visibility: hidden"-->
-                <label>GAD/NON-GAD</label>
-                <select class="form-control" v-model="form.category_gad">
-                    <option>GAD</option>
-                    <option>NON-GAD</option>
-                </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.category_gad">{{ form.errors.category_gad }}</div>
+                <div v-if="revs[0].gad_version=='1'">
+                    <label>GAD/NON-GAD</label>
+                    <select class="form-control" v-model="form.category_gad" >
+                        <option>GAD</option>
+                        <option>NON-GAD</option>
+                    </select>
+                    <div class="fs-6 c-red-500" v-if="form.errors.category_gad">{{ form.errors.category_gad }}</div>
+                </div>
+
 
 
                 <!--<input type="text" v-model="searchTerm" @input="filteredAccounts" placeholder="Search">
@@ -90,7 +93,9 @@
                 </button>
             </form>
         </div>
-        <!-- {{  form }} -->
+        <!-- {{revs}} -->
+        <!-- -- {{ revs[0].gad_version }}
+        {{  form }} -->
         <!-- {{ accounts_raw }} -->
     </div>
 </template>
@@ -159,6 +164,9 @@ export default {
     mounted() {
 
         //alert(this.idrev);
+        if(this.revs[0].gad_version=='2'){
+            this.form.category_gad='NON-GAD'
+        }
         this.form.revision_plan_id = this.idrev
         if (this.editData !== undefined) {
             this.pageTitle = "Edit"

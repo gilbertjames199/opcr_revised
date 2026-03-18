@@ -37,11 +37,11 @@
                 <QuillEditor theme="snow" v-model:content="form.management" contentType="html" toolbar="essential"
                 />
                 <!-- <input type="text" v-model="form.management" class="form-control" autocomplete="chrome-off"> -->
-                <div class="fs-6 c-red-500" v-if="form.errors.management">{{ form.errorsmanagement }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.management">{{ form.errors.management }}</div>
 
-                <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
-
-                <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">
+                <!-- <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off"> -->
+                <!-- :disabled="form.processing" -->
+                <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" >
                     Save changes
                 </button>
             </form>

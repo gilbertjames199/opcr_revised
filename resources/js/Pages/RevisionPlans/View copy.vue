@@ -540,11 +540,11 @@
                                         </td>
                                         <td>
                                             <span v-if="paps.is_strategy_based==1">
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_output">
+                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0]?.expected_output || []">
                                                     <div>{{ eo.description }}</div>
                                                     <hr>
                                                 </div>
-                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0].expected_outcome">
+                                                <div v-if="dat.strategyProject[0]" v-for="eo in dat.strategyProject[0]?.expected_outcome || []">
                                                     <div>{{ eo.description }}</div>
                                                     <hr>
                                                 </div>
@@ -778,7 +778,8 @@
                                                     </table>
                                                     <table class="m-0" style="border-collapse: collapse; width: 100%; height: 100%; table-layout: fixed;"
                                                     v-else>
-                                                        <template >
+                                                        <tbody>
+                                                        <!-- <template > -->
                                                             <tr >
                                                                 <td >
 
@@ -827,7 +828,8 @@
 
                                                                 </td>
                                                             </tr>
-                                                        </template>
+                                                        <!-- </template> -->
+                                                        </tbody>
                                                     </table>
                                                 </div>
 
@@ -1977,6 +1979,7 @@
                                     </tr> -->
 
                                     <!-- TOTAL ROW -->
+                                     <!-- <tfoot> -->
                                     <tr v-if="hasRows(rows)"  class="fw-bold bg-light">
                                         <td></td>
                                         <td colspan="2">TOTAL {{ gadType }}</td>
@@ -1986,15 +1989,19 @@
                                         </td>
                                         <td colspan="3"></td>
                                     </tr>
+                                     <!-- </tfoot> -->
+
                                 </template>
 
 
                             </tbody>
-                             <tr>
-                                <td colspan="4"><h4>TOTAL</h4></td>
-                                <td>₱ {{ overallBudget.toLocaleString() }}</td>
-                                <td colspan="3"></td>
-                            </tr>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4"><h4>TOTAL</h4></td>
+                                    <td>₱ {{ overallBudget.toLocaleString() }}</td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            </tfoot>
                             <!-- <tr>
                                     <td colspan="4"><h4>TOTAL</h4></td>
                                     <td>₱ {{ overallBudget.toLocaleString() }}</td>

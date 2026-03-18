@@ -384,7 +384,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "dropdown-item",
         href: "/activities/".concat(activity.id)
       }, "View", 8 /* PROPS */, _hoisted_12)])])])])]);
-    }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template v-if=\"strategy.activity && strategy.activity.length > 0\">\r\n\r\n                            </template> ")], 64 /* STABLE_FRAGMENT */);
+    }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template v-if=\"strategy.activity && strategy.activity.length > 0\">\r\n\r\n                            </template> ")], 64 /* STABLE_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
   }), 256 /* UNKEYED_FRAGMENT */))])])])])])])], 64 /* STABLE_FRAGMENT */);
 }
 

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RevisionPlan extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $connection = "mysql";
     protected $table = 'revision_plans';
     protected $guarded = [];
@@ -67,6 +68,15 @@ class RevisionPlan extends Model
     public function signatories()
     {
         return $this->hasMany(Signatory::class, 'revision_plan_id', 'id');
+    }
+
+    public function projectProfileTrackings()
+    {
+        return $this->hasMany(ProjectProfileTracking::class, 'revision_plan_id', 'id');
+    }
+    public function boxNumber()
+    {
+        return $this->belongsTo(HGDG_Checklist::class, 'checklist_id', 'id');
     }
     // protected $fillable = [
     //     'id',

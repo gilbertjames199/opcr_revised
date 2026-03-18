@@ -8,6 +8,8 @@ use App\Http\Controllers\RiskManangementController;
 use App\Http\Controllers\TeamPlanController;
 use App\Http\Controllers\SignatoryController;
 use App\Http\Controllers\CashDisbursementForecastController;
+use App\Http\Controllers\HGDGScoreController;
+use App\Http\Controllers\OfficePerformanceCommitmentRatingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -78,4 +80,12 @@ Route::prefix('revision-plan')->group(function () {
     // Signatory
     Route::get('/signatory', [SignatoryController::class, 'getSignatories'])
         ->name('signatory.index');
+});
+
+Route::prefix('opcr-accomplishments-admin/print')->group(function () {
+    Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment_dual_score_system']);
+});
+
+Route::prefix('hgdg_printing')->group(function(){
+    Route::get('/',[HGDGScoreController::class,'print_hgdg_score']);
 });

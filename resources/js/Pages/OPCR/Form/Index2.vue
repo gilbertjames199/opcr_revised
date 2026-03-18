@@ -30,7 +30,9 @@
         <!-- {{ opcr_date }} -->
         <div class="masonry-sizer col-md-6">
             <h5>PERIOD: <u>{{ opcr_date }}</u></h5>
-            <h5>STATUS: <u>{{ getStatus(list.rating_status) }}</u></h5>
+            <h5>STATUS: <u>{{ getStatus(String(list.rating_status)) }}</u></h5>
+            <!-- {{ list }}
+            {{ list.rating_status }} -->
         </div>
         <div class="col-12">
             <!-- <div class="row gap-20"></div> -->
@@ -175,19 +177,26 @@
                             :disabled="form.processing">
                             Print
                         </button>&nbsp;
-                        <!-- <span v-if="rating_status_dt==-1 || rating_status_dt==-2">
+                        <!-- rating_status_dt:{{ rating_status_dt }} -->
+                        <span v-if="rating_status_dt==-2">
                             <button type="button" class="btn btn-primary mt-3 text-white" @click="submitRecallRating(-1,0,'Successfully submitted OPCR', 'Are you sure you want to submit this OPCR')"
                             :disabled="form.processing" >
                                 Submit
                             </button>&nbsp;
-                        </span> -->
+                        </span>
+                        <span v-if="rating_status_dt==-1 || rating_status_dt==-2">
+                            <button type="button" class="btn btn-primary mt-3 text-white" @click="submitRecallRating(-1,0,'Successfully submitted OPCR', 'Are you sure you want to submit this OPCR')"
+                            :disabled="form.processing" >
+                                Submit
+                            </button>&nbsp;
+                        </span>
                         <!-- rating_status_dt{{ rating_status_dt }} -->
-                        <!-- <span v-if="rating_status_dt==0">
+                         <span v-if="rating_status_dt==0">
                             <button type="button" class="btn btn-secondary mt-3 text-white" @click="submitRecallRating(0,-1, 'Successfully recalled OPCR submission', 'Are you sure you want to recall the submission of this OPCR')"
                                 :disabled="form.processing" >
                                 Recall
                             </button>&nbsp;
-                        </span> -->
+                        </span>
 
                         <!-- <pagination :next="data.next_page_url" :prev="data.prev_page_url" /> -->
                     </div>
@@ -263,19 +272,23 @@
                             <h3>Selected Files (Pending Upload)</h3>
                             <table >
                                 <thead>
-                                    <th></th>
-                                    <th>File Name</th>
-                                    <th>File Type</th>
-                                    <th>File Size</th>
+                                    <tr>
+                                        <th></th>
+                                        <th>File Name</th>
+                                        <th>File Type</th>
+                                        <th>File Size</th>
+                                    </tr>
                                 </thead>
-                                <tr v-for="(file, index) in files" :key="index">
-                                    <td>
-                                        <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
-                                    </td>
-                                    <td>{{ file.name }}&nbsp;</td>
-                                    <td>{{ file.name.split('.').pop() }}&nbsp;</td>
-                                    <td>{{ formatFileSize(file.size) }}&nbsp;</td>
-                                </tr>
+                                <tbody>
+                                    <tr v-for="(file, index) in files" :key="index">
+                                        <td>
+                                            <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
+                                        </td>
+                                        <td>{{ file.name }}&nbsp;</td>
+                                        <td>{{ file.name.split('.').pop() }}&nbsp;</td>
+                                        <td>{{ formatFileSize(file.size) }}&nbsp;</td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </p>
