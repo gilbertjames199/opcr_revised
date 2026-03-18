@@ -391,6 +391,8 @@ class HGDGScoreController extends Controller
             ->map(function ($item) use ($idrevplan, $revplan) {
                 $question = $item->question;
                 // dd($revplan);
+                // dd($revplan->date_start);
+                $year = substr($revplan->date_start, 0, 4);
                 // HGDGQuestion::where('id', $item->question_id)->first();
                 // $scory = floatval($item->score);
                 // $scoor = floatval($question->score);
@@ -416,6 +418,7 @@ class HGDGScoreController extends Controller
                     "q_score" => $scoor,
                     "q_score2" => $scoor2,
                     "question_number" => $question->question_number,
+                    "project_title_year" =>$year?$revplan->project_title.' '.$year:$revplan->project_title,
                     "project_title"=>$revplan->project_title,
                     "hgdg_score"=>$revplan->hgdg_score,
                     "box_number"=>optional(optional($revplan)->boxNumber)->box_number,
