@@ -2346,21 +2346,18 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
     private function efficiencyRatingDescription($score)
     {
-        $rating = round($score);
-
-        switch ($rating) {
-            case 1:
-                return 'Poor';
-            case 2:
-                return 'Unsatisfactory';
-            case 3:
-                return 'Satisfactory';
-            case 4:
-                return 'Very Satisfactory';
-            case 5:
-                return 'Outstanding';
-            default:
-                return 'No';
+        if ($score <= 1.50) {
+            return 'Poor';
+        } elseif ($score <= 2.50) {
+            return 'Unsatisfactory';
+        } elseif ($score <= 3.50) {
+            return 'Satisfactory';
+        } elseif ($score <= 4.50) {
+            return 'Very Satisfactory';
+        } elseif ($score <= 5.00) {
+            return 'Outstanding';
+        } else {
+            return 'No Rating';
         }
     }
 
