@@ -36,18 +36,38 @@ class ProjectProfileTrackingController extends Controller
             // dd("seven jud siya:", $id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
         }
         // dd($id, $type, "new_status: " . $new_status, 'return_request_type: ' . $request->return_request_type);
+
+
+        // IDENTIFY RETURN REQUEST TYPE**********************************************************************
         $rrt = "";
         if ($request->return_request_type) {
             $rrt = $request->return_request_type;
         }
+
+        // IDENTIFYING USER**********************************************************************************
         $us = auth()->user();
         // dd($us);
-        $revplan = RevisionPlan::where('id', $id)->first();
+
+        // RETRIEVING PROJECT ***************************************************************************
+        $revplan = RevisionPlan::with(['budget'])->where('id', $id)->first();
+
+
+
+
+        // REDIRECTING IF NOT FOUND ***************************************************************************
         if (!$revplan) {
             return redirect()->back()->with('error', 'Revision Plan not found.')->withQueryString();
         }
-    // dd(auth()->user(), $revplan);
+
+        // ASSESSMENT FOR GAD BUDGET***************************************************************************
+        if($revplan->gad_version!='2'){
+            $this->generateComment($revplan);
+        }
+        // dd(auth()->user(), $revplan);
         // Only apply this check if submitting (new_status = 0)
+
+
+        // SUBMISSION*********************************************************************************************
         if ($new_status == 0) {
             $idpaps = $revplan->idpaps;
             // dd($idpaps);
@@ -59,9 +79,10 @@ class ProjectProfileTrackingController extends Controller
             $year = $revplan->year_period;
             // dd($revplan);
             // Check if any other revision plans of this idpaps are already submitted, reviewed, or approved , '1', '2'
-            $otherPlans = RevisionPlan::when($idpaps!=0, function($query) use ($idpaps, $id, $year){
-                $query->where('idpaps', $idpaps);
-            })
+            $otherPlans = RevisionPlan::with(['budget'])
+                ->when($idpaps!=0, function($query) use ($idpaps, $id, $year){
+                    $query->where('idpaps', $idpaps);
+                })
                 ->where('id', '!=', $id)
                 ->whereYear('date_start', $year)
                 // ->where('year_period', $year)
@@ -75,9 +96,11 @@ class ProjectProfileTrackingController extends Controller
                 return redirect()->back()->with('error', 'Cannot submit this Revision Plan because other plans for this PAP are already submitted, reviewed, or approved.');
             }
         }
+
+        // INDENTIFYING PROJECT/DOCUMENT  TYPE ********************************************************************
         $typpe = $revplan->type == "p" ? "Project Profie" : "Project Design";
 
-        // Update the status
+        // UPDATING STATUS*****************************************************************************************
         if ($new_status == "5") {
             $revplan->return_request_status = 0;
         } else if ($new_status == "7") {
@@ -90,10 +113,15 @@ class ProjectProfileTrackingController extends Controller
                 $revplan->status = $new_status;
             }
         }
-
+        // SAVING CHANGES********************************************************************************************
         $revplan->save();
+
+
         RevisionPlanDocuments::where('revision_plan_id', $id)
             ->update(['return_executed' => 1]);
+
+
+        // GENERATING PROFILE TRACIKING *****************************************************************************
         $this->projectProfileTracking->create([
             'action_by' => $us->recid,
             'action_type' => $type,
@@ -101,7 +129,7 @@ class ProjectProfileTrackingController extends Controller
             'remarks' => $request->remarks,
             'return_request_type' => $rrt
         ]);
-        // MESSAGE
+        // MESSAGE ARRAY ********************************************************************************************
         $actionWords = [
             0  => "Submitted",
             1  => "Reviewed",
@@ -110,6 +138,7 @@ class ProjectProfileTrackingController extends Controller
             5 => "Request for return sent"
         ];
 
+        // ACTION TEXT ***********************************************************************************************
         $actionText = $actionWords[$new_status] ?? "Updated";
         // if($new_status == 0 || $new_status == -1){
         //     return redirect()->back()->with('message', "Revision Plan status {$actionText} successfully.");
@@ -119,6 +148,8 @@ class ProjectProfileTrackingController extends Controller
         //         ->with('message','Project Profile '.$actionText.' successfully.');
         // }
         // Submit (0) OR Recall (-1) → go back to same page
+
+        // NEW STATUS ************************************************************************************************
         if ($new_status == 0 || $new_status == -1 || $new_status == "5" || $new_status == -2) {
             // return redirect()->back();
             return redirect()->to(url()->previous());
@@ -128,6 +159,8 @@ class ProjectProfileTrackingController extends Controller
         if($new_status==1){
             return redirect()->to(url()->previous());
         }
+
+        // ************************************************************************************************************
         // Review (1), Approve (2), Return (-2) → go to revision list
         return redirect('/revision_plans?source=rev_app')
             ->with('message', $typpe . " {$actionText} successfully.");
@@ -361,5 +394,50 @@ class ProjectProfileTrackingController extends Controller
         return inertia("RevisionPlans/Tracking/Index", [
             "data"=>$data
         ]);
+    }
+
+    public function generateComment($revplan){
+        // CALCULATING BUDGET REQUIREMENTS GAD**************************************************************************
+        $budget_total_gad = $revplan->budget
+                ->where('category_gad', 'GAD')
+                ->sum('amount');
+
+        //CALCULATING GAD ATTRIBUTED************************************************************************************
+        $budget_total = $revplan->budget->sum('amount');
+        $hgdg_score = $revplan->hgdg_score;
+        $gad_attributed = floatval($budget_total)*(floatval($hgdg_score)/20);
+        $diff = floatval($budget_total_gad)-floatval($gad_attributed);
+
+        // IF DIFFERENCE IS NOT ZERO **********************************************************************************
+        if($diff!=0){
+            // dd($diff,
+            // $budget_total_gad,
+            // $gad_attributed,
+            // $revplan->budget,
+            // $revplan,
+            //         $budget_total
+            // );
+            $comment = "";
+            if($diff>0){
+                $comment = "Subtract ".$diff." from your budgetary requirements.";
+            }else{
+                $comment = "Add ".$diff." to your budgetary requirements.";
+            }
+            $comment = 'Total of GAD in budgetary requirements ('
+                . number_format($budget_total_gad, 2) .
+                ') does not coincide with the computed GAD Attributed amount ('
+                . number_format($gad_attributed, 2) . ')';
+            $rev_comm = new RevisionPlanComment();
+            $rev_comm->table_row_id=$revplan->id;
+            $rev_comm->table_name = 'revision_plans';
+            $rev_comm->column_name= 'attributed_amount';
+            $rev_comm->comment = $comment;
+            $rev_comm->show_comment_box=0;
+            $rev_comm->comment_status=0;
+            $rev_comm->user_id=545;
+            $rev_comm->save();
+        }
+        // dd($budget_total_gad, $budget_total);
+        return "ok";
     }
 }

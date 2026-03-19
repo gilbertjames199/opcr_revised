@@ -482,8 +482,8 @@
                                     <!-- {{ formatDate(dat.project_profile_tracking.created_at) }} -- {{ dat.project_profile_tracking.created_at }}
                                        -->
                                     <span v-if="dat.project_profile_tracking?.created_at">
-  {{ formatDateTime(dat.project_profile_tracking.created_at) }}
-</span>
+                                    {{ formatDateTime(dat.project_profile_tracking.created_at) }}
+                                    </span>
                                 </td>
                                 <td>{{ dat.version }}</td>
                                 <td>{{ formatProjectType(dat.type) }}</td>
