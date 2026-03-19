@@ -943,6 +943,7 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import AIPModal from "@/Shared/PrintModal";
 import SIPModal from "@/Shared/ModalDynamicTitle";
+import HgdgModal from "@/Shared/ModalDynamicTitle";
 import ProjectPrintModal from "@/Shared/ModalDynamicTitle";
 import { Inertia } from '@inertiajs/inertia';
 import WorkPlanModal from "@/Shared/ModalDynamicTitle";
@@ -1006,7 +1007,7 @@ export default {
         }
     },
     components: {
-        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal, ReturnWithAmmendmentsModal
+        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal, ReturnWithAmmendmentsModal, HgdgModal
     },
     watch: {
         search: _.debounce(function (value) {

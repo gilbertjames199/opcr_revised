@@ -1327,9 +1327,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $prescribed_period_description = "";
 
                 if ($item->rating_q == 2 || $item->rating_q == 1 || $item->rating_e == 2 || $item->rating_e == 1) {
-                    $prescribed_period_description = $this->prescribedPeriodRatingDescription_below2($item->rating_t);
+                    $prescribed_period_description = $this->prescribedPeriodRatingDescription_below2($item->e1);
                 } else {
-                    $prescribed_period_description = $this->prescribedPeriodDescription($item->rating_t);
+                    $prescribed_period_description = $this->prescribedPeriodDescription($item->e1);
                 }
 
                 $timeliness_description = "";
@@ -1940,9 +1940,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
                 $timeliness_description = "";
                 if ($item->rating_q == 2 || $item->rating_q == 1 || $item->rating_e == 2 || $item->rating_e == 1) {
-                    $timeliness_description = $this->timelinessRatingDescription_below2($item->e1);
+                    $timeliness_description = $this->timelinessRatingDescription_below2($item->timeliness);
                 } else {
-                    $timeliness_description = $this->timelinessDescription($item->e1);
+                    $timeliness_description = $this->timelinessDescription($item->timeliness);
                 }
 
                 // dd($item);

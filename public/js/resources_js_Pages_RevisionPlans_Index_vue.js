@@ -28,6 +28,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     data: Object,
@@ -92,7 +93,8 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     WorkPlanModal: _Shared_ModalDynamicTitle__WEBPACK_IMPORTED_MODULE_3__["default"],
     SIPModal: _Shared_ModalDynamicTitle__WEBPACK_IMPORTED_MODULE_3__["default"],
     ProjectPrintModal: _Shared_ModalDynamicTitle__WEBPACK_IMPORTED_MODULE_3__["default"],
-    ReturnWithAmmendmentsModal: _Shared_ModalDynamicTitle__WEBPACK_IMPORTED_MODULE_3__["default"]
+    ReturnWithAmmendmentsModal: _Shared_ModalDynamicTitle__WEBPACK_IMPORTED_MODULE_3__["default"],
+    HgdgModal: _Shared_ModalDynamicTitle__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   watch: {
     search: _.debounce(function (value) {
