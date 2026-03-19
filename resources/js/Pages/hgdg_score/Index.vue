@@ -6,8 +6,8 @@
     <div class="row gap-10 masonry pos-r">
         <h1 v-if="revision_plan">{{ revision_plan.project_title }}
             <b>({{
-                revision_plan?.created_at && !isNaN(new Date(revision_plan.created_at))
-                    ? new Date(revision_plan.created_at).getFullYear()
+                revision_plan?.date_start && !isNaN(new Date(revision_plan.date_start))
+                    ? new Date(revision_plan.date_start).getFullYear()
                     : ''
                 }})</b>
         </h1>
