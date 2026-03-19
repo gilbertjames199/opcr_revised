@@ -602,10 +602,11 @@
                                         <td><span v-if="paps.is_strategy_based==1">{{ dat.ccet_code }}</span></td>
                                         <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
                                     </tr>
-                                    <tr :id="dat.id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
+                                    <tr :id="dat.strategy_id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
                                         <td :class="{
                                             'text-danger': has_comment('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)
                                         }" colspan="12"><b>{{ dat.description }}</b>
+                                        {{dat.strategy_id }}_strategy_projects_strategy
                                             <button v-if="can_view_comment()" class="superscript-btn"
                                                 @click="handleClick('Implementation Plan','strategies',dat.description,'strategy','strategy_projects', dat, dat.comments)">*
                                             </button>
@@ -679,9 +680,13 @@
                                                                         has_comment('Implementation Plan','Target/Indicator',pair.target_indicator,'target_indicator','expected_revised_outputs', pair, pair.comments)
                                                                     }"
                                                                     >{{ pair.target_indicator }}
-                                                                        <span v-if="pair.quantity>0
+                                                                        <!-- <span v-if="pair.quantity>0
                                                                             && !/\d+(\s*[a-zA-Z]+)?$/.test(pair.target_indicator)
-                                                                            && !/-\s*\d{1,3}(,\d{3})*/.test(pair.target_indicator)">
+                                                                            && !/-\s*\d{1,3}(,\d{3})*/.test(pair.target_indicator)"> -->
+                                                                        <span v-if="
+                                                                            pair.quantity > 0 &&
+                                                                            !/\d+\s*$/.test((pair.target_indicator || '').trim())
+                                                                            ">
                                                                             - {{ pair.quantity }}
                                                                         </span>
                                                                     </span>
@@ -2013,7 +2018,7 @@
                                                         :class="'comment-rejected'"
                                                     >
                                                         {{ comment.comment }}
-                                                        <!-- <p>{{comment.table_row_id}}_{{comment.table_name}}_{{comment.column_name}}</p> -->
+                                                        <p>{{comment.table_row_id}}_{{comment.table_name}}_{{comment.column_name}}</p>
                                                                             <!-- {{
                                                                     ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                                         ? comment.column_name

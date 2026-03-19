@@ -612,7 +612,7 @@
                                             <td><span v-if="paps.is_strategy_based==1">{{ dat.ccet_code }}</span></td>
                                             <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
                                         </tr>
-                                        <tr :id="dat.id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
+                                        <tr :id="dat.strategy_id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
                                             <!-- SEQUENCE NUMBER -->
                                             <td>
                                                 <input
