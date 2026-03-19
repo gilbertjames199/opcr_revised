@@ -39,8 +39,9 @@ class TargetAccomplishmentReviewApproveController extends Controller
         // $data = $this->revapp->paginate(10);
         if (auth()->user()->department_code == '04') {
             $data = $this->revapp
-                ->where('target_status', '>', -1)
-                ->where('target_status', '<', 1)
+                // ->where('target_status', '>', -1)
+                // ->where('target_status', '<', 1)
+                ->where('target_status',0)
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
                 ->paginate(10);
