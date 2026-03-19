@@ -2018,7 +2018,7 @@
                                                         :class="'comment-rejected'"
                                                     >
                                                         {{ comment.comment }}
-                                                        <p>{{comment.table_row_id}}_{{comment.table_name}}_{{comment.column_name}}</p>
+                                                        <!-- <p>{{comment.table_row_id}}_{{comment.table_name}}_{{comment.column_name}}</p> -->
                                                                             <!-- {{
                                                                     ['beneficiaries', 'objective', 'rationale'].includes(comment.column_name)
                                                                         ? comment.column_name
