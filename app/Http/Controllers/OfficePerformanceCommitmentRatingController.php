@@ -1327,9 +1327,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $prescribed_period_description = "";
 
                 if ($item->rating_q == 2 || $item->rating_q == 1 || $item->rating_e == 2 || $item->rating_e == 1) {
-                    $prescribed_period_description = $this->prescribedPeriodRatingDescription_below2($item->rating_t);
+                    $prescribed_period_description = $this->prescribedPeriodRatingDescription_below2($item->e1);
                 } else {
-                    $prescribed_period_description = $this->prescribedPeriodDescription($item->rating_t);
+                    $prescribed_period_description = $this->prescribedPeriodDescription($item->e1);
                 }
 
                 $timeliness_description = "";
@@ -1940,9 +1940,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
                 $timeliness_description = "";
                 if ($item->rating_q == 2 || $item->rating_q == 1 || $item->rating_e == 2 || $item->rating_e == 1) {
-                    $timeliness_description = $this->timelinessRatingDescription_below2($item->rating_t);
+                    $timeliness_description = $this->timelinessRatingDescription_below2($item->timeliness);
                 } else {
-                    $timeliness_description = $this->timelinessDescription($item->rating_t);
+                    $timeliness_description = $this->timelinessDescription($item->timeliness);
                 }
 
                 // dd($item);
@@ -2054,10 +2054,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $ave_qet_pl = number_format(floatval($ave_qet_pl), 2);
                 }
                 $ave_pl = $average;
-                    // dd("0");
+                // dd("0");
                 // } else {
-                    // dd("1");
-                    //
+                // dd("1");
+                //
                 // FROM DPCR**********************************************************************
                 $monthly_ratings = calculateMonthlyAverages($item, [
                     'q1',
@@ -2133,7 +2133,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $ave_qet_dpcr = number_format(floatval($ave_qet_dpcr), 2);
                 }
                 $ave_dpcr = $request->average;
-                    // dd($item->id, $item, $monthly_ratings, $monthly_ratings['q1'], $var_q);
+                // dd($item->id, $item, $monthly_ratings, $monthly_ratings['q1'], $var_q);
                 // }
                 $adj = "Outstanding";
 
@@ -2198,14 +2198,14 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "pmt_chair" => $pmt_chair,
                     "overall_average" => $ave,
                     "Actual_Accomplishment" => $Actual_Accomplishment,
-                    "semester"=>$my_opcr ? $my_opcr->semester : null,
-                    "year"=>$my_opcr ? $my_opcr->year : null,
-                    "office_name"=>$my_opcr ? optional(optional($my_opcr)->office)->office : null,
+                    "semester" => $my_opcr ? $my_opcr->semester : null,
+                    "year" => $my_opcr ? $my_opcr->year : null,
+                    "office_name" => $my_opcr ? optional(optional($my_opcr)->office)->office : null,
                     'rating_status' => $my_opcr ? $my_opcr->rating_status : null,
-                    'total_ave_qet_dpcr'=>0,
-                    'total_ave_qet_ppdo'=>0,
-                    'average_non_zero'=>0,
-                    'grand_total'=>0,
+                    'total_ave_qet_dpcr' => 0,
+                    'total_ave_qet_ppdo' => 0,
+                    'average_non_zero' => 0,
+                    'grand_total' => 0,
                     // "office_accountable" => $office_accountable
                     // "from_excel" => $item->from_excel,
                     // "mfo_idmfo" => $item->mfo_idmfo,
@@ -2263,8 +2263,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
             // Add the 4 new fields
             $row['total_ave_qet_dpcr'] = round($total_ave_qet_dpcr, 2);
             $row['total_ave_qet_ppdo'] = round($total_ave_qet_ppdo, 2);
-            $row['average_nonzero_dpcr']   = round($average_nonzero_dpcr,2);
-            $row['average_nonzero_ppdo']   = round($average_non_zero,2);
+            $row['average_nonzero_dpcr']   = round($average_nonzero_dpcr, 2);
+            $row['average_nonzero_ppdo']   = round($average_non_zero, 2);
             // $row['grand_total']        = round($ave_qet_dpcr + $ave_qet_ppdo, 2);
 
             return $row;
@@ -2309,14 +2309,14 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 "ave_qet" => null,
                 "target_success_indicator" => null,
                 "adjectival" => null,
-                "semester"=>$my_opcr ? $my_opcr->semester : null,
-                "year"=>$my_opcr ? $my_opcr->year : null,
-                "office_name"=>$my_opcr ? optional(optional($my_opcr)->office)->office : null,
+                "semester" => $my_opcr ? $my_opcr->semester : null,
+                "year" => $my_opcr ? $my_opcr->year : null,
+                "office_name" => $my_opcr ? optional(optional($my_opcr)->office)->office : null,
                 'rating_status' => $my_opcr ? $my_opcr->rating_status : null,
-                'total_ave_qet_dpcr'=>0,
-                'total_ave_qet_ppdo'=>0,
-                'average_non_zero'=>0,
-                'grand_total'=>0,
+                'total_ave_qet_dpcr' => 0,
+                'total_ave_qet_ppdo' => 0,
+                'average_non_zero' => 0,
+                'grand_total' => 0,
             ]]);
         }
         return $data;
@@ -2346,21 +2346,18 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
     private function efficiencyRatingDescription($score)
     {
-        $rating = round($score);
-
-        switch ($rating) {
-            case 1:
-                return 'Poor';
-            case 2:
-                return 'Unsatisfactory';
-            case 3:
-                return 'Satisfactory';
-            case 4:
-                return 'Very Satisfactory';
-            case 5:
-                return 'Outstanding';
-            default:
-                return 'No';
+        if ($score <= 1.50) {
+            return 'Poor';
+        } elseif ($score <= 2.50) {
+            return 'Unsatisfactory';
+        } elseif ($score <= 3.50) {
+            return 'Satisfactory';
+        } elseif ($score <= 4.50) {
+            return 'Very Satisfactory';
+        } elseif ($score <= 5.00) {
+            return 'Outstanding';
+        } else {
+            return 'No Rating';
         }
     }
 
