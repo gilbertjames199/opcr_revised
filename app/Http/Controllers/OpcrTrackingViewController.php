@@ -9,6 +9,7 @@ class OpcrTrackingViewController extends Controller
 {
     public function targets(Request $request){
         $data = OfficePerformanceCommitmentRatingList::with(['office'])
+            ->where('department_code','<>','01')
             ->get()
             ->groupBy('year')
             ->sortKeysDesc()
@@ -54,6 +55,7 @@ class OpcrTrackingViewController extends Controller
     }
     public function ratings(Request $request){
         $data = OfficePerformanceCommitmentRatingList::with(['office'])
+            ->where('department_code','<>','01')
             ->get()
             ->groupBy('year')
             ->sortKeysDesc()
