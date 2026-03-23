@@ -94,6 +94,7 @@ use App\Http\Controllers\IPCRController;
 use App\Http\Controllers\MeansOfVerificationController;
 use App\Http\Controllers\OfficeAipCodeController;
 use App\Http\Controllers\OpcrTargetBudgetController;
+use App\Http\Controllers\OpcrTrackingViewController;
 use App\Http\Controllers\ProjectDesignController;
 use App\Http\Controllers\ProjectProfileNextYearController;
 use App\Http\Controllers\ProjectProfileStreamlinedController;
@@ -612,6 +613,11 @@ Route::middleware('auth')->group(function () {
         //implementation/create/activity/${dat.id}
         Route::get('/create/activity/{idstrat}/{idrev_plan}', [ImplementationPlanController::class, 'act_create']);
         Route::get('/edit/activity/{id}', [ImplementationPlanController::class, 'act_edit']);
+    });
+    // OPCR Tracking
+    Route::prefix('/opcr-tracking')->group(function () {
+        Route::get('/targets', [OpcrTrackingViewController::class, 'targets']);
+        Route::get('/ratings', [OpcrTrackingViewController::class, 'ratings']);
     });
     // Strategy-based
     Route::prefix('/strategy/implementation')->group(function () {
