@@ -4037,7 +4037,8 @@ class RevisionPlanController extends Controller
             // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
             $signatories = $this->getSignatories($item->id);
             // dd($signatories);
-            $rationale = html_entity_decode($item->rationale, ENT_QUOTES | ENT_HTML5);
+            // $rationale = html_entity_decode($item->rationale, ENT_QUOTES | ENT_HTML5);
+            $rationale =$item->rationale;
 
             // Optional but recommended: strip unsupported tags
             // $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
