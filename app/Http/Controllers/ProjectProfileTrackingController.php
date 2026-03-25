@@ -104,8 +104,8 @@ class ProjectProfileTrackingController extends Controller
         if ($new_status == "5") {
             $revplan->return_request_status = 0;
         } else if ($new_status == "7") {
-            $revplan->status="-1";
-            $revplan->return_request_status = "-2";
+            $revplan->status="-2";
+            $revplan->return_request_status = "-1";
             // $this->service->generate($id);
         } else {
             if ($request->column == 'gad_status') {
