@@ -4049,7 +4049,7 @@ class RevisionPlanController extends Controller
 
             $rationale = preg_replace('/style="text-align:\s*justify;?"/', '', $rationale);
 
-
+            $rationale = $this->quillToJasperText($item->rationale);
             $partnership = $item->partnership ? html_entity_decode($item->partnership, ENT_QUOTES | ENT_HTML5) : '';
             $partnership = strip_tags($partnership, '<p><br><b><strong><i><em><u>');
             $partnership = preg_replace('/class="ql-align-justify"/', '', $partnership);
@@ -4145,6 +4145,30 @@ class RevisionPlanController extends Controller
         return $revplan;
         // $sigs= $this->getSignatories($request->id);
         // return $revplan->concat($sigs);
+    }
+    public function quillToJasperText($html)
+    {
+        // Remove unwanted Quill alignment attributes first
+        $html = preg_replace('/class="ql-align-justify"/', '', $html);
+        $html = preg_replace('/align="justify"/', '', $html);
+        $html = preg_replace('/style="text-align:\s*justify;?"/', '', $html);
+
+        // Convert <br> to double line breaks
+        $html = preg_replace('/<br\s*\/?>/i', "\n\n", $html);
+
+        // Convert closing paragraphs to double line breaks
+        $html = preg_replace('/<\/p>/', "\n\n", $html);
+
+        // Remove all remaining HTML tags
+        $text = strip_tags($html);
+
+        // Decode HTML entities (&nbsp;, etc.)
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5);
+
+        // Clean excessive spaces/newlines
+        $text = preg_replace("/\n{3,}/", "\n\n", $text);
+
+        return trim($text);
     }
     public function getSignatories($id)
     {
