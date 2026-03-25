@@ -3187,6 +3187,12 @@
                 <div>
                     <textarea class="form-control" rows="5" v-model="comment"
                         placeholder="Write your comment here..."></textarea>
+                    <!-- v-if="!briefRationale" -->
+<!-- fgfgfdggdfgdfgdgdfg -->
+                    <!-- @update:content="val => updateRevisionPlans('revision_plans', 'rationale', form.id, val)"
+                    ref="rationaleQuill" -->
+                    <QuillEditor theme="snow" v-model:content="comment" contentType="html"
+                            />
                 </div>
                 <div>
                     <button class="btn btn-primary mt-2 text-white" @click="saveComment()">
@@ -3374,8 +3380,16 @@ import CommentModal from "@/Shared/ModalDynamicTitle";
 import SmallModalComments from "@/Shared/SmallModal";
 import SmallModalCommentActions from "@/Shared/SmallModal";
 import { Inertia } from '@inertiajs/inertia';
+import QuillEditorC from '@/Shared/QuillEditorShared'
 export default {
-    components: { Filtering, Pagination, CommentModal, SmallModalComments, SmallModalCommentActions },
+    components: {
+        Filtering,
+        Pagination,
+        CommentModal,
+        SmallModalComments,
+        QuillEditorC,
+        SmallModalCommentActions
+    },
     props: {
         auth: Object,
         paps: Object,

@@ -4040,7 +4040,7 @@ class RevisionPlanController extends Controller
             $rationale = html_entity_decode($item->rationale, ENT_QUOTES | ENT_HTML5);
 
             // Optional but recommended: strip unsupported tags
-            $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
+            // $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
             $rationale = preg_replace('/class="ql-align-justify"/', '', $rationale);
 
             $rationale = preg_replace('/align="justify"/', '', $rationale);

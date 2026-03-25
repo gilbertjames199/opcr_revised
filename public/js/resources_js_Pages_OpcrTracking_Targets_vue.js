@@ -72,16 +72,27 @@ function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 
 var _hoisted_1 = {
-  "class": "w-100"
+  "class": "w-100 p-4"
 };
 var _hoisted_2 = {
-  "class": "table w-100 bg-white shadow-sm border"
+  "class": "table w-100 bg-white shadow border-0",
+  style: {
+    "border-radius": "8px",
+    "overflow": "hidden"
+  }
 };
 var _hoisted_3 = {
-  "class": "fw-bold"
+  "class": "fw-bold",
+  style: {
+    "color": "#2c3e50",
+    "padding": "1rem"
+  }
 };
 var _hoisted_4 = {
-  "class": "text-end"
+  "class": "text-end",
+  style: {
+    "padding": "1rem"
+  }
 };
 var _hoisted_5 = {
   "class": "d-flex justify-content-end w-100"
@@ -95,13 +106,20 @@ var _hoisted_8 = {
   "class": "p-0"
 };
 var _hoisted_9 = {
-  "class": "table w-100 mb-0 bg-white border"
+  "class": "table w-100 mb-0 bg-white border-0"
 };
 var _hoisted_10 = {
-  "class": "ps-4 fw-semibold"
+  "class": "fw-semibold",
+  style: {
+    "color": "#34495e",
+    "padding": "0.875rem 1rem 0.875rem 1.5rem"
+  }
 };
 var _hoisted_11 = {
-  "class": "text-end"
+  "class": "text-end",
+  style: {
+    "padding": "0.875rem 1rem"
+  }
 };
 var _hoisted_12 = ["onClick"];
 var _hoisted_13 = {
@@ -112,10 +130,31 @@ var _hoisted_14 = {
   "class": "p-0"
 };
 var _hoisted_15 = {
-  "class": "table w-100 mb-0 border"
+  "class": "table w-100 mb-0 border-0"
 };
 var _hoisted_16 = {
-  "class": "badge bg-secondary"
+  style: {
+    "padding": "0.875rem 1rem 0.875rem 2rem",
+    "color": "#7f8c8d"
+  }
+};
+var _hoisted_17 = {
+  style: {
+    "padding": "0.875rem 1rem",
+    "color": "#2c3e50"
+  }
+};
+var _hoisted_18 = {
+  style: {
+    "padding": "0.875rem 1rem"
+  }
+};
+var _hoisted_19 = {
+  "class": "badge status-badge",
+  style: {
+    "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    "font-weight": "600"
+  }
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
@@ -125,44 +164,102 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return _toConsumableArray(_cache[0] || (_cache[0] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("title", null, "OPCR Targets", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "OPCR Targets", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ================= YEAR TABLE ================= "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_2, [_cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
-    "class": "table-light"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Year"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-    "class": "text-end"
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "mb-4"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
+    "class": "mb-1 fw-bold",
+    style: {
+      "color": "#2c3e50"
+    }
+  }, "OPCR Targets"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "text-muted",
+    style: {
+      "font-size": "0.95rem"
+    }
+  }, "View and manage targets by year and semester")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ================= YEAR TABLE ================= "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_2, [_cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
+    style: {
+      "background-color": "#f8f9fa",
+      "border-bottom": "2px solid #dee2e6"
+    }
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    style: {
+      "font-weight": "600",
+      "color": "#2c3e50",
+      "padding": "1rem"
+    }
+  }, "Year"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    "class": "text-end",
+    style: {
+      "font-weight": "600",
+      "color": "#2c3e50",
+      "padding": "1rem"
+    }
   }, "Action")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.groupedData, function (semesters, year) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
       key: year
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" YEAR ROW "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["align-middle", {
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["align-middle year-row", {
         'year-glow': $data.openYear === year
       }])
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(year), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td class=\"text-end\">\n              <button\n                class=\"btn btn-sm btn-light border-0\"\n                @click=\"toggleYear(year)\"\n              >\n                <ChevronIcon :open=\"openYear === year\" />\n              </button>\n            </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-      "class": "btn btn-sm btn-light border-0 p-0",
+      "class": "btn btn-sm btn-light border-0 p-2 year-toggle",
       onClick: function onClick($event) {
         return $options.toggleYear(year);
-      }
+      },
+      title: "Expand/Collapse"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ChevronIcon, {
       open: $data.openYear === year
     }, null, 8 /* PROPS */, ["open"])], 8 /* PROPS */, _hoisted_6)])])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ================= SEMESTER TABLE ================= "), $data.openYear === year ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(semesters, function (offices, semester) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
         key: semester
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SEMESTER ROW "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
-        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-light", {
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["semester-row", {
           'semester-glow': $options.isSemesterOpen(year, semester)
-        }])
+        }]),
+        style: {
+          "background-color": "#f8f9fa",
+          "border-bottom": "1px solid #dee2e6"
+        }
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(semester), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-        "class": "btn btn-sm btn-light border-0",
+        "class": "btn btn-sm btn-light border-0 p-2 semester-toggle",
         onClick: function onClick($event) {
           return $options.toggleSemester(year, semester);
-        }
+        },
+        title: "Expand/Collapse"
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ChevronIcon, {
         open: $options.isSemesterOpen(year, semester)
       }, null, 8 /* PROPS */, ["open"])], 8 /* PROPS */, _hoisted_12)])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ================= OFFICES TABLE ================= "), $options.isSemesterOpen(year, semester) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_15, [_cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
-        "class": "table-light"
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "#"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Office"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Status")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(offices, function (item, index) {
+        style: {
+          "background-color": "#ecf0f1",
+          "border-bottom": "1px solid #bdc3c7"
+        }
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+        style: {
+          "font-weight": "600",
+          "color": "#34495e",
+          "padding": "0.75rem 1rem 0.75rem 2rem",
+          "width": "50px"
+        }
+      }, "#"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+        style: {
+          "font-weight": "600",
+          "color": "#34495e",
+          "padding": "0.75rem 1rem"
+        }
+      }, "Office"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+        style: {
+          "font-weight": "600",
+          "color": "#34495e",
+          "padding": "0.75rem 1rem"
+        }
+      }, "Status")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(offices, function (item, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
-          key: item.id
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.office_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.target_status), 1 /* TEXT */)])]);
+          key: item.id,
+          "class": "office-row",
+          style: {
+            "border-bottom": "1px solid #ecf0f1"
+          }
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.office_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.target_status), 1 /* TEXT */)])]);
       }), 128 /* KEYED_FRAGMENT */))])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
     }), 128 /* KEYED_FRAGMENT */))])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
   }), 128 /* KEYED_FRAGMENT */))])])])], 64 /* STABLE_FRAGMENT */);
@@ -186,7 +283,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.table td[data-v-beffc03a] {\n  vertical-align: middle;\n}\nbutton[data-v-beffc03a] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.year-glow[data-v-beffc03a] {\n  background-color: rgba(0, 150, 255, 0.15);\n  box-shadow: inset 0 0 10px rgba(0, 150, 255, 0.4), 0 0 8px rgba(0, 150, 255, 0.3);\n  transition: all 0.2s ease;\n}\n.semester-glow[data-v-beffc03a] {\n  background-color: rgba(0, 255, 100, 0.15);\n  box-shadow: inset 0 0 10px rgba(0, 255, 100, 0.4), 0 0 8px rgba(0, 255, 100, 0.3);\n  transition: all 0.2s ease;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.table td[data-v-beffc03a] {\n  vertical-align: middle;\n}\nbutton[data-v-beffc03a] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}row[data-v-beffc03a] {\n  transition: all 0.2s ease;\n}\n.year-row[data-v-beffc03a]:hover:not(.year-glow) {\n  background-color: #f0f6ff;\n}\n.year-glow[data-v-beffc03a] {\n  background-color: rgba(0, 150, 255, 0.15);\n  box-shadow: inset 0 0 10px rgba(0, 150, 255, 0.4), 0 0 8px rgba(0, 150, 255, 0.3);\n  transition: all 0.2s ease;\n}\n.semester-row[data-v-beffc03a] {\n  transition: all 0.2s ease;\n}\n.semester-row[data-v-beffc03a]:hover:not(.semester-glow) {\n  background-color: #f5f7fa;\n}\n.semester-glow[data-v-beffc03a] {\n  background-color: rgba(0, 255, 100, 0.15);\n  box-shadow: inset 0 0 10px rgba(0, 255, 100, 0.4), 0 0 8px rgba(0, 255, 100, 0.3);\n  transition: all 0.2s ease;\n}\n.office-row[data-v-beffc03a] {\n  transition: background-color 0.2s ease;\n}\n.office-row[data-v-beffc03a]:hover {\n  background-color: #f9f9f9;\n}\n.year-toggle[data-v-beffc03a]:hover,\n.semester-toggle[data-v-beffc03a]:hover {\n  background-color: #e9ecef !important;\n  border-radius: 4px;\n}\n.status-badge[data-v-beffc03a] {\n  padding: 0.5rem 0.875rem !important;\n  border-radius: 20px;\n  font-size: 0.85rem 255, 100, 0.15);\n  box-shadow: inset 0 0 10px rgba(0, 255, 100, 0.4), 0 0 8px rgba(0, 255, 100, 0.3);\n  transition: all 0.2s ease;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

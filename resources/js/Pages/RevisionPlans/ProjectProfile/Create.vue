@@ -762,7 +762,7 @@
                                                                 <tr style="height: 100%;">
                                                                     <!-- Target Indicator -->
                                                                     <td class="align-top" style="width: 25%; height: 100%; border: 1px solid #000; padding: 4px;" :id="pair.id + '_activity_projects_target_indicator'">
-                                                                        <span v-if="paps.is_strategy_based==0 && pair.target_indicator">
+                                                                        <span v-if="paps.is_strategy_based==0">
                                                                             <textarea :id="pair.id + '_target_indicator'"
                                                                                 class="form-control transparent-bg "
                                                                                 v-model="pair.target_indicator"
@@ -2364,7 +2364,7 @@
             </div>
         </SmallModalComments>
         <CommentModal v-if="show_comment_modal" @close-modal-event="closeCommentModal" title="COMMENTS">
-
+            test
             <div class="d-flex justify-content-center">
 
             </div>

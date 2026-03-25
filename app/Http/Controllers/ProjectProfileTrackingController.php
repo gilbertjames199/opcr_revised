@@ -61,7 +61,7 @@ class ProjectProfileTrackingController extends Controller
 
         // ASSESSMENT FOR GAD BUDGET***************************************************************************
         if($revplan->gad_version!='2'){
-            $this->generateComment($revplan);
+            // $this->generateComment($revplan);
         }
         // dd(auth()->user(), $revplan);
         // Only apply this check if submitting (new_status = 0)
