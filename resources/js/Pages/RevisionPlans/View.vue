@@ -3191,8 +3191,8 @@
 <!-- fgfgfdggdfgdfgdgdfg -->
                     <!-- @update:content="val => updateRevisionPlans('revision_plans', 'rationale', form.id, val)"
                     ref="rationaleQuill" -->
-                    <QuillEditor theme="snow" v-model:content="comment" contentType="html"
-                            />
+                    <!-- <QuillEditor theme="snow" v-model:content="comment" contentType="html"
+                            /> -->
                 </div>
                 <div>
                     <button class="btn btn-primary mt-2 text-white" @click="saveComment()">
