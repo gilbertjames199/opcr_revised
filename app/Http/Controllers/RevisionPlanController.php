@@ -4003,7 +4003,8 @@ class RevisionPlanController extends Controller
         // dd($amount);
 
         $revplan=$revplan->map(function ($item)use($amount, $proposed_budget) {
-            $totalScore = $item->hgdgScores->sum('score');
+            $totalScore = $item->hgdg_score;
+            // hgdgScores->sum('score');
             // dd($item);
             // dd($totalScore);
 
