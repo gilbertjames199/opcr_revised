@@ -4041,6 +4041,7 @@ class RevisionPlanController extends Controller
 
             // Optional but recommended: strip unsupported tags
             // $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
+            $rationale = preg_replace('/<br\s*\/?>/i', "\n\n", $rationale);
             $rationale = preg_replace('/class="ql-align-justify"/', '', $rationale);
 
             $rationale = preg_replace('/align="justify"/', '', $rationale);
