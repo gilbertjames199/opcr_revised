@@ -4096,7 +4096,7 @@ class RevisionPlanController extends Controller
                 // 'rationale' => '<p align="justify">' . e($item->rationale) . '</p>',
                 // 'rationale' => '<p style="text-align: justify;">' . $rationale . '</p>',
                 'rationale' => $rationale,
-                'objective' => '<p style="text-align: justify;">' .trim($item->objective). '</p>',
+                'objective' => '<p style="text-align: justify;">' .trim($rationale = $this->quillToJasperText($item->objective)). '</p>',
                 'beneficiaries' => $item->beneficiaries,
                 'implementing_team' => $item->implementing_team,
                 'implementing_teams' => $item->teamPlans,

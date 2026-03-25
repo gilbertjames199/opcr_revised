@@ -3188,7 +3188,7 @@
                     <textarea class="form-control" rows="5" v-model="comment"
                         placeholder="Write your comment here..."></textarea>
                     <!-- v-if="!briefRationale" -->
-<!-- fgfgfdggdfgdfgdgdfg -->
+                    <!-- fgfgfdggdfgdfgdgdfg -->
                     <!-- @update:content="val => updateRevisionPlans('revision_plans', 'rationale', form.id, val)"
                     ref="rationaleQuill" -->
                     <!-- <QuillEditor theme="snow" v-model:content="comment" contentType="html"
