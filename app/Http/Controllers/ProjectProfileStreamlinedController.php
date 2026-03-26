@@ -114,7 +114,7 @@ class ProjectProfileStreamlinedController extends Controller
             $source = $request->source;
             $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $request->idrevplan)->first();
         } else {
-            $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $max_id)->first();
+            $duplicate = RevisionPlan::with(['comments', 'comments.user', 'paps', 'checklist'])->where('id', $request->idrevplan)->first();
         }
         // dd($duplicate);
         // HGDG Checklist

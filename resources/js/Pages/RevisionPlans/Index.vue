@@ -6,6 +6,11 @@
     <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
     </p>-->
     <div class="row gap-20 masonry pos-r">
+        <!-- Flying Paper Plane Animation -->
+        <div v-if="showFlyingPlane" class="flying-plane-container">
+            <i class="fas fa-paper-plane flying-plane"></i>
+        </div>
+
         <div class="peers fxw-nw jc-sb ai-c">
             <div class="peers">
                 <h3 v-if="source==='sip'">SIP Profile</h3>
@@ -298,332 +303,291 @@
         </div>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
-            <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
-                <div class="table-responsive">
-                    <table class="table table-sm table-borderless table-striped table-hover">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th>Project Title</th>
-                                <th>Date Submitted</th>
-                                <th>Office</th>
-                                <th>Status</th>
-                                <th>View</th>
-                                <th>Edit</th>
-                                <th>Full Edit</th>
-                                <th></th>
-                                <th>Forward Next Year</th>
-                                <th>Version</th>
-                                <th>Year</th>
-                                <th>Type</th>
-                                <th>Actions</th>
+                <!-- Table Header with Title and Stats -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-primary mb-0">
+                        <i class="fas fa-list-ul me-2"></i>
+                        Project Profiles
+                    </h4>
+                    <button @click="fitTableWidth"
+                            class="btn btn-sm btn-outline-primary"
+                            title="Adjust zoom to fit table width">
+                        <i class="fas fa-compress me-2"></i>
+                        Fit Width to Visible Area
+                    </button>
+                    <!-- <div class="text-muted small">
+                        Showing {{ data.from }} to {{ data.to }} of {{ data.total }} entries
+                    </div> -->
+                </div>
+
+                <!-- Responsive Table Container -->
+                <div class="table-responsive" ref="tableResponsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-head-sticky">
+                            <tr>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-file-alt me-2"></i>Project Title
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-calendar me-2"></i>Date Submitted
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-building me-2"></i>Office
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-info-circle me-2"></i>Status
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center" colspan="3">
+                                    <i class="fas fa-edit me-2"></i>Actions
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-forward me-2"></i>Forward
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-code-branch me-2"></i>Version
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-calendar-alt me-2"></i>Year
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-tag me-2"></i>Type
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center">
+                                    <i class="fas fa-play me-2"></i>Actions
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center">
+                                    <i class="fas fa-cogs me-2"></i>More
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dat in data">
-                                <!-- TITLE -->
-                                <td>{{ dat.project_title }}
-                                    <span style="color:#FF10F0; font-weight: bold">
-                                        {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
+                            <tr v-for="dat in data" :key="dat.id" class="border-bottom border-light">
+                                <!-- PROJECT TITLE -->
+                                <td class="fw-medium">
+                                    <div class="d-flex flex-column">
+                                        <span class="text-dark">{{ dat.project_title }}</span>
+                                        <small v-if="amountStatus(dat.budget_sum, dat.imp_amount)" class="text-danger mt-1">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
+                                        </small>
+                                    </div>
+                                </td>
 
-                                        <!-- {{ dat.budget_sum }} --{{dat.imp_amount}} -- {{dat.id}} -->
+                                <!-- DATE SUBMITTED -->
+                                <td class="text-muted">{{ dat.created_at ? new Date(dat.created_at).toLocaleDateString() : 'N/A' }}</td>
+
+                                <!-- OFFICE -->
+                                <td>
+                                    <span class="badge bg-light text-dark border">
+                                        <i class="fas fa-building me-1"></i>{{ dat.FFUNCTION }}
                                     </span>
                                 </td>
-                                <!-- DATE SUBMITTED -->
-                                <td></td>
-                                <!-- OFFICE -->
-                                <td>{{ dat.FFUNCTION }}</td>
+
                                 <!-- STATUS -->
                                 <td>
-                                    <!-- <span
-                                        :style="{
-                                        display: 'inline-block',
-                                        padding: '2px 8px',
-                                        borderRadius: '4px',
-                                        color: 'white',
-                                        fontWeight: 'bold',
-                                        backgroundColor:
-                                            dat.status == '-2' ? '#ff1078' :
-                                            dat.status == '-1' ? 'gray' :
-                                            dat.status == '0'  ? 'orange' :
-                                            dat.status == '1'  ? 'blue' :
-                                            dat.status == '2'  ? 'green' :
-                                            dat.status == '7' ? 'red' :
-                                            'black'
-                                        }"
-                                    >
-                                        {{
-                                        dat.status == '-2' ? 'Returned' :
-                                        dat.status == '-1' ? 'Saved' :
-                                        dat.status == '0'  ? 'Submitted' :
-                                        dat.status == '1'  ? 'Reviewed' :
-                                        dat.status == '2'  ? 'Approved' :
-                                        dat.status == '7'  ? 'Request for Return' :
-                                        'Unknown'
-                                        }}
-                                    </span> -->
-                                    <span
-                                        :style="{
-                                            display: 'inline-block',
-                                            padding: '3px 10px',
-                                            borderRadius: '20px',
-                                            fontSize: '12px',
-                                            fontWeight: '600',
-                                            border: '1px solid',
-                                            backgroundColor:
-                                                dat.status == '-2' ? '#ffe4ef' :
-                                                dat.status == '-1' ? '#f2f2f2' :
-                                                dat.status == '0'  ? '#fff4db' :
-                                                dat.status == '1'  ? '#e6f0ff' :
-                                                dat.status == '2'  ? '#e6f7ec' :
-                                                dat.status == '7'  ? '#fde6e6' :
-                                                '#f0f0f0',
-                                            color:
-                                                dat.status == '-2' ? '#d6006c' :
-                                                dat.status == '-1' ? '#666' :
-                                                dat.status == '0'  ? '#cc8400' :
-                                                dat.status == '1'  ? '#2a6df4' :
-                                                dat.status == '2'  ? '#1f8a4c' :
-                                                dat.status == '7'  ? '#c62828' :
-                                                '#333',
-                                            borderColor:
-                                                dat.status == '-2' ? '#ffb3d1' :
-                                                dat.status == '-1' ? '#d9d9d9' :
-                                                dat.status == '0'  ? '#ffd27a' :
-                                                dat.status == '1'  ? '#a9c6ff' :
-                                                dat.status == '2'  ? '#9edbb4' :
-                                                dat.status == '7'  ? '#f5b5b5' :
-                                                '#ddd'
-                                        }"
-                                    >
-                                    {{
-                                        dat.status == '-2' ? 'Returned' :
-                                        dat.status == '-1' ? 'Saved' :
-                                        dat.status == '0'  ? 'Submitted' :
-                                        dat.status == '1'  ? 'Reviewed' :
-                                        dat.status == '2'  ? 'Approved' :
-                                        dat.status == '7'  ? 'Request for Return' :
-                                        'Unknown'
-                                    }}
-                                    </span>
-                                    <p v-if="parseFloat(dat.status)>-1 && parseFloat(dat.status) !== 1"><i>{{ dat.gad_status==1 ? 'GAD Approved' : 'GAD Not Yet Evaluated' }}</i></p>
-
+                                    <div :class="['status-oval', getStatusOvalClass(dat.status)]" class="d-inline-flex align-items-center">
+                                        <span :class="`badge fw-medium ${getStatusBadgeClass(dat.status)}`">
+                                            <i :class="[getStatusIcon(dat.status), 'me-1']"></i>
+                                            {{ getStatusLabel(dat.status) }}
+                                        </span>
+                                    </div>
+                                    <div v-if="parseFloat(dat.status)>-1 && parseFloat(dat.status) !== 1" class="mt-1">
+                                        <small class="text-muted">
+                                            <i :class="dat.gad_status==1 ? 'fas fa-check-circle text-success me-1' : 'fas fa-hourglass-half text-warning me-1'"></i>
+                                            {{ dat.gad_status==1 ? 'GAD Approved' : 'GAD Not Yet Evaluated' }}
+                                        </small>
+                                    </div>
                                 </td>
-                                <!-- VIEW -->
+
+                                <!-- VIEW / EDIT / FULL EDIT ACTIONS -->
+                                <td class="text-center" colspan="3">
+                                    <div class="d-flex flex-column gap-2 align-items-center">
+                                        <!-- VIEW ACTION -->
+                                        <div class="d-flex align-items-center gap-2" style="min-width: 160px;">
+                                            <Link :href="`/revision/view/project/paps/${dat.id}`"
+                                                  class="btn btn-sm btn-primary btn-icon"
+                                                  title="View Project">
+                                                <i class="fas fa-eye"></i>
+                                            </Link>
+                                            <small class="text-muted">View</small>
+                                        </div>
+
+                                        <!-- EDIT ACTION -->
+                                        <div v-if="paps" class="d-flex align-items-center gap-2" style="min-width: 160px;">
+                                            <Link :href="`/revision/edit/${dat.id}`"
+                                                  class="btn btn-sm btn-secondary btn-icon"
+                                                  title="Edit Project">
+                                                <i class="fas fa-edit"></i>
+                                            </Link>
+                                            <small class="text-muted">Edit</small>
+                                        </div>
+                                        <div v-else class="d-flex align-items-center gap-2" style="min-width: 160px;">
+                                            <Link :href="`/revision/edit/${dat.id}?source=direct`"
+                                                  class="btn btn-sm btn-secondary btn-icon"
+                                                  title="Edit Project">
+                                                <i class="fas fa-edit"></i>
+                                            </Link>
+                                            <small class="text-muted">Edit</small>
+                                        </div>
+
+                                        <!-- FULL EDIT ACTION -->
+                                        <div v-if="dat.idpaps" class="d-flex align-items-center gap-2" style="min-width: 160px;">
+                                            <Link :href="`/revision/streamlined/create/${dat.idpaps}?source=${source}&idrevplan=${dat.id}`"
+                                                  class="btn btn-sm btn-success btn-icon"
+                                                  title="Full Edit">
+                                                <i class="fas fa-edit me-1"></i><i class="fas fa-plus"></i>
+                                            </Link>
+                                            <small class="text-muted">Full Edit</small>
+                                        </div>
+                                        <div v-else class="d-flex align-items-center gap-2" style="min-width: 160px;">
+                                            <Link :href="`/revision/streamlined/create/0?source=${source}&idrevplan=${dat.id}`"
+                                                  class="btn btn-sm btn-success btn-icon"
+                                                  title="Full Edit">
+                                                <i class="fas fa-edit me-1"></i><i class="fas fa-plus"></i>
+                                            </Link>
+                                            <small class="text-muted">Full Edit</small>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- FORWARD NEXT YEAR -->
+                                <td class="text-center">
+                                    <button v-if="parseInt(dat.number_of_clones)<1 && dat.type==='p'"
+                                            @click="generateProjectDesign(dat.id, 'ny')"
+                                            :disabled="!((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && dat.status == 0)"
+                                            :class="getForwardButtonClass(dat)"
+                                            :title="getForwardButtonTitle(dat)">
+                                        <i class="fas fa-arrow-right"></i>
+                                        {{ parseInt(dat.year)+1}}
+                                    </button>
+                                </td>
+
+                                <!-- VERSION -->
                                 <td>
-                                    <Link
-                                        class="btn btn-primary btn-sm"
-                                        :href="`/revision/view/project/paps/${dat.id}`">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                    </svg>
-                                    </Link>
-
-
-                                    <!-- {{ dat }} -->
+                                    <span class="badge bg-info text-white">{{ dat.version }}</span>
                                 </td>
-                                <!-- EDIT -->
-                                <td>
-                                    <Link v-if="paps"
-                                        class="btn btn-primary btn-sm"
-                                        :href="`/revision/edit/${dat.id}`">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                        </svg>
-                                    </Link>
 
-                                    <!-- {{ dat }} -->
-                                    <Link v-else
-                                        class="btn btn-primary btn-sm"
-                                        :href="`/revision/edit/${dat.id}?source=direct`">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                        </svg>
-                                    </Link>
+                                <!-- YEAR -->
+                                <td class="fw-medium text-primary">{{ dat.year }}</td>
 
-                                </td>
-                                <!-- FULL EDIT -->
-                                <td >
-                                    <!-- /revision/streamlined/create/{{dat.idpaps}}?source={{source}}&idrevplan={{dat.id}} -->
-                                    <Link v-if="dat.idpaps"
-                                        class="btn btn-success btn-sm"
-                                        :href="`/revision/streamlined/create/${dat.idpaps}?source=${source}&idrevplan=${dat.id}`">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                        </svg>
-                                    </Link>
-                                    <Link v-else
-                                        class="btn btn-success btn-sm"
-                                        :href="`/revision/streamlined/create/0?source=${source}&idrevplan=${dat.id}`">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                        </svg>
-                                    </Link>
-                                </td>
-                                <!-- SUBMIT/RECALL/GENERATE ACTIONS -->
-                                <td>
-                                    <!-- Submit button when status = -1 -->
-                                    <button
-                                        v-if="dat.status == '-1' || dat.status == '-2'"
-                                        @click="submitItem(dat, 0)"
-                                        :disabled="!can_submit(dat.budget_sum, dat.imp_amount)"
-                                        :style="{
-                                        padding: '4px 10px',
-                                        border: 'none',
-                                        borderRadius: '4px',
-                                        backgroundColor: can_submit(dat.budget_sum, dat.imp_amount) ? 'blue' : '#9bbce0', // light greyish blue
-                                        color: 'white',
-                                        cursor: 'pointer',
-                                        fontWeight: 'bold'
-                                        }"
-                                    >
-                                        Submit
-                                    </button>
-
-                                    <!-- Recall button when status = 0 -->
-                                    <button
-                                        v-if="dat.status == '0'"
-                                        @click="submitItem(dat, -1)"
-                                        :style="{
-                                        padding: '4px 10px',
-                                        border: 'none',
-                                        borderRadius: '4px',
-                                        backgroundColor: '#ff1093',
-                                        color: 'white',
-                                        cursor: 'pointer',
-                                        fontWeight: 'bold'
-                                        }"
-                                    >
-                                        Recall
-                                    </button>
-                                    <!-- Generate Project Design button when status = 'approved' (example) -->
-                                     <!-- number of clones: {{dat.number_of_clones}} -->
-                                    <button
-                                        v-if="dat.status == 1 && parseInt(dat.number_of_clones_design)<1 && dat.type==='p'"
-                                        @click="generateProjectDesign(dat.id, 'd')"
-                                        :style="{
-                                            padding: '4px 10px',
-                                            border: 'none',
-                                            borderRadius: '4px',
-                                            backgroundColor: 'green',
-                                            color: 'white',
-                                            cursor: 'pointer',
-                                            fontWeight: 'bold'
-                                        }"
-                                    >
-                                        Generate Project Design
-                                    </button>
-
-                                    <!-- Generate Project Design button when status = 'approved' (example) -->
-                                    <button
-                                        v-if="dat.status == 1 && parseInt(dat.number_of_clones)<1 && source==='sip'"
-                                        @click="generateProjectDesign(dat.id, 'sip')"
-                                        :style="{
-                                            padding: '4px 10px',
-                                            border: 'none',
-                                            borderRadius: '4px',
-                                            backgroundColor: 'green',
-                                            color: 'white',
-                                            cursor: 'pointer',
-                                            fontWeight: 'bold'
-                                        }"
-                                    >
-                                        Generate SIP Profile
-                                    </button>
-
-                                    <!-- Request for Return/Justification  -->
-                                    <!-- dat.return_request_status: {{ dat.return_request_status }} -->
-                                    <button
-                                        v-if="['1','2'].includes(dat.status) && dat.return_request_status=='-1'"
-                                        @click="returnWithAmmendments(dat, 5)"
-                                        :style="{
-                                            padding: '4px 10px',
-                                            border: 'none',
-                                            borderRadius: '4px',
-                                            backgroundColor: '#d81b60',
-                                            color: 'white',
-                                            cursor: 'pointer',
-                                            fontWeight: 'bold'
-                                        }"
-                                    >
-                                        Request for return
-                                    </button>
-
-
-
-                                    <!-- {{ dat.number_of_clones }} -->
-                                </td>
-                                <!-- FORWARD TO NEXT YEAR -->
-                                <td>
-                                    <!-- Forward for Next Year when status = 'approved' (example) -->
-                                    <button
-                                        v-if="parseInt(dat.number_of_clones)<1 && dat.type==='p'"
-                                        @click="generateProjectDesign(dat.id, 'ny')"
-                                        :disabled="!((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && dat.status == 0)"
-                                        :style="{
-                                            padding: '4px 10px',
-                                            border: 'none',
-                                            borderRadius: '4px',
-                                            backgroundColor:
-                                                ((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && dat.status == 0)
-                                                    ? 'green'
-                                                    : '#9ca3af',
-                                            color: 'white',
-                                            cursor:
-                                                ((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && dat.status == 0)
-                                                    ? 'pointer'
-                                                    : 'not-allowed',
-                                            fontWeight: 'bold'
-                                        }"
-                                    >
-                                    <!-- {{ !((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && dat.status == 0) }}
-                                    {{ parseInt(dat.year) + 1   }}
-                                    {{ new Date().getFullYear()  }} -->
-                                    <!-- {{ dat.status }} -->
-                                        Forward {{ parseInt(dat.year)+1}}
-                                    </button>
-                                 </td>
-                                <!-- VERSIONS -->
-                                <td>{{ dat.version }} </td>
-                                <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>{{dat.year}}</b>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <!-- TYPE -->
-                                <td>{{ formatProjectType(dat.type) }}</td>
                                 <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                            </svg>
+                                    <span :class="getTypeBadgeClass(dat.type)" class="badge">
+                                        {{ formatProjectType(dat.type) }}
+                                    </span>
+                                </td>
+
+                                <!-- ACTIONS COLUMN (Submit/Recall/Generate buttons) -->
+                                <td class="text-center">
+                                    <div class="d-flex gap-1 justify-content-center flex-wrap">
+                                        <!-- Submit button when status = -1 or -2 -->
+                                        <button v-if="dat.status == '-1' || dat.status == '-2'"
+                                                @click="submitItem(dat, 0)"
+                                                :disabled="!can_submit(dat.budget_sum, dat.imp_amount)"
+                                                :class="can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon' : 'btn btn-secondary btn-sm btn-icon'"
+                                                title="Submit Project">
+                                            <i class="fas fa-paper-plane"></i>
+                                            <span class="ms-1">Submit</span>
                                         </button>
-                                        <!-- action-dropdown  -->
-                                        <ul class="dropdown-menu dropdown-menu-start"  aria-labelledby="dropdownMenuButton1">
-                                            <!-- <li><Link class="dropdown-item" :href="`/revision/edit/${dat.id}`">Edit</Link></li> -->
-                                            <li><Link class="dropdown-item" :href="`/HGDGScore/${dat.id}`">HGDG Score</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/strategies-and-activities/${dat.id}`">Implementation Schedule/ Workplan</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/budget/${dat.id}`">Budget Requirements </Link></li>
-                                            <!-- <li><Link class="dropdown-item" :href="`/implementation/${dat.id}`">Implementation Plan</Link></li> -->
-                                            <li><Link class="dropdown-item" :href="`/team/${dat.id}/revision/plan/team`">Implementing Team</Link></li>
-                                            <!-- <li><Link class="dropdown-item" :href="`/team/${dat.id}/revision/plan/team`">Partnership and Sustainability</Link></li> -->
-                                            <li><Link class="dropdown-item" :href="`/EvaluationMechanismTool/${dat.id}`">Monitoring and Evaluation</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/RiskManagement/${dat.id}`">Risk Management</Link></li>
-                                            <li><Link class="dropdown-item" :href="`/Signatories/${dat.id}`">Signatories</Link></li>
-                                            <li v-if="dat.type==='d'"><Button class="dropdown-item" @click="setLinkModal(dat.id)">
-                                                Print Comprehensive Workplan</Button></li>
+
+                                        <!-- Recall button when status = 0 -->
+                                        <button v-if="dat.status == '0'"
+                                                @click="submitItem(dat, -1)"
+                                                class="btn btn-warning btn-sm btn-icon"
+                                                title="Recall Project">
+                                            <i class="fas fa-undo"></i>
+                                            <span class="ms-1">Recall</span>
+                                        </button>
+
+                                        <!-- Generate Project Design button -->
+                                        <button v-if="dat.status == 1 && parseInt(dat.number_of_clones_design)<1 && dat.type==='p'"
+                                                @click="generateProjectDesign(dat.id, 'd')"
+                                                class="btn btn-info btn-sm btn-icon text-white"
+                                                title="Generate Project Design">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <span class="ms-1">Generate Project Design</span>
+                                        </button>
+
+                                        <!-- Generate SIP Profile button -->
+                                        <button v-if="dat.status == 1 && parseInt(dat.number_of_clones)<1 && source==='sip'"
+                                                @click="generateProjectDesign(dat.id, 'sip')"
+                                                class="btn btn-info btn-sm btn-icon"
+                                                title="Generate SIP Profile">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <span class="ms-1">Generate SIP</span>
+                                        </button>
+
+                                        <!-- Request for Return button -->
+                                        <button v-if="['1','2'].includes(dat.status) && dat.return_request_status=='-1'"
+                                                @click="returnWithAmmendments(dat, 5)"
+                                                class="btn btn-danger btn-sm btn-icon text-white"
+                                                title="Request for Return">
+                                            <i class="fas fa-reply"></i>
+                                            <span class="ms-1">Request for Return</span>
+                                        </button>
+                                    </div>
+                                </td>
+
+                                <!-- MORE ACTIONS DROPDOWN -->
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-dark dropdown-toggle"
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                                title="More Actions">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow">
                                             <li>
-                                                <Button class="dropdown-item" @click="openPrintProfile(dat.id)">
-                                                    Print Project
-                                                    <span v-if="dat.type==='p'">Profile</span>
-                                                    <span v-else>Design</span>
+                                                <Link class="dropdown-item" :href="`/HGDGScore/${dat.id}`">
+                                                    <i class="fas fa-chart-line me-2"></i>HGDG Score
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/strategies-and-activities/${dat.id}`">
+                                                    <i class="fas fa-tasks me-2"></i>Implementation Schedule
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/budget/${dat.id}`">
+                                                    <i class="fas fa-dollar-sign me-2"></i>Budget Requirements
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/team/${dat.id}/revision/plan/team`">
+                                                    <i class="fas fa-users me-2"></i>Implementing Team
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/EvaluationMechanismTool/${dat.id}`">
+                                                    <i class="fas fa-chart-bar me-2"></i>Monitoring & Evaluation
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/RiskManagement/${dat.id}`">
+                                                    <i class="fas fa-exclamation-triangle me-2"></i>Risk Management
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/Signatories/${dat.id}`">
+                                                    <i class="fas fa-signature me-2"></i>Signatories
+                                                </Link>
+                                            </li>
+                                            <li v-if="dat.type==='d'">
+                                                <Button class="dropdown-item" @click="setLinkModal(dat.id)">
+                                                    <i class="fas fa-print me-2"></i>Print Comprehensive Workplan
                                                 </Button>
                                             </li>
                                             <li>
-                                                <Link class="dropdown-item" :href="`/cdf/${dat.id}`" v-if="dat.type==='d'">
-                                                    Cash Disbursements Forecast
+                                                <Button class="dropdown-item" @click="openPrintProfile(dat.id)">
+                                                    <i class="fas fa-print me-2"></i>Print Project {{ dat.type==='p' ? 'Profile' : 'Design' }}
+                                                </Button>
+                                            </li>
+                                            <li v-if="dat.type==='d'">
+                                                <Link class="dropdown-item" :href="`/cdf/${dat.id}`">
+                                                    <i class="fas fa-file-invoice-dollar me-2"></i>Cash Disbursements Forecast
                                                 </Link>
                                             </li>
                                         </ul>
@@ -633,24 +597,15 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <p >
-                            {{ data.from }} to {{ data.to }} of
-                            {{ data.total }} entries
-                        </p>
-                    </div>
-                </div>
 
+                <!-- Pagination -->
+                <!-- <div class="d-flex justify-content-center mt-3">
+                    <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
+                </div> -->
             </div>
-            <!-- {{ rev_plan_selected }} -->
         </div>
-        <AIPModal v-if="showAIPModal" @close-modal-event="hideAIPModal">
+    </div>
+    <AIPModal v-if="showAIPModal" @close-modal-event="hideAIPModal">
             <div class="d-flex justify-content-center">
                 <!-- {{ aip_printLink }} -->
                 <iframe :src="aip_printLink" style="width:100%; height:500px" />
@@ -921,7 +876,7 @@
                                                         }"
                                                     >
                                                         REQUEST FOR RETURN
-                                                    </button>
+                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -933,9 +888,8 @@
                 </table>
 
 
-             </div>
+            </div>
         </ReturnWithAmmendmentsModal>
-    </div>
     <!-- src: {{source}} fdfsdf -->
 </template>
 <script>
@@ -1003,7 +957,8 @@ export default {
             displaySideModal: false,
             showImageModal: false,
             // END OF RETURN REQUEST***************
-            year_filtering_d: ''
+            year_filtering_d: '',
+            showFlyingPlane: false
         }
     },
     components: {
@@ -1032,6 +987,7 @@ export default {
             this.paps_id_here=this.paps.id
         }
         this.updateValue(); // Initialize ccet based on the initial state of checked
+        this.fitTableWidth();
     },
     methods:{
         printProfileVisible($rev_print_id){
@@ -1190,7 +1146,12 @@ export default {
                 `/status/revision/update/${revision_plan.id}/${actionlabelcomplete}/${newStatus}`,
                 {},
                 {
-                    preserveScroll: true
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        if (newStatus === 0) { // Only animate on Submit (status 0)
+                            this.triggerPaperPlaneAnimation();
+                        }
+                    }
                 }
             );
         },
@@ -1656,6 +1617,100 @@ export default {
                 }
             );
         },
+        // New helper methods for improved UI
+        getStatusBadgeClass(status) {
+            const classes = {
+                '-2': 'bg-danger text-white',
+                '-1': 'bg-secondary text-white',
+                '0': 'bg-warning text-dark',
+                '1': 'bg-info text-white',
+                '2': 'bg-success text-white',
+                '7': 'bg-danger text-white'
+            };
+            return classes[status] || 'bg-secondary text-white';
+        },
+        getStatusIcon(status) {
+            const icons = {
+                '-2': 'fas fa-undo',
+                '-1': 'fas fa-save',
+                '0': 'fas fa-paper-plane',
+                '1': 'fas fa-search',
+                '2': 'fas fa-check',
+                '7': 'fas fa-exclamation-triangle'
+            };
+            return icons[status] || 'fas fa-question';
+        },
+        getStatusLabel(status) {
+            const labels = {
+                '-2': 'Returned',
+                '-1': 'Saved',
+                '0': 'Submitted',
+                '1': 'Reviewed',
+                '2': 'Approved',
+                '7': 'Request for Return'
+            };
+            return labels[status] || 'Unknown';
+        },
+        getStatusOvalClass(status) {
+            const classes = {
+                '-2': 'status-oval-danger',
+                '-1': 'status-oval-secondary',
+                '0': 'status-oval-warning',
+                '1': 'status-oval-info',
+                '2': 'status-oval-success',
+                '7': 'status-oval-danger'
+            };
+            return classes[status] || 'status-oval-secondary';
+        },
+        getForwardButtonClass(dat) {
+            const isEnabled = (parseInt(dat.year) + 1 == new Date().getFullYear() + 1) && dat.status == 0;
+            return `btn btn-sm ${isEnabled ? 'btn-success' : 'btn-secondary'} ${isEnabled ? '' : 'disabled'}`;
+        },
+        getForwardButtonTitle(dat) {
+            const isEnabled = (parseInt(dat.year) + 1 == new Date().getFullYear() + 1) && dat.status == 0;
+            return isEnabled ? `Forward to ${parseInt(dat.year) + 1}` : 'Cannot forward this project';
+        },
+        triggerPaperPlaneAnimation() {
+            console.log('🎉 Flying plane animation triggered!');
+            this.showFlyingPlane = true;
+            setTimeout(() => {
+                this.showFlyingPlane = false;
+            }, 4500); // Hide after 2.5 seconds to match animation duration
+        },
+        getTypeBadgeClass(type) {
+            return type === 'p' ? 'badge bg-primary' : 'badge bg-info text-white';
+        },
+        fitTableWidth() {
+            const tableContainer = this.$refs.tableResponsive;
+            if (!tableContainer) return;
+
+            const table = tableContainer.querySelector('table');
+            if (!table) return;
+
+            // Get the container width (the visible area)
+            const containerWidth = tableContainer.parentElement.offsetWidth;
+
+            // Get the table's full content width
+            const tableWidth = (table.scrollWidth)+35;
+
+            // Calculate the zoom ratio needed
+            const zoomRatio = containerWidth / tableWidth;
+
+            // Apply zoom to fit (minimum 0.5, maximum 1)
+            const zoomLevel = Math.min(1, Math.max(0.5, zoomRatio));
+
+            // Apply CSS zoom
+            table.style.transform = `scale(${zoomLevel})`;
+            table.style.transformOrigin = 'left top';
+            table.style.width = `${100 / zoomLevel}%`;
+            table.parentElement.style.display = 'flex';
+
+            // Collapse the sidebar
+            // const sidebar = document.querySelector('.sidebar');
+            // if (sidebar) {
+                // sidebar.classList.add('collapsed');
+            // }
+        }
     }
 };
 </script>

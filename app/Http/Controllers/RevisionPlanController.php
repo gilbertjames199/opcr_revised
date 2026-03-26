@@ -26,6 +26,7 @@ use App\Models\Signatory;
 use App\Models\Strategy;
 use App\Models\Activity;
 use App\Models\ExpectedRevisedOutput;
+use App\Models\Office;
 use App\Models\StrategyProject;
 use App\Models\Target;
 use App\Models\TeamPlan;
@@ -1040,6 +1041,7 @@ class RevisionPlanController extends Controller
         } else if ($idpaps != 0) {
             $department_code = optional(optional($paps)->paps)->department_code;
             $ppa = ProgramAndProject::findOrFail($paps->idpaps);
+            // dd($ppa);
             if (auth()->user()->department_code == '04') {
                 $functions = FFUNCCOD::where('FFUNCCOD', $ppa->FFUNCCOD)->first();
             } else {
@@ -1365,12 +1367,17 @@ class RevisionPlanController extends Controller
         // dd($paps);
         // dd($budgetRequirements);
         // dd($paps);
+        // dd($functions);
         $view_returned = $paps->gad_version == '1' ? 'RevisionPlans/View' : 'RevisionPlans/View2';
-
+        $off="";
+        if (empty($functions) || $functions->isEmpty()) {
+            $off = Office::where('department_code', auth()->user()->department_code)->first();
+        }
+        // dd($off);
         return inertia($view_returned, [
             "all_comments" => $all_comments,
             "paps" => $paps,
-            "office" => $functions->FFUNCTION,
+            "office" => optional($functions)->FFUNCTION?optional($functions)->FFUNCTION: optional($off)->office,
             "implementation" => $implement,
             "department_code_project" => $department_code,
             "department_code_user" => auth()->user()->department_code,

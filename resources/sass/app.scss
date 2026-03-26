@@ -5,6 +5,12 @@
 // Variables
 @use 'variables' as *;
 
+// Font Awesome
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+
 @import 'theme.css';
 
 @import "~filepond/dist/filepond.min.css";
@@ -38,7 +44,24 @@
 
 
 .table-responsive {
-    overflow: visible !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+}
+
+// Sidebar Collapse Styling
+.sidebar.collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    transition: width 0.3s ease-in-out !important;
+}
+
+.page-container {
+    transition: margin-left 0.3s ease-in-out !important;
+}
+
+.sidebar.collapsed ~ .page-container {
+    margin-left: 0 !important;
 }
 
 // Bootstrap
@@ -160,6 +183,79 @@ hr {
 
 .action-btn:hover {
     background-color: #dce4eb !important;
+}
+
+.btn-icon {
+    padding: 0.35rem 0.6rem !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.35rem !important;
+    min-width: 2.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+.btn-icon i,
+.btn-icon svg {
+    margin-right: 0.2rem;
+}
+
+.btn-icon.btn-sm {
+    padding: 0.25rem 0.5rem !important;
+}
+
+.status-oval {
+    background-color: rgba(0, 123, 255, 0.08);
+    border: 1px solid rgba(0, 123, 255, 0.3);
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 8rem;
+}
+
+.status-oval .badge {
+    background-color: transparent !important;
+    border: none !important;
+    color: inherit !important;
+    min-width: auto;
+    font-weight: 600;
+}
+
+.status-oval-danger { background-color: rgba(220, 53, 69, 0.12); border-color: rgba(220, 53, 69, 0.35); }
+.status-oval-secondary { background-color: rgba(108, 117, 125, 0.12); border-color: rgba(108, 117, 125, 0.35); }
+.status-oval-warning { background-color: rgba(255, 193, 7, 0.12); border-color: rgba(255, 193, 7, 0.35); }
+.status-oval-info { background-color: rgba(23, 162, 184, 0.12); border-color: rgba(23, 162, 184, 0.35); }
+.status-oval-success { background-color: rgba(40, 167, 69, 0.12); border-color: rgba(40, 167, 69, 0.35); }
+
+.status-oval > span.bg-danger { background-color: rgba(220, 53, 69, 0.15) !important; color: #b32634 !important; }
+.status-oval > span.bg-secondary { background-color: rgba(108, 117, 125, 0.15) !important; color: #3a3f44 !important; }
+.status-oval > span.bg-warning { background-color: rgba(255, 193, 7, 0.15) !important; color: #856404 !important; }
+.status-oval > span.bg-info { background-color: rgba(23, 162, 184, 0.15) !important; color: #0c5460 !important; }
+.status-oval > span.bg-success { background-color: rgba(40, 167, 69, 0.15) !important; color: #155724 !important; }
+
+// Sticky Table Header
+.table-head-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.table-head-sticky th {
+    background-color: transparent;
+    color: #ffffff !important;
+    border-bottom: 2px solid #1a252f !important;
+    padding: 1rem 0.75rem !important;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.table-head-sticky th i {
+    color: #ffd700 !important;
 }
 
 .action-btn:focus {
@@ -304,6 +400,47 @@ body.dragging {
   width: 20ch; /* roughly 20 characters */
   min-width: 150px; /* optional minimum */
   max-width: 400px; /* optional maximum */
+}
+
+// Flying Paper Plane Animation
+@keyframes flyPlane {
+  0% {
+    transform: translate(0, 0) rotate(-45deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(100vw + 100px), calc(-100vh - 100px)) rotate(0deg) scale(1.2);
+    opacity: 0;
+  }
+}
+
+.flying-plane-container {
+  position: fixed;
+  bottom: 5vh;
+  left: 5vw;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.flying-plane {
+  display: inline-block;
+  font-size: 3rem;
+  color: #8B4513;
+  font-weight: 900;
+  text-shadow:
+    -1px -1px 0 rgba(0, 0, 0, 0.3),
+    1px -1px 0 rgba(0, 0, 0, 0.3),
+    -1px 1px 0 rgba(0, 0, 0, 0.3),
+    1px 1px 0 rgba(0, 0, 0, 0.3),
+    0 0 8px rgba(139, 69, 19, 0.6);
+  animation: flyPlane 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3)) brightness(1.1);
+  -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.2);
 }
 
 
