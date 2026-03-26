@@ -26,9 +26,98 @@
             </div>
         </div>
         <!-- FILTERING SECTION************************************** -->
-        <div class="masonry-item w-100 ">
+         <!-- FILTERING SECTION -->
+        <div class="masonry-item w-100">
+            <div class="toolbar-card">
+
+                <!-- Top Row: Actions -->
+                <div class="toolbar-row toolbar-actions">
+                    <div class="toolbar-left">
+                        <span class="toolbar-label">
+                            <i class="fas fa-sliders-h"></i> FILTER PANEL
+                        </span>
+                    </div>
+                    <div class="toolbar-right">
+                        <!-- /revision/create/${idpaps} -->
+                        <!-- <Link class="tool-btn tool-btn-primary" :href="`/paps/direct`" v-if="source==undefined">
+                            <i class="fas fa-plus"></i> Add Project Profile
+                        </Link> -->
+                        <Button class="tool-btn tool-btn-primary" @click="showSIPModal" v-if="source=='sip'">
+                            <i class="fas fa-plus"></i> Add SIP Profile
+                        </Button>
+                        <!-- /revision/create/0?source=direct -->
+                        <Link class="tool-btn tool-btn-primary" :href="`/paps/direct`" v-else>
+                            <i class="fas fa-plus"></i> Add Project Profile
+                        </Link>
+                        <!-- tool-btn-outline -->
+                        <button class="tool-btn tool-btn-primary" @click="showAIPModalMethod()">
+                            <i class="fas fa-file-alt"></i> AIP
+                        </button>
+                        <button @click="exportUsers" class="tool-btn tool-btn-success">
+                            <i class="fas fa-file-excel"></i> Export to Excel
+                        </button>
+                        <button class="tool-btn tool-btn-outline" @click="showFilter()">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="toolbar-divider"></div>
+
+                <!-- Bottom Row: Filters -->
+                <div class="toolbar-row toolbar-filters">
+
+                    <!-- Year Filter -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-calendar-alt"></i> Year
+                        </label>
+                        <select v-model="year_filtering_d" class="filter-select" @change="filterProjects()">
+                            <option value="">All Years</option>
+                            <option v-for="year in pcr_years" :value="year">{{ year }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Type Filter -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-tag"></i> Type
+                        </label>
+                        <select v-model="type_filter" class="filter-select" @change="filterProjects">
+                            <option value="">All Types</option>
+                            <option value="p">Project Profile</option>
+                            <option value="d">Project Design</option>
+                        </select>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="filter-group filter-group-grow">
+                        <label class="filter-label">
+                            <i class="fas fa-search"></i> Search
+                        </label>
+                        <div class="search-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input v-model="search" type="text" class="filter-input" placeholder="Search projects...">
+                        </div>
+                    </div>
+
+                    <!-- Climate Change Checkbox -->
+                    <div class="filter-group filter-group-checkbox">
+                        <label class="checkbox-label">
+                            <input type="checkbox" v-model="checked" @change="updateValue" class="checkbox-input" />
+                            <span class="checkbox-box"></span>
+                            <span class="checkbox-text">No Climate Change Expenditure</span>
+                        </label>
+                        <span class="checkbox-hint">Check if your LGU has no climate change expenditure</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- <div class="masonry-item w-100 ">
             <div class="row gap-10">
-                <!-- <div class="layers bd bgc-white p-20"> -->
+                comment ni <div class="layers bd bgc-white p-20">
                 <div class="col-md-4">
                     <div class="layers bd bgc-white p-10">
                         <div class="layer w-100 mB-10">
@@ -48,10 +137,10 @@
 
                             <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`" v-if="source==undefined">Add Project Profile</Link>
 
-                            <!-- :href="`/revision/streamlined/create/${idpaps}?source=sip`"  -->
+                            <!#-- :href="`/revision/streamlined/create/${idpaps}?source=sip`"  #--#>
                             <Button class="btn btn-primary btn-sm text-white" @click="showSIPModal" v-if="source=='sip'">Add SIP Profile</Button>
 
-                            <!-- <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Project Profile</Link>&nbsp; -->
+                            <#!-- <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Project Profile</Link>&nbsp; --#>
                             <Link class="btn btn-primary btn-sm" :href="`/revision/create/0?source=direct`" v-else>Add Project Profile</Link>&nbsp;
                             <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>&nbsp;
                             <button @click="exportUsers" class="btn btn-primary btn-sm mL-2 text-white">Export AIP to Excel</button>&nbsp;
@@ -59,7 +148,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-4">
+                <!#-- <div class="col-md-4">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
 
@@ -68,7 +157,7 @@
 
                         </div>
                     </div>
-                </div> -->
+                </div> --#>
                 <div class="col-md-4">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
@@ -102,11 +191,11 @@
                     </div>
                 </div>
 
-                <!-- </div> -->
+                <#!-- </div> --#>
 
 
             </div>
-        </div>
+        </div>-->
         <!-- <div class="peers fxw-nw jc-sb ai-c"> -->
             <!-- <div class="peers"> -->
                 <!-- <div class="peer mR-10">
@@ -1721,22 +1810,257 @@ export default {
 };
 </script>
 <style>
-            .row-centered {
-                text-align:center;
-            }
-            .col-centered {
-                display:inline-block;
-                float:none;
-                text-align:left;
-                margin-right:-4px;
-            }
-            .pos{
-                position: top;
-                top: 240px;
-            }
+    .row-centered {
+        text-align:center;
+    }
+    .col-centered {
+        display:inline-block;
+        float:none;
+        text-align:left;
+        margin-right:-4px;
+    }
+    .pos{
+        position: top;
+        top: 240px;
+    }
 
-            /* Allow Bootstrap dropdowns to escape the responsive table container */
-            .table-responsive {
-                overflow: visible !important;
-            }
+    /* Allow Bootstrap dropdowns to escape the responsive table container */
+    .table-responsive {
+        overflow: visible !important;
+    }
+
+    /* ── Toolbar Card ─────────────────────────────────────── */
+    .toolbar-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 0;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        overflow: hidden;
+    }
+
+    /* ── Rows ─────────────────────────────────────────────── */
+    .toolbar-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        flex-wrap: wrap;
+    }
+
+    .toolbar-actions {
+        background: #f8fafc;
+        justify-content: space-between;
+    }
+
+    .toolbar-filters {
+        gap: 16px;
+        align-items: flex-end;
+    }
+
+    .toolbar-left {
+        display: flex;
+        align-items: center;
+    }
+
+    .toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .toolbar-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+    }
+
+    .toolbar-label i {
+        margin-right: 6px;
+        color: #94a3b8;
+    }
+
+    .toolbar-divider {
+        height: 1px;
+        background: #e2e8f0;
+    }
+
+    /* ── Action Buttons ───────────────────────────────────── */
+    .tool-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 14px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+    }
+
+    .tool-btn i { font-size: 0.75rem; }
+    /* BUTTON PRIMARY */
+    .tool-btn-primary {
+        background: #2563eb;
+        color: #fff;
+    }
+    .tool-btn-primary:hover {
+        background: #1d4ed8;
+        color: #fff;
+        text-decoration: none;
+    }
+    /* BUTTON SUCCESS */
+    .tool-btn-success {
+        background: #0a9e59;
+        color: #fff;
+    }
+    .tool-btn-success:hover {
+        background: #0a9e59;
+        color: #fff;
+        text-decoration: none;
+    }
+    /* BUTTON OUTLINE */
+    .tool-btn-outline {
+        background: #fff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+    .tool-btn-outline:hover {
+        background: #f1f5f9;
+        border-color: #94a3b8;
+        color: #1e293b;
+    }
+
+    /* ── Filter Groups ────────────────────────────────────── */
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 150px;
+    }
+
+    .filter-group-grow {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .filter-group-checkbox {
+        min-width: 220px;
+        max-width: 280px;
+    }
+
+    .filter-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 0;
+    }
+
+    .filter-label i {
+        margin-right: 4px;
+        color: #94a3b8;
+    }
+
+    /* ── Select & Input ───────────────────────────────────── */
+    .filter-select,
+    .filter-input {
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        color: #1e293b;
+        background: #fff;
+        width: 100%;
+        transition: border-color 0.15s;
+        appearance: auto;
+    }
+
+    .filter-select:focus,
+    .filter-input:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+
+    .search-wrapper {
+        position: relative;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 0.75rem;
+        pointer-events: none;
+    }
+
+    .search-wrapper .filter-input {
+        padding-left: 28px;
+    }
+
+    /* ── Custom Checkbox ──────────────────────────────────── */
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        margin: 0;
+    }
+
+    .checkbox-input {
+        display: none;
+    }
+
+    .checkbox-box {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #cbd5e1;
+        border-radius: 4px;
+        background: #fff;
+        flex-shrink: 0;
+        transition: all 0.15s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .checkbox-input:checked + .checkbox-box {
+        background: #2563eb;
+        border-color: #2563eb;
+    }
+
+    .checkbox-input:checked + .checkbox-box::after {
+        content: '';
+        width: 4px;
+        height: 7px;
+        border: 2px solid white;
+        border-top: none;
+        border-left: none;
+        transform: rotate(45deg) translateY(-1px);
+        display: block;
+    }
+
+    .checkbox-text {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .checkbox-hint {
+        font-size: 0.7rem;
+        color: #94a3b8;
+        line-height: 1.3;
+        padding-left: 24px;
+    }
 </style>
