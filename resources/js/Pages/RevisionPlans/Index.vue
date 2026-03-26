@@ -1728,4 +1728,9 @@ export default {
                 position: top;
                 top: 240px;
             }
+
+            /* Allow Bootstrap dropdowns to escape the responsive table container */
+            .table-responsive {
+                overflow: visible !important;
+            }
 </style>
