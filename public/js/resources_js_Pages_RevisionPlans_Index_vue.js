@@ -761,14 +761,20 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     // New helper methods for improved UI
     getStatusBadgeClass: function getStatusBadgeClass(status) {
       var classes = {
-        '-2': 'bg-danger text-white',
-        '-1': 'bg-secondary text-white',
-        '0': 'bg-warning text-dark',
-        '1': 'bg-info text-white',
-        '2': 'bg-success text-white',
-        '7': 'bg-danger text-white'
+        '-2': 'text-white',
+        '-1': 'text-white',
+        '0': 'text-dark',
+        '1': 'ext-white',
+        '2': 'text-white',
+        '7': 'text-white'
       };
       return classes[status] || 'bg-secondary text-white';
+      // '-2': 'bg-danger text-white',
+      //     '-1': 'bg-secondary text-white',
+      //     '0': 'bg-warning text-dark',
+      //     '1': 'bg-info text-white',
+      //     '2': 'bg-success text-white',
+      //     '7': 'bg-danger text-white'
     },
     getStatusIcon: function getStatusIcon(status) {
       var icons = {
@@ -1563,7 +1569,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.generateProjectDesign(dat.id, 'ny');
       },
-      disabled: !(parseInt(dat.year) + 1 == new Date().getFullYear() + 1 && dat.status == 0),
+      disabled: !(parseInt(dat.year) + 1 == new Date().getFullYear() + 1 && (dat.status == 0 || dat.status == 1)),
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.getForwardButtonClass(dat)),
       title: $options.getForwardButtonTitle(dat)
     }, [_cache[55] || (_cache[55] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {

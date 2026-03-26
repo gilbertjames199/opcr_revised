@@ -1620,14 +1620,20 @@ export default {
         // New helper methods for improved UI
         getStatusBadgeClass(status) {
             const classes = {
-                '-2': 'bg-danger text-white',
-                '-1': 'bg-secondary text-white',
-                '0': 'bg-warning text-dark',
-                '1': 'bg-info text-white',
-                '2': 'bg-success text-white',
-                '7': 'bg-danger text-white'
+                '-2': 'text-white',
+                '-1': 'text-white',
+                '0': 'text-dark',
+                '1': 'ext-white',
+                '2': 'text-white',
+                '7': 'text-white'
             };
             return classes[status] || 'bg-secondary text-white';
+            // '-2': 'bg-danger text-white',
+            //     '-1': 'bg-secondary text-white',
+            //     '0': 'bg-warning text-dark',
+            //     '1': 'bg-info text-white',
+            //     '2': 'bg-success text-white',
+            //     '7': 'bg-danger text-white'
         },
         getStatusIcon(status) {
             const icons = {
