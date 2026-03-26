@@ -79,8 +79,28 @@
                                 <td>{{ dat.MOV }}</td>
                                 <td>
                                     <div class="dropdown dropstart">
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
-                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <!-- <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+                                            data-bs-strategy="fixed"
+                                        > -->
+                                        <!-- <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                            data-bs-strategy="fixed"
+                                            data-bs-boundary="viewport">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                            </svg>
+                                        </button> -->
+                                        <button
+                                        class="btn btn-secondary btn-sm action-btn"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        data-bs-strategy="fixed"
+                                        data-bs-offset="0,0">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                                                 <path
@@ -474,5 +494,27 @@ export default {
 .pos {
     position: top;
     top: 240px;
+}
+
+/* .table-responsive {
+    overflow: visible;  lets dropdowns escape
+}
+
+.bgc-white.p-20.bd {
+    overflow: visible !important;
+} */
+
+/* Also cover the modal if dropdowns are hidden there too */
+/* .modal-body,
+.modal-content {
+    overflow: visible !important;
+} */
+ .table-responsive {
+    overflow-x: auto;
+    overflow-y: visible !important;
+}
+
+.table-responsive .dropdown-menu.show {
+    position: fixed !important;
 }
 </style>
