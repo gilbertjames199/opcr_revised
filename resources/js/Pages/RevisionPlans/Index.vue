@@ -464,7 +464,10 @@
                                 </td>
 
                                 <!-- DATE SUBMITTED -->
-                                <td class="text-muted">{{ dat.created_at ? new Date(dat.created_at).toLocaleDateString() : 'N/A' }}</td>
+                                <td class="text-muted">
+                                    <span v-if="source=='direct'"></span>
+                                    <span v-else>{{ dat.created_at ? new Date(dat.created_at).toLocaleDateString() : ' ' }}</span>
+                                </td>
 
                                 <!-- OFFICE -->
                                 <td>

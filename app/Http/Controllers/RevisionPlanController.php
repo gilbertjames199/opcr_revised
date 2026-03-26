@@ -112,10 +112,11 @@ class RevisionPlanController extends Controller
         }
         $budget_controller = new BudgetRequirementController($this->budget);
         // dd("revision");
+        // dd($idpaps);
         if ($paps_type === "GAS") {
             return redirect('/revision/general/administration/services/' . $FFUNCCOD . '/plan');
         } else if ($idpaps == "0") {
-            // dd($idpaps);
+            // dd($idpaps,'idpaps is 0');
             $sharedPaps = SharedProgramAndProject::where('destination_department_code', $dept_id)->get()->pluck('idpaps');
 
             $popsp_agency = PopspAgency::where('agency_code', auth()->user()->popsp_agency)->first();
@@ -164,7 +165,7 @@ class RevisionPlanController extends Controller
             ]);
         } else {
             // dd(RevisionPlan::where('idpaps', $idpaps)->get());
-            $data = RevisionPlan::with(['paps', 'paps.office'])
+            $data = RevisionPlan::with(['paps', 'paps.office','projectProfileTrackings'])
                 ->where('idpaps', '=', $idpaps)
                 ->when($request->search, function ($query) use ($request) {
                     $query->where('project_title', 'like', '%' . $request->search . '%');
@@ -210,6 +211,7 @@ class RevisionPlanController extends Controller
                     // $year = ""
                     // dd($total);
                     // dd($imp_amount);
+                    // dd($item);
                     return [
                         // 'FFUNCTION' => $item->FFUNCTION,
                         'year' => $year,
@@ -465,7 +467,7 @@ class RevisionPlanController extends Controller
     }
     public function getDirect(Request $request, $dept_id, $popsp_agency, $budget_controller, $year_filtering)
     {
-        $data= RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects','paps.office', 'clonedVersions'])
+        $data= RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects','paps.office', 'clonedVersions','projectProfileTrackings'])
             ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                 $query->where('department_code', $dept_id)
                 ->orWhereHas('sharedProgramAndProjects', function ($q) use ($dept_id, $popsp_agency) {
@@ -571,7 +573,24 @@ class RevisionPlanController extends Controller
             ->map(function ($item) use ($budget_controller) {
                 $year = Carbon::parse($item->date_start)->year;
                 // COUNT THE COMMENTS
-                // dd($item);
+                if (!empty($item) && !empty($item->projectProfileTrackings)) {
+
+                    $latestSubmit = $item->projectProfileTrackings
+                        ->filter(function ($tracking) {
+                            return isset($tracking->action_type) &&
+                                strpos($tracking->action_type, 'Submit') !== false;
+                        })
+                        ->sortByDesc('created_at')
+                        ->first();
+                    $latestSubmit = $latestSubmit;
+
+                } else {
+                    $latestSubmit = null;
+                }
+
+                // dd($latestSubmit);
+
+                // dd($latestSubmit);
                 $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)->where('table_name', 'revision_plans')->count();
                 // dd($revision_comment);
 
@@ -623,7 +642,8 @@ class RevisionPlanController extends Controller
                     'number_of_clones' => $item->clonedVersions->count(),
                     'return_request_status' => $item->return_request_status,
                     'year'=>$year,
-                    'gad_status'=>$item->gad_status
+                    'gad_status'=>$item->gad_status,
+                    'created_at'=>$latestSubmit
                     // 'paps'=>$item->paps
                 ];
             });
