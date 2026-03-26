@@ -455,7 +455,7 @@
                                 <td class="text-center">
                                     <button v-if="parseInt(dat.number_of_clones)<1 && dat.type==='p'"
                                             @click="generateProjectDesign(dat.id, 'ny')"
-                                            :disabled="!((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && dat.status == 0)"
+                                            :disabled="!((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && (dat.status == 0 || dat.status == 1))"
                                             :class="getForwardButtonClass(dat)"
                                             :title="getForwardButtonTitle(dat)">
                                         <i class="fas fa-arrow-right"></i>
