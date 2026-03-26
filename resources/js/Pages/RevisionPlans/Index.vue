@@ -485,7 +485,7 @@
                                         <button v-if="dat.status == '-1' || dat.status == '-2'"
                                                 @click="submitItem(dat, 0)"
                                                 :disabled="!can_submit(dat.budget_sum, dat.imp_amount)"
-                                                :class="can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon' : 'btn btn-secondary btn-sm btn-icon'"
+                                                :class="can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
                                                 title="Submit Project">
                                             <i class="fas fa-paper-plane"></i>
                                             <span class="ms-1">Submit</span>

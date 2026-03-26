@@ -1032,6 +1032,7 @@ class RevisionPlanController extends Controller
         //PROGRAMS AND PROJECTS & FUNCTIONS
         $ppa = [];
         $functions = [];
+
         if ($scope == 'GAS') {
             $functions = AccountAccess::where('iduser', auth()->user()->recid)
                 ->where('ff.FFUNCCOD', $paps->FFUNCCOD)
@@ -1370,9 +1371,13 @@ class RevisionPlanController extends Controller
         // dd($functions);
         $view_returned = $paps->gad_version == '1' ? 'RevisionPlans/View' : 'RevisionPlans/View2';
         $off="";
-        if (empty($functions) || $functions->isEmpty()) {
-            $off = Office::where('department_code', auth()->user()->department_code)->first();
+        // dd($functions);
+        if (is_null($functions)) {
+            if (empty($functions) || $functions->isEmpty()) {
+                $off = Office::where('department_code', auth()->user()->department_code)->first();
+            }
         }
+
         // dd($off);
         return inertia($view_returned, [
             "all_comments" => $all_comments,

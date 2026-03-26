@@ -115,6 +115,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       this.paps_id_here = this.paps.id;
     }
     this.updateValue(); // Initialize ccet based on the initial state of checked
+    this.fitTableWidth();
   },
   methods: {
     printProfileVisible: function printProfileVisible($rev_print_id) {
@@ -1575,7 +1576,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return $options.submitItem(dat, 0);
       },
       disabled: !$options.can_submit(dat.budget_sum, dat.imp_amount),
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon' : 'btn btn-secondary btn-sm btn-icon'),
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'),
       title: "Submit Project"
     }, _toConsumableArray(_cache[56] || (_cache[56] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
       "class": "fas fa-paper-plane"
