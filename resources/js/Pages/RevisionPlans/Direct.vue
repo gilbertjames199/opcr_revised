@@ -470,8 +470,8 @@
                         <tbody>
                             <tr v-for="dat in data.data">
                                 <td></td>
-                                <td>{{ dat.project_title }}--
-                                    {{dat.budget_sum}} vs {{ dat.imp_amount }}
+                                <td>{{ dat.project_title }}
+                                    <!-- {{dat.budget_sum}} vs {{ dat.imp_amount }} -->
                                     <span style="color:red; font-weight: bold" >
                                         {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
                                     </span >
