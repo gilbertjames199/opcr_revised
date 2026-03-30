@@ -329,6 +329,15 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         // this.focusComment();
       }, 50);
     });
+
+    // Restore scroll position after page reload
+    var scrollPosition = sessionStorage.getItem('scrollPosition');
+    if (scrollPosition !== null) {
+      setTimeout(function () {
+        window.scrollTo(0, parseInt(scrollPosition));
+        sessionStorage.removeItem('scrollPosition');
+      }, 100);
+    }
     window.addEventListener('beforeunload', this.handleBeforeUnload);
     this.form.idpaps = this.idpaps;
     if (this.source !== undefined) {
@@ -1297,10 +1306,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
           alert('Successfully saved team member!');
           _this14.team_members = [];
           _this14.TeamModalVisible = false;
-          window.location.reload({
-            preserveScroll: true,
-            preserveState: true
-          });
+          sessionStorage.setItem('scrollPosition', window.scrollY);
+          window.location.reload();
         });
       } else if (this.action_type_team === 'update') {
         axios__WEBPACK_IMPORTED_MODULE_5___default().patch('/implementation-workplan/implementing/team/plans/update', {
@@ -1313,10 +1320,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
           alert('Successfully saved team member!');
           _this14.team_members = [];
           _this14.TeamModalVisible = false;
-          window.location.reload({
-            preserveScroll: true,
-            preserveState: true
-          });
+          sessionStorage.setItem('scrollPosition', window.scrollY);
+          window.location.reload();
         });
       }
     },

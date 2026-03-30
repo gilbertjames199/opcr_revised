@@ -3408,6 +3408,15 @@ export default {
 
     },
     mounted() {
+        // Restore scroll position after page reload
+        const scrollPosition = sessionStorage.getItem('scrollPosition');
+        if (scrollPosition !== null) {
+            setTimeout(() => {
+                window.scrollTo(0, parseInt(scrollPosition));
+                sessionStorage.removeItem('scrollPosition');
+            }, 100);
+        }
+
         window.addEventListener('beforeunload', this.handleBeforeUnload);
         this.form.idpaps = this.idpaps;
         if(this.source!==undefined){
@@ -4239,6 +4248,7 @@ export default {
                     alert('Successfully saved team member!')
                     this.team_members=[]
                     this.TeamModalVisible = false;
+                    sessionStorage.setItem('scrollPosition', window.scrollY);
                     window.location.reload()
                 });
             }else if(this.action_type_team==='update'){
@@ -4250,6 +4260,7 @@ export default {
                     alert('Successfully saved team member!')
                     this.team_members=[]
                     this.TeamModalVisible = false;
+                    sessionStorage.setItem('scrollPosition', window.scrollY);
                     window.location.reload()
                 });
             }
