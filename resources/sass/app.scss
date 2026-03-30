@@ -44,8 +44,25 @@
 
 
 .table-responsive {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    -ms-overflow-style: auto !important;
+}
+
+.table-responsive > table,
+.table-responsive .table {
+    width: auto !important;
+    min-width: 100% !important;
+    table-layout: auto !important;
+}
+
+.table-responsive .table th,
+.table-responsive .table td {
+    white-space: nowrap !important;
 }
 
 // Sidebar Collapse Styling
