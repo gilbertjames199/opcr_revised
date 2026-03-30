@@ -4043,26 +4043,29 @@ class RevisionPlanController extends Controller
             // ********************************************************************************
             $gad_attributed = 0;
             $tot_rounded = round($totalScore, 2);
-            if ($item->type === 'p' && $item->year_period < 2027) {
+            $year = Carbon::parse($item->date_start)->year;
+            $gad_attributed = $amount * ($tot_rounded / 20);
+            // dd($item);
+            // if ($item->type === 'p' && intval($year) < 2027) {
 
-                // old rule
-                $gad_attributed = $amount * ($tot_rounded / 20);
+            //     // old rule
+            //     $gad_attributed = $amount * ($tot_rounded / 20);
 
-            } else {
-
-                // new rule (score brackets)
-                if ($totalScore <= 3.9) {
-                    $gad_attributed = $amount * 0;
-                } elseif ($totalScore >= 4 && $totalScore <= 7.9) {
-                    $gad_attributed = $amount * 0.25;
-                } elseif ($totalScore >= 8 && $totalScore <= 14.9) {
-                    $gad_attributed = $amount * 0.5;
-                } elseif ($totalScore >= 15 && $totalScore <= 19.9) {
-                    $gad_attributed = $amount * 0.75;
-                } elseif ($totalScore == 20) {
-                    $gad_attributed = $amount;
-                }
-            }
+            // } else {
+            //     dd($item);
+            //     // new rule (score brackets)
+            //     if ($totalScore <= 3.9) {
+            //         $gad_attributed = $amount * 0;
+            //     } elseif ($totalScore >= 4 && $totalScore <= 7.9) {
+            //         $gad_attributed = $amount * 0.25;
+            //     } elseif ($totalScore >= 8 && $totalScore <= 14.9) {
+            //         $gad_attributed = $amount * 0.5;
+            //     } elseif ($totalScore >= 15 && $totalScore <= 19.9) {
+            //         $gad_attributed = $amount * 0.75;
+            //     } elseif ($totalScore == 20) {
+            //         $gad_attributed = $amount;
+            //     }
+            // }
             // dd($totalScore, $gad_attributed);
             // optional: round to 2 decimals
             $gad_attributed = number_format($gad_attributed, 2);
