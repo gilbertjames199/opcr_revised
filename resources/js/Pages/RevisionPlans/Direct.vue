@@ -494,10 +494,13 @@
 
                 <!-- Responsive Table Container -->
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle">
+                    <table class="table table-hover align-middle responsive-accordion-table">
                         <thead class="table-head-sticky">
                             <tr>
-                                <th class="border-0 fw-semibold text-primary">
+                                <th class="border-0 fw-semibold text-primary col-action">
+                                    <span class="visually-hidden">Toggle</span>
+                                </th>
+                                <th class="border-0 fw-semibold text-primary col-main">
                                     <i class="fas fa-hashtag me-2"></i>AIP Code
                                 </th>
                                 <th class="border-0 fw-semibold text-primary">
@@ -542,10 +545,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dat in data.data">
-                                <td></td>
-                                <td>{{ dat.project_title }}
-                                    <!-- {{dat.budget_sum}} vs {{ dat.imp_amount }} -->
+                            <template v-for="(dat, index) in data.data" :key="dat.id || index">
+                                <tr>
+                                    <td class="accordion-control" style="cursor: pointer;">
+                                        <button type="button" class="accordion-toggle-btn" @click.prevent="toggleExpand(index)" :aria-expanded="String(isExpanded(index))">
+                                            <span v-if="isExpanded(index)">▼</span>
+                                            <span v-else>►</span>
+                                        </button>
+                                    </td>
+                                <td class="col-main">{{ dat.AIP_CODE || dat.aip_code || dat.code || '' }}</td>
+                                <td class="col-second">{{ dat.project_title }}
                                     <span style="color:red; font-weight: bold" >
                                         {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
                                     </span >
@@ -776,6 +785,21 @@
                                     </div>
                                 </td> -->
                             </tr>
+                            <tr v-if="isExpanded(index)" class="accordion-details-row" :style="{ display: isExpanded(index) ? 'table-row' : 'none' }">
+                                <td colspan="14">
+                                    <div class="accordion-details-content">
+                                        <div><strong>Date Submitted:</strong> {{ dat.project_profile_tracking?.created_at ? formatDateTime(dat.project_profile_tracking.created_at) : '-' }}</div>
+                                        <div><strong>Version:</strong> {{ dat.version }}</div>
+                                        <div><strong>Type:</strong> {{ formatProjectType(dat.type) }}</div>
+                                        <div><strong>Implementing Offices:</strong> {{ dat.FFUNCTION }}</div>
+                                        <div><strong>Planned Amount:</strong> {{ format_number_conv(dat.budget_sum, 2, true) }}</div>
+                                        <div><strong>HGDG Score:</strong> {{ dat.hgdg_score }}</div>
+                                        <div><strong>Year:</strong> {{ dat.year }}</div>
+                                        <div><strong>Key Actions:</strong> View / Approve / Edit</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
                         </tbody>
                     </table>
                 </div>
@@ -1271,7 +1295,8 @@ export default {
             reviewers: [681,685],
             approvers: [682],
             current_user_id: '',
-            year_filtering_d: ''
+            year_filtering_d: '',
+            expandedRows: []
         }
     },
     computed: {
@@ -1483,6 +1508,16 @@ export default {
                     replace: true,
                 }
             );
+        },
+        isExpanded(id) {
+            return this.expandedRows.includes(id);
+        },
+        toggleExpand(id) {
+            if (this.isExpanded(id)) {
+                this.expandedRows = this.expandedRows.filter(item => item !== id);
+            } else {
+                this.expandedRows.push(id);
+            }
         },
         // BUDGET PREP
         async openRightAlignModal(source, id, title,sum_budget) {
