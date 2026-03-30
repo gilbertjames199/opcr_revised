@@ -39,14 +39,14 @@
                     </div>
                     <div class="toolbar-right">
                         <!-- /revision/create/${idpaps} -->
-                        <!-- <Link class="tool-btn tool-btn-primary" :href="`/paps/direct`" v-if="source==undefined">
+                        <Link class="tool-btn tool-btn-primary" :href="`/revision/create/${idpaps}`" v-if="source==undefined">
                             <i class="fas fa-plus"></i> Add Project Profile
-                        </Link> -->
+                        </Link>
                         <Button class="tool-btn tool-btn-primary" @click="showSIPModal" v-if="source=='sip'">
                             <i class="fas fa-plus"></i> Add SIP Profile
                         </Button>
                         <!-- /revision/create/0?source=direct -->
-                        <Link class="tool-btn tool-btn-primary" :href="`/paps/direct`" v-else>
+                        <Link class="tool-btn tool-btn-primary" :href="`/paps/direct`" v-if="source=='direct'">
                             <i class="fas fa-plus"></i> Add Project Profile
                         </Link>
                         <!-- tool-btn-outline -->
