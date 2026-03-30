@@ -51,18 +51,30 @@
     overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch !important;
     -ms-overflow-style: auto !important;
+    touch-action: pan-x pan-y !important;
+    -ms-touch-action: pan-x pan-y !important;
 }
 
 .table-responsive > table,
 .table-responsive .table {
     width: auto !important;
-    min-width: 100% !important;
+    min-width: max-content !important;
     table-layout: auto !important;
+    display: block !important;
 }
 
 .table-responsive .table th,
 .table-responsive .table td {
     white-space: nowrap !important;
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 10px !important;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.35) !important;
+    border-radius: 5px !important;
 }
 
 // Sidebar Collapse Styling
