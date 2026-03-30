@@ -581,7 +581,7 @@
                                     <!-- {{ dat }} -->
                                 </td>
                                 <!-- Review/Approve -->
-                                <td >
+                                <td v-if="my_source=='rev_app'">
                                     <!-- Review -->
                                      <!-- {{ dat.id }}<br>
                                     {{ dat.budget_sum }}, {{ dat.imp_amount }} {{  dat.comments_count }}
