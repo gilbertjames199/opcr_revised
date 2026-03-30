@@ -2865,7 +2865,7 @@ class RevisionPlanController extends Controller
                 'type' => $item->type,
                 'version' => $item->version,
                 'budget_sum' => $budgetary_requirement,
-                'imp_amount' => $imp_amount,
+                'imp_amount' => round($imp_amount, 2),
                 'idpaps' => $item->idpaps,
                 'status' => $item->status,
                 'gad_status' => $item->gad_status,
