@@ -4,45 +4,57 @@
     </Head>
 
     <div class="row gap-10 masonry pos-r">
-        <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{  hgdg_checklist.box_number }}. {{  hgdg_checklist.sector }}
-            </h3>
-            <!--<h6>List of User Accounts</h6>-->
-            <div class="peers">
-                <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+        <div class="toolbar-card">
+            <div class="toolbar-row">
+                <div class="toolbar-actions">
+                    <h3>{{  hgdg_checklist.box_number }}. {{  hgdg_checklist.sector }}
+                    </h3>
                 </div>
-                <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/HGDGQuestions/create/${hgdg_checklist.id}`">Add Question</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
-
-
+                <div class="toolbar-actions">
+                    <div class="search-wrapper">
+                        <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+                    </div>
+                    <Link class="tool-btn tool-btn-primary" :href="`/HGDGQuestions/create/${hgdg_checklist.id}`">
+                        <i class="fas fa-plus"></i> Add Question
+                    </Link>
+                    <button class="tool-btn tool-btn-secondary" @click="showFilter()">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+            </div>
+            <div class="toolbar-row toolbar-filters" v-if="filter">
+                <div class="filter-group">
+                    <label>Sample Inputs</label>
+                    <input type="text" class="form-control filter-input">
+                    <button class="tool-btn tool-btn-primary" @click="">
+                        <i class="fas fa-search"></i> Filter
+                    </button>
                 </div>
             </div>
         </div>
 
-        <filtering v-if="filter" @closeFilter="filter=false">
-            <label>Sample Inputs</label>
-            <input type="text" class="form-control">
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
-        </filtering>
-
-
         <div class="col-12">
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
-                    <!--<Table :questions="questions" />-->
-                    <table name="tabel" class="table table-hover table-striped">
-                        <thead class="bg-secondary text-white">
+                    <table name="tabel" class="table table-hover align-middle">
+                        <thead class="table-head-sticky">
                             <tr >
-                                <th>Item Number</th>
-                                <th>Question</th>
-                                <th>Score for Partly Done</th>
-                                <th>Score for Done</th>
-                                <!--<th>Score</th>-->
-                                <th scope="col" style="text-align: right" >ACTION</th>
+                                <th scope="col">
+                                    <i class="fas fa-list-ol"></i> Item Number
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-question"></i> Question
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-star-half-alt"></i> Score for Partly Done
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-star"></i> Score for Done
+                                </th>
+                                <th scope="col" class="text-end">
+                                    <i class="fas fa-cogs"></i> Action
+                                </th>
                             </tr>
-                            <!--v-if="showActionsColumn(user.can.canEditUsers, user.can.canUpdateUserPermissions, user.can.canDeleteUsers)"-->
                         </thead>
                         <tbody>
                             <template v-for="(question, index) in questions" :key="question.id">

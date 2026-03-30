@@ -7,51 +7,89 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Programs and Projects (PAPS)</h3>
             <div class="peers">
-                <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
-
-                <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/paps/create/${idmfo}`">Add Programs and
-                    Projects<!--PAPS {{ idmfo }}--></Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
-                    &nbsp;&nbsp;
-                    <Link @click="goBack">
-                    <!-- <Link :href="`/mfos/direct`"> -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
-                        viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
-                        <path fill-rule="evenodd"
-                            d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
-                    </svg>
-                    </Link>
-                </div>
-
+                <h3>Programs and Projects (PAPS)</h3>
             </div>
-            <!--
-            <Link :href="`/mfos/${idinteroutcome}`">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
-            </Link> -->
+            <div class="peers">
+                <Link @click="goBack">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                    </svg>
+                </Link>
+            </div>
+        </div>
+
+        <!-- FILTERING SECTION -->
+        <div class="masonry-item w-100">
+            <div class="toolbar-card">
+                <!-- Top Row: Actions -->
+                <div class="toolbar-row toolbar-actions">
+                    <div class="toolbar-left">
+                        <span class="toolbar-label">
+                            <i class="fas fa-sliders-h"></i> FILTER PANEL
+                        </span>
+                    </div>
+                    <div class="toolbar-right">
+                        <Link class="tool-btn tool-btn-primary" :href="`/paps/create/${idmfo}`">
+                            <i class="fas fa-plus"></i> Add Programs and Projects
+                        </Link>
+                        <button class="tool-btn tool-btn-outline" @click="showFilter()">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="toolbar-divider"></div>
+
+                <!-- Bottom Row: Filters -->
+                <div class="toolbar-row toolbar-filters">
+                    <!-- Search -->
+                    <div class="filter-group filter-group-grow">
+                        <label class="filter-label">
+                            <i class="fas fa-search"></i> Search
+                        </label>
+                        <div class="search-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input v-model="search" type="text" class="filter-input" placeholder="Search PAPS...">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
-            <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
+                <!-- Table Header with Title and Stats -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-primary mb-0">
+                        <i class="fas fa-list-ul me-2"></i>
+                        PAPS List
+                    </h4>
+                    <div class="text-muted small">
+                        Showing {{ data.from }} to {{ data.to }} of {{ data.total }} entries
+                    </div>
+                </div>
+
+                <!-- Responsive Table Container -->
                 <div class="table-responsive">
-                    <table class="table table-sm table-borderless table-striped table-hover">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th>Major Final Outputs</th>
-                                <th>PAPS Description</th>
-                                <th>Means of Verification</th>
-                                <th>Action</th>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-head-sticky">
+                            <tr>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-file-alt me-2"></i>Major Final Outputs
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-file-contract me-2"></i>PAPS Description
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-check-circle me-2"></i>Means of Verification
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center">
+                                    <i class="fas fa-cogs me-2"></i>Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,7 +97,7 @@
                                 <td>{{ dat.m_f_o.mfo_desc }}</td>
                                 <td>{{ dat.paps_desc }}</td>
                                 <td>{{ dat.MOV }}</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="dropdown dropstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button"
                                             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -97,14 +135,6 @@
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <p>
-                            {{ data.from }} to {{ data.to }} of
-                            {{ data.total }} entries
-                        </p>
                     </div>
                 </div>
 

@@ -6,14 +6,59 @@
     <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
     </p>-->
     <div class="row gap-20 masonry pos-r">
-        <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Chief Executive Agenda</h3>
-            <div class="peers">
-                <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+        <h3>Chief Executive Agenda</h3>
+
+        <div class="toolbar-card">
+            <!-- Top Row: Actions -->
+            <div class="toolbar-row toolbar-actions">
+                <div class="toolbar-left">
+                    <span class="toolbar-label">
+                        <i class="fas fa-sliders-h"></i> FILTER PANEL
+                    </span>
                 </div>
-                <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/ChiefAgenda/create`">Add Agenda</Link>
+                <div class="toolbar-right">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input v-model="search" type="text" class="filter-input" placeholder="Search...">
+                    </div>
+                    <Link class="tool-btn tool-btn-primary" :href="`/ChiefAgenda/create`">
+                        <i class="fas fa-plus"></i> Add Agenda
+                    </Link>
+                    <button class="tool-btn tool-btn-outline" @click="showFilter()">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="toolbar-divider"></div>
+
+            <!-- Bottom Row: Filters -->
+            <div class="toolbar-row toolbar-filters" v-if="filter">
+                <!-- Year From Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">
+                        <i class="fas fa-calendar-alt"></i> Year From
+                    </label>
+                    <input type="number" class="filter-input" placeholder="Start year">
+                </div>
+
+                <!-- Year To Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">
+                        <i class="fas fa-calendar-alt"></i> Year To
+                    </label>
+                    <input type="number" class="filter-input" placeholder="End year">
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px; align-items: flex-end; margin-left: auto;">
+                    <button class="tool-btn tool-btn-primary" @click="">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="tool-btn tool-btn-outline" @click="filter = false">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
                 </div>
             </div>
         </div>
@@ -23,14 +68,24 @@
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
-                    <table class="table table-sm table-borderless table-striped table-hover">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th>Agenda Description</th>
-                                <th>Year From</th>
-                                <th>Year To</th>
-                                <th>Rationale</th>
-                                <th>Action</th>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-head-sticky">
+                            <tr>
+                                <th scope="col">
+                                    <i class="fas fa-align-left"></i> Agenda Description
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-calendar-alt"></i> Year From
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-calendar-alt"></i> Year To
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-file-alt"></i> Rationale
+                                </th>
+                                <th scope="col" class="text-end">
+                                    <i class="fas fa-cogs"></i> Action
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,7 +99,7 @@
                                     <!-- <QuillEditor v-model:content="dat.rationale" contentType="html" :readOnly="true" /> -->
 
                                 </td>
-                                <td>
+                                <td class="text-end">
                                     <div class="dropdown dropstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button"
                                             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -98,6 +153,8 @@ export default {
     },
     data() {
         return {
+            search: this.$props.filters?.search || '',
+            filter: false
 
         }
     },

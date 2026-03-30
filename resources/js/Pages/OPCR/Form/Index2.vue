@@ -40,23 +40,23 @@
                 <!-- style="overflow-x: auto; display: block; align-items-center width: 100%; -webkit-overflow-scrolling: touch;" -->
                 <form @submit.prevent="submit()">
                     <div class="table-responsive">
-                        <table class="table table-hover table-bordered border-dark">
-                            <thead class="text-center ">
-                                <tr class="bg-secondary text-white">
-                                    <th rowspan="2">Major Final Output</th>
-                                    <th rowspan="2">Success Indicators (Targets + Measures)</th>
-                                    <th rowspan="2">Alloted Budget</th>
-                                    <th rowspan="2">Accountable Division</th>
-                                    <th rowspan="2">Actual Accomplishments</th>
-                                    <th colspan="4">Rating</th>
-                                    <th rowspan="2">Remarks</th>
-                                    <th rowspan="2">MOV</th>
+                        <table class="table table-hover table-bordered border-dark align-middle">
+                            <thead class="table-head-sticky text-center">
+                                <tr>
+                                    <th scope="col" rowspan="2"><i class="fas fa-align-left"></i> Major Final Output</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-bullseye"></i> Success Indicators</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-money-bill"></i> Alloted Budget</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-user-tie"></i> Accountable Division</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-check-circle"></i> Actual Accomplishments</th>
+                                    <th scope="col" colspan="4"><i class="fas fa-star"></i> Rating</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-comment"></i> Remarks</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-file-upload"></i> MOV</th>
                                 </tr>
-                                <tr class="bg-secondary text-white">
-                                    <th>Quality</th>
-                                    <th>Efficiency</th>
-                                    <th>Timeliness</th>
-                                    <th>Average</th>
+                                <tr>
+                                    <th scope="col">Quality</th>
+                                    <th scope="col">Efficiency</th>
+                                    <th scope="col">Timeliness</th>
+                                    <th scope="col">Average</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -138,7 +138,7 @@
                     </div>
                 </form>
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered border-dark">
+                    <table class="table table-hover table-bordered border-dark align-middle">
                         <tbody>
                             <tr>
                                 <td>Assessed by PMT Secretariat:</td>

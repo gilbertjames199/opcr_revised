@@ -7,62 +7,102 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3 v-if="my_source=='budget'">Budget Proposal </h3>
-            <h3 v-if="my_source=='direct'">Programs</h3>
-            <h3 v-if="my_source=='rev_app'">Review/Approve Project Profile</h3>
             <div class="peers">
-                <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
-                <div class="peer">
-                    <!-- <Link class="btn btn-primary btn-sm" :href="`/revision/create/${idpaps}`">Add Project Profile</Link> -->
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showPrint()">Print</button>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showAIPModalMethod()">AIP</button>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showIppListModal()">IPP List</button>
-                    Filter Plans by Comment
-                    <select v-model="has_comments_filtering" @change="filterPrograms(search, filter_FFUNCCOD)">
-                        <option value="">All Plans</option>
-                        <option value="1">Plans with comments</option>
-                        <option value="0">Plans with no comments</option>
-                    </select>
-                    Filter Plans by Year
-                    <select v-model="year_filtering_d" @change="filterPrograms(search, filter_FFUNCCOD)">
-                        <option value="">All Years</option>
-                        <option v-for="year in pcr_years" :value="year">{{ year }}</option>
-                    </select>
-                    <!-- <input
-                        type="checkbox"
-                        v-model="checked"
-                        @change="updateValue"
-                    />
-                        <p>ccet = {{ ccet }}</p> -->
-
-                </div>
+                <h3 v-if="my_source=='budget'">Budget Proposal </h3>
+                <h3 v-if="my_source=='direct'">Programs</h3>
+                <h3 v-if="my_source=='rev_app'">Review/Approve Project Profile</h3>
             </div>
-
-            <!--
+            <div class="peers">
                 <Link :href="`/paps/direct`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
                         <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
                     </svg>
                 </Link>
-            -->
+            </div>
+        </div>
+        <!-- FILTERING SECTION -->
+        <div class="masonry-item w-100">
+            <div class="toolbar-card">
+                <!-- Top Row: Actions -->
+                <div class="toolbar-row toolbar-actions">
+                    <div class="toolbar-left">
+                        <span class="toolbar-label">
+                            <i class="fas fa-sliders-h"></i> FILTER PANEL
+                        </span>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="tool-btn tool-btn-primary" @click="showPrint()">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                        <button class="tool-btn tool-btn-primary" @click="showAIPModalMethod()">
+                            <i class="fas fa-file-alt"></i> AIP
+                        </button>
+                        <button class="tool-btn tool-btn-primary" @click="showIppListModal()">
+                            <i class="fas fa-list"></i> IPP List
+                        </button>
+                        <button class="tool-btn tool-btn-outline" @click="showFilter()">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="toolbar-divider"></div>
+
+                <!-- Bottom Row: Filters -->
+                <div class="toolbar-row toolbar-filters">
+                    <!-- Search -->
+                    <div class="filter-group filter-group-grow">
+                        <label class="filter-label">
+                            <i class="fas fa-search"></i> Search
+                        </label>
+                        <div class="search-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input v-model="search" type="text" class="filter-input" placeholder="Search programs...">
+                        </div>
+                    </div>
+
+                    <!-- Comments Filter -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-comment"></i> Comments
+                        </label>
+                        <select v-model="has_comments_filtering" class="filter-select" @change="filterPrograms(search, filter_FFUNCCOD)">
+                            <option value="">All Plans</option>
+                            <option value="1">Plans with comments</option>
+                            <option value="0">Plans with no comments</option>
+                        </select>
+                    </div>
+
+                    <!-- Year Filter -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-calendar-alt"></i> Year
+                        </label>
+                        <select v-model="year_filtering_d" class="filter-select" @change="filterPrograms(search, filter_FFUNCCOD)">
+                            <option value="">All Years</option>
+                            <option v-for="year in pcr_years" :value="year">{{ year }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Office Filter -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-building"></i> Office
+                        </label>
+                        <select class="filter-select" v-model="filter_FFUNCCOD" @change="filterPrograms(search, filter_FFUNCCOD)">
+                            <option value=""></option>
+                            <option v-for="office in offices" :value="office.FFUNCCOD">{{ office.FFUNCTION }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="peers fxw-nw jc-sb ai-c">
             <!-- <h5>Program/Project: <u>{{ paps.paps_desc }}</u></h5> -->
         </div>
         <div class="masonry-sizer col-md-6"></div>
-        <filtering v-if="filter" @closeFilter="filter = false">
-            <label>Office</label>
-            <!-- {{ FFUNCCOD }} -->
-            <select class="form-select" v-model="filter_FFUNCCOD" @change="filterPrograms(search, filter_FFUNCCOD)">
-                <option></option>
-                <option v-for="office in offices" :value="office.FFUNCCOD">{{ office.FFUNCTION }}</option>
-            </select>
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
-        </filtering>
         <modal-right-align v-if="showModalRightAlign" @closeFilter="showModalRightAlign = false"
             :title="'Budget Details'">
             <h3>Project Title: <u>{{ project_title }}</u></h3>
@@ -443,28 +483,62 @@
             SP1 -Approved by SP -->
         </AIPModal>
         <div class="masonry-item w-100">
-            <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
+                <!-- Table Header with Title and Stats -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-primary mb-0">
+                        <i class="fas fa-list-ul me-2"></i>
+                        Programs
+                    </h4>
+                </div>
+
+                <!-- Responsive Table Container -->
                 <div class="table-responsive">
-                    <table class="table table-sm table-borderless table-striped table-hover">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th>AIP Code</th>
-                                <th>Program Title</th>
-                                <th>Date Submitted</th>
-                                <th>Version</th>
-                                <th>Type</th>
-                                <th>Implementing Offices</th>
-                                <th>Planned Amount</th>
-                                <th>HGDG Score</th>
-                                <th>Year</th>
-                                <th>View</th>
-                                <th v-if="my_source=='rev_app'">Approve</th>
-                                <th v-if="my_source=='rev_app'">Full Edit</th>
-                                <th v-if="my_source=='rev_app' || my_source=='approved'">Return</th>
-                                <th v-if="my_source=='budget'">Budget Details </th>
-                                <!-- <th>Edit</th> -->
-                                <!-- <th>Actions</th> -->
+                    <table class="table table-hover align-middle">
+                        <thead class="table-head-sticky">
+                            <tr>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-hashtag me-2"></i>AIP Code
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-file-alt me-2"></i>Program Title
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-calendar me-2"></i>Date Submitted
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-code-branch me-2"></i>Version
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-tag me-2"></i>Type
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-building me-2"></i>Implementing Offices
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-dollar-sign me-2"></i>Planned Amount
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-star me-2"></i>HGDG Score
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-calendar-alt me-2"></i>Year
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center">
+                                    <i class="fas fa-eye me-2"></i>View
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center" v-if="my_source=='rev_app'">
+                                    <i class="fas fa-check me-2"></i>Approve
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center" v-if="my_source=='rev_app'">
+                                    <i class="fas fa-edit me-2"></i>Full Edit
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center" v-if="my_source=='rev_app' || my_source=='approved'">
+                                    <i class="fas fa-undo me-2"></i>Return
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center" v-if="my_source=='budget'">
+                                    <i class="fas fa-cogs me-2"></i>Budget Details
+                                </th>
                             </tr>
                         </thead>
                         <tbody>

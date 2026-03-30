@@ -3,65 +3,85 @@
         <title>Users</title>
     </Head>
     <div class="row gap-10 masonry pos-r">
-        <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Users</h3>
-            <div class="peers">
-                <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+        <h3>Users</h3>
+
+        <div class="toolbar-card">
+            <div class="toolbar-row">
+                <div class="toolbar-left">
+                    <div class="search-wrapper">
+                        <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+                    </div>
                 </div>
-                <div class="peer">
-                    <Link class="btn btn-primary btn-sm" href="/users/create">Add User</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                <div class="toolbar-right" style="display: flex; gap: 8px; align-items: center;">
+                    <Link class="tool-btn tool-btn-primary" href="/users/create">
+                        <i class="fas fa-plus"></i> Add User
+                    </Link>
+                    <button class="tool-btn tool-btn-secondary" @click="showFilter()">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+            </div>
+            <div class="toolbar-row toolbar-filters" v-if="filter">
+                <div class="filter-group">
+                    <label>Sample Inputs</label>
+                    <input type="text" class="form-control filter-input">
+                    <button class="tool-btn tool-btn-primary" @click="">
+                        <i class="fas fa-search"></i> Filter
+                    </button>
                 </div>
             </div>
         </div>
 
-        <filtering v-if="filter" @closeFilter="filter = false">
-            <label>Sample Inputs</label>
-            <input type="text" class="form-control">
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
-        </filtering>
-
         <div class="col-12">
             <div class="bgc-white p-20 bd">
-                <table class="table table-hover table-striped">
-                    <thead class="table-primary">
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Role</th>
-                            <th scope="col" style="text-align: right">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(user, index) in users.data" :key="index">
-                            <td>{{ user.FullName }}</td>
-                            <td>{{ user.UserName }}</td>
-                            <td>{{ user.UserType }}</td>
-                            <td style="text-align: right">
-                                <div class="dropdown dropstart">
-                                    <button class="btn btn-secondary btn-sm action-btn" type="button"
-                                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path
-                                                d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                                        </svg>
-                                    </button>
-                                    <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                        <li>
-                                            <!-- recid;{{ user.recid }} -->
-                                            <Link class="dropdown-item" :href="`/users/${user.recid}/edit`">Edit </Link>
-                                        </li>
-                                        <li v-if="user.department_code">
-                                            <Link class="dropdown-item" :href="`/users/${user.recid}/impersonate`">Impersonate</Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-head-sticky">
+                            <tr>
+                                <th scope="col">
+                                    <i class="fas fa-user"></i> Name
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-at"></i> Username
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-user-tag"></i> Role
+                                </th>
+                                <th scope="col" class="text-end">
+                                    <i class="fas fa-cogs"></i> Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(user, index) in users.data" :key="index">
+                                <td>{{ user.FullName }}</td>
+                                <td>{{ user.UserName }}</td>
+                                <td>{{ user.UserType }}</td>
+                                <td class="text-end">
+                                    <div class="dropdown dropstart">
+                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                            </svg>
+                                        </button>
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <!-- recid;{{ user.recid }} -->
+                                                <Link class="dropdown-item" :href="`/users/${user.recid}/edit`">Edit </Link>
+                                            </li>
+                                            <li v-if="user.department_code">
+                                                <Link class="dropdown-item" :href="`/users/${user.recid}/impersonate`">Impersonate</Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="users.next_page_url" :prev="users.prev_page_url" />

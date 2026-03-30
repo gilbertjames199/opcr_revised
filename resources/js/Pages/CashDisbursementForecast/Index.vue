@@ -6,29 +6,23 @@
     <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
     </p>-->
     <div class="row gap-20 masonry pos-r">
-        <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Cash Disbursement Forecast</h3>
-            <div class="peers">
-                <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+        <div class="toolbar-card">
+            <div class="toolbar-row">
+                <div class="toolbar-actions">
+                    <h3>Cash Disbursement Forecast</h3>
                 </div>
-                <div class="peer">
-                    <!-- <Link class="btn btn-primary btn-sm" :href="`/Monitoring/create/${idpaps}`">Add Monitoring</Link> -->
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="printCDF()">Print</button>
+                <div class="toolbar-actions">
+                    <div class="search-wrapper">
+                        <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+                    </div>
+                    <button class="tool-btn tool-btn-primary" @click="printCDF()">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <Link class="tool-btn tool-btn-secondary" :href="`/OPCRpaps/direct`">
+                        <i class="fas fa-times"></i>
+                    </Link>
                 </div>
-                <Link :href="`/OPCRpaps/direct`">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                    </svg>
-                </Link>
             </div>
-            <!-- <Link :href="'/Sectoral'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
-            </Link> -->
         </div>
 
         <div class="masonry-sizer col-md-6"></div>

@@ -6,97 +6,142 @@
     <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
     </p>-->
     <div class="row gap-20 masonry pos-r">
-        <div class="peers fxw-nw jc-sb ai-c">
-            <h3>OPCR Standard</h3>
-            <div class="peers" v-if="auth.user.department_code === '04'">
-                <div class="peer mR-10">
-                    Search MFO
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
-                </div>
-                <div class="peer mR-10">
+        <h3>OPCR Standard</h3>
 
-                    Select Office <span style="color:red">(select office before printing)</span>
-                    <select v-model="FFUNCCOD" class="form-control form-control-sm" @change="filterMFOs()">
-                        <option></option>
-                        <option v-for="func in functions" :value="func.FFUNCCOD">
-                            {{ func.FFUNCTION }}
+        <div class="toolbar-card" v-if="auth.user.department_code === '04'">
+            <!-- Top Row: Actions -->
+            <div class="toolbar-row toolbar-actions">
+                <div class="toolbar-left">
+                    <span class="toolbar-label">
+                        <i class="fas fa-sliders-h"></i> FILTER PANEL
+                    </span>
+                </div>
+                <div class="toolbar-right">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input v-model="search" type="text" class="filter-input" placeholder="Search MFO...">
+                    </div>
+                    <div style="min-width: 200px;">
+                        <select v-model="FFUNCCOD" class="filter-select" @change="filterMFOs()">
+                            <option value="">-- Select Office --</option>
+                            <option v-for="func in functions" :value="func.FFUNCCOD">
+                                {{ func.FFUNCTION }}
+                            </option>
+                        </select>
+                    </div>
+                    <button class="tool-btn tool-btn-primary" @click="showModal(filter_FFUNCCOD, filter_FFUNCTION, filter_mooe, filter_Ps)">
+                        <i class="fas fa-print"></i> Print OPCR Standard
+                    </button>
+                    <button class="tool-btn tool-btn-outline" @click="showFilter()">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="toolbar-divider"></div>
+
+            <!-- Bottom Row: Filters -->
+            <div class="toolbar-row toolbar-filters" v-if="filter">
+                <!-- MFO Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">
+                        <i class="fas fa-layer-group"></i> Filter by MFO
+                    </label>
+                    <select v-model="mfosel" class="filter-select" @change="filterData()">
+                        <option value="">-- Select MFO --</option>
+                        <option v-for="mfo in mfos_data" :value="mfo.id">
+                            {{ mfo.mfo_desc }}
                         </option>
                     </select>
-                    <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(
-                        filter_FFUNCCOD,
-                        filter_FFUNCTION,
-                        filter_mooe,
-                        filter_Ps
-                    )">Print OPCR Standard</button>
-                    <button class="btn btn-sm btn-danger mL-2 text-white" @click="clearFilter">Clear Filter</button>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px; align-items: flex-end; margin-left: auto;">
+                    <button class="tool-btn tool-btn-primary" @click="filterData()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="tool-btn tool-btn-outline" @click="filter = false">
+                        <i class="fas fa-times"></i> Close
+                    </button>
                 </div>
             </div>
-            <div class="peers" v-else>
-                <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-
-                </div>
-                <div class="peer mR-10">
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
-                    <!-- <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link> -->
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(
-                        filter_FFUNCCOD,
-                        filter_FFUNCTION,
-                        filter_mooe,
-                        filter_Ps
-                    )">Print OPCR Standard</button>
-
-                </div>
-            </div>
-
-            <!-- <Link :href="`/inter_outcome/${idoutcome}`">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
-            </Link> -->
         </div>
-        <filtering v-if="filter" @closeFilter="filter = false">
-            <div v-if="auth.user.department_code === '04'">
-                Filter by Office
-                <select v-model="FFUNCCOD" class="form-control" @change="filterMFOs()">
-                    <option value=""></option>
-                    <option v-for="func in functions" :value="func.FFUNCCOD">
-                        {{ func.FFUNCTION }}
-                    </option>
-                </select>
+
+        <div class="toolbar-card" v-else>
+            <!-- Top Row: Actions -->
+            <div class="toolbar-row toolbar-actions">
+                <div class="toolbar-left">
+                    <span class="toolbar-label">
+                        <i class="fas fa-sliders-h"></i> FILTER PANEL
+                    </span>
+                </div>
+                <div class="toolbar-right">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input v-model="search" type="text" class="filter-input" placeholder="Search...">
+                    </div>
+                    <button class="tool-btn tool-btn-primary" @click="showModal(filter_FFUNCCOD, filter_FFUNCTION, filter_mooe, filter_Ps)">
+                        <i class="fas fa-print"></i> Print OPCR Standard
+                    </button>
+                    <button class="tool-btn tool-btn-outline" @click="showFilter()">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
             </div>
 
-            Filter by MFO
-            <select v-model="mfosel" class="form-control" @change="filterData()">
-                <option></option>
-                <option v-for="mfo in mfos_data" :value="mfo.id">
-                    {{ mfo.mfo_desc }}
-                </option>
-            </select>
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="showModal(
-                filter_FFUNCCOD,
-                filter_FFUNCTION,
-                filter_mooe,
-                filter_Ps
-            )">Print OPCR Standard</button>&nbsp;
-            <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
-        </filtering>
+            <!-- Divider -->
+            <div class="toolbar-divider"></div>
+
+            <!-- Bottom Row: Filters -->
+            <div class="toolbar-row toolbar-filters" v-if="filter">
+                <!-- MFO Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">
+                        <i class="fas fa-layer-group"></i> Filter by MFO
+                    </label>
+                    <select v-model="mfosel" class="filter-select" @change="filterData()">
+                        <option value="">-- Select MFO --</option>
+                        <option v-for="mfo in mfos_data" :value="mfo.id">
+                            {{ mfo.mfo_desc }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px; align-items: flex-end; margin-left: auto;">
+                    <button class="tool-btn tool-btn-primary" @click="filterData()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="tool-btn tool-btn-outline" @click="filter = false">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
-                    <table class="table table-sm table-borderless table-striped table-hover">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th v-if="auth.user.department_code == '04'">Office</th>
-                                <th>Major Final Output</th>
-                                <th>PAPS Description</th>
-                                <th>Description</th>
-                                <th>Action</th>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-head-sticky">
+                            <tr>
+                                <th v-if="auth.user.department_code == '04'" scope="col">
+                                    <i class="fas fa-building"></i> Office
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-layer-group"></i> Major Final Output
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-file-alt"></i> PAPS Description
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-align-left"></i> Description
+                                </th>
+                                <th scope="col" class="text-end">
+                                    <i class="fas fa-cogs"></i> Action
+                                </th>
                             </tr>
                         </thead>
                         <tbody>

@@ -10,14 +10,8 @@
         <h4 class="text-center">Review/Approve </h4>
         <!-- </p> -->
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>OPCR (Rating)</h3>
             <div class="peers">
-                <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
-                <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/Societal/create`">Add Societal Goals</Link>
-                </div>
+                <h3>OPCR (Rating)</h3>
             </div>
             <!-- <Link :href="'/Sectoral'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -27,19 +21,76 @@
             </Link> -->
         </div>
 
+        <!-- FILTERING SECTION -->
+        <div class="masonry-item w-100">
+            <div class="toolbar-card">
+                <!-- Top Row: Actions -->
+                <div class="toolbar-row toolbar-actions">
+                    <div class="toolbar-left">
+                        <span class="toolbar-label">
+                            <i class="fas fa-sliders-h"></i> FILTER PANEL
+                        </span>
+                    </div>
+                    <div class="toolbar-right">
+                        <Link class="tool-btn tool-btn-primary" :href="`/Societal/create`">
+                            <i class="fas fa-plus"></i> Add Societal Goals
+                        </Link>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="toolbar-divider"></div>
+
+                <!-- Bottom Row: Filters -->
+                <div class="toolbar-row toolbar-filters">
+                    <!-- Search -->
+                    <div class="filter-group filter-group-grow">
+                        <label class="filter-label">
+                            <i class="fas fa-search"></i> Search
+                        </label>
+                        <div class="search-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input v-model="search" type="text" class="filter-input" placeholder="Search ratings...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
-            <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
+                <!-- Table Header with Title and Stats -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-primary mb-0">
+                        <i class="fas fa-list-ul me-2"></i>
+                        OPCR Ratings List
+                    </h4>
+                    <div class="text-muted small">
+                        Showing {{ data.from }} to {{ data.to }} of {{ data.total }} entries
+                    </div>
+                </div>
+
+                <!-- Responsive Table Container -->
                 <div class="table-responsive">
-                    <table class="table table-sm table-borderless table-striped table-hover">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th>Office</th>
-                                <th>Semester</th>
-                                <th>Period Covered</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-head-sticky">
+                            <tr>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-building me-2"></i>Office
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-calendar me-2"></i>Semester
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-calendar-alt me-2"></i>Period Covered
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-info-circle me-2"></i>Status
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center">
+                                    <i class="fas fa-cogs me-2"></i>Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,7 +107,7 @@
                                 <td>
                                     {{ getStatus(dat.rating_status) }}
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <div class="dropdown dropstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button"
                                             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -90,17 +141,11 @@
                         <pagination :next="data.next_page_url" :prev="data.prev_page_url" v-bind="source === 'ppdo_approval' ? { source: source } : {}"/>
                     </div>
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <p>
-                            {{ data.from }} to {{ data.to }} of
-                            {{ data.total }} entries
-                        </p>
-                    </div>
-                </div>
 
             </div>
+
         </div>
+        <!-- </div> -->
         <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`">
             <!-- {{ opcr_current }} -->
             <div class="sticky-header">

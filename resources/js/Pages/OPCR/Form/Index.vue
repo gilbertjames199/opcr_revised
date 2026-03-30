@@ -36,22 +36,22 @@
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
                     <form @submit.prevent="submit()">
-                        <table class="table table-hover table-bordered border-dark">
-                            <thead class="text-center align-items-center">
-                                <tr class="bg-secondary text-white">
-                                    <th rowspan="2">Major Final Output</th>
-                                    <th rowspan="2">Success Indicators (Targets + Measures)</th>
-                                    <th rowspan="2">Alloted Budget</th>
-                                    <th rowspan="2">Accountable Division</th>
-                                    <th rowspan="2">Actual Accomplishments</th>
-                                    <th colspan="4">Rating</th>
-                                    <th rowspan="2">Remarks</th>
+                        <table class="table table-hover table-bordered border-dark align-middle">
+                            <thead class="table-head-sticky text-center">
+                                <tr>
+                                    <th scope="col" rowspan="2"><i class="fas fa-align-left"></i> Major Final Output</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-bullseye"></i> Success Indicators</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-money-bill"></i> Alloted Budget</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-user-tie"></i> Accountable Division</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-check-circle"></i> Actual Accomplishments</th>
+                                    <th scope="col" colspan="4"><i class="fas fa-star"></i> Rating</th>
+                                    <th scope="col" rowspan="2"><i class="fas fa-comment"></i> Remarks</th>
                                 </tr>
-                                <tr class="bg-secondary text-white">
-                                    <th>Q</th>
-                                    <th>E</th>
-                                    <th>T</th>
-                                    <th>Ave</th>
+                                <tr>
+                                    <th scope="col">Q</th>
+                                    <th scope="col">E</th>
+                                    <th scope="col">T</th>
+                                    <th scope="col">Ave</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,7 +121,7 @@
 
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered border-dark">
+                    <table class="table table-hover table-bordered border-dark align-middle">
                         <tbody>
                             <tr>
                                 <td>Assessed by PMT Secretariat:</td>
@@ -190,7 +190,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="align: center">
+                <div class="text-center">
                     <!-- <button class="btn btn-primary text-white" @click="submitAction('1')" v-if="emp_status === '0'">
                         Review
                     </button>

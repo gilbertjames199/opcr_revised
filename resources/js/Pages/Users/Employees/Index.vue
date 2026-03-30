@@ -4,35 +4,81 @@
     </Head>
 
     <div class="row gap-10 masonry pos-r">
-        <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Employees</h3>
-            <div class="peers">
-                <div class="peer mR-10">
-                    <!-- <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search..."> -->
+        <h3>Employees</h3>
+
+        <div class="toolbar-card">
+            <!-- Top Row: Actions -->
+            <div class="toolbar-row toolbar-actions">
+                <div class="toolbar-left">
+                    <span class="toolbar-label">
+                        <i class="fas fa-sliders-h"></i> FILTER PANEL
+                    </span>
                 </div>
-                <div class="peer">
-                    <!-- <Link v-if="can.canInsertUsers" class="btn btn-primary btn-sm" href="/users/create">Add User</Link> -->
-                    <Link class="btn btn-primary btn-sm mL-2 text-white" href="/user/employees/sync/employees/list">Sync Employees</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                <div class="toolbar-right">
+                    <Link class="tool-btn tool-btn-primary" href="/user/employees/sync/employees/list">
+                        <i class="fas fa-sync"></i> Sync Employees
+                    </Link>
+                    <button class="tool-btn tool-btn-outline" @click="showFilter()">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="toolbar-divider"></div>
+
+            <!-- Bottom Row: Filters -->
+            <div class="toolbar-row toolbar-filters" v-if="filter">
+                <!-- Name Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">
+                        <i class="fas fa-user"></i> Name
+                    </label>
+                    <input type="text" class="filter-input" placeholder="Filter by name">
+                </div>
+
+                <!-- Employment Status Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">
+                        <i class="fas fa-briefcase"></i> Employment Status
+                    </label>
+                    <select class="filter-select">
+                        <option value="">-- All --</option>
+                        <option value="permanent">Permanent</option>
+                        <option value="contractual">Contractual</option>
+                        <option value="casual">Casual</option>
+                    </select>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px; align-items: flex-end; margin-left: auto;">
+                    <button class="tool-btn tool-btn-primary" @click="">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="tool-btn tool-btn-outline" @click="filter = false">
+                        <i class="fas fa-times"></i> Close
+                    </button>
                 </div>
             </div>
         </div>
 
-        <filtering v-if="filter" @closeFilter="filter=false">
-            <label>Sample Inputs</label>
-            <input type="text" class="form-control">
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
-        </filtering>
-
         <div class="col-12">
             <div class="bgc-white p-20 bd">
-                <table class="table table-hover table-striped">
-                    <thead class="table-primary">
+                <table class="table table-hover align-middle">
+                    <thead class="table-head-sticky">
                         <tr>
-                            <th scope="col">Name</th>
-                            <th>Employment Status</th>
-                            <th>Division</th>
-                            <th scope="col" style="text-align: right">Action</th>
+                            <th scope="col">
+                                <i class="fas fa-user"></i> Name
+                            </th>
+                            <th scope="col">
+                                <i class="fas fa-briefcase"></i> Employment Status
+                            </th>
+                            <th scope="col">
+                                <i class="fas fa-sitemap"></i> Division
+                            </th>
+                            <th scope="col" class="text-end">
+                                <i class="fas fa-cogs"></i> Action
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,7 +86,7 @@
                             <td>{{ user.employee_name }}</td>
                             <td>{{ user.employment_type_descr }}</td>
                             <td><div v-if="user.division">{{ user.division.division_name1 }}</div></td>
-                            <td style="text-align: right">
+                            <td class="text-end">
                                 <div class="dropdown dropstart" >
                                   <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">

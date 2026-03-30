@@ -12,72 +12,52 @@
                 }})</b>
         </h1>
 
-        <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{  hgdg_checklist.box_number }}. {{  hgdg_checklist.sector }}
-            </h3>
-
-            <!--<h6>List of User Accounts</h6>-->
-            <div class="peers">
-                <!-- <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div> -->
-                <div class="peer">
-                    <!-- <Link class="btn btn-primary btn-sm" :href="`/HGDGQuestions/create/${hgdg_checklist.id}`">Add Question</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
-                        <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(idrevplan)">Print HGDG Score</button>
+        <div class="toolbar-card">
+            <div class="toolbar-row">
+                <div class="toolbar-actions">
+                    <h3>{{  hgdg_checklist.box_number }}. {{  hgdg_checklist.sector }}
+                    </h3>
                 </div>
-                <!-- {{ revision_plan }} -->
-                <a @click.prevent="goBack" href="#">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                    </svg>
-                </a>
-                <!-- <Link v-if="idmfo=='0' && scope!='GAS'" :href="`/revision/${revision_plan.idpaps}`">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                    </svg>
-                </Link>
-                <Link v-if="idpaps=='0' && scope!='GAS'" :href="`/mforevision/${idmfo}`">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                    </svg>
-                </Link>
-                <Link v-if="idmfo=='0' && idpaps=='0' && scope=='GAS'" :href="`/revision/general/administration/services/${FFUNCCOD}/plan`">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                    </svg>
-                </Link> -->
+                <div class="toolbar-actions">
+                    <button class="tool-btn tool-btn-primary" @click="showModal(idrevplan)">
+                        <i class="fas fa-print"></i> Print HGDG Score
+                    </button>
+                    <a class="tool-btn tool-btn-secondary" @click.prevent="goBack" href="#">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
             </div>
         </div>
-
-        <filtering v-if="filter" @closeFilter="filter=false">
-            <label>Sample Inputs</label>
-            <input type="text" class="form-control">
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
-        </filtering>
 
         <div class="col-12">
             <div class="bgc-white p-20 bd">
                 <div class="table-responsive">
                     <form @submit.prevent="submit()">
-                    <!--<Table :questions="questions" />-->
-                        <table name="tabel" class="table table-hover table-striped">
-                            <thead class="bg-secondary text-white">
+                        <table name="tabel" class="table table-hover align-middle">
+                            <thead class="table-head-sticky">
                                 <tr >
-                                    <th>Item Number</th>
-                                    <th>Question</th>
-                                    <th v-if="can_edit">Not Done</th>
-                                    <th v-if="can_edit">Partly Done</th>
-                                    <th v-if="can_edit">Done</th>
-                                    <!--<th>Score</th>-->
-                                    <th scope="col" style="text-align: right" >Score</th>
-                                    <th>Remarks</th>
+                                    <th scope="col">
+                                        <i class="fas fa-list-ol"></i> Item Number
+                                    </th>
+                                    <th scope="col">
+                                        <i class="fas fa-question"></i> Question
+                                    </th>
+                                    <th v-if="can_edit" scope="col">
+                                        <i class="fas fa-times-circle"></i> Not Done
+                                    </th>
+                                    <th v-if="can_edit" scope="col">
+                                        <i class="fas fa-star-half-alt"></i> Partly Done
+                                    </th>
+                                    <th v-if="can_edit" scope="col">
+                                        <i class="fas fa-check-circle"></i> Done
+                                    </th>
+                                    <th scope="col" class="text-end">
+                                        <i class="fas fa-trophy"></i> Score
+                                    </th>
+                                    <th scope="col">
+                                        <i class="fas fa-comment"></i> Remarks
+                                    </th>
                                 </tr>
-                                <!--v-if="showActionsColumn(user.can.canEditUsers, user.can.canUpdateUserPermissions, user.can.canDeleteUsers)"-->
                             </thead>
                             <tbody>
                                 <tr v-for="(hgdg_score, index) in form.hgdg_scores">

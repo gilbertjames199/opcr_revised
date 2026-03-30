@@ -7,64 +7,129 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Programs and Projects </h3>
             <div class="peers">
-                <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
-                <div class="peer">
-                    <Link class="btn btn-primary btn-sm" :href="`/paps/direct/create`">Add Programs and Projects </Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showModal(
-                        func_code,
-                        func_name
-                    )">Print DPCR Standard</button>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
-                </div>
+                <h3>Programs and Projects</h3>
             </div>
-            <!-- <Link :href="`/inter_outcome/${idoutcome}`">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                </svg>
-            </Link> -->
         </div>
-        <filtering v-if="filter" @closeFilter="filter = false">
-            <div v-if="$page.props.auth.user.department_code === '04'">
-                Filter by Office
-                <select v-model="FFUNCCOD" class="form-control" @change="filterMFOs()">
-                    <option v-for="FFUNCCOD in offices" :value="FFUNCCOD.FFUNCCOD">
-                        {{ FFUNCCOD.FFUNCTION }}
-                    </option>
-                </select>
+
+        <!-- FILTERING SECTION -->
+        <div class="masonry-item w-100">
+            <div class="toolbar-card">
+                <!-- Top Row: Actions -->
+                <div class="toolbar-row toolbar-actions">
+                    <div class="toolbar-left">
+                        <span class="toolbar-label">
+                            <i class="fas fa-sliders-h"></i> FILTER PANEL
+                        </span>
+                    </div>
+                    <div class="toolbar-right">
+                        <Link class="tool-btn tool-btn-primary" :href="`/paps/direct/create`">
+                            <i class="fas fa-plus"></i> Add Programs and Projects
+                        </Link>
+                        <button class="tool-btn tool-btn-primary" @click="showModal(func_code, func_name)">
+                            <i class="fas fa-print"></i> Print DPCR Standard
+                        </button>
+                        <button class="tool-btn tool-btn-outline" @click="showFilter()">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="toolbar-divider"></div>
+
+                <!-- Bottom Row: Filters -->
+                <div class="toolbar-row toolbar-filters">
+                    <!-- Search -->
+                    <div class="filter-group filter-group-grow">
+                        <label class="filter-label">
+                            <i class="fas fa-search"></i> Search
+                        </label>
+                        <div class="search-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input v-model="search" type="text" class="filter-input" placeholder="Search PAPS...">
+                        </div>
+                    </div>
+
+                    <!-- Office Filter (conditional) -->
+                    <div v-if="$page.props.auth.user.department_code === '04'" class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-building"></i> Office
+                        </label>
+                        <select v-model="FFUNCCOD" class="filter-select" @change="filterMFOs()">
+                            <option value=""></option>
+                            <option v-for="FFUNCCOD in offices" :value="FFUNCCOD.FFUNCCOD">
+                                {{ FFUNCCOD.FFUNCTION }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Division Filter (conditional) -->
+                    <div v-if="$page.props.auth.user.department_code === '02'" class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-sitemap"></i> Division
+                        </label>
+                        <select v-model="division_code" class="filter-select" @change="filterMFOs()">
+                            <option value=""></option>
+                            <option v-for="div in divisions" :value="div.division_code">
+                                {{ div.division_name1 }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- MFO Filter -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-file-alt"></i> MFO
+                        </label>
+                        <select v-model="mfosel" class="filter-select" @change="filterData()">
+                            <option value=""></option>
+                            <option v-for="mfo in mfos_data" :value="mfo.id">
+                                {{ mfo.mfo_desc }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Clear Filter Button -->
+                    <div class="filter-group">
+                        <button class="tool-btn tool-btn-danger" @click="clearFilter">
+                            <i class="fas fa-times"></i> Clear Filter
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div v-if="$page.props.auth.user.department_code === '02'">
-                Filter by Division
-                <select v-model="division_code" class="form-control" @change="filterMFOs()">
-                    <option v-for="div in divisions" :value="div.division_code">
-                        {{ div.division_name1 }}
-                    </option>
-                </select>
-            </div>
-            Filter by MFO
-            <select v-model="mfosel" class="form-control" @change="filterData()">
-                <option v-for="mfo in mfos_data" :value="mfo.id">
-                    {{ mfo.mfo_desc }}
-                </option>
-            </select>
-            <button class="btn btn-sm btn-danger mT-5 text-white" @click="clearFilter">Clear Filter</button>
-        </filtering>
+        </div>
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
-            <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
+                <!-- Table Header with Title and Stats -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-primary mb-0">
+                        <i class="fas fa-list-ul me-2"></i>
+                        PAPS List
+                    </h4>
+                    <div class="text-muted small">
+                        Showing {{ data.from }} to {{ data.to }} of {{ data.total }} entries
+                    </div>
+                </div>
+
+                <!-- Responsive Table Container -->
                 <div class="table-responsive">
-                    <table class="table table-sm table-borderless table-striped table-hover">
-                        <thead>
-                            <tr class="bg-secondary text-white">
-                                <th>Major Final Output</th>
-                                <th>PAPS Description</th>
-                                <th>Description</th>
-                                <th>Action</th>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-head-sticky">
+                            <tr>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-file-alt me-2"></i>Major Final Output
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-file-contract me-2"></i>PAPS Description
+                                </th>
+                                <th class="border-0 fw-semibold text-primary">
+                                    <i class="fas fa-check-circle me-2"></i>Description
+                                </th>
+                                <th class="border-0 fw-semibold text-primary text-center">
+                                    <i class="fas fa-cogs me-2"></i>Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,23 +142,8 @@
                                     <div>{{ dat.paps_desc }}</div>
                                 </td>
                                 <td>{{ dat.MOV }}</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="dropdown dropstart">
-                                        <!-- <button class="btn btn-secondary btn-sm action-btn" type="button"
-                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
-                                            data-bs-strategy="fixed"
-                                        > -->
-                                        <!-- <button class="btn btn-secondary btn-sm action-btn" type="button"
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="false"
-                                            data-bs-strategy="fixed"
-                                            data-bs-boundary="viewport">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                                            </svg>
-                                        </button> -->
                                         <button
                                         class="btn btn-secondary btn-sm action-btn"
                                         type="button"
@@ -147,14 +197,6 @@
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <p>
-                            {{ data.from }} to {{ data.to }} of
-                            {{ data.total }} entries
-                        </p>
                     </div>
                 </div>
 
