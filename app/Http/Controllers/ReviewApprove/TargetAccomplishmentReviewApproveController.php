@@ -38,12 +38,32 @@ class TargetAccomplishmentReviewApproveController extends Controller
     {
         // $data = $this->revapp->paginate(10);
         if (auth()->user()->department_code == '04') {
+            // $data = $this->revapp->with(['office'])
+            //     // ->where('target_status', '>', -1)
+            //     // ->where('target_status', '<', 1)
+            //     ->where('target_status',0)
+            //     ->whereHas('office', function($query)use($request){
+            //         $searchTerm = "%{$request->search}%";
+            //         $query->where('FFUNCTION','LIKE', $searchTerm);
+            //     })
+            //     ->orderBy('year', 'desc')
+            //     ->orderBy('semester', 'desc')
+            //     ->orderBy('id', 'desc')
+            //     ->paginate(10);
+            // Step 1: Query the `offices` table on its own connection (mysql2)
+            $searchTerm = "%{$request->search}%";
+
+            $matchingCodes = \App\Models\Office::where('office', 'LIKE', $searchTerm)
+                ->pluck('department_code'); // returns a Collection of codes
+
+            // Step 2: Use whereIn instead of whereHas
             $data = $this->revapp
-                // ->where('target_status', '>', -1)
-                // ->where('target_status', '<', 1)
-                ->where('target_status',0)
+                ->with(['office'])
+                ->where('target_status', 0)
+                ->whereIn('department_code', $matchingCodes) // ✅ no cross-DB join
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
+                ->orderBy('id', 'desc')
                 ->paginate(10);
             $data->getCollection()->transform(function ($item) {
                 $opcr_id = $item->id;
@@ -94,6 +114,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     'office' => $office
                 ];
             });
+
             // dd($data);
             return inertia('Review-Approve/OPCR/Targets/Index', [
                 'data' => $data
@@ -102,6 +123,16 @@ class TargetAccomplishmentReviewApproveController extends Controller
             $data = $this->revapp
                 ->where('target_status', '>', 0)
                 ->where('target_status', '<', 2)
+                ->when($request->search, function($q) use ($request){
+                    $searchTerm = "%{$request->search}%";
+                    $q->where(function($query) use ($searchTerm) {
+                        $query->whereHas('office', function($subQuery) use ($searchTerm) {
+                            $subQuery->where('FFUNCTION', 'like', $searchTerm)
+                                     ->orWhere('FFUNCCOD', 'like', $searchTerm);
+                        })->orWhere('semester', 'like', $searchTerm)
+                          ->orWhere('year', 'like', $searchTerm);
+                    });
+                })
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
                 ->paginate(10);

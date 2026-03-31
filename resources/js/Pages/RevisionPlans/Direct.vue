@@ -491,7 +491,7 @@
                         Programs
                     </h4>
                     <button @click="fitTableWidth"
-                            class="btn btn-sm btn-outline-primary"
+                            class="btn btn-sm btn-outline-primary text-white"
                             title="Adjust zoom to fit table width">
                         <i class="fas fa-compress me-2"></i>
                         Fit Width to Visible Area
@@ -1377,6 +1377,7 @@ export default {
         window.addEventListener("keydown", this.handleKeydown);
         this.has_comments_filtering=this.has_comments
         this.year_filtering_d=this.year_filtering
+        this.fitTableWidth();
     },
     beforeUnmount() {
         window.removeEventListener("keydown", this.handleKeydown);

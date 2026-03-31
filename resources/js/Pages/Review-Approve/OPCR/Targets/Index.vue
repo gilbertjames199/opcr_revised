@@ -32,9 +32,9 @@
                         </span>
                     </div>
                     <div class="toolbar-right">
-                        <Link class="tool-btn tool-btn-primary" :href="`/Societal/create`">
+                        <!-- <Link class="tool-btn tool-btn-primary" :href="`/Societal/create`">
                             <i class="fas fa-plus"></i> Add Societal Goals
-                        </Link>
+                        </Link> -->
                     </div>
                 </div>
 
@@ -219,13 +219,16 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
 import Modal2 from "@/Shared/PrintModal";
+import { Inertia } from '@inertiajs/inertia';
 export default {
     props: {
         auth: Object,
+        filters: Object,
         data: Object
     },
     data() {
         return {
+            search: "",
             displayModal: false,
             displayModal2: false,
             opcr_data: [],
@@ -242,7 +245,23 @@ export default {
     components: {
         Pagination, Filtering, Modal, Modal2
     },
-
+    watch: {
+        // search: _.debounce(function (value) {
+        //     this.filterPrograms(value, this.filter_FFUNCCOD)
+        // }, 300),
+        search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/review-approve/targets",
+                { search: value
+                 },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 300),
+    },
     methods: {
 
         showCreate() {
