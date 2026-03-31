@@ -46,83 +46,6 @@
 .table-responsive {
     overflow-x: auto !important;
     overflow-y: hidden !important;
-    -webkit-overflow-scrolling: touch !important;
-    width: 100% !important;
-}
-
-.responsive-accordion-table .accordion-control {
-    padding: 0.35rem 0.4rem;
-}
-
-.responsive-accordion-table .accordion-toggle-btn {
-    background: transparent;
-    border: 1px solid #c8cbe0;
-    border-radius: 0.35rem;
-    width: 32px;
-    height: 32px;
-    font-size: 0.75rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.responsive-accordion-table .accordion-details-row {
-    display: none !important;
-}
-
-.responsive-accordion-table .accordion-details-content {
-    background: #f9fbff;
-    border: 1px solid #e9ebf5;
-    padding: 0.75rem;
-    border-radius: 0.35rem;
-    gap: 0.25rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.responsive-accordion-table .accordion-details-content div {
-    font-size: 0.85rem;
-    line-height: 1.3;
-}
-
-.responsive-accordion-table .accordion-actions {
-    color: #0b5ed7;
-    font-weight: 600;
-}
-
-@media (max-width: 992px) {
-    .responsive-accordion-table th:not(.col-action):not(.col-main):not(.col-second),
-    .responsive-accordion-table td:not(.col-action):not(.col-main):not(.col-second) {
-        display: none !important;
-    }
-
-    .responsive-accordion-table .accordion-details-row {
-        display: table-row !important;
-    }
-
-    .responsive-accordion-table .accordion-details-row td {
-        padding: 0.5rem 0.75rem !important;
-        background-color: #fafbfd !important;
-    }
-
-    .responsive-accordion-table .accordion-control {
-        width: 1%;
-        display: table-cell !important;
-    }
-
-    .responsive-accordion-table .col-main,
-    .responsive-accordion-table .col-second {
-        width: auto;
-    }
-}
-
-@media (min-width: 992px) {
-    .responsive-accordion-table .accordion-control,
-    .responsive-accordion-table th.col-action,
-    .responsive-accordion-table td.accordion-control {
-        display: none !important;
-    }
 }
 
 // Sidebar Collapse Styling
@@ -804,4 +727,3 @@ body.dragging {
     line-height: 1.3;
     padding-left: 24px;
 }
-
