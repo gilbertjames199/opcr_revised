@@ -45,7 +45,8 @@
 
 .table-responsive {
     overflow-x: auto !important;
-    overflow-y: hidden !important;
+    overflow-y: visible !important;
+    // overflow-y: visible !important;
 }
 
 // Sidebar Collapse Styling
@@ -489,9 +490,9 @@ body.dragging {
 }
 
 /* Allow Bootstrap dropdowns to escape the responsive table container */
-.table-responsive {
-    overflow: visible !important;
-}
+// .table-responsive {
+    // overflow: visible !important;
+// }
 
 /* ── Toolbar Card ─────────────────────────────────────── */
 .toolbar-card {

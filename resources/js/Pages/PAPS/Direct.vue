@@ -8,7 +8,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <div class="peers">
-                <h3>Programs and Projects</h3>
+                <h3>Programs and Projects </h3>
             </div>
         </div>
 
@@ -553,10 +553,14 @@ export default {
 } */
  .table-responsive {
     overflow-x: auto;
-    overflow-y: visible !important;
+    overflow-y: visible;
 }
 
 .table-responsive .dropdown-menu.show {
     position: fixed !important;
 }
+
+/* .dropdown-menu {
+    z-index: 1051 !important;  /* slightly above Bootstrap's default 1050
+} */
 </style>

@@ -2787,6 +2787,44 @@
                 <!-- {{src}} -->
                 <span >
                     <button
+                        v-if="paps.gad_status=='0' && src=='rev_app'"
+                        :disabled="countUnresolvedComments > 0"
+                        @click="statusAction(paps, 1, 'gad_status')"
+                        :style="{
+                        padding: '4px 10px',
+                        border: 'none',
+                        borderRadius: '4px',
+                        backgroundColor: countUnresolvedComments > 0 ? '#cccccc' : 'blue',
+                        color: 'white',
+                        cursor: countUnresolvedComments > 0 ? 'not-allowed' : 'pointer',
+                        fontWeight: 'bold',
+                        marginRight: '4px',
+                        opacity: countUnresolvedComments > 0 ? 0.6 : 1
+                        }"
+                        :title="countUnresolvedComments > 0 ? `Cannot review while there are ${countUnresolvedComments} unresolved comment(s)` : 'Review GAD aspects of this project'"
+                    >
+                        GAD Review
+                    </button> &nbsp;
+                    <button
+                        v-if="paps.status == '0' && paps.gad_status=='1'  && src=='rev_app'"
+                        :disabled="countUnresolvedComments > 0"
+                        @click="statusAction(paps, 1, 'status')"
+                        :style="{
+                            padding: '4px 10px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            backgroundColor: countUnresolvedComments > 0 ? '#cccccc' : 'blue',
+                            color: 'white',
+                            cursor: countUnresolvedComments > 0 ? 'not-allowed' : 'pointer',
+                            fontWeight: 'bold',
+                            marginRight: '4px',
+                            opacity: countUnresolvedComments > 0 ? 0.6 : 1
+                        }"
+                        :title="countUnresolvedComments > 0 ? `Cannot approve while there are ${countUnresolvedComments} unresolved comment(s)` : 'Approve this project profile'"
+                    >
+                        Approve
+                    </button> &nbsp;
+                    <button
                         v-if="['0','1'].includes(paps.status) && src=='rev_app'"
                         @click="statusAction(paps, -2)"
                         :style="{
@@ -2796,27 +2834,26 @@
                         backgroundColor: '#fc00d7',
                         color: 'white',
                         cursor: 'pointer',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        marginRight: '4px'
                         }"
                     >
                         Return
                     </button> &nbsp;
                     <button
-                        v-if="paps.status == '0' && paps.gad_status=='1'  && src=='rev_app'"
-
-                        @click="statusAction(paps, 1, 'status')"
+                        v-if="['0'].includes(paps.return_request_status)"
+                        @click="statusAction(paps, 7)"
                         :style="{
-                            padding: '4px 10px',
-                            border: 'none',
-                            borderRadius: '4px',
-                            backgroundColor: 'blue',
-                            color: 'white',
-                            cursor: 'pointer',
-                            fontWeight: 'bold',
-                            marginRight: '4px'
+                        padding: '4px 10px',
+                        border: 'none',
+                        borderRadius: '4px',
+                        backgroundColor: 'red',
+                        color: 'white',
+                        cursor: 'pointer',
+                        fontWeight: 'bold'
                         }"
                     >
-                        Approve
+                        Approve Return Request
                     </button>
                 </span>
                 <span  :style="{

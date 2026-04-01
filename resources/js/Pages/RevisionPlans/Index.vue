@@ -553,6 +553,8 @@
                                         <i class="fas fa-arrow-right"></i>
                                         {{ parseInt(dat.year)+1}}
                                     </button>
+
+                                    {{ dat.status }}
                                 </td>
 
                                 <!-- VERSION -->
