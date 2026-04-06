@@ -554,7 +554,7 @@
                                         {{ parseInt(dat.year)+1}}
                                     </button>
 
-                                    {{ dat.status }}
+                                    <!-- {{ dat.status }} -->
                                 </td>
 
                                 <!-- VERSION -->
