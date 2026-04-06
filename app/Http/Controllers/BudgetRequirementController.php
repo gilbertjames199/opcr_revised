@@ -98,7 +98,7 @@ class BudgetRequirementController extends Controller
             $ps_gad = collect();
 
             $ps_non = $all_budget_requirements->filter(function ($item) {
-                return $item->category === 'Personnel Services' && $item->category_gad === 'NON-GAD';
+                return $item->category === 'Personnel Services';
             });
 
             //TOTAL GAD Amount
