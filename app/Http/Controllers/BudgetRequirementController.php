@@ -553,7 +553,22 @@ class BudgetRequirementController extends Controller
         return $gad_categories;
     }
     public function getBudgetCategoriesType(Request $request){
-        $categories = BudgetRequirement::select('category')
+
+        if($request->category_gad==""){
+            $categories = BudgetRequirement::select('category')
+            ->where('revision_plan_id', $request->revision_plan_id)
+            ->groupBy('category')
+            ->get()
+            ->map(function ($cat) use ($request) {
+                return [
+                    'revision_plan_id' => $request->revision_plan_id,
+                    'category' => $cat->category,
+                ];
+            })
+            ->filter() // keep only non-empty items
+            ->values();
+        }else{
+            $categories = BudgetRequirement::select('category')
             ->where('category_gad', $request->category_gad)
             ->where('revision_plan_id', $request->revision_plan_id)
             ->groupBy('category')
@@ -566,6 +581,8 @@ class BudgetRequirementController extends Controller
             })
             ->filter() // keep only non-empty items
             ->values();
+        }
+
                 $empty=[];
         if ($categories->isEmpty()) {
             return $empty;
@@ -575,8 +592,8 @@ class BudgetRequirementController extends Controller
     }
     public function getbudgetDetails(Request $request){
         $empty=[];
-        $revplan = RevisionPlan::where('id', $request->revision_plan_id)->first();
-        if($revplan->gad_version=="2"){
+        // $revplan = RevisionPlan::where('id', $request->revision_plan_id)->first();
+        if($request->category_gad==""){
             $budget=BudgetRequirement::where('revision_plan_id', $request->revision_plan_id)
                     ->where('category', $request->category)
                     ->get();
