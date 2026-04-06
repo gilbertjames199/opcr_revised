@@ -575,10 +575,18 @@ class BudgetRequirementController extends Controller
     }
     public function getbudgetDetails(Request $request){
         $empty=[];
-        $budget=BudgetRequirement::where('revision_plan_id', $request->revision_plan_id)
+        $revplan = RevisionPlan::where('id', $request->revision_plan_id)->first();
+        if($revplan->gad_version=="2"){
+            $budget=BudgetRequirement::where('revision_plan_id', $request->revision_plan_id)
+                    ->where('category', $request->category)
+                    ->get();
+        }else{
+            $budget=BudgetRequirement::where('revision_plan_id', $request->revision_plan_id)
                     ->where('category', $request->category)
                     ->where('category_gad', $request->category_gad)
                     ->get();
+        }
+
 
         if ($budget->isEmpty()) {
             return $empty;
