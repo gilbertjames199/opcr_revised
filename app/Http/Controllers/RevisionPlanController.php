@@ -4069,6 +4069,9 @@ class RevisionPlanController extends Controller
             // dd($totalScore, $gad_attributed);
             // optional: round to 2 decimals
             $gad_attributed = number_format($gad_attributed, 2);
+            if ($totalScore <= 3.9) {
+                    $gad_attributed = $amount * 0;
+                }
             $tot_rounded = round($totalScore, 2);
             // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
             $signatories = $this->getSignatories($item->id);
@@ -5104,5 +5107,17 @@ class RevisionPlanController extends Controller
         }
 
         return $grouped;
+    }
+
+    public function delete(Request $request, $id)
+    {
+        try {
+            $revisionPlan = RevisionPlan::findOrFail($id);
+            $revisionPlan->delete(); // Soft delete
+
+            return redirect()->back()->with('success', 'Revision plan deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete revision plan: ' . $e->getMessage());
+        }
     }
 }

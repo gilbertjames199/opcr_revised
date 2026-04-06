@@ -447,6 +447,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [RevisionPlanController::class, 'store']);
         Route::get('/edit/{id}', [RevisionPlanController::class, 'edit']);
         Route::patch('/update', [RevisionPlanController::class, 'update']);
+        Route::delete('/{id}/delete', [RevisionPlanController::class, 'delete']);
         Route::get('/view/project/paps/{id}', [RevisionPlanController::class, 'view']);
         Route::get('/general/administration/services/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas']);
         Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);

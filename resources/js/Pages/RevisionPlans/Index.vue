@@ -540,6 +540,16 @@
                                             </Link>
                                             <small class="text-muted">Full Edit</small>
                                         </div>
+
+                                        <!-- DELETE ACTION -->
+                                        <div class="d-flex align-items-center gap-2" style="min-width: 160px;">
+                                            <button @click="deleteRevisionPlan(dat.id)"
+                                                    class="btn btn-sm btn-danger btn-icon text-white"
+                                                    title="Delete Project">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            <small class="text-muted">Delete</small>
+                                        </div>
                                     </div>
                                 </td>
 
@@ -1779,6 +1789,26 @@ export default {
         },
         getTypeBadgeClass(type) {
             return type === 'p' ? 'badge bg-primary' : 'badge bg-info text-white';
+        },
+        deleteRevisionPlan(id) {
+            const confirmMessage = `Are you sure you want to delete this revision plan? This action cannot be undone.`;
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
+            Inertia.delete(
+                `/revision/${id}/delete`,
+                {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        console.log('Revision plan deleted successfully');
+                    },
+                    onError: (errors) => {
+                        console.error('Failed to delete revision plan:', errors);
+                        alert('Failed to delete revision plan. Please try again.');
+                    }
+                }
+            );
         },
         fitTableWidth() {
             const tableContainer = this.$refs.tableResponsive;
