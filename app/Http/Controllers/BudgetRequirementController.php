@@ -521,22 +521,34 @@ class BudgetRequirementController extends Controller
     }
 
     public function getbudgetCategories(Request $request){
-        $gad_categories = BudgetRequirement::select('category_gad')
-            ->whereNotNull('category_gad')
-            ->where('revision_plan_id', $request->revision_plan_id)
-            ->where('category_gad', '!=', '')
-            ->groupBy('category_gad')
-            ->get()
-            ->map(function ($gad)use($request) {
+        $revplan = RevisionPlan::where('id', $request->revision_plan_id)->first();
+        // dd($revplan);
+        if($revplan->gad_version=="2"){
+            $gad_categories=response()->json([
+                    [
+                        "revision_plan_id" => $request->revision_plan_id,
+                        "category_gad"     => null
+                    ]
+                ]);
+        }else{
+            $gad_categories = BudgetRequirement::select('category_gad')
+                ->whereNotNull('category_gad')
+                ->where('revision_plan_id', $request->revision_plan_id)
+                ->where('category_gad', '!=', '')
+                ->groupBy('category_gad')
+                ->get()
+                ->map(function ($gad)use($request) {
 
-                return [
-                    'revision_plan_id'=>$request->revision_plan_id,
-                    'category_gad' => $gad->category_gad,
-                    // 'categories' => $categories
-                ];
-            })
-            ->filter() // only include if there is at least 1 category
-            ->values();
+                    return [
+                        'revision_plan_id'=>$request->revision_plan_id,
+                        'category_gad' => $gad->category_gad,
+                        // 'categories' => $categories
+                    ];
+                })
+                ->filter() // only include if there is at least 1 category
+                ->values();
+        }
+
 
         return $gad_categories;
     }

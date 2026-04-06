@@ -674,6 +674,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [ImplementingTeamController::class, 'update']);
         Route::delete('/{id}', [ImplementingTeamController::class, 'destroy']);
     });
+
     //Revision PLan Implementing Team
     Route::prefix('/team')->group(function () {
         Route::get('/{revid}/revision/plan/team', [TeamPlanController::class, 'index']);
@@ -683,6 +684,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [TeamPlanController::class, 'update']);
         Route::delete('/{id}', [TeamPlanController::class, 'destroy']);
     });
+
     //Evaluation Mechanism Tool
     Route::prefix('/EvaluationMechanismTool')->group(function () {
         Route::get('/{id}', [MonitoringAndEvaluationController::class, 'index']);
