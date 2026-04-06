@@ -542,7 +542,7 @@
                                         </div>
 
                                         <!-- DELETE ACTION -->
-                                        <div class="d-flex align-items-center gap-2" style="min-width: 160px;">
+                                        <div v-if="dat.year == '2027' && dat.status !== '1'" class="d-flex align-items-center gap-2" style="min-width: 160px;">
                                             <button @click="deleteRevisionPlan(dat.id)"
                                                     class="btn btn-sm btn-danger btn-icon text-white"
                                                     title="Delete Project">
