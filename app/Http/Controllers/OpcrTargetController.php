@@ -807,18 +807,27 @@ class OpcrTargetController extends Controller
         $year = $opcr_sem ? $opcr_sem->year : '';
         $office = $opcr_sem ? ($opcr_sem->office ? $opcr_sem->office->office : '') : '';
         // dd($opcr_sem->office->pgHead);
-        $first_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->first_name : '') : '') : '';
-        // $middle_name = $opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->middle_name : ($opcr_sem->office->pgHead->middle_name ? substr($opcr_sem->office->pgHead->middle_name, 0, 1) . '.' : '')) : '';
-        $middle_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->middle_name ? $opcr_sem->office->pgHead->middle_name : '') : '') : '') : '';
+
         $pgHead = "";
-        // dd(substr($middle_name, 0, 1));
-        if($opcr_sem->pg_head){
-            $pgHead =$opcr_sem->pg_head;
-        }else{
-            $last_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->last_name : '') : '') : '';
-            $suffix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->suffix_name ? ', ' . $opcr_sem->office->pgHead->suffix_name : '') : '') : '') : '';
-            $postfix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '') : '';
-            $pgHead = $first_name . ' ' . ($middle_name ? substr($middle_name, 0, 1) . '. ' : '') . $last_name . $suffix_name . $postfix_name;
+
+        if ($opcr_sem && $opcr_sem->pg_head) {
+            $pgHead = $opcr_sem->pg_head;
+        } elseif ($opcr_sem && $opcr_sem->office && $opcr_sem->office->pgHead) {
+            $pgHeadObj = $opcr_sem->office->pgHead;
+            $firstName = $pgHeadObj->first_name ?? '';
+            $lastName = $pgHeadObj->last_name ?? '';
+            $middleName = $pgHeadObj->middle_name ?? '';
+            $suffixName = $pgHeadObj->suffix_name ?? '';
+            $postfixName = $pgHeadObj->postfix_name ?? '';
+
+            $pgHead = trim($firstName . ' ' . (strlen($middleName) > 0 ? substr($middleName, 0, 1) . '. ' : '') . $lastName);
+
+            if ($suffixName) {
+                $pgHead .= ', ' . $suffixName;
+            }
+            if ($postfixName) {
+                $pgHead .= ', ' . $postfixName;
+            }
         }
 
         // Assistant PG Head
