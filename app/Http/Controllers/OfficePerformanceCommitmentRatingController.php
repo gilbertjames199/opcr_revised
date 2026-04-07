@@ -1075,6 +1075,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
         if ($opcr_id) {
             $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
             // dd($opcr_id);
+            $dept_head1 = $my_opcr->pg_head? $my_opcr->pg_head : $dept_head;
+            $dept_head = Str::upper($dept_head1);
             $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
             $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
             $start = $dateStart->format('F');
