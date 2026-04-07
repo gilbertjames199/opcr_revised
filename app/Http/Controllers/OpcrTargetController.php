@@ -810,13 +810,16 @@ class OpcrTargetController extends Controller
         $first_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->first_name : '') : '') : '';
         // $middle_name = $opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->middle_name : ($opcr_sem->office->pgHead->middle_name ? substr($opcr_sem->office->pgHead->middle_name, 0, 1) . '.' : '')) : '';
         $middle_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->middle_name ? $opcr_sem->office->pgHead->middle_name : '') : '') : '') : '';
-
+        $pgHead = "";
         // dd(substr($middle_name, 0, 1));
-        $last_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->last_name : '') : '') : '';
-        $suffix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->suffix_name ? ', ' . $opcr_sem->office->pgHead->suffix_name : '') : '') : '') : '';
-        $postfix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '') : '';
-        $pgHead = $first_name . ' ' . ($middle_name ? substr($middle_name, 0, 1) . '. ' : '') . $last_name . $suffix_name . $postfix_name;
-
+        if($opcr_sem->pg_head){
+            $pgHead =$opcr_sem->pg_head;
+        }else{
+            $last_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? $opcr_sem->office->pgHead->last_name : '') : '') : '';
+            $suffix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->suffix_name ? ', ' . $opcr_sem->office->pgHead->suffix_name : '') : '') : '') : '';
+            $postfix_name = $opcr_sem ? ($opcr_sem->office ? ($opcr_sem->office->pgHead ? ($opcr_sem->office->pgHead->postfix_name ? ', ' . $opcr_sem->office->pgHead->postfix_name : '') : '') : '') : '';
+            $pgHead = $first_name . ' ' . ($middle_name ? substr($middle_name, 0, 1) . '. ' : '') . $last_name . $suffix_name . $postfix_name;
+        }
 
         // Assistant PG Head
         $assistant_pg_head = "";
