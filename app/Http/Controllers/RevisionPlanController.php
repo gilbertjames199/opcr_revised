@@ -467,6 +467,7 @@ class RevisionPlanController extends Controller
     }
     public function getDirect(Request $request, $dept_id, $popsp_agency, $budget_controller, $year_filtering)
     {
+        // dd($dept_id);
         $data= RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects','paps.office', 'clonedVersions','projectProfileTrackings'])
             ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                 $query->where('department_code', $dept_id)

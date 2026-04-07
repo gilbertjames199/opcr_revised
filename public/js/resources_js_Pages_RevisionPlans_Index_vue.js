@@ -1213,6 +1213,7 @@ var _hoisted_42 = {
   }
 };
 var _hoisted_43 = {
+  key: 4,
   "class": "d-flex align-items-center gap-2",
   style: {
     "min-width": "160px"
@@ -1611,7 +1612,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       _: 1 /* STABLE */
     }, 8 /* PROPS */, ["href"]), _cache[57] || (_cache[57] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
       "class": "text-muted"
-    }, "Full Edit", -1 /* CACHED */))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DELETE ACTION "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, "Full Edit", -1 /* CACHED */))])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DELETE ACTION "), dat.year == '2027' && dat.status !== '1' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       onClick: function onClick($event) {
         return $options.deleteRevisionPlan(dat.id);
       },
@@ -1621,7 +1622,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "fas fa-trash"
     }, null, -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_44), _cache[59] || (_cache[59] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
       "class": "text-muted"
-    }, "Delete", -1 /* CACHED */))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FORWARD NEXT YEAR "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_45, [parseInt(dat.number_of_clones) < 1 && dat.type === 'p' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "Delete", -1 /* CACHED */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FORWARD NEXT YEAR "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_45, [parseInt(dat.number_of_clones) < 1 && dat.type === 'p' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
       onClick: function onClick($event) {
         return $options.generateProjectDesign(dat.id, 'ny');

@@ -525,7 +525,7 @@
                             </button>
                         </p>
                         <!-- class="table-responsive" style="max-height: 500px; overflow-y: auto;" -->
-                        <div >
+                        <div style="overflow-x: auto; width: 100%;">
                             <p><em>Use the <strong>numeric SEQ#</strong> to order strategies and activities from lowest to highest. After making changes, click outside the field and refresh the page (<strong>Ctrl+R</strong>) to apply them.</em></p>
 
 
@@ -4446,6 +4446,48 @@ export default {
             });
 
             return total;
+        },
+
+        //FIT WIDTH TO VISIBLE AREA ****************************
+        fitWidthToVisibleArea() {
+            const table = document.querySelector('.table.table-hover.table-bordered.border-dark');
+            const tableContainer = document.querySelector('div[id="implementation_workplan"]')?.parentElement?.querySelector('div > div');
+
+            if (!table) return;
+
+            if (this.implementationTableFitted) {
+                // Reset to original state
+                table.style.width = 'auto';
+                table.style.tableLayout = 'auto';
+                table.style.whiteSpace = 'normal';
+                table.querySelectorAll('td, th').forEach(cell => {
+                    cell.style.whiteSpace = 'normal';
+                    cell.style.width = '';
+                });
+                this.implementationTableFitted = false;
+            } else {
+                // Fit to visible area
+                const windowWidth = window.innerWidth;
+                const padding = 40; // Account for margins and scrollbar
+                const availableWidth = windowWidth - padding;
+
+                table.style.width = availableWidth + 'px';
+                table.style.tableLayout = 'fixed';
+                table.style.whiteSpace = 'nowrap';
+
+                // Make cells preserve space for text
+                const cells = table.querySelectorAll('td, th');
+                const numCols = table.querySelectorAll('th').length;
+                const colWidth = availableWidth / numCols;
+
+                cells.forEach(cell => {
+                    cell.style.whiteSpace = 'normal';
+                    cell.style.wordWrap = 'break-word';
+                    cell.style.overflowWrap = 'break-word';
+                });
+
+                this.implementationTableFitted = true;
+            }
         },
 
 
