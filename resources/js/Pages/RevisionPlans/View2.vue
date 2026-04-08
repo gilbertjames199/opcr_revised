@@ -528,14 +528,15 @@
                             </Link>
                         </h3>
 
-                        <table class="table table-hover table-bordered border-dark">
+                        <div class="table-responsive" style="overflow-x:auto;">
+                            <table class="table table-hover table-bordered border-dark">
                             <thead>
                                 <tr class="bg-secondary text-white" >
                                     <th style="width: 12%; text-align: center;">Strategies/Activities</th>
-                                    <th style="width: 8%; text-align: center;" >Performance Target Indicators</th>
+                                    <th style="width: 8%; text-align: center;" >Performance Target and Indicator</th>
                                     <th style="width: 8%; text-align: center;" >Gender Issues to be Addressed</th>
                                     <th style="width: 8%; text-align: center;" >Timeline</th>
-                                    <th style="width: 8%; text-align: center;" >Expected Output</th>
+                                    <th style="width: 8%; text-align: center;" >Expected Output/Outcome</th>
                                     <th style="width: 8%; text-align: center;" >Personnel Services</th>
                                     <th style="width: 8%; text-align: center;" >MOOE</th>
                                     <th style="width: 8%; text-align: center;" >Financial Expenses</th>
@@ -1101,10 +1102,12 @@
                                 </tr>
                             </tbody>
                         </table>
+                        </div>
                         <!-- {{ implementation }} -->
                     </div>
                     <br>
                     <!--BUDGETARY REQUIREMENTS-->
+
                     <!-- v-if="b_mooe.length>0 || b_capital.length>0 || b_ps.length>0" -->
                     <div>
                         <h3 id="budgetary_requirements">
