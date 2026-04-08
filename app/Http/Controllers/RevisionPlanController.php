@@ -5027,7 +5027,7 @@ class RevisionPlanController extends Controller
                     'co_q2' => number_format(($proj->co_q2 ?? 0),2),
                     'co_q3' => number_format(($proj->co_q3 ?? 0),2),
                     'co_q4' => number_format(($proj->co_q4 ?? 0),2),
-                    'ccet' => number_format(($proj->ccet ?? null),2),
+                    'ccet' => $proj->ccet,
                     'co_total' => number_format(($co_total),2),
                     'total'=>number_format(($overall_total),2),
                     'responsible' => $proj->responsible ?? null,
