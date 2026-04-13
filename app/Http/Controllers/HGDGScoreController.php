@@ -426,8 +426,8 @@ class HGDGScoreController extends Controller
                     "sector"=>optional(optional($revplan)->boxNumber)->sector,
                     "program_coordinator"=>$preparedRow->name,
                     "program_coordinator_position"=>$preparedRow->position,
-                    "head"=>$approvedRow->name,
-                    "head_position"=>$approvedRow->position,
+                    "head"=>optional($approvedRow)->name,
+                    "head_position"=>optional($approvedRow)->position,
                 ];
             });
         return count($scores)>0?$scores:[];
