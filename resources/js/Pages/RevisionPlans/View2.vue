@@ -81,7 +81,7 @@
             </Link>
         </div>
 
-        <div class="col-9">
+        <div class="col-9" ref="printableDiv">
             <div class="d-flex justify-content-center">
                 <img :src="getImagePath('logo.png')" alt="" class="img-fluid" style="width:100px; height:100px">
 
@@ -2010,7 +2010,22 @@
                             }"
                         >
                             Approve Return Request
-                        </button>
+                        </button> &nbsp;
+                        <!-- <button
+                            @click="generatePDF()"
+                            :style="{
+                            padding: '4px 10px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            backgroundColor: '#28a745',
+                            color: 'white',
+                            cursor: 'pointer',
+                            fontWeight: 'bold'
+                            }"
+                            title="Generate PDF and open in new tab"
+                        >
+                            📄 PDF
+                        </button> -->
                     </span>
             </div>
             <!-- p-20  -->
@@ -3284,6 +3299,42 @@ export default {
                 }
             );
         },
+
+        // Generate DOM-based PDF and download automatically
+        generatePDF() {
+            const element = this.$refs.printableDiv;
+            if (!element) {
+                alert('Printable element not found!');
+                return;
+            }
+
+            // Load html2pdf library from CDN
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+            script.onload = () => {
+                // Extract year from paps.date_start
+                let year = new Date().getFullYear();
+                if (this.paps.date_start) {
+                    year = new Date(this.paps.date_start).getFullYear();
+                }
+
+                // Create filename from project title and year
+                const filename = `${this.paps.project_title || 'document'}_${year}.pdf`;
+
+                const options = {
+                    margin: 10,
+                    filename: filename,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+                };
+
+                // Generate PDF and download automatically
+                html2pdf().set(options).from(element).save();
+            };
+            document.head.appendChild(script);
+        }
+
     }
 }
 </script>

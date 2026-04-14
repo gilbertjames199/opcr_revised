@@ -2904,6 +2904,23 @@
                         }}
                     </b>
                 </span>
+                <!-- PDF Print Button -->
+                <!-- <button
+                    @click="printDiv()"
+                    :style="{
+                        padding: '4px 10px',
+                        border: 'none',
+                        borderRadius: '4px',
+                        backgroundColor: '#28a745',
+                        color: 'white',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
+                        marginLeft: '4px'
+                    }"
+                    title="Generate PDF and open in new tab"
+                >
+                    📄 PDF
+                </button> -->
                 <!-- {{ paps.status }}-->
             </div>
 
@@ -4399,43 +4416,43 @@ export default {
         //         selected: selectedText
         //     };
         // },
-        // printDiv() {
-        //     const div = this.$refs.printableDiv;
-        //     if (!div) return;
+        printDiv() {
+            const div = this.$refs.printableDiv;
+            if (!div) return;
 
-        //     const divContents = div.innerHTML;
+            const divContents = div.innerHTML;
 
-        //     // Get all stylesheets from the main page
-        //     let styles = '';
-        //     Array.from(document.styleSheets).forEach((styleSheet) => {
-        //         try {
-        //         if (styleSheet.href) {
-        //             // External stylesheet
-        //             styles += `<link rel="stylesheet" href="${styleSheet.href}">`;
-        //         } else if (styleSheet.cssRules) {
-        //             // Inline style
-        //             let css = Array.from(styleSheet.cssRules)
-        //             .map(rule => rule.cssText)
-        //             .join(' ');
-        //             styles += `<style>${css}</style>`;
-        //         }
-        //         } catch (e) {
-        //         // ignore cross-origin stylesheets
-        //         }
-        //     });
+            // Get all stylesheets from the main page
+            let styles = '';
+            Array.from(document.styleSheets).forEach((styleSheet) => {
+                try {
+                if (styleSheet.href) {
+                    // External stylesheet
+                    styles += `<link rel="stylesheet" href="${styleSheet.href}">`;
+                } else if (styleSheet.cssRules) {
+                    // Inline style
+                    let css = Array.from(styleSheet.cssRules)
+                    .map(rule => rule.cssText)
+                    .join(' ');
+                    styles += `<style>${css}</style>`;
+                }
+                } catch (e) {
+                // ignore cross-origin stylesheets
+                }
+            });
 
-        //     const printWindow = window.open('', '', 'height=800,width=1000');
-        //     printWindow.document.write('<html><head><title>Print Preview</title>');
-        //     printWindow.document.write(styles); // include styles
-        //     printWindow.document.write('</head><body>');
-        //     printWindow.document.write(divContents);
-        //     printWindow.document.write('</body></html>');
+            const printWindow = window.open('', '', 'height=800,width=1000');
+            printWindow.document.write('<html><head><title>Print Preview</title>');
+            printWindow.document.write(styles); // include styles
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
 
-        //     printWindow.document.close();
-        //     printWindow.focus();
-        //     printWindow.print();
-        //     printWindow.close();
-        // }
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        },
         // ATTRIBUTED AMOUNT**********************************************************
         getGadAttributedAmount(overallBudget, hgdg_score) {
             const score = parseFloat(hgdg_score) || 0;
@@ -4530,6 +4547,40 @@ export default {
             );
         },
 
+        // Generate DOM-based PDF and download automatically
+        generatePDF() {
+            const element = this.$refs.printableDiv;
+            if (!element) {
+                alert('Printable element not found!');
+                return;
+            }
+
+            // Load html2pdf library from CDN
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+            script.onload = () => {
+                // Extract year from paps.date_start
+                let year = new Date().getFullYear();
+                if (this.paps.date_start) {
+                    year = new Date(this.paps.date_start).getFullYear();
+                }
+
+                // Create filename from project title and year
+                const filename = `${this.paps.project_title || 'document'}_${year}.pdf`;
+
+                const options = {
+                    margin: 10,
+                    filename: filename,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+                };
+
+                // Generate PDF and download automatically
+                html2pdf().set(options).from(element).save();
+            };
+            document.head.appendChild(script);
+        }
 
     }
 }

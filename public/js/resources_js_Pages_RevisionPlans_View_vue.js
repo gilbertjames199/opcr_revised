@@ -974,39 +974,40 @@ function _readOnlyError(r) { throw new TypeError('"' + r + '" is read-only'); }
     //         selected: selectedText
     //     };
     // },
-    // printDiv() {
-    //     const div = this.$refs.printableDiv;
-    //     if (!div) return;
-    //     const divContents = div.innerHTML;
-    //     // Get all stylesheets from the main page
-    //     let styles = '';
-    //     Array.from(document.styleSheets).forEach((styleSheet) => {
-    //         try {
-    //         if (styleSheet.href) {
-    //             // External stylesheet
-    //             styles += `<link rel="stylesheet" href="${styleSheet.href}">`;
-    //         } else if (styleSheet.cssRules) {
-    //             // Inline style
-    //             let css = Array.from(styleSheet.cssRules)
-    //             .map(rule => rule.cssText)
-    //             .join(' ');
-    //             styles += `<style>${css}</style>`;
-    //         }
-    //         } catch (e) {
-    //         // ignore cross-origin stylesheets
-    //         }
-    //     });
-    //     const printWindow = window.open('', '', 'height=800,width=1000');
-    //     printWindow.document.write('<html><head><title>Print Preview</title>');
-    //     printWindow.document.write(styles); // include styles
-    //     printWindow.document.write('</head><body>');
-    //     printWindow.document.write(divContents);
-    //     printWindow.document.write('</body></html>');
-    //     printWindow.document.close();
-    //     printWindow.focus();
-    //     printWindow.print();
-    //     printWindow.close();
-    // }
+    printDiv: function printDiv() {
+      var div = this.$refs.printableDiv;
+      if (!div) return;
+      var divContents = div.innerHTML;
+
+      // Get all stylesheets from the main page
+      var styles = '';
+      Array.from(document.styleSheets).forEach(function (styleSheet) {
+        try {
+          if (styleSheet.href) {
+            // External stylesheet
+            styles += "<link rel=\"stylesheet\" href=\"".concat(styleSheet.href, "\">");
+          } else if (styleSheet.cssRules) {
+            // Inline style
+            var css = Array.from(styleSheet.cssRules).map(function (rule) {
+              return rule.cssText;
+            }).join(' ');
+            styles += "<style>".concat(css, "</style>");
+          }
+        } catch (e) {
+          // ignore cross-origin stylesheets
+        }
+      });
+      var printWindow = window.open('', '', 'height=800,width=1000');
+      printWindow.document.write('<html><head><title>Print Preview</title>');
+      printWindow.document.write(styles); // include styles
+      printWindow.document.write('</head><body>');
+      printWindow.document.write(divContents);
+      printWindow.document.write('</body></html>');
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    },
     // ATTRIBUTED AMOUNT**********************************************************
     getGadAttributedAmount: function getGadAttributedAmount(overallBudget, hgdg_score) {
       var score = parseFloat(hgdg_score) || 0;
@@ -1089,6 +1090,49 @@ function _readOnlyError(r) { throw new TypeError('"' + r + '" is read-only'); }
         preserveScroll: true,
         preserveState: true // ⭐ keeps pagination page
       });
+    },
+    // Generate DOM-based PDF and download automatically
+    generatePDF: function generatePDF() {
+      var _this8 = this;
+      var element = this.$refs.printableDiv;
+      if (!element) {
+        alert('Printable element not found!');
+        return;
+      }
+
+      // Load html2pdf library from CDN
+      var script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+      script.onload = function () {
+        // Extract year from paps.date_start
+        var year = new Date().getFullYear();
+        if (_this8.paps.date_start) {
+          year = new Date(_this8.paps.date_start).getFullYear();
+        }
+
+        // Create filename from project title and year
+        var filename = "".concat(_this8.paps.project_title || 'document', "_").concat(year, ".pdf");
+        var options = {
+          margin: 10,
+          filename: filename,
+          image: {
+            type: 'jpeg',
+            quality: 0.98
+          },
+          html2canvas: {
+            scale: 2
+          },
+          jsPDF: {
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+          }
+        };
+
+        // Generate PDF and download automatically
+        html2pdf().set(options).from(element).save();
+      };
+      document.head.appendChild(script);
     }
   }
 });
@@ -2391,7 +2435,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1 /* STABLE */
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[0] || (_cache[0] = function () {
-      return _ctx.printDiv && _ctx.printDiv.apply(_ctx, arguments);
+      return $options.printDiv && $options.printDiv.apply($options, arguments);
     })
   }, "Print")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-9\">\n\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" MAIN CONTENT****************************************************************************************************** "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     src: _ctx.getImagePath('logo.png'),
@@ -3976,7 +4020,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       color: $props.paps.status == '-2' ? '#ffd1e8' : $props.paps.status == '-1' ? '#f2f2f2' : $props.paps.status == '0' ? '#fff4db' : $props.paps.status == '1' ? '#e6f0ff' : $props.paps.status == '2' ? '#e6f7ec' : $props.paps.status == '7' ? '#fde6e6' : '#ffffff',
       borderColor: $props.paps.status == '-2' ? '#ffb3d1' : $props.paps.status == '-1' ? '#d9d9d9' : $props.paps.status == '0' ? '#ffd27a' : $props.paps.status == '1' ? '#a9c6ff' : $props.paps.status == '2' ? '#9edbb4' : $props.paps.status == '7' ? '#f5b5b5' : '#ddd'
     })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Status: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.paps.status == '-2' ? 'Returned' : $props.paps.status == '-1' ? 'Saved' : $props.paps.status == '0' ? 'Submitted' : $props.paps.status == '1' ? 'Reviewed' : $props.paps.status == '2' ? 'Approved' : $props.paps.status == '7' ? 'Request for Return' : 'Unknown'), 1 /* TEXT */)], 4 /* STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ paps.status }}")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" p-20  ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SmallModalComments, {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Status: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.paps.status == '-2' ? 'Returned' : $props.paps.status == '-1' ? 'Saved' : $props.paps.status == '0' ? 'Submitted' : $props.paps.status == '1' ? 'Reviewed' : $props.paps.status == '2' ? 'Approved' : $props.paps.status == '7' ? 'Request for Return' : 'Unknown'), 1 /* TEXT */)], 4 /* STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" PDF Print Button "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\n                    @click=\"printDiv()\"\n                    :style=\"{\n                        padding: '4px 10px',\n                        border: 'none',\n                        borderRadius: '4px',\n                        backgroundColor: '#28a745',\n                        color: 'white',\n                        cursor: 'pointer',\n                        fontWeight: 'bold',\n                        marginLeft: '4px'\n                    }\"\n                    title=\"Generate PDF and open in new tab\"\n                >\n                    📄 PDF\n                </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ paps.status }}")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" p-20  ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SmallModalComments, {
     modelValue: $data.showComments,
     "onUpdate:modelValue": _cache[79] || (_cache[79] = function ($event) {
       return $data.showComments = $event;
