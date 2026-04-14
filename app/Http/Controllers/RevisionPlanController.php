@@ -4197,6 +4197,9 @@ class RevisionPlanController extends Controller
         // Convert <br> to double line breaks
         $html = preg_replace('/<br\s*\/?>/i', "\n\n", $html);
 
+        // Replace images with a large blank gap so Jasper has room for the image area
+        $html = preg_replace('/<img[^>]*>/i', "\n\n" . str_repeat(' ', 400) . "\n\n", $html);
+
         // Convert closing paragraphs to double line breaks
         $html = preg_replace('/<\/p>/', "\n\n", $html);
 
