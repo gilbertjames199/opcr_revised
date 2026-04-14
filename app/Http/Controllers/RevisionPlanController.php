@@ -4198,7 +4198,16 @@ class RevisionPlanController extends Controller
         $html = preg_replace('/<br\s*\/?>/i', "\n\n", $html);
 
         // Replace images with a large blank gap so Jasper has room for the image area
-        $html = preg_replace('/<img[^>]*>/i', '<div class="image-placeholder" style="height: 200px; background: #f0f0f0;"></div>', $html);
+        // $html = preg_replace('/<img[^>]*>/i', '<div class="image-placeholder" style="height: 200px; background: #f0f0f0;"></div>', $html);
+        $lineHeight = 20; // pixels per line
+        $imageHeight = 150; // pixels
+        $rowsNeeded = ceil($imageHeight / $lineHeight);
+
+        $html = preg_replace(
+            '/<img[^>]*>/i',
+            str_repeat('<br>', $rowsNeeded),
+            $html
+        );
         // $html = preg_replace('/<img[^>]*>/i', '<div style="height: 200px;"></div>', $html);
 
 
