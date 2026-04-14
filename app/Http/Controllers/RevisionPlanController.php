@@ -4135,7 +4135,7 @@ class RevisionPlanController extends Controller
                 'hgdg_percent' => $item->hgdg_percent,
                 // 'rationale' => '<p align="justify">' . e($item->rationale) . '</p>',
                 // 'rationale' => '<p style="text-align: justify;">' . $rationale . '</p>',
-                'rationale' => $item->rationale,
+                'rationale' => $rationale,
                 'objective' => $item->objective,
                 // '<p style="text-align: justify;">' .trim($rationale = $this->quillToJasperText($item->objective)). '</p>',
                 'beneficiaries' => $item->beneficiaries,
