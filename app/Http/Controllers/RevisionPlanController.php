@@ -2696,8 +2696,14 @@ class RevisionPlanController extends Controller
                         } else {
                             $q2->where('gad_status', 1);
                         }
-                    })->orWhere(function($qq){
-                        $qq->where('idpaps',0)->where('status','0');
+                    })->orWhere(function($qq) use ($myid, $gad_reviewers) {
+                        $qq->where('idpaps',0);
+
+                        if (in_array($myid, $gad_reviewers, true)) {
+                            $qq->where('gad_status', 0);
+                        } else {
+                            $qq->where('gad_status', 1);
+                        }
                     });
                     // ->orWhere('revision_plans.idpaps', 0);
                 });
