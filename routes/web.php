@@ -78,6 +78,7 @@ use App\Http\Controllers\AppropriationAmountController;
 use App\Http\Controllers\AppropriationBudgetController;
 use App\Http\Controllers\AppropriationController;
 use App\Http\Controllers\BudgetPrepController;
+use App\Http\Controllers\DevelopmentFundController;
 use App\Http\Controllers\DivisionOutputController;
 use App\Http\Controllers\ExpectedOutputController;
 use App\Http\Controllers\ExpectedRevisedOutcomeController;
@@ -453,6 +454,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/general/administration/services/create/{FFUNCCOD}/plan', [RevisionPlanController::class, 'gas_create']);
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
         Route::get('/export/aip', [RevisionPlanController::class, 'exportStrategies'])->name('export.aip');
+    });
+    // 20% Development Fund
+    Route::prefix('/development-fund')->group(function () {
+        Route::get('/{id}', [DevelopmentFundController::class, 'dev_fund_index']);
+        Route::get('/create/{id}', [DevelopmentFundController::class, 'dev_fund_create']);
+        Route::post('/store', [DevelopmentFundController::class, 'dev_fund_store']);
+        Route::get('/edit/{id}', [DevelopmentFundController::class, 'dev_fund_edit']);
+        Route::patch('/update', [DevelopmentFundController::class, 'dev_fund_update']);
+        Route::delete('/{id}/delete', [DevelopmentFundController::class, 'dev_fund_delete']);
     });
     // Revision Plan Streamlined
     Route::prefix('/revision/streamlined')->group(function () {

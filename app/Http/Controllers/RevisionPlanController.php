@@ -2678,16 +2678,28 @@ class RevisionPlanController extends Controller
                 });
 
                  // GAD visibility rules
-                $query->whereHas('paps', function ($q) use ($myid, $gad_reviewers) {
+                // $query->whereHas('paps', function ($q) use ($myid, $gad_reviewers) {
 
-                    if (in_array($myid, $gad_reviewers, true)) {
-                        // ✅ GAD reviewer → see ONLY gad_status = 0
-                        $q->where('gad_status', 0);
-                    } else {
-                        // ❌ Not a reviewer → see ONLY gad_status = 1
-                        $q->where('gad_status', 1);
-                    }
+                //     if (in_array($myid, $gad_reviewers, true)) {
+                //         // ✅ GAD reviewer → see ONLY gad_status = 0
+                //         $q->where('gad_status', 0);
+                //     } else {
+                //         // ❌ Not a reviewer → see ONLY gad_status = 1
+                //         $q->where('gad_status', 1);
+                //     }
 
+                // });
+                $query->where(function ($q) use ($myid, $gad_reviewers) {
+                    $q->whereHas('paps', function ($q2) use ($myid, $gad_reviewers) {
+                        if (in_array($myid, $gad_reviewers, true)) {
+                            $q2->where('gad_status', 0);
+                        } else {
+                            $q2->where('gad_status', 1);
+                        }
+                    })->orWhere(function($qq){
+                        $qq->where('idpaps',0)->where('status','0');
+                    });
+                    // ->orWhere('revision_plans.idpaps', 0);
                 });
             })
             ->when($request->source == 'approved', function ($query)use ($myid, $gad_reviewers)  {
@@ -2720,11 +2732,14 @@ class RevisionPlanController extends Controller
                 // dd($request->search);
                 $query->where('project_title', 'LIKE', '%' . $request->search . '%');
             })
-            ->whereHas('paps', function ($query) use ($request, $source, $dept_id) {
-                $query->when($source == 'budget', function ($query) use ($dept_id) {
-                    $query->where('department_code', $dept_id);
-                });
+            ->where(function($query)use($request, $source, $dept_id){
+                $query->whereHas('paps', function ($query) use ($request, $source, $dept_id) {
+                    $query->when($source == 'budget', function ($query) use ($dept_id) {
+                        $query->where('department_code', $dept_id);
+                    });
+                })->orWhere('idpaps',0);
             })
+
             // ->when($source == 'budget', function ($query) use ($dept_id) {
             //     $query->whereHas('paps', function ($q) use ($dept_id) {
             //         $q->where('department_code', $dept_id);
@@ -2856,11 +2871,19 @@ class RevisionPlanController extends Controller
                 ->sortByDesc('created_at')
                 ->first();
             // dd($item->project_profile_tracking);
+            $function_off = optional(optional(optional($item)->paps)->office)->FFUNCTION;
+            if(!$function_off){
+                // dd($function_off, $item->FFUNCCOD);
+                $ffunccod =FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)->first();
+                $function_off = optional($ffunccod)->FFUNCTION;
+                // dd($function_off, $item);
+            }
+            // dd($function_off, $item);
             return [
                 'aip' => $aip,
                 'comments_count' => $commentCount,
                 'comments' => $all_comments,
-                'FFUNCTION' => optional(optional($item->paps)->office)->FFUNCTION,
+                'FFUNCTION' => $function_off,
                 'id' => $item->id,
                 'project_title' => $item->project_title,
                 'type' => $item->type,

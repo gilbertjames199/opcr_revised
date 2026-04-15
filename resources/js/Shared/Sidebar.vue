@@ -48,7 +48,7 @@
                         ><span class="title">Dashboard</span></Link
                     >
                 </li>-->
-
+                <!-- LOGFRAME **************************************************************** -->
                 <li class="nav-item dropdown">
                     <a class="dropdown-toggle" href="javascript:void(0);">
                         <span class="icon-holder">
@@ -138,7 +138,7 @@
                         </li>
                     </ul>
                 </li>
-
+                <!-- OPCR ******************************************************************** -->
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/opcrlist" :class="{ 'active': $page.url === '/opcrlist' }">
                     <span></span>
@@ -155,6 +155,7 @@
                     <span class="title">OPCR</span>
                     </Link>
                 </li>
+                <!-- IPP ********************************************************************* -->
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/revision/0?source=direct" :class="{ 'active': $page.url === '/revision/0?source=direct' }">
                     <span></span>
@@ -170,6 +171,24 @@
                     <span class="title">IPP</span>
                     </Link>
                 </li>
+                <!-- IPP ********************************************************************* -->
+                <li class="nav-item">
+                    <Link class="sidebar-link" href="/development-fund/0"
+                    :class="{ 'active': $page.url === '/development-fund/0' }">
+                    <span></span>
+                    <span class="icon-holder">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 2h12v20H4z"/>
+                            <path d="M6 6h8"/>
+                            <path d="M6 10h8"/>
+                            <circle cx="8" cy="16" r="2"/>
+                        </svg>
+                    </span>
+                    <span class="title">20% Development Fund</span>
+                    </Link>
+                </li>
+                <!-- SIP ********************************************************************* -->
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/revision/0?source=sip" :class="{ 'active': $page.url === '/revision/0?source=sip' }">
                     <span></span>
