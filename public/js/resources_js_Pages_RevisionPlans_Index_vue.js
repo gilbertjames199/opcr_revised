@@ -285,7 +285,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     // GENERATE PROJECT DEISGN
     generateProjectDesign: function generateProjectDesign(id, type) {
       if (!id) return;
-
+      alert(type);
       // Browser confirmation
       if (!confirm("Are you sure you want to generate the Project Design for this project?")) {
         return; // User canceled

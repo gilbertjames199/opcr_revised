@@ -575,7 +575,7 @@
                     </span>
                     <!--V. IMPLEMENTATION SCHEDULE/WORKPLAN *******************************************************************************************************************-->
                     <div>
-                         <h3 id="implementation_workplan">
+                        <h3 id="implementation_workplan">
                             <!-- /strategies-and-activities/${dat.id} -->
                             V.
                             <Link :href="(department_code_user === '04' || department_code_user === department_code_project)
@@ -592,8 +592,6 @@
                         <!-- class="table-responsive" style="max-height: 500px; overflow-y: auto;" -->
                         <div style="overflow-x: auto; width: 100%;">
                             <p><em>Use the <strong>numeric SEQ#</strong> to order strategies and activities from lowest to highest. After making changes, click outside the field and refresh the page (<strong>Ctrl+R</strong>) to apply them.</em></p>
-
-
                             <table class="table table-hover table-bordered border-dark">
                                 <thead >
                                     <tr class="bg-secondary text-white" >

@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProjectProfileStreamlinedController extends Controller
 {
@@ -557,6 +558,191 @@ class ProjectProfileStreamlinedController extends Controller
     }
     public function getImplementationPlan($id, $paps, $idpaps)
     {
+        // dd($id, $paps, $idpaps);
+        // dd(Strategy::with([
+        //     'strategyProject' => function ($query) use ($id) {
+        //         $query->where('project_id', $id)
+        //             ->where('is_active', '1');
+        //     },
+        //     'strategyProject.expected_output',
+        //     'strategyProject.expected_output.comments',
+        //     'strategyProject.expected_outcome',
+        //     'strategyProject.expected_outcome.comments',
+        //     'strategyProject.comments',
+        //     'strategyProject.comments.user',
+        //     'activity' => function ($query) use ($paps, $id) {
+        //         if ($paps->is_strategy_based == 0) {
+        //             $query->whereHas('activityProject', function ($q) {
+        //                 $q->where('is_active', '1');
+        //             });
+        //         }
+        //     },
+        //     'activity.activityProject' => function ($q) use ($id) {
+        //         $q->where('project_id', $id)
+        //             ->where('is_active', '1')
+        //             ->orderBy('activity_id', 'asc');
+        //     },
+        //     'activity.activityProject.expected_output',
+        //     'activity.activityProject.expected_output.comments',
+        //     'activity.activityProject.expected_outcome',
+        //     'activity.activityProject.expected_outcome.comments',
+        //     'activity.activityProject.comments',
+        //     'activity.activityProject.comments.user'
+        // ])->whereHas('strategyProject', function ($query)use ($id) {
+        //     $query->where('project_id', $id)->where('is_active', '1');
+        // })
+        //     ->where('idpaps', $idpaps)
+
+        //     ->get()
+        //     ->map(function ($item) {
+        //         // dd($item);
+        //         $item->activity = $item->activity->map(function ($activity) {
+        //             $activity->is_selected = $activity->activityProject->count() > 0;
+        //             $ps_q1 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q1 > 0 ? $activity->activityProject[0]->ps_q1 : 0) : 0;
+        //             $ps_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q2 > 0 ? $activity->activityProject[0]->ps_q2 : 0) : 0;
+        //             $ps_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q3 > 0 ? $activity->activityProject[0]->ps_q3 : 0) : 0;
+        //             $ps_q4 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->ps_q4 > 0 ? $activity->activityProject[0]->ps_q4 : 0) : 0;
+        //             $mooe_q1 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->mooe_q1 > 0 ? $activity->activityProject[0]->mooe_q1 : 0) : 0;
+        //             $mooe_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->mooe_q2 > 0 ? $activity->activityProject[0]->mooe_q2 : 0) : 0;
+        //             $mooe_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->mooe_q3 > 0 ? $activity->activityProject[0]->mooe_q3 : 0) : 0;
+        //             $mooe_q4 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->mooe_q4 > 0 ? $activity->activityProject[0]->mooe_q4 : 0) : 0;
+        //             $co_q1 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q1 > 0 ? $activity->activityProject[0]->co_q1 : 0) : 0;
+        //             $co_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q2 > 0 ? $activity->activityProject[0]->co_q2 : 0) : 0;
+        //             $co_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q3 > 0 ? $activity->activityProject[0]->co_q3 : 0) : 0;
+        //             $co_q4 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->co_q4 > 0 ? $activity->activityProject[0]->co_q4 : 0) : 0;
+        //             $fe_q1 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q1 > 0 ? $activity->activityProject[0]->fe_q1 : 0) : 0;
+        //             $fe_q2 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q2 > 0 ? $activity->activityProject[0]->fe_q2 : 0) : 0;
+        //             $fe_q3 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q3 > 0 ? $activity->activityProject[0]->fe_q3 : 0) : 0;
+        //             $fe_q4 = $activity->activityProject->count() > 0 ? ($activity->activityProject[0]->fe_q4 > 0 ? $activity->activityProject[0]->fe_q4 : 0) : 0;
+        //             $act_comments = $activity->activityProject->count() > 0 ? $activity->activityProject[0]->comments : [];
+        //             $ps_total = floatval($ps_q1) + floatval($ps_q2) + floatval($ps_q3) + floatval($ps_q4);
+        //             $mooe_total = floatval($mooe_q1) + floatval($mooe_q2) + floatval($mooe_q3) + floatval($mooe_q4);
+        //             $co_total = floatval($co_q1) + floatval($co_q2) + floatval($co_q3) + floatval($co_q4);
+        //             $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
+        //             // dd($activity->activityProject);
+        //             return [
+        //                 "seq_no" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->seq_no : null,
+        //                 "id" => $activity->id,
+        //                 "date_from" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_from : null,
+        //                 "date_to" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_to : null,
+        //                 "description" => $activity->description,
+        //                 "target_indicator" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->target_indicator : null,
+        //                 "activity_id" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->id : null,
+        //                 "project_id" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->project_id : null,
+        //                 "ps_q1" => $ps_q1,
+        //                 "ps_q2" => $ps_q2,
+        //                 "ps_q3" => $ps_q3,
+        //                 "ps_q4" => $ps_q4,
+        //                 "ps_total" => $ps_total,
+        //                 "mooe_q1" => $mooe_q1,
+        //                 "mooe_q2" => $mooe_q2,
+        //                 "mooe_q3" => $mooe_q3,
+        //                 "mooe_q4" => $mooe_q4,
+        //                 "mooe_total" => $mooe_total,
+        //                 "co_q1" => $co_q1,
+        //                 "co_q2" => $co_q2,
+        //                 "co_q3" => $co_q3,
+        //                 "co_q4" => $co_q4,
+        //                 "co_total" => $co_total,
+        //                 "fe_q1" => $fe_q1,
+        //                 "fe_q2" => $fe_q2,
+        //                 "fe_q3" => $fe_q3,
+        //                 "fe_q4" => $fe_q4,
+        //                 "fe_total" => $fe_total,
+        //                 "gad_issue" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->gad_issue : null,
+        //                 "ccet_code" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->ccet_code : null,
+        //                 "responsible" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->responsible : null,
+        //                 "activityProject" => $activity->activityProject,
+        //                 "activity" => $activity->activity,
+        //                 "finance_visible" =>   0,
+        //                 "is_active" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->is_active : 0,
+        //                 "comments" => $act_comments
+        //             ];
+        //         })
+        //         ->sortBy('seq_no')   // 👈 ORDER BY ASC
+        //         ->values();          // 👈 reset array indexes;
+        //         $ps_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q1 > 0 ? $item->strategyProject[0]->ps_q1 : 0) : 0;
+        //         $ps_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q2 > 0 ? $item->strategyProject[0]->ps_q2 : 0) : 0;
+        //         $ps_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q3 > 0 ? $item->strategyProject[0]->ps_q3 : 0) : 0;
+        //         $ps_q4 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q4 > 0 ? $item->strategyProject[0]->ps_q4 : 0) : 0;
+        //         $mooe_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->mooe_q1 > 0 ? $item->strategyProject[0]->mooe_q1 : 0) : 0;
+        //         $mooe_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->mooe_q2 > 0 ? $item->strategyProject[0]->mooe_q2 : 0) : 0;
+        //         $mooe_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->mooe_q3 > 0 ? $item->strategyProject[0]->mooe_q3 : 0) : 0;
+        //         $mooe_q4 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->mooe_q4 > 0 ? $item->strategyProject[0]->mooe_q4 : 0) : 0;
+        //         $co_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q1 > 0 ? $item->strategyProject[0]->co_q1 : 0) : 0;
+        //         $co_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q2 > 0 ? $item->strategyProject[0]->co_q2 : 0) : 0;
+        //         $co_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q3 > 0 ? $item->strategyProject[0]->co_q3 : 0) : 0;
+        //         $co_q4 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->co_q4 > 0 ? $item->strategyProject[0]->co_q4 : 0) : 0;
+        //         $fe_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_q1 > 0 ? $item->strategyProject[0]->fe_q1 : 0) : 0;
+        //         $fe_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_q2 > 0 ? $item->strategyProject[0]->fe_q2 : 0) : 0;
+        //         $fe_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_q3 > 0 ? $item->strategyProject[0]->fe_q3 : 0) : 0;
+        //         $fe_q4 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->fe_q4 > 0 ? $item->strategyProject[0]->fe_q4 : 0) : 0;
+        //         $comments = $item->strategyProject->count() > 0 ? $item->strategyProject[0]->comments : [];
+        //         $ps_total = floatval($ps_q1) + floatval($ps_q2) + floatval($ps_q3) + floatval($ps_q4);
+
+        //         $mooe_total = floatval($mooe_q1) + floatval($mooe_q2) + floatval($mooe_q3) + floatval($mooe_q4);
+        //         $co_total = floatval($co_q1) + floatval($co_q2) + floatval($co_q3) + floatval($co_q4);
+        //         $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
+        //         // dd($co_total);
+        //         // dd($item->strategyProject[0]);
+
+        //         return [
+        //             "seq_no" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->seq_no : null,
+        //             "id" => $item->id,
+        //             "description" => $item->description,
+        //             "target_indicator" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->target_indicator : null,
+        //             "strategy_id" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->id : null,
+        //             "project_id" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->project_id : null,
+        //             "date_from" => $item->strategyProject->count() > 0
+        //                 ? ($item->strategyProject[0]->date_from
+        //                     ? $item->strategyProject[0]->date_from
+        //                     : null)
+        //                 : null,
+        //             "date_to" => $item->strategyProject->count() > 0
+        //                 ? ($item->strategyProject[0]->date_to
+        //                     ? Carbon::parse($item->strategyProject[0]->date_to)->format('Y-m-d')
+        //                     : null)
+        //                 : null,
+        //             "ps_q1" => $ps_q1,
+        //             "ps_q2" => $ps_q2,
+        //             "ps_q3" => $ps_q3,
+        //             "ps_q4" => $ps_q4,
+        //             "ps_total" => $ps_total,
+        //             "mooe_q1" => $mooe_q1,
+        //             "mooe_q2" => $mooe_q2,
+        //             "mooe_q3" => $mooe_q3,
+        //             "mooe_q4" => $mooe_q4,
+        //             "mooe_total" => $mooe_total,
+        //             "co_q1" => $co_q1,
+        //             "co_q2" => $co_q2,
+        //             "co_q3" => $co_q3,
+        //             "co_q4" => $co_q4,
+        //             "co_total" => $co_total,
+        //             "fe_q1" => $fe_q1,
+        //             "fe_q2" => $fe_q2,
+        //             "fe_q3" => $fe_q3,
+        //             "fe_q4" => $fe_q4,
+        //             "fe_total" => $fe_total,
+        //             "gad_issue" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->gad_issue : null,
+        //             "ccet_code" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->ccet_code : null,
+        //             "responsible" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->responsible : null,
+        //             "strategyProject" => $item->strategyProject,
+        //             "activity" => $item->activity,
+        //             "finance_visible" => 0,
+        //             "is_active" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->is_active : 0,
+        //             "activity_visible" => 0,
+        //             "comments" => $comments
+        //         ];
+        //     })
+        //     ->sortBy('seq_no')   // 👈 sort AFTER mapping
+        //     ->values());
+        // *****************************************************************************
+        // dd(Strategy::with(['strategyProject'])
+        //     ->where('idpaps', $idpaps)
+        //     ->whereHas('strategyProject', function($item)use($id){
+        //         $item->where('project_id', $id)->where('is_active', '1');
+        //     })
+        //     ->get());
         $imp= Strategy::with([
             'strategyProject' => function ($query) use ($id) {
                 $query->where('project_id', $id)
@@ -644,6 +830,7 @@ class ProjectProfileStreamlinedController extends Controller
                     $co_total = floatval($co_q1) + floatval($co_q2) + floatval($co_q3) + floatval($co_q4);
                     $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
                     // dd($activity->activityProject);
+                    // dd($activity->activityProject->count() > 0 ? $activity->activityProject[0]->is_active : 0);
                     return [
                         "seq_no" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->seq_no : null,
                         "id" => $activity->id,
@@ -760,7 +947,11 @@ class ProjectProfileStreamlinedController extends Controller
             })
             ->sortBy('seq_no')   // 👈 sort AFTER mapping
             ->values();          // 👈 reset indexes for Vue;
-
+        // dd($imp);
+        // Log::info('IMPLEMENTATION DATA', [
+        //     'count' => $imp->count(),
+        //     'data' => $imp->toArray()
+        // ]);
         // dd($imp, $id, $paps, $idpaps);
         return $imp;
     }

@@ -133,6 +133,7 @@ class ActivityController extends Controller
     {
         $activitiesData = $request->activities;
         $strategy_id = $request->strategy_id;
+        // dd($request);
         foreach ($activitiesData as $row) {
 
             // 1. Save to activities table

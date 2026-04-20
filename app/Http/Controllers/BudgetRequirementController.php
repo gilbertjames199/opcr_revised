@@ -555,7 +555,7 @@ class BudgetRequirementController extends Controller
     public function getBudgetCategoriesType(Request $request){
 
         if($request->category_gad==""){
-            $categories = BudgetRequirement::select('category')
+            $categories = BudgetRequirement::select('category', DB::raw('SUM(amount) as total_amount'))
             ->where('revision_plan_id', $request->revision_plan_id)
             ->groupBy('category')
             ->get()
@@ -563,12 +563,13 @@ class BudgetRequirementController extends Controller
                 return [
                     'revision_plan_id' => $request->revision_plan_id,
                     'category' => $cat->category,
+                    'total_amount' => $cat->total_amount,
                 ];
             })
             ->filter() // keep only non-empty items
             ->values();
         }else{
-            $categories = BudgetRequirement::select('category')
+            $categories = BudgetRequirement::select('category', DB::raw('SUM(amount) as total_amount'))
             ->where('category_gad', $request->category_gad)
             ->where('revision_plan_id', $request->revision_plan_id)
             ->groupBy('category')
@@ -577,6 +578,7 @@ class BudgetRequirementController extends Controller
                 return [
                     'revision_plan_id' => $request->revision_plan_id,
                     'category' => $cat->category,
+                    'total_amount' => $cat->total_amount,
                 ];
             })
             ->filter() // keep only non-empty items

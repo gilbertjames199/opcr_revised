@@ -226,7 +226,15 @@ class PAPController extends Controller
     public function store(Request $request)
     {
         // dd($request);
-        $dept_code = auth()->user()->department_code;
+        $FFUNCCOD = $request->FFUNCCOD;
+        if($FFUNCCOD){
+            $office = Office::where('FFUNCCOD', $FFUNCCOD)->first();
+            if($office){
+                $dept_code = $office->department_code;
+            }
+        }else{
+            $dept_code = auth()->user()->department_code;
+        }
         $request->merge(['department_code' => $dept_code]);
         $proceed = "1";
         // $attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
