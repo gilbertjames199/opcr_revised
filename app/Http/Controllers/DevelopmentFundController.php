@@ -110,14 +110,19 @@ class DevelopmentFundController extends Controller
         }
         // dd($id);
         $paps=null;
+        // GETTING the PAPS for the given ID
         if($id!=0){
-            $paps = ProgramAndProject::with('revisionPlan')
+            // Load only the revision plan that matches the requested id
+            $paps = ProgramAndProject::with(['revisionPlan' => function($q) use ($id) {
+                        $q->where('id', $id);
+                    }])
                     ->whereHas('revisionPlan', function($query)use($id){
                         $query->where('id',$id);
                     })
                     ->first();
-            $editData=$paps;
+            $editData = $paps;
         }
+        // dd($editData);
         // dd($paps);
         // dd($functions, auth()->user()->department_code);
         $popsp_agencies =PopspAgency::all();
@@ -126,11 +131,13 @@ class DevelopmentFundController extends Controller
         $implementation =[];
         $rev = null;
         if($editData){
-            // dd($editData->revisionPlan[0]);
-            $rev=$editData->revisionPlan[0];
-            // dd($rev);
-            $implementation = ProjectProfileStreamlinedController::getImplementationPlan($rev->id, $rev, $editData->id);
-            // dd($implementation, "implementation");
+            // revisionPlan is a collection; take the first (should be the one filtered above)
+            $rev = $editData->revisionPlan->first() ?? null;
+            if($rev){
+                $implementation = ProjectProfileStreamlinedController::getImplementationPlan($rev->id, $rev, $editData->id);
+            } else {
+                $implementation = [];
+            }
         }
         // SET CCET CODES
         $ccet_codes = ClimateChangeExpenditureTagging::where('id', '<>', 1)->get();
@@ -293,33 +300,39 @@ class DevelopmentFundController extends Controller
     public function dev_fund_update(Request $request, $id)
     {
         // dd($request, $id);
-        // $paps = ProgramAndProject::where('id', $id)->first();
-        // $paps->paps_desc = $request->paps_desc;
-        // // $paps->department_code = $dept_code;
-        // // $paps->FFUNCCOD = $request->FFUNCCOD;
-        // $paps->idmfo = $request->idmfo;
-        // $paps->MOV = $request->MOV;
-        // $paps->type = $request->type;
-        // $paps->chief_executive_agenda = $request->chief_executive_agenda;
-        // $paps->socio_economic_agenda = $request->socio_economic_agenda;
-        // $paps->sust_devt_goal = $request->sust_devt_goal;
-        // $paps->executive_legislative_agenda = $request->executive_legislative_agenda;
-        // $paps->research_agenda = $request->research_agenda;
-        // $paps->sector = $request->sector;
-        // $paps->subsector = $request->subsector;
-        // $paps->source_of_funds = $request->source_of_funds;
-        // $paps->source_others_specify = $request->source_others_specify;
-        // $paps->funding_agency = $request->funding_agency;
-        // $paps->popsp = $request->popsp;
-        // $paps->focus_area = $request->focus_area;
-        // $paps->is_mother_program = $request->is_mother_program ?? '0';
-        // $paps->mother_program_id = $request->mother_program_id ?? null;
-        // $paps->save();
+        $paps = ProgramAndProject::where('id', $id)->first();
+        // dd($paps);
+        $paps->paps_desc = $request->paps_desc;
+        // $paps->department_code = $dept_code;
+        // $paps->FFUNCCOD = $request->FFUNCCOD;
+        $paps->idmfo = $request->idmfo;
+        $paps->MOV = $request->MOV;
+        $paps->type = $request->type;
+        $paps->chief_executive_agenda = $request->chief_executive_agenda;
+        $paps->socio_economic_agenda = $request->socio_economic_agenda;
+        $paps->sust_devt_goal = $request->sust_devt_goal;
+        $paps->executive_legislative_agenda = $request->executive_legislative_agenda;
+        $paps->research_agenda = $request->research_agenda;
+        $paps->sector = $request->sector;
+        $paps->subsector = $request->subsector;
+        $paps->source_of_funds = $request->source_of_funds;
+        $paps->source_others_specify = $request->source_others_specify;
+        $paps->funding_agency = $request->funding_agency;
+        $paps->popsp = $request->popsp;
+        $paps->focus_area = $request->focus_area;
+        $paps->is_mother_program = $request->is_mother_program ?? '0';
+        $paps->mother_program_id = $request->mother_program_id ?? null;
+        $paps->save();
 
-        $rev = RevisionPlan::where('id', $id)->first();
+        $rev = RevisionPlan::where('idpaps', $id)->first();
         $rev->date_start = $request->date_start;
         $rev->date_end = $request->date_end;
+        $rev->aip_code = $request->aip_code;
+
+        // dd($rev);
         $rev->save();
+
+
 
         return redirect()->back()->with('message', 'Programs and Projects(PAPS) updated');
     }

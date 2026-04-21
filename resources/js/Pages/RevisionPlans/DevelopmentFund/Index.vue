@@ -108,7 +108,7 @@
                         <tbody>
                             <template v-for="dat in data">
                                 <tr >
-                                    <td>{{aip_code}}</td>
+                                    <td>{{dat.aip_code}}</td>
                                     <td>
                                         <button class="btn btn-sm btn-link" @click="toggleExpanded(dat.id)" style="padding: 0; margin-right: 8px;">
                                             <i :class="expanded[dat.id] ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></i>

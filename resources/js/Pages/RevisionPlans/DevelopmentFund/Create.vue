@@ -1491,6 +1491,7 @@ export default {
             filter: false,
             from_mfo: false,
             submitted: false,
+            rev: [],
             form: useForm({
                 paps_desc: "",
                 type: "",
@@ -1745,6 +1746,7 @@ export default {
         this.paps_specific = this.paps;
         this.form.idmfo = this.idmfo
         if (this.editData && Object.keys(this.editData).length > 0) {
+            this.rev = this.editData.revision_plan?.[0] || [];
             this.pageTitle = "Edit"
             this.form.paps_desc = this.editData.paps_desc
             this.form.MOV = this.editData.MOV
@@ -1770,6 +1772,10 @@ export default {
             this.form.activity = this.editData.activity || this.form.activity
             this.filterMFOs()
             this.loadPAPS();
+            // set dates and AIP code from the revision (`rev`) when available, otherwise fallback to editData
+            this.form.date_start = this.rev?.date_start ?? (this.editData.revision_plan && this.editData.revision_plan[0]?.date_start) ?? this.form.date_start;
+            this.form.date_end = this.rev?.date_end ?? (this.editData.revision_plan && this.editData.revision_plan[0]?.date_end) ?? this.form.date_end;
+            this.form.aip_code = this.rev?.aip_code ?? this.editData.revision_plan.aip_code ?? this.form.aip_code;
             this.form.mother_program_id = this.editData.mother_program_id
         } else {
             this.pageTitle = "Create"
