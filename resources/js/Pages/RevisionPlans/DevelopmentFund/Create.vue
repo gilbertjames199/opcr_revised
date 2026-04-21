@@ -228,7 +228,7 @@
                         <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
                     </div>
                     <!-- THIRD COLUMN -ACTIVITIES -->
-
+                    <!-- {{ paps}} -->
                 </div>
 
                 <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">

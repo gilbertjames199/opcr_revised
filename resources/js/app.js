@@ -358,30 +358,30 @@ createInertiaApp({
                 },
                 methods: {
                     formatDate(dateString) {
-if (!dateString) return '';
+                        if (!dateString) return '';
 
-    // Strip microseconds if they exist
-    const cleanDateString = dateString.replace(/\.\d{3,6}Z$/, 'Z');
+                            // Strip microseconds if they exist
+                            const cleanDateString = dateString.replace(/\.\d{3,6}Z$/, 'Z');
 
-    const date = new Date(cleanDateString);
+                            const date = new Date(cleanDateString);
 
-    const datePart = date.toLocaleDateString('en-US', {
-        month: 'long',
-        day: '2-digit',
-        year: 'numeric',
-        timeZone: 'Asia/Manila'
-    });
+                            const datePart = date.toLocaleDateString('en-US', {
+                                month: 'long',
+                                day: '2-digit',
+                                year: 'numeric',
+                                timeZone: 'Asia/Manila'
+                            });
 
-    const timePart = date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true,
-        timeZone: 'Asia/Manila'
-    });
+                            const timePart = date.toLocaleTimeString('en-US', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: true,
+                                timeZone: 'Asia/Manila'
+                            });
 
-    return `${datePart} ${timePart}`;
-},
+                        return `${datePart} ${timePart}`;
+                    },
                     goBack() {
                         window.history.back();  // or this.$router.go(-1)
                     },
@@ -1709,6 +1709,18 @@ if (!dateString) return '';
                         });
 
                         return `${datePart} - ${timePart}`;
+                    },
+                    // SOURCE OF FUNDS
+                    sourceOfFundsText(code) {
+                        const mapping = {
+                            'gen_fund': 'General Fund',
+                            'dev': '20% Development Fund',
+                            'ldrrmf': 'LDRRMF',
+                            'other': 'Other Sources',
+                            '':''
+
+                        };
+                        return mapping[code] || code;
                     }
                 }
             })

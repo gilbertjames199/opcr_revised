@@ -22,8 +22,14 @@
                         <input v-model="search" type="text" class="filter-input" placeholder="Search...">
                     </div>
                     <Link class="tool-btn tool-btn-primary" :href="`/development-fund/create/${id}`">
-                        <i class="fas fa-plus"></i> Add 20% Development Fund
+                        <i class="fas fa-plus"></i> Add Engineering PPAs
                     </Link>
+                    <button class="tool-btn tool-btn-outline" @click="expandAll()">
+                        <i class="fas fa-expand"></i> Expand All
+                    </button>
+                    <button class="tool-btn tool-btn-outline" @click="collapseAll()">
+                        <i class="fas fa-compress"></i> Collapse All
+                    </button>
                     <button class="tool-btn tool-btn-outline" @click="showFilter()">
                         <i class="fas fa-filter"></i> Filter
                     </button>
@@ -63,55 +69,127 @@
                     <table class="table table-hover align-middle">
                         <thead class="table-head-sticky">
                             <tr>
-                                <th >
-                                    <i class="fas fa-building"></i> Project Title
+                                <th rowspan="2">AIP Code</th>
+                                <th rowspan="2" colspan="2">
+                                    <i class="fas fa-building"></i> Program/Project/Activity Title/Description
+                                </th >
+                                <th scope="col" rowspan="2">
+                                    <i class="fas fa-align-left"></i> Implementing Office
                                 </th>
-                                <th scope="col">
-                                    <i class="fas fa-align-left"></i> Office
+                                <th rowspan="1" colspan="2" class="text-center">
+                                    SCHEDULE OF IMPLEMENTATION
                                 </th>
+                                <th rowspan="2">
+                                    EXPECTED OUTPUTS
+                                </th>
+                                <th rowspan="2">FUNDING SOURCE</th>
+                                <th rowspan="1" colspan="5" class="align-middle">AMOUNT</th>
+                                <!-- <th rowspan="1" colspan="2" class="text-center">
+                                    AMOUNT OF CLIMATE CHANGE EXPENDITURES
+                                </th> -->
                                 <!-- <th scope="col">
                                     <i class="fas fa-industry"></i> Sector
                                 </th> -->
-                                <th scope="col" class="text-end">
+                                <th rowspan="2" scope="col" class="text-end">
                                     <i class="fas fa-cogs"></i> Action
                                 </th>
                             </tr>
+                            <tr>
+                                <th>Date From</th>
+                                <th>Date To</th>
+                                <th>PS</th>
+                                <th>MOOE</th>
+                                <th>FE</th>
+                                <th>Capital Outlay</th>
+                                <th>Total</th>
+
+                            </tr>
                         </thead>
                         <tbody>
-
-                            <tr v-for="dat in data.data">
-                                <td >{{ dat.project_title }}</td>
-                                <td>
-                                    <!-- {{dat.paps.office.FFUNCTION }}
-                                      -->
-                                      {{ dat.paps?.office?.FFUNCTION ?? '' }}
-
-                                    <!-- <div align="justify" v-html="dat.goal_description"></div> -->
-                                    <!-- {{ truncateText(getPlainTextWithoutTags(dat.goal_description), 10) }} -->
-                                </td>
-                                <!-- <td></td> -->
-                                <td class="text-end">
-                                    <div class="dropdown dropstart">
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button"
-                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                                            </svg>
+                            <template v-for="dat in data">
+                                <tr >
+                                    <td>{{aip_code}}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-link" @click="toggleExpanded(dat.id)" style="padding: 0; margin-right: 8px;">
+                                            <i :class="expanded[dat.id] ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></i>
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                            <li>
-                                                <Link class="dropdown-item" :href="`/development-fund/create/${dat.id}`">Edit</Link>
-                                            </li>
-                                            <li>
-                                                <Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">
-                                                Delete</Link>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+
+                                    </td>
+                                    <td>
+                                        <b>{{ dat.project_title }}</b>
+                                    </td>
+                                    <td>
+                                        <!-- {{dat.paps.office.FFUNCTION }}
+                                        -->
+                                        {{ dat.paps?.office?.FFUNCTION ?? '' }}
+
+                                        <!-- <div align="justify" v-html="dat.goal_description"></div> -->
+                                        <!-- {{ truncateText(getPlainTextWithoutTags(dat.goal_description), 10) }} -->
+                                    </td>
+                                    <!-- DATE FROM -->
+                                    <td>{{ dat.date_start }}</td>
+                                    <!-- DATE TO -->
+                                    <td>{{ dat.date_end }}</td>
+                                    <!-- EXPECTED OUTPUTS -->
+                                    <td></td>
+                                    <!-- FUNDING SOURCE-->
+                                    <td>{{ sourceOfFundsText(dat.paps?.source_of_funds) }}</td>
+                                    <!-- PS -->
+                                    <td></td>
+                                    <!-- MOOE -->
+                                    <td></td>
+                                    <!-- FE -->
+                                    <td></td>
+                                    <!-- CAPITAL OUTLAY -->
+                                    <td></td>
+                                    <!-- TOTAL -->
+                                    <td></td>
+                                    <!-- <td></td> -->
+                                    <td class="text-end">
+                                        <div class="dropdown dropstart">
+                                            <button class="btn btn-secondary btn-sm action-btn" type="button"
+                                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                                </svg>
+                                            </button>
+                                            <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                                <li>
+                                                    <Link class="dropdown-item" :href="`/development-fund/create/${dat.id}`">Edit</Link>
+                                                </li>
+                                                <li>
+                                                    <Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">
+                                                    Delete</Link>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr v-if="expanded[dat.id]" v-for="act in dat.activity_project" class="table-secondary">
+                                    <td>{{ act.aip_code }}</td>
+                                    <td></td>
+                                    <td>{{ act.activity?.description }}</td>
+                                    <td>{{ dat.paps?.office?.FFUNCTION ?? '' }}</td>
+                                    <td>{{ dat.date_start }}</td>
+                                    <td>{{ dat.date_end }}</td>
+                                    <td>
+                                        <p v-for="exp in act.expected_output">{{ exp.description }}</p>
+                                    </td>
+                                    <td></td>
+                                    <td>{{ format_number_conv(parseFloat(act.ps_q1??0)+parseFloat(act.ps_q2??0)+parseFloat(act.ps_q3??0)+parseFloat(act.ps_q4??0),2,true) }}</td>
+                                    <td>{{ format_number_conv(parseFloat(act.mooe_q1??0)+parseFloat(act.mooe_q2??0)+parseFloat(act.mooe_q3??0)+parseFloat(act.mooe_q4??0),2,true) }}</td>
+                                    <td>{{ format_number_conv(parseFloat(act.fe_q1??0)+parseFloat(act.fe_q2??0)+parseFloat(act.fe_q3??0)+parseFloat(act.fe_q4??0),2,true) }}</td>
+                                    <td>{{ format_number_conv(parseFloat(act.co_q1??0)+parseFloat(act.co_q2??0)+parseFloat(act.co_q3??0)+parseFloat(act.co_q4??0),2,true) }}</td>
+                                    <td>{{ format_number_conv(parseFloat(act.ps_q1??0)+parseFloat(act.ps_q2??0)+parseFloat(act.ps_q3??0)+parseFloat(act.ps_q4??0) +
+                                     parseFloat(act.mooe_q1??0)+parseFloat(act.mooe_q2??0)+parseFloat(act.mooe_q3??0)+parseFloat(act.mooe_q4??0) +
+                                     parseFloat(act.fe_q1??0)+parseFloat(act.fe_q2??0)+parseFloat(act.fe_q3??0)+parseFloat(act.fe_q4??0) +
+                                     parseFloat(act.co_q1??0)+parseFloat(act.co_q2??0)+parseFloat(act.co_q3??0)+parseFloat(act.co_q4??0),2, true) }}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </div>
@@ -123,8 +201,8 @@
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <p>
-                            {{ data.from }} to {{ data.to }} of
-                            {{ data.total }} entries
+                            <!-- {{ data.from }} to {{ data.to }} of -->
+                            <!-- {{ data.total }} entries -->
                         </p>
                     </div>
                 </div>
@@ -146,8 +224,8 @@ export default {
     data() {
         return {
             search: this.$props.filters?.search || '',
-            filter: false
-
+            filter: false,
+            expanded: {}
         }
     },
     components: {
@@ -155,7 +233,17 @@ export default {
     },
 
     methods: {
-
+        toggleExpanded(rowId) {
+            this.expanded[rowId] = !this.expanded[rowId];
+        },
+        expandAll() {
+            this.data.data.forEach((dat) => {
+                this.expanded[dat.id] = true;
+            });
+        },
+        collapseAll() {
+            this.expanded = {};
+        },
         showCreate() {
             this.$inertia.get(
                 "/targets/create",
@@ -172,7 +260,10 @@ export default {
         deleteSectoral(id) {
             let text = "WARNING!\nAre you sure you want to delete the Sectoral Goals?" + id;
             if (confirm(text) == true) {
-                this.$inertia.delete("/Sectoral/" + id);
+                this.$inertia.delete("/development-fund/" + id+"/delete", {
+                    preserveScroll: true,
+                    preserveState: true,
+                });
             }
         },
         // getAccomplishment(tar_id) {

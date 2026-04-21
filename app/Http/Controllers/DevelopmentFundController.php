@@ -32,13 +32,20 @@ class DevelopmentFundController extends Controller
         if($request->no_of_pages){
             $no_of_pages = $request->no_of_pages;
         }
-        $data=RevisionPlan::with(['paps','paps.office'])
+        $data=RevisionPlan::with([
+                    'paps',
+                    'paps.office',
+                    'activityProject',
+                    'activityProject.activity',
+                    'activityProject.expected_output'
+                ])
                 ->when($id!=0, function($query) use ($id){
                     $query->where('id', $id);
                 })
                 ->whereHas('paps', function($query) use ($id){
                     $query->where('source_of_funds','dev');
-                })->paginate($no_of_pages);
+                })->get();
+                // ->paginate($no_of_pages);
         // dd($data, $id);
         return inertia('RevisionPlans/DevelopmentFund/Index', [
             'data'=>$data,
@@ -308,6 +315,8 @@ class DevelopmentFundController extends Controller
         $paps->mother_program_id = $request->mother_program_id ?? null;
         $paps->save();
 
+        $rev = RevisionPlan::where('idpaps', $paps->id)->first();
+        $rev->date_start = $request->date_start;
 
         return redirect()->back()->with('message', 'Programs and Projects(PAPS) updated');
     }
@@ -315,5 +324,10 @@ class DevelopmentFundController extends Controller
     public function dev_fund_delete(Request $request)
     {
         //
+        $rev = RevisionPlan::with('paps')->find($request->id);
+        $paps = $rev->paps;
+        $rev->delete();
+        $paps->delete();
+        return redirect()->back()->with('message', 'Programs and Projects(PAPS) deleted');
     }
 }
