@@ -461,7 +461,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/create/{id}', [DevelopmentFundController::class, 'dev_fund_create']);
         Route::post('/store', [DevelopmentFundController::class, 'dev_fund_store']);
         Route::get('/edit/{id}', [DevelopmentFundController::class, 'dev_fund_edit']);
-        Route::patch('/update', [DevelopmentFundController::class, 'dev_fund_update']);
+        Route::patch('/update/{id}', [DevelopmentFundController::class, 'dev_fund_update']);
         Route::delete('/{id}/delete', [DevelopmentFundController::class, 'dev_fund_delete']);
     });
     // Revision Plan Streamlined

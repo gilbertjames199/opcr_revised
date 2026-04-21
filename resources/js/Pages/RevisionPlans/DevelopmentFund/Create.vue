@@ -1801,12 +1801,11 @@ export default {
             }
             this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4);
             if (this.editData !== undefined && this.id!=0) {
-                if (this.from_mfo == true) {
-                    this.form.patch("/paps/update/" + this.form.id, this.form);
-                } else {
-                    this.form.patch("/paps/" + this.form.id, this.form);
-                }
-
+                // if (this.from_mfo == true) {
+                //     this.form.patch("/development-fund/update/" + this.form.id, this.form);
+                // } else {
+                this.form.patch("/development-fund/update/" + this.form.id, this.form);
+                // }
             } else {
                 this.form.id = null;
                 // alert(this.from_mfo);
@@ -1815,7 +1814,6 @@ export default {
                 // } else {
                 this.form.post("/development-fund/store", this.form);
                 // }
-
             }
         },
         setselect() {

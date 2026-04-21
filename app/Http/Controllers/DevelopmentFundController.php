@@ -171,7 +171,8 @@ class DevelopmentFundController extends Controller
             'type' => 'required',
             'FFUNCCOD' => 'required',
             'idmfo' => 'required',
-            'sector' => 'required'
+            'sector' => 'required',
+
             // 'chief_executive_agenda' => 'required',
             // 'socio_economic_agenda' => 'required',
             // 'sust_devt_goal' => 'required',
@@ -274,14 +275,36 @@ class DevelopmentFundController extends Controller
             ->with($status, $msg);
     }
 
-    public function dev_fund_edit(Request $request)
+    public function dev_fund_edit(Request $request, $id)
     {
-        //
+
     }
 
     public function dev_fund_update(Request $request)
     {
-        //
+        // dd($request, $id);
+        $paps = ProgramAndProject::where('id', $id)->first();
+        $paps->paps_desc = $request->paps_desc;
+        $paps->department_code = $dept_code;
+        $paps->FFUNCCOD = $request->FFUNCCOD;
+        $paps->idmfo = $request->idmfo;
+        $paps->MOV = $request->MOV;
+        $paps->type = $request->type;
+        $paps->chief_executive_agenda = $request->chief_executive_agenda;
+        $paps->socio_economic_agenda = $request->socio_economic_agenda;
+        $paps->sust_devt_goal = $request->sust_devt_goal;
+        $paps->executive_legislative_agenda = $request->executive_legislative_agenda;
+        $paps->research_agenda = $request->research_agenda;
+        $paps->sector = $request->sector;
+        $paps->subsector = $request->subsector;
+        $paps->source_of_funds = $request->source_of_funds;
+        $paps->source_others_specify = $request->source_others_specify;
+        $paps->funding_agency = $request->funding_agency;
+        $paps->popsp = $request->popsp;
+        $paps->focus_area = $request->focus_area;
+        $paps->is_mother_program = $request->is_mother_program ?? '0';
+        $paps->mother_program_id = $request->mother_program_id ?? null;
+        $paps->save();
     }
 
     public function dev_fund_delete(Request $request)
