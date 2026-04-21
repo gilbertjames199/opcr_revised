@@ -316,7 +316,7 @@ class DevelopmentFundController extends Controller
         // $paps->mother_program_id = $request->mother_program_id ?? null;
         // $paps->save();
 
-        $rev = RevisionPlan::where('idpaps', $id)->first();
+        $rev = RevisionPlan::where('id', $id)->first();
         $rev->date_start = $request->date_start;
         $rev->date_end = $request->date_end;
         $rev->save();
