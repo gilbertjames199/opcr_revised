@@ -55,8 +55,8 @@ __webpack_require__.r(__webpack_exports__);
         // replace: true,
       });
     },
-    deleteSectoral: function deleteSectoral(id) {
-      var text = "WARNING!\nAre you sure you want to delete the Sectoral Goals?" + id;
+    deleteSectoral: function deleteSectoral(id, title) {
+      var text = "WARNING!\nAre you sure you want to delete the PPA with thte title: " + title + "?";
       if (confirm(text) == true) {
         this.$inertia["delete"]("/development-fund/" + id + "/delete", {
           preserveScroll: true,
@@ -360,7 +360,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, 8 /* PROPS */, ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "text-danger dropdown-item",
       onClick: function onClick($event) {
-        return $options.deleteSectoral(dat.id);
+        return $options.deleteSectoral(dat.id, dat.project_title);
       }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {

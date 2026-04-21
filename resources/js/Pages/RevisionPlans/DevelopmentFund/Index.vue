@@ -160,7 +160,7 @@
                                                     <Link class="dropdown-item" :href="`/development-fund/create/${dat.id}`">Edit</Link>
                                                 </li>
                                                 <li>
-                                                    <Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">
+                                                    <Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id, dat.project_title)">
                                                     Delete</Link>
                                                 </li>
                                             </ul>
@@ -257,8 +257,8 @@ export default {
                 }
             );
         },
-        deleteSectoral(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Sectoral Goals?" + id;
+        deleteSectoral(id, title) {
+            let text = "WARNING!\nAre you sure you want to delete the PPA with thte title: " + title + "?";
             if (confirm(text) == true) {
                 this.$inertia.delete("/development-fund/" + id+"/delete", {
                     preserveScroll: true,

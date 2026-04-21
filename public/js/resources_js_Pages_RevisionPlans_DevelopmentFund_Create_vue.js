@@ -272,19 +272,20 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       }
       this.form.target_qty = parseFloat(this.form.target_qty1) + parseFloat(this.form.target_qty2) + parseFloat(this.form.target_qty3) + parseFloat(this.form.target_qty4);
       if (this.editData !== undefined && this.id != 0) {
-        // if (this.from_mfo == true) {
-        //     this.form.patch("/development-fund/update/" + this.form.id, this.form);
-        // } else {
-        this.form.patch("/development-fund/update/" + this.form.id, this.form);
-        // }
+        // update existing
+        this.form.patch("/development-fund/update/" + this.form.id, {
+          onSuccess: function onSuccess() {
+            window.location.reload();
+          }
+        });
       } else {
+        // create new
         this.form.id = null;
-        // alert(this.from_mfo);
-        // if (this.from_mfo == true) {
-        //     this.form.post("/paps/save", this.form);
-        // } else {
-        this.form.post("/development-fund/store", this.form);
-        // }
+        this.form.post("/development-fund/store", {
+          onSuccess: function onSuccess() {
+            window.location.reload();
+          }
+        });
       }
     },
     setselect: function setselect() {
