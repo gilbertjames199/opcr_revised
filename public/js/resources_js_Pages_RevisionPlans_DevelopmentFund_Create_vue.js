@@ -274,9 +274,9 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       if (this.editData !== undefined && this.id != 0) {
         // update existing
         this.form.patch("/development-fund/update/" + this.form.id, {
-          onSuccess: function onSuccess() {
-            window.location.reload();
-          }
+          // onSuccess: () => {
+          // window.location.reload();
+          // }
         });
       } else {
         // create new
@@ -777,6 +777,26 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       if (this.unsaved) {
         event.preventDefault();
         event.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+      }
+    },
+    // GENERAL DELETION ************************************************
+    deleteData: function deleteData(id, table, title) {
+      //alert(this.idpaps);
+      var text = "WARNING!\nAre you sure you want to delete a row from " + table + " with title " + title + "?";
+      if (confirm(text) == true) {
+        this.$inertia["delete"]("/revision/streamlined/" + id + "/" + table, {
+          preserveScroll: true
+        });
+      }
+    },
+    // DELETE STRATEGY OR ACTIVITY
+    deleteDataActivityOrStrat: function deleteDataActivityOrStrat(id, table, title, project_id) {
+      //alert(this.idpaps);
+      var text = "WARNING!\nAre you sure you want to delete a row from " + table + " with title " + title + "? strat/act /revision/streamlined/" + id + "/" + table + "/" + project_id;
+      if (confirm(text) == true) {
+        this.$inertia["delete"]("/revision/streamlined/" + id + "/" + table + "/" + project_id, {
+          preserveScroll: true
+        });
       }
     }
   }
@@ -1396,7 +1416,6 @@ var _hoisted_216 = ["onUpdate:modelValue", "onChange"];
 var _hoisted_217 = ["onUpdate:modelValue", "onChange"];
 var _hoisted_218 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _this = this;
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
   var _component_multiselect = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("multiselect");
   var _component_StrategyModal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("StrategyModal");
@@ -1658,7 +1677,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[23] || (_cache[23] = function ($event) {
       return $options.showStrategyModal();
     })
-  }, " Add Strategies ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.paps ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_39, [_cache[129] || (_cache[129] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("em", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Use the "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "numeric SEQ#"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" to order strategies and activities from lowest to highest. After making changes, click outside the field and refresh the page ("), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Ctrl+R"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(") to apply them.")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_40, [_cache[128] || (_cache[128] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+  }, " Add Strategies ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.paps ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_39, [_cache[129] || (_cache[129] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("em", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Use the "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "numeric SEQ#"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" to order strategies and activities from lowest to highest. After making changes, click outside the field and refresh the page ("), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Ctrl+R"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(") to apply them.")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ rev }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_40, [_cache[128] || (_cache[128] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
     "class": "bg-secondary text-white"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     style: {
@@ -1824,7 +1843,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, " Add Activities ", 8 /* PROPS */, _hoisted_66), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" @click=\"deleteData(dat.id, 'strategies', dat.description)\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-danger btn-sm text-white",
       onClick: function onClick($event) {
-        return _ctx.deleteDataActivityOrStrat(dat.id, 'strategies', dat.description, _this.form.id);
+        return $options.deleteDataActivityOrStrat(dat.id, 'strategies', dat.description, $data.rev.id);
       }
     }, " 🗑 Delete Strategy ", 8 /* PROPS */, _hoisted_67)])], 8 /* PROPS */, _hoisted_60)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ACTIVITIES **************************************************************************************************** "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)((dat.activity || []).filter(function (a) {
       return a;
@@ -2521,7 +2540,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, " Edit Activity ", 8 /* PROPS */, _hoisted_168), _cache[125] || (_cache[125] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         "class": "btn btn-danger btn-sm text-white",
         onClick: function onClick($event) {
-          return _ctx.deleteDataActivityOrStrat(act.id, 'activities', dat.description, _this.form.id);
+          return $options.deleteDataActivityOrStrat(act.id, 'activities', dat.description, $data.rev.id);
         }
       }, " 🗑 Delete Activity ", 8 /* PROPS */, _hoisted_169), _cache[126] || (_cache[126] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* CACHED */))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
     }), 128 /* KEYED_FRAGMENT */))], 64 /* STABLE_FRAGMENT */);

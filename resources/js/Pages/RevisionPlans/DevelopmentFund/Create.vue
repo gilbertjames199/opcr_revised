@@ -257,6 +257,7 @@
 
             <div style="overflow-x: auto; width: 100%;" v-if="paps">
                 <p><em>Use the <strong>numeric SEQ#</strong> to order strategies and activities from lowest to highest. After making changes, click outside the field and refresh the page (<strong>Ctrl+R</strong>) to apply them.</em></p>
+                <!-- {{ rev }} -->
                 <table class="table table-hover table-bordered border-dark">
                     <thead >
                         <tr class="bg-secondary text-white" >
@@ -377,7 +378,7 @@
                                     </button>
                                     <!-- @click="deleteData(dat.id, 'strategies', dat.description)" -->
                                     <button class="btn btn-danger btn-sm text-white"
-                                    @click="deleteDataActivityOrStrat(dat.id, 'strategies', dat.description, this.form.id)"
+                                    @click="deleteDataActivityOrStrat(dat.id, 'strategies', dat.description, rev.id)"
                                         >
                                         🗑 Delete Strategy
                                     </button>
@@ -915,7 +916,7 @@
                                             Edit Activity
                                         </button><hr >
                                         <button class="btn btn-danger btn-sm text-white"
-                                            @click="deleteDataActivityOrStrat(act.id, 'activities', dat.description, this.form.id)">
+                                            @click="deleteDataActivityOrStrat(act.id, 'activities', dat.description, rev.id)">
                                             🗑 Delete Activity
                                         </button><hr>
                                     </td>
@@ -2229,6 +2230,32 @@ export default {
                 event.preventDefault();
                 event.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
             }
+        },
+
+        // GENERAL DELETION ************************************************
+        deleteData(id, table, title){
+
+            //alert(this.idpaps);
+            let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+"?";
+              if (confirm(text) == true) {
+                this.$inertia.delete("/revision/streamlined/" + id+"/"+table, {
+                    preserveScroll: true
+                });
+            }
+
+        },
+        // DELETE STRATEGY OR ACTIVITY
+        deleteDataActivityOrStrat(id, table, title, project_id){
+            //alert(this.idpaps);
+            let text = "WARNING!\nAre you sure you want to delete a row from "+table+" with title "+title+
+                "? strat/act /revision/streamlined/" + id+"/"+table+"/"+project_id;
+              if (confirm(text) == true) {
+                this.$inertia.delete("/revision/streamlined/" + id+"/"+table+"/"+project_id,
+                {
+                    preserveScroll: true
+                });
+            }
+
         },
     },
 };
