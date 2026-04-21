@@ -314,7 +314,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, "FUNDING SOURCE"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     rowspan: "1",
     colspan: "5",
-    "class": "align-middle"
+    "class": "align-middle text-center"
   }, "AMOUNT"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th rowspan=\"1\" colspan=\"2\" class=\"text-center\">\n                                    AMOUNT OF CLIMATE CHANGE EXPENDITURES\n                                </th> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th scope=\"col\">\n                                    <i class=\"fas fa-industry\"></i> Sector\n                                </th> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     rowspan: "2",
     scope: "col",

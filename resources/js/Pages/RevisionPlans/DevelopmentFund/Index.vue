@@ -83,7 +83,7 @@
                                     EXPECTED OUTPUTS
                                 </th>
                                 <th rowspan="2">FUNDING SOURCE</th>
-                                <th rowspan="1" colspan="5" class="align-middle">AMOUNT</th>
+                                <th rowspan="1" colspan="5" class="align-middle text-center">AMOUNT</th>
                                 <!-- <th rowspan="1" colspan="2" class="text-center">
                                     AMOUNT OF CLIMATE CHANGE EXPENDITURES
                                 </th> -->

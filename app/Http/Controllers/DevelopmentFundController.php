@@ -210,6 +210,7 @@ class DevelopmentFundController extends Controller
             $paps->idmfo = $request->idmfo;
             $paps->MOV = $request->MOV;
             $paps->type = $request->type;
+            $paps->aip_code = $request->aip_code;
             $paps->chief_executive_agenda = $request->chief_executive_agenda;
             $paps->socio_economic_agenda = $request->socio_economic_agenda;
             $paps->sust_devt_goal = $request->sust_devt_goal;
@@ -292,31 +293,33 @@ class DevelopmentFundController extends Controller
     public function dev_fund_update(Request $request, $id)
     {
         // dd($request, $id);
-        $paps = ProgramAndProject::where('id', $id)->first();
-        $paps->paps_desc = $request->paps_desc;
-        // $paps->department_code = $dept_code;
-        // $paps->FFUNCCOD = $request->FFUNCCOD;
-        $paps->idmfo = $request->idmfo;
-        $paps->MOV = $request->MOV;
-        $paps->type = $request->type;
-        $paps->chief_executive_agenda = $request->chief_executive_agenda;
-        $paps->socio_economic_agenda = $request->socio_economic_agenda;
-        $paps->sust_devt_goal = $request->sust_devt_goal;
-        $paps->executive_legislative_agenda = $request->executive_legislative_agenda;
-        $paps->research_agenda = $request->research_agenda;
-        $paps->sector = $request->sector;
-        $paps->subsector = $request->subsector;
-        $paps->source_of_funds = $request->source_of_funds;
-        $paps->source_others_specify = $request->source_others_specify;
-        $paps->funding_agency = $request->funding_agency;
-        $paps->popsp = $request->popsp;
-        $paps->focus_area = $request->focus_area;
-        $paps->is_mother_program = $request->is_mother_program ?? '0';
-        $paps->mother_program_id = $request->mother_program_id ?? null;
-        $paps->save();
+        // $paps = ProgramAndProject::where('id', $id)->first();
+        // $paps->paps_desc = $request->paps_desc;
+        // // $paps->department_code = $dept_code;
+        // // $paps->FFUNCCOD = $request->FFUNCCOD;
+        // $paps->idmfo = $request->idmfo;
+        // $paps->MOV = $request->MOV;
+        // $paps->type = $request->type;
+        // $paps->chief_executive_agenda = $request->chief_executive_agenda;
+        // $paps->socio_economic_agenda = $request->socio_economic_agenda;
+        // $paps->sust_devt_goal = $request->sust_devt_goal;
+        // $paps->executive_legislative_agenda = $request->executive_legislative_agenda;
+        // $paps->research_agenda = $request->research_agenda;
+        // $paps->sector = $request->sector;
+        // $paps->subsector = $request->subsector;
+        // $paps->source_of_funds = $request->source_of_funds;
+        // $paps->source_others_specify = $request->source_others_specify;
+        // $paps->funding_agency = $request->funding_agency;
+        // $paps->popsp = $request->popsp;
+        // $paps->focus_area = $request->focus_area;
+        // $paps->is_mother_program = $request->is_mother_program ?? '0';
+        // $paps->mother_program_id = $request->mother_program_id ?? null;
+        // $paps->save();
 
-        $rev = RevisionPlan::where('idpaps', $paps->id)->first();
+        $rev = RevisionPlan::where('idpaps', $id)->first();
         $rev->date_start = $request->date_start;
+        $rev->date_end = $request->date_end;
+        $rev->save();
 
         return redirect()->back()->with('message', 'Programs and Projects(PAPS) updated');
     }
