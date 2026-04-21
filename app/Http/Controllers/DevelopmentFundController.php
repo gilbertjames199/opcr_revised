@@ -28,6 +28,9 @@ class DevelopmentFundController extends Controller
     {
         // dd($id);
         // dd()
+
+        // dd(auth()->user());
+        $dept_code= auth()->user()->department_code;
         $no_of_pages =10;
         if($request->no_of_pages){
             $no_of_pages = $request->no_of_pages;
@@ -41,6 +44,11 @@ class DevelopmentFundController extends Controller
                 ])
                 ->when($id!=0, function($query) use ($id){
                     $query->where('id', $id);
+                })
+                ->when($dept_code!='04', function($query) use ($dept_code){
+                    $query->whereHas('paps', function($q) use ($dept_code){
+                        $q->where('department_code', $dept_code);
+                    });
                 })
                 ->whereHas('paps', function($query) use ($id){
                     $query->where('source_of_funds','dev');
