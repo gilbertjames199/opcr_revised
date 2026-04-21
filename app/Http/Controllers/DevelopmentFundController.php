@@ -158,6 +158,8 @@ class DevelopmentFundController extends Controller
             $office = Office::where('FFUNCCOD', $FFUNCCOD)->first();
             if($office){
                 $dept_code = $office->department_code;
+            }else{
+                $dept_code = auth()->user()->department_code;
             }
         }else{
             $dept_code = auth()->user()->department_code;
@@ -280,13 +282,13 @@ class DevelopmentFundController extends Controller
 
     }
 
-    public function dev_fund_update(Request $request)
+    public function dev_fund_update(Request $request, $id)
     {
         // dd($request, $id);
         $paps = ProgramAndProject::where('id', $id)->first();
         $paps->paps_desc = $request->paps_desc;
-        $paps->department_code = $dept_code;
-        $paps->FFUNCCOD = $request->FFUNCCOD;
+        // $paps->department_code = $dept_code;
+        // $paps->FFUNCCOD = $request->FFUNCCOD;
         $paps->idmfo = $request->idmfo;
         $paps->MOV = $request->MOV;
         $paps->type = $request->type;
@@ -305,6 +307,9 @@ class DevelopmentFundController extends Controller
         $paps->is_mother_program = $request->is_mother_program ?? '0';
         $paps->mother_program_id = $request->mother_program_id ?? null;
         $paps->save();
+
+
+        return redirect()->back()->with('message', 'Programs and Projects(PAPS) updated');
     }
 
     public function dev_fund_delete(Request $request)
