@@ -87,11 +87,11 @@ class DevelopmentFundController extends Controller
                     ->orWhere('ff.FFUNCTION', 'LIKE', '%Hospital%');
             })
             ->with('func');
-        if (auth()->user()->recid !== 545) {
-            $functions = clone ($functions)->where('iduser', auth()->user()->recid);
-            $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
-            // $motherPAPS = clone ($motherPAPS)->whereIn('FFUNCCOD', $accessFFUNCCOD);
-        }
+        // if (auth()->user()->recid !== 545) {
+        //     $functions = clone ($functions)->where('iduser', auth()->user()->recid);
+        //     $mfos = $mfos1->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        //     // $motherPAPS = clone ($motherPAPS)->whereIn('FFUNCCOD', $accessFFUNCCOD);
+        // }
         $functions = clone ($functions)
             ->distinct('FFUNCCOD')
             ->orderBy('FFUNCTION', 'ASC')
