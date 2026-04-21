@@ -228,7 +228,86 @@
                         <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
                     </div>
                     <!-- THIRD COLUMN -ACTIVITIES -->
+                    <!-- <div class="col-md-6">
+                        {{ form.activity}}
+                        <label for="">Personnel Services </label>
+                        <input type="text" v-model="form.activity.ps_q1" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.ps_q1">{{ form.errors.activity?.ps_q1 }}</div>
 
+                        <label for="">Personnel Services Q2</label>
+                        <input type="text" v-model="form.activity.ps_q2" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.ps_q2">{{ form.errors.activity?.ps_q2 }}</div>
+
+                        <label for="">Personnel Services Q3</label>
+                        <input type="text" v-model="form.activity.ps_q3" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.ps_q3">{{ form.errors.activity?.ps_q3 }}</div>
+
+                        <label for="">Personnel Services Q4</label>
+                        <input type="text" v-model="form.activity.ps_q4" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.ps_q4">{{ form.errors.activity?.ps_q4 }}</div>
+
+                        <label for="">MOOE </label>
+                        <input type="text" v-model="form.activity.mooe_q1" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.mooe_q1">{{ form.errors.activity?.mooe_q1 }}</div>
+
+                        <label for="">MOOE Q2</label>
+                        <input type="text" v-model="form.activity.mooe_q2" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.mooe_q2">{{ form.errors.activity?.mooe_q2 }}</div>
+
+                        <label for="">MOOE Q3</label>
+                        <input type="text" v-model="form.activity.mooe_q3" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.mooe_q3">{{ form.errors.activity?.mooe_q3 }}</div>
+
+                        <label for="">MOOE Q4</label>
+                        <input type="text" v-model="form.activity.mooe_q4" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.mooe_q4">{{ form.errors.activity?.mooe_q4 }}</div>
+
+                        <label for="">Financial Expenses </label>
+                        <input type="text" v-model="form.activity.fe_q1" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.fe_q1">{{ form.errors.activity?.fe_q1 }}</div>
+
+                        <label for="">Financial Expenses Q2</label>
+                        <input type="text" v-model="form.activity.fe_q2" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.fe_q2">{{ form.errors.activity?.fe_q2 }}</div>
+
+                        <label for="">Financial Expenses Q3</label>
+                        <input type="text" v-model="form.activity.fe_q3" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.fe_q3">{{ form.errors.activity?.fe_q3 }}</div>
+
+                        <label for="">Financial Expenses  Q4</label>
+                        <input type="text" v-model="form.activity.fe_q4" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.fe_q4">{{ form.errors.activity?.fe_q4 }}</div>
+
+                        <label for="">Capital Outlay</label>
+                        <input type="text" v-model="form.activity.co_q1" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.co_q1">{{ form.errors.activity?.co_q1 }}</div>
+
+                        <label for="">Capital Outlay Q2</label>
+                        <input type="text" v-model="form.activity.co_q2" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.co_q2">{{ form.errors.activity?.co_q2 }}</div>
+
+                        <label for="">Capital Outlay Q3</label>
+                        <input type="text" v-model="form.activity.co_q3" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.co_q3">{{ form.errors.activity?.co_q3 }}</div>
+
+                        <label for="">Capital Outlay Q4</label>
+                        <input type="text" v-model="form.activity.co_q4" class="form-control" autocomplete="chrome-off">
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.co_q4">{{ form.errors.activity?.co_q4 }}</div>
+                    </div> -->
+                    <!-- FOURTH COLUMN -EXPECTED REVISED OUTPUTS -->
+                    <div class="col-md-6">
+                        <label for="">Expected Revised Outputs</label>
+                        <textarea rows="4" v-model="form.activity.expected_revised_outputs.description" class="form-control" autocomplete="chrome-off" />
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.expected_revised_outputs?.description">
+                            {{ form.errors.activity?.expected_revised_outputs?.description }}
+                        </div>
+
+                        <label for="">Expected Revised Outputs</label>
+                        <textarea rows="4" v-model="form.activity.expected_revised_outputs.ccet_code" class="form-control" autocomplete="chrome-off" />
+                        <div class="fs-6 c-red-500" v-if="form.errors.activity?.expected_revised_outputs?.ccet_code">
+                            {{ form.errors.activity?.expected_revised_outputs?.ccet_code }}
+                        </div>
+                    </div>
                 </div>
 
                 <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">

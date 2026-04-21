@@ -370,6 +370,7 @@
                             <div ref="rationaleEl"
                                 @mouseup="handleSelection('rationale')"
                                 v-html="paps.rationale"
+                                style="text-align: justify;"
                             ></div>
 
                         </div>

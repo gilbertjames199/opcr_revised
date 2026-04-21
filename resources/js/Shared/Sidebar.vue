@@ -156,23 +156,22 @@
                     </Link>
                 </li>
                 <!-- IPP ********************************************************************* -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/revision/0?source=direct" :class="{ 'active': $page.url === '/revision/0?source=direct' }">
-                    <span></span>
-                    <span class="icon-holder">
-
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 2h12v20H4z"/>
-                            <path d="M6 6h8"/>
-                            <path d="M6 10h8"/>
-                            <circle cx="8" cy="16" r="2"/>
-                        </svg>
-                    </span>
-                    <span class="title">IPP</span>
+                        <span></span>
+                        <span class="icon-holder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 2h12v20H4z"/>
+                                <path d="M6 6h8"/>
+                                <path d="M6 10h8"/>
+                                <circle cx="8" cy="16" r="2"/>
+                            </svg>
+                        </span>
+                        <span class="title">IPP</span>
                     </Link>
-                </li>
-                <!-- IPP ********************************************************************* -->
-                <li class="nav-item">
+                </li> -->
+                <!-- 20% Development Fund ********************************************************************* -->
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/development-fund/0"
                     :class="{ 'active': $page.url === '/development-fund/0' }">
                     <span></span>
@@ -187,9 +186,9 @@
                     </span>
                     <span class="title">20% Development Fund</span>
                     </Link>
-                </li>
+                </li> -->
                 <!-- SIP ********************************************************************* -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/revision/0?source=sip" :class="{ 'active': $page.url === '/revision/0?source=sip' }">
                     <span></span>
                     <span class="icon-holder">
@@ -203,7 +202,11 @@
                     </span>
                     <span class="title">SIP</span>
                     </Link>
-                </li>
+                </li> -->
+
+
+
+
                 <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/IPCR/direct" :class="{ 'active': $page.url === '/IPCR/direct' }">
                     <span></span>
@@ -304,20 +307,107 @@
                     <span class="title">Accomplishment Report</span>
                     </Link>
                 </li> -->
-                <li class="nav-item" v-if="$page.props.auth.user.department_code == '04'">
+                <!-- IPP (All Offices) -->
+                <!-- <li class="nav-item" v-if="$page.props.auth.user.department_code == '04'">
                     <Link class="sidebar-link" href="/revision_plans?source=direct"
                         :class="{ 'active': $page.url === '/revision_plans?source=direct' }"
                         v-if="($page.props.auth.user.department_code == '04' || $page.props.auth.user.office.empl_id == '1399')"
                     >
-                    <span></span>
-                    <span class="icon-holder">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-ruled-fill" viewBox="0 0 16 16">
-                            <path d="M12 0H4a2 2 0 0 0-2 2v4h12V2a2 2 0 0 0-2-2m2 7H6v2h8zm0 3H6v2h8zm0 3H6v3h6a2 2 0 0 0 2-2zm-9 3v-3H2v1a2 2 0 0 0 2 2zm-3-4h3v-2H2zm0-3h3V7H2z"/>
-                        </svg>
-
-                    </span>
-                    <span class="title">IPP (All Offices)</span>
+                        <span></span>
+                        <span class="icon-holder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-ruled-fill" viewBox="0 0 16 16">
+                                <path d="M12 0H4a2 2 0 0 0-2 2v4h12V2a2 2 0 0 0-2-2m2 7H6v2h8zm0 3H6v2h8zm0 3H6v3h6a2 2 0 0 0 2-2zm-9 3v-3H2v1a2 2 0 0 0 2 2zm-3-4h3v-2H2zm0-3h3V7H2z"/>
+                            </svg>
+                        </span>
+                        <span class="title">IPP (All Offices)</span>
                     </Link>
+                </li> -->
+
+
+                <li class="nav-item dropdown" >
+                    <a class="dropdown-toggle" href="javascript:void(0);">
+                        <span class="icon-holder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 2h12v20H4z"/>
+                                <path d="M6 6h8"/>
+                                <path d="M6 10h8"/>
+                                <circle cx="8" cy="16" r="2"/>
+                            </svg>
+                        </span>
+                        <span class="title">IPP</span>
+                        <span class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- Regular PPAs ************************************ -->
+                        <li>
+                            <Link class="sidebar-link" href="/revision/0?source=direct" :class="{ 'active': $page.url === '/revision/0?source=direct' }">
+                                <span></span>
+                                <span class="icon-holder">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 2h12v20H4z"/>
+                                        <path d="M6 6h8"/>
+                                        <path d="M6 10h8"/>
+                                        <circle cx="8" cy="16" r="2"/>
+                                    </svg>
+                                </span>
+                                <span class="title">&nbsp;&nbsp;Regular PPAs</span>
+                            </Link>
+                        </li>
+                        <!-- Engineering PPAs -->
+                        <li>
+                            <Link class="sidebar-link" href="/development-fund/0"
+                            :class="{ 'active': $page.url === '/development-fund/0' }">
+                            <span></span>
+                            <span class="icon-holder">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 2h12v20H4z"/>
+                                    <path d="M6 6h8"/>
+                                    <path d="M6 10h8"/>
+                                    <circle cx="8" cy="16" r="2"/>
+                                </svg>
+                            </span>
+                            <span class="title">&nbsp;&nbsp;Engineering PPAs</span>
+                            </Link>
+                        </li>
+                        <!-- IPP -ALl Offices -->
+                        <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/revision_plans?source=direct"
+                                :class="{ 'active': $page.url === '/revision_plans?source=direct' }"
+                                v-if="($page.props.auth.user.department_code == '04' || $page.props.auth.user.office.empl_id == '1399')"
+                            >
+                                <span></span>
+                                <span class="icon-holder">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-ruled-fill" viewBox="0 0 16 16">
+                                        <path d="M12 0H4a2 2 0 0 0-2 2v4h12V2a2 2 0 0 0-2-2m2 7H6v2h8zm0 3H6v2h8zm0 3H6v3h6a2 2 0 0 0 2-2zm-9 3v-3H2v1a2 2 0 0 0 2 2zm-3-4h3v-2H2zm0-3h3V7H2z"/>
+                                    </svg>
+                                </span>
+                                <span class="title">&nbsp;&nbsp;IPP (All Offices)</span>
+                            </Link>
+                        </li>
+                        <!-- SIP****************** -->
+                        <li>
+                            <Link class="sidebar-link" href="/revision/0?source=sip" :class="{ 'active': $page.url === '/revision/0?source=sip' }">
+                            <span></span>
+                            <span class="icon-holder">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 2h12v20H4z"/>
+                                    <path d="M6 6h8"/>
+                                    <path d="M6 10h8"/>
+                                    <circle cx="8" cy="16" r="2"/>
+                                </svg>
+                            </span>
+                            <span class="title">&nbsp;&nbsp;SIP</span>
+                            </Link>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/revision_plans?source=budget"

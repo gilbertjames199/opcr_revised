@@ -63,15 +63,15 @@
                     <table class="table table-hover align-middle">
                         <thead class="table-head-sticky">
                             <tr>
-                                <th v-if="auth.user.department_code === '04'" scope="col">
+                                <th >
                                     <i class="fas fa-building"></i> Project Title
                                 </th>
                                 <th scope="col">
-                                    <i class="fas fa-align-left"></i> Description
+                                    <i class="fas fa-align-left"></i> Office
                                 </th>
-                                <th scope="col">
+                                <!-- <th scope="col">
                                     <i class="fas fa-industry"></i> Sector
-                                </th>
+                                </th> -->
                                 <th scope="col" class="text-end">
                                     <i class="fas fa-cogs"></i> Action
                                 </th>
@@ -80,12 +80,16 @@
                         <tbody>
 
                             <tr v-for="dat in data.data">
-                                <td v-if="auth.user.department_code === '04'">{{ dat.project_title }}</td>
+                                <td >{{ dat.project_title }}</td>
                                 <td>
+                                    <!-- {{dat.paps.office.FFUNCTION }}
+                                      -->
+                                      {{ dat.paps?.office?.FFUNCTION ?? '' }}
+
                                     <!-- <div align="justify" v-html="dat.goal_description"></div> -->
                                     <!-- {{ truncateText(getPlainTextWithoutTags(dat.goal_description), 10) }} -->
                                 </td>
-                                <td></td>
+                                <!-- <td></td> -->
                                 <td class="text-end">
                                     <div class="dropdown dropstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button"

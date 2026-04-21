@@ -396,6 +396,7 @@
                             <div
                                 @mouseup="handleSelection('rationale')"
                                 v-html="paps.rationale"
+                                style="text-align: justify;"
                             ></div>
                             <!-- {{ paps.rationale }} -->
                         </div>

@@ -114,8 +114,10 @@
                 </div>
 
                 <!-- Responsive Table Container -->
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
+                  <!-- class="table-responsive" -->
+                <div>
+                     <!-- class="table table-hover align-middle" -->
+                    <table>
                         <thead class="table-head-sticky">
                             <tr>
                                 <th class="border-0 fw-semibold text-primary">

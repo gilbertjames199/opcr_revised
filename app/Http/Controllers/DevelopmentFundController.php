@@ -32,7 +32,7 @@ class DevelopmentFundController extends Controller
         if($request->no_of_pages){
             $no_of_pages = $request->no_of_pages;
         }
-        $data=RevisionPlan::with(['paps'])
+        $data=RevisionPlan::with(['paps','paps.office'])
                 ->when($id!=0, function($query) use ($id){
                     $query->where('id', $id);
                 })
