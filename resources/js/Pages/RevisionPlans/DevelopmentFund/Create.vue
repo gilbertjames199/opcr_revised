@@ -15,7 +15,7 @@
                 </Link>
             </div>
             <div v-else>
-                <Link :href="`/development-fund/${form.id}`">
+                <Link @click="goBack">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                     viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
