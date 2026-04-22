@@ -128,6 +128,7 @@
                                     </td>
 
                                     <!-- Col 3-4: Date From / Date To -->
+                                    <td></td>
                                     <td colspan="2"></td>
 
                                     <!-- Col 5: Expected Outputs — loop through sub-array -->
