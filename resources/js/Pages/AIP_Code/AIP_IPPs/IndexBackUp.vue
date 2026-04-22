@@ -55,8 +55,7 @@
                         <thead class="table-head-sticky">
                             <tr>
                                 <th scope="col" rowspan="2">AIP Code</th>
-                                <th scope="col" rowspan="2">Program/Project/Activity Title/Description</th>
-                                <th scope="col" rowspan="2">Implementing Office</th>
+                                <th scope="col" rowspan="2">Project Title</th>
                                 <th scope="col" colspan="2">Schedule of Implementation</th>
                                 <th scope="col" rowspan="2">Expected Outputs</th>
                                 <th scope="col" rowspan="2">Source of Fund</th>
@@ -84,7 +83,6 @@
                                             {{ item.project_title }}
                                         </button>
                                     </td>
-                                    <td>{{ item?.paps?.office?.FFUNCTION }}</td>
                                     <td>{{ item.date_start }}</td>
                                     <td>{{ item.date_end }}</td>
                                     <td></td>
@@ -119,37 +117,17 @@
                                     :key="`${item.id}-activity-${activity.id}`"
                                     class="sub-row"
                                 >
-                                    <!-- Col 1: AIP Code column — empty, acts as indent anchor -->
-                                    <td></td>
-
-                                    <!-- Col 2: Project Title column — activity description -->
-                                    <td style="padding-left: 20px;">
-                                        {{ activity.activity ? activity.activity.description : '' }}
+                                    <td colspan="2" style="padding-left: 40px;">
+                                        <strong>Activity:</strong> {{ activity.activity ? activity.activity.description : '' }}
                                     </td>
-
-                                    <!-- Col 3-4: Date From / Date To -->
                                     <td colspan="2"></td>
-
-                                    <!-- Col 5: Expected Outputs — loop through sub-array -->
-                                    <td>
-                                        <template v-if="activity.expected_output && activity.expected_output.length">
-                                            <div v-for="(output, idx) in activity.expected_output" :key="idx">
-                                                {{ output.description }}
-                                            </div>
-                                        </template>
-                                    </td>
-
-                                    <!-- Col 6: Source of Fund -->
+                                    <td>{{ activity.expected_output ? activity.expected_output.description : '' }}</td>
                                     <td></td>
-
-                                    <!-- Col 7-11: Amounts — formatted -->
-                                    <td>{{ format_number_conv(calculatePS(activity), 2, true) }}</td>
-                                    <td>{{ format_number_conv(calculateMOOE(activity), 2, true) }}</td>
-                                    <td>{{ format_number_conv(calculateFE(activity), 2, true) }}</td>
-                                    <td>{{ format_number_conv(calculateCO(activity), 2, true) }}</td>
-                                    <td>{{ format_number_conv(calculateTotal(activity), 2, true) }}</td>
-
-                                    <!-- Col 12-13: Sector / Subsector -->
+                                    <td>{{ calculatePS(activity).toFixed(2) }}</td>
+                                    <td>{{ calculateMOOE(activity).toFixed(2) }}</td>
+                                    <td>{{ calculateFE(activity).toFixed(2) }}</td>
+                                    <td>{{ calculateCO(activity).toFixed(2) }}</td>
+                                    <td>{{ calculateTotal(activity).toFixed(2) }}</td>
                                     <td colspan="2"></td>
                                 </tr>
                             </template>

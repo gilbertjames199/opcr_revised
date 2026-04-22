@@ -686,16 +686,23 @@ class AnnualInvestmentPlanController extends Controller
             $current_year = $request->year;
         }
         $revs = RevisionPlan::with([
-                    'paps',
-                    'paps.office',
-                    'activityProject',
-                    'activityProject.activity',
-                    'activityProject.expected_output'
-                ])
+                'paps',
+                'paps.office',
+                'activityProject' => function ($q) {
+                    $q->where('is_active', 1)
+                    ->whereHas('activity.strat'); // only ensure relationship exists
+                },
+                'activityProject.activity',
+                'activityProject.activity.strat',
+                'activityProject.expected_output'
+            ])
             ->whereYear('date_start', $current_year)
-            ->where('status',1)
+            ->where('status', 1)
+            ->whereHas('activityProject.activity.strat', function ($q) {
+                $q->whereColumn('strategies.idpaps', 'revision_plans.idpaps');
+            })
+            ->orderBy('aip_code', 'ASC')
             ->get();
-
         $gen_pub = $revs->filter(function ($rev) {
             return optional($rev->paps)->sector === 'General Public Services Sector'
                 && (optional($rev->paps)->source_of_funds === 'gen_fund'
