@@ -678,4 +678,66 @@ class AnnualInvestmentPlanController extends Controller
                 ];
             });
     }
+
+    public function set_ipp_aip_codes(Request $request)
+    {
+        $current_year = date('Y');
+        if($request->year){
+            $current_year = $request->year;
+        }
+        $revs = RevisionPlan::with([
+                    'paps',
+                    'paps.office',
+                    'activityProject',
+                    'activityProject.activity',
+                    'activityProject.expected_output'
+                ])
+            ->whereYear('date_start', $current_year)
+            ->where('status',1)
+            ->get();
+
+        $gen_pub = $revs->filter(function ($rev) {
+            return optional($rev->paps)->sector === 'General Public Services Sector'
+                && (optional($rev->paps)->source_of_funds === 'gen_fund'
+                || optional($rev->paps)->source_of_funds === ''
+                || optional($rev->paps)->source_of_funds === null);
+        });
+
+        $econ = $revs->filter(function ($rev) {
+            return optional($rev->paps)->sector === 'Economic Services'
+                && (optional($rev->paps)->source_of_funds === 'gen_fund'
+                || optional($rev->paps)->source_of_funds === ''
+                || optional($rev->paps)->source_of_funds === null);
+        });
+
+        $soc = $revs->filter(function ($rev) {
+            return optional($rev->paps)->sector === 'Social Services Sector'
+                && (optional($rev->paps)->source_of_funds === 'gen_fund'
+                    || optional($rev->paps)->source_of_funds === ''
+                    || optional($rev->paps)->source_of_funds === null);
+                // && optional($rev->paps)->source_of_funds === 'gen_fund';
+        });
+
+        $ldrrmf = $revs->filter(function ($rev) {
+            return optional($rev->paps)->source_of_funds === 'ldrrmf' && (optional($rev->paps)->source_of_funds === 'gen_fund'
+                || optional($rev->paps)->source_of_funds === ''
+                || optional($rev->paps)->source_of_funds === null);
+        });
+
+        $others = $revs->filter(function ($rev) {
+            return optional($rev->paps)->sector === 'Other Services' && (optional($rev->paps)->source_of_funds === 'gen_fund'
+                || optional($rev->paps)->source_of_funds === ''
+                || optional($rev->paps)->source_of_funds === null);
+        });
+
+        return inertia("AIP_Code/AIP_IPPs/Index",[
+            "gen_pub" => $gen_pub,
+            "econ" => $econ,
+            "soc" => $soc,
+            "ldrrmf" => $ldrrmf,
+            "others" => $others,
+        ]);
+        // dd($others, $gen_pub, $econ, $soc, $ldrrmf);
+
+    }
 }

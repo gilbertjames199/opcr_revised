@@ -455,6 +455,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
         Route::get('/export/aip', [RevisionPlanController::class, 'exportStrategies'])->name('export.aip');
     });
+    // AIP Code
+    // ipp_aip_codes
+    Route::prefix('/ipp_aip_codes')->group(function () {
+        Route::get('/', [AnnualInvestmentPlanController::class, 'set_ipp_aip_codes']);
+    });
     // 20% Development Fund
     Route::prefix('/development-fund')->group(function () {
         Route::get('/{id}', [DevelopmentFundController::class, 'dev_fund_index']);

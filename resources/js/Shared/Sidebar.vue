@@ -407,6 +407,22 @@
                             <span class="title">&nbsp;&nbsp;SIP</span>
                             </Link>
                         </li>
+                        <!-- AIP****************** -->
+                        <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/ipp_aip_codes" :class="{ 'active': $page.url === '/revision/0?source=sip' }">
+                            <span></span>
+                            <span class="icon-holder">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 2h12v20H4z"/>
+                                    <path d="M6 6h8"/>
+                                    <path d="M6 10h8"/>
+                                    <circle cx="8" cy="16" r="2"/>
+                                </svg>
+                            </span>
+                            <span class="title">&nbsp;&nbsp;IPP AIP Codes</span>
+                            </Link>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">
