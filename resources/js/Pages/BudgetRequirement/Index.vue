@@ -150,7 +150,7 @@
                             <span v-else>OK</span>
                         </th>
                     </tr>
-                    <tr>
+                    <tr v-if="gad_version=='1'">
                         <td>GAD Attributed Amount {{gad_version}}</td>
                         <td>{{ format_number_conv(revs_attributed,2,true) }}</td>
                         <td>{{ format_number_conv(GAD_total,2,true) }}</td>

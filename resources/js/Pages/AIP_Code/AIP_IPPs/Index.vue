@@ -1,6 +1,6 @@
 <template>
     <Head>
-        <title>Home</title>
+        <title>AIP</title>
     </Head>
 
     <div class="row gap-20 masonry pos-r">
