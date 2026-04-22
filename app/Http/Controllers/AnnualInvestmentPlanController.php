@@ -690,14 +690,23 @@ class AnnualInvestmentPlanController extends Controller
                 'paps.office',
                 'activityProject' => function ($q) {
                     $q->where('is_active', 1)
-                    ->whereHas('activity.strat'); // only ensure relationship exists
+                    ->whereHas('activity.strat')
+                    ->join('activities', 'activity_projects.activity_id', '=', 'activities.id')
+                    ->orderBy('activity_projects.seq_no', 'ASC')
+                    ->orderBy('activities.description', 'ASC')
+                    ->select('activity_projects.*'); // prevent column conflicts after join
                 },
                 'activityProject.activity',
                 'activityProject.activity.strat',
                 'activityProject.expected_output'
             ])
             ->whereYear('date_start', $current_year)
-            ->where('status', 1)
+            ->where(function ($q) {
+                $q->where('status', 1)
+                ->orWhereHas('paps', function ($q2) {
+                    $q2->where('source_of_funds', 'dev');
+                });
+            })
             ->whereHas('activityProject.activity.strat', function ($q) {
                 $q->whereColumn('strategies.idpaps', 'revision_plans.idpaps');
             })
@@ -708,6 +717,7 @@ class AnnualInvestmentPlanController extends Controller
                 && (optional($rev->paps)->source_of_funds === 'gen_fund'
                 || optional($rev->paps)->source_of_funds === ''
                 || optional($rev->paps)->source_of_funds === null)
+                && optional($rev->paps)->department_code !== 'dev'
                 && optional($rev->paps)->department_code !== '17';
         });
 
@@ -716,6 +726,7 @@ class AnnualInvestmentPlanController extends Controller
                 && (optional($rev->paps)->source_of_funds === 'gen_fund'
                 || optional($rev->paps)->source_of_funds === ''
                 || optional($rev->paps)->source_of_funds === null)
+                && optional($rev->paps)->department_code !== 'dev'
                 && optional($rev->paps)->department_code !== '17';
         });
 
@@ -724,6 +735,7 @@ class AnnualInvestmentPlanController extends Controller
                 && (optional($rev->paps)->source_of_funds === 'gen_fund'
                     || optional($rev->paps)->source_of_funds === ''
                     || optional($rev->paps)->source_of_funds === null)
+                && optional($rev->paps)->department_code !== 'dev'
                 && optional($rev->paps)->department_code !== '17';
                 // && optional($rev->paps)->source_of_funds === 'gen_fund';
         });
@@ -732,6 +744,7 @@ class AnnualInvestmentPlanController extends Controller
             return (optional($rev->paps)->source_of_funds === 'ldrrmf' && (optional($rev->paps)->source_of_funds === 'gen_fund'
                 || optional($rev->paps)->source_of_funds === ''
                 || optional($rev->paps)->source_of_funds === null))
+                && optional($rev->paps)->department_code !== 'dev'
                 || optional($rev->paps)->department_code === '17';
         });
 
@@ -739,6 +752,13 @@ class AnnualInvestmentPlanController extends Controller
             return optional($rev->paps)->sector === 'Other Services' && (optional($rev->paps)->source_of_funds === 'gen_fund'
                 || optional($rev->paps)->source_of_funds === ''
                 || optional($rev->paps)->source_of_funds === null)
+                && optional($rev->paps)->department_code !== 'dev'
+                && optional($rev->paps)->department_code !== '17';
+        });
+
+        $dev = $revs->filter(function ($rev) {
+            return optional($rev->paps)->source_of_funds === 'dev'
+
                 && optional($rev->paps)->department_code !== '17';
         });
 
@@ -748,6 +768,7 @@ class AnnualInvestmentPlanController extends Controller
             "soc" => $soc,
             "ldrrmf" => $ldrrmf,
             "others" => $others,
+            "dev" => $dev,
             "year_props"=>$current_year
         ]);
         // dd($others, $gen_pub, $econ, $soc, $ldrrmf);

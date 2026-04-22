@@ -174,6 +174,7 @@ export default {
         soc: Object,
         ldrrmf: Object,
         others: Object,
+        dev: Object,
         year_props: String
     },
     data() {
@@ -195,6 +196,7 @@ export default {
                 { key: 'soc',      label: 'Social Services',   data: this.soc },
                 { key: 'ldrrmf',   label: 'LDRRMF',            data: this.ldrrmf },
                 { key: 'others',   label: 'Other Sources',     data: this.others },
+                { key: 'dev',      label: '20% Development Fund', data: this.dev },
             ];
         },
         activeItems() {

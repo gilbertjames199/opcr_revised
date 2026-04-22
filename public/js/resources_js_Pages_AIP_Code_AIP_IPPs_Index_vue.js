@@ -23,6 +23,7 @@ __webpack_require__.r(__webpack_exports__);
     soc: Object,
     ldrrmf: Object,
     others: Object,
+    dev: Object,
     year_props: String
   },
   data: function data() {
@@ -59,6 +60,10 @@ __webpack_require__.r(__webpack_exports__);
         key: 'others',
         label: 'Other Sources',
         data: this.others
+      }, {
+        key: 'dev',
+        label: '20% Development Fund',
+        data: this.dev
       }];
     },
     activeItems: function activeItems() {
