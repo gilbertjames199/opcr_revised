@@ -700,34 +700,39 @@ class AnnualInvestmentPlanController extends Controller
             return optional($rev->paps)->sector === 'General Public Services Sector'
                 && (optional($rev->paps)->source_of_funds === 'gen_fund'
                 || optional($rev->paps)->source_of_funds === ''
-                || optional($rev->paps)->source_of_funds === null);
+                || optional($rev->paps)->source_of_funds === null)
+                && optional($rev->paps)->department_code !== '17';
         });
 
         $econ = $revs->filter(function ($rev) {
             return optional($rev->paps)->sector === 'Economic Services'
                 && (optional($rev->paps)->source_of_funds === 'gen_fund'
                 || optional($rev->paps)->source_of_funds === ''
-                || optional($rev->paps)->source_of_funds === null);
+                || optional($rev->paps)->source_of_funds === null)
+                && optional($rev->paps)->department_code !== '17';
         });
 
         $soc = $revs->filter(function ($rev) {
             return optional($rev->paps)->sector === 'Social Services Sector'
                 && (optional($rev->paps)->source_of_funds === 'gen_fund'
                     || optional($rev->paps)->source_of_funds === ''
-                    || optional($rev->paps)->source_of_funds === null);
+                    || optional($rev->paps)->source_of_funds === null)
+                && optional($rev->paps)->department_code !== '17';
                 // && optional($rev->paps)->source_of_funds === 'gen_fund';
         });
 
         $ldrrmf = $revs->filter(function ($rev) {
-            return optional($rev->paps)->source_of_funds === 'ldrrmf' && (optional($rev->paps)->source_of_funds === 'gen_fund'
+            return (optional($rev->paps)->source_of_funds === 'ldrrmf' && (optional($rev->paps)->source_of_funds === 'gen_fund'
                 || optional($rev->paps)->source_of_funds === ''
-                || optional($rev->paps)->source_of_funds === null);
+                || optional($rev->paps)->source_of_funds === null))
+                || optional($rev->paps)->department_code === '17';
         });
 
         $others = $revs->filter(function ($rev) {
             return optional($rev->paps)->sector === 'Other Services' && (optional($rev->paps)->source_of_funds === 'gen_fund'
                 || optional($rev->paps)->source_of_funds === ''
-                || optional($rev->paps)->source_of_funds === null);
+                || optional($rev->paps)->source_of_funds === null)
+                && optional($rev->paps)->department_code !== '17';
         });
 
         return inertia("AIP_Code/AIP_IPPs/Index",[
@@ -736,6 +741,7 @@ class AnnualInvestmentPlanController extends Controller
             "soc" => $soc,
             "ldrrmf" => $ldrrmf,
             "others" => $others,
+            "year_props"=>$current_year
         ]);
         // dd($others, $gen_pub, $econ, $soc, $ldrrmf);
 

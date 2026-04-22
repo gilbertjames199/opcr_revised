@@ -420,7 +420,7 @@
                                     <circle cx="8" cy="16" r="2"/>
                                 </svg>
                             </span>
-                            <span class="title">&nbsp;&nbsp;IPP AIP Codes</span>
+                            <span class="title">&nbsp;&nbsp;AIP</span>
                             </Link>
                         </li>
                     </ul>
