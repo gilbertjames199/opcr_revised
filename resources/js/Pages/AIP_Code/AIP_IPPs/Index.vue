@@ -170,8 +170,13 @@
                                     <td>
                                         <template v-if="activity.expected_output && activity.expected_output.length">
                                             <div v-for="(output, idx) in activity.expected_output" :key="idx">
+                                                <span v-if="expected_output_quantity(output)>0 && shouldDisplayQuantity(output.description)" >
+                                                    <b>{{ expected_output_quantity(output) }}</b>
+                                                </span>
+
                                                 {{ output.description }}
                                             </div>
+                                            <br />
                                         </template>
                                     </td>
 
@@ -322,6 +327,46 @@ export default {
                 preserveScroll: true,
                 preserveState:  false, // false so the table refreshes with updated aip_codes
             });
+        },
+        expected_output_quantity(expected_output) {
+            if (!expected_output) return 0;
+            var q1 = expected_output.physical_q1;
+            var q2 = expected_output.physical_q2;
+            var q3 = expected_output.physical_q3;
+            var q4 = expected_output.physical_q4;
+            console.log(expected_output.description, q1, q2, q3, q4)
+            var total = parseFloat(q1 || 0) + parseFloat(q2 || 0) + parseFloat(q3 || 0) + parseFloat(q4 || 0);
+            return total;
+        },
+        shouldDisplayQuantity(description){
+            if(!description) return false
+
+            const text = description.trim()
+
+            // 1. If description starts with a number → DO NOT display quantity
+            if(/^\d+/.test(text)){
+                return false
+            }
+
+            /*
+                2. If description follows:
+                <verb> <number> ...
+                OR
+                <verb1>, <verb2>, and <verbN> <number> ...
+
+                Example matches:
+                "Conduct 5 trainings"
+                "Prepare, review, and submit 3 reports"
+            */
+
+            const verbNumberPattern = /^[A-Za-z,\s]+?\s\d+\b/
+
+            if(verbNumberPattern.test(text)){
+                return false
+            }
+
+            // Otherwise, display quantity
+            return true
         },
     },
 };
