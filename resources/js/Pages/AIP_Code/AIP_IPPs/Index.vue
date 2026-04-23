@@ -365,6 +365,18 @@ export default {
                 return false
             }
 
+
+            // 3. Ends with:
+            //    - number
+            //    - number + unit
+            //    - "- number"
+            //    - "- number unit"
+            const endNumberPattern = /(-\s*)?\d+(\.\d+)?(\s+[A-Za-z]+)?\s*$/;
+
+            if (endNumberPattern.test(text)) {
+                return false;
+            }
+
             // Otherwise, display quantity
             return true
         },
