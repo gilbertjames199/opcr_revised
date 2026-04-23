@@ -181,6 +181,14 @@
                                             <i :class="expandedRows[item.id] ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></i>
                                             {{ item.project_title }}
                                         </button>
+                                        <a :href="`/revision/view/project/paps/${item.id}`"
+                                            target="_blank"
+                                            class="btn btn-sm btn-link text-primary ms-1"
+                                            title="View project details"
+                                            style="padding: 0;"
+                                        >
+                                            <i class="fas fa-eye"></i>
+                                        </a>
                                     </td>
                                     <td>{{ item?.paps?.office?.FFUNCTION }}</td>
                                     <td>{{ item.date_start }}</td>
@@ -234,6 +242,7 @@
                                     <!-- Col 2: Project Title column — activity description -->
                                     <td style="padding-left: 20px;">
                                         {{ activity.activity ? activity.activity.description : '' }}
+
                                     </td>
 
                                     <!-- Col 3-4: Date From / Date To -->
