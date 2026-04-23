@@ -244,13 +244,19 @@
                                     <td>
                                         <template v-if="activity.expected_output && activity.expected_output.length">
                                             <div v-for="(output, idx) in activity.expected_output" :key="idx">
-                                                <span v-if="expected_output_quantity(output)>0 && shouldDisplayQuantity(output.description)" >
-                                                    <b>{{ expected_output_quantity(output) }}</b>
-                                                </span>
+                                                <div>
+                                                    <span v-if="expected_output_quantity(output)>0 && shouldDisplayQuantity(output.description)" >
+                                                        <b>{{ expected_output_quantity(output) }}</b>
+                                                    </span>
 
-                                                {{ output.description }}
+                                                    {{ output.description }}
+                                                </div>
+                                                <hr v-if="activity.expected_output.length>1" style="border-color: white; border-style: solid;" />
                                             </div>
-                                            <br />
+
+
+
+                                            <!-- <br /> -->
                                         </template>
                                     </td>
 
