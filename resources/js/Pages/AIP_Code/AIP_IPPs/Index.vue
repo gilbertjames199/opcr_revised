@@ -85,6 +85,10 @@
                                 <span class="badge bg-secondary me-2"><i class="fas fa-link"></i></span>
                                 <strong>Inherit AIP Codes</strong> — Copies AIP codes from the previous year's approved plan into the current year's records where no code has been assigned yet.
                             </li>
+                            <li class="mb-2">
+                                <span class="badge bg-secondary me-2"><i class="fas fa-eye"></i></span>
+                                <strong>View Project Details</strong> — Opens a new tab to display detailed information about the selected project.
+                            </li>
                         </ul>
                     </div>
 
