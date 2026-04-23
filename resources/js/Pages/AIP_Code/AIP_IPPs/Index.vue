@@ -45,6 +45,75 @@
 
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
+            <!-- Legend / Instructions Card -->
+            <div class="bgc-white bd mb-3">
+                <!-- Header -->
+                <div
+                    class="px-20 py-2 d-flex align-items-center justify-content-between"
+                    style="background-color: #1d5c8a; border-radius: 2px 2px 0 0; cursor: pointer; padding-left: 20px !important; padding-right: 20px !important;"
+                    @click="showGuide = !showGuide"
+                >
+                    <span class="fw-bold text-white" style="font-size: 14px;">
+                        <i class="fas fa-info-circle me-2"></i>Guide
+                    </span>
+                    <i
+                        class="fas text-white"
+                        :class="showGuide ? 'fa-chevron-up' : 'fa-chevron-down'"
+                    ></i>
+                </div>
+
+                <!-- Collapsible Body -->
+                <div v-show="showGuide" class="p-20 row g-3">
+
+                    <!-- Buttons -->
+                    <div class="col-md-6">
+                        <p class="fw-semibold mb-2 text-muted" style="font-size: 13px; text-transform: uppercase; letter-spacing: .5px;">Toolbar Buttons</p>
+                        <ul class="list-unstyled mb-0" style="font-size: 13px;">
+                            <li class="mb-2">
+                                <span class="badge bg-secondary me-2"><i class="fas fa-expand"></i></span>
+                                <strong>Expand All</strong> — Shows all activity rows under each project in the current tab.
+                            </li>
+                            <li class="mb-2">
+                                <span class="badge bg-secondary me-2"><i class="fas fa-compress"></i></span>
+                                <strong>Collapse All</strong> — Hides all activity rows, showing only the top-level project rows.
+                            </li>
+                            <li class="mb-2">
+                                <span class="badge bg-secondary me-2"><i class="fas fa-link"></i></span>
+                                <strong>Inherit AIP Codes</strong> — Copies AIP codes from the previous year's approved plan into the current year's records where no code has been assigned yet.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Editable Columns -->
+                    <div class="col-md-4">
+                        <p class="fw-semibold mb-2 text-muted" style="font-size: 13px; text-transform: uppercase; letter-spacing: .5px;">Editable Columns</p>
+                        <ul class="list-unstyled mb-0" style="font-size: 13px;">
+                            <li class="mb-2">
+                                <span class="badge bg-warning text-dark me-2">AIP Code</span>
+                                Type directly into the field — changes are saved automatically on blur.
+                            </li>
+                            <li class="mb-2">
+                                <span class="badge bg-warning text-dark me-2">Source of Fund</span>
+                                Select from the dropdown — saved automatically on change.
+                            </li>
+                            <li class="mb-2">
+                                <span class="badge bg-warning text-dark me-2">Sector</span>
+                                Select from the dropdown — saved automatically on change.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="col-md-2">
+                        <p class="fw-semibold mb-2 text-muted" style="font-size: 13px; text-transform: uppercase; letter-spacing: .5px;">Search Bar</p>
+                        <p style="font-size: 13px;" class="mb-0">
+                            Filters records across <strong>all tabs</strong> by AIP Code, Project Title, Office, Sector, Subsector, or Activity description. Results update automatically as you type.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Tabs Navigation -->
             <div class="bgc-white p-20 bd">
                 <!-- Tabs Navigation -->
                 <ul class="nav nav-tabs" id="aipTabs" role="tablist">
@@ -226,6 +295,7 @@ export default {
             year: '',
             expandedRows: {},
             activeTab: 'gen_pub',
+            showGuide: true,   // ← add this
         }
     },
     components: {
