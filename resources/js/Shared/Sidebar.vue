@@ -408,7 +408,7 @@
                             </Link>
                         </li>
                         <!-- AIP****************** -->
-                        <li v-if="$page.props.auth.user.department_code == '04'">
+                        <li >
                             <Link class="sidebar-link" href="/ipp_aip_codes" :class="{ 'active': $page.url === '/revision/0?source=sip' }">
                             <span></span>
                             <span class="icon-holder">

@@ -48,13 +48,14 @@
             <div class="bgc-white p-20 bd">
                 <!-- Tabs Navigation -->
                 <ul class="nav nav-tabs" id="aipTabs" role="tablist">
-                    <li class="nav-item" role="presentation" v-for="tab in tabs" :key="tab.key">
+                    <li class="nav-item" role="presentation" v-for="tab in tabs" :key="tab.key" >
                         <button
                             class="nav-link"
                             :class="{ active: activeTab === tab.key }"
                             @click="activeTab = tab.key"
                             type="button"
                             role="tab"
+                            v-if="getLength(tab.data) > 0"
                         >
                             {{ tab.label }}
                             <span class="badge-circle">{{ getLength(tab.data) }}</span>

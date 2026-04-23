@@ -687,6 +687,9 @@ class AnnualInvestmentPlanController extends Controller
         if($request->year){
             $current_year = $request->year;
         }
+        // dd(auth()->user(), $request->year);
+        $dept_code = auth()->user()->department_code;
+
         $revs = RevisionPlan::with([
                 'paps',
                 'paps.office',
@@ -711,6 +714,12 @@ class AnnualInvestmentPlanController extends Controller
             })
             ->whereHas('activityProject.activity.strat', function ($q) {
                 $q->whereColumn('strategies.idpaps', 'revision_plans.idpaps');
+            })
+            ->when($dept_code !== '04', function ($query) use ($dept_code) {
+                // Filter by paps.department_code when user is not '04'
+                $query->whereHas('paps', function ($q) use ($dept_code) {
+                    $q->where('department_code', $dept_code);
+                });
             })
             ->orderBy('aip_code', 'ASC')
             ->get();
