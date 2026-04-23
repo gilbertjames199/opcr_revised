@@ -251,7 +251,7 @@
 
                                                     {{ output.description }}
                                                 </div>
-                                                <hr v-if="activity.expected_output.length>1" style="border-color: white; border-style: solid;" />
+                                                <hr v-if="activity.expected_output.length>1 && idx !== activity.expected_output.length - 1" style="border-color: white; border-style: solid;" />
                                             </div>
 
 
