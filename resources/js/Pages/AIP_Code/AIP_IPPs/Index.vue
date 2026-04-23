@@ -70,6 +70,10 @@
                         <p class="fw-semibold mb-2 text-muted" style="font-size: 13px; text-transform: uppercase; letter-spacing: .5px;">Toolbar Buttons</p>
                         <ul class="list-unstyled mb-0" style="font-size: 13px;">
                             <li class="mb-2">
+                                <span class="badge bg-secondary me-2"><i class="fas fa-calendar"></i></span>
+                                <strong>Year Filter</strong> — Filters the entire table to show only records within the selected calendar year. Changing the value immediately reloads the page with updated data.
+                            </li>
+                            <li class="mb-2">
                                 <span class="badge bg-secondary me-2"><i class="fas fa-expand"></i></span>
                                 <strong>Expand All</strong> — Shows all activity rows under each project in the current tab.
                             </li>
@@ -295,7 +299,7 @@ export default {
             year: '',
             expandedRows: {},
             activeTab: 'gen_pub',
-            showGuide: true,   // ← add this
+            showGuide: false,   // ← add this
         }
     },
     components: {

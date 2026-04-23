@@ -727,9 +727,16 @@ class AnnualInvestmentPlanController extends Controller
                     $q->where('aip_code', 'like', "%{$search}%")
                     ->orWhere('project_title', 'like', "%{$search}%")
                     ->orWhereHas('paps', function ($q2) use ($search) {
+                        // $q2->where(function($q3) use ($search) {
+                        //      $q3->where('sector', 'like', "%{$search}%")
+                        //     ->orWhere('subsector', 'like', "%{$search}%");
+                        // })->where('FFUNCCOD', 'like', "%{$search}%");
                         $q2->where('sector', 'like', "%{$search}%")
                             ->orWhere('subsector', 'like', "%{$search}%");
                     })
+                    // ->orWhereHas('paps.office', function ($q2) use ($search) {
+                    //     $q2->where('office', 'like', "%{$search}%");
+                    // })
                     ->orWhereHas('activityProject.activity', function ($q2) use ($search) {
                         $q2->where('description', 'like', "%{$search}%");
                     });
