@@ -459,6 +459,8 @@ Route::middleware('auth')->group(function () {
     // ipp_aip_codes
     Route::prefix('/ipp_aip_codes')->group(function () {
         Route::get('/', [AnnualInvestmentPlanController::class, 'set_ipp_aip_codes']);
+        Route::patch('/autosave', [AnnualInvestmentPlanController::class, 'autosave']); // ← add here
+        Route::patch('/inherit_aip_codes', [AnnualInvestmentPlanController::class, 'inheritAipCodes']); // ← add here
     });
     // 20% Development Fund
     Route::prefix('/development-fund')->group(function () {

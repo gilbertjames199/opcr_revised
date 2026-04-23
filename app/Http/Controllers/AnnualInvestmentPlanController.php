@@ -19,6 +19,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+
 
 class AnnualInvestmentPlanController extends Controller
 {
@@ -773,5 +775,53 @@ class AnnualInvestmentPlanController extends Controller
         ]);
         // dd($others, $gen_pub, $econ, $soc, $ldrrmf);
 
+    }
+
+    public function autosave(Request $request)
+    {
+        // dd($request, ProgramAndProject::where('id', $request->id)->first());
+        $allowedColumns = [
+            'revision_plans'      => ['aip_code'],
+            'program_and_projects' => ['source_of_funds', 'sector'],
+        ];
+
+        $validated = $request->validate([
+            'id'     => ['required', 'integer'],
+            'table'  => ['required', 'string', Rule::in(array_keys($allowedColumns))],
+            'column' => ['required', 'string'],
+            'value'  => ['nullable', 'string', 'max:255'],
+        ]);
+
+        // Whitelist the column against its table to prevent mass-assignment via URL tampering
+        $table  = $validated['table'];
+        $column = $validated['column'];
+
+        abort_if(
+            !in_array($column, $allowedColumns[$table], true),
+            422,
+            "Column '{$column}' is not allowed on table '{$table}'."
+        );
+
+        DB::table($table)
+            ->where('id', $validated['id'])
+            ->update([$column => $validated['value']]);
+
+        // return response()->json(['success' => true]);
+        return redirect()->back();
+    }
+
+    public function inheritAipCodes()
+    {
+        // Update only revision_plans rows where aip_code is null/blank,
+        // joining to program_and_projects through idpaps = program_and_projects.id
+        DB::table('revision_plans')
+            ->join('program_and_projects', 'revision_plans.idpaps', '=', 'program_and_projects.id')
+            ->whereNull('revision_plans.aip_code')
+            ->orWhere('revision_plans.aip_code', '')
+            ->update([
+                'revision_plans.aip_code' => DB::raw('program_and_projects.aip_code'),
+            ]);
+
+        return redirect()->back();
     }
 }

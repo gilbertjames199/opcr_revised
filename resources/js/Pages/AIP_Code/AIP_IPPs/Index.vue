@@ -22,10 +22,23 @@
                     </select>
                 </div>
                 <div class="toolbar-right">
-                    <Link class="tool-btn tool-btn-primary" :href="`/AIP/create`">
+                    <button @click="expandAll" class="tool-btn tool-btn-secondary me-2">
+                        <i class="fas fa-expand"></i>
+                        Expand All
+                    </button>
+                    <button @click="collapseAll" class="tool-btn tool-btn-secondary me-2">
+                        <i class="fas fa-compress"></i>
+                        Collapse All
+                    </button>
+
+                    <button @click="inheritAipCodes" class="tool-btn tool-btn-secondary me-2">
+                        <i class="fas fa-link"></i>
+                        Inherit AIP Codes
+                    </button>
+                    <!-- <Link class="tool-btn tool-btn-primary" :href="`/AIP/create`">
                         <i class="fas fa-plus"></i>
                         AIP Codes
-                    </Link>
+                    </Link> -->
                 </div>
             </div>
         </div>
@@ -76,8 +89,19 @@
                         </thead>
                         <tbody>
                             <template v-for="item in activeItems" :key="item.id">
+                                <!-- MAIN ROWS -->
                                 <tr class="main-row">
-                                    <td><input v-model="item.aip_code" type="text" class="form-control form-control-sm" /></td>
+                                    <td>
+                                        <!-- {{ item.aip_code }} -->
+                                        <!-- <input v-model="item.aip_code" type="text" class="form-control form-control-sm" /> -->
+                                        <input
+                                            v-model="item.aip_code"
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            style="min-width: 160px;"
+                                            @blur="autosave(item.id, 'revision_plans', 'aip_code', item.aip_code)"
+                                        />
+                                    </td>
                                     <td>
                                         <button @click="toggleRow(item.id)" class="btn btn-sm btn-link" style="text-align: left; padding: 0;">
                                             <i :class="expandedRows[item.id] ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></i>
@@ -89,7 +113,12 @@
                                     <td>{{ item.date_end }}</td>
                                     <td></td>
                                     <td>
-                                        <select v-model="item.paps.source_of_funds" class="form-select form-select-sm">
+                                        <!-- <select v-model="item.paps.source_of_funds" class="form-select form-select-sm"> -->
+                                        <select
+                                            v-model="item.paps.source_of_funds"
+                                            class="form-select form-select-sm"
+                                            @change="autosave(item.paps.id, 'program_and_projects', 'source_of_funds', item.paps.source_of_funds)"
+                                        >
                                             <option value="">-- Select --</option>
                                             <option value="dev">20% Development Fund</option>
                                             <option value="gen_fund">General Fund</option>
@@ -103,7 +132,12 @@
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        <select v-model="item.paps.sector" class="form-select form-select-sm">
+                                        <!-- <select v-model="item.paps.sector" class="form-select form-select-sm"> -->
+                                        <select
+                                            v-model="item.paps.sector"
+                                            class="form-select form-select-sm"
+                                            @change="autosave(item.paps.id, 'program_and_projects', 'sector', item.paps.sector)"
+                                        >
                                             <option value="">-- Select --</option>
                                             <option value="Economic Services">Economic Services</option>
                                             <option value="General Public Services Sector">General Public Services Sector</option>
@@ -113,6 +147,7 @@
                                     </td>
                                     <td>{{ item.paps.subsector }}</td>
                                 </tr>
+                                <!-- CHILD ROWS -->
                                 <tr
                                     v-if="expandedRows[item.id] && item.activity_project && item.activity_project.length"
                                     v-for="activity in item.activity_project"
@@ -207,6 +242,12 @@ export default {
     },
     mounted() {
         this.year = this.year_props;
+        this.expandAll();
+    },
+    watch: {
+        activeTab() {
+            this.expandAll();
+        }
     },
     methods: {
         getLength(prop) {
@@ -224,6 +265,16 @@ export default {
         },
         toggleRow(itemId) {
             this.expandedRows[itemId] = !this.expandedRows[itemId];
+        },
+        expandAll() {
+            this.activeItems.forEach(item => {
+                this.expandedRows[item.id] = true;
+            });
+        },
+        collapseAll() {
+            this.activeItems.forEach(item => {
+                this.expandedRows[item.id] = false;
+            });
         },
         calculatePS(activity_project) {
             return parseFloat(activity_project.ps_q1 || 0) +
@@ -254,7 +305,24 @@ export default {
                    this.calculateMOOE(activity_project) +
                    this.calculateFE(activity_project) +
                    this.calculateCO(activity_project);
-        }
+        },
+        autosave(id, tableName, columnName, value) {
+            this.$inertia.patch('/ipp_aip_codes/autosave', {
+                id,
+                table:  tableName,
+                column: columnName,
+                value,
+            }, {
+                preserveScroll: true,
+                preserveState:  true,
+            });
+        },
+        inheritAipCodes() {
+            this.$inertia.patch('/ipp_aip_codes/inherit_aip_codes', {}, {
+                preserveScroll: true,
+                preserveState:  false, // false so the table refreshes with updated aip_codes
+            });
+        },
     },
 };
 </script>
