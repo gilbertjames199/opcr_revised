@@ -48,7 +48,7 @@
             <div class="bgc-white p-20 bd">
                 <!-- Tabs Navigation -->
                 <ul class="nav nav-tabs" id="aipTabs" role="tablist">
-                    <li class="nav-item" role="presentation" v-for="tab in tabs" :key="tab.key" >
+                    <li class="nav-item" role="presentation" v-for="tab in filteredTabs" :key="tab.key" >
                         <button
                             class="nav-link"
                             :class="{ active: activeTab === tab.key }"
@@ -216,11 +216,13 @@ export default {
         ldrrmf: Object,
         others: Object,
         dev: Object,
-        year_props: String
+        year_props: String,
+        filters: Object,
     },
     data() {
         return {
-            search: '',
+
+            search: this.filters?.search ?? '',
             year: '',
             expandedRows: {},
             activeTab: 'gen_pub',
@@ -245,6 +247,9 @@ export default {
             if (!tab || !tab.data) return [];
             return Array.isArray(tab.data) ? tab.data : (tab.data.data ?? Object.values(tab.data));
         },
+        filteredTabs() {
+            return this.tabs.filter(tab => this.getLength(tab.data) > 0);
+        },
     },
     mounted() {
         this.year = this.year_props;
@@ -253,7 +258,35 @@ export default {
     watch: {
         activeTab() {
             this.expandAll();
-        }
+        },
+        filteredTabs: {
+            immediate: true,
+            handler(tabs) {
+                if (!tabs.length) {
+                    this.activeTab = null;
+                    return;
+                }
+
+                // If current tab is empty or invalid → switch to first available
+                const exists = tabs.some(t => t.key === this.activeTab);
+                if (!exists) {
+                    this.activeTab = tabs[0].key;
+                }
+            }
+        },
+        search(value) {
+            clearTimeout(this._searchTimeout);
+            this._searchTimeout = setTimeout(() => {
+                this.$inertia.get('/ipp_aip_codes', {
+                    search: value,
+                    year: this.year,
+                }, {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                });
+            }, 400);
+        },
     },
     methods: {
         getLength(prop) {

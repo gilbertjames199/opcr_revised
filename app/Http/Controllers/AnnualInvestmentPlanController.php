@@ -689,6 +689,7 @@ class AnnualInvestmentPlanController extends Controller
         }
         // dd(auth()->user(), $request->year);
         $dept_code = auth()->user()->department_code;
+        $search = $request->search;
 
         $revs = RevisionPlan::with([
                 'paps',
@@ -719,6 +720,19 @@ class AnnualInvestmentPlanController extends Controller
                 // Filter by paps.department_code when user is not '04'
                 $query->whereHas('paps', function ($q) use ($dept_code) {
                     $q->where('department_code', $dept_code);
+                });
+            })
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('aip_code', 'like', "%{$search}%")
+                    ->orWhere('project_title', 'like', "%{$search}%")
+                    ->orWhereHas('paps', function ($q2) use ($search) {
+                        $q2->where('sector', 'like', "%{$search}%")
+                            ->orWhere('subsector', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('activityProject.activity', function ($q2) use ($search) {
+                        $q2->where('description', 'like', "%{$search}%");
+                    });
                 });
             })
             ->orderBy('aip_code', 'ASC')
@@ -780,7 +794,10 @@ class AnnualInvestmentPlanController extends Controller
             "ldrrmf" => $ldrrmf,
             "others" => $others,
             "dev" => $dev,
-            "year_props"=>$current_year
+            "year_props"=>$current_year,
+            "filters"    => [           // ← add this
+                "search" => $search,
+            ],
         ]);
         // dd($others, $gen_pub, $econ, $soc, $ldrrmf);
 

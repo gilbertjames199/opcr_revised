@@ -24,11 +24,13 @@ __webpack_require__.r(__webpack_exports__);
     ldrrmf: Object,
     others: Object,
     dev: Object,
-    year_props: String
+    year_props: String,
+    filters: Object
   },
   data: function data() {
+    var _this$filters$search, _this$filters;
     return {
-      search: '',
+      search: (_this$filters$search = (_this$filters = this.filters) === null || _this$filters === void 0 ? void 0 : _this$filters.search) !== null && _this$filters$search !== void 0 ? _this$filters$search : '',
       year: '',
       expandedRows: {},
       activeTab: 'gen_pub'
@@ -74,6 +76,12 @@ __webpack_require__.r(__webpack_exports__);
       });
       if (!tab || !tab.data) return [];
       return Array.isArray(tab.data) ? tab.data : (_tab$data$data = tab.data.data) !== null && _tab$data$data !== void 0 ? _tab$data$data : Object.values(tab.data);
+    },
+    filteredTabs: function filteredTabs() {
+      var _this2 = this;
+      return this.tabs.filter(function (tab) {
+        return _this2.getLength(tab.data) > 0;
+      });
     }
   },
   mounted: function mounted() {
@@ -83,6 +91,38 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     activeTab: function activeTab() {
       this.expandAll();
+    },
+    filteredTabs: {
+      immediate: true,
+      handler: function handler(tabs) {
+        var _this3 = this;
+        if (!tabs.length) {
+          this.activeTab = null;
+          return;
+        }
+
+        // If current tab is empty or invalid → switch to first available
+        var exists = tabs.some(function (t) {
+          return t.key === _this3.activeTab;
+        });
+        if (!exists) {
+          this.activeTab = tabs[0].key;
+        }
+      }
+    },
+    search: function search(value) {
+      var _this4 = this;
+      clearTimeout(this._searchTimeout);
+      this._searchTimeout = setTimeout(function () {
+        _this4.$inertia.get('/ipp_aip_codes', {
+          search: value,
+          year: _this4.year
+        }, {
+          preserveScroll: true,
+          preserveState: true,
+          replace: true
+        });
+      }, 400);
     }
   },
   methods: {
@@ -105,15 +145,15 @@ __webpack_require__.r(__webpack_exports__);
       this.expandedRows[itemId] = !this.expandedRows[itemId];
     },
     expandAll: function expandAll() {
-      var _this2 = this;
+      var _this5 = this;
       this.activeItems.forEach(function (item) {
-        _this2.expandedRows[item.id] = true;
+        _this5.expandedRows[item.id] = true;
       });
     },
     collapseAll: function collapseAll() {
-      var _this3 = this;
+      var _this6 = this;
       this.activeItems.forEach(function (item) {
-        _this3.expandedRows[item.id] = false;
+        _this6.expandedRows[item.id] = false;
       });
     },
     calculatePS: function calculatePS(activity_project) {
@@ -360,7 +400,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "fas fa-link"
   }, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Inherit AIP Codes ", -1 /* CACHED */)]))), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link class=\"tool-btn tool-btn-primary\" :href=\"`/AIP/create`\">\n                        <i class=\"fas fa-plus\"></i>\n                        AIP Codes\n                    </Link> ")])])]), _cache[27] || (_cache[27] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "masonry-sizer col-md-6"
-  }, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tabs Navigation "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.tabs, function (tab) {
+  }, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tabs Navigation "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredTabs, function (tab) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       "class": "nav-item",
       role: "presentation",
