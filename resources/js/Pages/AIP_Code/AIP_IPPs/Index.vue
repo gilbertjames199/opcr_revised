@@ -50,7 +50,7 @@
                 <!-- Header -->
                 <div
                     class="px-20 py-2 d-flex align-items-center justify-content-between"
-                    style="background-color: #1d5c8a; border-radius: 2px 2px 0 0; cursor: pointer; padding-left: 20px !important; padding-right: 20px !important;"
+                    style="background-color: #612f03; border-radius: 2px 2px 0 0; cursor: pointer; padding-left: 20px !important; padding-right: 20px !important;"
                     @click="showGuide = !showGuide"
                 >
                     <span class="fw-bold text-white" style="font-size: 14px;">
@@ -187,7 +187,7 @@
                                         </button>
                                         <a :href="`/revision/view/project/paps/${item.id}`"
                                             target="_blank"
-                                            class="btn btn-sm btn-link text-primary ms-1"
+                                            class="btn btn-sm btn-link text-success ms-1"
                                             title="View project details"
                                             style="padding: 0;"
                                         >
@@ -519,7 +519,7 @@ export default {
     width: 28px;
     height: 28px;
     margin-left: 8px;
-    background-color: #dc3545;
+    background-color: #c2026f;
     color: white;
     font-weight: bold;
     border-radius: 50%;
