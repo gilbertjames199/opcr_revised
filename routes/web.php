@@ -425,6 +425,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/major/final/outputs/filter/{division_code}/filter/by/division', [PAPController::class, 'mfos_filter']);
         //FILTER mother PAPS in CREATE/EDIT
         Route::get('/mother/paps/filter/{idmfo}', [PAPController::class, 'mother_paps_filter']);
+        Route::get('/major/final/outputs', [PAPController::class, 'FUNCTIONS']);
     });
     //Shared Programs and Projects Profile
     Route::prefix('/sharedPAPS')->group(function () {

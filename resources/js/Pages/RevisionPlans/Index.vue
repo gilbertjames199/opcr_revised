@@ -59,6 +59,9 @@
                         <button class="tool-btn tool-btn-outline" @click="showFilter()">
                             <i class="fas fa-filter"></i> Filter
                         </button>
+                        <button class="tool-btn btn-success" @click="showFilter1()">
+                            <i class="fas fa-filter"></i> Print HGDH Score
+                        </button>
                     </div>
                 </div>
 

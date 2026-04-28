@@ -9,6 +9,7 @@ use App\Models\Division;
 use App\Models\EconomicAgenda;
 use App\Models\ELA;
 use App\Models\FFUNCCOD;
+use App\Models\Functions;
 use App\Models\MajorFinalOutput;
 use App\Models\Monitoring;
 use App\Models\Office;
@@ -94,7 +95,7 @@ class PAPController extends Controller
         $sustainable = SDG::get();
         $executive_legislative = ELA::get();
         $research = ResearchAgenda::get();
-        //dd($id);
+        dd($id);
         $year_object = DB::connection('mysql2')
             ->table('raaohs')
             ->select(DB::raw('DISTINCT(tyear)'))
@@ -225,7 +226,7 @@ class PAPController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request);
+        // dd($request->all());
         $FFUNCCOD = $request->FFUNCCOD;
         if($FFUNCCOD){
             $office = Office::where('FFUNCCOD', $FFUNCCOD)->first();
@@ -286,6 +287,7 @@ class PAPController extends Controller
             $paps->focus_area = $request->focus_area;
             $paps->is_mother_program = $request->is_mother_program ?? '0';
             $paps->mother_program_id = $request->mother_program_id ?? null;
+            $paps->fund_owner = $request->fund_owner_ffunccod;
             $paps->save();
             $msg = "Programs and Projects(PAPS) added";
             $status = "message";
@@ -306,8 +308,11 @@ class PAPController extends Controller
             'idmfo' => 'required',
             'type' => 'required',
         ]);
+
+        // dd($request->all());
         //$attributes = $request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
         $this->model->create($request->all());
+
 
         return redirect('/paps/' . $request->idmfo)
             ->with('message', 'Programs and Projects(PAPS) added');
@@ -347,6 +352,7 @@ class PAPController extends Controller
             'focus_area',
             'is_mother_program',
             'mother_program_id',
+            'fund_owner',
             'aip_code',
             'agency_name'
         ]);
@@ -408,6 +414,7 @@ class PAPController extends Controller
             'focus_area' => $request->focus_area,
             'is_mother_program' => $request->is_mother_program,
             'mother_program_id' => $request->mother_program_id,
+            // 'fund_owner' => $request->
             'aip_code' => $request->aip_code,
             'agency_name' => $request->agency_name,
         ]);
@@ -418,7 +425,7 @@ class PAPController extends Controller
     {
         $dept_code = auth()->user()->department_code;
         $data = $this->model::findOrFail($request->id);
-        // dd($request);
+        // dd($request->all());
         // dd($request->chief_executive_agenda);
         // dd($request->aip_code);
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
@@ -443,6 +450,7 @@ class PAPController extends Controller
             'focus_area' => $request->focus_area,
             'is_mother_program' => $request->is_mother_program,
             'mother_program_id' => $request->mother_program_id,
+            'fund_owner' => $request->fund_owner_ffunccod,
             'aip_code' => $request->aip_code,
         ]);
         //dd('updated');
@@ -665,6 +673,19 @@ class PAPController extends Controller
             ->where('id', '>', '45')
             ->get();
         return ['data' => $data];
+    }
+
+
+    public function FUNCTIONS(Request $request)
+    {
+
+        // dd($FFUNCCOD);
+        $data = Functions::get();
+
+        // dd($data);
+        return ['data' => $data];
+
+
     }
     public function mfos_filter_division(Request $request, $division_code)
     {
