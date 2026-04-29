@@ -58,7 +58,7 @@
                                         <Link :href="`/revision/view/project/paps/${dat.revision_plan_id}`"
                                             target="_blank"
                                             class="text-dark">
-                                            {{ dat.revision_plan.project_title }}
+                                            {{ dat.revision_plan?.project_title }}
                                         </Link>
                                     </td>
 

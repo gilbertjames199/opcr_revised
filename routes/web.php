@@ -617,6 +617,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}/{idbudget}', [BudgetRequirementController::class, 'destroy']);
         Route::patch('/update/{idrev}', [BudgetRequirementController::class, 'update']);
         Route::post('/store/budget', [BudgetRequirementController::class, 'store_budget_from_revplan']);
+        Route::get('/ooes/{idrev}', [BudgetRequirementController::class, 'ooe_index']);
+        Route::patch('/update-field/{id}', [BudgetRequirementController::class, 'updateField']);
     });
     //testing helpers
     Route::get('test-helper', [BudgetRequirementController::class, 'getFirstLastName']);
