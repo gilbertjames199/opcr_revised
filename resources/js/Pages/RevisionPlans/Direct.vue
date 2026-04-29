@@ -491,7 +491,7 @@
                         Programs
                     </h4>
                     <button @click="fitTableWidth"
-                            class="btn btn-sm btn-outline-primary text-white"
+                            class="btn btn-sm btn-outline-primary"
                             title="Adjust zoom to fit table width">
                         <i class="fas fa-compress me-2"></i>
                         Fit Width to Visible Area
