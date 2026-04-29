@@ -53,9 +53,10 @@ class ProjectProfileController extends Controller
                         'revision_plans.id',
                         'revision_plans.idpaps',
                         'revision_plans.project_title',
-                        'revision_plans.budget'
+
                     );
-                }
+                },
+                'latestRevisionPlan.budget'
             ])
             ->get();
 
