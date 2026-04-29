@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActivityProject;
 use App\Models\AnnualInvestmentPlanInstitutional;
 use App\Models\BudgetRequirement;
+use App\Models\OOE;
 use App\Models\RevisionPlan;
 use App\Models\StrategyProject;
 use Carbon\Carbon;
@@ -612,5 +613,93 @@ class BudgetRequirementController extends Controller
         }
 
         return $budget;
+    }
+    public function ooe_index(Request $request, $id){
+        $rev = RevisionPlan::with(['budget'])
+                ->where('id', $id)
+                ->first();
+        $budget = $rev->budget;
+        $gad_version =$rev->gad_version;
+        $data= $this->fetch_budgetary_requirements($id, $budget, $rev, $gad_version);
+
+
+        return inertia('RevisionPlans/OOE/Index',[
+            "data"=>$data,
+            "rev" =>$rev,
+            "gad_version"=>$gad_version
+        ]);
+    }
+    protected function fetch_budgetary_requirements($id, $budget, $rev, $gad_version){
+        $data = $budget->toArray();   // 👈 this makes each item an array (as seen in your dd)
+
+        if (empty($data)) {
+            return [];
+        }
+
+        // Get gad_version from the first item (array access)
+        $gadVersion = $gad_version;  // Note: revisionPlan is also array if toArray() was deep
+
+        // ----------------------------------------------------------------------
+        // Robust solution: transform each array item, adding ooe_options
+        // ----------------------------------------------------------------------
+        $transformed = collect($data)->map(function ($item) use($rev) {
+            // Fetch active OOE options for the account_code
+            $ooeOptions = OOE::where('FACTCODE', $item['account_code'])
+                            ->where('active_tag', 1)
+                            ->get();
+
+            // Build the desired flat array with all columns
+            return [
+                'id'               => $item['id'],
+                'idooe'            => $item['idooe'],
+                'revision_plan_id' => $item['revision_plan_id'],
+                'particulars'      => $item['particulars'],
+                'account_code'     => $item['account_code'],
+                'sip_number'       => $item['sip_number'],
+                'amount'           => $item['amount'],
+                'proposed_budget'  => $item['proposed_budget'],
+                'category'         => $item['category'],
+                'category_gad'     => $item['category_gad'],
+                'remarks'          => $item['remarks'],
+                'source'           => $item['source'],
+                'created_at'       => $item['created_at'],
+                'updated_at'       => $item['updated_at'],
+                'ooe_options'      => $ooeOptions,  // Collection or array as you prefer
+                // Keep revisionPlan if needed later
+                'revisionPlan'     => $rev,
+            ];
+        });
+
+        // Prepare grouping based on gad_version
+        if ($gadVersion == 1) {
+            $structured = $transformed->groupBy('category_gad')->map(function ($itemsByGad) {
+                return $itemsByGad->groupBy('category')->map(function ($itemsByCategory) {
+                    return $itemsByCategory->values();
+                });
+            });
+        } elseif ($gadVersion == 2) {
+            $structured = $transformed->groupBy('category')->map(function ($itemsByCategory) {
+                return $itemsByCategory->values();
+            });
+        } else {
+            $structured = $transformed; // fallback
+        }
+
+        return $structured->toArray();
+    }
+
+    public function updateField(Request $request, $id)
+    {
+        $request->validate([
+            'column' => 'required|string|in:remarks,idooe', // allowed columns
+            'value'  => 'nullable|string|max:65535',        // adjust max length as needed
+        ]);
+
+        $budgetItem = BudgetRequirement::findOrFail($id);
+        $budgetItem->{$request->column} = $request->value;
+        $budgetItem->save();
+
+        // return response()->json(['success' => true]);
+        return redirect()->back();
     }
 }

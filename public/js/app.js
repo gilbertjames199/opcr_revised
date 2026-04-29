@@ -2882,6 +2882,16 @@ var map = {
 		9,
 		"resources_js_Pages_RevisionPlans_MFO_Index_vue"
 	],
+	"./RevisionPlans/OOE/Index": [
+		"./resources/js/Pages/RevisionPlans/OOE/Index.vue",
+		9,
+		"resources_js_Pages_RevisionPlans_OOE_Index_vue"
+	],
+	"./RevisionPlans/OOE/Index.vue": [
+		"./resources/js/Pages/RevisionPlans/OOE/Index.vue",
+		9,
+		"resources_js_Pages_RevisionPlans_OOE_Index_vue"
+	],
 	"./RevisionPlans/ProjectProfile/Create": [
 		"./resources/js/Pages/RevisionPlans/ProjectProfile/Create.vue",
 		9,
@@ -5003,7 +5013,7 @@ setFavicon('/images/OPCR_ICON.png');
           console.warn("Complex selection – wrapping failed", e);
           return;
         }
-      }), _defineProperty(_defineProperty(_defineProperty(_methods, "removeHighlights", function removeHighlights() {
+      }), _defineProperty(_defineProperty(_defineProperty(_defineProperty(_methods, "removeHighlights", function removeHighlights() {
         // Remove all highlights
         var highlights = document.querySelectorAll('.text-highlight');
         highlights.forEach(function (highlight) {
@@ -5038,6 +5048,22 @@ setFavicon('/images/OPCR_ICON.png');
           '': ''
         };
         return mapping[code] || code;
+      }), "formatMonthDayYear", function formatMonthDayYear(dateStr) {
+        if (!dateStr) return '';
+        var parts = dateStr.split('-');
+        if (parts.length !== 3) return dateStr; // fallback to original
+
+        var year = parseInt(parts[0], 10);
+        var month = parseInt(parts[1], 10) - 1; // months are 0-indexed in JS
+        var day = parseInt(parts[2], 10);
+        var date = new Date(year, month, day);
+        // Check if date is valid
+        if (isNaN(date.getTime())) return dateStr;
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
       }))
     }).mount(el);
   },

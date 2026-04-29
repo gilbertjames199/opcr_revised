@@ -697,6 +697,11 @@
                                                     <i class="fas fa-file-invoice-dollar me-2"></i>Cash Disbursements Forecast
                                                 </Link>
                                             </li>
+                                            <li>
+                                                <Link class="dropdown-item" :href="`/budget/ooes/${dat.id}`">
+                                                    <i class="fas fa-file-invoice-dollar me-2"></i>Objects of Expenditure
+                                                </Link>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>

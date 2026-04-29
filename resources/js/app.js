@@ -1721,6 +1721,26 @@ createInertiaApp({
 
                         };
                         return mapping[code] || code;
+                    },
+                    // DATE NUMBER TO FORMATTED MONTH DAY YEAR
+                    formatMonthDayYear(dateStr) {
+                        if (!dateStr) return '';
+                        const parts = dateStr.split('-');
+                        if (parts.length !== 3) return dateStr; // fallback to original
+
+                        const year = parseInt(parts[0], 10);
+                        const month = parseInt(parts[1], 10) - 1; // months are 0-indexed in JS
+                        const day = parseInt(parts[2], 10);
+
+                        const date = new Date(year, month, day);
+                        // Check if date is valid
+                        if (isNaN(date.getTime())) return dateStr;
+
+                        return date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
                     }
                 }
             })
