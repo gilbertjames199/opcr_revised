@@ -134,6 +134,20 @@
                     <input type="text" v-model="form.source_others_specify" class="form-control" autocomplete="chrome-off">
                     <div class="fs-6 c-red-500" v-if="form.errors.source_others_specify">{{ form.errors.source_others_specify }}</div>
                 </div>
+
+                <label>Fund Owner</label>
+
+                <select class="form-control" v-model="form.fund_owner_ffunccod">
+    <option value=""></option>
+
+    <option v-for="functional1 in functions1"
+            :key="functional1.FFUNCCOD"
+            :value="functional1.FFUNCCOD">
+
+        {{ functional1.FFUNCTION }} ({{ functional1.FFUNCCOD }})
+
+    </option>
+</select>
                 <!-- FUNDING AGENCY -->
                 <!-- <label for="">Funding Agency</label>
                 <input type="text" v-model="form.funding_agency" class="form-control" autocomplete="chrome-off">
@@ -240,6 +254,7 @@ export default {
         research: Object,
         idmfo: String,
         functions: Object,
+        functions1:Object,
         popsp_agencies: Object
     },
     components: {
@@ -260,6 +275,7 @@ export default {
                 paps_desc: "",
                 type: "",
                 FFUNCCOD: "",
+                fund_owner_ffunccod: "",
                 idmfo: "",
                 MOV: "",
                 sector: "",
@@ -385,6 +401,7 @@ export default {
             ],
             mfos_data: [],
             motherPAPS: [],
+            functions1: [],
             pageTitle: ""
         };
     },
@@ -423,6 +440,7 @@ export default {
         }
     },
     mounted() {
+    this.getFunctions1();
         if (this.idmfo !== undefined) {
             this.from_mfo = true
         }
@@ -450,6 +468,7 @@ export default {
             this.form.is_mother_program = this.editData.is_mother_program
             this.form.aip_code =this.editData.aip_code
             this.form.agency_name = this.editData.agency_name
+            this.form.fund_owner_ffunccod = this.editData.fund_owner
             this.form.id = this.editData.id
             this.filterMFOs()
             this.loadPAPS();
@@ -466,6 +485,13 @@ export default {
     },
 
     methods: {
+
+   getFunctions1() {
+    axios.get('/paps/major/final/outputs')
+        .then(res => {
+            this.functions1 = res.data.data;
+        });
+},
         limitWordCount() {
             // Get the words from the input text
             const words = this.form.MOV.split(/\s+/);
