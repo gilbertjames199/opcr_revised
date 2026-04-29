@@ -66,7 +66,9 @@
                     <template v-else-if="gad_version == 2">
                         <tbody v-for="(items, category) in data" :key="category">
                             <tr class="table-secondary">
-                                <th colspan="5" class="text-start">{{ category }}</th>
+                                <th colspan="5" class="text-start">
+                                    <h4>{{ category }}</h4>
+                                </th>
                             </tr>
                             <tr v-for="item in items" :key="item.id">
                                 <td>{{ item.account_code }}</td>
