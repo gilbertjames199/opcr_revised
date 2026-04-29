@@ -52,7 +52,8 @@ class ProjectProfileController extends Controller
                     $q->select(
                         'revision_plans.id',
                         'revision_plans.idpaps',
-                        'revision_plans.project_title'
+                        'revision_plans.project_title',
+                        'revision_plans.budget'
                     );
                 }
             ])
