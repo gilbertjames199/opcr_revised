@@ -104,4 +104,10 @@ class ProgramAndProject extends Model
     {
         return $this->hasMany(SharedProgramAndProject::class, 'idpaps', 'id');
     }
+
+    public function latestRevisionPlan()
+    {
+        return $this->hasOne(RevisionPlan::class, 'idpaps', 'id')
+            ->latestOfMany('version'); // Laravel 8+
+    }
 }

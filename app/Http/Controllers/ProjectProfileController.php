@@ -39,9 +39,23 @@ class ProjectProfileController extends Controller
     {
         $FFUNCCOD = $request->FFUNCCOD;
 
-        $data = ProgramAndProject::where('FFUNCCOD', $FFUNCCOD)
-            ->whereHas('revisionPlan')
-            ->with('revisionPlan') // optional: include the related data
+        $data = ProgramAndProject::select(
+            'id',
+            'paps_desc',
+            'FFUNCCOD',
+            'fund_owner'
+        )
+            ->where('FFUNCCOD', $FFUNCCOD)
+            ->whereHas('latestRevisionPlan')
+            ->with([
+                'latestRevisionPlan' => function ($q) {
+                    $q->select(
+                        'revision_plans.id',
+                        'revision_plans.idpaps',
+                        'revision_plans.project_title'
+                    );
+                }
+            ])
             ->get();
 
         return $data;
