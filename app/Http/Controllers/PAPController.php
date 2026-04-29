@@ -95,7 +95,7 @@ class PAPController extends Controller
         $sustainable = SDG::get();
         $executive_legislative = ELA::get();
         $research = ResearchAgenda::get();
-        dd($id);
+        // dd($id);
         $year_object = DB::connection('mysql2')
             ->table('raaohs')
             ->select(DB::raw('DISTINCT(tyear)'))
