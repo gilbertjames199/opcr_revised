@@ -1339,6 +1339,9 @@ Route::prefix('aip')->group(function () {
     Route::get('/printing', [AnnualInvestmentPlanController::class, 'print_OPCR']);
 });
 
+Route::prefix('/OPCRpaps')->group(function () {
+    Route::get('/PPMP/PPA', [ProjectProfileController::class, 'PPMP_PPA']);
+});
 
 // Route::prefix('api_ppa2')->group(function () {
 //     Route::get('/', [RevisionPlanController::class, 'api_ppa']);
