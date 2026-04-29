@@ -67,17 +67,17 @@
                             <tr v-for="item in items" :key="item.id">
                                 <td>{{ item.account_code }}</td>
                                 <td>{{ item.particulars }}</td>
-                                <td>{{ item.amount }}</td>
+                                <td>{{ format_number_conv(item.amount, 2, true) }}</td>
                                 <td>
-                                    <select :value="item.idooe" @change="updateField(item.id, 'idooe', $event.target.value)">
-                                        <option :value="null">Select OOE</option>
-                                        <option v-for="opt in item.ooe_options" :key="opt.id" :value="opt.id">
-                                            {{ opt.name || opt.description }}
+                                    <select class="form-select" :value="item.idooe" @change="updateField(item.id, 'idooe', $event.target.value)">
+                                        <option :value="null"></option>
+                                        <option v-for="opt in item.ooe_options" :key="opt.recid" :value="opt.recid">
+                                            {{ opt.FOOEDESC }}
                                         </option>
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" :value="item.remarks" @blur="updateField(item.id, 'remarks', $event.target.value)" />
+                                    <input class="form-control" type="text" :value="item.remarks" @blur="updateField(item.id, 'remarks', $event.target.value)" />
                                 </td>
                             </tr>
                         </tbody>
