@@ -52,7 +52,11 @@ class DevelopmentFundController extends Controller
                 })
                 ->whereHas('paps', function($query) use ($id){
                     $query->where('source_of_funds','dev');
-                })->get();
+                })
+                ->whereHas('activityProject', function($query) {
+                    $query->where('is_active', 0);
+                })
+                ->get();
                 // ->paginate($no_of_pages);
         // dd($data, $id);
         return inertia('RevisionPlans/DevelopmentFund/Index', [
