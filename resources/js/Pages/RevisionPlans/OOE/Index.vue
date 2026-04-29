@@ -32,11 +32,15 @@
                     <template v-if="gad_version == 1">
                         <tbody v-for="(categories, categoryGad) in data" :key="categoryGad">
                             <tr class="table-secondary">
-                                <th colspan="5" class="text-start">{{ categoryGad }}</th>
+                                <th colspan="5" class="text-start">
+                                    <h3>{{ categoryGad }}</h3>
+                                </th>
                             </tr>
                             <template v-for="(items, category) in categories" :key="category">
                                 <tr class="table-light">
-                                    <th colspan="5" class="text-start ps-3">{{ category }}</th>
+                                    <th colspan="5" class="text-start ps-3">
+                                        <h4>{{ category }}</h4>
+                                    </th>
                                 </tr>
                                 <tr v-for="item in items" :key="item.id">
                                     <td>{{ item.account_code }}</td>
