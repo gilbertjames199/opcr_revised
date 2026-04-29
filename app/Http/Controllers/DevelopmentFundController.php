@@ -35,26 +35,25 @@ class DevelopmentFundController extends Controller
         if($request->no_of_pages){
             $no_of_pages = $request->no_of_pages;
         }
-        $data=RevisionPlan::with([
+        $data = RevisionPlan::with([
                     'paps',
                     'paps.office',
-                    'activityProject',
+                    'activityProject' => function($query) {
+                        $query->where('is_active', 1);
+                    },
                     'activityProject.activity',
                     'activityProject.expected_output'
                 ])
-                ->when($id!=0, function($query) use ($id){
+                ->when($id != 0, function($query) use ($id){
                     $query->where('id', $id);
                 })
-                ->when($dept_code!='04', function($query) use ($dept_code){
+                ->when($dept_code != '04', function($query) use ($dept_code){
                     $query->whereHas('paps', function($q) use ($dept_code){
                         $q->where('department_code', $dept_code);
                     });
                 })
                 ->whereHas('paps', function($query) use ($id){
                     $query->where('source_of_funds','dev');
-                })
-                ->whereHas('activityProject', function($query) {
-                    $query->where('is_active', 0);
                 })
                 ->get();
                 // ->paginate($no_of_pages);
