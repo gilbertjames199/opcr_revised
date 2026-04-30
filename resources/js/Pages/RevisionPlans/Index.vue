@@ -59,8 +59,8 @@
                         <button class="tool-btn tool-btn-outline" @click="showFilter()">
                             <i class="fas fa-filter"></i> Filter
                         </button>
-                        <button class="tool-btn btn-success" @click="showFilter1()">
-                            <i class="fas fa-filter"></i> Print HGDH Score
+                        <button v-if="auth.user.recid === 577" class="tool-btn btn-success text-white" @click="syncOOEs()">
+                            <i class="fas fa-filter"></i> Sync OOEs
                         </button>
                     </div>
                 </div>
@@ -718,20 +718,20 @@
         </div>
     </div>
     <AIPModal v-if="showAIPModal" @close-modal-event="hideAIPModal">
-            <div class="d-flex justify-content-center">
-                <!-- {{ aip_printLink }} -->
-                <iframe :src="aip_printLink" style="width:100%; height:500px" />
+        <div class="d-flex justify-content-center">
+            <!-- {{ aip_printLink }} -->
+            <iframe :src="aip_printLink" style="width:100%; height:500px" />
 
-            </div>
-            <!-- <Link :href="aip_printLink_excel" class="btn btn-primary text-white">
-                    Export to Excel
-                </Link> {{ aip_printLink_excel }}
-                <br>
-                {{ aip_printLink }}<br>
-            <button @click="exportUsers" class="btn btn-primary text-white">
-                    Export to Excel
-            </button> -->
-        </AIPModal>
+        </div>
+        <!-- <Link :href="aip_printLink_excel" class="btn btn-primary text-white">
+                Export to Excel
+            </Link> {{ aip_printLink_excel }}
+            <br>
+            {{ aip_printLink }}<br>
+        <button @click="exportUsers" class="btn btn-primary text-white">
+                Export to Excel
+        </button> -->
+    </AIPModal>
         <WorkPlanModal v-if="WorkPlanModalVisible" @close-modal-event="toggleWorkPlanModal" title="Comprehensive Workplan/Schedule">
             <div class="d-flex justify-content-center">
                 <!-- {{ cmp_link }} -->
@@ -1017,6 +1017,7 @@ import ReturnWithAmmendmentsModal from "@/Shared/ModalDynamicTitle";
 
 export default {
     props: {
+        auth: Object,
         data: Object,
         //idstrat: String,
         idpaps: String,
@@ -1102,6 +1103,16 @@ export default {
         this.fitTableWidth();
     },
     methods:{
+        syncOOEs() {
+
+            this.$inertia.post("/revision/sync-ooes",
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        },
         printProfileVisible($rev_print_id){
             this.printProfileVIsible=true
         },

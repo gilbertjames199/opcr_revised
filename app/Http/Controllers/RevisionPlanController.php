@@ -5155,4 +5155,36 @@ class RevisionPlanController extends Controller
             return redirect()->back()->with('error', 'Failed to delete revision plan: ' . $e->getMessage());
         }
     }
+
+    public function syncOOEs()
+    {
+        $revisionPlans = RevisionPlan::with('budget')
+            // ->whereYear('date_start', 2026)
+            ->get();
+
+        $updated = 0;
+        // dd($revisionPlans);
+        foreach ($revisionPlans as $plan) {
+            // dd($plan->budget);
+            foreach ($plan->budget as $budget) {
+
+                // Skip if idooe is already set
+                if (!is_null($budget->idooe) && $budget->idooe !== '') {
+                    continue;
+                }
+                // dd($budget, $matches);
+                $matches = OOE::where('FACTCODE', '=', $budget->account_code)->where('active_tag', 1)->get();
+                // if($matches)
+                if ($matches->count() === 1) {
+                    // $budget->update(['idooe' => $matches->first()->id]);
+                    $bdgt = BudgetRequirement::where('id', $budget->id)->first();
+                    $bdgt->idooe = $matches->first()->recid;
+                    $bdgt->save();
+                    $updated++;
+                }
+            }
+        }
+
+        return redirect()->back()->with('message', "OOE sync complete. {$updated} budget entr" . ($updated === 1 ? 'y' : 'ies') . " updated.");
+    }
 }
