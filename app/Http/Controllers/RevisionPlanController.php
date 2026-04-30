@@ -5017,6 +5017,14 @@ class RevisionPlanController extends Controller
                 $expected_outcomes = optional($proj)->expected_outcome
                     ? optional($proj)->expected_outcome->pluck('description')->implode('<br><br>')
                     : null;
+
+                // Concatenate outcomes at the end
+                $expected_outputs = collect([
+                        $expected_outputs,
+                        $expected_outcomes
+                    ])
+                    ->filter()
+                    ->implode('<br><br>');
                 $ps_total=floatval($proj->ps_q1)+floatval($proj->ps_q2)+floatval($proj->ps_q3)+floatval($proj->ps_q4);
                 $mooe_total=floatval($proj->mooe_q1)+floatval($proj->mooe_q2)+floatval($proj->mooe_q3)+floatval($proj->mooe_q4);
                 $fe_total= floatval($proj->fe_q1)+floatval($proj->fe_q2)+floatval($proj->fe_q3)+floatval($proj->fe_q4);
