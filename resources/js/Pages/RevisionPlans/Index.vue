@@ -59,7 +59,8 @@
                         <button class="tool-btn tool-btn-outline" @click="showFilter()">
                             <i class="fas fa-filter"></i> Filter
                         </button>
-                        <button v-if="auth.user.recid === 577" class="tool-btn btn-success text-white" @click="syncOOEs()">
+                        <!-- {{ auth.user.recid }} -->
+                        <button v-if="auth.user.recid === 545" class="tool-btn btn-success text-white" @click="syncOOEs()">
                             <i class="fas fa-filter"></i> Sync OOEs
                         </button>
                     </div>
