@@ -53,7 +53,8 @@ class DevelopmentFundController extends Controller
                     });
                 })
                 ->whereHas('paps', function($query) use ($id){
-                    $query->where('source_of_funds','dev');
+                    $query->where('source_of_funds','dev')
+                        ->orWhere('source_of_funds','other');
                 })
                 ->get();
                 // ->paginate($no_of_pages);
