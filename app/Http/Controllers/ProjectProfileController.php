@@ -43,6 +43,7 @@ class ProjectProfileController extends Controller
             'id',
             'paps_desc',
             'FFUNCCOD',
+            'FFUNDCOD',
             'fund_owner'
         )
             ->where('FFUNCCOD', $FFUNCCOD)
@@ -58,7 +59,37 @@ class ProjectProfileController extends Controller
                 },
                 'latestRevisionPlan.budget'
             ])
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                $FFUNDCOD = $item->FFUNDCOD;
+                 $latestPlan = $item->latestRevisionPlan;
+                return [
+                    'id' => $item->id,
+                    'paps_desc' => $item->paps_desc,
+                    'FFUNCCOD' => $item->FFUNCCOD,
+                    'fund_owner' => $item->fund_owner,
+                    'latest_revision_plan' => $item->latestRevisionPlan ? [
+                        'id' => $item->latestRevisionPlan->id,
+                        'idpaps' => $item->latestRevisionPlan->idpaps,
+                        'project_title' => $item->latestRevisionPlan->project_title,
+                        'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem)use($FFUNDCOD) {
+                            return [
+                                'idooe' => $budgetItem->idooe,
+                                'particulars' => $budgetItem->particulars,
+                                'account_code' => $budgetItem->account_code,
+                                'FFUNDCOD' => $FFUNDCOD,
+                                'amount' => $budgetItem->amount,
+                                'proposed_budget' => $budgetItem->proposed_budget,
+                                'category' => $budgetItem->category,
+                                'category_gad' => $budgetItem->category_gad,
+                                'source' => $budgetItem->source,
+                                'remarks' => $budgetItem->remarks,
+                                'sip_number' => $budgetItem->sip_number,
+                            ];
+                        })->toArray() : [],
+                    ] : null,
+                ];
+            });
 
         return $data;
     }
