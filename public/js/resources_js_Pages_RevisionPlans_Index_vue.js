@@ -818,7 +818,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       return classes[status] || 'status-oval-secondary';
     },
     getForwardButtonClass: function getForwardButtonClass(dat) {
-      var isEnabled = parseInt(dat.year) + 1 == new Date().getFullYear() + 1 && dat.status == 0;
+      var isEnabled = parseInt(dat.year) + 1 == new Date().getFullYear() + 1 && (dat.status == 0 || dat.status == 1);
       return "btn btn-sm ".concat(isEnabled ? 'btn-success' : 'btn-secondary', " ").concat(isEnabled ? '' : 'disabled');
     },
     getForwardButtonTitle: function getForwardButtonTitle(dat) {
@@ -1638,12 +1638,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "fas fa-trash"
     }, null, -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_44), _cache[61] || (_cache[61] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
       "class": "text-muted"
-    }, "Delete", -1 /* CACHED */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FORWARD NEXT YEAR "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_45, [parseInt(dat.number_of_clones) < 1 && dat.type === 'p' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "Delete", -1 /* CACHED */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" FORWARD NEXT YEAR "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ (parseInt(dat.year) + 1 == new Date().getFullYear()+1) }}  -- {{  dat.status }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" (parseInt(dat.status == 0 || dat.status == 1) "), parseInt(dat.number_of_clones) < 1 && dat.type === 'p' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 0,
       onClick: function onClick($event) {
         return $options.generateProjectDesign(dat.id, 'ny');
       },
-      disabled: !(parseInt(dat.year) + 1 == new Date().getFullYear() + 1 && (dat.status == 0 || dat.status == 1)),
+      disabled: !(parseInt(dat.year) + 1 == new Date().getFullYear() + 1 && [0, 1].includes(parseInt(dat.status))),
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.getForwardButtonClass(dat)),
       title: $options.getForwardButtonTitle(dat)
     }, [_cache[62] || (_cache[62] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {

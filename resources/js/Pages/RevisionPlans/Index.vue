@@ -559,9 +559,11 @@
 
                                 <!-- FORWARD NEXT YEAR -->
                                 <td class="text-center">
+                                    <!-- {{ (parseInt(dat.year) + 1 == new Date().getFullYear()+1) }}  -- {{  dat.status }} -->
+                                    <!-- (parseInt(dat.status == 0 || dat.status == 1) -->
                                     <button v-if="parseInt(dat.number_of_clones)<1 && dat.type==='p'"
                                             @click="generateProjectDesign(dat.id, 'ny')"
-                                            :disabled="!((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && (dat.status == 0 || dat.status == 1))"
+                                            :disabled="!((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && ([0,1].includes(parseInt(dat.status))))"
                                             :class="getForwardButtonClass(dat)"
                                             :title="getForwardButtonTitle(dat)">
                                         <i class="fas fa-arrow-right"></i>
@@ -1793,7 +1795,7 @@ export default {
             return classes[status] || 'status-oval-secondary';
         },
         getForwardButtonClass(dat) {
-            const isEnabled = (parseInt(dat.year) + 1 == new Date().getFullYear() + 1) && dat.status == 0;
+            const isEnabled = (parseInt(dat.year) + 1 == new Date().getFullYear() + 1) && (dat.status == 0 || dat.status==1);
             return `btn btn-sm ${isEnabled ? 'btn-success' : 'btn-secondary'} ${isEnabled ? '' : 'disabled'}`;
         },
         getForwardButtonTitle(dat) {
