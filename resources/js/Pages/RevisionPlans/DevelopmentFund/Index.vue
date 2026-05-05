@@ -6,7 +6,8 @@
     <!--<p style="text-align: justify;">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur.
     </p>-->
     <div class="row gap-20 masonry pos-r">
-        <h3>Engineering PPAs</h3>
+        <h3>{{ source === 'dev' ? 'Engineering PPAs' : 'Other Sources' }}</h3>
+
 
         <div class="toolbar-card">
             <!-- Top Row: Actions -->
@@ -22,7 +23,8 @@
                         <input v-model="search" type="text" class="filter-input" placeholder="Search...">
                     </div>
                     <Link class="tool-btn tool-btn-primary" :href="`/development-fund/create/${id}`">
-                        <i class="fas fa-plus"></i> Add Engineering PPAs
+                        <i class="fas fa-plus"></i>
+                        {{ source === 'dev' ? 'Add Engineering PPAs' : 'Add Other Sources' }}
                     </Link>
                     <button class="tool-btn tool-btn-outline" @click="expandAll()">
                         <i class="fas fa-expand"></i> Expand All
@@ -220,6 +222,7 @@ export default {
         auth: Object,
         data: Object,
         id: String,
+        source: String
     },
     data() {
         return {

@@ -5017,6 +5017,14 @@ class RevisionPlanController extends Controller
                 $expected_outcomes = optional($proj)->expected_outcome
                     ? optional($proj)->expected_outcome->pluck('description')->implode('<br><br>')
                     : null;
+
+                // Concatenate outcomes at the end
+                $expected_outputs = collect([
+                        $expected_outputs,
+                        $expected_outcomes
+                    ])
+                    ->filter()
+                    ->implode('<br><br>');
                 $ps_total=floatval($proj->ps_q1)+floatval($proj->ps_q2)+floatval($proj->ps_q3)+floatval($proj->ps_q4);
                 $mooe_total=floatval($proj->mooe_q1)+floatval($proj->mooe_q2)+floatval($proj->mooe_q3)+floatval($proj->mooe_q4);
                 $fe_total= floatval($proj->fe_q1)+floatval($proj->fe_q2)+floatval($proj->fe_q3)+floatval($proj->fe_q4);
@@ -5154,5 +5162,37 @@ class RevisionPlanController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete revision plan: ' . $e->getMessage());
         }
+    }
+
+    public function syncOOEs()
+    {
+        $revisionPlans = RevisionPlan::with('budget')
+            // ->whereYear('date_start', 2026)
+            ->get();
+
+        $updated = 0;
+        // dd($revisionPlans);
+        foreach ($revisionPlans as $plan) {
+            // dd($plan->budget);
+            foreach ($plan->budget as $budget) {
+
+                // Skip if idooe is already set
+                if (!is_null($budget->idooe) && $budget->idooe !== '') {
+                    continue;
+                }
+                // dd($budget, $matches);
+                $matches = OOE::where('FACTCODE', '=', $budget->account_code)->where('active_tag', 1)->get();
+                // if($matches)
+                if ($matches->count() === 1) {
+                    // $budget->update(['idooe' => $matches->first()->id]);
+                    $bdgt = BudgetRequirement::where('id', $budget->id)->first();
+                    $bdgt->idooe = $matches->first()->recid;
+                    $bdgt->save();
+                    $updated++;
+                }
+            }
+        }
+
+        return redirect()->back()->with('message', "OOE sync complete. {$updated} budget entr" . ($updated === 1 ? 'y' : 'ies') . " updated.");
     }
 }
