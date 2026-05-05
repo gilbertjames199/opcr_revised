@@ -108,6 +108,11 @@ class ProgramAndProject extends Model
     public function latestRevisionPlan()
     {
         return $this->hasOne(RevisionPlan::class, 'idpaps', 'id')
-            ->latestOfMany('version'); // Laravel 8+
+            ->ofMany([
+                'version' => 'max',
+                'id' => 'max' // tie-breaker (important)
+            ], function ($query) {
+                $query->where('status', 1);
+            });
     }
 }
