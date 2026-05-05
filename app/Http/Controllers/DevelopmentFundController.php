@@ -44,6 +44,7 @@ class DevelopmentFundController extends Controller
                     'activityProject.activity',
                     'activityProject.expected_output'
                 ])
+                ->join('program_and_projects', 'program_and_projects.id', '=', 'revision_plans.idpaps')
                 ->when($id != 0, function($query) use ($id){
                     $query->where('id', $id);
                 })
@@ -56,6 +57,8 @@ class DevelopmentFundController extends Controller
                     $query->where('source_of_funds','dev')
                         ->orWhere('source_of_funds','other');
                 })
+                ->orderBy('program_and_projects.source_of_funds', 'ASC')
+                ->select('revision_plans.*')
                 ->get();
                 // ->paginate($no_of_pages);
         // dd($data, $id);
