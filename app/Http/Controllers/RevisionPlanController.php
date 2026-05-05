@@ -3243,6 +3243,14 @@ class RevisionPlanController extends Controller
         if ($request->ccet) {
             $ccet = $request->ccet;
         }
+
+
+        $year = filter_var($request->year, FILTER_VALIDATE_INT);
+
+        if (!$year || !checkdate(1, 1, $year)) {
+            $year = Carbon::now()->year;
+        }
+        // dd($year);
         // ? "1":"0";
         $plans = RevisionPlan::with([
             'strategyProject.strategy',
@@ -3256,6 +3264,8 @@ class RevisionPlanController extends Controller
             'paps.office.office'
         ])
         ->where('status', '1')
+        ->whereYear('date_start', $year)
+        ->orderBy('aip_code', 'asc')
         ->get();
         // $plans = RevisionPlan::with([
         //         'strategyProject.strategy',
@@ -3299,9 +3309,7 @@ class RevisionPlanController extends Controller
         foreach ($plans as $plan) {
             $strategy = optional(optional($plan)->strategyProject->first())->strategy;
             // dd($plan );
-            // if($plan->idpaps==0){
-            //     dd($plan);
-            // }
+
             if (!$strategy) {
                 continue;
             }

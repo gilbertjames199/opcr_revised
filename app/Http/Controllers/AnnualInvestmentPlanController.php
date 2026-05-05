@@ -709,7 +709,8 @@ class AnnualInvestmentPlanController extends Controller
             ->where(function ($q) {
                 $q->where('status', 1)
                 ->orWhereHas('paps', function ($q2) {
-                    $q2->where('source_of_funds', 'dev');
+                    $q2->where('source_of_funds', 'dev')
+                     ->orWhere('source_of_funds', 'other');
                 });
             })
             ->whereHas('activityProject.activity.strat', function ($q) {
@@ -844,9 +845,9 @@ class AnnualInvestmentPlanController extends Controller
                 && optional($rev->paps)->department_code !== 'dev'
                 || optional($rev->paps)->department_code === '17';
         });
-
+        // optional($rev->paps)->sector === 'Other Services' &&
         $others = $revs->filter(function ($rev) {
-            return optional($rev->paps)->sector === 'Other Services' && (optional($rev->paps)->source_of_funds === 'gen_fund'
+            return (optional($rev->paps)->source_of_funds === 'other'
                 || optional($rev->paps)->source_of_funds === ''
                 || optional($rev->paps)->source_of_funds === null)
                 && optional($rev->paps)->department_code !== 'dev'
