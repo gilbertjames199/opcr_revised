@@ -706,6 +706,7 @@ class AnnualInvestmentPlanController extends Controller
                 'activityProject.activity.strat',
                 'activityProject.expected_output'
             ])
+            ->select('revision_plans.*')
             ->whereYear('date_start', $current_year)
             ->where(function ($q) {
                 $q->where('status', 1)
@@ -742,8 +743,11 @@ class AnnualInvestmentPlanController extends Controller
                     });
                 });
             })
+            ->join('program_and_projects', 'program_and_projects.id', '=', 'revision_plans.idpaps')
+            ->where('idpaps',0)
             ->orderBy('aip_code', 'ASC')
             ->get();
+        // dd($revs);
         $gen_pub = $revs->filter(function ($rev) {
             return optional($rev->paps)->sector === 'General Public Services Sector'
                 && (optional($rev->paps)->source_of_funds === 'gen_fund'

@@ -54,6 +54,7 @@ class ProjectProfileController extends Controller
                 // dd($item->FFUNCCOD);
                 $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
                                 ->where('status','1')
+                                ->where('idpaps', 0)
                                 ->with('budget')
                                 ->orderBY('created_at', 'desc')
                                 ->first();
