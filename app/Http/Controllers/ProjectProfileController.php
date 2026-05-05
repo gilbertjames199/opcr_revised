@@ -39,6 +39,7 @@ class ProjectProfileController extends Controller
     public function PPMP_PPA(Request $request)
     {
         $FFUNCCOD = $request->FFUNCCOD;
+        $year = $request->year;
 
         $gas_data = ProgramAndProject::select(
             'id',
@@ -50,14 +51,15 @@ class ProjectProfileController extends Controller
             ->where('FFUNCCOD', $FFUNCCOD)
             ->where('type', 'GAS')
             ->get()
-            ->map(function ($item) {
+            ->map(function ($item)use($year) {
                 // dd($item->FFUNCCOD);
                 $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
-                                ->where('status','1')
-                                ->where('idpaps', 0)
-                                ->with('budget')
-                                ->orderBY('created_at', 'desc')
-                                ->first();
+                    ->where('status', '1')
+                    ->whereYear(('date_start'), $year)
+                    ->where('idpaps',0)
+                    ->with('budget')
+                    ->orderBY('created_at', 'desc')
+                    ->first();
                 // dd($latestPlan->budget);
                 $FFUNDCOD = $item->FFUNDCOD;
                 // $latestPlan = $item->latestRevisionPlan;
@@ -72,7 +74,7 @@ class ProjectProfileController extends Controller
                         'id' => $latestPlan->id,
                         'idpaps' => $latestPlan->idpaps,
                         'project_title' => $latestPlan->project_title,
-                        'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem)use($FFUNDCOD) {
+                        'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
                             return [
                                 'idooe' => $budgetItem->idooe,
                                 'particulars' => $budgetItem->particulars,
@@ -95,17 +97,19 @@ class ProjectProfileController extends Controller
             'paps_desc',
             'FFUNCCOD',
             'FFUNDCOD',
-            'fund_owner'
+            'fund_owner',
         )
             ->where('FFUNCCOD', $FFUNCCOD)
-            ->whereHas('latestRevisionPlan')
+            ->whereHas('latestRevisionPlan', function ($q) use ($year) {
+                $q->whereYear('date_start', $year);
+            })
             ->with([
                 'latestRevisionPlan' => function ($q) {
                     $q->select(
                         'revision_plans.id',
                         'revision_plans.idpaps',
                         'revision_plans.project_title',
-
+                        'revision_plans.year_period',
                     );
                 },
                 'latestRevisionPlan.budget'
@@ -113,9 +117,7 @@ class ProjectProfileController extends Controller
             ->get()
             ->map(function ($item) {
                 $FFUNDCOD = $item->FFUNDCOD;
-                 $latestPlan = $item->latestRevisionPlan;
-
-
+                $latestPlan = $item->latestRevisionPlan;
                 return [
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
@@ -125,7 +127,8 @@ class ProjectProfileController extends Controller
                         'id' => $item->latestRevisionPlan->id,
                         'idpaps' => $item->latestRevisionPlan->idpaps,
                         'project_title' => $item->latestRevisionPlan->project_title,
-                        'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem)use($FFUNDCOD) {
+                        'year' => $item->latestRevisionPlan->year_period,
+                        'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
                             return [
                                 'idooe' => $budgetItem->idooe,
                                 'particulars' => $budgetItem->particulars,
