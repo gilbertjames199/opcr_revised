@@ -3257,10 +3257,51 @@ class RevisionPlanController extends Controller
         ])
         ->where('status', '1')
         ->get();
+        // $plans = RevisionPlan::with([
+        //         'strategyProject.strategy',
+        //         'strategyProject.expected_output',
+        //         'strategyProject.expected_outcome',
+        //         'activityProject.expected_output',
+        //         'activityProject.expected_outcome',
+        //         'budget',
+        //         'paps',
+        //         'paps.office',
+        //         'paps.office.office'
+        //     ])
+        //     ->where('status', '1')
+        //     ->get()
+        //     ->sortBy(function ($plan) {
+        //         // Define rank for source_of_funds
+        //         $sourceOrder = [
+        //             'gen_fund' => 1,
+        //             'dev'      => 2,
+        //             'ldrrmf'   => 3,
+        //             'other'    => 4,
+        //         ];
+        //         $source = $plan->paps->source_of_funds ?? 'other';
+        //         $sourceRank = $sourceOrder[$source] ?? 4;
 
+        //         // Define rank for sectors (only relevant for gen_fund)
+        //         $sectorOrder = [
+        //             'General Public Services Sector' => 1,
+        //             'Economic Services'              => 2,
+        //             'Social Services Sector'         => 3,
+        //         ];
+        //         $sector = $plan->paps->sector ?? '';
+        //         $sectorRank = ($source === 'gen_fund' && isset($sectorOrder[$sector]))
+        //                     ? $sectorOrder[$sector]
+        //                     : 0;
+
+        //         // Return sortable array: [source_rank, sector_rank, aip_code]
+        //         return [$sourceRank, $sectorRank, $plan->aip_code];
+        //     })
+        //     ->values(); // optional: reset keys
         foreach ($plans as $plan) {
             $strategy = optional(optional($plan)->strategyProject->first())->strategy;
-
+            // dd($plan );
+            // if($plan->idpaps==0){
+            //     dd($plan);
+            // }
             if (!$strategy) {
                 continue;
             }

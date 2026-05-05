@@ -690,7 +690,6 @@ class AnnualInvestmentPlanController extends Controller
         // dd(auth()->user(), $request->year);
         $dept_code = auth()->user()->department_code;
         $search = $request->search;
-
         $revs = RevisionPlan::with([
                 'paps',
                 'paps.office',
@@ -706,7 +705,6 @@ class AnnualInvestmentPlanController extends Controller
                 'activityProject.activity.strat',
                 'activityProject.expected_output'
             ])
-            ->select('revision_plans.*')
             ->whereYear('date_start', $current_year)
             ->where(function ($q) {
                 $q->where('status', 1)
@@ -743,10 +741,73 @@ class AnnualInvestmentPlanController extends Controller
                     });
                 });
             })
-            ->join('program_and_projects', 'program_and_projects.id', '=', 'revision_plans.idpaps')
-            ->where('idpaps',0)
             ->orderBy('aip_code', 'ASC')
             ->get();
+            // dd($revs);
+        // $revs = RevisionPlan::with([
+        //         'paps',
+        //         'paps.office',
+        //         'activityProject' => function ($q) {
+        //             $q->where('is_active', 1)
+        //             ->whereHas('activity.strat')
+        //             ->join('activities', 'activity_projects.activity_id', '=', 'activities.id')
+        //             ->orderBy('activity_projects.seq_no', 'ASC')
+        //             ->orderBy('activities.description', 'ASC')
+        //             ->select('activity_projects.*'); // prevent column conflicts after join
+        //         },
+        //         'activityProject.activity',
+        //         'activityProject.activity.strat',
+        //         'activityProject.expected_output'
+        //     ])
+        //     ->select('revision_plans.*')
+        //     ->whereYear('date_start', $current_year)
+        //     ->where(function ($q) {
+        //         // $q->where('revision_plans.status', 1)
+        //         //   ->orWhere('program_and_projects.source_of_funds', 'dev');
+        //         // ->orWhereHas('paps', function ($q2) {
+        //         //     $q2->where('source_of_funds', 'dev');
+        //         // });
+        //     })
+        //     ->whereHas('activityProject.activity.strat', function ($q) {
+        //         $q->whereColumn('strategies.idpaps', 'revision_plans.idpaps');
+        //     })
+        //     ->when($dept_code !== '04', function ($query) use ($dept_code) {
+        //         // Filter by paps.department_code when user is not '04'
+        //         $query->where('program_and_projects.department_code', $dept_code);
+        //         // $query->whereHas('paps', function ($q) use ($dept_code) {
+        //         //     $q->where('department_code', $dept_code);
+        //         // });
+        //     })
+        //     ->when($search, function ($query) use ($search) {
+        //         $query->where(function ($q) use ($search) {
+        //             $q->where('aip_code', 'like', "%{$search}%")
+        //             ->orWhere('project_title', 'like', "%{$search}%")
+        //             ->orWhere(function($q2)use($search){
+        //                 $q2->where(function($q3) use ($search) {
+        //                   $q3->where('sector', 'like', "%{$search}%")
+        //                  ->orWhere('subsector', 'like', "%{$search}%");
+        //                 })->where('FFUNCCOD', 'like', "%{$search}%");
+        //             })
+        //             // ->orWhereHas('paps', function ($q2) use ($search) {
+        //             //     // $q2->where(function($q3) use ($search) {
+        //             //     //      $q3->where('sector', 'like', "%{$search}%")
+        //             //     //     ->orWhere('subsector', 'like', "%{$search}%");
+        //             //     // })->where('FFUNCCOD', 'like', "%{$search}%");
+        //             //     $q2->where('sector', 'like', "%{$search}%")
+        //             //         ->orWhere('subsector', 'like', "%{$search}%");
+        //             // })
+        //             // ->orWhereHas('paps.office', function ($q2) use ($search) {
+        //             //     $q2->where('office', 'like', "%{$search}%");
+        //             // })
+        //             ->orWhereHas('activityProject.activity', function ($q2) use ($search) {
+        //                 $q2->where('description', 'like', "%{$search}%");
+        //             });
+        //         });
+        //     })
+        //     ->join('program_and_projects', 'program_and_projects.id', '=', 'revision_plans.idpaps')
+        //     ->where('idpaps',0)
+        //     ->orderBy('aip_code', 'ASC')
+        //     ->get();
         // dd($revs);
         $gen_pub = $revs->filter(function ($rev) {
             return optional($rev->paps)->sector === 'General Public Services Sector'
