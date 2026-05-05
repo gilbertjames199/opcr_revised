@@ -361,7 +361,7 @@
                         </li>
                         <!-- Engineering PPAs -->
                         <li>
-                            <Link class="sidebar-link" href="/development-fund/0"
+                            <Link class="sidebar-link" href="/development-fund/0?source=dev"
                             :class="{ 'active': $page.url === '/development-fund/0' }">
                             <span></span>
                             <span class="icon-holder">
@@ -374,6 +374,23 @@
                                 </svg>
                             </span>
                             <span class="title">&nbsp;&nbsp;Engineering PPAs</span>
+                            </Link>
+                        </li>
+                        <!-- Other Sources -->
+                        <li>
+                            <Link class="sidebar-link" href="/development-fund/0?source=other"
+                            :class="{ 'active': $page.url === '/development-fund/0' }">
+                            <span></span>
+                            <span class="icon-holder">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 2h12v20H4z"/>
+                                    <path d="M6 6h8"/>
+                                    <path d="M6 10h8"/>
+                                    <circle cx="8" cy="16" r="2"/>
+                                </svg>
+                            </span>
+                            <span class="title">&nbsp;&nbsp;Other Sources</span>
                             </Link>
                         </li>
                         <!-- IPP -ALl Offices -->

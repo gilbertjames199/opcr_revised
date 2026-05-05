@@ -35,6 +35,7 @@ class DevelopmentFundController extends Controller
         if($request->no_of_pages){
             $no_of_pages = $request->no_of_pages;
         }
+        $source = $request->source ?? 'dev';
         $data = RevisionPlan::with([
                     'paps',
                     'paps.office',
@@ -53,9 +54,9 @@ class DevelopmentFundController extends Controller
                         $q->where('department_code', $dept_code);
                     });
                 })
-                ->whereHas('paps', function($query) use ($id){
-                    $query->where('source_of_funds','dev')
-                        ->orWhere('source_of_funds','other');
+                ->whereHas('paps', function($query) use ($id, $source){
+                    $query->where('source_of_funds',$source);
+                        // ->orWhere('source_of_funds','other');
                 })
                 ->orderBy('program_and_projects.source_of_funds', 'ASC')
                 ->select('revision_plans.*')
@@ -64,6 +65,7 @@ class DevelopmentFundController extends Controller
         // dd($data, $id);
         return inertia('RevisionPlans/DevelopmentFund/Index', [
             'data'=>$data,
+            'source'=>$source,
             'id'=>$id
         ]);
         // dd($data);
