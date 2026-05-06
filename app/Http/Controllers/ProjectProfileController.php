@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Office;
 use App\Models\ProgramAndProject;
 use App\Models\ProjectProfile;
 use App\Models\RevisionPlan;
+use App\Models\SharedProgramAndProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,7 +43,12 @@ class ProjectProfileController extends Controller
         // test
         $FFUNCCOD = $request->FFUNCCOD;
         $year = $request->year;
+        $office = Office::where('FFUNCCOD', $FFUNCCOD)->first();
+        // dd($office);
 
+
+        $shared_paps = SharedProgramAndProject::where('destination_department_code', $office->department_code)->get()->pluck('idpaps');
+        // dd($shared_paps);
         $gas_data = ProgramAndProject::select(
             'id',
             'paps_desc',
@@ -100,7 +107,11 @@ class ProjectProfileController extends Controller
             'FFUNDCOD',
             'fund_owner',
         )
-            ->where('FFUNCCOD', $FFUNCCOD)
+            // ->where('FFUNCCOD', $FFUNCCOD)
+            ->where(function($query) use ($FFUNCCOD, $shared_paps) {
+                $query->where('FFUNCCOD', $FFUNCCOD)
+                    ->orWhereIn('id', $shared_paps);
+            })
             ->whereHas('latestRevisionPlan', function ($q) use ($year) {
                 $q->whereYear('date_start', $year);
             })
