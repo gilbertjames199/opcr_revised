@@ -14,7 +14,7 @@ class AddSeqNoColumnToRevisionPlans extends Migration
     public function up()
     {
         Schema::table('revision_plans', function (Blueprint $table) {
-            $table->string()
+            $table->string('seq_no')->nullable()->after('aip_code');
         });
     }
 
