@@ -38,6 +38,7 @@ use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class RevisionPlanController extends Controller
@@ -5244,4 +5245,211 @@ class RevisionPlanController extends Controller
 
         return redirect()->back()->with('message', "OOE sync complete. {$updated} budget entr" . ($updated === 1 ? 'y' : 'ies') . " updated.");
     }
+
+    public function automateHospitalOperations(Request $request){
+        // dd("dd");
+        // 1880	Integrated and Hospital Operations and Management
+        // 1965	Hospital Operations - DDOPH Pantukan
+        // 1966	Hospital Operations - DDOPH Laak
+        // 1967	Hospital Operations - DDOPH Montevista
+        // 1968	Hospital Operations - DDOPH Maragusan
+        // RevisionPlan::whereIn('id',[543, 418, 462])->get()->each(function($plan){
+        //     $this->replicate($plan);
+        // });
+        $this->replicateStrategiesAndActivities();
+    }
+    public function replicateStrategiesAndActivities()
+    {
+        $revisionPlanIds = [543, 418, 462];
+        $revisionPlans = RevisionPlan::whereIn('id', $revisionPlanIds)->get();
+
+        DB::transaction(function () use ($revisionPlans) {
+            foreach ($revisionPlans as $revisionPlan) {
+                // 1. Get all strategy_projects for this revision plan,
+                //    including any soft-deleted strategies.
+                $strategyProjects = $revisionPlan->strategyProject()
+                    ->with(['strategy' => function ($query) {
+                        $query->withTrashed();
+                    }])
+                    ->get();
+
+                foreach ($strategyProjects as $strategyProject) {
+                    $oldStrategy = $strategyProject->strategy;
+
+                    if (!$oldStrategy) {
+                        continue; // No strategy linked, skip.
+                    }
+
+                    $oldStrategyId = $oldStrategy->id;
+
+                    // 2. Replicate the strategy (columns: id, description, idpaps, idmfo,
+                    //    FFUNCCOD, year_period, created_at, updated_at, deleted_at).
+                    $newStrategy = $oldStrategy->replicate();
+                    //    Change idpaps to the current revision plan's idpaps.
+                    $newStrategy->idpaps = $revisionPlan->idpaps;
+
+                    //    Keep original timestamps and deleted_at (disable auto-touch).
+                    $newStrategy->timestamps = false;
+                    $newStrategy->save();
+                    $newStrategy->timestamps = true;
+
+                    $newStrategyId = $newStrategy->id;
+
+                    // 3. Update the current strategy_project to point to the new strategy.
+                    $strategyProject->strategy_id = $newStrategyId;
+                    $strategyProject->save();
+
+                    // 4. Process all activities under the old strategy (including trashed).
+                    $activities = $oldStrategy->activity()->withTrashed()->get();
+
+                    foreach ($activities as $activity) {
+                        $oldActivityId = $activity->id;
+
+                        // 4a. Replicate the activity (columns: id, description, strategy_id,
+                        //     created_at, updated_at, deleted_at).
+                        $newActivity = $activity->replicate();
+                        $newActivity->strategy_id = $newStrategyId;
+
+                        $newActivity->timestamps = false;
+                        $newActivity->save();
+                        $newActivity->timestamps = true;
+
+                        $newActivityId = $newActivity->id;
+
+                        // 4c. Update activity_projects that reference the old activity
+                        //     AND the current revision plan (project_id).
+                        ActivityProject::where('activity_id', $oldActivityId)
+                            ->where('project_id', $revisionPlan->id)
+                            ->update(['activity_id' => $newActivityId]);
+                    }
+                }
+            }
+        });
+
+        return redirect()->back()->with('success', 'Replication completed successfully.');
+    }
+    // public function replicate(RevisionPlan $revisionPlan)
+    // {
+    //     $revisionPlanIds = [543, 418, 462];
+
+    //     $results = [];
+
+    //     DB::transaction(function () use ($revisionPlanIds, &$results) {
+    //         foreach ($revisionPlanIds as $revisionPlanId) {
+
+    //             $revisionPlan = RevisionPlan::findOrFail($revisionPlanId);
+    //             $revisionPlanIdpaps = $revisionPlan->idpaps;
+
+    //             $planResults = [
+    //                 'revision_plan_id'       => $revisionPlanId,
+    //                 'idpaps'                 => $revisionPlanIdpaps,
+    //                 'strategy_projects'      => [],
+    //             ];
+
+    //             // ── Step 1 ──────────────────────────────────────────────────────────────
+    //             // Retrieve all strategy_projects belonging to this revision plan.
+    //             // ────────────────────────────────────────────────────────────────────────
+    //             $strategyProjects = StrategyProject::where('project_id', $revisionPlanId)->get();
+
+    //             foreach ($strategyProjects as $strategyProject) {
+
+    //                 $oldStrategyId = $strategyProject->strategy_id;
+
+    //                 $oldStrategy = Strategy::find($oldStrategyId);
+
+    //                 if (! $oldStrategy) {
+    //                     Log::warning("RevisionPlan [{$revisionPlanId}]: strategy_project [{$strategyProject->id}] references missing strategy [{$oldStrategyId}]. Skipping.");
+    //                     continue;
+    //                 }
+
+    //                 // ── Step 2 ──────────────────────────────────────────────────────────
+    //                 // Replicate the strategy.
+    //                 // Copy the specified columns; override idpaps with the revision plan's.
+    //                 // ────────────────────────────────────────────────────────────────────
+    //                 $newStrategy = new Strategy();
+    //                 $newStrategy->description  = $oldStrategy->description;
+    //                 $newStrategy->idpaps       = $revisionPlanIdpaps; // override
+    //                 $newStrategy->idmfo        = $oldStrategy->idmfo;
+    //                 $newStrategy->FFUNCCOD     = $oldStrategy->FFUNCCOD;
+    //                 $newStrategy->year_period  = $oldStrategy->year_period;
+    //                 $newStrategy->created_at   = $oldStrategy->created_at;
+    //                 $newStrategy->updated_at   = $oldStrategy->updated_at;
+    //                 $newStrategy->deleted_at   = $oldStrategy->deleted_at;
+    //                 $newStrategy->save();
+
+    //                 $newStrategyId = $newStrategy->id;
+
+    //                 // ── Step 3 ──────────────────────────────────────────────────────────
+    //                 // Point the strategy_project at the newly replicated strategy.
+    //                 // ────────────────────────────────────────────────────────────────────
+    //                 $strategyProject->strategy_id = $newStrategyId;
+    //                 $strategyProject->save();
+
+    //                 $spResult = [
+    //                     'strategy_project_id' => $strategyProject->id,
+    //                     'old_strategy_id'     => $oldStrategyId,
+    //                     'new_strategy_id'     => $newStrategyId,
+    //                     'activities'          => [],
+    //                 ];
+
+    //                 // ── Step 4 ──────────────────────────────────────────────────────────
+    //                 // Process every activity that belongs to the OLD (source) strategy.
+    //                 // ────────────────────────────────────────────────────────────────────
+    //                 $activities = Activity::where('strategy_id', $oldStrategyId)->get();
+
+    //                 foreach ($activities as $activity) {
+
+    //                     $oldActivityId = $activity->id;
+
+    //                     // ── Step 4-b ─────────────────────────────────────────────────────
+    //                     // Replicate the activity.
+    //                     // Copy the specified columns; wire strategy_id to the new strategy.
+    //                     // ─────────────────────────────────────────────────────────────────
+    //                     $newActivity = new Activity();
+    //                     $newActivity->description = $activity->description;
+    //                     $newActivity->strategy_id = $newStrategyId; // points to new strategy
+    //                     $newActivity->created_at  = $activity->created_at;
+    //                     $newActivity->updated_at  = $activity->updated_at;
+    //                     $newActivity->deleted_at  = $activity->deleted_at;
+    //                     $newActivity->save();
+
+    //                     $newActivityId = $newActivity->id;
+
+    //                     // ── Step 4-c-i ───────────────────────────────────────────────────
+    //                     // Find the FIRST matching activity_project for this revision plan
+    //                     // and update its idpaps to the revision plan's idpaps.
+    //                     // ─────────────────────────────────────────────────────────────────
+    //                     $activityProject = ActivityProject::where('activity_id', $oldActivityId)
+    //                         ->where('project_id', $revisionPlanId)
+    //                         ->first();
+
+    //                     $activityProjectUpdated = false;
+
+    //                     if ($activityProject) {
+    //                         $activityProject->idpaps = $revisionPlanIdpaps;
+    //                         $activityProject->save();
+    //                         $activityProjectUpdated = true;
+    //                     } else {
+    //                         Log::info("RevisionPlan [{$revisionPlanId}]: no activity_project found for activity [{$oldActivityId}]. idpaps not updated.");
+    //                     }
+
+    //                     $spResult['activities'][] = [
+    //                         'old_activity_id'          => $oldActivityId,
+    //                         'new_activity_id'          => $newActivityId,
+    //                         'activity_project_updated' => $activityProjectUpdated,
+    //                     ];
+    //                 }
+
+    //                 $planResults['strategy_projects'][] = $spResult;
+    //             }
+
+    //             $results[] = $planResults;
+    //         }
+    //     });
+
+    //     return response()->json([
+    //         'message' => 'Replication completed successfully.',
+    //         'data'    => $results,
+    //     ]);
+    // }
 }
