@@ -112,7 +112,7 @@ class ProgramAndProject extends Model
                 'version' => 'max',
                 'id' => 'max' // tie-breaker (important)
             ], function ($query) {
-                $query->where('status', 1);
+                $query->where('status', ">", -1);
             });
     }
 }
