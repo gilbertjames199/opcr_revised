@@ -146,7 +146,7 @@ class RevisionPlanController extends Controller
                     if(count($gas)>0){
                         $data = $data->concat($gas);
                     }
-                    dd($gas);
+                    // dd($gas);
                     // if(count($gas2)>0){
                     //     $data = $data->concat($gas2);
                     // }
