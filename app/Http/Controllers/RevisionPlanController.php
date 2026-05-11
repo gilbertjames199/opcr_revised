@@ -115,6 +115,7 @@ class RevisionPlanController extends Controller
         // dd("revision");
         // dd($idpaps);
         if ($paps_type === "GAS") {
+
             return redirect('/revision/general/administration/services/' . $FFUNCCOD . '/plan');
         } else if ($idpaps == "0") {
             // dd($idpaps,'idpaps is 0');
@@ -141,10 +142,11 @@ class RevisionPlanController extends Controller
                     // $gas2 = $this->forGas($request, $FFUNCCOD, 2027, $budget_controller, $year_filtering);
                     // dd($gas2);
                     $data = $this->getDirect($request, $dept_id, $popsp_agency, $budget_controller, $year_filtering);
-                    // dd($gas, $gas2, $data);
+                    // dd($gas, $data);
                     if(count($gas)>0){
                         $data = $data->concat($gas);
                     }
+                    dd($gas);
                     // if(count($gas2)>0){
                     //     $data = $data->concat($gas2);
                     // }
@@ -468,11 +470,11 @@ class RevisionPlanController extends Controller
     }
     public function getDirect(Request $request, $dept_id, $popsp_agency, $budget_controller, $year_filtering)
     {
-        // dd($dept_id);
+        // dd($dept_id, $popsp_agency, $budget_controller, $year_filtering);
         $data= RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects','paps.office', 'clonedVersions','projectProfileTrackings'])
             ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                 $query->where('department_code', $dept_id)
-                ->orWhereHas('sharedProgramAndProjects', function ($q) use ($dept_id, $popsp_agency) {
+                    ->orWhereHas('sharedProgramAndProjects', function ($q) use ($dept_id, $popsp_agency) {
                         $q->where('destination_department_code', $dept_id);
                         // ->orWhere('destination_department_code', optional($popsp_agency)->department_code_actual);
                     });

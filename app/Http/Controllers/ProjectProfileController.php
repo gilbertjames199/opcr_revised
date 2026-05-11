@@ -62,13 +62,17 @@ class ProjectProfileController extends Controller
             ->map(function ($item)use($year) {
                 // dd($item->FFUNCCOD);
                 $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
-                    ->where('status', '1')
+                    // ->where('status', '1')
+                    ->where(function($query)  {
+                        $query->where('status', '1')
+                            ->orWhere('status', '0');
+                    })
                     ->whereYear(('date_start'), $year)
                     ->where('idpaps',0)
                     ->with('budget')
                     ->orderBY('created_at', 'desc')
                     ->first();
-                // dd($latestPlan->budget);
+                // dd($latestPlan);
                 $FFUNDCOD = $item->FFUNDCOD;
                 // $latestPlan = $item->latestRevisionPlan;
 
