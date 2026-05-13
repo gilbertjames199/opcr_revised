@@ -839,11 +839,13 @@ class AnnualInvestmentPlanController extends Controller
         });
 
         $ldrrmf = $revs->filter(function ($rev) {
-            return (optional($rev->paps)->source_of_funds === 'ldrrmf' && (optional($rev->paps)->source_of_funds === 'gen_fund'
-                || optional($rev->paps)->source_of_funds === ''
-                || optional($rev->paps)->source_of_funds === null))
-                && optional($rev->paps)->department_code !== 'dev'
-                || optional($rev->paps)->department_code === '17';
+            return optional($rev->paps)->source_of_funds === 'ldrrmf';
+            // return (optional($rev->paps)->source_of_funds === 'ldrrmf' &&
+            //     (optional($rev->paps)->source_of_funds === 'gen_fund'
+            //     || optional($rev->paps)->source_of_funds === ''
+            //     || optional($rev->paps)->source_of_funds === null))
+            //     && optional($rev->paps)->department_code !== 'dev';
+                // || optional($rev->paps)->department_code === '17';
         });
         // optional($rev->paps)->sector === 'Other Services' &&
         $others = $revs->filter(function ($rev) {
@@ -859,7 +861,7 @@ class AnnualInvestmentPlanController extends Controller
 
                 && optional($rev->paps)->department_code !== '17';
         });
-
+    // dd($revs);
         return inertia("AIP_Code/AIP_IPPs/Index",[
             "gen_pub" => $gen_pub,
             "econ" => $econ,
