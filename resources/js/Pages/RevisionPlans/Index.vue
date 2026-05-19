@@ -10,7 +10,7 @@
         <div v-if="showFlyingPlane" class="flying-plane-container">
             <i class="fas fa-paper-plane flying-plane"></i>
         </div>
-
+        <!-- {{ year_filtering_d }} -->
         <div class="peers fxw-nw jc-sb ai-c">
             <div class="peers">
                 <h3 v-if="source==='sip'">SIP Profile</h3>
@@ -604,7 +604,16 @@
                                         <i class="fas fa-arrow-right"></i>
                                         {{ parseInt(dat.year)+1}}
                                     </button>
+                                    <br />
+                                    <!-- :disabled="!((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && ([0,1].includes(parseInt(dat.status))))" -->
 
+                                    <!-- :title="getForwardButtonTitle(dat)" -->
+                                    <button v-if="parseInt(dat.number_of_clones)>0 && dat.type==='p'"
+                                            @click="generateProjectDesign(dat.id, 'ly')"
+                                            class="btn btn-sm btn-success">
+                                        <i class="fas fa-arrow-right"></i>
+                                        {{ parseInt(dat.year)-1}}
+                                    </button>
                                     <!-- {{ dat.status }} -->
                                 </td>
 
@@ -1290,6 +1299,10 @@ export default {
             // }
         },
         showAIPModalMethod(){
+            if(this.year_filtering_d === ''){
+                alert('Please select year first before printing.');
+                return;
+            }
             var linkt = "https://";
             var jasper_ip = this.jasper_ip;
             var jasper_link ='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no&output=pdf';
@@ -1410,6 +1423,19 @@ export default {
             }else if(type=='ny'){
                 // alert(type)
                 Inertia.post(`/project/next_year/${id}`, {
+                    'type': type
+                }, {
+                    onSuccess: () => {
+                        // optional: anything you want to run after success
+                        console.log("Project Design generated.");
+                    },
+                    onError: (errors) => {
+                        console.error(errors);
+                    }
+                });
+            }else if(type=='ly'){
+                // alert(type)
+                Inertia.post(`/project/last/year/${id}`, {
                     'type': type
                 }, {
                     onSuccess: () => {

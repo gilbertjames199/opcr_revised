@@ -501,6 +501,11 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/project/next_year')->group(function () {
         Route::post('/{sem_id}', [ProjectProfileNextYearController::class, 'index']);
     });
+
+    // Forward Next Year
+    Route::prefix('/project/last/year')->group(function () {
+        Route::post('/{sem_id}', [ProjectProfileNextYearController::class, 'last_year']);
+    });
     // Cash Disbursements Forecast
     Route::prefix('/cdf')->group(function () {
         Route::get('/{revision_plan_id}', [CashDisbursementForecastController::class, 'set_cdf']);

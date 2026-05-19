@@ -251,4 +251,30 @@ class ProjectProfileNextYearController extends Controller
             ];
         }
     }
+
+    public function last_year(Request $request, $sem_id){
+        $current = RevisionPlan::where('id', $sem_id)->first();
+        // dd($current);
+        $current_year = Carbon::parse($current->date_start)->year;
+
+        $next_year = intval($current_year)-1;
+        $existing =RevisionPlan::where('reference_profile_id', $sem_id)
+                    ->whereYear('date_start', $next_year)
+                    ->get();
+        if(count($existing)>0){
+            return redirect()->back()->with(
+                'error',
+                'A project profile has already been forwarded for last year ('.$next_year.')'
+            );
+        }else{
+            // dd($request->input('type'));
+            $result = $this->cloneRevisionPlan($sem_id, $request->input('type'), $next_year);
+
+            if (isset($result['error'])) {
+                return redirect()->back()->with('error', $result['error']);
+            }
+
+            return redirect()->back()->with('message', $result['message']);
+        }
+    }
 }
