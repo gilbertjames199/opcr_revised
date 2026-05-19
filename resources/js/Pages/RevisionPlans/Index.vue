@@ -460,10 +460,45 @@
                                 <td class="fw-medium">
                                     <div class="d-flex flex-column">
                                         <span class="text-dark">{{ dat.project_title }}</span>
-                                        <small v-if="amountStatus(dat.budget_sum, dat.imp_amount)" class="text-danger mt-1">
-                                            <i class="fas fa-exclamation-triangle me-1"></i>
-                                            {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
-                                        </small>
+                                        <span
+                                            v-if="hasAnyWarning(dat)"
+                                            class="mt-1"
+                                            style="cursor:pointer; text-decoration:underline; color:red;"
+                                            @click="toggleWarnings(dat.id)"
+                                        >
+                                            <i
+                                                class="fas fa-exclamation-triangle me-1"
+                                                style="color:#b8860b;"
+                                            ></i>
+
+                                            View Warnings
+                                        </span>
+                                        <div v-if="openWarningsRow === dat.id" class="mt-2">
+                                            <ul class="text-danger" style="padding-left: 1.2em;">
+                                                <li v-if="amountStatus(dat.budget_sum, dat.imp_amount)">
+                                                    <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                    {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
+                                                </li>
+                                                <li v-if="categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps')">
+                                                    <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                    <!-- {{ categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps') }} -->
+                                                    <div v-html="categoryAmountStatus(dat.budget_ps_total, dat  .imp_ps_total, 'ps')"></div>
+                                                </li>
+                                                <li v-if="categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe')">
+                                                    <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                    <!-- {{ categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe') }} -->
+                                                    <div v-html="categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe')"></div>
+                                                </li>
+                                                <li v-if="categoryAmountStatus(dat.budget_co_total, dat.imp_co_total, 'co')">
+                                                    <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                    <div v-html="categoryAmountStatus(dat.budget_co_total, dat.imp_co_total, 'co')"></div>
+                                                </li>
+                                                <li v-if="categoryAmountStatus(dat.budget_fe_total, dat.imp_fe_total, 'fe')">
+                                                    <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                    <div v-html="categoryAmountStatus(dat.budget_fe_total, dat.imp_fe_total, 'fe')"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </td>
 
@@ -591,11 +626,15 @@
                                 <!-- ACTIONS COLUMN (Submit/Recall/Generate buttons) -->
                                 <td class="text-center">
                                     <div class="d-flex gap-1 justify-content-center flex-wrap">
-                                        <!-- Submit button when status = -1 or -2 -->
-                                        <button v-if="dat.status == '-1' || dat.status == '-2'"
+                                        <!-- Submit button when status = -1 or -2 v-if="hasAnyWarning(dat)"
+                                        :disabled="!can_submit(dat.budget_sum, dat.imp_amount)"
+                                        :class="can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
+                                        -->
+                                        <!-- {{ hasAnyWarning(dat) }} -->
+                                        <button v-if="(dat.status == '-1' || dat.status == '-2') && !hasAnyWarning(dat)"
                                                 @click="submitItem(dat, 0)"
-                                                :disabled="!can_submit(dat.budget_sum, dat.imp_amount)"
-                                                :class="can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
+                                                :disabled="hasAnyWarning(dat)"
+                                                :class="!hasAnyWarning(dat) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
                                                 title="Submit Project">
                                             <i class="fas fa-paper-plane"></i>
                                             <span class="ms-1">Submit</span>
@@ -1035,6 +1074,7 @@ export default {
     data() {
         return{
             search: this.$props.filters.search,
+            openWarningsRow: null,
             showAIPModal: false,
             aip_printLink: "",
             ccet: 'no',       // This is the main variable bound by v-model
@@ -1106,6 +1146,18 @@ export default {
         this.fitTableWidth();
     },
     methods:{
+        toggleWarnings(id) {
+            this.openWarningsRow = this.openWarningsRow === id ? null : id;
+        },
+        hasAnyWarning(dat) {
+            return !!(
+                this.amountStatus(dat.budget_sum, dat.imp_amount) ||
+                this.categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps') ||
+                this.categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe') ||
+                this.categoryAmountStatus(dat.budget_co_total, dat.imp_co_total, 'co') ||
+                this.categoryAmountStatus(dat.budget_fe_total, dat.imp_fe_total, 'fe')
+            );
+        },
         syncOOEs() {
 
             this.$inertia.post("/revision/sync-ooes",
@@ -1171,11 +1223,51 @@ export default {
             //showAmount ="Budget is "+budget+" \n imp amount is "+imp_amount + " "
             if(bdg>imp){
                 //alert('budget is greater than impamount');
-                status_now=showAmount+"Warning: total amount of budgetary requirement is greater than the total implementation plans amount."
+                status_now=showAmount+"Total amount of budgetary requirement is greater than the total implementation plans amount."
             }
             if(bdg<imp){
-                status_now=showAmount+"Warning: total amount of implementation plans is greater than the total  amount of budgetary requirement."
+                status_now=showAmount+"Total amount of implementation schedule/workplan is greater than the total  amount of budgetary requirement."
             }
+            return status_now;
+        },
+        categoryAmountStatus(budget, imp_amount, category) {
+
+            var status_now = "";
+            var showAmount = "";
+
+            var bdg = parseFloat(parseFloat(budget || 0).toFixed(2));
+            var imp = parseFloat(parseFloat(imp_amount || 0).toFixed(2));
+
+            // Category labels
+            const categoryLabels = {
+                mooe: "Maintenance, Operating, and Other Expenses",
+                co: "Capital Outlay",
+                ps: "Personnel Services",
+                fe: "Financial Expenses"
+            };
+
+            var categoryLabel = categoryLabels[category] || "Unknown Category";
+
+            if (imp > bdg) {
+                status_now =
+                    showAmount +
+                    "Total amount of <b>" +
+                    categoryLabel +
+                    "</b> in implementation schedule/workplan is greater than the total amount of <b>" +
+                    categoryLabel +
+                    "</b> in budgetary requirements.";
+            }
+
+            if (imp < bdg) {
+                status_now =
+                    showAmount +
+                    "Total amount of <b>" +
+                    categoryLabel +
+                    "</b> in implementation schedule/workplan is lesser than the total amount of <b>" +
+                    categoryLabel +
+                    " in budgetary requirements.";
+            }
+
             return status_now;
         },
         can_submit(budget, imp_amount){

@@ -270,8 +270,65 @@ class RevisionPlanController extends Controller
             })
             ->get()
             ->map(function ($item) use($currentYear, $budget_controller) {
-                $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
-                    ->sum('amount');
+                // $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                //     ->sum('amount');
+                $budgetary_requirement = 0;
+                $budget_ps_total   = 0;
+                $budget_mooe_total = 0;
+                $budget_co_total   = 0;
+                $budget_fe_total   = 0;
+                try {
+
+                    // Ensure budget exists and is iterable
+                    $budgets = collect($item->budget ?? []);
+
+                    $budget_ps_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Personnel Services')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+
+                    $budget_mooe_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Maintenance, Operating, and Other Expenses')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+
+                    $budget_co_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Capital Outlay')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+
+                    $budget_fe_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Financial Expenses')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+                    $budgetary_requirement = $budget_ps_total + $budget_mooe_total + $budget_co_total + $budget_fe_total;
+                } catch (\Throwable $e) {
+
+                    // Fallback to 0 if something unexpected happens
+                    $budget_ps_total   = 0;
+                    $budget_mooe_total = 0;
+                    $budget_co_total   = 0;
+                    $budget_fe_total   = 0;
+                }
+                $imp_amount = 0.00;
+                // DB::table('targets')
+                //     ->where('implementation_plans.idrev_plan', $item->id)
+                //     ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                //     ->select('targets.*', 'implementation_plans.*')
+                //     ->sum('targets.planned_budget');
+                $total = [];
+                $imp_ps_total=0.00;
+                $imp_mooe_total=0.00;
+                $imp_co_total=0.00;
+                $imp_fe_total=0.00;
                 // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
                 //                 ->join('targets', 'targets.id','implementation_plans.id')
                 //                 ->sum('targets.planned_budget');
@@ -290,10 +347,15 @@ class RevisionPlanController extends Controller
                 }
                 // dd($item->is_strategy_based);
                 if ($total) {
-                    $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
-                        $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
-                        $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
-                        $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                    $imp_ps_total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4');
+                    $imp_mooe_total = $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4');
+                    $imp_co_total = $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+                    $imp_fe_total = $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                    $imp_amount = $imp_ps_total + $imp_mooe_total + $imp_co_total + $imp_fe_total;
+                    // $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                    //     $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                    //     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
+                    //     $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
                 }
 
                 // dd($item);
@@ -304,7 +366,15 @@ class RevisionPlanController extends Controller
                     'type' => $item->type,
                     'version' => $item->version,
                     'budget_sum' => $budgetary_requirement,
+                    'budget_ps_total' => $budget_ps_total,
+                    'budget_mooe_total' => $budget_mooe_total,
+                    'budget_co_total' => $budget_co_total,
+                    'budget_fe_total' => $budget_fe_total,
                     'imp_amount' => $imp_amount,
+                    'imp_ps_total' => $imp_ps_total,
+                    'imp_mooe_total' => $imp_mooe_total,
+                    'imp_co_total' => $imp_co_total,
+                    'imp_fe_total' => $imp_fe_total,
                     'scope' => $item->scope,
                     'year_period' => $item->year_period,
                     'status' => $item->status,
@@ -471,7 +541,14 @@ class RevisionPlanController extends Controller
     public function getDirect(Request $request, $dept_id, $popsp_agency, $budget_controller, $year_filtering)
     {
         // dd($dept_id, $popsp_agency, $budget_controller, $year_filtering);
-        $data= RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects','paps.office', 'clonedVersions','projectProfileTrackings'])
+        $data= RevisionPlan::with([
+                'paps',
+                'paps.sharedProgramAndProjects',
+                'paps.office',
+                'clonedVersions',
+                'projectProfileTrackings',
+                'budget'
+            ])
             ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                 $query->where('department_code', $dept_id)
                     ->orWhereHas('sharedProgramAndProjects', function ($q) use ($dept_id, $popsp_agency) {
@@ -599,9 +676,54 @@ class RevisionPlanController extends Controller
                 // dd($revision_comment);
 
                 // BUDGERTARY REQUIREMENTs
-                $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
-                    ->sum('amount');
+                // $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                //     ->sum('amount');
+                $budgetary_requirement = 0;
+                $budget_ps_total   = 0;
+                $budget_mooe_total = 0;
+                $budget_co_total   = 0;
+                $budget_fe_total   = 0;
+                try {
 
+                    // Ensure budget exists and is iterable
+                    $budgets = collect($item->budget ?? []);
+
+                    $budget_ps_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Personnel Services')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+
+                    $budget_mooe_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Maintenance, Operating, and Other Expenses')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+
+                    $budget_co_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Capital Outlay')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+
+                    $budget_fe_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Financial Expenses')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+                    $budgetary_requirement = $budget_ps_total + $budget_mooe_total + $budget_co_total + $budget_fe_total;
+                } catch (\Throwable $e) {
+
+                    // Fallback to 0 if something unexpected happens
+                    $budget_ps_total   = 0;
+                    $budget_mooe_total = 0;
+                    $budget_co_total   = 0;
+                    $budget_fe_total   = 0;
+                }
                 $imp_amount = 0.00;
                 // DB::table('targets')
                 //     ->where('implementation_plans.idrev_plan', $item->id)
@@ -609,6 +731,10 @@ class RevisionPlanController extends Controller
                 //     ->select('targets.*', 'implementation_plans.*')
                 //     ->sum('targets.planned_budget');
                 $total = [];
+                $imp_ps_total=0.00;
+                $imp_mooe_total=0.00;
+                $imp_co_total=0.00;
+                $imp_fe_total=0.00;
                 // dd($item);
                 if ($item->is_strategy_based == 1) {
                     $total = $budget_controller->getStratTotal($item->id);
@@ -617,10 +743,15 @@ class RevisionPlanController extends Controller
                 }
                 // dd($item->is_strategy_based);
                 if ($total) {
-                    $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
-                        $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
-                        $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
-                        $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                    $imp_ps_total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4');
+                    $imp_mooe_total = $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4');
+                    $imp_co_total = $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+                    $imp_fe_total = $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                    $imp_amount = $imp_ps_total + $imp_mooe_total + $imp_co_total + $imp_fe_total;
+                    // $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                    //     $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                    //     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
+                    //     $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
                 }
                 // dd($total);
                 // dd($item);
@@ -640,7 +771,14 @@ class RevisionPlanController extends Controller
                     'type' => $item->type,
                     'version' => $item->version,
                     'budget_sum' => $budgetary_requirement,
+                    'budget_ps_total' => $budget_ps_total,
+                    'budget_mooe_total' => $budget_mooe_total,
+                    'budget_co_total' => $budget_co_total,
+                    'budget_fe_total' => $budget_fe_total,
                     'imp_amount' => $imp_amount,
+                    'imp_mooe_total' => $imp_mooe_total,
+                    'imp_co_total' => $imp_co_total,
+                    'imp_fe_total' => $imp_fe_total,
                     'status' => $item->status,
                     'number_of_clones_design' => $item->clonedVersions->where('type', 'd')->count(),
                     'number_of_clones' => $item->clonedVersions->count(),

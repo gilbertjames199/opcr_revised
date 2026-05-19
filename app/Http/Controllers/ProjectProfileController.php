@@ -43,6 +43,7 @@ class ProjectProfileController extends Controller
         // test
         $FFUNCCOD = $request->FFUNCCOD;
         $year = $request->year;
+        // dd($FFUNCCOD);
         $office = Office::where('FFUNCCOD', $FFUNCCOD)->first();
         // dd($office);
 
