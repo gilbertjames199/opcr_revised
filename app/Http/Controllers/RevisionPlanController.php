@@ -3509,6 +3509,9 @@ class RevisionPlanController extends Controller
                 $source = implode("\n", $chars);
             }
             $paps_title = $plan->project_title;
+            if ($paps_title === mb_strtoupper($paps_title, 'UTF-8')) {
+                $paps_title = $this->titleCaseTransform($paps_title);
+            }
             $paps_desc = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
             $paps_title_desc = "<b>" . $paps_title . "</b>\n\n<i>" . $paps_desc . "</i>";
 
@@ -3528,7 +3531,8 @@ class RevisionPlanController extends Controller
                     'ccet_code_adaptation' => $ccet_code_adaptation,
                     'aip_code' => $plan->aip_code,
                     'source' => $source . "\n",
-                    'ccet' => $ccet
+                    'ccet' => $ccet,
+                    'year'=>$year
                 ];
             } else {
                 // If the same strategy appears again, merge expected outputs
@@ -3545,6 +3549,36 @@ class RevisionPlanController extends Controller
         }
 
         return array_values($strategies);
+    }
+
+    public function titleCaseTransform($text)
+    {
+        $paps_title = $text;
+
+        if ($paps_title === mb_strtoupper($paps_title, 'UTF-8')) {
+
+            // Convert to title case first
+            $paps_title = mb_convert_case(mb_strtolower($paps_title, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+
+            // Words to keep lowercase (unless first word)
+            $lowercaseWords = [
+                'And', 'Or', 'Nor', 'But', 'For', 'So', 'Yet',
+                'A', 'An', 'The',
+                'Of', 'In', 'On', 'At', 'To', 'By', 'From',
+                'With', 'As', 'Per', 'Via', 'Over', 'Under',
+                'Into', 'Upon', 'Off'
+            ];
+
+            $words = explode(' ', $paps_title);
+
+            foreach ($words as $index => $word) {
+                if ($index > 0 && in_array($word, $lowercaseWords)) {
+                    $words[$index] = mb_strtolower($word, 'UTF-8');
+                }
+            }
+
+            $paps_title = implode(' ', $words);
+        }
     }
     public function exportStrategiesOrig(Request $request)
     {
