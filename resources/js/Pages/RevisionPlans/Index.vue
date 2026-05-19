@@ -608,12 +608,12 @@
                                     <!-- :disabled="!((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && ([0,1].includes(parseInt(dat.status))))" -->
 
                                     <!-- :title="getForwardButtonTitle(dat)" -->
-                                    <button v-if="parseInt(dat.number_of_clones)>0 && dat.type==='p'"
+                                    <!-- <button v-if="parseInt(dat.number_of_clones)>0 && dat.type==='p'"
                                             @click="generateProjectDesign(dat.id, 'ly')"
                                             class="btn btn-sm btn-success">
                                         <i class="fas fa-arrow-right"></i>
                                         {{ parseInt(dat.year)-1}}
-                                    </button>
+                                    </button> -->
                                     <!-- {{ dat.status }} -->
                                 </td>
 
