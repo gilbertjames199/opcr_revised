@@ -45,6 +45,10 @@ class RevisionPlan extends Model
     {
         return $this->belongsTo(ProgramAndProject::class, 'idpaps', 'id');
     }
+    public function office()
+    {
+        return $this->hasOne(FFUNCCOD::class, 'FFUNCCOD', 'FFUNCCOD');
+    }
     public function strategyProject()
     {
         return $this->hasMany(StrategyProject::class, 'project_id', 'id');

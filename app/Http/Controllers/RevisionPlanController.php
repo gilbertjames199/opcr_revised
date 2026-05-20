@@ -3402,7 +3402,8 @@ class RevisionPlanController extends Controller
             'budget',
             'paps',
             'paps.office',
-            'paps.office.office'
+            'paps.office.office',
+            'office'
         ])
         ->where('status', '1')
         ->whereYear('date_start', $year)
@@ -3513,19 +3514,19 @@ class RevisionPlanController extends Controller
             if ($paps_title === mb_strtoupper($paps_title, 'UTF-8')) {
                 $paps_title = $this->titleCaseTransform($paps_title);
             }
-            if($plan->id==191){
-                // dd($plan, $paps_title, $paps_temp);
-                // dd($plan);
-            }
+            // if($plan->id==272){
+            //     // dd($plan, $paps_title, $paps_temp);
+            //     dd($plan);
+            // }
             $paps_desc = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
             $paps_title_desc = "<b>" . $paps_title . "</b>\n\n<i>" . $paps_desc . "</i>";
-
+            $imp_office=optional(optional(optional($plan)->paps)->office)->office ?
+                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
+                        optional(optional(optional($plan)->paps)->office)->FFUNCTION;
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
-                    'implementing_office' => optional(optional(optional($plan)->paps)->office)->office ?
-                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
-                        optional(optional(optional($plan)->paps)->office)->FFUNCTION,
+                    'implementing_office' => $imp_office ? $imp_office : optional(optional($plan)->office)->FFUNCTION,
                     'expected_output' => $expected_outputs,
                     'total_mooe' => $total_mooe,
                     'total_ps' => $total_ps,
