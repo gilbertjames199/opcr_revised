@@ -55,8 +55,12 @@ __webpack_require__.r(__webpack_exports__);
         },
         onError: function onError(errors) {
           _this.pendingRequests--;
-          console.error(errors);
-          alert('Update failed. Check console.');
+          if (errors.idooe) {
+            alert("Update failed: ".concat(errors.idooe));
+          } else {
+            console.error(errors);
+            alert('Update failed. Please check your input and try again.');
+          }
         }
       });
     }

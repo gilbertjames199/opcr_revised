@@ -167,8 +167,12 @@ export default {
                 },
                 onError: (errors) => {
                     this.pendingRequests--;
-                    console.error(errors);
-                    alert('Update failed. Check console.');
+                    if (errors.idooe) {
+                        alert(`Update failed: ${errors.idooe}`);
+                    } else {
+                        console.error(errors);
+                        alert('Update failed. Please check your input and try again.');
+                    }
                 }
             });
         }

@@ -694,8 +694,19 @@ class BudgetRequirementController extends Controller
             'column' => 'required|string|in:remarks,idooe', // allowed columns
             'value'  => 'nullable|string|max:65535',        // adjust max length as needed
         ]);
-
         $budgetItem = BudgetRequirement::findOrFail($id);
+        if($request->column == 'idooe' && $request->value){
+            $ooe = BudgetRequirement::where('revision_plan_id', $budgetItem->revision_plan_id)->where('idooe', $request->value)->first();
+            // dd($ooe, $request, $id);
+            if ($ooe) {
+                // dd($ooe);
+                return redirect()->back()->withErrors([
+                    'idooe' => 'The selected OOE option already exists in another budget requirement.'
+                ]);
+            }
+        }
+        // dd($request);
+
         $budgetItem->{$request->column} = $request->value;
         $budgetItem->save();
 
