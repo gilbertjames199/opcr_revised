@@ -776,6 +776,7 @@ class RevisionPlanController extends Controller
                     'budget_co_total' => $budget_co_total,
                     'budget_fe_total' => $budget_fe_total,
                     'imp_amount' => $imp_amount,
+                    'imp_ps_total' => $imp_ps_total,
                     'imp_mooe_total' => $imp_mooe_total,
                     'imp_co_total' => $imp_co_total,
                     'imp_fe_total' => $imp_fe_total,

@@ -470,7 +470,6 @@
                                                 class="fas fa-exclamation-triangle me-1"
                                                 style="color:#b8860b;"
                                             ></i>
-
                                             View Errors
                                         </span>
                                         <div v-if="openWarningsRow === dat.id" class="mt-2">
@@ -482,7 +481,7 @@
                                                 <li v-if="categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps')">
                                                     <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
                                                     <!-- {{ categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps') }} -->
-                                                    <div v-html="categoryAmountStatus(dat.budget_ps_total, dat  .imp_ps_total, 'ps')"></div>
+                                                    <div v-html="categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps')"></div>
                                                 </li>
                                                 <li v-if="categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe')">
                                                     <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
