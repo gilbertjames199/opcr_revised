@@ -3513,9 +3513,10 @@ class RevisionPlanController extends Controller
             if ($paps_title === mb_strtoupper($paps_title, 'UTF-8')) {
                 $paps_title = $this->titleCaseTransform($paps_title);
             }
-            // if($plan->id==127){
-            //     dd($plan, $paps_title, $paps_temp);
-            // }
+            if($plan->id==191){
+                // dd($plan, $paps_title, $paps_temp);
+                // dd($plan);
+            }
             $paps_desc = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
             $paps_title_desc = "<b>" . $paps_title . "</b>\n\n<i>" . $paps_desc . "</i>";
 

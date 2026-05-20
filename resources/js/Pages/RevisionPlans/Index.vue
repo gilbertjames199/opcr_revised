@@ -471,7 +471,7 @@
                                                 style="color:#b8860b;"
                                             ></i>
 
-                                            View Warnings
+                                            View Errors
                                         </span>
                                         <div v-if="openWarningsRow === dat.id" class="mt-2">
                                             <ul class="text-danger" style="padding-left: 1.2em;">
