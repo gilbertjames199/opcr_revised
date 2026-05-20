@@ -3509,9 +3509,13 @@ class RevisionPlanController extends Controller
                 $source = implode("\n", $chars);
             }
             $paps_title = $plan->project_title;
+            // $paps_temp=$paps_title;
             if ($paps_title === mb_strtoupper($paps_title, 'UTF-8')) {
                 $paps_title = $this->titleCaseTransform($paps_title);
             }
+            // if($plan->id==127){
+            //     dd($plan, $paps_title, $paps_temp);
+            // }
             $paps_desc = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
             $paps_title_desc = "<b>" . $paps_title . "</b>\n\n<i>" . $paps_desc . "</i>";
 
@@ -3532,7 +3536,8 @@ class RevisionPlanController extends Controller
                     'aip_code' => $plan->aip_code,
                     'source' => $source . "\n",
                     'ccet' => $ccet,
-                    'year'=>$year
+                    'year'=>$year,
+                    'id' => $plan->id
                 ];
             } else {
                 // If the same strategy appears again, merge expected outputs
@@ -3579,6 +3584,7 @@ class RevisionPlanController extends Controller
 
             $paps_title = implode(' ', $words);
         }
+        return $paps_title;
     }
     public function exportStrategiesOrig(Request $request)
     {
