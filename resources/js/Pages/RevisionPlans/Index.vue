@@ -472,32 +472,35 @@
                                             ></i>
                                             View Errors
                                         </span>
-                                        <div v-if="openWarningsRow === dat.id" class="mt-2">
-                                            <ul class="text-danger" style="padding-left: 1.2em;">
-                                                <li v-if="amountStatus(dat.budget_sum, dat.imp_amount)">
-                                                    <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
-                                                    {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
-                                                </li>
-                                                <li v-if="categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps')">
-                                                    <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
-                                                    <!-- {{ categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps') }} -->
-                                                    <div v-html="categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps')"></div>
-                                                </li>
-                                                <li v-if="categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe')">
-                                                    <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
-                                                    <!-- {{ categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe') }} -->
-                                                    <div v-html="categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe')"></div>
-                                                </li>
-                                                <li v-if="categoryAmountStatus(dat.budget_co_total, dat.imp_co_total, 'co')">
-                                                    <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
-                                                    <div v-html="categoryAmountStatus(dat.budget_co_total, dat.imp_co_total, 'co')"></div>
-                                                </li>
-                                                <li v-if="categoryAmountStatus(dat.budget_fe_total, dat.imp_fe_total, 'fe')">
-                                                    <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
-                                                    <div v-html="categoryAmountStatus(dat.budget_fe_total, dat.imp_fe_total, 'fe')"></div>
-                                                </li>
-                                            </ul>
+                                        <div v-if="parseFloat(dat.status)<1">
+                                            <div v-if="openWarningsRow === dat.id" class="mt-2">
+                                                <ul class="text-danger" style="padding-left: 1.2em;">
+                                                    <li v-if="amountStatus(dat.budget_sum, dat.imp_amount)">
+                                                        <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                        {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
+                                                    </li>
+                                                    <li v-if="categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps')">
+                                                        <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                        <!-- {{ categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps') }} -->
+                                                        <div v-html="categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps')"></div>
+                                                    </li>
+                                                    <li v-if="categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe')">
+                                                        <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                        <!-- {{ categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe') }} -->
+                                                        <div v-html="categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe')"></div>
+                                                    </li>
+                                                    <li v-if="categoryAmountStatus(dat.budget_co_total, dat.imp_co_total, 'co')">
+                                                        <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                        <div v-html="categoryAmountStatus(dat.budget_co_total, dat.imp_co_total, 'co')"></div>
+                                                    </li>
+                                                    <li v-if="categoryAmountStatus(dat.budget_fe_total, dat.imp_fe_total, 'fe')">
+                                                        <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                        <div v-html="categoryAmountStatus(dat.budget_fe_total, dat.imp_fe_total, 'fe')"></div>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
+
                                     </div>
                                 </td>
 

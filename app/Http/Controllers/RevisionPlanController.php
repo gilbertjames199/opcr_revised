@@ -547,7 +547,14 @@ class RevisionPlanController extends Controller
                 'paps.office',
                 'clonedVersions',
                 'projectProfileTrackings',
-                'budget'
+                'budget',
+                'hgdgScores',
+                'strategyProject',
+                'activityProject',
+                'teamPlans',
+                'monitoringAndEvaluations',
+                'riskManagements',
+                'signatories'
             ])
             ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                 $query->where('department_code', $dept_id)
