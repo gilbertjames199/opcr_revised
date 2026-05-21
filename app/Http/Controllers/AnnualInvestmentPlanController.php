@@ -819,14 +819,14 @@ class AnnualInvestmentPlanController extends Controller
         // dd($request, ProgramAndProject::where('id', $request->id)->first());
         $allowedColumns = [
             'revision_plans'      => ['aip_code'],
-            'program_and_projects' => ['source_of_funds', 'sector'],
+            'program_and_projects' => ['source_of_funds', 'sector','MOV'],
         ];
 
         $validated = $request->validate([
             'id'     => ['required', 'integer'],
             'table'  => ['required', 'string', Rule::in(array_keys($allowedColumns))],
             'column' => ['required', 'string'],
-            'value'  => ['nullable', 'string', 'max:255'],
+            'value'  => ['nullable', 'string'],
         ]);
 
         // Whitelist the column against its table to prevent mass-assignment via URL tampering
