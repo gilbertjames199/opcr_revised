@@ -95,6 +95,22 @@
                         </select>
                     </div>
 
+                    <!-- Sector/Source of Funds Filtering -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-tag"></i> Sector/Source of Funds
+                        </label>
+                        <select v-model="ssf_filter" class="filter-select" @change="filterProjects">
+                            <option value="">All Types</option>
+                            <option value="p">Project Profile</option>
+                            <option value="d">Project Design</option>
+                            <option value="gen_fund">General Fund</option>
+                            <option value="ldrrmf">Local Disaster Risk Reduction and Management Fund</option>
+                            <option value="other">Other Sources</option>
+                            <option value="dev">Development Fund</option>
+                            <option></option>
+                        </select>
+                    </div>
                     <!-- Search -->
                     <div class="filter-group filter-group-grow">
                         <label class="filter-label">
@@ -1125,6 +1141,7 @@ export default {
             showImageModal: false,
             // END OF RETURN REQUEST***************
             year_filtering_d: '',
+            ssf_filter: '',
             showFlyingPlane: false
         }
     },
@@ -1471,6 +1488,7 @@ export default {
                 {
                     search: this.search,
                     type_filter: this.type_filter,
+                    ssf_filter: this.ssf_filter,
                     source:this.source,
                     year: this.year_filtering_d
                 },
