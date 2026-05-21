@@ -3519,7 +3519,14 @@ class RevisionPlanController extends Controller
                         ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
                         ($output->physical_q3 ? floatval($output->physical_q3) : 0) +
                         ($output->physical_q4 ? floatval($output->physical_q4) : 0);
-                    return $target_budget_year.' '.trim(($output->description ?? ''));
+                    $description = trim($output->description ?? '');
+
+                    // Check if description starts with a number
+                    if (preg_match('/^\d+/', $description)) {
+                        return $description;
+                    }
+
+                    return $target_budget_year . ' ' . $description;
                 })
                 ->filter()
                 ->implode("\n");
