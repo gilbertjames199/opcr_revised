@@ -1325,7 +1325,7 @@ export default {
             var linkt = "https://";
             var jasper_ip = this.jasper_ip;
             var jasper_link ='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no&output=pdf';
-            var params ='&ccet='+this.ccet+'&year='+this.year_filtering_d
+            var params ='&ccet='+this.ccet+'&year='+this.year_filtering_d+'&ssf_filter='+this.ssf_filter
             // console.log(params);
             this.aip_printLink = linkt+jasper_ip+jasper_link+params;
             // this.aip_printLink_excel = this.aip_printLink.replace('&output=pdf', '&output=csv');
