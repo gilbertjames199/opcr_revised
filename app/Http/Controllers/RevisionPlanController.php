@@ -3476,9 +3476,9 @@ class RevisionPlanController extends Controller
             $sector = optional(optional($plan)->paps)->sector;
             $strategyId = $strategy->id;
             $budget = $plan->budget;
-            $source = "";
+            $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
             if (count($budget) > 0) {
-                $source = $budget[0]->source;
+                $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
             }
             // $expected_outputs = collect($plan->activityProject)
             //     ->pluck('expected_output')
@@ -3800,6 +3800,12 @@ class RevisionPlanController extends Controller
             }
             $source_of_funds = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
 
+            $source = $this->set_source($source_of_funds);
+            if (mb_strlen($source, 'UTF-8') < 25) {
+
+                $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
+                $source = implode("\n", $chars);
+            }
             // dd($plan);
             return [
                 'project_title'=>optional(optional($item)->activity)->description,
@@ -3817,7 +3823,7 @@ class RevisionPlanController extends Controller
                 'ccet_code_mitigation'=>$ccet_code_mitigation,
                 'ccet_code_adaptation'=>$ccet_code_adaptation,
                 'aip_code'=>optional($plan)->aip_code,
-                'source'=>$source_of_funds,
+                'source'=>$source,
                 'ccet'=>$ccet,
                 'year'=>optional($plan)->year,
                 'id'=>optional($plan)->id,
