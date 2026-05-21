@@ -3519,7 +3519,7 @@ class RevisionPlanController extends Controller
                         ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
                         ($output->physical_q3 ? floatval($output->physical_q3) : 0) +
                         ($output->physical_q4 ? floatval($output->physical_q4) : 0);
-                    return trim(($output->description ?? ''));
+                    return $target_budget_year.' '.trim(($output->description ?? ''));
                 })
                 ->filter()
                 ->implode("\n");
@@ -3777,6 +3777,7 @@ class RevisionPlanController extends Controller
         ->get()
         ->map(function($item)use($ccet){
             $plan = optional($item)->revisionPlan;
+
             $imp_office=optional(optional(optional($plan)->paps)->office)->office ?
                         optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
                         optional(optional(optional($plan)->paps)->office)->FFUNCTION;
