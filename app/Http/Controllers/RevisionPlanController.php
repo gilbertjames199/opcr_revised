@@ -3406,6 +3406,7 @@ class RevisionPlanController extends Controller
             'strategyProject.strategy',
             'strategyProject.expected_output',
             'strategyProject.expected_outcome',
+            'activityProject.activity',
             'activityProject.expected_output',
             'activityProject.expected_outcome',
             'budget',
@@ -3501,7 +3502,10 @@ class RevisionPlanController extends Controller
                 ? ""
                 : collect($plan->activityProject)
                  ->filter(function ($activityProject) {
-
+                    // Only active activity projects
+                    if ((int)($activityProject->is_active ?? 0) !== 1) {
+                        return false;
+                    }
                     $total_co =
                         (float)($activityProject->co_q1 ?? 0) +
                         (float)($activityProject->co_q2 ?? 0) +
@@ -3781,6 +3785,8 @@ class RevisionPlanController extends Controller
                 });
         })
         ->whereIn('project_id', $ids)
+        ->where('is_active', 1)
+        ->whereHas('activity')
         ->get()
         ->map(function($item)use($ccet){
             $plan = optional($item)->revisionPlan;
