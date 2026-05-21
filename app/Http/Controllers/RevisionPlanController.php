@@ -3414,7 +3414,13 @@ class RevisionPlanController extends Controller
             'paps.office.office',
             'office'
         ])
-        ->where('status', '1')
+        ->where(function ($query) {
+
+            $query->where('status', '1')
+
+                // exempt idpaps = 1950 from status = 1 requirement
+                ->orWhere('idpaps', 1950);
+        })
         ->whereYear('date_start', $year)
         ->when($request->ssf_filter, function($query) use ($request){
             // dd($request->ssf_filter);
