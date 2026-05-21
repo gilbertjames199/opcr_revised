@@ -179,6 +179,7 @@
                                             style="min-width: 160px;"
                                             @blur="autosave(item.id, 'revision_plans', 'aip_code', item.aip_code)"
                                         />
+
                                     </td>
                                     <td>
                                         <button @click="toggleRow(item.id)" class="btn btn-sm btn-link" style="text-align: left; padding: 0;">
@@ -193,6 +194,12 @@
                                         >
                                             <i class="fas fa-eye"></i>
                                         </a>
+                                        <br /><br />
+                                        <textarea v-model="item.paps.MOV"
+                                        class="form-control form-control-sm"
+                                        @change="autosave(item.paps.id, 'program_and_projects', 'MOV', item.paps.MOV)">
+                                        </textarea>
+                                        <!-- {{ item.paps }} -->
                                     </td>
                                     <td>{{ item?.paps?.office?.FFUNCTION }}</td>
                                     <td>{{ item.date_start }}</td>

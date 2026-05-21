@@ -101,9 +101,15 @@
                             <i class="fas fa-tag"></i> Sector/Source of Funds
                         </label>
                         <select v-model="ssf_filter" class="filter-select" @change="filterProjects">
-                            <option value="">All Types</option>
+                            <!-- <option value="">All Types</option>
                             <option value="p">Project Profile</option>
-                            <option value="d">Project Design</option>
+                            <option value="d">Project Design</option> -->
+
+
+                            <option value="General Public Services Sector">General Public Services Sector</option>
+                            <option value="Economic Services">Economic Services</option>
+                            <option value="Other Services">Other Services</option>
+                            <option value="Social Services Sector">Social Services Sector</option>
                             <option value="gen_fund">General Fund</option>
                             <option value="ldrrmf">Local Disaster Risk Reduction and Management Fund</option>
                             <option value="other">Other Sources</option>
