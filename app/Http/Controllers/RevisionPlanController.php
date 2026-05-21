@@ -3471,7 +3471,8 @@ class RevisionPlanController extends Controller
             if (!$strategy) {
                 continue;
             }
-            $source_of_funds = optional(optional($plan)->paps)->source_of_funds;
+            $source_of_funds = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
+
             $sector = optional(optional($plan)->paps)->sector;
             $strategyId = $strategy->id;
             $budget = $plan->budget;
@@ -3723,6 +3724,17 @@ class RevisionPlanController extends Controller
     // dd($final_strategies, $strategies);
         return $final_strategies;
     }
+    public function getSourceLabel($source)
+    {
+        $sources = [
+            'gen_fund' => 'General Fund',
+            'ldrrmf'   => 'LDRRMF',
+            'other'    => 'Other Source',
+            'dev'      => '20% Development Fund',
+        ];
+
+        return $sources[$source] ?? $source;
+    }
     public function retrievingCapitalOutlay($ids, $ccet){
         // dd($ids);
         $revs = ActivityProject::with(['revisionPlan',
@@ -3786,6 +3798,8 @@ class RevisionPlanController extends Controller
                     }
                 }
             }
+            $source_of_funds = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
+
             // dd($plan);
             return [
                 'project_title'=>optional(optional($item)->activity)->description,
@@ -3803,11 +3817,11 @@ class RevisionPlanController extends Controller
                 'ccet_code_mitigation'=>$ccet_code_mitigation,
                 'ccet_code_adaptation'=>$ccet_code_adaptation,
                 'aip_code'=>optional($plan)->aip_code,
-                'source'=>optional(optional($plan)->paps)->source_of_funds,
+                'source'=>$source_of_funds,
                 'ccet'=>$ccet,
                 'year'=>optional($plan)->year,
                 'id'=>optional($plan)->id,
-                'source_of_funds'=>optional(optional($plan)->paps)->source_of_funds,
+                'source_of_funds'=>$source_of_funds ,
                 'sector'=>optional(optional($plan)->paps)->sector,
                 'level'=>2
             ];
