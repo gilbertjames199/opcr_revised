@@ -3490,7 +3490,19 @@ class RevisionPlanController extends Controller
             //     ])
             //     ->filter(fn($item) => !empty($item['description']))
             //     ->values();
-            $expected_outputs = collect($plan->activityProject)
+            $expected_outputs = in_array($source_of_funds, ['dev', 'other'])
+                ? ""
+                : collect($plan->activityProject)
+                 ->filter(function ($activityProject) {
+
+                    $total_co =
+                        (float)($activityProject->co_q1 ?? 0) +
+                        (float)($activityProject->co_q2 ?? 0) +
+                        (float)($activityProject->co_q3 ?? 0) +
+                        (float)($activityProject->co_q4 ?? 0);
+
+                    return $total_co <= 0;
+                })
                 ->pluck('expected_output')
                 ->filter()
                 ->flatten(1)
@@ -3778,7 +3790,11 @@ class RevisionPlanController extends Controller
             return [
                 'project_title'=>optional(optional($item)->activity)->description,
                 'implementing_office'=>$imp_office,
-                'expected_output'=>$item->expected_output,
+                'expected_output'=>collect($item->expected_output)
+                    ->pluck('description')
+                    ->filter()
+                    ->map(fn ($desc) => trim($desc))
+                    ->implode("\n"),
                 'total_mooe'=>$total_mooe,
                 'total_ps'=>$total_ps,
                 'total_co'=>$total_co,
