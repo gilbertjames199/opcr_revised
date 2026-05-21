@@ -3584,7 +3584,7 @@ class RevisionPlanController extends Controller
                     'ccet' => $ccet,
                     'year'=>$year,
                     'id' => $plan->id,
-                    'source_of_funds' => $source_of_funds,
+                    'source_of_funds' => optional(optional($plan)->paps)->source_of_funds,
                     'sector' => $sector,
                     'level'=>1
                 ];
@@ -3821,7 +3821,7 @@ class RevisionPlanController extends Controller
                 'ccet'=>$ccet,
                 'year'=>optional($plan)->year,
                 'id'=>optional($plan)->id,
-                'source_of_funds'=>$source_of_funds ,
+                'source_of_funds'=>optional(optional($plan)->paps)->source_of_funds,
                 'sector'=>optional(optional($plan)->paps)->sector,
                 'level'=>2
             ];
