@@ -3823,7 +3823,7 @@ class RevisionPlanController extends Controller
                 'ccet_code_mitigation'=>$ccet_code_mitigation,
                 'ccet_code_adaptation'=>$ccet_code_adaptation,
                 'aip_code'=>optional($plan)->aip_code,
-                'source'=>$source,
+                'source'=>" ",
                 'ccet'=>$ccet,
                 'year'=>optional($plan)->year,
                 'id'=>optional($plan)->id,
