@@ -3495,13 +3495,11 @@ class RevisionPlanController extends Controller
                 ->filter()
                 ->flatten(1)
                 ->map(function ($output) {
-
                     $target_budget_year =
                         ($output->physical_q1 ? floatval($output->physical_q1) : 0) +
                         ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
                         ($output->physical_q3 ? floatval($output->physical_q3) : 0) +
                         ($output->physical_q4 ? floatval($output->physical_q4) : 0);
-
                     return trim(($output->description ?? ''));
                 })
                 ->filter()
@@ -3574,7 +3572,8 @@ class RevisionPlanController extends Controller
                     'year'=>$year,
                     'id' => $plan->id,
                     'source_of_funds' => $source_of_funds,
-                    'sector' => $sector
+                    'sector' => $sector,
+                    'level'=>1
                 ];
             } else {
                 // If the same strategy appears again, merge expected outputs
@@ -3593,7 +3592,51 @@ class RevisionPlanController extends Controller
         // return array_values($strategies);
         $strategies = collect($strategies);
         $rev_ids = $strategies->pluck('id');
-        // $capital_activities = $this->retrievingCapitalOutlay($rev_ids, $request->ccet);
+        $capital_activities = $this->retrievingCapitalOutlay($rev_ids, $request->ccet);
+        // dd($strategies->pluck('id'), $capital_activities->pluck('id'));
+        // dd($strategies, $capital_activities);
+        $strategies = $strategies
+            ->concat($capital_activities)
+            ->sort(function ($a, $b) {
+
+                /*
+                |--------------------------------------------------------------------------
+                | aip_code ASC
+                |--------------------------------------------------------------------------
+                */
+
+                $aipCompare = strcmp(
+                    (string)($a['aip_code'] ?? ''),
+                    (string)($b['aip_code'] ?? '')
+                );
+
+                if ($aipCompare !== 0) {
+                    return $aipCompare;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | id ASC
+                |--------------------------------------------------------------------------
+                */
+
+                $idCompare = ($a['id'] ?? 0) <=> ($b['id'] ?? 0);
+
+                if ($idCompare !== 0) {
+                    return $idCompare;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | level ASC
+                |--------------------------------------------------------------------------
+                */
+
+                return ($a['level'] ?? 0) <=> ($b['level'] ?? 0);
+            })
+            ->values();
+
+        // $strategies = $strategies->concat($capital_activities)->values();
         // dd($capital_activities);
         /*
         |--------------------------------------------------------------------------
@@ -3669,6 +3712,94 @@ class RevisionPlanController extends Controller
         return $final_strategies;
     }
     public function retrievingCapitalOutlay($ids, $ccet){
+        // dd($ids);
+        $revs = ActivityProject::with(['revisionPlan',
+            // 'revisionPlan.strategyProject.strategy',
+            // 'revisionPlan.strategyProject.expected_output',
+            // 'revisionPlan.strategyProject.expected_outcome',
+            'activity',
+            'expected_output',
+            'expected_outcome',
+            'revisionPlan.budget',
+            'revisionPlan.paps',
+            'revisionPlan.paps.office',
+            'revisionPlan.paps.office.office',
+            'revisionPlan.office'
+        ])
+        ->where(function($queryBase)use($ids){
+            $queryBase->where(function($query) use ($ids){
+                    $query->whereIn('project_id', $ids)
+                        ->where(function($q){
+                            $q->where('co_q1', '>', 0)
+                                ->orWhere('co_q2', '>', 0)
+                                ->orWhere('co_q3', '>', 0)
+                                ->orWhere('co_q4', '>', 0);
+                        });
+                })
+                ->orWhere(function($query) {
+                    $query->whereHas('revisionPlan.paps', function($qpaps){
+                        $qpaps->where('source_of_funds', 'dev')
+                            ->orWhere('source_of_funds','other');
+                    });
+                });
+        })
+        ->whereIn('project_id', $ids)
+        ->get()
+        ->map(function($item)use($ccet){
+            $plan = optional($item)->revisionPlan;
+            $imp_office=optional(optional(optional($plan)->paps)->office)->office ?
+                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
+                        optional(optional(optional($plan)->paps)->office)->FFUNCTION;
+            $total_mooe = optional($item)->mooe_q1 + optional($item)->mooe_q2 + optional($item)->mooe_q3 + optional($item)->mooe_q4;
+            $total_ps = optional($item)->ps_q1 + optional($item)->ps_q2 + optional($item)->ps_q3 + optional($item)->ps_q4;
+            $total_co = optional($item)->co_q1 + optional($item)->co_q2 + optional($item)->co_q3 + optional($item)->co_q4;
+            $total_fe = optional($item)->fe_q1 + optional($item)->fe_q2 + optional($item)->fe_q3 + optional($item)->fe_q4;
+            $total_all = $total_mooe + $total_ps + $total_co + $total_fe;
+            $activityWithCcet = $item->ccet_code;
+            $ccet_code_adaptation = 0;
+            $ccet_code_mitigation = 0;
+            if ($activityWithCcet) {
+                // Found at least one with a ccet_code
+                $ccetCode = $activityWithCcet;
+                if ($ccetCode) {
+                    if (Str::startsWith($ccetCode, 'A')) {
+                        $ccet_code_adaptation = $total_all;
+                        $ccet_code_mitigation = 0;
+                    } elseif (Str::startsWith($ccetCode, 'M')) {
+                        $ccet_code_adaptation = 0;
+                        $ccet_code_mitigation = $total_all;
+                    } else {
+                        $ccet_code_adaptation = 0;
+                        $ccet_code_mitigation = 0;
+                    }
+                }
+            }
+            // dd($plan);
+            return [
+                'project_title'=>optional(optional($item)->activity)->description,
+                'implementing_office'=>$imp_office,
+                'expected_output'=>$item->expected_output,
+                'total_mooe'=>$total_mooe,
+                'total_ps'=>$total_ps,
+                'total_co'=>$total_co,
+                'total_fe'=>$total_fe,
+                'ccet_code'=>optional($item)->ccet_code,
+                'ccet_code_mitigation'=>$ccet_code_mitigation,
+                'ccet_code_adaptation'=>$ccet_code_adaptation,
+                'aip_code'=>optional($plan)->aip_code,
+                'source'=>optional(optional($plan)->paps)->source_of_funds,
+                'ccet'=>$ccet,
+                'year'=>optional($plan)->year,
+                'id'=>optional($plan)->id,
+                'source_of_funds'=>optional(optional($plan)->paps)->source_of_funds,
+                'sector'=>optional(optional($plan)->paps)->sector,
+                'level'=>2
+            ];
+        });
+
+        return $revs;
+    }
+    public function retrievingCapitalOutlaytest($ids, $ccet){
         // use Illuminate\Support\Facades\DB;
         // dd($ids, RevisionPlan());
 
