@@ -690,7 +690,6 @@ class AnnualInvestmentPlanController extends Controller
         // dd(auth()->user(), $request->year);
         $dept_code = auth()->user()->department_code;
         $search = $request->search;
-
         $revs = RevisionPlan::with([
                 'paps',
                 'paps.office',
@@ -710,7 +709,8 @@ class AnnualInvestmentPlanController extends Controller
             ->where(function ($q) {
                 $q->where('status', 1)
                 ->orWhereHas('paps', function ($q2) {
-                    $q2->where('source_of_funds', 'dev');
+                    $q2->where('source_of_funds', 'dev')
+                     ->orWhere('source_of_funds', 'other');
                 });
             })
             ->whereHas('activityProject.activity.strat', function ($q) {
@@ -744,6 +744,8 @@ class AnnualInvestmentPlanController extends Controller
             })
             ->orderBy('aip_code', 'ASC')
             ->get();
+            // dd($revs);
+
         $gen_pub = $revs->filter(function ($rev) {
             return optional($rev->paps)->sector === 'General Public Services Sector'
                 && (optional($rev->paps)->source_of_funds === 'gen_fund'
@@ -773,15 +775,17 @@ class AnnualInvestmentPlanController extends Controller
         });
 
         $ldrrmf = $revs->filter(function ($rev) {
-            return (optional($rev->paps)->source_of_funds === 'ldrrmf' && (optional($rev->paps)->source_of_funds === 'gen_fund'
-                || optional($rev->paps)->source_of_funds === ''
-                || optional($rev->paps)->source_of_funds === null))
-                && optional($rev->paps)->department_code !== 'dev'
-                || optional($rev->paps)->department_code === '17';
+            return optional($rev->paps)->source_of_funds === 'ldrrmf';
+            // return (optional($rev->paps)->source_of_funds === 'ldrrmf' &&
+            //     (optional($rev->paps)->source_of_funds === 'gen_fund'
+            //     || optional($rev->paps)->source_of_funds === ''
+            //     || optional($rev->paps)->source_of_funds === null))
+            //     && optional($rev->paps)->department_code !== 'dev';
+                // || optional($rev->paps)->department_code === '17';
         });
-
+        // optional($rev->paps)->sector === 'Other Services' &&
         $others = $revs->filter(function ($rev) {
-            return optional($rev->paps)->sector === 'Other Services' && (optional($rev->paps)->source_of_funds === 'gen_fund'
+            return (optional($rev->paps)->source_of_funds === 'other'
                 || optional($rev->paps)->source_of_funds === ''
                 || optional($rev->paps)->source_of_funds === null)
                 && optional($rev->paps)->department_code !== 'dev'
@@ -793,7 +797,7 @@ class AnnualInvestmentPlanController extends Controller
 
                 && optional($rev->paps)->department_code !== '17';
         });
-
+    // dd($revs);
         return inertia("AIP_Code/AIP_IPPs/Index",[
             "gen_pub" => $gen_pub,
             "econ" => $econ,
@@ -815,14 +819,14 @@ class AnnualInvestmentPlanController extends Controller
         // dd($request, ProgramAndProject::where('id', $request->id)->first());
         $allowedColumns = [
             'revision_plans'      => ['aip_code'],
-            'program_and_projects' => ['source_of_funds', 'sector'],
+            'program_and_projects' => ['source_of_funds', 'sector','MOV'],
         ];
 
         $validated = $request->validate([
             'id'     => ['required', 'integer'],
             'table'  => ['required', 'string', Rule::in(array_keys($allowedColumns))],
             'column' => ['required', 'string'],
-            'value'  => ['nullable', 'string', 'max:255'],
+            'value'  => ['nullable', 'string'],
         ]);
 
         // Whitelist the column against its table to prevent mass-assignment via URL tampering

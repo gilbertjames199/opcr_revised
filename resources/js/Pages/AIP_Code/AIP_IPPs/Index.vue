@@ -179,6 +179,7 @@
                                             style="min-width: 160px;"
                                             @blur="autosave(item.id, 'revision_plans', 'aip_code', item.aip_code)"
                                         />
+
                                     </td>
                                     <td>
                                         <button @click="toggleRow(item.id)" class="btn btn-sm btn-link" style="text-align: left; padding: 0;">
@@ -193,6 +194,25 @@
                                         >
                                             <i class="fas fa-eye"></i>
                                         </a>
+                                        <br /><br />
+                                        <!-- <textarea v-model="item.paps.MOV" class="form-control form-control-sm overflow-hidden" rows="1"
+                                            style="resize:none;"
+                                            @input="autoResize($event)"
+                                            @change="autosave(item.paps.id, 'program_and_projects', 'MOV', item.paps.MOV)"
+                                            :ref="'mov_' + item.id"
+                                        >
+                                        </textarea> -->
+                                        <textarea
+                                            v-model="item.paps.MOV"
+                                            class="form-control form-control-sm"
+                                            style="resize:none; overflow:hidden; min-height:38px;"
+                                            @input="autoResize($event)"
+                                            @focus="autoResize($event)"
+                                            @change="autosave(item.paps.id, 'program_and_projects', 'MOV', item.paps.MOV)"
+                                            :ref="'mov_' + item.id"
+                                        >
+                                        </textarea>
+                                        <!-- {{ item.paps }} -->
                                     </td>
                                     <td>{{ item?.paps?.office?.FFUNCTION }}</td>
                                     <td>{{ item.date_start }}</td>
@@ -345,6 +365,7 @@ export default {
         },
     },
     mounted() {
+        this.resizeAllMOVTextareas();
         this.year = this.year_props;
         this.expandAll();
     },
@@ -382,6 +403,45 @@ export default {
         },
     },
     methods: {
+        autoResize(event) {
+
+            this.$nextTick(() => {
+
+                const textarea = event.target;
+
+                textarea.style.height = 'auto';
+
+                textarea.style.height = textarea.scrollHeight + 'px';
+            });
+        },
+
+        resizeAllMOVTextareas() {
+
+            this.$nextTick(() => {
+
+                Object.keys(this.$refs).forEach(refKey => {
+
+                    if (!refKey.startsWith('mov_')) {
+                        return;
+                    }
+
+                    let textarea = this.$refs[refKey];
+
+                    if (Array.isArray(textarea)) {
+                        textarea = textarea[0];
+                    }
+
+                    if (textarea) {
+
+                        textarea.style.height = 'auto';
+
+                        textarea.style.height =
+                            textarea.scrollHeight + 'px';
+                    }
+                });
+            });
+        },
+
         getLength(prop) {
             if (!prop) return 0;
             if (Array.isArray(prop)) return prop.length;

@@ -31,6 +31,7 @@ use App\Models\StrategyProject;
 use App\Models\Target;
 use App\Models\TeamPlan;
 use App\Models\User;
+use App\Services\RevisionPlanSummaryService;
 use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Carbon\Carbon;
@@ -38,6 +39,7 @@ use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class RevisionPlanController extends Controller
@@ -45,6 +47,8 @@ class RevisionPlanController extends Controller
     protected $model;
     protected $imp;
     protected $budget;
+    // protected $revisionPlanSummaryService;
+
     public function __construct(RevisionPlan $model, ImplementationPlan $imp, BudgetRequirement $budget)
     {
         $this->model = $model;
@@ -114,6 +118,7 @@ class RevisionPlanController extends Controller
         // dd("revision");
         // dd($idpaps);
         if ($paps_type === "GAS") {
+
             return redirect('/revision/general/administration/services/' . $FFUNCCOD . '/plan');
         } else if ($idpaps == "0") {
             // dd($idpaps,'idpaps is 0');
@@ -144,6 +149,7 @@ class RevisionPlanController extends Controller
                     if (count($gas) > 0) {
                         $data = $data->concat($gas);
                     }
+                    // dd($gas);
                     // if(count($gas2)>0){
                     //     $data = $data->concat($gas2);
                     // }
@@ -267,9 +273,66 @@ class RevisionPlanController extends Controller
                 $query->where('revision_plans.date_start', $year_filtering);
             })
             ->get()
-            ->map(function ($item) use ($currentYear, $budget_controller) {
-                $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
-                    ->sum('amount');
+            ->map(function ($item) use($currentYear, $budget_controller) {
+                // $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                //     ->sum('amount');
+                $budgetary_requirement = 0;
+                $budget_ps_total   = 0;
+                $budget_mooe_total = 0;
+                $budget_co_total   = 0;
+                $budget_fe_total   = 0;
+                try {
+
+                    // Ensure budget exists and is iterable
+                    $budgets = collect($item->budget ?? []);
+
+                    $budget_ps_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Personnel Services')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+
+                    $budget_mooe_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Maintenance, Operating, and Other Expenses')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+
+                    $budget_co_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Capital Outlay')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+
+                    $budget_fe_total = $budgets
+                        ->filter(fn($b) => is_object($b) || is_array($b))
+                        ->where('category', 'Financial Expenses')
+                        ->sum(function ($b) {
+                            return (float) data_get($b, 'amount', 0);
+                        });
+                    $budgetary_requirement = $budget_ps_total + $budget_mooe_total + $budget_co_total + $budget_fe_total;
+                } catch (\Throwable $e) {
+
+                    // Fallback to 0 if something unexpected happens
+                    $budget_ps_total   = 0;
+                    $budget_mooe_total = 0;
+                    $budget_co_total   = 0;
+                    $budget_fe_total   = 0;
+                }
+                $imp_amount = 0.00;
+                // DB::table('targets')
+                //     ->where('implementation_plans.idrev_plan', $item->id)
+                //     ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                //     ->select('targets.*', 'implementation_plans.*')
+                //     ->sum('targets.planned_budget');
+                $total = [];
+                $imp_ps_total=0.00;
+                $imp_mooe_total=0.00;
+                $imp_co_total=0.00;
+                $imp_fe_total=0.00;
                 // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
                 //                 ->join('targets', 'targets.id','implementation_plans.id')
                 //                 ->sum('targets.planned_budget');
@@ -288,10 +351,15 @@ class RevisionPlanController extends Controller
                 }
                 // dd($item->is_strategy_based);
                 if ($total) {
-                    $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
-                        $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
-                        $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
-                        $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                    $imp_ps_total = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4');
+                    $imp_mooe_total = $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4');
+                    $imp_co_total = $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4');
+                    $imp_fe_total = $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                    $imp_amount = $imp_ps_total + $imp_mooe_total + $imp_co_total + $imp_fe_total;
+                    // $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                    //     $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                    //     $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
+                    //     $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
                 }
 
                 // dd($item);
@@ -302,7 +370,15 @@ class RevisionPlanController extends Controller
                     'type' => $item->type,
                     'version' => $item->version,
                     'budget_sum' => $budgetary_requirement,
+                    'budget_ps_total' => $budget_ps_total,
+                    'budget_mooe_total' => $budget_mooe_total,
+                    'budget_co_total' => $budget_co_total,
+                    'budget_fe_total' => $budget_fe_total,
                     'imp_amount' => $imp_amount,
+                    'imp_ps_total' => $imp_ps_total,
+                    'imp_mooe_total' => $imp_mooe_total,
+                    'imp_co_total' => $imp_co_total,
+                    'imp_fe_total' => $imp_fe_total,
                     'scope' => $item->scope,
                     'year_period' => $item->year_period,
                     'status' => $item->status,
@@ -3239,48 +3315,103 @@ class RevisionPlanController extends Controller
     {
         $strategies = [];
         $ccet = "0";
+
         if ($request->ccet) {
             $ccet = $request->ccet;
         }
+
+
+        $year = filter_var($request->year, FILTER_VALIDATE_INT);
+
+        if (!$year || !checkdate(1, 1, $year)) {
+            $year = Carbon::now()->year;
+        }
+        // dd($year);
         // ? "1":"0";
         $plans = RevisionPlan::with([
             'strategyProject.strategy',
             'strategyProject.expected_output',
             'strategyProject.expected_outcome',
+            'activityProject' => function ($query) {
+                $query->whereHas('activity');
+            },
+            'activityProject.activity',
             'activityProject.expected_output',
             'activityProject.expected_outcome',
             'budget',
             'paps',
             'paps.office',
-            'paps.office.office'
+            'paps.office.office',
+            'office'
         ])
             ->where('status', '1')
             ->get();
 
+
+        $pln=$plans;
         foreach ($plans as $plan) {
             $strategy = optional(optional($plan)->strategyProject->first())->strategy;
+            // dd($plan );
 
             if (!$strategy) {
                 continue;
             }
+            $source_of_funds = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
 
+            $sector = optional(optional($plan)->paps)->sector;
             $strategyId = $strategy->id;
             $budget = $plan->budget;
-            $source = "";
+            $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
             if (count($budget) > 0) {
-                $source = $budget[0]->source;
+                $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
             }
-            $expected_outputs = collect($plan->activityProject)
+            // $expected_outputs = collect($plan->activityProject)
+            //     ->pluck('expected_output')
+            //     ->filter()
+            //     ->flatten(1)
+            //     ->map(fn($output) => [
+            //         'target_budget_year' => (($output->physical_q1 ? floatval($output->physical_q1) : 0) + ($output->physical_q2 ? floatval($output->physical_q2) : 0)
+            //             + ($output->physical_q3 ? floatval($output->physical_q3) : 0) + ($output->physical_q4 ? floatval($output->physical_q4) : 0)),
+            //         'description' => $output->description ?? ''
+            //     ])
+            //     ->filter(fn($item) => !empty($item['description']))
+            //     ->values();
+            $expected_outputs = in_array($source_of_funds, ['dev', 'other'])
+                ? ""
+                : collect($plan->activityProject)
+                 ->filter(function ($activityProject) {
+                    // Only active activity projects
+                    if ((int)($activityProject->is_active ?? 0) !== 1) {
+                        return false;
+                    }
+                    $total_co =
+                        (float)($activityProject->co_q1 ?? 0) +
+                        (float)($activityProject->co_q2 ?? 0) +
+                        (float)($activityProject->co_q3 ?? 0) +
+                        (float)($activityProject->co_q4 ?? 0);
+
+                    return $total_co <= 0;
+                })
                 ->pluck('expected_output')
                 ->filter()
                 ->flatten(1)
-                ->map(fn($output) => [
-                    'target_budget_year' => (($output->physical_q1 ? floatval($output->physical_q1) : 0) + ($output->physical_q2 ? floatval($output->physical_q2) : 0)
-                        + ($output->physical_q3 ? floatval($output->physical_q3) : 0) + ($output->physical_q4 ? floatval($output->physical_q4) : 0)),
-                    'description' => $output->description ?? ''
-                ])
-                ->filter(fn($item) => !empty($item['description']))
-                ->values();
+                ->map(function ($output) {
+                    $target_budget_year =
+                        ($output->physical_q1 ? floatval($output->physical_q1) : 0) +
+                        ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
+                        ($output->physical_q3 ? floatval($output->physical_q3) : 0) +
+                        ($output->physical_q4 ? floatval($output->physical_q4) : 0);
+                    $description = trim($output->description ?? '');
+
+                    // Check if description starts with a number
+                    if (preg_match('/^\d+/', $description)) {
+                        return $description;
+                    }
+
+                    return $target_budget_year . ' ' . $description;
+                })
+                ->filter()
+                ->implode("\n");
             $total_mooe = $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
             $total_ps = $budget->where('category', 'Personnel Services')->sum('amount');
             $total_co = $budget->where('category', 'Capital Outlay')->sum('amount');
@@ -3318,15 +3449,23 @@ class RevisionPlanController extends Controller
                 $source = implode("\n", $chars);
             }
             $paps_title = $plan->project_title;
+            // $paps_temp=$paps_title;
+            if ($paps_title === mb_strtoupper($paps_title, 'UTF-8')) {
+                $paps_title = $this->titleCaseTransform($paps_title);
+            }
+            // if($plan->id==272){
+            //     // dd($plan, $paps_title, $paps_temp);
+            //     dd($plan);
+            // }
             $paps_desc = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
             $paps_title_desc = "<b>" . $paps_title . "</b>\n\n<i>" . $paps_desc . "</i>";
-
+            $imp_office=optional(optional(optional($plan)->paps)->office)->office ?
+                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
+                        optional(optional(optional($plan)->paps)->office)->FFUNCTION;
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
-                    'implementing_office' => optional(optional(optional($plan)->paps)->office)->office ?
-                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
-                        optional(optional(optional($plan)->paps)->office)->FFUNCTION,
+                    'implementing_office' => $imp_office ? $imp_office : optional(optional($plan)->office)->FFUNCTION,
                     'expected_output' => $expected_outputs,
                     'total_mooe' => $total_mooe,
                     'total_ps' => $total_ps,
@@ -3337,23 +3476,613 @@ class RevisionPlanController extends Controller
                     'ccet_code_adaptation' => $ccet_code_adaptation,
                     'aip_code' => $plan->aip_code,
                     'source' => $source . "\n",
-                    'ccet' => $ccet
+                    'ccet' => $ccet,
+                    'year'=>$year,
+                    'id' => $plan->id,
+                    'source_of_funds' => optional(optional($plan)->paps)->source_of_funds,
+                    'sector' => $sector,
+                    'level'=>1
                 ];
             } else {
                 // If the same strategy appears again, merge expected outputs
-                $strategies[$strategyId]['expected_output'] = $strategies[$strategyId]['expected_output']
-                    ->merge($expected_outputs)
-                    ->unique('id') // remove duplicates if outputs have IDs
-                    ->values();
+                // $strategies[$strategyId]['expected_output'] = $strategies[$strategyId]['expected_output']
+                //     ->merge($expected_outputs)
+                //     ->unique('id') // remove duplicates if outputs have IDs
+                //     ->values();
             }
         }
 
         // Optional: convert expected_output collections back to arrays
-        foreach ($strategies as &$strategy) {
-            $strategy['expected_output'] = $strategy['expected_output']->toArray();
-        }
+        // foreach ($strategies as &$strategy) {
+        //     $strategy['expected_output'] = $strategy['expected_output']->toArray();
+        // }
 
-        return array_values($strategies);
+        // return array_values($strategies);
+        $strategies = collect($strategies);
+        $rev_ids = $strategies->pluck('id');
+        $cap_ob = $this->capitalOutlayObject($rev_ids);
+        $capital_activities = $this->retrievingCapitalOutlay( $request->ccet, $cap_ob);
+        // $summary = $this->getRevisionPlanSummary($pln->concat($cap_ob));
+        // dd($strategies->pluck('id'), $capital_activities->pluck('id'));
+        // dd($strategies, $capital_activities);
+        $strategies = $strategies
+            ->concat($capital_activities)
+            ->sort(function ($a, $b) {
+
+                /*
+                |--------------------------------------------------------------------------
+                | aip_code ASC
+                |--------------------------------------------------------------------------
+                */
+
+                $aipCompare = strcmp(
+                    (string)($a['aip_code'] ?? ''),
+                    (string)($b['aip_code'] ?? '')
+                );
+
+                if ($aipCompare !== 0) {
+                    return $aipCompare;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | id ASC
+                |--------------------------------------------------------------------------
+                */
+
+                $idCompare = ($a['id'] ?? 0) <=> ($b['id'] ?? 0);
+
+                if ($idCompare !== 0) {
+                    return $idCompare;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | level ASC
+                |--------------------------------------------------------------------------
+                */
+
+                return ($a['level'] ?? 0) <=> ($b['level'] ?? 0);
+            })
+            ->values();
+
+        // $strategies = $strategies->concat($capital_activities)->values();
+        // dd($capital_activities);
+        /*
+        |--------------------------------------------------------------------------
+        | General Fund Sectors
+        |--------------------------------------------------------------------------
+        */
+
+        $general_public_services = $strategies
+            ->where('source_of_funds', 'gen_fund')
+            ->where('sector', 'General Public Services Sector')
+            ->values();
+
+        $economic_services = $strategies
+            ->where('source_of_funds', 'gen_fund')
+            ->where('sector', 'Economic Services')
+            ->values();
+
+        $social_services = $strategies
+            ->where('source_of_funds', 'gen_fund')
+            ->where('sector', 'Social Services Sector')
+            ->values();
+
+        $other_services = $strategies
+            ->where('source_of_funds', 'gen_fund')
+            ->where('sector', 'Other Services')
+            ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Other Source of Funds
+        |--------------------------------------------------------------------------
+        */
+
+        $dev = $strategies
+            ->where('source_of_funds', 'dev')
+            ->values();
+
+        $ldrrmf = $strategies
+            ->where('source_of_funds', 'ldrrmf')
+            ->values();
+
+        $other = $strategies
+            ->where('source_of_funds', 'other')
+            ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Final Ordered Collection
+        |--------------------------------------------------------------------------
+        |
+        | Order:
+        | 1. General Public Services Sector
+        | 2. Economic Services
+        | 3. Social Services Sector
+        | 4. dev
+        | 5. ldrrmf
+        | 6. other
+        |
+        */
+        // $Revision
+
+        // dd($dev, $summary, $cap_ob);
+        /*
+        |--------------------------------------------------------------------------
+        | Totals
+        |--------------------------------------------------------------------------
+        */
+
+        // General Public Services
+        $general_public_services_total_mooe = $general_public_services->sum('total_mooe');
+        $general_public_services_total_ps   = $general_public_services->sum('total_ps');
+        $general_public_services_total_co   = $general_public_services->sum('total_co');
+        $general_public_services_total_fe   = $general_public_services->sum('total_fe');
+
+        // Economic Services
+        $economic_services_total_mooe = $economic_services->sum('total_mooe');
+        $economic_services_total_ps   = $economic_services->sum('total_ps');
+        $economic_services_total_co   = $economic_services->sum('total_co');
+        $economic_services_total_fe   = $economic_services->sum('total_fe');
+
+        // Social Services
+        $social_services_total_mooe = $social_services->sum('total_mooe');
+        $social_services_total_ps   = $social_services->sum('total_ps');
+        $social_services_total_co   = $social_services->sum('total_co');
+        $social_services_total_fe   = $social_services->sum('total_fe');
+
+        // Other Services
+        $other_services_total_mooe = $other_services->sum('total_mooe');
+        $other_services_total_ps   = $other_services->sum('total_ps');
+        $other_services_total_co   = $other_services->sum('total_co');
+        $other_services_total_fe   = $other_services->sum('total_fe');
+
+        // Development Fund
+        $dev_total_mooe = $dev->sum('total_mooe');
+        $dev_total_ps   = $dev->sum('total_ps');
+        $dev_total_co   = $dev->sum('total_co');
+        $dev_total_fe   = $dev->sum('total_fe');
+
+        // LDRRMF
+        $ldrrmf_total_mooe = $ldrrmf->sum('total_mooe');
+        $ldrrmf_total_ps   = $ldrrmf->sum('total_ps');
+        $ldrrmf_total_co   = $ldrrmf->sum('total_co');
+        $ldrrmf_total_fe   = $ldrrmf->sum('total_fe');
+
+        // Other Source
+        $other_total_mooe = $other->sum('total_mooe');
+        $other_total_ps   = $other->sum('total_ps');
+        $other_total_co   = $other->sum('total_co');
+        $other_total_fe   = $other->sum('total_fe');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Final Strategies
+        |--------------------------------------------------------------------------
+        */
+
+        $final_strategies = collect()
+            ->concat($general_public_services)
+            ->concat($economic_services)
+            ->concat($social_services)
+            ->concat($other_services)
+            ->concat($dev)
+            ->concat($ldrrmf)
+            ->concat($other)
+            ->map(function ($item) use (
+                $general_public_services_total_mooe,
+                $general_public_services_total_ps,
+                $general_public_services_total_co,
+                $general_public_services_total_fe,
+
+                $economic_services_total_mooe,
+                $economic_services_total_ps,
+                $economic_services_total_co,
+                $economic_services_total_fe,
+
+                $social_services_total_mooe,
+                $social_services_total_ps,
+                $social_services_total_co,
+                $social_services_total_fe,
+
+                $other_services_total_mooe,
+                $other_services_total_ps,
+                $other_services_total_co,
+                $other_services_total_fe,
+
+                $dev_total_mooe,
+                $dev_total_ps,
+                $dev_total_co,
+                $dev_total_fe,
+
+                $ldrrmf_total_mooe,
+                $ldrrmf_total_ps,
+                $ldrrmf_total_co,
+                $ldrrmf_total_fe,
+
+                $other_total_mooe,
+                $other_total_ps,
+                $other_total_co,
+                $other_total_fe
+            ) {
+
+                $item['general_public_services_total_mooe'] = $general_public_services_total_mooe;
+                $item['general_public_services_total_ps']   = $general_public_services_total_ps;
+                $item['general_public_services_total_co']   = $general_public_services_total_co;
+                $item['general_public_services_total_fe']   = $general_public_services_total_fe;
+
+                $item['economic_services_total_mooe'] = $economic_services_total_mooe;
+                $item['economic_services_total_ps']   = $economic_services_total_ps;
+                $item['economic_services_total_co']   = $economic_services_total_co;
+                $item['economic_services_total_fe']   = $economic_services_total_fe;
+
+                $item['social_services_total_mooe'] = $social_services_total_mooe;
+                $item['social_services_total_ps']   = $social_services_total_ps;
+                $item['social_services_total_co']   = $social_services_total_co;
+                $item['social_services_total_fe']   = $social_services_total_fe;
+
+                $item['other_services_total_mooe'] = $other_services_total_mooe;
+                $item['other_services_total_ps']   = $other_services_total_ps;
+                $item['other_services_total_co']   = $other_services_total_co;
+                $item['other_services_total_fe']   = $other_services_total_fe;
+
+                $item['dev_total_mooe'] = $dev_total_mooe;
+                $item['dev_total_ps']   = $dev_total_ps;
+                $item['dev_total_co']   = $dev_total_co;
+                $item['dev_total_fe']   = $dev_total_fe;
+
+                $item['ldrrmf_total_mooe'] = $ldrrmf_total_mooe;
+                $item['ldrrmf_total_ps']   = $ldrrmf_total_ps;
+                $item['ldrrmf_total_co']   = $ldrrmf_total_co;
+                $item['ldrrmf_total_fe']   = $ldrrmf_total_fe;
+
+                $item['other_total_mooe'] = $other_total_mooe;
+                $item['other_total_ps']   = $other_total_ps;
+                $item['other_total_co']   = $other_total_co;
+                $item['other_total_fe']   = $other_total_fe;
+
+                return $item;
+
+                // return $item;
+            })
+            ->values();
+        // dd($final_strategies, $strategies);
+        return $final_strategies;
+    }
+
+    protected function getRevisionPlanSummary($plans)
+    {
+        return app(RevisionPlanSummaryService::class)->summarize($plans);
+    }
+
+    public function getSourceLabel($source)
+    {
+        $sources = [
+            'gen_fund' => 'General Fund',
+            'ldrrmf'   => 'LDRRMF',
+            'other'    => 'Other Source',
+            'dev'      => '20% Development Fund',
+        ];
+
+        return $sources[$source] ?? $source;
+    }
+    public function capitalOutlayObject($ids){
+        return ActivityProject::with(['revisionPlan',
+            // 'revisionPlan.strategyProject.strategy',
+            // 'revisionPlan.strategyProject.expected_output',
+            // 'revisionPlan.strategyProject.expected_outcome',
+            'activity',
+            'expected_output',
+            'expected_outcome',
+            'revisionPlan.budget',
+            'revisionPlan.paps',
+            'revisionPlan.paps.office',
+            'revisionPlan.paps.office.office',
+            'revisionPlan.office'
+        ])
+        ->where(function($queryBase)use($ids){
+            $queryBase->where(function($query) use ($ids){
+                    $query->whereIn('project_id', $ids)
+                        ->where(function($q){
+                            $q->where('co_q1', '>', 0)
+                                ->orWhere('co_q2', '>', 0)
+                                ->orWhere('co_q3', '>', 0)
+                                ->orWhere('co_q4', '>', 0);
+                        });
+                })
+                ->orWhere(function($query) {
+                    $query->whereHas('revisionPlan.paps', function($qpaps){
+                        $qpaps->where('source_of_funds', 'dev')
+                            ->orWhere('source_of_funds','other');
+                    });
+                });
+        })
+        ->whereIn('project_id', $ids)
+        ->where('is_active', 1)
+        ->whereHas('activity')
+        ->get();
+    }
+    public function retrievingCapitalOutlay($ccet, $cap_ob){
+        // dd($ids);
+        $revs = $cap_ob
+        ->map(function($item)use($ccet){
+            $plan = optional($item)->revisionPlan;
+
+            $imp_office=optional(optional(optional($plan)->paps)->office)->office ?
+                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
+                        optional(optional(optional($plan)->paps)->office)->FFUNCTION;
+            $total_mooe = optional($item)->mooe_q1 + optional($item)->mooe_q2 + optional($item)->mooe_q3 + optional($item)->mooe_q4;
+            $total_ps = optional($item)->ps_q1 + optional($item)->ps_q2 + optional($item)->ps_q3 + optional($item)->ps_q4;
+            $total_co = optional($item)->co_q1 + optional($item)->co_q2 + optional($item)->co_q3 + optional($item)->co_q4;
+            $total_fe = optional($item)->fe_q1 + optional($item)->fe_q2 + optional($item)->fe_q3 + optional($item)->fe_q4;
+            $total_all = $total_mooe + $total_ps + $total_co + $total_fe;
+            $activityWithCcet = $item->ccet_code;
+            $ccet_code_adaptation = 0;
+            $ccet_code_mitigation = 0;
+            if ($activityWithCcet) {
+                // Found at least one with a ccet_code
+                $ccetCode = $activityWithCcet;
+                if ($ccetCode) {
+                    if (Str::startsWith($ccetCode, 'A')) {
+                        $ccet_code_adaptation = $total_all;
+                        $ccet_code_mitigation = 0;
+                    } elseif (Str::startsWith($ccetCode, 'M')) {
+                        $ccet_code_adaptation = 0;
+                        $ccet_code_mitigation = $total_all;
+                    } else {
+                        $ccet_code_adaptation = 0;
+                        $ccet_code_mitigation = 0;
+                    }
+                }
+            }
+            $source_of_funds = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
+
+            $source = $this->set_source($source_of_funds);
+            if (mb_strlen($source, 'UTF-8') < 25) {
+
+                $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
+                $source = implode("\n", $chars);
+            }
+            // dd($plan);
+            return [
+                'project_title'=>optional(optional($item)->activity)->description,
+                'implementing_office'=>$imp_office,
+                'expected_output'=>collect($item->expected_output)
+                    ->pluck('description')
+                    ->filter()
+                    ->map(fn ($desc) => trim($desc))
+                    ->implode("\n"),
+                'total_mooe'=>$total_mooe,
+                'total_ps'=>$total_ps,
+                'total_co'=>$total_co,
+                'total_fe'=>$total_fe,
+                'ccet_code'=>optional($item)->ccet_code,
+                'ccet_code_mitigation'=>$ccet_code_mitigation,
+                'ccet_code_adaptation'=>$ccet_code_adaptation,
+                'aip_code'=>optional($plan)->aip_code,
+                'source'=>" ",
+                'ccet'=>$ccet,
+                'year'=>optional($plan)->year,
+                'id'=>optional($plan)->id,
+                'source_of_funds'=>optional(optional($plan)->paps)->source_of_funds,
+                'sector'=>optional(optional($plan)->paps)->sector,
+                'level'=>2
+            ];
+        });
+
+        return $revs;
+    }
+    public function retrievingCapitalOutlaytest($ids, $ccet){
+        // use Illuminate\Support\Facades\DB;
+        // dd($ids, RevisionPlan());
+
+        $rows = RevisionPlan::query()
+            ->with([
+                'activityProject.activity',
+                'activityProject.expected_output',
+                'office'
+            ])
+            ->join('activity_projects', 'revision_plans.id', '=', 'activity_projects.project_id')
+            ->whereIn('revision_plans.id', $ids)
+            // only activity projects with CO > 0
+            ->whereRaw('
+                (
+                    COALESCE(activity_projects.co_q1,0) +
+                    COALESCE(activity_projects.co_q2,0) +
+                    COALESCE(activity_projects.co_q3,0) +
+                    COALESCE(activity_projects.co_q4,0)
+                ) > 0
+            ')
+
+            ->select(
+                'revision_plans.*',
+                'activity_projects.id as activity_project_id',
+                'activity_projects.ccet_code',
+                'activity_projects.co_q1',
+                'activity_projects.co_q2',
+                'activity_projects.co_q3',
+                'activity_projects.co_q4'
+            )
+
+            ->get()
+
+            ->map(function ($plan) use ($ccet) {
+
+                $activityProject = $plan->activityProject
+                    ->where('id', $plan->activity_project_id)
+                    ->first();
+
+                if (!$activityProject) {
+                    return null;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Activity Name / Description
+                |--------------------------------------------------------------------------
+                */
+
+                $activity_name = optional($activityProject->activity)->name
+                    ?? optional($activityProject->activity)->description
+                    ?? '';
+
+                $paps_title_desc = trim(
+                    ($plan->project_title ?? '') .
+                    (!empty($activity_name) ? ' - ' . $activity_name : '')
+                );
+
+                /*
+                |--------------------------------------------------------------------------
+                | Expected Outputs
+                |--------------------------------------------------------------------------
+                */
+
+                $expected_outputs = collect($activityProject->expected_output)
+                    ->map(function ($output) {
+
+                        $target_total =
+                            (float)($output->physical_q1 ?? 0) +
+                            (float)($output->physical_q2 ?? 0) +
+                            (float)($output->physical_q3 ?? 0) +
+                            (float)($output->physical_q4 ?? 0);
+
+                        return trim(
+                            $target_total . ' - ' . ($output->description ?? '')
+                        );
+                    })
+                    ->filter()
+                    ->implode("\n");
+
+                /*
+                |--------------------------------------------------------------------------
+                | Totals
+                |--------------------------------------------------------------------------
+                */
+
+                $total_co =
+                    (float)($activityProject->co_q1 ?? 0) +
+                    (float)($activityProject->co_q2 ?? 0) +
+                    (float)($activityProject->co_q3 ?? 0) +
+                    (float)($activityProject->co_q4 ?? 0);
+
+                $total_mooe = 0;
+                $total_ps = 0;
+                $total_fe = 0;
+
+                /*
+                |--------------------------------------------------------------------------
+                | CCET
+                |--------------------------------------------------------------------------
+                */
+
+                $ccetCode = $activityProject->ccet_code;
+
+                $ccet_code_mitigation = 0;
+                $ccet_code_adaptation = 0;
+
+                if (!empty($ccetCode)) {
+
+                    if (strtoupper(substr($ccetCode, 0, 1)) === 'M') {
+                        $ccet_code_mitigation = $total_co;
+                    } else {
+                        $ccet_code_adaptation = $total_co;
+                    }
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Program / Project Derived Fields
+                |--------------------------------------------------------------------------
+                */
+
+                $imp_office = optional($plan)->implementing_office;
+
+                $source = optional($plan)->source ?? '';
+
+                $source_of_funds = optional($plan)->source_of_funds ?? '';
+
+                $sector = optional($plan)->sector ?? '';
+
+                /*
+                |--------------------------------------------------------------------------
+                | Return Row
+                |--------------------------------------------------------------------------
+                */
+
+                return [
+
+                    'project_title' => $paps_title_desc,
+
+                    'implementing_office' => $imp_office
+                        ? $imp_office
+                        : optional(optional($plan)->office)->FFUNCTION,
+
+                    'expected_output' => $expected_outputs,
+
+                    'total_mooe' => $total_mooe,
+
+                    'total_ps' => $total_ps,
+
+                    'total_co' => $total_co,
+
+                    'total_fe' => $total_fe,
+
+                    'ccet_code' => $ccetCode,
+
+                    'ccet_code_mitigation' => $ccet_code_mitigation,
+
+                    'ccet_code_adaptation' => $ccet_code_adaptation,
+
+                    'aip_code' => $plan->aip_code,
+
+                    'source' => $source . "\n",
+
+                    'ccet' => $ccet,
+
+                    'year' => \Carbon\Carbon::parse($plan->date_start)->year,
+
+                    'id' => $plan->id,
+
+                    'source_of_funds' => $source_of_funds,
+
+                    'sector' => $sector,
+                ];
+            })
+
+            ->filter()
+            ->values();
+    }
+    public function titleCaseTransform($text)
+    {
+        $paps_title = $text;
+
+        if ($paps_title === mb_strtoupper($paps_title, 'UTF-8')) {
+
+            // Convert to title case first
+            $paps_title = mb_convert_case(mb_strtolower($paps_title, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+
+            // Words to keep lowercase (unless first word)
+            $lowercaseWords = [
+                'And', 'Or', 'Nor', 'But', 'For', 'So', 'Yet',
+                'A', 'An', 'The',
+                'Of', 'In', 'On', 'At', 'To', 'By', 'From',
+                'With', 'As', 'Per', 'Via', 'Over', 'Under',
+                'Into', 'Upon', 'Off'
+            ];
+
+            $words = explode(' ', $paps_title);
+
+            foreach ($words as $index => $word) {
+                if ($index > 0 && in_array($word, $lowercaseWords)) {
+                    $words[$index] = mb_strtolower($word, 'UTF-8');
+                }
+            }
+
+            $paps_title = implode(' ', $words);
+        }
+        return $paps_title;
     }
     public function exportStrategiesOrig(Request $request)
     {
@@ -5280,4 +6009,211 @@ class RevisionPlanController extends Controller
 
         return redirect()->back()->with('message', "OOE sync complete. {$updated} budget entr" . ($updated === 1 ? 'y' : 'ies') . " updated.");
     }
+
+    public function automateHospitalOperations(Request $request){
+        // dd("dd");
+        // 1880	Integrated and Hospital Operations and Management
+        // 1965	Hospital Operations - DDOPH Pantukan
+        // 1966	Hospital Operations - DDOPH Laak
+        // 1967	Hospital Operations - DDOPH Montevista
+        // 1968	Hospital Operations - DDOPH Maragusan
+        // RevisionPlan::whereIn('id',[543, 418, 462])->get()->each(function($plan){
+        //     $this->replicate($plan);
+        // });
+        $this->replicateStrategiesAndActivities();
+    }
+    public function replicateStrategiesAndActivities()
+    {
+        $revisionPlanIds = [543, 418, 462];
+        $revisionPlans = RevisionPlan::whereIn('id', $revisionPlanIds)->get();
+
+        DB::transaction(function () use ($revisionPlans) {
+            foreach ($revisionPlans as $revisionPlan) {
+                // 1. Get all strategy_projects for this revision plan,
+                //    including any soft-deleted strategies.
+                $strategyProjects = $revisionPlan->strategyProject()
+                    ->with(['strategy' => function ($query) {
+                        $query->withTrashed();
+                    }])
+                    ->get();
+
+                foreach ($strategyProjects as $strategyProject) {
+                    $oldStrategy = $strategyProject->strategy;
+
+                    if (!$oldStrategy) {
+                        continue; // No strategy linked, skip.
+                    }
+
+                    $oldStrategyId = $oldStrategy->id;
+
+                    // 2. Replicate the strategy (columns: id, description, idpaps, idmfo,
+                    //    FFUNCCOD, year_period, created_at, updated_at, deleted_at).
+                    $newStrategy = $oldStrategy->replicate();
+                    //    Change idpaps to the current revision plan's idpaps.
+                    $newStrategy->idpaps = $revisionPlan->idpaps;
+
+                    //    Keep original timestamps and deleted_at (disable auto-touch).
+                    $newStrategy->timestamps = false;
+                    $newStrategy->save();
+                    $newStrategy->timestamps = true;
+
+                    $newStrategyId = $newStrategy->id;
+
+                    // 3. Update the current strategy_project to point to the new strategy.
+                    $strategyProject->strategy_id = $newStrategyId;
+                    $strategyProject->save();
+
+                    // 4. Process all activities under the old strategy (including trashed).
+                    $activities = $oldStrategy->activity()->withTrashed()->get();
+
+                    foreach ($activities as $activity) {
+                        $oldActivityId = $activity->id;
+
+                        // 4a. Replicate the activity (columns: id, description, strategy_id,
+                        //     created_at, updated_at, deleted_at).
+                        $newActivity = $activity->replicate();
+                        $newActivity->strategy_id = $newStrategyId;
+
+                        $newActivity->timestamps = false;
+                        $newActivity->save();
+                        $newActivity->timestamps = true;
+
+                        $newActivityId = $newActivity->id;
+
+                        // 4c. Update activity_projects that reference the old activity
+                        //     AND the current revision plan (project_id).
+                        ActivityProject::where('activity_id', $oldActivityId)
+                            ->where('project_id', $revisionPlan->id)
+                            ->update(['activity_id' => $newActivityId]);
+                    }
+                }
+            }
+        });
+
+        return redirect()->back()->with('success', 'Replication completed successfully.');
+    }
+    // public function replicate(RevisionPlan $revisionPlan)
+    // {
+    //     $revisionPlanIds = [543, 418, 462];
+
+    //     $results = [];
+
+    //     DB::transaction(function () use ($revisionPlanIds, &$results) {
+    //         foreach ($revisionPlanIds as $revisionPlanId) {
+
+    //             $revisionPlan = RevisionPlan::findOrFail($revisionPlanId);
+    //             $revisionPlanIdpaps = $revisionPlan->idpaps;
+
+    //             $planResults = [
+    //                 'revision_plan_id'       => $revisionPlanId,
+    //                 'idpaps'                 => $revisionPlanIdpaps,
+    //                 'strategy_projects'      => [],
+    //             ];
+
+    //             // ── Step 1 ──────────────────────────────────────────────────────────────
+    //             // Retrieve all strategy_projects belonging to this revision plan.
+    //             // ────────────────────────────────────────────────────────────────────────
+    //             $strategyProjects = StrategyProject::where('project_id', $revisionPlanId)->get();
+
+    //             foreach ($strategyProjects as $strategyProject) {
+
+    //                 $oldStrategyId = $strategyProject->strategy_id;
+
+    //                 $oldStrategy = Strategy::find($oldStrategyId);
+
+    //                 if (! $oldStrategy) {
+    //                     Log::warning("RevisionPlan [{$revisionPlanId}]: strategy_project [{$strategyProject->id}] references missing strategy [{$oldStrategyId}]. Skipping.");
+    //                     continue;
+    //                 }
+
+    //                 // ── Step 2 ──────────────────────────────────────────────────────────
+    //                 // Replicate the strategy.
+    //                 // Copy the specified columns; override idpaps with the revision plan's.
+    //                 // ────────────────────────────────────────────────────────────────────
+    //                 $newStrategy = new Strategy();
+    //                 $newStrategy->description  = $oldStrategy->description;
+    //                 $newStrategy->idpaps       = $revisionPlanIdpaps; // override
+    //                 $newStrategy->idmfo        = $oldStrategy->idmfo;
+    //                 $newStrategy->FFUNCCOD     = $oldStrategy->FFUNCCOD;
+    //                 $newStrategy->year_period  = $oldStrategy->year_period;
+    //                 $newStrategy->created_at   = $oldStrategy->created_at;
+    //                 $newStrategy->updated_at   = $oldStrategy->updated_at;
+    //                 $newStrategy->deleted_at   = $oldStrategy->deleted_at;
+    //                 $newStrategy->save();
+
+    //                 $newStrategyId = $newStrategy->id;
+
+    //                 // ── Step 3 ──────────────────────────────────────────────────────────
+    //                 // Point the strategy_project at the newly replicated strategy.
+    //                 // ────────────────────────────────────────────────────────────────────
+    //                 $strategyProject->strategy_id = $newStrategyId;
+    //                 $strategyProject->save();
+
+    //                 $spResult = [
+    //                     'strategy_project_id' => $strategyProject->id,
+    //                     'old_strategy_id'     => $oldStrategyId,
+    //                     'new_strategy_id'     => $newStrategyId,
+    //                     'activities'          => [],
+    //                 ];
+
+    //                 // ── Step 4 ──────────────────────────────────────────────────────────
+    //                 // Process every activity that belongs to the OLD (source) strategy.
+    //                 // ────────────────────────────────────────────────────────────────────
+    //                 $activities = Activity::where('strategy_id', $oldStrategyId)->get();
+
+    //                 foreach ($activities as $activity) {
+
+    //                     $oldActivityId = $activity->id;
+
+    //                     // ── Step 4-b ─────────────────────────────────────────────────────
+    //                     // Replicate the activity.
+    //                     // Copy the specified columns; wire strategy_id to the new strategy.
+    //                     // ─────────────────────────────────────────────────────────────────
+    //                     $newActivity = new Activity();
+    //                     $newActivity->description = $activity->description;
+    //                     $newActivity->strategy_id = $newStrategyId; // points to new strategy
+    //                     $newActivity->created_at  = $activity->created_at;
+    //                     $newActivity->updated_at  = $activity->updated_at;
+    //                     $newActivity->deleted_at  = $activity->deleted_at;
+    //                     $newActivity->save();
+
+    //                     $newActivityId = $newActivity->id;
+
+    //                     // ── Step 4-c-i ───────────────────────────────────────────────────
+    //                     // Find the FIRST matching activity_project for this revision plan
+    //                     // and update its idpaps to the revision plan's idpaps.
+    //                     // ─────────────────────────────────────────────────────────────────
+    //                     $activityProject = ActivityProject::where('activity_id', $oldActivityId)
+    //                         ->where('project_id', $revisionPlanId)
+    //                         ->first();
+
+    //                     $activityProjectUpdated = false;
+
+    //                     if ($activityProject) {
+    //                         $activityProject->idpaps = $revisionPlanIdpaps;
+    //                         $activityProject->save();
+    //                         $activityProjectUpdated = true;
+    //                     } else {
+    //                         Log::info("RevisionPlan [{$revisionPlanId}]: no activity_project found for activity [{$oldActivityId}]. idpaps not updated.");
+    //                     }
+
+    //                     $spResult['activities'][] = [
+    //                         'old_activity_id'          => $oldActivityId,
+    //                         'new_activity_id'          => $newActivityId,
+    //                         'activity_project_updated' => $activityProjectUpdated,
+    //                     ];
+    //                 }
+
+    //                 $planResults['strategy_projects'][] = $spResult;
+    //             }
+
+    //             $results[] = $planResults;
+    //         }
+    //     });
+
+    //     return response()->json([
+    //         'message' => 'Replication completed successfully.',
+    //         'data'    => $results,
+    //     ]);
+    // }
 }

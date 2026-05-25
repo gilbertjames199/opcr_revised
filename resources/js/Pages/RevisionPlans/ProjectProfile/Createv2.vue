@@ -1185,6 +1185,10 @@
                                                     @click="showExpectedOutcomesModal(act.id)">
                                                         Edit Activity
                                                     </button><hr > -->
+                                                    <button class="btn btn-primary btn-sm text-white"
+                                                    @click="showEditActivityModal(act)">
+                                                        Edit Activity
+                                                    </button><hr >
                                                     <!-- form: {{ form.id}} -- {{ act.is_active }} -->
                                                     <button class="btn btn-danger btn-sm text-white"
                                                         @click="deleteDataActivityOrStrat(act.id, 'activities', dat.description, this.form.id)">
@@ -3040,6 +3044,247 @@
             <!-- </tr> -->
         </table>
     </ExpectedOutcomeModal>
+    <ActivityModalEdit v-if="ActivityModalVisibleEdit" @close-modal-event="closeActivityModalEdit" title="ACTIVITIES MODAL">
+
+        <table>
+            <tbody>
+                <tr>
+                    <td style="background-color: #2b1402; color: #fff;">&nbsp;<h5>Activity Description</h5>&nbsp;</td>
+                    <td colspan="5" style="background-color: #2b1402;">
+                        <textarea
+                            class="form-control"
+                            v-model="activity_active.description"
+                            type="text"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activities', 'description', activity_active.id, activity_active.description)">
+                                {{ activity_active.description }}
+                        </textarea>
+                    </td>
+                </tr>
+                <tr >
+                    <!-- GAD Issue -->
+                    <td style="background-color: #703a13; color: #fff;" rowspan="2">
+                        <b>&nbsp;GAD Issue&nbsp;</b>
+                    </td>
+                    <td rowspan="2">
+                        <textarea
+                            class="form-control transparent-bg "
+                            v-model="activity_active.gad_issue"
+                            type="text"
+                            @input="setUnsaved(true)"
+                            @change="updateRevisionPlans('activity_projects', 'gad_issue', activity_active.activity_id, activity_active.gad_issue)">
+                                {{ activity_active.gad_issue }}
+                        </textarea>
+                    </td>
+                    <td style="background-color: #703a13; color: #fff; text-align: center;" colspan="4"><b>&nbsp;TIMELINE&nbsp;</b></td>
+                </tr>
+                <tr>
+                    <!-- Timeline -->
+                    <td style="background-color: #703a13; color: #fff;">
+                        <b>&nbsp;FROM&nbsp;</b>
+                    </td>
+                    <td >
+                        <input class="form-control" type="date" v-model="activity_active.date_from" :id="activity_active.activity_id + '_activity_projects_date_from'"
+                            @change="updateRevisionPlans('activity_projects', 'date_from', activity_active.activity_id, activity_active.date_from)"/>
+                    </td>
+                    <td style="background-color: #703a13; color: #fff;">
+                        <b>&nbsp;TO&nbsp;</b>
+                    </td>
+                    <td>
+                        <input class="form-control" type="date" v-model="activity_active.date_to"
+                            @change="updateRevisionPlans('activity_projects', 'date_to', activity_active.activity_id, activity_active.date_to)"
+                            :id="activity_active.activity_id + '_activity_projects_date_to'"/>
+                    </td>
+                </tr>
+                <!-- COLUMN HEADERS -->
+                <tr style="background-color: #2b1402; color: #fff;">
+                    <th></th>
+                    <th><b>Quarter 1</b></th>
+                    <th><b>Quarter 2</b></th>
+                    <th><b>Quarter 3</b></th>
+                    <th><b>Quarter 4</b></th>
+                    <th><b>Total</b></th>
+                </tr>
+                <!-- PERSONNEL SERVICES -->
+                <tr >
+                    <td style="background-color: #703a13; color: #fff;">
+                        <b>&nbsp;Personnel Services&nbsp;</b>
+                    </td>
+                    <td>
+                        <input class="form-control"
+                            type="number"
+                            v-model="activity_active.ps_q1"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'ps_q1', activity_active.activity_id, activity_active.ps_q1)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.ps_q2"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'ps_q2', activity_active.activity_id, activity_active.ps_q2)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.ps_q3"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'ps_q3', activity_active.activity_id, activity_active.ps_q3)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.ps_q4"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'ps_q4', activity_active.activity_id, activity_active.ps_q4)"
+                        />
+                    </td>
+                    <td>
+                        {{ format_number_conv((parseFloat(activity_active.ps_q1)+parseFloat(activity_active.ps_q2)+parseFloat(activity_active.ps_q3)+parseFloat(activity_active.ps_q4)),2,true) }}
+                    </td>
+                </tr>
+                <!-- MOOE -->
+                <tr>
+                    <td style="background-color: #703a13; color: #fff;">
+                        <b>&nbsp;MOOE&nbsp;</b>
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.mooe_q1"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'mooe_q1', activity_active.activity_id, activity_active.mooe_q1)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.mooe_q2"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'mooe_q2', activity_active.activity_id, activity_active.mooe_q2)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.mooe_q3"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'mooe_q3', activity_active.activity_id, activity_active.mooe_q3)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.mooe_q4"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'mooe_q4', activity_active.activity_id, activity_active.mooe_q4)"
+                        />
+                    </td>
+                    <td>{{ format_number_conv((parseFloat(activity_active.mooe_q1)+parseFloat(activity_active.mooe_q2)+parseFloat(activity_active.mooe_q3)+parseFloat(activity_active.mooe_q4)),2,true) }}</td>
+                </tr>
+                <!-- FINANCIAL EXPENSES -->
+                <tr>
+                    <td style="background-color: #703a13; color: #fff;">
+                        <b>&nbsp;Financial Expenses&nbsp;</b>
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.fe_q1"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'fe_q1', activity_active.activity_id, activity_active.fe_q1)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.fe_q2"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'fe_q2', activity_active.activity_id, activity_active.fe_q2)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.fe_q3"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'fe_q3', activity_active.activity_id, activity_active.fe_q3)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.fe_q4"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'fe_q4', activity_active.activity_id, activity_active.fe_q4)"
+                        />
+                    </td>
+                    <td>{{ format_number_conv((parseFloat(activity_active.fe_q1)+parseFloat(activity_active.fe_q2)+parseFloat(activity_active.fe_q3)+parseFloat(activity_active.fe_q4)),2,true) }}</td>
+                </tr>
+                <!-- CAPITAL OUTLAY -->
+                <tr>
+                    <td style="background-color: #703a13; color: #fff;">
+                        <b>&nbsp;Capital Outlay&nbsp;</b>
+                    </td>
+                    <td><input class="form-control"
+                        type="number"
+                        v-model="activity_active.co_q1"
+                        @input="setUnsaved(true)"
+                        @change="updateRevisionPlans('activity_projects', 'co_q1', activity_active.activity_id, activity_active.co_q1)"
+                    />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.co_q2"
+                            @input="setUnsaved(true)"
+                            @change="updateRevisionPlans('activity_projects', 'co_q2', activity_active.activity_id, activity_active.co_q2)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.co_q3"
+                            @input="setUnsaved(true)"
+                            @change="updateRevisionPlans('activity_projects', 'co_q3', activity_active.activity_id, activity_active.co_q3)"
+                        />
+                    </td>
+                    <td><input class="form-control"
+                            type="number"
+                            v-model="activity_active.co_q4"
+                            @input="setUnsaved(true)"
+                            @change="updateRevisionPlans('activity_projects', 'co_q4', activity_active.activity_id, activity_active.co_q4)"
+                        />
+                    </td>
+                    <td>{{ format_number_conv((parseFloat(activity_active.co_q1)+parseFloat(activity_active.co_q2)+parseFloat(activity_active.co_q3)+parseFloat(activity_active.co_q4)),2,true) }}</td>
+
+                </tr>
+                <!-- CCET Code/Respoinsible Person -->
+                <tr>
+                    <!-- Climate Change Expenditure Tagging -->
+                    <td style="background-color: #703a13; color: #fff;">
+                        <b>&nbsp;CCET Code&nbsp;</b>
+                    </td>
+                    <td colspan="2">
+                        <multiselect
+                            class="form-select dynamic-width"
+                            style="width: 100%;"
+                            :options="ccet_computed"
+                            :searchable="true"
+                            label="label"
+                            track-by="label"
+                            :reduce="act => activity_active.ccet_code"
+                            v-model="activity_active.ccet_code"
+                            @input="newVal => updateRevisionPlans('activity_projects', 'ccet_code', activity_active.activity_id, newVal)"
+                        />
+                    </td>
+                    <!-- PERSON Responsible -->
+                    <td style="background-color: #703a13; color: #fff;">
+                        <b>&nbsp;Person Responsible&nbsp;</b>
+                    </td>
+                    <td colspan="2">
+                        <input class="form-control"
+                            type="text"
+                            v-model="activity_active.responsible"
+                            @input="setUnsaved(true)"
+                            @blur="updateRevisionPlans('activity_projects', 'responsible', activity_active.activity_id, activity_active.responsible)"
+                        />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- {{activity_active}} -->
+    </ActivityModalEdit>
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -3049,6 +3294,7 @@ import CommentModal from "@/Shared/ModalDynamicTitle";
 import BudgetModal from "@/Shared/ModalDynamicTitleSmall";
 import StrategyModal from "@/Shared/ModalDynamicTitle";
 import ActivityModal from "@/Shared/ModalDynamicTitle";
+import ActivityModalEdit from "@/Shared/ModalDynamicTitle";
 import TeamModal from "@/Shared/ModalDynamicTitle";
 import RiskManagementModal from "@/Shared/ModalDynamicTitle";
 import MonitoringModal from "@/Shared/ModalDynamicTitle";
@@ -3115,6 +3361,7 @@ export default {
         CommentModal,
         StrategyModal,
         ActivityModal,
+        ActivityModalEdit,
         TeamModal,
         RiskManagementModal,
         MonitoringModal,
@@ -3205,8 +3452,10 @@ export default {
             // ACTIVITIES****************
             strategy_id: 0, /*Parent strategy of the activity */
             ActivityModalVisible: false,
+            ActivityModalVisibleEdit: false,
             activities: [],
             activity_description_current: '',
+            activity_active: [],
             //IMPLEMENTING TEAM *******************************
             TeamModalVisible: false,
             team_members: [],
@@ -4172,7 +4421,14 @@ export default {
                 alert('Error saving activities.');
             }
         },
-
+        showEditActivityModal(activity){
+            this.activity_active = activity;
+            this.ActivityModalVisibleEdit=true;
+        },
+        closeActivityModalEdit(){
+            this.ActivityModalVisibleEdit=false;
+             this.activity_active = [];
+        },
         //IMPLEMENTING TEAM *******************************
         showTeamModal(){
             this.action_type_team = 'store'

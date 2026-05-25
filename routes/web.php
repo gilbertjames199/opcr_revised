@@ -456,7 +456,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
         Route::get('/export/aip', [RevisionPlanController::class, 'exportStrategies'])->name('export.aip');
         Route::post('/sync-ooes', [RevisionPlanController::class, 'syncOOEs'])->name('revision.sync-ooes');
-
+        Route::get('/automate/hospital/operations',[RevisionPlanController::class, 'automateHospitalOperations'])->name('revision.automate-hospital-operations');
     });
     // AIP Code
     // ipp_aip_codes
@@ -500,6 +500,11 @@ Route::middleware('auth')->group(function () {
     // Forward Next Year
     Route::prefix('/project/next_year')->group(function () {
         Route::post('/{sem_id}', [ProjectProfileNextYearController::class, 'index']);
+    });
+
+    // Forward Next Year
+    Route::prefix('/project/last/year')->group(function () {
+        Route::post('/{sem_id}', [ProjectProfileNextYearController::class, 'last_year']);
     });
     // Cash Disbursements Forecast
     Route::prefix('/cdf')->group(function () {
@@ -1345,6 +1350,7 @@ Route::prefix('aip')->group(function () {
 
 Route::prefix('/OPCRpaps')->group(function () {
     Route::get('/PPMP/PPA', [ProjectProfileController::class, 'PPMP_PPA']);
+    Route::get('/budget/prep', [ProjectProfileController::class, 'budget_prep']);
 });
 
 // Route::prefix('api_ppa2')->group(function () {

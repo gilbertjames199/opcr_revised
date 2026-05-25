@@ -83,11 +83,21 @@ class ProjectProfileTrackingController extends Controller
                 ->when($idpaps!=0, function($query) use ($idpaps, $id, $year){
                     $query->where('idpaps', $idpaps);
                 })
-                ->where('id', '!=', $id)
+                ->where('id', '!=', intval($id))
                 ->whereYear('date_start', $year)
                 // ->where('year_period', $year)
                 ->whereIn('status', ['0'])
                 ->count();
+            // $query = RevisionPlan::with(['budget'])
+            //     ->when($idpaps != 0, function($query) use ($idpaps) {
+            //         $query->where('idpaps', $idpaps);
+            //     })
+            //     ->where('id', '!=', intval($id))
+            //     ->whereYear('date_start', $year)
+            //     ->whereIn('status', ['0']);
+
+            // dd($query->toSql(), $query->getBindings());
+            // dd($otherPlans, $revplan, $id, $year);
             // dd($otherPlans = RevisionPlan::where('idpaps', $idpaps)
             //     ->where('id', '!=', $id)
             //     ->whereYear('date_start', $year)

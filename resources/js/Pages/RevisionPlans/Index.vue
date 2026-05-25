@@ -10,7 +10,7 @@
         <div v-if="showFlyingPlane" class="flying-plane-container">
             <i class="fas fa-paper-plane flying-plane"></i>
         </div>
-
+        <!-- {{ year_filtering_d }} -->
         <div class="peers fxw-nw jc-sb ai-c">
             <div class="peers">
                 <h3 v-if="source==='sip'">SIP Profile</h3>
@@ -95,6 +95,28 @@
                         </select>
                     </div>
 
+                    <!-- Sector/Source of Funds Filtering -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-tag"></i> Sector/Source of Funds
+                        </label>
+                        <select v-model="ssf_filter" class="filter-select" @change="filterProjects">
+                            <!-- <option value="">All Types</option>
+                            <option value="p">Project Profile</option>
+                            <option value="d">Project Design</option> -->
+
+
+                            <option value="General Public Services Sector">General Public Services Sector</option>
+                            <option value="Economic Services">Economic Services</option>
+                            <option value="Other Services">Other Services</option>
+                            <option value="Social Services Sector">Social Services Sector</option>
+                            <option value="gen_fund">General Fund</option>
+                            <option value="ldrrmf">Local Disaster Risk Reduction and Management Fund</option>
+                            <option value="other">Other Sources</option>
+                            <option value="dev">Development Fund</option>
+                            <option></option>
+                        </select>
+                    </div>
                     <!-- Search -->
                     <div class="filter-group filter-group-grow">
                         <label class="filter-label">
@@ -460,10 +482,47 @@
                                 <td class="fw-medium">
                                     <div class="d-flex flex-column">
                                         <span class="text-dark">{{ dat.project_title }}</span>
-                                        <small v-if="amountStatus(dat.budget_sum, dat.imp_amount)" class="text-danger mt-1">
-                                            <i class="fas fa-exclamation-triangle me-1"></i>
-                                            {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
-                                        </small>
+                                        <span
+                                            v-if="hasAnyWarning(dat)"
+                                            class="mt-1"
+                                            style="cursor:pointer; text-decoration:underline; color:red;"
+                                            @click="toggleWarnings(dat.id)"
+                                        >
+                                            <i
+                                                class="fas fa-exclamation-triangle me-1"
+                                                style="color:#b8860b;"
+                                            ></i>
+                                            View Errors
+                                        </span>
+                                        <div v-if="parseFloat(dat.status)<1">
+                                            <div v-if="openWarningsRow === dat.id" class="mt-2">
+                                                <ul class="text-danger" style="padding-left: 1.2em;">
+                                                    <li v-if="amountStatus(dat.budget_sum, dat.imp_amount)">
+                                                        <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                        {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
+                                                    </li>
+                                                    <li v-if="categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps')">
+                                                        <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                        <!-- {{ categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps') }} -->
+                                                        <div v-html="categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps')"></div>
+                                                    </li>
+                                                    <li v-if="categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe')">
+                                                        <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                        <!-- {{ categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe') }} -->
+                                                        <div v-html="categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe')"></div>
+                                                    </li>
+                                                    <li v-if="categoryAmountStatus(dat.budget_co_total, dat.imp_co_total, 'co')">
+                                                        <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                        <div v-html="categoryAmountStatus(dat.budget_co_total, dat.imp_co_total, 'co')"></div>
+                                                    </li>
+                                                    <li v-if="categoryAmountStatus(dat.budget_fe_total, dat.imp_fe_total, 'fe')">
+                                                        <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
+                                                        <div v-html="categoryAmountStatus(dat.budget_fe_total, dat.imp_fe_total, 'fe')"></div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </td>
 
@@ -569,7 +628,16 @@
                                         <i class="fas fa-arrow-right"></i>
                                         {{ parseInt(dat.year)+1}}
                                     </button>
+                                    <br />
+                                    <!-- :disabled="!((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && ([0,1].includes(parseInt(dat.status))))" -->
 
+                                    <!-- :title="getForwardButtonTitle(dat)" -->
+                                    <!-- <button v-if="parseInt(dat.number_of_clones)>0 && dat.type==='p'"
+                                            @click="generateProjectDesign(dat.id, 'ly')"
+                                            class="btn btn-sm btn-success">
+                                        <i class="fas fa-arrow-right"></i>
+                                        {{ parseInt(dat.year)-1}}
+                                    </button> -->
                                     <!-- {{ dat.status }} -->
                                 </td>
 
@@ -591,11 +659,15 @@
                                 <!-- ACTIONS COLUMN (Submit/Recall/Generate buttons) -->
                                 <td class="text-center">
                                     <div class="d-flex gap-1 justify-content-center flex-wrap">
-                                        <!-- Submit button when status = -1 or -2 -->
-                                        <button v-if="dat.status == '-1' || dat.status == '-2'"
+                                        <!-- Submit button when status = -1 or -2 v-if="hasAnyWarning(dat)"
+                                        :disabled="!can_submit(dat.budget_sum, dat.imp_amount)"
+                                        :class="can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
+                                        -->
+                                        <!-- {{ hasAnyWarning(dat) }} -->
+                                        <button v-if="(dat.status == '-1' || dat.status == '-2') && !hasAnyWarning(dat)"
                                                 @click="submitItem(dat, 0)"
-                                                :disabled="!can_submit(dat.budget_sum, dat.imp_amount)"
-                                                :class="can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
+                                                :disabled="hasAnyWarning(dat)"
+                                                :class="!hasAnyWarning(dat) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
                                                 title="Submit Project">
                                             <i class="fas fa-paper-plane"></i>
                                             <span class="ms-1">Submit</span>
@@ -1053,6 +1125,7 @@ export default {
     data() {
         return{
             search: this.$props.filters.search,
+            openWarningsRow: null,
             showAIPModal: false,
             aip_printLink: "",
             ccet: 'no',       // This is the main variable bound by v-model
@@ -1092,6 +1165,7 @@ export default {
             showImageModal: false,
             // END OF RETURN REQUEST***************
             year_filtering_d: '',
+            ssf_filter: '',
             showFlyingPlane: false
         }
     },
@@ -1124,6 +1198,18 @@ export default {
         this.fitTableWidth();
     },
     methods:{
+        toggleWarnings(id) {
+            this.openWarningsRow = this.openWarningsRow === id ? null : id;
+        },
+        hasAnyWarning(dat) {
+            return !!(
+                this.amountStatus(dat.budget_sum, dat.imp_amount) ||
+                this.categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps') ||
+                this.categoryAmountStatus(dat.budget_mooe_total, dat.imp_mooe_total, 'mooe') ||
+                this.categoryAmountStatus(dat.budget_co_total, dat.imp_co_total, 'co') ||
+                this.categoryAmountStatus(dat.budget_fe_total, dat.imp_fe_total, 'fe')
+            );
+        },
         syncOOEs() {
 
             this.$inertia.post("/revision/sync-ooes",
@@ -1192,11 +1278,51 @@ export default {
             //showAmount ="Budget is "+budget+" \n imp amount is "+imp_amount + " "
             if(bdg>imp){
                 //alert('budget is greater than impamount');
-                status_now=showAmount+"Warning: total amount of budgetary requirement is greater than the total implementation plans amount."
+                status_now=showAmount+"Total amount of budgetary requirement is greater than the total implementation plans amount."
             }
             if(bdg<imp){
-                status_now=showAmount+"Warning: total amount of implementation plans is greater than the total  amount of budgetary requirement."
+                status_now=showAmount+"Total amount of implementation schedule/workplan is greater than the total  amount of budgetary requirement."
             }
+            return status_now;
+        },
+        categoryAmountStatus(budget, imp_amount, category) {
+
+            var status_now = "";
+            var showAmount = "";
+
+            var bdg = parseFloat(parseFloat(budget || 0).toFixed(2));
+            var imp = parseFloat(parseFloat(imp_amount || 0).toFixed(2));
+
+            // Category labels
+            const categoryLabels = {
+                mooe: "Maintenance, Operating, and Other Expenses",
+                co: "Capital Outlay",
+                ps: "Personnel Services",
+                fe: "Financial Expenses"
+            };
+
+            var categoryLabel = categoryLabels[category] || "Unknown Category";
+
+            if (imp > bdg) {
+                status_now =
+                    showAmount +
+                    "Total amount of <b>" +
+                    categoryLabel +
+                    "</b> in implementation schedule/workplan is greater than the total amount of <b>" +
+                    categoryLabel +
+                    "</b> in budgetary requirements.";
+            }
+
+            if (imp < bdg) {
+                status_now =
+                    showAmount +
+                    "Total amount of <b>" +
+                    categoryLabel +
+                    "</b> in implementation schedule/workplan is lesser than the total amount of <b>" +
+                    categoryLabel +
+                    " in budgetary requirements.";
+            }
+
             return status_now;
         },
         can_submit(budget, imp_amount){
@@ -1219,10 +1345,14 @@ export default {
             // }
         },
         showAIPModalMethod(){
+            if(this.year_filtering_d === ''){
+                alert('Please select year first before printing.');
+                return;
+            }
             var linkt = "https://";
             var jasper_ip = this.jasper_ip;
             var jasper_link ='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no&output=pdf';
-            var params ='&ccet='+this.ccet
+            var params ='&ccet='+this.ccet+'&year='+this.year_filtering_d+'&ssf_filter='+this.ssf_filter
             // console.log(params);
             this.aip_printLink = linkt+jasper_ip+jasper_link+params;
             // this.aip_printLink_excel = this.aip_printLink.replace('&output=pdf', '&output=csv');
@@ -1349,6 +1479,19 @@ export default {
                         console.error(errors);
                     }
                 });
+            }else if(type=='ly'){
+                // alert(type)
+                Inertia.post(`/project/last/year/${id}`, {
+                    'type': type
+                }, {
+                    onSuccess: () => {
+                        // optional: anything you want to run after success
+                        console.log("Project Design generated.");
+                    },
+                    onError: (errors) => {
+                        console.error(errors);
+                    }
+                });
             }
 
 
@@ -1372,6 +1515,7 @@ export default {
                 {
                     search: this.search,
                     type_filter: this.type_filter,
+                    ssf_filter: this.ssf_filter,
                     source:this.source,
                     year: this.year_filtering_d
                 },
