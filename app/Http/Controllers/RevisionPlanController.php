@@ -79,7 +79,7 @@ class RevisionPlanController extends Controller
         $dept_id = auth()->user()->department_code;
         $FFUNCCOD = FFUNCCOD::where('department_code', $dept_id)->first()->FFUNCCOD;
         $year_filtering = null;
-        if($request->year){
+        if ($request->year) {
             $year_filtering = $request->year;
         }
         if ($request->year_period) {
@@ -141,7 +141,7 @@ class RevisionPlanController extends Controller
                     // dd($gas2);
                     $data = $this->getDirect($request, $dept_id, $popsp_agency, $budget_controller, $year_filtering);
                     // dd($gas, $gas2, $data);
-                    if(count($gas)>0){
+                    if (count($gas) > 0) {
                         $data = $data->concat($gas);
                     }
                     // if(count($gas2)>0){
@@ -165,7 +165,7 @@ class RevisionPlanController extends Controller
             ]);
         } else {
             // dd(RevisionPlan::where('idpaps', $idpaps)->get());
-            $data = RevisionPlan::with(['paps', 'paps.office','projectProfileTrackings'])
+            $data = RevisionPlan::with(['paps', 'paps.office', 'projectProfileTrackings'])
                 ->where('idpaps', '=', $idpaps)
                 ->when($request->search, function ($query) use ($request) {
                     $query->where('project_title', 'like', '%' . $request->search . '%');
@@ -173,9 +173,9 @@ class RevisionPlanController extends Controller
                 ->when($request->year_filtering, function ($query) use ($request) {
                     $query->where('date_from', $request->year_filtering);
                 })
-                 ->when($request->type_filter, function ($query) use ($request) {
-                     $query->where('type', $request->type_filter);
-                 })
+                ->when($request->type_filter, function ($query) use ($request) {
+                    $query->where('type', $request->type_filter);
+                })
 
                 ->get()
                 ->map(function ($item) use ($budget_controller) {
@@ -243,7 +243,8 @@ class RevisionPlanController extends Controller
             ]);
         }
     }
-    public function forGas(Request $request, $FFUNCCOD, $currentYear, $budget_controller, $year_filtering){
+    public function forGas(Request $request, $FFUNCCOD, $currentYear, $budget_controller, $year_filtering)
+    {
         // dd($FFUNCCOD);
         // dd(RevisionPlan::where('revision_plans.FFUNCCOD', $FFUNCCOD)->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'revision_plans.FFUNCCOD')->where('revision_plans.scope', 'GAS')->get());
         $data = RevisionPlan::select(
@@ -262,11 +263,11 @@ class RevisionPlanController extends Controller
             // ->where('revision_plans.idmfo', '0')
             // ->where('revision_plans.idmfo', '0')
             ->where('revision_plans.scope', 'GAS')
-            ->when($year_filtering, function($query) use ($year_filtering){
+            ->when($year_filtering, function ($query) use ($year_filtering) {
                 $query->where('revision_plans.date_start', $year_filtering);
             })
             ->get()
-            ->map(function ($item) use($currentYear, $budget_controller) {
+            ->map(function ($item) use ($currentYear, $budget_controller) {
                 $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                     ->sum('amount');
                 // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
@@ -308,8 +309,8 @@ class RevisionPlanController extends Controller
                     'number_of_clones' => 0,
                     'return_request_status' => $item->return_request_status,
                     // 'year'=>$currentYear
-                    'year'=>$item->year_period,
-                    'gad_status'=>$item->gad_status
+                    'year' => $item->year_period,
+                    'gad_status' => $item->gad_status
                 ];
             });
         // dd("gas", $data);
@@ -412,7 +413,7 @@ class RevisionPlanController extends Controller
                 })
                     ->orWhere('type', 'sip');
             })
-            ->when($year_filtering, function($query) use ($year_filtering){
+            ->when($year_filtering, function ($query) use ($year_filtering) {
                 $query->where('revision_plans.date_start', $year_filtering);
             })
             ->get()
@@ -459,8 +460,8 @@ class RevisionPlanController extends Controller
                     'imp_amount' => $imp_amount,
                     'status' => $item->status,
                     'number_of_clones' => $item->clonedVersions->count(),
-                    'year'=>$year,
-                    'gad_status'=>$item->gad_status
+                    'year' => $year,
+                    'gad_status' => $item->gad_status
                     // 'paps'=>$item->paps
                 ];
             });
@@ -468,193 +469,7 @@ class RevisionPlanController extends Controller
     public function getDirect(Request $request, $dept_id, $popsp_agency, $budget_controller, $year_filtering)
     {
         // dd($dept_id);
-        $data= RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects','paps.office', 'clonedVersions','projectProfileTrackings'])
-            ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
-                $query->where('department_code', $dept_id)
-                ->orWhereHas('sharedProgramAndProjects', function ($q) use ($dept_id, $popsp_agency) {
-                        $q->where('destination_department_code', $dept_id);
-                        // ->orWhere('destination_department_code', optional($popsp_agency)->department_code_actual);
-                    });
-                // ->orWhere('department_code', optional($popsp_agency)->department_code_actual);
-            })
-            ->when(auth()->user()->popsp_agency, function ($query) use ($dept_id, $popsp_agency) {
-                // dd("may agency", $popsp_agency);
-                $query->where('agency_name', $popsp_agency->agency_code);
-            })
-            ->when($request->has_comments == 1, function ($query) {
-                $query->whereExists(function ($sub) {
-                    $sub->select(DB::raw(1))
-                        ->from('revision_plan_comments as rpc')
-                        ->where(function ($inner) {
-                            $inner->where('rpc.table_name', 'revision_plans')
-                                ->whereColumn('rpc.table_row_id', 'revision_plans.id');
-                        })
-                        // activity_projects
-                        ->orWhereExists(function ($inner) {
-                            $inner->select(DB::raw(1))
-                                ->from('activity_projects as ap')
-                                ->whereColumn('ap.project_id', 'revision_plans.id')
-                                ->join('revision_plan_comments as rpc2', 'rpc2.table_row_id', '=', 'ap.id')
-                                ->where('rpc2.table_name', 'activity_projects');
-                        })
-                        // strategy_projects
-                        ->orWhereExists(function ($inner) {
-                            $inner->select(DB::raw(1))
-                                ->from('strategy_projects as sp')
-                                ->whereColumn('sp.project_id', 'revision_plans.id')
-                                ->join('revision_plan_comments as rpc3', 'rpc3.table_row_id', '=', 'sp.id')
-                                ->where('rpc3.table_name', 'strategy_projects');
-                        })
-                        // 4️⃣ expected_revised_outputs comments
-                        ->orWhereExists(function ($inner) {
-                            $inner->select(DB::raw(1))
-                                ->from('activity_projects as ap')
-                                ->whereColumn('ap.project_id', 'revision_plans.id')
-                                ->join('expected_revised_outputs as ero2', 'ero2.activity_project_id', '=', 'ap.id')
-                                ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'ero2.id')
-                                ->where('rpc4.table_name', 'expected_revised_outputs');
-                        })
-
-                        // 3️⃣ expected_revised_outcomes comments
-                        ->orWhereExists(function ($inner) {
-                            $inner->select(DB::raw(1))
-                                ->from('activity_projects as ap')
-                                ->whereColumn('ap.project_id', 'revision_plans.id')
-                                ->join('expected_revised_outcomes as ero', 'ero.activity_project_id', '=', 'ap.id')
-                                ->join('revision_plan_comments as rpc3', 'rpc3.table_row_id', '=', 'ero.id')
-                                ->where('rpc3.table_name', 'expected_revised_outcomes');
-                        })
-                        // budget_requirements
-                        ->orWhereExists(function ($inner) {
-                            $inner->select(DB::raw(1))
-                                ->from('budget_requirements as br')
-                                ->whereColumn('br.revision_plan_id', 'revision_plans.id')
-                                ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'br.id')
-                                ->where('rpc4.table_name', 'budget_requirements');
-                        })
-                        // team plans
-                        ->orWhereExists(function ($inner) {
-                            $inner->select(DB::raw(1))
-                                ->from('team_plans as tp')
-                                ->whereColumn('tp.revision_plan_id', 'revision_plans.id')
-                                ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'tp.id')
-                                ->where('rpc4.table_name', 'team_plans');
-                        })
-
-                        // monitoring and evaluation
-                        ->orWhereExists(function ($inner) {
-                            $inner->select(DB::raw(1))
-                                ->from('monitoring_and_evaluations as me')
-                                ->whereColumn('me.revision_plan_id', 'revision_plans.id')
-                                ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'me.id')
-                                ->where('rpc4.table_name', 'monitoring_and_evaluations');
-                        })
-
-                        // risk managements
-                        ->orWhereExists(function ($inner) {
-                            $inner->select(DB::raw(1))
-                                ->from('risk_manangements as rm')
-                                ->whereColumn('rm.revision_plan_id', 'revision_plans.id')
-                                ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'rm.id')
-                                ->where('rpc4.table_name', 'risk_manangements');
-                        });
-                });
-            })
-            ->when($request->search, function ($query) use ($request) {
-                $query->where('project_title', 'LIKE', '%' . $request->search . '%');
-            })
-            ->where('type', '<>', 'sip')
-            ->when($request->type_filter, function ($query) use ($request) {
-                $query->where('type', $request->type_filter);
-            })
-            ->when($year_filtering, function($query) use ($year_filtering){
-                $query->whereYear('revision_plans.date_start', $year_filtering);
-            })
-            ->get()
-            ->map(function ($item) use ($budget_controller) {
-                $year = Carbon::parse($item->date_start)->year;
-                // COUNT THE COMMENTS
-                if (!empty($item) && !empty($item->projectProfileTrackings)) {
-
-                    $latestSubmit = $item->projectProfileTrackings
-                        ->filter(function ($tracking) {
-                            return isset($tracking->action_type) &&
-                                strpos($tracking->action_type, 'Submit') !== false;
-                        })
-                        ->sortByDesc('created_at')
-                        ->first();
-                    $latestSubmit = $latestSubmit;
-
-                } else {
-                    $latestSubmit = null;
-                }
-
-                // dd($latestSubmit);
-
-                // dd($latestSubmit);
-                $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)->where('table_name', 'revision_plans')->count();
-                // dd($revision_comment);
-
-                // BUDGERTARY REQUIREMENTs
-                $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
-                    ->sum('amount');
-
-                $imp_amount = 0.00;
-                // DB::table('targets')
-                //     ->where('implementation_plans.idrev_plan', $item->id)
-                //     ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
-                //     ->select('targets.*', 'implementation_plans.*')
-                //     ->sum('targets.planned_budget');
-                $total = [];
-                // dd($item);
-                if ($item->is_strategy_based == 1) {
-                    $total = $budget_controller->getStratTotal($item->id);
-                } else {
-                    $total = $budget_controller->getActivityTotal($item->id);
-                }
-                // dd($item->is_strategy_based);
-                if ($total) {
-                    $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
-                        $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
-                        $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
-                        $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
-                }
-                // dd($total);
-                // dd($item);
-                // dd($item->project_title);
-                // if ($item->id == 201) {
-                //     dd($item);
-                // }
-                // if($item->id==91){
-                //     dd($item);
-                // }
-                return [
-                    // 'FFUNCTION' => $item->FFUNCTION,
-                    'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
-                    'idpaps' => $item->idpaps,
-                    'id' => $item->id,
-                    'project_title' => $item->project_title,
-                    'type' => $item->type,
-                    'version' => $item->version,
-                    'budget_sum' => $budgetary_requirement,
-                    'imp_amount' => $imp_amount,
-                    'status' => $item->status,
-                    'number_of_clones_design' => $item->clonedVersions->where('type', 'd')->count(),
-                    'number_of_clones' => $item->clonedVersions->count(),
-                    'return_request_status' => $item->return_request_status,
-                    'year'=>$year,
-                    'gad_status'=>$item->gad_status,
-                    'created_at'=>$latestSubmit
-                    // 'paps'=>$item->paps
-                ];
-            });
-        // dd($data);
-        return $data;
-    }
-
-    public function getShared(Request $request, $dept_id, $popsp_agency, $budget_controller, $year_filtering)
-    {
-        return RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects','paps.office', 'clonedVersions'])
+        $data = RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects', 'paps.office', 'clonedVersions', 'projectProfileTrackings'])
             ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                 $query->where('department_code', $dept_id)
                     ->orWhereHas('sharedProgramAndProjects', function ($q) use ($dept_id, $popsp_agency) {
@@ -753,7 +568,192 @@ class RevisionPlanController extends Controller
             ->when($request->type_filter, function ($query) use ($request) {
                 $query->where('type', $request->type_filter);
             })
-            ->when($year_filtering, function($query) use ($year_filtering){
+            ->when($year_filtering, function ($query) use ($year_filtering) {
+                $query->whereYear('revision_plans.date_start', $year_filtering);
+            })
+            ->get()
+            ->map(function ($item) use ($budget_controller) {
+                $year = Carbon::parse($item->date_start)->year;
+                // COUNT THE COMMENTS
+                if (!empty($item) && !empty($item->projectProfileTrackings)) {
+
+                    $latestSubmit = $item->projectProfileTrackings
+                        ->filter(function ($tracking) {
+                            return isset($tracking->action_type) &&
+                                strpos($tracking->action_type, 'Submit') !== false;
+                        })
+                        ->sortByDesc('created_at')
+                        ->first();
+                    $latestSubmit = $latestSubmit;
+                } else {
+                    $latestSubmit = null;
+                }
+
+                // dd($latestSubmit);
+
+                // dd($latestSubmit);
+                $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)->where('table_name', 'revision_plans')->count();
+                // dd($revision_comment);
+
+                // BUDGERTARY REQUIREMENTs
+                $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                    ->sum('amount');
+
+                $imp_amount = 0.00;
+                // DB::table('targets')
+                //     ->where('implementation_plans.idrev_plan', $item->id)
+                //     ->join('implementation_plans', 'targets.idimplementation', '=', 'implementation_plans.id')
+                //     ->select('targets.*', 'implementation_plans.*')
+                //     ->sum('targets.planned_budget');
+                $total = [];
+                // dd($item);
+                if ($item->is_strategy_based == 1) {
+                    $total = $budget_controller->getStratTotal($item->id);
+                } else {
+                    $total = $budget_controller->getActivityTotal($item->id);
+                }
+                // dd($item->is_strategy_based);
+                if ($total) {
+                    $imp_amount = $total->sum('ps_q1') + $total->sum('ps_q2') + $total->sum('ps_q3') + $total->sum('ps_q4') +
+                        $total->sum('mooe_q1') + $total->sum('mooe_q2') + $total->sum('mooe_q3') + $total->sum('mooe_q4') +
+                        $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
+                        $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
+                }
+                // dd($total);
+                // dd($item);
+                // dd($item->project_title);
+                // if ($item->id == 201) {
+                //     dd($item);
+                // }
+                // if($item->id==91){
+                //     dd($item);
+                // }
+                return [
+                    // 'FFUNCTION' => $item->FFUNCTION,
+                    'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
+                    'idpaps' => $item->idpaps,
+                    'id' => $item->id,
+                    'project_title' => $item->project_title,
+                    'type' => $item->type,
+                    'version' => $item->version,
+                    'budget_sum' => $budgetary_requirement,
+                    'imp_amount' => $imp_amount,
+                    'status' => $item->status,
+                    'number_of_clones_design' => $item->clonedVersions->where('type', 'd')->count(),
+                    'number_of_clones' => $item->clonedVersions->count(),
+                    'return_request_status' => $item->return_request_status,
+                    'year' => $year,
+                    'gad_status' => $item->gad_status,
+                    'created_at' => $latestSubmit
+                    // 'paps'=>$item->paps
+                ];
+            });
+        // dd($data);
+        return $data;
+    }
+
+    public function getShared(Request $request, $dept_id, $popsp_agency, $budget_controller, $year_filtering)
+    {
+        return RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects', 'paps.office', 'clonedVersions'])
+            ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
+                $query->where('department_code', $dept_id)
+                    ->orWhereHas('sharedProgramAndProjects', function ($q) use ($dept_id, $popsp_agency) {
+                        $q->where('destination_department_code', $dept_id);
+                        // ->orWhere('destination_department_code', optional($popsp_agency)->department_code_actual);
+                    });
+                // ->orWhere('department_code', optional($popsp_agency)->department_code_actual);
+            })
+            ->when(auth()->user()->popsp_agency, function ($query) use ($dept_id, $popsp_agency) {
+                // dd("may agency", $popsp_agency);
+                $query->where('agency_name', $popsp_agency->agency_code);
+            })
+            ->when($request->has_comments == 1, function ($query) {
+                $query->whereExists(function ($sub) {
+                    $sub->select(DB::raw(1))
+                        ->from('revision_plan_comments as rpc')
+                        ->where(function ($inner) {
+                            $inner->where('rpc.table_name', 'revision_plans')
+                                ->whereColumn('rpc.table_row_id', 'revision_plans.id');
+                        })
+                        // activity_projects
+                        ->orWhereExists(function ($inner) {
+                            $inner->select(DB::raw(1))
+                                ->from('activity_projects as ap')
+                                ->whereColumn('ap.project_id', 'revision_plans.id')
+                                ->join('revision_plan_comments as rpc2', 'rpc2.table_row_id', '=', 'ap.id')
+                                ->where('rpc2.table_name', 'activity_projects');
+                        })
+                        // strategy_projects
+                        ->orWhereExists(function ($inner) {
+                            $inner->select(DB::raw(1))
+                                ->from('strategy_projects as sp')
+                                ->whereColumn('sp.project_id', 'revision_plans.id')
+                                ->join('revision_plan_comments as rpc3', 'rpc3.table_row_id', '=', 'sp.id')
+                                ->where('rpc3.table_name', 'strategy_projects');
+                        })
+                        // 4️⃣ expected_revised_outputs comments
+                        ->orWhereExists(function ($inner) {
+                            $inner->select(DB::raw(1))
+                                ->from('activity_projects as ap')
+                                ->whereColumn('ap.project_id', 'revision_plans.id')
+                                ->join('expected_revised_outputs as ero2', 'ero2.activity_project_id', '=', 'ap.id')
+                                ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'ero2.id')
+                                ->where('rpc4.table_name', 'expected_revised_outputs');
+                        })
+
+                        // 3️⃣ expected_revised_outcomes comments
+                        ->orWhereExists(function ($inner) {
+                            $inner->select(DB::raw(1))
+                                ->from('activity_projects as ap')
+                                ->whereColumn('ap.project_id', 'revision_plans.id')
+                                ->join('expected_revised_outcomes as ero', 'ero.activity_project_id', '=', 'ap.id')
+                                ->join('revision_plan_comments as rpc3', 'rpc3.table_row_id', '=', 'ero.id')
+                                ->where('rpc3.table_name', 'expected_revised_outcomes');
+                        })
+                        // budget_requirements
+                        ->orWhereExists(function ($inner) {
+                            $inner->select(DB::raw(1))
+                                ->from('budget_requirements as br')
+                                ->whereColumn('br.revision_plan_id', 'revision_plans.id')
+                                ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'br.id')
+                                ->where('rpc4.table_name', 'budget_requirements');
+                        })
+                        // team plans
+                        ->orWhereExists(function ($inner) {
+                            $inner->select(DB::raw(1))
+                                ->from('team_plans as tp')
+                                ->whereColumn('tp.revision_plan_id', 'revision_plans.id')
+                                ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'tp.id')
+                                ->where('rpc4.table_name', 'team_plans');
+                        })
+
+                        // monitoring and evaluation
+                        ->orWhereExists(function ($inner) {
+                            $inner->select(DB::raw(1))
+                                ->from('monitoring_and_evaluations as me')
+                                ->whereColumn('me.revision_plan_id', 'revision_plans.id')
+                                ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'me.id')
+                                ->where('rpc4.table_name', 'monitoring_and_evaluations');
+                        })
+
+                        // risk managements
+                        ->orWhereExists(function ($inner) {
+                            $inner->select(DB::raw(1))
+                                ->from('risk_manangements as rm')
+                                ->whereColumn('rm.revision_plan_id', 'revision_plans.id')
+                                ->join('revision_plan_comments as rpc4', 'rpc4.table_row_id', '=', 'rm.id')
+                                ->where('rpc4.table_name', 'risk_manangements');
+                        });
+                });
+            })
+            ->when($request->search, function ($query) use ($request) {
+                $query->where('project_title', 'LIKE', '%' . $request->search . '%');
+            })
+            ->where('type', '<>', 'sip')
+            ->when($request->type_filter, function ($query) use ($request) {
+                $query->where('type', $request->type_filter);
+            })
+            ->when($year_filtering, function ($query) use ($year_filtering) {
                 $query->where('revision_plans.date_from', $year_filtering);
             })
             ->get()
@@ -807,7 +807,7 @@ class RevisionPlanController extends Controller
                     'status' => $item->status,
                     'number_of_clones' => $item->clonedVersions->count(),
                     'return_request_status' => $item->return_request_status,
-                    'year'=>$year
+                    'year' => $year
                     // 'paps'=>$item->paps
                 ];
             });
@@ -874,7 +874,7 @@ class RevisionPlanController extends Controller
                 ->get();
             // dd("wala si paps", $paps);
             // $all_paps = Progr
-        }else{
+        } else {
             $paps_all = ProgramAndProject::with('MFO')
                 ->where(function ($query) use ($dept_code) {
                     $query->whereHas('MFO', function ($query) use ($dept_code) {
@@ -1045,7 +1045,7 @@ class RevisionPlanController extends Controller
             ->first();
 
         // dd($paps);
-        $checklist_id=$paps->checklist_id;
+        $checklist_id = $paps->checklist_id;
         $scope = $paps->scope;
         $idpaps = $paps->idpaps;
         $idmfo = $paps->idmfo;
@@ -1102,9 +1102,9 @@ class RevisionPlanController extends Controller
             'strategyProject.comments.user',
             'activity' => function ($query) use ($paps, $id) {
                 if ($paps->is_strategy_based == 0) {
-                    $query->whereHas('activityProject', function ($q) use($id) {
+                    $query->whereHas('activityProject', function ($q) use ($id) {
                         $q->where('is_active', '1')
-                             ->where('project_id', $id);
+                            ->where('project_id', $id);
                     });
                 }
             },
@@ -1119,11 +1119,11 @@ class RevisionPlanController extends Controller
             'activity.activityProject.comments',
             'activity.activityProject.comments.user'
         ])
-            ->whereHas('strategyProject', function ($query)use($id) {
+            ->whereHas('strategyProject', function ($query) use ($id) {
                 $query->where('is_active', '1')
                     ->where('project_id', $id);
             })
-            ->when($scope!= 'GAS', function ($query) use ($idpaps) {
+            ->when($scope != 'GAS', function ($query) use ($idpaps) {
                 $query->where('idpaps', $idpaps);
             })
             // ->where('idpaps', $idpaps)
@@ -1155,7 +1155,7 @@ class RevisionPlanController extends Controller
                     $fe_total = floatval($fe_q1) + floatval($fe_q2) + floatval($fe_q3) + floatval($fe_q4);
                     // dd($activity->activityProject);
                     return [
-                        "seq_no" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->seq_no:null,
+                        "seq_no" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->seq_no : null,
                         "id" => $activity->id,
                         "date_from" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_from : null,
                         "date_to" => $activity->activityProject->count() > 0 ? $activity->activityProject[0]->date_to : null,
@@ -1193,8 +1193,8 @@ class RevisionPlanController extends Controller
                         "comments" => $act_comments
                     ];
                 })
-                ->sortBy('seq_no')   // 👈 sort AFTER mapping
-                ->values();          // 👈 reset indexes for Vue;
+                    ->sortBy('seq_no')   // 👈 sort AFTER mapping
+                    ->values();          // 👈 reset indexes for Vue;
                 $ps_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q1 > 0 ? $item->strategyProject[0]->ps_q1 : 0) : 0;
                 $ps_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q2 > 0 ? $item->strategyProject[0]->ps_q2 : 0) : 0;
                 $ps_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q3 > 0 ? $item->strategyProject[0]->ps_q3 : 0) : 0;
@@ -1336,7 +1336,7 @@ class RevisionPlanController extends Controller
         //RISK MANAGEEMNT
         $risks = Risk_manangement::with(['comments', 'comments.user'])->where('revision_plan_id', $id)->get();
 
-        $type=($paps)?$paps->type:'';
+        $type = ($paps) ? $paps->type : '';
         $signatories = Signatory::with(['comments'])->where('revision_plan_id', $id)
             ->when($type === 'p', function ($query) {
                 $query->whereNotIn('acted', [
@@ -1391,7 +1391,7 @@ class RevisionPlanController extends Controller
         // dd($paps);
         // dd($functions);
         $view_returned = $paps->gad_version == '1' ? 'RevisionPlans/View' : 'RevisionPlans/View2';
-        $off="";
+        $off = "";
         // dd($functions);
         if (is_null($functions)) {
             if (empty($functions) || $functions->isEmpty()) {
@@ -1403,7 +1403,7 @@ class RevisionPlanController extends Controller
         return inertia($view_returned, [
             "all_comments" => $all_comments,
             "paps" => $paps,
-            "office" => optional($functions)->FFUNCTION?optional($functions)->FFUNCTION: optional($off)->office,
+            "office" => optional($functions)->FFUNCTION ? optional($functions)->FFUNCTION : optional($off)->office,
             "implementation" => $implement,
             "department_code_project" => $department_code,
             "department_code_user" => auth()->user()->department_code,
@@ -1587,7 +1587,7 @@ class RevisionPlanController extends Controller
         return $allComments;
 
 
-// The user relation is not included in allCOmments
+        // The user relation is not included in allCOmments
     }
 
     public function budgetRequirements($id)
@@ -2056,7 +2056,7 @@ class RevisionPlanController extends Controller
                     'status' => $item->status,
                     'number_of_clones' => $item->clonedVersions->count(),
                     'return_request_status' => $item->return_request_status,
-                    'year'=>$year
+                    'year' => $year
                     // 'paps'=>$item->paps
                 ];
             });
@@ -2569,9 +2569,9 @@ class RevisionPlanController extends Controller
     }
     public function direct(Request $request)
     {
-        $year_filtering=null;
-        if($request->year){
-            $year_filtering=$request->year;
+        $year_filtering = null;
+        if ($request->year) {
+            $year_filtering = $request->year;
         }
         $myid = auth()->user()->recid;
         $dept_id = auth()->user()->department_code;
@@ -2646,30 +2646,31 @@ class RevisionPlanController extends Controller
         }
         $aip = AnnualInvestmentPlanInstitutional::where('year_period', $year_period)->first();
         // dd($aip);
-        $data = RevisionPlan::with(['budget',
-                    'paps',
-                    'paps.office',
-                    'clonedVersions',
-                    'hgdgScores',
-                    'hgdgScores.question',
-                    'projectProfileTrackings'
-                ])
-                // ->withMax([
-                //     'projectProfileTrackings as date_submitted' => function ($q) {
-                //         $q->where('action_type', 'Submit Project Profile');
-                //     }
-                // ], 'created_at')
-                ->withMax([
-                    'projectProfileTrackings as date_submitted' => function ($q) {
-                        $q->where('action_type', 'Submit Project Profile');
-                    }
-                ], 'created_at')
+        $data = RevisionPlan::with([
+            'budget',
+            'paps',
+            'paps.office',
+            'clonedVersions',
+            'hgdgScores',
+            'hgdgScores.question',
+            'projectProfileTrackings'
+        ])
+            // ->withMax([
+            //     'projectProfileTrackings as date_submitted' => function ($q) {
+            //         $q->where('action_type', 'Submit Project Profile');
+            //     }
+            // ], 'created_at')
+            ->withMax([
+                'projectProfileTrackings as date_submitted' => function ($q) {
+                    $q->where('action_type', 'Submit Project Profile');
+                }
+            ], 'created_at')
             ->whereHas('budget', function ($query) {
                 $query->select(DB::raw('revision_plan_id'))
                     ->groupBy('revision_plan_id')
                     ->havingRaw('SUM(amount) > 0');
             })
-            ->when($request->source == 'rev_app', function ($query)use ($myid, $gad_reviewers)  {
+            ->when($request->source == 'rev_app', function ($query) use ($myid, $gad_reviewers) {
 
                 $query->where(function ($q) {
                     $q->where('status', '0')
@@ -2677,7 +2678,7 @@ class RevisionPlanController extends Controller
                         ->orWhere('return_request_status', '0');
                 });
 
-                 // GAD visibility rules
+                // GAD visibility rules
                 // $query->whereHas('paps', function ($q) use ($myid, $gad_reviewers) {
 
                 //     if (in_array($myid, $gad_reviewers, true)) {
@@ -2696,8 +2697,8 @@ class RevisionPlanController extends Controller
                         } else {
                             $q2->where('gad_status', 1);
                         }
-                    })->orWhere(function($qq) use ($myid, $gad_reviewers) {
-                        $qq->where('idpaps',0);
+                    })->orWhere(function ($qq) use ($myid, $gad_reviewers) {
+                        $qq->where('idpaps', 0);
 
                         if (in_array($myid, $gad_reviewers, true)) {
                             $qq->where('gad_status', 0);
@@ -2708,12 +2709,11 @@ class RevisionPlanController extends Controller
                     // ->orWhere('revision_plans.idpaps', 0);
                 });
             })
-            ->when($request->source == 'approved', function ($query)use ($myid, $gad_reviewers)  {
+            ->when($request->source == 'approved', function ($query) use ($myid, $gad_reviewers) {
 
                 $query->where(function ($q) {
                     $q->where('status', '1')
                         ->orWhere('status', '2');
-
                 });
 
                 //  // GAD visibility rules
@@ -2738,12 +2738,12 @@ class RevisionPlanController extends Controller
                 // dd($request->search);
                 $query->where('project_title', 'LIKE', '%' . $request->search . '%');
             })
-            ->where(function($query)use($request, $source, $dept_id){
+            ->where(function ($query) use ($request, $source, $dept_id) {
                 $query->whereHas('paps', function ($query) use ($request, $source, $dept_id) {
                     $query->when($source == 'budget', function ($query) use ($dept_id) {
                         $query->where('department_code', $dept_id);
                     });
-                })->orWhere('idpaps',0);
+                })->orWhere('idpaps', 0);
             })
 
             // ->when($source == 'budget', function ($query) use ($dept_id) {
@@ -2866,8 +2866,8 @@ class RevisionPlanController extends Controller
             }
             // dd($item->hgdgScores);
             $hgdg_score_sum = optional($item->hgdgScores)
-            ->filter(fn ($score) => optional($score->question)->checklist_id == $item->checklist_id)
-            ->sum('score') ?? 0;
+                ->filter(fn($score) => optional($score->question)->checklist_id == $item->checklist_id)
+                ->sum('score') ?? 0;
             // if($hgdg_score_sum>20){
             //     // dd($item, $hgdg_score_sum, $item->hgdgScores);
             // }
@@ -2878,9 +2878,9 @@ class RevisionPlanController extends Controller
                 ->first();
             // dd($item->project_profile_tracking);
             $function_off = optional(optional(optional($item)->paps)->office)->FFUNCTION;
-            if(!$function_off){
+            if (!$function_off) {
                 // dd($function_off, $item->FFUNCCOD);
-                $ffunccod =FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)->first();
+                $ffunccod = FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)->first();
                 $function_off = optional($ffunccod)->FFUNCTION;
                 // dd($function_off, $item);
             }
@@ -2905,8 +2905,8 @@ class RevisionPlanController extends Controller
                 'year' => $year = $item->date_start
                     ? Carbon::parse($item->date_start)->year
                     : null,
-                'project_profile_tracking'=>$latestSubmit,
-                'date_submitted'=>optional($latestSubmit)->created_at
+                'project_profile_tracking' => $latestSubmit,
+                'date_submitted' => optional($latestSubmit)->created_at
             ];
         });
         // dd($data);
@@ -2973,7 +2973,7 @@ class RevisionPlanController extends Controller
             "acc" => $acc,
             'fileBaseUrl' => $baseUrl,
             'disk' => $disk,
-            'year_filtering'=>$year_filtering,
+            'year_filtering' => $year_filtering,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -3155,8 +3155,8 @@ class RevisionPlanController extends Controller
             ->whereHas('paps', function ($query) use ($dept_id) {
                 $query->where('department_code', $dept_id);
             })
-            ->where('status','>',-1)
-            ->when($request->year, function($query)use($request){
+            ->where('status', '>', -1)
+            ->when($request->year, function ($query) use ($request) {
                 $query->whereYear('date_start', $request->year);
             });
         // if ($dept_id) {
@@ -3194,39 +3194,38 @@ class RevisionPlanController extends Controller
                     'FFUNCTION' => trim(optional(optional($item->paps)->office)->FFUNCTION),
                     'id' => $item->id,
                     'project_title' => $item->project_title,
-                    'year'=>optional($item)->date_start?\Carbon\Carbon::parse($item->date_start)->year:'',
+                    'year' => optional($item)->date_start ? \Carbon\Carbon::parse($item->date_start)->year : '',
                     'type' => $item->type,
                     'version' => $item->version,
                     'amount' => $budgetary_requirement,
                     'strategies' => $this->get_strategies($request, $item->id),
-                    'status'=> $this->set_status($item->status, $item->gad_status)
+                    'status' => $this->set_status($item->status, $item->gad_status)
                 ];
             });
 
         return $data;
     }
-    protected function set_status($status, $gad_status){
-        if($status=="1"){
+    protected function set_status($status, $gad_status)
+    {
+        if ($status == "1") {
             return "Approved";
         }
 
-        if($status=="0"){
-            if($gad_status=="1"){
+        if ($status == "0") {
+            if ($gad_status == "1") {
                 return "PPDO Review on-going";
-            }else{
+            } else {
                 return "GAD Review on-going";
             }
-
         }
 
-        if($status=="-1"){
+        if ($status == "-1") {
             return "Saved";
         }
 
-        if($status=="-2"){
+        if ($status == "-2") {
             return "Returned";
         }
-
     }
     public function aip_api(Request $request)
     {
@@ -3255,8 +3254,8 @@ class RevisionPlanController extends Controller
             'paps.office',
             'paps.office.office'
         ])
-        ->where('status', '1')
-        ->get();
+            ->where('status', '1')
+            ->get();
 
         foreach ($plans as $plan) {
             $strategy = optional(optional($plan)->strategyProject->first())->strategy;
@@ -4064,7 +4063,7 @@ class RevisionPlanController extends Controller
 
         // dd($amount);
 
-        $revplan=$revplan->map(function ($item)use($amount, $proposed_budget) {
+        $revplan = $revplan->map(function ($item) use ($amount, $proposed_budget) {
             $totalScore = $item->hgdg_score;
             // hgdgScores->sum('score');
             // dd($item);
@@ -4100,14 +4099,14 @@ class RevisionPlanController extends Controller
             // optional: round to 2 decimals
             $gad_attributed = number_format($gad_attributed, 2);
             if ($totalScore <= 3.9) {
-                    $gad_attributed = $amount * 0;
-                }
+                $gad_attributed = $amount * 0;
+            }
             $tot_rounded = round($totalScore, 2);
             // $data = Signatory::where('revision_plan_id', $request->revision_plan_id)->get();
             $signatories = $this->getSignatories($item->id);
             // dd($signatories);
             // $rationale = html_entity_decode($item->rationale, ENT_QUOTES | ENT_HTML5);
-            $rationale =$item->rationale;
+            $rationale = $item->rationale;
 
             // Optional but recommended: strip unsupported tags
             // $rationale = strip_tags($rationale, '<p><br><b><strong><i><em><u>');
@@ -4126,7 +4125,7 @@ class RevisionPlanController extends Controller
             $partnership = preg_replace('/style="text-align:\s*justify;?"/', '', $partnership);
             $date_start = Carbon::parse($item->date_start)->format('F Y');
             $date_end = Carbon::parse($item->date_end)->format('F Y');
-            $tot = intval($item->beneficiary_male)+intval($item->beneficiary_female);
+            $tot = intval($item->beneficiary_male) + intval($item->beneficiary_female);
 
             // dd($item->checklist);
             return [
@@ -4159,7 +4158,7 @@ class RevisionPlanController extends Controller
                 // 'proposed_budget' => number_format($proposed_budget, 2, '.', ','),
                 'proposed_budget' => number_format((float) str_replace(',', '', $proposed_budget), 2, '.', ','),
                 'attributed_amount' => number_format((float) str_replace(',', '', $gad_attributed), 2, '.', ','),
-                'checklist_id' => optional(optional($item)->checklist)->box_number.'. '.optional(optional($item)->checklist)->sector,
+                'checklist_id' => optional(optional($item)->checklist)->box_number . '. ' . optional(optional($item)->checklist)->sector,
                 'hgdg_score' => $tot_rounded,
                 'hgdg_percent' => $item->hgdg_percent,
                 // 'rationale' => '<p align="justify">' . e($item->rationale) . '</p>',
@@ -4215,6 +4214,88 @@ class RevisionPlanController extends Controller
         return $revplan;
         // $sigs= $this->getSignatories($request->id);
         // return $revplan->concat($sigs);
+    }
+
+    public function lbpform4(Request $request)
+    {
+        $rev_id = $request->id;
+
+        $data = RevisionPlan::with([
+            'paps:id,paps_desc,idmfo,aip_code',
+            'paps.MFO:id,mfo_desc',
+            'activityProject.expected_output'
+        ])
+            ->where('id', $rev_id)
+            ->select('id', 'project_title', 'idpaps')
+            ->first();
+
+        if (!$data) {
+            return response()->json([
+                'message' => 'Revision Plan not found'
+            ], 404);
+        }
+
+        // GROUPED ACTIVITIES
+        $activities = $data->activityProject->map(function ($activity) {
+
+            return [
+                'activity_project_id' => $activity->id,
+                'activity_name'       => $activity->activity_name,
+
+                'expected_outputs'    => $activity->expected_output->map(function ($output) {
+
+                    // TOTAL TARGET (Q1 + Q2 + Q3 + Q4)
+                    $totalTarget =
+                        (float) $output->physical_q1 +
+                        (float) $output->physical_q2 +
+                        (float) $output->physical_q3 +
+                        (float) $output->physical_q4;
+
+                    return [
+                        'id'                  => $output->id,
+                        'activity_project_id' => $output->activity_project_id,
+
+                        // DESCRIPTION + TOTAL TARGET
+                        'description' =>
+                        $output->description
+                            . "\n\nTotal Target: " . $totalTarget,
+
+                        'total_target' => $totalTarget,
+                    ];
+                })->values(),
+            ];
+        })->values();
+
+        // BUDGET TOTALS
+        $budgetTotals = BudgetRequirement::where('revision_plan_id', $rev_id)
+            ->selectRaw("
+            SUM(CASE WHEN category = 'Personnel Services' THEN amount ELSE 0 END) as PS,
+            SUM(CASE WHEN category = 'Maintenance, Operating, and Other Expenses' THEN amount ELSE 0 END) as MOOE,
+            SUM(CASE WHEN category = 'Capital Outlay' THEN amount ELSE 0 END) as CO
+        ")
+            ->first();
+
+        return response()->json([
+            'rev_id'        => $rev_id,
+            'project_title' => $data->project_title,
+            'idpaps'        => $data->idpaps,
+
+            // PAPS
+            'paps_desc'     => $data->paps->paps_desc ?? null,
+            'idmfo'         => $data->paps->idmfo ?? null,
+            'aip_code'      => $data->paps->aip_code ?? null,
+
+            // MFO
+            'mfo_desc'      => $data->paps->MFO->mfo_desc ?? null,
+
+            // MONEY FORMAT TOTALS
+            'PS'   => number_format((float) $budgetTotals->PS, 2, '.', ','),
+            'MOOE' => number_format((float) $budgetTotals->MOOE, 2, '.', ','),
+            'CO'   => number_format((float) $budgetTotals->CO, 2, '.', ','),
+
+            // ACTIVITIES
+            'activities'    => $activities,
+        ]);
     }
     public function quillToJasperText($html)
     {
@@ -4352,7 +4433,7 @@ class RevisionPlanController extends Controller
         $year = $request->has('year')
             ? $request->year
             : date('Y');
-            // mao ni dapat, temporary lang na sa taas: date('Y') + 1
+        // mao ni dapat, temporary lang na sa taas: date('Y') + 1
         // dd($year);
         // dd($budget_controller);
         $data = RevisionPlan::with(['budget', 'paps', 'paps.office'])
@@ -4367,8 +4448,8 @@ class RevisionPlanController extends Controller
             })
             ->where('status', '>=', '0')
             // ->when($request->source == 'rev_app', function ($query) {
-                // dd("rev app ang source");
-                // $query->where('status', '>=', '0');
+            // dd("rev app ang source");
+            // $query->where('status', '>=', '0');
             // })
             ->when($request->office, function ($query) use ($request) {
                 $query->whereHas('paps', function ($query_inner) use ($request) {
@@ -4478,19 +4559,21 @@ class RevisionPlanController extends Controller
             // dd($revision);
             // dd($request->id);
             $budget_total = $this->getTotalBudget($revision);
-            $activities = ActivityProject::with(['expected_output', 'expected_outcome',
-                    'activity',
-                    'activity.strat',
-                    'activity.strat.strategyProject'=> function ($query) use ($revision) {
-                        $query->where('project_id', $revision->id);
-                    },
-                ])->where('project_id', $revision->id)
+            $activities = ActivityProject::with([
+                'expected_output',
+                'expected_outcome',
+                'activity',
+                'activity.strat',
+                'activity.strat.strategyProject' => function ($query) use ($revision) {
+                    $query->where('project_id', $revision->id);
+                },
+            ])->where('project_id', $revision->id)
                 // Activity must exist and NOT be soft-deleted
                 ->whereHas('activity', function ($q) {
                     $q->whereNull('deleted_at')
-                        ->whereHas('strat', function($query){
+                        ->whereHas('strat', function ($query) {
                             $query->whereNull('deleted_at')
-                                ->whereHas('strategyProject', function($q){
+                                ->whereHas('strategyProject', function ($q) {
                                     $q->where('is_active', "1");
                                 });
                         });
@@ -4654,15 +4737,17 @@ class RevisionPlanController extends Controller
     {
 
 
-        $activitiesQuery = ActivityProject::with(['activity','activity.strat'])->whereHas('activity', function($query){
-                            $query->whereNull('deleted_at')
-          ->whereHas('strat', function ($q) {
-              $q->whereNull('deleted_at');
-          });
-                        }
+        $activitiesQuery = ActivityProject::with(['activity', 'activity.strat'])->whereHas(
+            'activity',
+            function ($query) {
+                $query->whereNull('deleted_at')
+                    ->whereHas('strat', function ($q) {
+                        $q->whereNull('deleted_at');
+                    });
+            }
 
-                    )
-                    ->where('project_id', $revision->id);
+        )
+            ->where('project_id', $revision->id);
 
         // ---- TOTAL BUDGET ACROSS ALL ACTIVITY ROWS ----
         $total_budget = $activitiesQuery->get()->reduce(function ($carry, $row) {
@@ -4688,11 +4773,11 @@ class RevisionPlanController extends Controller
             // 'strategy.activity.activityProject.expected_output',
             // 'strategy.activity.activityProject.expected_outcome'
         ])
-            ->whereHas('strategy', function($query){
+            ->whereHas('strategy', function ($query) {
                 $query->whereNull('deleted_at');
             })
             ->where('project_id', $request->id)
-            ->where('is_active','1')
+            ->where('is_active', '1')
             // ->orderBy('seq_no', 'ASC')        // primary sort
             // ->orderBy('created_at', 'ASC')    // tie-breaker (oldest first)
             ->get()
@@ -4705,76 +4790,76 @@ class RevisionPlanController extends Controller
 
                 //     $item->strategy = $strategyArray;
                 // }
-                $act=$strategy->activity
-                        ? $strategy->activity->flatMap(function ($act) use ($request) {
+                $act = $strategy->activity
+                    ? $strategy->activity->flatMap(function ($act) use ($request) {
 
-                            $projects = $act->activityProject ?? collect();
-                            // dd($act);
-                            return $projects->map(function ($proj) use ($act, $request) {
-                                // Build expected outputs first
-                                // $expectedOutputs = collect($proj->expected_output ?? [])
+                        $projects = $act->activityProject ?? collect();
+                        // dd($act);
+                        return $projects->map(function ($proj) use ($act, $request) {
+                            // Build expected outputs first
+                            // $expectedOutputs = collect($proj->expected_output ?? [])
+                            //     ->map(function ($eo) {
+                            //         return [
+                            //             'description' => $eo->description ?? null,
+                            //             'target_indicator' => $eo->target_indicator ?? null,
+                            //         ];
+                            //     });
+
+                            // // Append expected outcomes to SAME ARRAY
+                            // $expectedOutcomes = collect($proj->expected_outcome ?? [])
+                            //     ->map(function ($eo) {
+                            //         return [
+                            //             'description' => $eo->description ?? null,
+                            //             'target_indicator' => $eo->target_indicator ?? null,
+                            //         ];
+                            //     });
+
+                            // Merge both into a single array
+                            // $combined = $expectedOutputs->merge($expectedOutcomes);
+
+                            return [
+                                'activity_project_id' => $proj->id ?? null,
+                                'revision_plan_id' => $request->id,
+                                'strategy_id' => $act->strategy_id ?? null,
+                                'description' => $act->description ?? null,
+                                'gad_issue' => $proj->gad_issue ?? null,
+                                'date_from' => $proj->date_from ?? null,
+                                'date_to' => $proj->date_to ?? null,
+
+                                'ps_q1' => $proj->ps_q1 ?? 0,
+                                'ps_q2' => $proj->ps_q2 ?? 0,
+                                'ps_q3' => $proj->ps_q3 ?? 0,
+                                'ps_q4' => $proj->ps_q4 ?? 0,
+
+                                'mooe_q1' => $proj->mooe_q1 ?? 0,
+                                'mooe_q2' => $proj->mooe_q2 ?? 0,
+                                'mooe_q3' => $proj->mooe_q3 ?? 0,
+                                'mooe_q4' => $proj->mooe_q4 ?? 0,
+
+                                'fe_q1' => $proj->fe_q1 ?? 0,
+                                'fe_q2' => $proj->fe_q2 ?? 0,
+                                'fe_q3' => $proj->fe_q3 ?? 0,
+                                'fe_q4' => $proj->fe_q4 ?? 0,
+
+                                'co_q1' => $proj->co_q1 ?? 0,
+                                'co_q2' => $proj->co_q2 ?? 0,
+                                'co_q3' => $proj->co_q3 ?? 0,
+                                'co_q4' => $proj->co_q4 ?? 0,
+                                'ccet' => $proj->ccet ?? null,
+                                'responsible' => $proj->responsible ?? null,
+
+                                // 'expected_outputs' => $combined->values(),
+                                // 'expected_outputs' => ($proj->expected_output ?? collect())
                                 //     ->map(function ($eo) {
                                 //         return [
                                 //             'description' => $eo->description ?? null,
                                 //             'target_indicator' => $eo->target_indicator ?? null,
                                 //         ];
-                                //     });
-
-                                // // Append expected outcomes to SAME ARRAY
-                                // $expectedOutcomes = collect($proj->expected_outcome ?? [])
-                                //     ->map(function ($eo) {
-                                //         return [
-                                //             'description' => $eo->description ?? null,
-                                //             'target_indicator' => $eo->target_indicator ?? null,
-                                //         ];
-                                //     });
-
-                                // Merge both into a single array
-                                // $combined = $expectedOutputs->merge($expectedOutcomes);
-
-                                return [
-                                    'activity_project_id' => $proj->id ?? null,
-                                    'revision_plan_id' => $request->id,
-                                    'strategy_id' => $act->strategy_id ?? null,
-                                    'description' => $act->description ?? null,
-                                    'gad_issue' => $proj->gad_issue ?? null,
-                                    'date_from' => $proj->date_from ?? null,
-                                    'date_to' => $proj->date_to ?? null,
-
-                                    'ps_q1' => $proj->ps_q1 ?? 0,
-                                    'ps_q2' => $proj->ps_q2 ?? 0,
-                                    'ps_q3' => $proj->ps_q3 ?? 0,
-                                    'ps_q4' => $proj->ps_q4 ?? 0,
-
-                                    'mooe_q1' => $proj->mooe_q1 ?? 0,
-                                    'mooe_q2' => $proj->mooe_q2 ?? 0,
-                                    'mooe_q3' => $proj->mooe_q3 ?? 0,
-                                    'mooe_q4' => $proj->mooe_q4 ?? 0,
-
-                                    'fe_q1' => $proj->fe_q1 ?? 0,
-                                    'fe_q2' => $proj->fe_q2 ?? 0,
-                                    'fe_q3' => $proj->fe_q3 ?? 0,
-                                    'fe_q4' => $proj->fe_q4 ?? 0,
-
-                                    'co_q1' => $proj->co_q1 ?? 0,
-                                    'co_q2' => $proj->co_q2 ?? 0,
-                                    'co_q3' => $proj->co_q3 ?? 0,
-                                    'co_q4' => $proj->co_q4 ?? 0,
-                                    'ccet' => $proj->ccet ?? null,
-                                    'responsible' => $proj->responsible ?? null,
-
-                                    // 'expected_outputs' => $combined->values(),
-                                    // 'expected_outputs' => ($proj->expected_output ?? collect())
-                                    //     ->map(function ($eo) {
-                                    //         return [
-                                    //             'description' => $eo->description ?? null,
-                                    //             'target_indicator' => $eo->target_indicator ?? null,
-                                    //         ];
-                                    //     }),
-                                ];
-                            });
-                        })
-                        : collect();
+                                //     }),
+                            ];
+                        });
+                    })
+                    : collect();
                 // if(count($act)<1){
                 //     dd("less than 1", $item);
                 // }
@@ -4787,7 +4872,7 @@ class RevisionPlanController extends Controller
                     'id' => $strategy->id ?? null,
                     'revision_plan_id' => $request->id,
                     'activities' => $act,
-                    'is_active'=>$item->is_active,
+                    'is_active' => $item->is_active,
                     // $strategy->activity
                     //     ? $strategy->activity->flatMap(function ($act) use ($request) {
 
@@ -4982,8 +5067,8 @@ class RevisionPlanController extends Controller
                     })
                     ->whenEmpty(fn() => collect())
                     ->implode('<br><br>');
-                    // dd(optional($proj)->expected_output,$expected_outputs);
-                    // dd(optional(optional($proj)->activity)->expected_output);
+                // dd(optional($proj)->expected_output,$expected_outputs);
+                // dd(optional(optional($proj)->activity)->expected_output);
 
                 // Collect expected outcomes (target_indicator column)
                 // $target_indicators = optional($proj)->expected_output
@@ -5020,16 +5105,16 @@ class RevisionPlanController extends Controller
 
                 // Concatenate outcomes at the end
                 $expected_outputs = collect([
-                        $expected_outputs,
-                        $expected_outcomes
-                    ])
+                    $expected_outputs,
+                    $expected_outcomes
+                ])
                     ->filter()
                     ->implode('<br><br>');
-                $ps_total=floatval($proj->ps_q1)+floatval($proj->ps_q2)+floatval($proj->ps_q3)+floatval($proj->ps_q4);
-                $mooe_total=floatval($proj->mooe_q1)+floatval($proj->mooe_q2)+floatval($proj->mooe_q3)+floatval($proj->mooe_q4);
-                $fe_total= floatval($proj->fe_q1)+floatval($proj->fe_q2)+floatval($proj->fe_q3)+floatval($proj->fe_q4);
-                $co_total= floatval($proj->co_q1)+floatval($proj->co_q2)+floatval($proj->co_q3)+floatval($proj->co_q4);
-                $overall_total = floatval($ps_total)+floatval($mooe_total)+floatval($fe_total)+floatval($co_total);
+                $ps_total = floatval($proj->ps_q1) + floatval($proj->ps_q2) + floatval($proj->ps_q3) + floatval($proj->ps_q4);
+                $mooe_total = floatval($proj->mooe_q1) + floatval($proj->mooe_q2) + floatval($proj->mooe_q3) + floatval($proj->mooe_q4);
+                $fe_total = floatval($proj->fe_q1) + floatval($proj->fe_q2) + floatval($proj->fe_q3) + floatval($proj->fe_q4);
+                $co_total = floatval($proj->co_q1) + floatval($proj->co_q2) + floatval($proj->co_q3) + floatval($proj->co_q4);
+                $overall_total = floatval($ps_total) + floatval($mooe_total) + floatval($fe_total) + floatval($co_total);
                 // if($proj->id==3961){
                 //     dd($ps_total, $mooe_total, $fe_total, $co_total, $overall_total, $proj);
                 // }else{
@@ -5050,28 +5135,28 @@ class RevisionPlanController extends Controller
                     'date_from' => $proj->date_from ?? "2026-01-01",
                     'date_to' => $proj->date_to ?? "2026-12-31",
 
-                    'ps_q1' => number_format(($proj->ps_q1 ?? 0),2),
-                    'ps_q2' => number_format(($proj->ps_q2 ?? 0),2),
-                    'ps_q3' => number_format(($proj->ps_q3 ?? 0),2),
-                    'ps_q4' => number_format(($proj->ps_q4 ?? 0),2),
-                    'ps_total' => number_format(($ps_total),2),
-                    'mooe_q1' => number_format(($proj->mooe_q1 ?? 0),2),
-                    'mooe_q2' => number_format(($proj->mooe_q2 ?? 0),2),
-                    'mooe_q3' => number_format(($proj->mooe_q3 ?? 0),2),
-                    'mooe_q4' => number_format(($proj->mooe_q4 ?? 0),2),
-                    'mooe_total' => number_format(($mooe_total),2),
-                    'fe_q1' => number_format(($proj->fe_q1 ?? 0),2),
-                    'fe_q2' => number_format(($proj->fe_q2 ?? 0),2),
-                    'fe_q3' => number_format(($proj->fe_q3 ?? 0),2),
-                    'fe_q4' => number_format(($proj->fe_q4 ?? 0),2),
-                    'fe_total' => number_format(($fe_total),2),
-                    'co_q1' => number_format(($proj->co_q1 ?? 0),2),
-                    'co_q2' => number_format(($proj->co_q2 ?? 0),2),
-                    'co_q3' => number_format(($proj->co_q3 ?? 0),2),
-                    'co_q4' => number_format(($proj->co_q4 ?? 0),2),
+                    'ps_q1' => number_format(($proj->ps_q1 ?? 0), 2),
+                    'ps_q2' => number_format(($proj->ps_q2 ?? 0), 2),
+                    'ps_q3' => number_format(($proj->ps_q3 ?? 0), 2),
+                    'ps_q4' => number_format(($proj->ps_q4 ?? 0), 2),
+                    'ps_total' => number_format(($ps_total), 2),
+                    'mooe_q1' => number_format(($proj->mooe_q1 ?? 0), 2),
+                    'mooe_q2' => number_format(($proj->mooe_q2 ?? 0), 2),
+                    'mooe_q3' => number_format(($proj->mooe_q3 ?? 0), 2),
+                    'mooe_q4' => number_format(($proj->mooe_q4 ?? 0), 2),
+                    'mooe_total' => number_format(($mooe_total), 2),
+                    'fe_q1' => number_format(($proj->fe_q1 ?? 0), 2),
+                    'fe_q2' => number_format(($proj->fe_q2 ?? 0), 2),
+                    'fe_q3' => number_format(($proj->fe_q3 ?? 0), 2),
+                    'fe_q4' => number_format(($proj->fe_q4 ?? 0), 2),
+                    'fe_total' => number_format(($fe_total), 2),
+                    'co_q1' => number_format(($proj->co_q1 ?? 0), 2),
+                    'co_q2' => number_format(($proj->co_q2 ?? 0), 2),
+                    'co_q3' => number_format(($proj->co_q3 ?? 0), 2),
+                    'co_q4' => number_format(($proj->co_q4 ?? 0), 2),
                     'ccet' => $proj->ccet_code,
-                    'co_total' => number_format(($co_total),2),
-                    'total'=>number_format(($overall_total),2),
+                    'co_total' => number_format(($co_total), 2),
+                    'total' => number_format(($overall_total), 2),
                     'responsible' => $proj->responsible ?? null,
                     'expected_outputs' => $expected_outputs,
                     'target_indicators' => $target_indicators,
@@ -5087,8 +5172,8 @@ class RevisionPlanController extends Controller
                 ];
             })
             ->sortBy('seq_no')   // 👈 ORDER BY ASC
-                ->values();
-            // dd($activityProjects,"OK na po?");
+            ->values();
+        // dd($activityProjects,"OK na po?");
         // dd(ActivityProject::with([
         //     'activity',
         //     'expected_output',

@@ -51,10 +51,11 @@ class ProjectProfileController extends Controller
             ->where('FFUNCCOD', $FFUNCCOD)
             ->where('type', 'GAS')
             ->get()
-            ->map(function ($item) {
+            ->map(function ($item)  use ($year){
                 // dd($item->FFUNCCOD);
                 $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
                     ->where('status', '1')
+                    ->whereYear('date_start', $year)
                     ->with('budget')
                     ->orderBY('created_at', 'desc')
                     ->first();
