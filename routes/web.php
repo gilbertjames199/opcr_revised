@@ -1350,6 +1350,7 @@ Route::prefix('aip')->group(function () {
 
 Route::prefix('/OPCRpaps')->group(function () {
     Route::get('/PPMP/PPA', [ProjectProfileController::class, 'PPMP_PPA']);
+    Route::get('/budget/prep', [ProjectProfileController::class, 'budget_prep']);
 });
 
 // Route::prefix('api_ppa2')->group(function () {
