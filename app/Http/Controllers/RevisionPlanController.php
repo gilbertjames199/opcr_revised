@@ -31,6 +31,7 @@ use App\Models\StrategyProject;
 use App\Models\Target;
 use App\Models\TeamPlan;
 use App\Models\User;
+use App\Services\RevisionPlanSummaryService;
 use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Carbon\Carbon;
@@ -46,6 +47,8 @@ class RevisionPlanController extends Controller
     protected $model;
     protected $imp;
     protected $budget;
+    // protected $revisionPlanSummaryService;
+
     public function __construct(RevisionPlan $model, ImplementationPlan $imp, BudgetRequirement $budget)
     {
         $this->model = $model;
@@ -3406,6 +3409,9 @@ class RevisionPlanController extends Controller
             'strategyProject.strategy',
             'strategyProject.expected_output',
             'strategyProject.expected_outcome',
+            'activityProject' => function ($query) {
+                $query->whereHas('activity');
+            },
             'activityProject.activity',
             'activityProject.expected_output',
             'activityProject.expected_outcome',
@@ -3432,45 +3438,9 @@ class RevisionPlanController extends Controller
         })
         ->orderBy('aip_code', 'asc')
         ->get();
-        // $plans = RevisionPlan::with([
-        //         'strategyProject.strategy',
-        //         'strategyProject.expected_output',
-        //         'strategyProject.expected_outcome',
-        //         'activityProject.expected_output',
-        //         'activityProject.expected_outcome',
-        //         'budget',
-        //         'paps',
-        //         'paps.office',
-        //         'paps.office.office'
-        //     ])
-        //     ->where('status', '1')
-        //     ->get()
-        //     ->sortBy(function ($plan) {
-        //         // Define rank for source_of_funds
-        //         $sourceOrder = [
-        //             'gen_fund' => 1,
-        //             'dev'      => 2,
-        //             'ldrrmf'   => 3,
-        //             'other'    => 4,
-        //         ];
-        //         $source = $plan->paps->source_of_funds ?? 'other';
-        //         $sourceRank = $sourceOrder[$source] ?? 4;
 
-        //         // Define rank for sectors (only relevant for gen_fund)
-        //         $sectorOrder = [
-        //             'General Public Services Sector' => 1,
-        //             'Economic Services'              => 2,
-        //             'Social Services Sector'         => 3,
-        //         ];
-        //         $sector = $plan->paps->sector ?? '';
-        //         $sectorRank = ($source === 'gen_fund' && isset($sectorOrder[$sector]))
-        //                     ? $sectorOrder[$sector]
-        //                     : 0;
 
-        //         // Return sortable array: [source_rank, sector_rank, aip_code]
-        //         return [$sourceRank, $sectorRank, $plan->aip_code];
-        //     })
-        //     ->values(); // optional: reset keys
+        $pln=$plans;
         foreach ($plans as $plan) {
             $strategy = optional(optional($plan)->strategyProject->first())->strategy;
             // dd($plan );
@@ -3622,7 +3592,9 @@ class RevisionPlanController extends Controller
         // return array_values($strategies);
         $strategies = collect($strategies);
         $rev_ids = $strategies->pluck('id');
-        $capital_activities = $this->retrievingCapitalOutlay($rev_ids, $request->ccet);
+        $cap_ob = $this->capitalOutlayObject($rev_ids);
+        $capital_activities = $this->retrievingCapitalOutlay( $request->ccet, $cap_ob);
+        // $summary = $this->getRevisionPlanSummary($pln->concat($cap_ob));
         // dd($strategies->pluck('id'), $capital_activities->pluck('id'));
         // dd($strategies, $capital_activities);
         $strategies = $strategies
@@ -3728,6 +3700,60 @@ class RevisionPlanController extends Controller
         */
         // $Revision
 
+        // dd($dev, $summary, $cap_ob);
+        /*
+        |--------------------------------------------------------------------------
+        | Totals
+        |--------------------------------------------------------------------------
+        */
+
+        // General Public Services
+        $general_public_services_total_mooe = $general_public_services->sum('total_mooe');
+        $general_public_services_total_ps   = $general_public_services->sum('total_ps');
+        $general_public_services_total_co   = $general_public_services->sum('total_co');
+        $general_public_services_total_fe   = $general_public_services->sum('total_fe');
+
+        // Economic Services
+        $economic_services_total_mooe = $economic_services->sum('total_mooe');
+        $economic_services_total_ps   = $economic_services->sum('total_ps');
+        $economic_services_total_co   = $economic_services->sum('total_co');
+        $economic_services_total_fe   = $economic_services->sum('total_fe');
+
+        // Social Services
+        $social_services_total_mooe = $social_services->sum('total_mooe');
+        $social_services_total_ps   = $social_services->sum('total_ps');
+        $social_services_total_co   = $social_services->sum('total_co');
+        $social_services_total_fe   = $social_services->sum('total_fe');
+
+        // Other Services
+        $other_services_total_mooe = $other_services->sum('total_mooe');
+        $other_services_total_ps   = $other_services->sum('total_ps');
+        $other_services_total_co   = $other_services->sum('total_co');
+        $other_services_total_fe   = $other_services->sum('total_fe');
+
+        // Development Fund
+        $dev_total_mooe = $dev->sum('total_mooe');
+        $dev_total_ps   = $dev->sum('total_ps');
+        $dev_total_co   = $dev->sum('total_co');
+        $dev_total_fe   = $dev->sum('total_fe');
+
+        // LDRRMF
+        $ldrrmf_total_mooe = $ldrrmf->sum('total_mooe');
+        $ldrrmf_total_ps   = $ldrrmf->sum('total_ps');
+        $ldrrmf_total_co   = $ldrrmf->sum('total_co');
+        $ldrrmf_total_fe   = $ldrrmf->sum('total_fe');
+
+        // Other Source
+        $other_total_mooe = $other->sum('total_mooe');
+        $other_total_ps   = $other->sum('total_ps');
+        $other_total_co   = $other->sum('total_co');
+        $other_total_fe   = $other->sum('total_fe');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Final Strategies
+        |--------------------------------------------------------------------------
+        */
 
         $final_strategies = collect()
             ->concat($general_public_services)
@@ -3737,10 +3763,92 @@ class RevisionPlanController extends Controller
             ->concat($dev)
             ->concat($ldrrmf)
             ->concat($other)
+            ->map(function ($item) use (
+                $general_public_services_total_mooe,
+                $general_public_services_total_ps,
+                $general_public_services_total_co,
+                $general_public_services_total_fe,
+
+                $economic_services_total_mooe,
+                $economic_services_total_ps,
+                $economic_services_total_co,
+                $economic_services_total_fe,
+
+                $social_services_total_mooe,
+                $social_services_total_ps,
+                $social_services_total_co,
+                $social_services_total_fe,
+
+                $other_services_total_mooe,
+                $other_services_total_ps,
+                $other_services_total_co,
+                $other_services_total_fe,
+
+                $dev_total_mooe,
+                $dev_total_ps,
+                $dev_total_co,
+                $dev_total_fe,
+
+                $ldrrmf_total_mooe,
+                $ldrrmf_total_ps,
+                $ldrrmf_total_co,
+                $ldrrmf_total_fe,
+
+                $other_total_mooe,
+                $other_total_ps,
+                $other_total_co,
+                $other_total_fe
+            ) {
+
+                $item['general_public_services_total_mooe'] = $general_public_services_total_mooe;
+                $item['general_public_services_total_ps']   = $general_public_services_total_ps;
+                $item['general_public_services_total_co']   = $general_public_services_total_co;
+                $item['general_public_services_total_fe']   = $general_public_services_total_fe;
+
+                $item['economic_services_total_mooe'] = $economic_services_total_mooe;
+                $item['economic_services_total_ps']   = $economic_services_total_ps;
+                $item['economic_services_total_co']   = $economic_services_total_co;
+                $item['economic_services_total_fe']   = $economic_services_total_fe;
+
+                $item['social_services_total_mooe'] = $social_services_total_mooe;
+                $item['social_services_total_ps']   = $social_services_total_ps;
+                $item['social_services_total_co']   = $social_services_total_co;
+                $item['social_services_total_fe']   = $social_services_total_fe;
+
+                $item['other_services_total_mooe'] = $other_services_total_mooe;
+                $item['other_services_total_ps']   = $other_services_total_ps;
+                $item['other_services_total_co']   = $other_services_total_co;
+                $item['other_services_total_fe']   = $other_services_total_fe;
+
+                $item['dev_total_mooe'] = $dev_total_mooe;
+                $item['dev_total_ps']   = $dev_total_ps;
+                $item['dev_total_co']   = $dev_total_co;
+                $item['dev_total_fe']   = $dev_total_fe;
+
+                $item['ldrrmf_total_mooe'] = $ldrrmf_total_mooe;
+                $item['ldrrmf_total_ps']   = $ldrrmf_total_ps;
+                $item['ldrrmf_total_co']   = $ldrrmf_total_co;
+                $item['ldrrmf_total_fe']   = $ldrrmf_total_fe;
+
+                $item['other_total_mooe'] = $other_total_mooe;
+                $item['other_total_ps']   = $other_total_ps;
+                $item['other_total_co']   = $other_total_co;
+                $item['other_total_fe']   = $other_total_fe;
+
+                return $item;
+
+                // return $item;
+            })
             ->values();
-    // dd($final_strategies, $strategies);
+        // dd($final_strategies, $strategies);
         return $final_strategies;
     }
+
+    protected function getRevisionPlanSummary($plans)
+    {
+        return app(RevisionPlanSummaryService::class)->summarize($plans);
+    }
+
     public function getSourceLabel($source)
     {
         $sources = [
@@ -3752,9 +3860,8 @@ class RevisionPlanController extends Controller
 
         return $sources[$source] ?? $source;
     }
-    public function retrievingCapitalOutlay($ids, $ccet){
-        // dd($ids);
-        $revs = ActivityProject::with(['revisionPlan',
+    public function capitalOutlayObject($ids){
+        return ActivityProject::with(['revisionPlan',
             // 'revisionPlan.strategyProject.strategy',
             // 'revisionPlan.strategyProject.expected_output',
             // 'revisionPlan.strategyProject.expected_outcome',
@@ -3787,7 +3894,11 @@ class RevisionPlanController extends Controller
         ->whereIn('project_id', $ids)
         ->where('is_active', 1)
         ->whereHas('activity')
-        ->get()
+        ->get();
+    }
+    public function retrievingCapitalOutlay($ccet, $cap_ob){
+        // dd($ids);
+        $revs = $cap_ob
         ->map(function($item)use($ccet){
             $plan = optional($item)->revisionPlan;
 
