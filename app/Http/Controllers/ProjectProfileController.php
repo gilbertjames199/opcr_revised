@@ -212,8 +212,10 @@ class ProjectProfileController extends Controller
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
                     'FFUNCCOD' => $item->FFUNCCOD,
-                    'department_code'=>optional($item->office)->department_code,
+                    'FFUNCTION' => optional($item->office)->FFUNCTION,
+                    'department_code'=>optional($item->office)->office,
                     'fund_owner' => $item->fund_owner,
+                    'aip_code' =>optional($latestPlan)->aip_code,
                     'latest_revision_plan' => $latestPlan ? [
                         'id' => $latestPlan->id,
                         'idpaps' => $latestPlan->idpaps,
@@ -259,6 +261,7 @@ class ProjectProfileController extends Controller
                         'revision_plans.idpaps',
                         'revision_plans.project_title',
                         'revision_plans.year_period',
+                        'revision_plans.aip_code',
                     );
                 },
                 'latestRevisionPlan.budget'
@@ -267,11 +270,13 @@ class ProjectProfileController extends Controller
             ->map(function ($item) {
                 $FFUNDCOD = $item->FFUNDCOD;
                 $latestPlan = $item->latestRevisionPlan;
+                // dd($latestPlan);
 
                 return [
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
                     'FFUNCCOD' => $item->FFUNCCOD,
+                    'FFUNCTION' => optional($item->office)->FFUNCTION,
                     'department_code'=>optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
                     'aip_code' =>optional($latestPlan)->aip_code,
