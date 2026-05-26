@@ -199,7 +199,11 @@ class ProjectProfileController extends Controller
                             ->orWhere('status', '0');
                     })
                     ->whereYear(('date_start'), $year)
-                    ->where('idpaps',0)
+                    ->where(function($query) {
+                        $query->where('idpaps',0)
+                            ->orWhere('scope', 'GAS');
+                    })
+                    // ->where('idpaps',0)
                     ->with('budget')
                     ->orderBY('created_at', 'desc')
                     ->first();
@@ -213,7 +217,7 @@ class ProjectProfileController extends Controller
                     'paps_desc' => $item->paps_desc,
                     'FFUNCCOD' => $item->FFUNCCOD,
                     'FFUNCTION' => optional($item->office)->FFUNCTION,
-                    'department_code'=>optional($item->office)->office,
+                    'department_code'=>optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
                     'aip_code' =>optional($latestPlan)->aip_code,
                     'latest_revision_plan' => $latestPlan ? [
