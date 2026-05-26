@@ -549,8 +549,9 @@
                                     </div>
                                     <div v-if="parseFloat(dat.status)>-1 && parseFloat(dat.status) !== 1" class="mt-1">
                                         <small class="text-muted">
+
                                             <i :class="dat.gad_status==1 ? 'fas fa-check-circle text-success me-1' : 'fas fa-hourglass-half text-warning me-1'"></i>
-                                            {{ dat.gad_status==1 ? 'GAD Approved' : 'GAD Not Yet Evaluated' }}
+                                            {{ dat.gad_status==1 || dat.gad_status==='1' ? 'GAD Approved' : 'GAD Not Yet Evaluated' }}
                                         </small>
                                     </div>
                                 </td>

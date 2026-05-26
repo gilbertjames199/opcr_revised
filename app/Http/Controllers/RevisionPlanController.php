@@ -260,6 +260,8 @@ class RevisionPlanController extends Controller
             'revision_plans.type',
             'revision_plans.year_period',
             'ff.FFUNCTION',
+            'revision_plans.gad_status',
+            'revision_plans.status',
             'status',
         )
             ->Join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'revision_plans.FFUNCCOD')
@@ -363,6 +365,11 @@ class RevisionPlanController extends Controller
                 }
 
                 // dd($item);
+                // if($item->id==528){
+                //     dd($item);
+                // }else{
+                //     dd("incorrect");
+                // }
                 return [
                     'FFUNCTION' => $item->FFUNCTION,
                     'id' => $item->id,
