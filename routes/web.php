@@ -1305,6 +1305,7 @@ Route::prefix('printLBP')->group(function () {
     Route::get('/MFO', [AIPController::class, 'MFO']);
     Route::get('/PAPS', [AIPController::class, 'PAPS']);
 });
+// LBP Form 2 Printing
 Route::prefix('print/appropriations')->group(function () {
     Route::get('/', [AppropriationController::class, 'main']);
     Route::get('/paps/types', [AppropriationController::class, 'paps_types']);

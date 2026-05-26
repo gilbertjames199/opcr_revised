@@ -185,12 +185,13 @@ class ProjectProfileController extends Controller
             'FFUNCCOD',
             'FFUNDCOD',
             'fund_owner'
-        )
+        )   ->with(['office'])
             ->where('FFUNCCOD', $FFUNCCOD)
             ->where('type', 'GAS')
             ->get()
             ->map(function ($item)use($year) {
                 // dd($item->FFUNCCOD);
+                // dd($item->office);
                 $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
                     // ->where('status', '1')
                     ->where(function($query)  {
@@ -211,6 +212,7 @@ class ProjectProfileController extends Controller
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
                     'FFUNCCOD' => $item->FFUNCCOD,
+                    'department_code'=>optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
                     'latest_revision_plan' => $latestPlan ? [
                         'id' => $latestPlan->id,
@@ -242,6 +244,7 @@ class ProjectProfileController extends Controller
             'fund_owner',
         )
             // ->where('FFUNCCOD', $FFUNCCOD)
+            ->with(['office'])
             ->where(function($query) use ($FFUNCCOD, $shared_paps) {
                 $query->where('FFUNCCOD', $FFUNCCOD)
                     ->orWhereIn('id', $shared_paps);
@@ -264,10 +267,12 @@ class ProjectProfileController extends Controller
             ->map(function ($item) {
                 $FFUNDCOD = $item->FFUNDCOD;
                 $latestPlan = $item->latestRevisionPlan;
+
                 return [
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
                     'FFUNCCOD' => $item->FFUNCCOD,
+                    'department_code'=>optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
                     'latest_revision_plan' => $item->latestRevisionPlan ? [
                         'id' => $item->latestRevisionPlan->id,
