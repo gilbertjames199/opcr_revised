@@ -282,6 +282,7 @@ class ProjectProfileController extends Controller
                     'FFUNCCOD' => $item->FFUNCCOD,
                     'department_code'=>optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
+                    'aip_code' =>optional($latestPlan)->aip_code,
                     'latest_revision_plan' => $item->latestRevisionPlan ? [
                         'id' => $item->latestRevisionPlan->id,
                         'idpaps' => $item->latestRevisionPlan->idpaps,
