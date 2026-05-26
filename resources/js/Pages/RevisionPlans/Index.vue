@@ -777,6 +777,11 @@
                                                     <i class="fas fa-file-invoice-dollar me-2"></i>Objects of Expenditure
                                                 </Link>
                                             </li>
+                                            <li>
+                                                <Link class="dropdown-item" @click="openLBPForm4(dat.id)">
+                                                    <i class="fas fa-file-invoice-dollar me-2"></i>Print LBPForm 4
+                                                </Link>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -840,6 +845,18 @@
 
             <!-- {{ppa_link}} -->
         </ProjectPrintModal>
+
+        <LBPPrintModal v-if="printLBPForm4" @close-modal-event="printLBPForm4=false" title="Printed Output">
+            <h1>LBP Form 4</h1>
+
+            <div class="d-flex justify-content-center">
+                <!-- {{ aip_printLink }} -->
+                <iframe :src="ppa_link" style="width:100%; height:500px" />
+
+            </div>
+
+            <!-- {{ppa_link}} -->
+        </LBPPrintModal>
         <ReturnWithAmmendmentsModal v-if="ReturnWithAmmendmentsModalVisible" @close-modal-event="hideReturnWithAmmendmentsModal" title="REQUEST FOR RETURN">
             <div class="peers mb-12">
 
@@ -1086,6 +1103,7 @@ import AIPModal from "@/Shared/PrintModal";
 import SIPModal from "@/Shared/ModalDynamicTitle";
 import HgdgModal from "@/Shared/ModalDynamicTitle";
 import ProjectPrintModal from "@/Shared/ModalDynamicTitle";
+import LBPPrintModal from "@/Shared/ModalDynamicTitle";
 import { Inertia } from '@inertiajs/inertia';
 import WorkPlanModal from "@/Shared/ModalDynamicTitle";
 import ReturnWithAmmendmentsModal from "@/Shared/ModalDynamicTitle";
@@ -1122,7 +1140,7 @@ export default {
             type_filter: this.$props.filters.type_filter,
             paps_id_here: 0,
             printProfileVIsible: false,
-
+            printLBPForm4: false,
             // /Project id
             rev_plan_id: 0,
             ppa_link: "",
@@ -1152,7 +1170,7 @@ export default {
         }
     },
     components: {
-        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal, ReturnWithAmmendmentsModal, HgdgModal
+        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal, ReturnWithAmmendmentsModal, HgdgModal, LBPPrintModal
     },
     watch: {
         search: _.debounce(function (value) {
@@ -1204,6 +1222,9 @@ export default {
         },
         printProfileVisible($rev_print_id){
             this.printProfileVIsible=true
+        },
+        printLBPForm4s($rev_print_id){
+            this.printLBPForm4=true
         },
         showCreate(){
             this.$inertia.get(
@@ -1509,6 +1530,18 @@ export default {
         openPrintProfile(rev_plan_id_p){
             this.rev_plan_id=rev_plan_id_p
             this.printProfileVIsible=true
+
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link ='/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Fplanning_system%2FIndividual_Output&reportUnit=%2Freports%2Fplanning_system%2FIndividual_Output%2FProject_Profile&standAlone=true&standAlone=true&output=pdf';
+            var params ='&id='+rev_plan_id_p
+            // console.log(params);
+            this.ppa_link = linkt+jasper_ip+jasper_link+params;
+        },
+
+        openLBPForm4(rev_plan_id_p){
+            this.rev_plan_id=rev_plan_id_p
+            this.printLBPForm4=true
 
             var linkt = "https://";
             var jasper_ip = this.jasper_ip;

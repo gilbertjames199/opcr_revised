@@ -60,6 +60,13 @@ class ProjectProfileController extends Controller
             ->where('FFUNCCOD', $FFUNCCOD)
             ->where('type', 'GAS')
             ->get()
+<<<<<<< HEAD
+            ->map(function ($item)  use ($year){
+                // dd($item->FFUNCCOD);
+                $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
+                    ->where('status', '1')
+                    ->whereYear('date_start', $year)
+=======
             ->map(function ($item)use($year) {
                 // dd($item->FFUNCCOD);
                 $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
@@ -70,6 +77,7 @@ class ProjectProfileController extends Controller
                     })
                     ->whereYear(('date_start'), $year)
                     ->where('idpaps',0)
+>>>>>>> f9df842b00d1cee36e424c1ba93d9f7c3dd4fff3
                     ->with('budget')
                     ->orderBY('created_at', 'desc')
                     ->first();
