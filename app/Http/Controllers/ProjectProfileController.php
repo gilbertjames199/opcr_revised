@@ -230,6 +230,7 @@ class ProjectProfileController extends Controller
                         'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
                             return [
                                 'idooe' => $budgetItem->idooe,
+                                'FOOEDESC'=> $budgetItem->objectOfExpenditure ? $budgetItem->objectOfExpenditure->FOOEDESC : null,
                                 'particulars' => $budgetItem->particulars,
                                 'account_code' => $budgetItem->account_code,
                                 'FFUNDCOD' => $FFUNDCOD,
@@ -274,7 +275,8 @@ class ProjectProfileController extends Controller
                         'revision_plans.status',
                     );
                 },
-                'latestRevisionPlan.budget'
+                'latestRevisionPlan.budget',
+                'latestRevisionPlan.budget.objectOfExpenditure',
             ])
             ->where('type','<>', 'GAS')
             ->get()
@@ -301,6 +303,7 @@ class ProjectProfileController extends Controller
                         'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
                             return [
                                 'idooe' => $budgetItem->idooe,
+                                'FOOEDESC'=> $budgetItem->objectOfExpenditure ? $budgetItem->objectOfExpenditure->FOOEDESC : null,
                                 'particulars' => $budgetItem->particulars,
                                 'account_code' => $budgetItem->account_code,
                                 'FFUNDCOD' => $FFUNDCOD,
