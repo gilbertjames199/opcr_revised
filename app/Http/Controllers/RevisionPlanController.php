@@ -3337,7 +3337,8 @@ class RevisionPlanController extends Controller
         // ? "1":"0";
         // dd($ssf_filter);
         $plans = $this->getAllPlans($request, $year, $ssf_filter);
-
+        $papss=$plans->pluck("paps");
+        // dd($papss->pluck('source_of_funds'));
         // dd($plans->first());
         $pln=$plans;
         foreach ($plans as $plan) {
@@ -3763,9 +3764,9 @@ class RevisionPlanController extends Controller
             ->where('status', '1')
             ->whereYear('date_start', $year)
             ->whereHas('paps', function ($query) use($request, $ssf_filter) {
-                $query->where('source_of_funds', '<>', 'dev')
+                $query
                     ->when($request->ssf_filter, function ($query) use ($request, $ssf_filter) {
-                        if($ssf_filter=='gen_fund' || $ssf_filter=='ldrrmf' || $ssf_filter=='other'){
+                        if($ssf_filter=='gen_fund' || $ssf_filter=='ldrrmf' || $ssf_filter=='other' || $ssf_filter=='dev'){
                             $query->where('source_of_funds', $request->ssf_filter);
                         }else if($ssf_filter=='General Public Services Sector' ||
                                 $ssf_filter=='Economic Services' ||
