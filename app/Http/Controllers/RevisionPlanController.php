@@ -3353,6 +3353,7 @@ class RevisionPlanController extends Controller
                 'office'
             ])
             ->where('status', '1')
+            ->whereYear('date_start', $year)
             ->whereHas('paps', function ($query) use($request, $ssf_filter) {
                 $query->where('source_of_funds', '<>', 'dev')
                     ->when($request->ssf_filter, function ($query) use ($request, $ssf_filter) {
