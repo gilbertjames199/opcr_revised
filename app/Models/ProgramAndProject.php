@@ -82,7 +82,10 @@ class ProgramAndProject extends Model
     {
         return $this->hasOne(FFUNCCOD::class, 'FFUNCCOD', 'FFUNCCOD');
     }
-
+    public function fundOwner()
+    {
+        return $this->hasOne(FFUNCCOD::class, 'FFUNCCOD', 'fund_owner');
+    }
     public function opcrtarget()
     {
         return $this->hasMany(OpcrTarget::class, 'idpaps', 'id');

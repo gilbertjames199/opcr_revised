@@ -187,13 +187,14 @@ class ProjectProfileController extends Controller
             'FFUNCCOD',
             'FFUNDCOD',
             'fund_owner'
-        )   ->with(['office'])
+        )   ->with(['office', 'fundOwner'])
             ->where('FFUNCCOD', $FFUNCCOD)
             ->where('type', 'GAS')
             ->get()
             ->map(function ($item)use($year) {
                 // dd($item->FFUNCCOD);
                 // dd($item->office);
+
                 $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
                     // ->where('status', '1')
                     ->where(function($query)  {
@@ -218,7 +219,7 @@ class ProjectProfileController extends Controller
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
                     'FFUNCCOD' => $item->FFUNCCOD,
-                    'FFUNCTION' => optional($item->office)->FFUNCTION,
+                    'FFUNCTION' => optional($item->fundOwner)->FFUNCTION,
                     'department_code'=>optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
                     'aip_code' =>optional($latestPlan)->aip_code,
@@ -244,15 +245,16 @@ class ProjectProfileController extends Controller
                     ] : null,
                 ];
             });
+
         $data = ProgramAndProject::select(
-            'id',
-            'paps_desc',
-            'FFUNCCOD',
-            'FFUNDCOD',
-            'fund_owner',
-        )
+                'id',
+                'paps_desc',
+                'FFUNCCOD',
+                'FFUNDCOD',
+                'fund_owner',
+            )
             // ->where('FFUNCCOD', $FFUNCCOD)
-            ->with(['office'])
+            ->with(['office', 'fundOwner'])
             ->where(function($query) use ($FFUNCCOD, $shared_paps) {
                 $query->where('FFUNCCOD', $FFUNCCOD)
                     ->orWhereIn('id', $shared_paps);
@@ -277,12 +279,14 @@ class ProjectProfileController extends Controller
                 $FFUNDCOD = $item->FFUNDCOD;
                 $latestPlan = $item->latestRevisionPlan;
                 // dd($latestPlan);
-
+                // if($item->fund_owner!='1121'){
+                //     dd($item);
+                // }
                 return [
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
                     'FFUNCCOD' => $item->FFUNCCOD,
-                    'FFUNCTION' => optional($item->office)->FFUNCTION,
+                    'FFUNCTION' => optional($item->fundOwner)->FFUNCTION,
                     'department_code'=>optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
                     'aip_code' =>optional($latestPlan)->aip_code,
