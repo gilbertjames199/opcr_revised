@@ -227,6 +227,7 @@ class ProjectProfileController extends Controller
                         'id' => $latestPlan->id,
                         'idpaps' => $latestPlan->idpaps,
                         'project_title' => $latestPlan->project_title,
+                        'type' => $latestPlan->type,
                         'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
                             return [
                                 'idooe' => $budgetItem->idooe,
@@ -273,6 +274,7 @@ class ProjectProfileController extends Controller
                         'revision_plans.year_period',
                         'revision_plans.aip_code',
                         'revision_plans.status',
+                        'revision_plans.type',
                     );
                 },
                 'latestRevisionPlan.budget',
@@ -295,11 +297,13 @@ class ProjectProfileController extends Controller
                     'department_code'=>optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
                     'aip_code' =>optional($latestPlan)->aip_code,
+
                     'latest_revision_plan' => $item->latestRevisionPlan ? [
                         'id' => $item->latestRevisionPlan->id,
                         'idpaps' => $item->latestRevisionPlan->idpaps,
                         'project_title' => $item->latestRevisionPlan->project_title,
                         'year' => $item->latestRevisionPlan->year_period,
+                        'type' => $item->latestRevisionPlan->type,
                         'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
                             return [
                                 'idooe' => $budgetItem->idooe,
