@@ -175,8 +175,8 @@ class ProjectProfileController extends Controller
         $year = $request->year;
         // dd($FFUNCCOD);
         $office = Office::where('department_code', $department_code)->first();
-        $FFUNCCOD = $office->FFUNCCOD;
-        // dd($office);
+        $FFUNCCOD = $office->ffunccod;
+        // dd($office, $FFUNCCOD);
 
 
         $shared_paps = SharedProgramAndProject::where('destination_department_code', $office->department_code)->get()->pluck('idpaps');
