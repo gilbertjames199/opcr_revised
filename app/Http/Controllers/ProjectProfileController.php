@@ -170,10 +170,12 @@ class ProjectProfileController extends Controller
     public function budget_prep(Request $request)
     {
         // test
-        $FFUNCCOD = $request->FFUNCCOD;
+        // $FFUNCCOD = $request->FFUNCCOD;
+        $department_code = $request->department_code;
         $year = $request->year;
         // dd($FFUNCCOD);
-        $office = Office::where('FFUNCCOD', $FFUNCCOD)->first();
+        $office = Office::where('department_code', $department_code)->first();
+        $FFUNCCOD = $office->FFUNCCOD;
         // dd($office);
 
 

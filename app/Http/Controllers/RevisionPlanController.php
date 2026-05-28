@@ -3327,7 +3327,7 @@ class RevisionPlanController extends Controller
             $ccet = $request->ccet;
         }
 
-
+        $ssf_filter = $request->ssf_filter ? $request->ssf_filter : null;
         $year = filter_var($request->year, FILTER_VALIDATE_INT);
 
         if (!$year || !checkdate(1, 1, $year)) {
@@ -3335,23 +3335,40 @@ class RevisionPlanController extends Controller
         }
         // dd($year);
         // ? "1":"0";
+        // dd($ssf_filter);
         $plans = RevisionPlan::with([
-            'strategyProject.strategy',
-            'strategyProject.expected_output',
-            'strategyProject.expected_outcome',
-            'activityProject' => function ($query) {
-                $query->whereHas('activity');
-            },
-            'activityProject.activity',
-            'activityProject.expected_output',
-            'activityProject.expected_outcome',
-            'budget',
-            'paps',
-            'paps.office',
-            'paps.office.office',
-            'office'
-        ])
+                'strategyProject.strategy',
+                'strategyProject.expected_output',
+                'strategyProject.expected_outcome',
+                'activityProject' => function ($query) {
+                    $query->whereHas('activity');
+                },
+                'activityProject.activity',
+                'activityProject.expected_output',
+                'activityProject.expected_outcome',
+                'budget',
+                'paps',
+                'paps.office',
+                'paps.office.office',
+                'office'
+            ])
             ->where('status', '1')
+            ->whereHas('paps', function ($query) use($request, $ssf_filter) {
+                $query->where('source_of_funds', '<>', 'dev')
+                    ->when($request->ssf_filter, function ($query) use ($request, $ssf_filter) {
+                        if($ssf_filter=='gen_fund' || $ssf_filter=='ldrrmf' || $ssf_filter=='other'){
+                            $query->where('source_of_funds', $request->ssf_filter);
+                        }else if($ssf_filter=='General Public Services Sector' ||
+                                $ssf_filter=='Economic Services' ||
+                                $ssf_filter=='Other Services' ||
+                                $ssf_filter=='Social Services Sector'
+                        ){
+                            $query->where('sector', $request->ssf_filter);
+                        }
+                            // no additional filtering}
+
+                    });
+            })
             ->get();
 
 
@@ -3507,7 +3524,7 @@ class RevisionPlanController extends Controller
         // return array_values($strategies);
         $strategies = collect($strategies);
         $rev_ids = $strategies->pluck('id');
-        $cap_ob = $this->capitalOutlayObject($rev_ids);
+        $cap_ob = $this->capitalOutlayObject($request, $rev_ids);
         $capital_activities = $this->retrievingCapitalOutlay( $request->ccet, $cap_ob);
         // $summary = $this->getRevisionPlanSummary($pln->concat($cap_ob));
         // dd($strategies->pluck('id'), $capital_activities->pluck('id'));
@@ -3775,7 +3792,7 @@ class RevisionPlanController extends Controller
 
         return $sources[$source] ?? $source;
     }
-    public function capitalOutlayObject($ids){
+    public function capitalOutlayObject(Request $request, $ids){
         return ActivityProject::with(['revisionPlan',
             // 'revisionPlan.strategyProject.strategy',
             // 'revisionPlan.strategyProject.expected_output',
