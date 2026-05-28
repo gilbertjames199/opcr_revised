@@ -3336,43 +3336,9 @@ class RevisionPlanController extends Controller
         // dd($year);
         // ? "1":"0";
         // dd($ssf_filter);
-        $plans = RevisionPlan::with([
-                'strategyProject.strategy',
-                'strategyProject.expected_output',
-                'strategyProject.expected_outcome',
-                'activityProject' => function ($query) {
-                    $query->whereHas('activity');
-                },
-                'activityProject.activity',
-                'activityProject.expected_output',
-                'activityProject.expected_outcome',
-                'budget',
-                'paps',
-                'paps.office',
-                'paps.office.office',
-                'office'
-            ])
-            ->where('status', '1')
-            ->whereYear('date_start', $year)
-            ->whereHas('paps', function ($query) use($request, $ssf_filter) {
-                $query->where('source_of_funds', '<>', 'dev')
-                    ->when($request->ssf_filter, function ($query) use ($request, $ssf_filter) {
-                        if($ssf_filter=='gen_fund' || $ssf_filter=='ldrrmf' || $ssf_filter=='other'){
-                            $query->where('source_of_funds', $request->ssf_filter);
-                        }else if($ssf_filter=='General Public Services Sector' ||
-                                $ssf_filter=='Economic Services' ||
-                                $ssf_filter=='Other Services' ||
-                                $ssf_filter=='Social Services Sector'
-                        ){
-                            $query->where('sector', $request->ssf_filter);
-                        }
-                            // no additional filtering}
+        $plans = $this->getAllPlans($request, $year, $ssf_filter);
 
-                    });
-            })
-            ->get();
-
-
+        // dd($plans->first());
         $pln=$plans;
         foreach ($plans as $plan) {
             $strategy = optional(optional($plan)->strategyProject->first())->strategy;
@@ -3776,7 +3742,44 @@ class RevisionPlanController extends Controller
         // dd($final_strategies, $strategies);
         return $final_strategies;
     }
+    public function getAllPlans(Request $request, $year, $ssf_filter){
 
+        return RevisionPlan::with([
+                'strategyProject.strategy',
+                'strategyProject.expected_output',
+                'strategyProject.expected_outcome',
+                'activityProject' => function ($query) {
+                    $query->whereHas('activity');
+                },
+                'activityProject.activity',
+                'activityProject.expected_output',
+                'activityProject.expected_outcome',
+                'budget',
+                'paps',
+                'paps.office',
+                'paps.office.office',
+                'office'
+            ])
+            ->where('status', '1')
+            ->whereYear('date_start', $year)
+            ->whereHas('paps', function ($query) use($request, $ssf_filter) {
+                $query->where('source_of_funds', '<>', 'dev')
+                    ->when($request->ssf_filter, function ($query) use ($request, $ssf_filter) {
+                        if($ssf_filter=='gen_fund' || $ssf_filter=='ldrrmf' || $ssf_filter=='other'){
+                            $query->where('source_of_funds', $request->ssf_filter);
+                        }else if($ssf_filter=='General Public Services Sector' ||
+                                $ssf_filter=='Economic Services' ||
+                                $ssf_filter=='Other Services' ||
+                                $ssf_filter=='Social Services Sector'
+                        ){
+                            $query->where('sector', $request->ssf_filter);
+                        }
+                            // no additional filtering}
+
+                    });
+            })
+            ->get();
+    }
     protected function getRevisionPlanSummary($plans)
     {
         return app(RevisionPlanSummaryService::class)->summarize($plans);

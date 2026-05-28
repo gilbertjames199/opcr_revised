@@ -243,6 +243,7 @@ class ProjectProfileController extends Controller
                             ];
                         })->toArray() : [],
                     ] : null,
+                    'status' => $latestPlan ? $latestPlan->status : null,
                 ];
             });
 
@@ -270,10 +271,12 @@ class ProjectProfileController extends Controller
                         'revision_plans.project_title',
                         'revision_plans.year_period',
                         'revision_plans.aip_code',
+                        'revision_plans.status',
                     );
                 },
                 'latestRevisionPlan.budget'
             ])
+            ->where('type','<>', 'GAS')
             ->get()
             ->map(function ($item) {
                 $FFUNDCOD = $item->FFUNDCOD;
@@ -311,9 +314,13 @@ class ProjectProfileController extends Controller
                             ];
                         })->toArray() : [],
                     ] : null,
+                    'status'=>$latestPlan ? $latestPlan->status : null,
                 ];
             });
 
-        return $data->concat($gas_data);
+        return $data->concat($gas_data)
+                ->where('status', 1)
+                ->values();
+        // ->pluck('status');
     }
 }
