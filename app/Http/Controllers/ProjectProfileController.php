@@ -285,6 +285,7 @@ class ProjectProfileController extends Controller
                         'revision_plans.aip_code',
                         'revision_plans.status',
                         'revision_plans.type',
+                        'revision_plans.program_id_2',
                     );
                 },
                 'latestRevisionPlan.budget',
@@ -304,6 +305,7 @@ class ProjectProfileController extends Controller
                 $co   = $categoryTotals['Capital Outlay'];
                 $ps   = $categoryTotals['Personnel Services'];
                 $fe   = $categoryTotals['Financial Expenses'];
+                // dd($latestPlan);
                 return [
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
