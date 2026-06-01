@@ -210,6 +210,11 @@ class ProjectProfileController extends Controller
                     ->with('budget')
                     ->orderBY('created_at', 'desc')
                     ->first();
+                $categoryTotals = $this->getTotalByCategory($latestPlan);
+                $mooe = $categoryTotals['Maintenance, Operating, and Other Expenses'];
+                $co   = $categoryTotals['Capital Outlay'];
+                $ps   = $categoryTotals['Personnel Services'];
+                $fe   = $categoryTotals['Financial Expenses'];
                 // dd($latestPlan);
                 $FFUNDCOD = $item->FFUNDCOD;
                 // $latestPlan = $item->latestRevisionPlan;
@@ -223,6 +228,11 @@ class ProjectProfileController extends Controller
                     'department_code'=>optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
                     'aip_code' =>optional($latestPlan)->aip_code,
+                    'mooe' => $mooe,
+                    'co' => $co,
+                    'ps' => $ps,
+                    'fe' => $fe,
+                    'program_id' => $latestPlan ? $latestPlan->program_id_2 : null,
                     'latest_revision_plan' => $latestPlan ? [
                         'id' => $latestPlan->id,
                         'idpaps' => $latestPlan->idpaps,
@@ -289,6 +299,11 @@ class ProjectProfileController extends Controller
                 // if($item->fund_owner!='1121'){
                 //     dd($item);
                 // }
+                $categoryTotals = $this->getTotalByCategory($latestPlan);
+                $mooe = $categoryTotals['Maintenance, Operating, and Other Expenses'];
+                $co   = $categoryTotals['Capital Outlay'];
+                $ps   = $categoryTotals['Personnel Services'];
+                $fe   = $categoryTotals['Financial Expenses'];
                 return [
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
@@ -297,7 +312,11 @@ class ProjectProfileController extends Controller
                     'department_code'=>optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
                     'aip_code' =>optional($latestPlan)->aip_code,
-
+                    'mooe' => $mooe,
+                    'co' => $co,
+                    'ps' => $ps,
+                    'fe' => $fe,
+                    'program_id' => $latestPlan ? $latestPlan->program_id_2 : null,
                     'latest_revision_plan' => $item->latestRevisionPlan ? [
                         'id' => $item->latestRevisionPlan->id,
                         'idpaps' => $item->latestRevisionPlan->idpaps,
@@ -330,4 +349,24 @@ class ProjectProfileController extends Controller
                 ->values();
         // ->pluck('status');
     }
+    protected function getTotalByCategory($latestPlan){
+        $categoryTotals = [
+            'Maintenance, Operating, and Other Expenses' => 0,
+            'Capital Outlay' => 0,
+            'Personnel Services' => 0,
+            'Financial Expenses' => 0,
+        ];
+
+        if ($latestPlan && $latestPlan->budget) {
+            foreach ($latestPlan->budget as $budget) {
+                $category = $budget->category;
+
+                if (isset($categoryTotals[$category])) {
+                    $categoryTotals[$category] += $budget->amount;
+                }
+            }
+        }
+        return $categoryTotals;
+    }
+
 }

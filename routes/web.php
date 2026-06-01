@@ -456,6 +456,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
         Route::get('/export/aip', [RevisionPlanController::class, 'exportStrategies'])->name('export.aip');
         Route::post('/sync-ooes', [RevisionPlanController::class, 'syncOOEs'])->name('revision.sync-ooes');
+        Route::post('/generate-programs', [RevisionPlanController::class, 'generatePrograms'])->name('revision.generate-programs');
         Route::get('/automate/hospital/operations',[RevisionPlanController::class, 'automateHospitalOperations'])->name('revision.automate-hospital-operations');
     });
     // AIP Code

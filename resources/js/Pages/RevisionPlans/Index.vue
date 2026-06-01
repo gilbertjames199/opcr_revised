@@ -63,6 +63,9 @@
                         <button v-if="auth.user.recid === 545" class="tool-btn btn-success text-white" @click="syncOOEs()">
                             <i class="fas fa-filter"></i> Sync OOEs
                         </button>
+                        <button v-if="auth.user.recid === 545" class="tool-btn btn-primary text-white" @click="generatePrograms()">
+                            <i class="fas fa-cogs"></i> Generate Programs
+                        </button>
                     </div>
                 </div>
 
@@ -1214,6 +1217,20 @@ export default {
         syncOOEs() {
 
             this.$inertia.post("/revision/sync-ooes",
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        },
+        generatePrograms() {
+            if (!confirm("Are you sure you want to generate programs from revision plans with NULL program_id_2?")) {
+                return;
+            }
+
+            this.$inertia.post("/revision/generate-programs",
+                {},
                 {
                     preserveScroll: true,
                     preserveState: true,

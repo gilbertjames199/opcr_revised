@@ -18,6 +18,7 @@ use App\Models\Monitoring_and_evaluation;
 use App\Models\OOE;
 use App\Models\PopspAgency;
 use App\Models\ProgramAndProject;
+use App\Models\Program;
 use App\Models\RevisionPlan;
 use App\Models\RevisionPlanComment;
 use App\Models\Risk_manangement;
@@ -6037,6 +6038,44 @@ class RevisionPlanController extends Controller
         }
 
         return redirect()->back()->with('message', "OOE sync complete. {$updated} budget entr" . ($updated === 1 ? 'y' : 'ies') . " updated.");
+    }
+
+    public function generatePrograms()
+    {
+        try {
+            // Get all revision plans where program_id_2 is NULL
+            $revisionPlans = RevisionPlan::whereNull('program_id_2')->get();
+            // dd($revisionPlans->first());
+            // dd($revisionPlans);
+            $created = 0;
+            $updated = 0;
+
+            foreach ($revisionPlans as $revisionPlan) {
+                // Create a new Program with the revision plan's project_title as FPROGRAM
+                $program = new Program();
+                $program->FPROGRAM = $revisionPlan->project_title;
+                $program->ftype=4;
+
+                // Save the program to get the recid
+
+                if ($program->save()) {
+                    // dd($program);
+                    $created++;
+
+                    // Update the revision plan's program_id_2 with the new program's recid
+                    $revisionPlan->program_id_2 = $program->recid;
+                    if ($revisionPlan->save()) {
+                        $updated++;
+                    }
+                    // dd($program, $revisionPlan);
+                }
+            }
+
+            return redirect()->back()->with('message', "Program generation complete. {$created} program(s) created and {$updated} revision plan(s) updated.");
+        } catch (\Exception $e) {
+            Log::error('Error generating programs: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while generating programs: ' . $e->getMessage());
+        }
     }
 
     public function automateHospitalOperations(Request $request){
