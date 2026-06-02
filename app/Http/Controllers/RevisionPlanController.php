@@ -3707,41 +3707,125 @@ class RevisionPlanController extends Controller
                 $other_total_co,
                 $other_total_fe
             ) {
+                // dd($item['source_of_funds'], $item['sector']);
+                $sf = $item['source_of_funds'];
+                $sector = $item['sector'];
+                if($sf=='gen_fund' && $sector=='General Public Services Sector'){
+                    $item['grand_total_mooe'] = number_format($general_public_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($general_public_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($general_public_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($general_public_services_total_fe, 2, '.', '');
+                }
+                elseif($sf=='gen_fund' && $sector=='Economic Services'){
+                    $item['grand_total_mooe'] = number_format($economic_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($economic_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($economic_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($economic_services_total_fe, 2, '.', '');
+                }
+                elseif($sf=='gen_fund' && $sector=='Social Services Sector'){
+                    $item['grand_total_mooe'] = number_format($social_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($social_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($social_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($social_services_total_fe, 2, '.', '');
+                }
+                elseif($sf=='gen_fund' && $sector=='Other Services'){
+                    $item['grand_total_mooe'] = number_format($other_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($other_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($other_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($other_services_total_fe, 2, '.', '');
+                }
+                elseif($sf=='dev'){
+                    $item['grand_total_mooe'] = number_format($dev_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($dev_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($dev_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($dev_total_fe, 2, '.', '');
+                }
+                elseif($sf=='ldrrmf'){
+                    $item['grand_total_mooe'] = number_format($ldrrmf_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($ldrrmf_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($ldrrmf_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($ldrrmf_total_fe, 2, '.', '');
+                }
+                elseif($sf=='other'){
+                    $item['grand_total_mooe'] = number_format($other_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($other_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($other_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($other_total_fe, 2, '.', '');
+                }
+                else{
+                    $item['grand_total_mooe'] = number_format(0, 2, '.', '');
+                    $item['grand_total_ps']   = number_format(0, 2, '.', '');
+                    $item['grand_total_co']   = number_format(0, 2, '.', '');
+                    $item['grand_total_fe']   = number_format(0, 2, '.', '');
+                }
+                // $item['grand_total_mooe'] = number_format($general_public_services_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($general_public_services_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($general_public_services_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($general_public_services_total_fe, 2, '.', '');
 
-                $item['general_public_services_total_mooe'] = number_format($general_public_services_total_mooe, 2, '.', '');
-                $item['general_public_services_total_ps']   = number_format($general_public_services_total_ps, 2, '.', '');
-                $item['general_public_services_total_co']   = number_format($general_public_services_total_co, 2, '.', '');
-                $item['general_public_services_total_fe']   = number_format($general_public_services_total_fe, 2, '.', '');
+                // $item['grand_total_mooe'] = number_format($economic_services_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($economic_services_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($economic_services_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($economic_services_total_fe, 2, '.', '');
 
-                $item['economic_services_total_mooe'] = number_format($economic_services_total_mooe, 2, '.', '');
-                $item['economic_services_total_ps']   = number_format($economic_services_total_ps, 2, '.', '');
-                $item['economic_services_total_co']   = number_format($economic_services_total_co, 2, '.', '');
-                $item['economic_services_total_fe']   = number_format($economic_services_total_fe, 2, '.', '');
+                // $item['grand_total_mooe'] = number_format($social_services_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($social_services_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($social_services_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($social_services_total_fe, 2, '.', '');
 
-                $item['social_services_total_mooe'] = number_format($social_services_total_mooe, 2, '.', '');
-                $item['social_services_total_ps']   = number_format($social_services_total_ps, 2, '.', '');
-                $item['social_services_total_co']   = number_format($social_services_total_co, 2, '.', '');
-                $item['social_services_total_fe']   = number_format($social_services_total_fe, 2, '.', '');
+                // $item['grand_total_mooe'] = number_format($other_services_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($other_services_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($other_services_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($other_services_total_fe, 2, '.', '');
 
-                $item['other_services_total_mooe'] = number_format($other_services_total_mooe, 2, '.', '');
-                $item['other_services_total_ps']   = number_format($other_services_total_ps, 2, '.', '');
-                $item['other_services_total_co']   = number_format($other_services_total_co, 2, '.', '');
-                $item['other_services_total_fe']   = number_format($other_services_total_fe, 2, '.', '');
+                // $item['grand_total_mooe'] = number_format($dev_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($dev_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($dev_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($dev_total_fe, 2, '.', '');
 
-                $item['dev_total_mooe'] = number_format($dev_total_mooe, 2, '.', '');
-                $item['dev_total_ps']   = number_format($dev_total_ps, 2, '.', '');
-                $item['dev_total_co']   = number_format($dev_total_co, 2, '.', '');
-                $item['dev_total_fe']   = number_format($dev_total_fe, 2, '.', '');
+                // $item['grand_total_mooe'] = number_format($ldrrmf_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($ldrrmf_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($ldrrmf_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($ldrrmf_total_fe, 2, '.', '');
 
-                $item['ldrrmf_total_mooe'] = number_format($ldrrmf_total_mooe, 2, '.', '');
-                $item['ldrrmf_total_ps']   = number_format($ldrrmf_total_ps, 2, '.', '');
-                $item['ldrrmf_total_co']   = number_format($ldrrmf_total_co, 2, '.', '');
-                $item['ldrrmf_total_fe']   = number_format($ldrrmf_total_fe, 2, '.', '');
+                // $item['grand_total_mooe'] = number_format($other_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($other_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($other_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($other_total_fe, 2, '.', '');
+                // $item['general_public_services_total_mooe'] = number_format($general_public_services_total_mooe, 2, '.', '');
+                // $item['general_public_services_total_ps']   = number_format($general_public_services_total_ps, 2, '.', '');
+                // $item['general_public_services_total_co']   = number_format($general_public_services_total_co, 2, '.', '');
+                // $item['general_public_services_total_fe']   = number_format($general_public_services_total_fe, 2, '.', '');
 
-                $item['other_total_mooe'] = number_format($other_total_mooe, 2, '.', '');
-                $item['other_total_ps']   = number_format($other_total_ps, 2, '.', '');
-                $item['other_total_co']   = number_format($other_total_co, 2, '.', '');
-                $item['other_total_fe']   = number_format($other_total_fe, 2, '.', '');
+                // $item['economic_services_total_mooe'] = number_format($economic_services_total_mooe, 2, '.', '');
+                // $item['economic_services_total_ps']   = number_format($economic_services_total_ps, 2, '.', '');
+                // $item['economic_services_total_co']   = number_format($economic_services_total_co, 2, '.', '');
+                // $item['economic_services_total_fe']   = number_format($economic_services_total_fe, 2, '.', '');
+
+                // $item['social_services_total_mooe'] = number_format($social_services_total_mooe, 2, '.', '');
+                // $item['social_services_total_ps']   = number_format($social_services_total_ps, 2, '.', '');
+                // $item['social_services_total_co']   = number_format($social_services_total_co, 2, '.', '');
+                // $item['social_services_total_fe']   = number_format($social_services_total_fe, 2, '.', '');
+
+                // $item['other_services_total_mooe'] = number_format($other_services_total_mooe, 2, '.', '');
+                // $item['other_services_total_ps']   = number_format($other_services_total_ps, 2, '.', '');
+                // $item['other_services_total_co']   = number_format($other_services_total_co, 2, '.', '');
+                // $item['other_services_total_fe']   = number_format($other_services_total_fe, 2, '.', '');
+
+                // $item['dev_total_mooe'] = number_format($dev_total_mooe, 2, '.', '');
+                // $item['dev_total_ps']   = number_format($dev_total_ps, 2, '.', '');
+                // $item['dev_total_co']   = number_format($dev_total_co, 2, '.', '');
+                // $item['dev_total_fe']   = number_format($dev_total_fe, 2, '.', '');
+
+                // $item['ldrrmf_total_mooe'] = number_format($ldrrmf_total_mooe, 2, '.', '');
+                // $item['ldrrmf_total_ps']   = number_format($ldrrmf_total_ps, 2, '.', '');
+                // $item['ldrrmf_total_co']   = number_format($ldrrmf_total_co, 2, '.', '');
+                // $item['ldrrmf_total_fe']   = number_format($ldrrmf_total_fe, 2, '.', '');
+
+                // $item['other_total_mooe'] = number_format($other_total_mooe, 2, '.', '');
+                // $item['other_total_ps']   = number_format($other_total_ps, 2, '.', '');
+                // $item['other_total_co']   = number_format($other_total_co, 2, '.', '');
+                // $item['other_total_fe']   = number_format($other_total_fe, 2, '.', '');
 
                 return $item;
 
