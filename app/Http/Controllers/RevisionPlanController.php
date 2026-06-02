@@ -3455,11 +3455,12 @@ class RevisionPlanController extends Controller
             $imp_office=optional(optional(optional($plan)->paps)->office)->office ?
                         optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
                         optional(optional(optional($plan)->paps)->office)->FFUNCTION;
+            // dd($source, optional(optional($plan)->paps)->source_of_funds);
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
                     'implementing_office' => $imp_office ? $imp_office : optional(optional($plan)->office)->FFUNCTION,
-                    'expected_output' => $expected_outputs,
+                    'expected_output' => optional(optional($plan)->paps)->source_of_funds === 'dev' ? $expected_outputs : null,
                     'total_mooe' => $total_mooe,
                     'total_ps' => $total_ps,
                     'total_co' => $total_co,

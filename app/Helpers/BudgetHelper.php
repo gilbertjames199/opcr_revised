@@ -6,12 +6,21 @@ class BudgetHelper
 {
     public static function getCategoryAbbreviation($category)
     {
-        return match ($category) {
-            'Maintenance, Operating, and Other Expenses' => 'mooe',
-            'Capital Outlay' => 'co',
-            'Personnel Services' => 'ps',
-            'Financial Expenses' => 'fe',
-            default => null,
-        };
+        switch ($category) {
+            case 'Maintenance, Operating, and Other Expenses':
+                return 'mooe';
+
+            case 'Capital Outlay':
+                return 'co';
+
+            case 'Personnel Services':
+                return 'ps';
+
+            case 'Financial Expenses':
+                return 'fe';
+
+            default:
+                return null;
+        }
     }
 }

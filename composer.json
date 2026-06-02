@@ -38,7 +38,8 @@
         "files": [
             "app/Helpers/functions.php",
             "app/Helpers/PaginationHelper.php",
-            "app/Helpers/calculateMonthlyAverages.php"
+            "app/Helpers/calculateMonthlyAverages.php",
+            "app/Helpers/BudgetHelper.php"
         ]
     },
     "autoload-dev": {
