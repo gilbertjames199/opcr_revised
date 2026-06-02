@@ -3620,42 +3620,59 @@ class RevisionPlanController extends Controller
         $general_public_services_total_ps   = $general_public_services->sum('total_ps');
         $general_public_services_total_co   = $general_public_services->sum('total_co');
         $general_public_services_total_fe   = $general_public_services->sum('total_fe');
+        $general_public_services_ccet_code_adaptation = $general_public_services->sum('ccet_code_adaptation');
+        $general_public_services_ccet_code_mitigation = $general_public_services->sum('ccet_code_mitigation');
 
         // Economic Services
         $economic_services_total_mooe = $economic_services->sum('total_mooe');
         $economic_services_total_ps   = $economic_services->sum('total_ps');
         $economic_services_total_co   = $economic_services->sum('total_co');
         $economic_services_total_fe   = $economic_services->sum('total_fe');
+        $economic_services_ccet_code_adaptation = $economic_services->sum('ccet_code_adaptation');
+        $economic_services_ccet_code_mitigation = $economic_services->sum('ccet_code_mitigation');
 
         // Social Services
         $social_services_total_mooe = $social_services->sum('total_mooe');
         $social_services_total_ps   = $social_services->sum('total_ps');
         $social_services_total_co   = $social_services->sum('total_co');
         $social_services_total_fe   = $social_services->sum('total_fe');
+        $social_services_ccet_code_adaptation = $social_services->sum('ccet_code_adaptation');
+        $social_services_ccet_code_mitigation = $social_services->sum('ccet_code_mitigation');
 
         // Other Services
         $other_services_total_mooe = $other_services->sum('total_mooe');
         $other_services_total_ps   = $other_services->sum('total_ps');
         $other_services_total_co   = $other_services->sum('total_co');
         $other_services_total_fe   = $other_services->sum('total_fe');
+        $other_services_ccet_code_adaptation = $other_services->sum('ccet_code_adaptation');
+        $other_services_ccet_code_mitigation = $other_services->sum('ccet_code_mitigation');
 
         // Development Fund
         $dev_total_mooe = $dev->sum('total_mooe');
         $dev_total_ps   = $dev->sum('total_ps');
         $dev_total_co   = $dev->sum('total_co');
         $dev_total_fe   = $dev->sum('total_fe');
+        $dev_ccet_code_adaptation = $dev->sum('ccet_code_adaptation');
+        $dev_ccet_code_mitigation = $dev->sum('ccet_code_mitigation');
 
         // LDRRMF
         $ldrrmf_total_mooe = $ldrrmf->sum('total_mooe');
         $ldrrmf_total_ps   = $ldrrmf->sum('total_ps');
         $ldrrmf_total_co   = $ldrrmf->sum('total_co');
         $ldrrmf_total_fe   = $ldrrmf->sum('total_fe');
+        $ldrrmf_ccet_code_adaptation = $ldrrmf->sum('ccet_code_adaptation');
+        $ldrrmf_ccet_code_mitigation = $ldrrmf->sum('ccet_code_mitigation');
 
         // Other Source
         $other_total_mooe = $other->sum('total_mooe');
         $other_total_ps   = $other->sum('total_ps');
         $other_total_co   = $other->sum('total_co');
         $other_total_fe   = $other->sum('total_fe');
+        $other_ccet_code_adaptation = $other->sum('ccet_code_adaptation');
+        $other_ccet_code_mitigation = $other->sum('ccet_code_mitigation');
+
+
+
 
         /*
         |--------------------------------------------------------------------------
@@ -3676,36 +3693,52 @@ class RevisionPlanController extends Controller
                 $general_public_services_total_ps,
                 $general_public_services_total_co,
                 $general_public_services_total_fe,
+                $general_public_services_ccet_code_adaptation,
+                $general_public_services_ccet_code_mitigation,
 
                 $economic_services_total_mooe,
                 $economic_services_total_ps,
                 $economic_services_total_co,
                 $economic_services_total_fe,
+                $economic_services_ccet_code_adaptation,
+                $economic_services_ccet_code_mitigation,
 
                 $social_services_total_mooe,
                 $social_services_total_ps,
                 $social_services_total_co,
                 $social_services_total_fe,
+                $social_services_ccet_code_adaptation,
+                $social_services_ccet_code_mitigation,
 
                 $other_services_total_mooe,
                 $other_services_total_ps,
                 $other_services_total_co,
                 $other_services_total_fe,
+                $other_services_ccet_code_adaptation,
+                $other_services_ccet_code_mitigation,
 
                 $dev_total_mooe,
                 $dev_total_ps,
                 $dev_total_co,
                 $dev_total_fe,
+                $dev_ccet_code_adaptation,
+                $dev_ccet_code_mitigation,
 
                 $ldrrmf_total_mooe,
                 $ldrrmf_total_ps,
                 $ldrrmf_total_co,
                 $ldrrmf_total_fe,
+                $ldrrmf_ccet_code_adaptation,
+                $ldrrmf_ccet_code_mitigation,
 
                 $other_total_mooe,
                 $other_total_ps,
                 $other_total_co,
-                $other_total_fe
+                $other_total_fe,
+                $other_ccet_code_adaptation,
+                $other_ccet_code_mitigation
+
+
             ) {
                 // dd($item['source_of_funds'], $item['sector']);
                 $sf = $item['source_of_funds'];
@@ -3715,48 +3748,64 @@ class RevisionPlanController extends Controller
                     $item['grand_total_ps']   = number_format($general_public_services_total_ps, 2, '.', '');
                     $item['grand_total_co']   = number_format($general_public_services_total_co, 2, '.', '');
                     $item['grand_total_fe']   = number_format($general_public_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($general_public_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($general_public_services_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='gen_fund' && $sector=='Economic Services'){
                     $item['grand_total_mooe'] = number_format($economic_services_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = number_format($economic_services_total_ps, 2, '.', '');
                     $item['grand_total_co']   = number_format($economic_services_total_co, 2, '.', '');
                     $item['grand_total_fe']   = number_format($economic_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($economic_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($economic_services_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='gen_fund' && $sector=='Social Services Sector'){
                     $item['grand_total_mooe'] = number_format($social_services_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = number_format($social_services_total_ps, 2, '.', '');
                     $item['grand_total_co']   = number_format($social_services_total_co, 2, '.', '');
                     $item['grand_total_fe']   = number_format($social_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($social_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($social_services_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='gen_fund' && $sector=='Other Services'){
                     $item['grand_total_mooe'] = number_format($other_services_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = number_format($other_services_total_ps, 2, '.', '');
                     $item['grand_total_co']   = number_format($other_services_total_co, 2, '.', '');
                     $item['grand_total_fe']   = number_format($other_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($other_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($other_services_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='dev'){
                     $item['grand_total_mooe'] = number_format($dev_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = number_format($dev_total_ps, 2, '.', '');
                     $item['grand_total_co']   = number_format($dev_total_co, 2, '.', '');
                     $item['grand_total_fe']   = number_format($dev_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($dev_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($dev_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='ldrrmf'){
                     $item['grand_total_mooe'] = number_format($ldrrmf_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = number_format($ldrrmf_total_ps, 2, '.', '');
                     $item['grand_total_co']   = number_format($ldrrmf_total_co, 2, '.', '');
                     $item['grand_total_fe']   = number_format($ldrrmf_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($ldrrmf_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($ldrrmf_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='other'){
                     $item['grand_total_mooe'] = number_format($other_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = number_format($other_total_ps, 2, '.', '');
                     $item['grand_total_co']   = number_format($other_total_co, 2, '.', '');
                     $item['grand_total_fe']   = number_format($other_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($other_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($other_ccet_code_mitigation, 2, '.', '');
                 }
                 else{
                     $item['grand_total_mooe'] = number_format(0, 2, '.', '');
                     $item['grand_total_ps']   = number_format(0, 2, '.', '');
                     $item['grand_total_co']   = number_format(0, 2, '.', '');
                     $item['grand_total_fe']   = number_format(0, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format(0, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format(0, 2, '.', '');
                 }
                 // $item['grand_total_mooe'] = number_format($general_public_services_total_mooe, 2, '.', '');
                 // $item['grand_total_ps']   = number_format($general_public_services_total_ps, 2, '.', '');
