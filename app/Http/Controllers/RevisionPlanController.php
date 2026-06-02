@@ -3774,7 +3774,8 @@ class RevisionPlanController extends Controller
                                 $ssf_filter=='Other Services' ||
                                 $ssf_filter=='Social Services Sector'
                         ){
-                            $query->where('sector', $request->ssf_filter);
+                            $query->where('sector', $request->ssf_filter)
+                                ->where('source_of_funds', 'gen_fund');
                         }
                             // no additional filtering}
 
