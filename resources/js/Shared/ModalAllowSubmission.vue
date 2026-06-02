@@ -21,8 +21,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- {{ allowed }} -->
-                                    <tr v-for="item in allowed" :key="item.id">
+                                    <!-- {{ localAllowed }} -->
+                                    <tr v-for="item in localAllowed" :key="item.id">
                                         <td class="fw-medium">{{ item.year }}</td>
                                         <td class="text-center">
                                             <div class="form-check">
@@ -56,11 +56,15 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
+    name: 'ModalAllowSubmission',
     props: {
         allowed: {
             type: [Object, Array],
-            required: true
+            required: false,
+            default: () => []
         }
     },
     data() {
@@ -71,7 +75,12 @@ export default {
     watch: {
         allowed: {
             handler(newVal) {
-                this.localAllowed = JSON.parse(JSON.stringify(newVal));
+                if (!newVal) {
+                    this.localAllowed = [];
+                    return;
+                }
+                const cloned = JSON.parse(JSON.stringify(newVal));
+                this.localAllowed = Array.isArray(cloned) ? cloned : Object.values(cloned);
             },
             immediate: true,
             deep: true
@@ -86,11 +95,9 @@ export default {
             this.$emit('close-modal-event');
         },
         toggleAllowSubmission(item) {
-            // Update the local copy
             const newValue = item.allow_submission === '1' || item.allow_submission === 1 ? '0' : '1';
             item.allow_submission = newValue;
 
-            // Make API call to update the database
             this.updateSubmissionStatus(item.id, newValue);
         },
         updateSubmissionStatus(id, status) {

@@ -1101,9 +1101,7 @@
 
             </div>
         </ReturnWithAmmendmentsModal>
-        <ModalAllowSubmission v-if="showAllowSubmissionModalVisible" @close-modal-event="showAllowSubmissionModalVisible=false" :allowed="allowed" @submission-updated="refreshPage">
-
-        </ModalAllowSubmission>
+        <ModalAllowSubmission v-if="showAllowSubmissionModalVisible" @close-modal-event="hideAllowSubmissionModal" :allowed="allowed" @submission-updated="refreshPage" />
     <!-- src: {{source}} fdfsdf -->
 </template>
 <script>
@@ -1217,6 +1215,9 @@ export default {
         },
         showAllowSubmissionModal() {
             this.showAllowSubmissionModalVisible = true;
+        },
+        hideAllowSubmissionModal() {
+            this.showAllowSubmissionModalVisible = false;
         },
         refreshPage() {
             this.$inertia.get(
