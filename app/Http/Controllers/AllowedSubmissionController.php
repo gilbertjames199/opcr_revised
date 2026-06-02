@@ -17,6 +17,11 @@ class AllowedSubmissionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (auth()->user()->department_code !== '04') {
+            // return response()->json(['success' => false, 'message' => 'Unauthorized. Only department 04 can update submission status.'], 403);
+            return redirect()->back()->with('error', 'Unauthorized. Only department 04 can update submission status.');
+        }
+
         $data = $request->validate([
             'allow_submission' => 'required|in:0,1',
         ]);
