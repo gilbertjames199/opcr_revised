@@ -1,6 +1,12 @@
 {
-    "/js/app.js": "/js/app.js?id=85f68b5adcb91ad185eddcc4058680df",
-    "/js/manifest.js": "/js/manifest.js?id=740b3e82a8b3583fd262eebd15d78ea5",
-    "/css/app.css": "/css/app.css?id=385db55a5412eab4f642e45f3290627a",
-    "/js/vendor.js": "/js/vendor.js?id=8aa372557a9d874177b5ce8b0b848126"
+    "/js/app.js": "/js/app.js?id=bc3f2f6e585a88891bbebacd79f5c1eb",
+    "/js/manifest.js": "/js/manifest.js?id=16c60dc96f97786fe2a20bf99b153c8d",
+    "/css/app.css": "/css/app.css?id=2a6b984a73cae1ac262fa325593689ac",
+    "/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.woff2?2463b90d9a316e4e5294e6706b6a7a72": "/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.woff2?2463b90d9a316e4e5294e6706b6a7a72?id=109ad919b74a62a8a223361da1651bbc",
+    "/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.ttf?2582b0e4bcf85eceead0de3fd9035c90": "/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.ttf?2582b0e4bcf85eceead0de3fd9035c90?id=8218477819a31609afa351933eebcdb4",
+    "/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.woff2?89999bdf5d835c0120257222e5568fec": "/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.woff2?89999bdf5d835c0120257222e5568fec?id=25bde24dc00e5dce8f1bfa8164b3b7b1",
+    "/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.ttf?914997e1bdfc990d0897cdaba877a0b3": "/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.ttf?914997e1bdfc990d0897cdaba877a0b3?id=96c3064e8868339b4aa6473968bdd464",
+    "/fonts/vendor/@fortawesome/fontawesome-free/webfa-brands-400.woff2?c210719e60948b211a1260f79812efe5": "/fonts/vendor/@fortawesome/fontawesome-free/webfa-brands-400.woff2?c210719e60948b211a1260f79812efe5?id=552e767fb6056f7f34a4783c2933556e",
+    "/fonts/vendor/@fortawesome/fontawesome-free/webfa-brands-400.ttf?1815e00441357e01619e5793e1caa78a": "/fonts/vendor/@fortawesome/fontawesome-free/webfa-brands-400.ttf?1815e00441357e01619e5793e1caa78a?id=7c8d1eaa468e8de72642d3fc43ee5ed2",
+    "/js/vendor.js": "/js/vendor.js?id=4b3b958982e7bb123573fc75f5619019"
 }
