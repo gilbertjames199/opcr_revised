@@ -26,6 +26,7 @@ use App\Models\SharedProgramAndProject;
 use App\Models\Signatory;
 use App\Models\Strategy;
 use App\Models\Activity;
+use App\Models\AllowIppSubmissions;
 use App\Models\ExpectedRevisedOutput;
 use App\Models\Office;
 use App\Models\StrategyProject;
@@ -118,6 +119,7 @@ class RevisionPlanController extends Controller
         $budget_controller = new BudgetRequirementController($this->budget);
         // dd("revision");
         // dd($idpaps);
+        $allowed = AllowIppSubmissions::all();
         if ($paps_type === "GAS") {
 
             return redirect('/revision/general/administration/services/' . $FFUNCCOD . '/plan');
@@ -157,6 +159,7 @@ class RevisionPlanController extends Controller
                 }
             }
             // dd($data);
+            // dd($allowed);
             return inertia('RevisionPlans/Index', [
                 // "filters" => $request->only(['search']),
                 'data' => $data->sortBy('project_title')->values(),
@@ -165,6 +168,7 @@ class RevisionPlanController extends Controller
                 "filters" => $request->only(['search', 'type_filter', 'year_filtering']),
                 "source" => $request->source,
                 "year_filtering" => $year_filtering,
+                "allowed" => $allowed,
                 'can' => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                     'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -3338,6 +3342,7 @@ class RevisionPlanController extends Controller
         // ? "1":"0";
         // dd($ssf_filter);
         $plans = $this->getAllPlans($request, $year, $ssf_filter);
+        // dd($plans->pluck('project_title'));
         $papss=$plans->pluck("paps");
         // dd($papss->pluck('source_of_funds'));
         // dd($plans->first());
@@ -3443,7 +3448,7 @@ class RevisionPlanController extends Controller
             }
             $paps_title = $plan->project_title;
             // $paps_temp=$paps_title;
-            if ($paps_title === mb_strtoupper($paps_title, 'UTF-8')) {
+            if ($paps_title === mb_strtoupper($paps_title, 'UTF-8') && !preg_match('/^STF\s+\d{4}$/', $paps_title)) {
                 $paps_title = $this->titleCaseTransform($paps_title);
             }
             // if($plan->id==272){
@@ -3460,7 +3465,7 @@ class RevisionPlanController extends Controller
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
                     'implementing_office' => $imp_office ? $imp_office : optional(optional($plan)->office)->FFUNCTION,
-                    'expected_output' => optional(optional($plan)->paps)->source_of_funds === 'dev' ? $expected_outputs : null,
+                    'expected_output' =>  $expected_outputs,
                     'total_mooe' => $total_mooe,
                     'total_ps' => $total_ps,
                     'total_co' => $total_co,
@@ -3498,7 +3503,7 @@ class RevisionPlanController extends Controller
         $capital_activities = $this->retrievingCapitalOutlay( $request->ccet, $cap_ob);
         // $summary = $this->getRevisionPlanSummary($pln->concat($cap_ob));
         // dd($strategies->pluck('id'), $capital_activities->pluck('id'));
-        // dd($strategies, $capital_activities);
+        // dd($strategies, $capital_activities->pluck('project_title'));
         $strategies = $strategies
             ->concat($capital_activities)
             ->sort(function ($a, $b) {
@@ -3585,7 +3590,8 @@ class RevisionPlanController extends Controller
         $other = $strategies
             ->where('source_of_funds', 'other')
             ->values();
-
+        // dd($other, $social_services);
+        // ->pluck('project_title')
         /*
         |--------------------------------------------------------------------------
         | Final Ordered Collection

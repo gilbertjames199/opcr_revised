@@ -59,6 +59,9 @@
                         <button class="tool-btn tool-btn-outline" @click="showFilter()">
                             <i class="fas fa-filter"></i> Filter
                         </button>
+                        <button class="tool-btn tool-btn-info" @click="showAllowSubmissionModal()">
+                            <i class="fas fa-lock"></i> Disable/Enable Annual Submissions
+                        </button>
                         <!-- {{ auth.user.recid }} -->
                         <button v-if="auth.user.recid === 545" class="tool-btn btn-success text-white" @click="syncOOEs()">
                             <i class="fas fa-filter"></i> Sync OOEs
@@ -668,11 +671,11 @@
                                         :class="can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
                                         -->
                                         <!-- {{ hasAnyWarning(dat) }} -->
-                                        <button v-if="(dat.status == '-1' || dat.status == '-2') && !hasAnyWarning(dat)"
+                                        <button v-if="(dat.status == '-1' || dat.status == '-2') && !hasAnyWarning(dat) && isSubmissionAllowed(dat.year)"
                                                 @click="submitItem(dat, 0)"
-                                                :disabled="hasAnyWarning(dat)"
-                                                :class="!hasAnyWarning(dat) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
-                                                title="Submit Project">
+                                                :disabled="hasAnyWarning(dat) || !isSubmissionAllowed(dat.year)"
+                                                :class="!hasAnyWarning(dat) && isSubmissionAllowed(dat.year) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
+                                                :title="!isSubmissionAllowed(dat.year) ? 'Submissions are disabled for year ' + dat.year : 'Submit Project'">
                                             <i class="fas fa-paper-plane"></i>
                                             <span class="ms-1">Submit</span>
                                         </button>
@@ -1098,6 +1101,9 @@
 
             </div>
         </ReturnWithAmmendmentsModal>
+        <ModalAllowSubmission v-if="showAllowSubmissionModalVisible" @close-modal-event="showAllowSubmissionModalVisible=false" :allowed="allowed" @submission-updated="refreshPage">
+
+        </ModalAllowSubmission>
     <!-- src: {{source}} fdfsdf -->
 </template>
 <script>
@@ -1111,9 +1117,11 @@ import LBPPrintModal from "@/Shared/ModalDynamicTitle";
 import { Inertia } from '@inertiajs/inertia';
 import WorkPlanModal from "@/Shared/ModalDynamicTitle";
 import ReturnWithAmmendmentsModal from "@/Shared/ModalDynamicTitle";
+import ModalAllowSubmission from "@/Shared/ModalAllowSubmission";
 
 export default {
     props: {
+
         auth: Object,
         data: Object,
         //idstrat: String,
@@ -1123,6 +1131,7 @@ export default {
         monitors: Object,
         source: String,
         year_filtering: String,
+        allowed: Object,
         // search: String,
         // type_f: String,
     },
@@ -1170,11 +1179,12 @@ export default {
             // END OF RETURN REQUEST***************
             year_filtering_d: '',
             ssf_filter: '',
-            showFlyingPlane: false
+            showFlyingPlane: false,
+            showAllowSubmissionModalVisible: false
         }
     },
     components: {
-        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal, ReturnWithAmmendmentsModal, HgdgModal, LBPPrintModal
+        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal, ReturnWithAmmendmentsModal, HgdgModal, LBPPrintModal, ModalAllowSubmission
     },
     watch: {
         search: _.debounce(function (value) {
@@ -1204,6 +1214,37 @@ export default {
     methods:{
         toggleWarnings(id) {
             this.openWarningsRow = this.openWarningsRow === id ? null : id;
+        },
+        showAllowSubmissionModal() {
+            this.showAllowSubmissionModalVisible = true;
+        },
+        refreshPage() {
+            this.$inertia.get(
+                "/revision/"+this.paps_id_here,
+                {
+                    search: this.search,
+                    type_filter: this.type_filter,
+                    ssf_filter: this.ssf_filter,
+                    source:this.source,
+                    year: this.year_filtering_d
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        },
+        isSubmissionAllowed(year) {
+            if (!this.allowed) return true;
+
+            // Handle if allowed is an object with array values
+            let allowedArray = Array.isArray(this.allowed) ? this.allowed : Object.values(this.allowed);
+
+            const allowedItem = allowedArray.find(item => item.year === year || item.year === String(year));
+            if (!allowedItem) return true; // If no restriction found, allow submission
+
+            return allowedItem.allow_submission === '1' || allowedItem.allow_submission === 1;
         },
         hasAnyWarning(dat) {
             return !!(

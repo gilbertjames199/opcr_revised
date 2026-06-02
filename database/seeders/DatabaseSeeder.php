@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             MunicipalitySeeder::class,
             BarangaySeeder::class,
             SectorSeeder::class,
+            AllowIppSubmissionSeeder::class,
             //TargetSeeder::class,
             //AccomplishmentSeeder::class,
             //IndicatorSeeder::class
