@@ -3343,9 +3343,12 @@ class RevisionPlanController extends Controller
         // dd($ssf_filter);
         $plans = $this->getAllPlans($request, $year, $ssf_filter);
         $plansWithEmptyStrategy = $plans->filter(function ($plan) {
-            $strategy = optional(optional($plan)->strategyProject->first())->strategy;
+            $strategyProject = $plan->strategyProject()->whereHas('strategy')->first();
+            $strategy = optional($strategyProject)->strategy;
             return is_null($strategy);
         });
+        // dd($plansWithEmptyStrategy[11]);
+        // ->pluck('project_title'));
         // dd($plansWithEmptyStrategy->pluck('project_title'));
         // dd($plans->pluck('project_title'));
         $papss=$plans->pluck("paps");
@@ -3354,7 +3357,8 @@ class RevisionPlanController extends Controller
         $pln=$plans;
         // dd($plans->first(), $plans[296]);
         foreach ($plans as $plan) {
-            $strategy = optional(optional($plan)->strategyProject->first())->strategy;
+            $strategyProject = $plan->strategyProject()->whereHas('strategy')->first();
+            $strategy = optional($strategyProject)->strategy;
             // dd($plan );
 
             if (!$strategy) {
@@ -3499,6 +3503,7 @@ class RevisionPlanController extends Controller
 
             }
         }
+        // dd($plansWithEmptyStrategy[11], );
         // dd($plans[296], $plans->first()->strategyProject(), $strategies);
         // ->first(), $plans[296]
         // Optional: convert expected_output collections back to arrays
@@ -3901,6 +3906,8 @@ class RevisionPlanController extends Controller
             })
             ->values();
         // dd($final_strategies, $strategies);
+        // dd($final_strategies->pluck('grand_total_mooe'), $final_strategies->pluck('grand_total_ps'), $final_strategies->pluck('grand_total_co'), $final_strategies->pluck('grand_total_fe'));
+        // dd($final_strategies[78], $final_strategies[77]);
         return $final_strategies;
     }
     public function getAllPlans(Request $request, $year, $ssf_filter){
