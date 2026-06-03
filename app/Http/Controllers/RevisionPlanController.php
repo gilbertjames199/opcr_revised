@@ -3651,13 +3651,20 @@ class RevisionPlanController extends Controller
         $social_services_ccet_code_adaptation = $safeSum($social_services, 'ccet_code_adaptation');
         $social_services_ccet_code_mitigation = $safeSum($social_services, 'ccet_code_mitigation');
 
+        // LDRRMF
+        $ldrrmf_total_mooe = $safeSum($ldrrmf, 'total_mooe');
+        $ldrrmf_total_ps   = $safeSum($ldrrmf, 'total_ps');
+        $ldrrmf_total_co   = $safeSum($ldrrmf, 'total_co');
+        $ldrrmf_total_fe   = $safeSum($ldrrmf, 'total_fe');
+        $ldrrmf_ccet_code_adaptation = $safeSum($ldrrmf, 'ccet_code_adaptation');
+        $ldrrmf_ccet_code_mitigation = $safeSum($ldrrmf, 'ccet_code_mitigation');
         // Other Services
-        $other_services_total_mooe = $safeSum($other_services, 'total_mooe');
-        $other_services_total_ps   = $safeSum($other_services, 'total_ps');
-        $other_services_total_co   = $safeSum($other_services, 'total_co');
-        $other_services_total_fe   = $safeSum($other_services, 'total_fe');
-        $other_services_ccet_code_adaptation = $safeSum($other_services, 'ccet_code_adaptation');
-        $other_services_ccet_code_mitigation = $safeSum($other_services, 'ccet_code_mitigation');
+        $other_services_total_mooe = $safeSum($other_services, 'total_mooe') + $ldrrmf_total_mooe;
+        $other_services_total_ps   = $safeSum($other_services, 'total_ps') + $ldrrmf_total_ps;
+        $other_services_total_co   = $safeSum($other_services, 'total_co') + $ldrrmf_total_co;
+        $other_services_total_fe   = $safeSum($other_services, 'total_fe') + $ldrrmf_total_fe;
+        $other_services_ccet_code_adaptation = $safeSum($other_services, 'ccet_code_adaptation') + $ldrrmf_ccet_code_adaptation;
+        $other_services_ccet_code_mitigation = $safeSum($other_services, 'ccet_code_mitigation') + $ldrrmf_ccet_code_mitigation;
 
         // Development Fund
         $dev_total_mooe = $safeSum($dev, 'total_mooe');
@@ -3667,13 +3674,7 @@ class RevisionPlanController extends Controller
         $dev_ccet_code_adaptation = $safeSum($dev, 'ccet_code_adaptation');
         $dev_ccet_code_mitigation = $safeSum($dev, 'ccet_code_mitigation');
 
-        // LDRRMF
-        $ldrrmf_total_mooe = $safeSum($ldrrmf, 'total_mooe');
-        $ldrrmf_total_ps   = $safeSum($ldrrmf, 'total_ps');
-        $ldrrmf_total_co   = $safeSum($ldrrmf, 'total_co');
-        $ldrrmf_total_fe   = $safeSum($ldrrmf, 'total_fe');
-        $ldrrmf_ccet_code_adaptation = $safeSum($ldrrmf, 'ccet_code_adaptation');
-        $ldrrmf_ccet_code_mitigation = $safeSum($ldrrmf, 'ccet_code_mitigation');
+
 
         // Other Source
         $other_total_mooe = $safeSum($other, 'total_mooe');
@@ -3955,13 +3956,16 @@ class RevisionPlanController extends Controller
                 return false;
             }
 
-            if ($ssf_filter == 'gen_fund' || $ssf_filter == 'ldrrmf' || $ssf_filter == 'other' || $ssf_filter == 'dev') {
+            if ($ssf_filter == 'gen_fund' || $ssf_filter == 'other' || $ssf_filter == 'dev') {
                 return $paps->source_of_funds === $request->ssf_filter;
-            } else if ($ssf_filter == 'General Public Services Sector' ||
+            } else if($ssf_filter == 'Other Services'  || $ssf_filter == 'ldrrmf' ){
+                return $paps->source_of_funds === 'ldrrmf' || $paps->sector === 'Other Services';
+
+            }else if ($ssf_filter == 'General Public Services Sector' ||
                     $ssf_filter == 'Economic Services' ||
-                    $ssf_filter == 'Other Services' ||
                     $ssf_filter == 'Social Services Sector'
             ) {
+                // $ssf_filter == 'Other Services' ||
                 return $paps->sector === $request->ssf_filter && $paps->source_of_funds === 'gen_fund';
             }
 
