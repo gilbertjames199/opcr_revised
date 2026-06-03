@@ -3342,11 +3342,17 @@ class RevisionPlanController extends Controller
         // ? "1":"0";
         // dd($ssf_filter);
         $plans = $this->getAllPlans($request, $year, $ssf_filter);
+        $plansWithEmptyStrategy = $plans->filter(function ($plan) {
+            $strategy = optional(optional($plan)->strategyProject->first())->strategy;
+            return is_null($strategy);
+        });
+        // dd($plansWithEmptyStrategy->pluck('project_title'));
         // dd($plans->pluck('project_title'));
         $papss=$plans->pluck("paps");
         // dd($papss->pluck('source_of_funds'));
         // dd($plans->first());
         $pln=$plans;
+        // dd($plans->first(), $plans[296]);
         foreach ($plans as $plan) {
             $strategy = optional(optional($plan)->strategyProject->first())->strategy;
             // dd($plan );
@@ -3357,7 +3363,7 @@ class RevisionPlanController extends Controller
             $source_of_funds = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
 
             $sector = optional(optional($plan)->paps)->sector;
-            $strategyId = $strategy->id;
+            $strategyId = $plan->id;
             $budget = $plan->budget;
             $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
             if (count($budget) > 0) {
@@ -3483,14 +3489,18 @@ class RevisionPlanController extends Controller
                     'level'=>1
                 ];
             } else {
+                continue;
+                // dd($plans[276], $plan, $strategies, $strategyId, $strategy, $strategies[$strategyId]);
                 // If the same strategy appears again, merge expected outputs
                 // $strategies[$strategyId]['expected_output'] = $strategies[$strategyId]['expected_output']
                 //     ->merge($expected_outputs)
                 //     ->unique('id') // remove duplicates if outputs have IDs
                 //     ->values();
+
             }
         }
-
+        // dd($plans[296], $plans->first()->strategyProject(), $strategies);
+        // ->first(), $plans[296]
         // Optional: convert expected_output collections back to arrays
         // foreach ($strategies as &$strategy) {
         //     $strategy['expected_output'] = $strategy['expected_output']->toArray();
@@ -3754,60 +3764,60 @@ class RevisionPlanController extends Controller
                     $item['total_ccet_code_mitigation'] = (float) number_format($general_public_services_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='gen_fund' && $sector=='Economic Services'){
-                    $item['grand_total_mooe'] = (double) number_format($economic_services_total_mooe, 2, '.', '');
-                    $item['grand_total_ps']   = (double) number_format($economic_services_total_ps, 2, '.', '');
-                    $item['grand_total_co']   = (double) number_format($economic_services_total_co, 2, '.', '');
-                    $item['grand_total_fe']   = (double) number_format($economic_services_total_fe, 2, '.', '');
-                    $item['total_ccet_code_adaptation'] = (double) number_format($economic_services_ccet_code_adaptation, 2, '.', '');
-                    $item['total_ccet_code_mitigation'] = (double) number_format($economic_services_ccet_code_mitigation, 2, '.', '');
+                    $item['grand_total_mooe'] = (float) number_format($economic_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($economic_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($economic_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($economic_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($economic_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($economic_services_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='gen_fund' && $sector=='Social Services Sector'){
-                    $item['grand_total_mooe'] = (double) number_format($social_services_total_mooe, 2, '.', '');
-                    $item['grand_total_ps']   = (double) number_format($social_services_total_ps, 2, '.', '');
-                    $item['grand_total_co']   = (double) number_format($social_services_total_co, 2, '.', '');
-                    $item['grand_total_fe']   = (double) number_format($social_services_total_fe, 2, '.', '');
-                    $item['total_ccet_code_adaptation'] = (double) number_format($social_services_ccet_code_adaptation, 2, '.', '');
-                    $item['total_ccet_code_mitigation'] = (double) number_format($social_services_ccet_code_mitigation, 2, '.', '');
+                    $item['grand_total_mooe'] = (float) number_format($social_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($social_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($social_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($social_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($social_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($social_services_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='gen_fund' && $sector=='Other Services'){
-                    $item['grand_total_mooe'] = (double) number_format($other_services_total_mooe, 2, '.', '');
-                    $item['grand_total_ps']   = (double) number_format($other_services_total_ps, 2, '.', '');
-                    $item['grand_total_co']   = (double) number_format($other_services_total_co, 2, '.', '');
-                    $item['grand_total_fe']   = (double) number_format($other_services_total_fe, 2, '.', '');
-                    $item['total_ccet_code_adaptation'] = (double) number_format($other_services_ccet_code_adaptation, 2, '.', '');
-                    $item['total_ccet_code_mitigation'] = (double) number_format($other_services_ccet_code_mitigation, 2, '.', '');
+                    $item['grand_total_mooe'] = (float) number_format($other_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($other_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($other_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($other_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($other_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($other_services_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='dev'){
-                    $item['grand_total_mooe'] = (double) number_format($dev_total_mooe, 2, '.', '');
-                    $item['grand_total_ps']   = (double) number_format($dev_total_ps, 2, '.', '');
-                    $item['grand_total_co']   = (double) number_format($dev_total_co, 2, '.', '');
-                    $item['grand_total_fe']   = (double) number_format($dev_total_fe, 2, '.', '');
-                    $item['total_ccet_code_adaptation'] = (double) number_format($dev_ccet_code_adaptation, 2, '.', '');
-                    $item['total_ccet_code_mitigation'] = (double) number_format($dev_ccet_code_mitigation, 2, '.', '');
+                    $item['grand_total_mooe'] = (float) number_format($dev_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($dev_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($dev_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($dev_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($dev_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($dev_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='ldrrmf'){
-                    $item['grand_total_mooe'] = (double) number_format($ldrrmf_total_mooe, 2, '.', '');
-                    $item['grand_total_ps']   = (double) number_format($ldrrmf_total_ps, 2, '.', '');
-                    $item['grand_total_co']   = (double) number_format($ldrrmf_total_co, 2, '.', '');
-                    $item['grand_total_fe']   = (double) number_format($ldrrmf_total_fe, 2, '.', '');
-                    $item['total_ccet_code_adaptation'] = (double) number_format($ldrrmf_ccet_code_adaptation, 2, '.', '');
-                    $item['total_ccet_code_mitigation'] = (double) number_format($ldrrmf_ccet_code_mitigation, 2, '.', '');
+                    $item['grand_total_mooe'] = (float) number_format($ldrrmf_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($ldrrmf_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($ldrrmf_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($ldrrmf_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($ldrrmf_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($ldrrmf_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='other'){
-                    $item['grand_total_mooe'] = (double) number_format($other_total_mooe, 2, '.', '');
-                    $item['grand_total_ps']   = (double) number_format($other_total_ps, 2, '.', '');
-                    $item['grand_total_co']   = (double) number_format($other_total_co, 2, '.', '');
-                    $item['grand_total_fe']   = (double) number_format($other_total_fe, 2, '.', '');
-                    $item['total_ccet_code_adaptation'] = (double) number_format($other_ccet_code_adaptation, 2, '.', '');
-                    $item['total_ccet_code_mitigation'] = (double) number_format($other_ccet_code_mitigation, 2, '.', '');
+                    $item['grand_total_mooe'] = (float) number_format($other_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($other_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($other_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($other_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($other_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($other_ccet_code_mitigation, 2, '.', '');
                 }
                 else{
-                    $item['grand_total_mooe'] = (double) number_format(0, 2, '.', '');
-                    $item['grand_total_ps']   = (double) number_format(0, 2, '.', '');
-                    $item['grand_total_co']   = (double) number_format(0, 2, '.', '');
-                    $item['grand_total_fe']   = (double) number_format(0, 2, '.', '');
-                    $item['total_ccet_code_adaptation'] = (double) number_format(0, 2, '.', '');
-                    $item['total_ccet_code_mitigation'] = (double) number_format(0, 2, '.', '');
+                    $item['grand_total_mooe'] = (float) number_format(0, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format(0, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format(0, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format(0, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format(0, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format(0, 2, '.', '');
                 }
                 // $item['grand_total_mooe'] = number_format($general_public_services_total_mooe, 2, '.', '');
                 // $item['grand_total_ps']   = number_format($general_public_services_total_ps, 2, '.', '');
@@ -3888,7 +3898,7 @@ class RevisionPlanController extends Controller
     }
     public function getAllPlans(Request $request, $year, $ssf_filter){
 
-        return RevisionPlan::with([
+        $data= RevisionPlan::with([
                 'strategyProject.strategy',
                 'strategyProject.expected_output',
                 'strategyProject.expected_outcome',
@@ -3906,24 +3916,61 @@ class RevisionPlanController extends Controller
             ])
             ->where('status', '1')
             ->whereYear('date_start', $year)
-            ->whereHas('paps', function ($query) use($request, $ssf_filter) {
-                $query
-                    ->when($request->ssf_filter, function ($query) use ($request, $ssf_filter) {
-                        if($ssf_filter=='gen_fund' || $ssf_filter=='ldrrmf' || $ssf_filter=='other' || $ssf_filter=='dev'){
-                            $query->where('source_of_funds', $request->ssf_filter);
-                        }else if($ssf_filter=='General Public Services Sector' ||
-                                $ssf_filter=='Economic Services' ||
-                                $ssf_filter=='Other Services' ||
-                                $ssf_filter=='Social Services Sector'
-                        ){
-                            $query->where('sector', $request->ssf_filter)
-                                ->where('source_of_funds', 'gen_fund');
-                        }
-                            // no additional filtering}
-
-                    });
-            })
             ->get();
+
+        // Apply paps filter only if the row's scope is not 'GAS'
+        $data = $data->filter(function ($plan) use($request, $ssf_filter) {
+            if ($plan->scope === 'GAS') {
+                return true; // Include GAS scope without additional filter
+            }
+
+            // For non-GAS scope, apply the paps filter
+            if (!$request->ssf_filter) {
+                return true; // No filter specified
+            }
+
+            $paps = $plan->paps;
+            if (!$paps) {
+                return false;
+            }
+
+            if ($ssf_filter == 'gen_fund' || $ssf_filter == 'ldrrmf' || $ssf_filter == 'other' || $ssf_filter == 'dev') {
+                return $paps->source_of_funds === $request->ssf_filter;
+            } else if ($ssf_filter == 'General Public Services Sector' ||
+                    $ssf_filter == 'Economic Services' ||
+                    $ssf_filter == 'Other Services' ||
+                    $ssf_filter == 'Social Services Sector'
+            ) {
+                return $paps->sector === $request->ssf_filter && $paps->source_of_funds === 'gen_fund';
+            }
+
+            return true;
+        });
+
+        // For GAS rows, replace paps with the matching ProgramAndProject by FFUNCCOD department_code.
+        $data = $data->map(function ($plan) {
+            if ($plan->scope !== 'GAS') {
+                return $plan;
+            }
+
+            $ffunccod = FFUNCCOD::where('FFUNCCOD', $plan->FFUNCCOD)->first();
+            if (!$ffunccod || !isset($ffunccod->department_code)) {
+                return $plan;
+            }
+
+            $gasPaps = ProgramAndProject::with(['office'])
+                ->where('department_code', $ffunccod->department_code)
+                ->where('type', 'GAS')
+                ->first();
+
+            if ($gasPaps) {
+                $plan->setRelation('paps', $gasPaps);
+            }
+
+            return $plan;
+        });
+        // dd($data->first(), $data[296], );
+        return $data;
     }
     protected function getRevisionPlanSummary($plans)
     {
@@ -4018,7 +4065,13 @@ class RevisionPlanController extends Controller
                 $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
                 $source = implode("\n", $chars);
             }
-            // dd($plan);
+            // dd($plan->id);
+            // if(optional($plan)->id==418){
+            //     dd($item, $plan, $source_of_funds, $source,"condition met");
+            // }else{
+            //     dd($item, $plan, $source_of_funds, $source, $item->id);
+            // }
+
             return [
                 'project_title'=>optional(optional($item)->activity)->description,
                 'implementing_office'=>$imp_office,
