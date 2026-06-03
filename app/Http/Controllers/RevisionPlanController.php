@@ -3781,12 +3781,12 @@ class RevisionPlanController extends Controller
                     $item['total_ccet_code_mitigation'] = (float) number_format($social_services_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='gen_fund' && $sector=='Other Services'){
-                    $item['grand_total_mooe'] = (float) number_format($other_services_total_mooe, 2, '.', '');
-                    $item['grand_total_ps']   = (float) number_format($other_services_total_ps, 2, '.', '');
-                    $item['grand_total_co']   = (float) number_format($other_services_total_co, 2, '.', '');
-                    $item['grand_total_fe']   = (float) number_format($other_services_total_fe, 2, '.', '');
-                    $item['total_ccet_code_adaptation'] = (float) number_format($other_services_ccet_code_adaptation, 2, '.', '');
-                    $item['total_ccet_code_mitigation'] = (float) number_format($other_services_ccet_code_mitigation, 2, '.', '');
+                    $item['grand_total_mooe'] = number_format($other_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($other_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($other_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($other_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($other_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($other_services_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='dev'){
                     $item['grand_total_mooe'] = (float) number_format($dev_total_mooe, 2, '.', '');
@@ -3797,12 +3797,12 @@ class RevisionPlanController extends Controller
                     $item['total_ccet_code_mitigation'] = (float) number_format($dev_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='ldrrmf'){
-                    $item['grand_total_mooe'] = (float) number_format($ldrrmf_total_mooe, 2, '.', '');
-                    $item['grand_total_ps']   = (float) number_format($ldrrmf_total_ps, 2, '.', '');
-                    $item['grand_total_co']   = (float) number_format($ldrrmf_total_co, 2, '.', '');
-                    $item['grand_total_fe']   = (float) number_format($ldrrmf_total_fe, 2, '.', '');
-                    $item['total_ccet_code_adaptation'] = (float) number_format($ldrrmf_ccet_code_adaptation, 2, '.', '');
-                    $item['total_ccet_code_mitigation'] = (float) number_format($ldrrmf_ccet_code_mitigation, 2, '.', '');
+                    $item['grand_total_mooe'] = number_format($ldrrmf_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($ldrrmf_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($ldrrmf_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($ldrrmf_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($ldrrmf_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($ldrrmf_ccet_code_mitigation, 2, '.', '');
                 }
                 elseif($sf=='other'){
                     $item['grand_total_mooe'] = (float) number_format($other_total_mooe, 2, '.', '');
