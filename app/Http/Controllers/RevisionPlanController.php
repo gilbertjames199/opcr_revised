@@ -4027,10 +4027,10 @@ class RevisionPlanController extends Controller
                     ->filter()
                     ->map(fn ($desc) => trim($desc))
                     ->implode("\n"),
-                'total_mooe'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $total_mooe : '',
-                'total_ps'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $total_ps : '',
-                'total_co'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $total_co : '',
-                'total_fe'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $total_fe : '',
+                'total_mooe'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_mooe) : 0,
+                'total_ps'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_ps) : 0,
+                'total_co'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_co) : 0,
+                'total_fe'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_fe) : 0,
                 'ccet_code'=>optional($item)->ccet_code,
                 'ccet_code_mitigation'=>$ccet_code_mitigation,
                 'ccet_code_adaptation'=>$ccet_code_adaptation,
