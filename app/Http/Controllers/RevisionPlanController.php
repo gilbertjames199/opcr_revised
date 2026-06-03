@@ -3615,61 +3615,63 @@ class RevisionPlanController extends Controller
         |--------------------------------------------------------------------------
         */
 
+        $safeSum = fn($collection, $key) => $collection->sum(fn($item) => floatval($item[$key] ?? 0));
+
         // General Public Services
-        $general_public_services_total_mooe = $general_public_services->sum('total_mooe');
-        $general_public_services_total_ps   = $general_public_services->sum('total_ps');
-        $general_public_services_total_co   = $general_public_services->sum('total_co');
-        $general_public_services_total_fe   = $general_public_services->sum('total_fe');
-        $general_public_services_ccet_code_adaptation = $general_public_services->sum('ccet_code_adaptation');
-        $general_public_services_ccet_code_mitigation = $general_public_services->sum('ccet_code_mitigation');
+        $general_public_services_total_mooe = $safeSum($general_public_services, 'total_mooe');
+        $general_public_services_total_ps   = $safeSum($general_public_services, 'total_ps');
+        $general_public_services_total_co   = $safeSum($general_public_services, 'total_co');
+        $general_public_services_total_fe   = $safeSum($general_public_services, 'total_fe');
+        $general_public_services_ccet_code_adaptation = $safeSum($general_public_services, 'ccet_code_adaptation');
+        $general_public_services_ccet_code_mitigation = $safeSum($general_public_services, 'ccet_code_mitigation');
 
         // Economic Services
-        $economic_services_total_mooe = $economic_services->sum('total_mooe');
-        $economic_services_total_ps   = $economic_services->sum('total_ps');
-        $economic_services_total_co   = $economic_services->sum('total_co');
-        $economic_services_total_fe   = $economic_services->sum('total_fe');
-        $economic_services_ccet_code_adaptation = $economic_services->sum('ccet_code_adaptation');
-        $economic_services_ccet_code_mitigation = $economic_services->sum('ccet_code_mitigation');
+        $economic_services_total_mooe = $safeSum($economic_services, 'total_mooe');
+        $economic_services_total_ps   = $safeSum($economic_services, 'total_ps');
+        $economic_services_total_co   = $safeSum($economic_services, 'total_co');
+        $economic_services_total_fe   = $safeSum($economic_services, 'total_fe');
+        $economic_services_ccet_code_adaptation = $safeSum($economic_services, 'ccet_code_adaptation');
+        $economic_services_ccet_code_mitigation = $safeSum($economic_services, 'ccet_code_mitigation');
 
         // Social Services
-        $social_services_total_mooe = $social_services->sum('total_mooe');
-        $social_services_total_ps   = $social_services->sum('total_ps');
-        $social_services_total_co   = $social_services->sum('total_co');
-        $social_services_total_fe   = $social_services->sum('total_fe');
-        $social_services_ccet_code_adaptation = $social_services->sum('ccet_code_adaptation');
-        $social_services_ccet_code_mitigation = $social_services->sum('ccet_code_mitigation');
+        $social_services_total_mooe = $safeSum($social_services, 'total_mooe');
+        $social_services_total_ps   = $safeSum($social_services, 'total_ps');
+        $social_services_total_co   = $safeSum($social_services, 'total_co');
+        $social_services_total_fe   = $safeSum($social_services, 'total_fe');
+        $social_services_ccet_code_adaptation = $safeSum($social_services, 'ccet_code_adaptation');
+        $social_services_ccet_code_mitigation = $safeSum($social_services, 'ccet_code_mitigation');
 
         // Other Services
-        $other_services_total_mooe = $other_services->sum('total_mooe');
-        $other_services_total_ps   = $other_services->sum('total_ps');
-        $other_services_total_co   = $other_services->sum('total_co');
-        $other_services_total_fe   = $other_services->sum('total_fe');
-        $other_services_ccet_code_adaptation = $other_services->sum('ccet_code_adaptation');
-        $other_services_ccet_code_mitigation = $other_services->sum('ccet_code_mitigation');
+        $other_services_total_mooe = $safeSum($other_services, 'total_mooe');
+        $other_services_total_ps   = $safeSum($other_services, 'total_ps');
+        $other_services_total_co   = $safeSum($other_services, 'total_co');
+        $other_services_total_fe   = $safeSum($other_services, 'total_fe');
+        $other_services_ccet_code_adaptation = $safeSum($other_services, 'ccet_code_adaptation');
+        $other_services_ccet_code_mitigation = $safeSum($other_services, 'ccet_code_mitigation');
 
         // Development Fund
-        $dev_total_mooe = $dev->sum('total_mooe');
-        $dev_total_ps   = $dev->sum('total_ps');
-        $dev_total_co   = $dev->sum('total_co');
-        $dev_total_fe   = $dev->sum('total_fe');
-        $dev_ccet_code_adaptation = $dev->sum('ccet_code_adaptation');
-        $dev_ccet_code_mitigation = $dev->sum('ccet_code_mitigation');
+        $dev_total_mooe = $safeSum($dev, 'total_mooe');
+        $dev_total_ps   = $safeSum($dev, 'total_ps');
+        $dev_total_co   = $safeSum($dev, 'total_co');
+        $dev_total_fe   = $safeSum($dev, 'total_fe');
+        $dev_ccet_code_adaptation = $safeSum($dev, 'ccet_code_adaptation');
+        $dev_ccet_code_mitigation = $safeSum($dev, 'ccet_code_mitigation');
 
         // LDRRMF
-        $ldrrmf_total_mooe = $ldrrmf->sum('total_mooe');
-        $ldrrmf_total_ps   = $ldrrmf->sum('total_ps');
-        $ldrrmf_total_co   = $ldrrmf->sum('total_co');
-        $ldrrmf_total_fe   = $ldrrmf->sum('total_fe');
-        $ldrrmf_ccet_code_adaptation = $ldrrmf->sum('ccet_code_adaptation');
-        $ldrrmf_ccet_code_mitigation = $ldrrmf->sum('ccet_code_mitigation');
+        $ldrrmf_total_mooe = $safeSum($ldrrmf, 'total_mooe');
+        $ldrrmf_total_ps   = $safeSum($ldrrmf, 'total_ps');
+        $ldrrmf_total_co   = $safeSum($ldrrmf, 'total_co');
+        $ldrrmf_total_fe   = $safeSum($ldrrmf, 'total_fe');
+        $ldrrmf_ccet_code_adaptation = $safeSum($ldrrmf, 'ccet_code_adaptation');
+        $ldrrmf_ccet_code_mitigation = $safeSum($ldrrmf, 'ccet_code_mitigation');
 
         // Other Source
-        $other_total_mooe = $other->sum('total_mooe');
-        $other_total_ps   = $other->sum('total_ps');
-        $other_total_co   = $other->sum('total_co');
-        $other_total_fe   = $other->sum('total_fe');
-        $other_ccet_code_adaptation = $other->sum('ccet_code_adaptation');
-        $other_ccet_code_mitigation = $other->sum('ccet_code_mitigation');
+        $other_total_mooe = $safeSum($other, 'total_mooe');
+        $other_total_ps   = $safeSum($other, 'total_ps');
+        $other_total_co   = $safeSum($other, 'total_co');
+        $other_total_fe   = $safeSum($other, 'total_fe');
+        $other_ccet_code_adaptation = $safeSum($other, 'ccet_code_adaptation');
+        $other_ccet_code_mitigation = $safeSum($other, 'ccet_code_mitigation');
 
 
 
@@ -3931,7 +3933,7 @@ class RevisionPlanController extends Controller
     public function getSourceLabel($source)
     {
         $sources = [
-            'gen_fund' => 'General Fund',
+            'gen_fund' => 'GF',
             'ldrrmf'   => 'LDRRMF',
             'other'    => 'Other Source',
             'dev'      => '20% Development Fund',
@@ -4025,10 +4027,10 @@ class RevisionPlanController extends Controller
                     ->filter()
                     ->map(fn ($desc) => trim($desc))
                     ->implode("\n"),
-                'total_mooe'=>$total_mooe,
-                'total_ps'=>$total_ps,
-                'total_co'=>$total_co,
-                'total_fe'=>$total_fe,
+                'total_mooe'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $total_mooe : '',
+                'total_ps'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $total_ps : '',
+                'total_co'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $total_co : '',
+                'total_fe'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $total_fe : '',
                 'ccet_code'=>optional($item)->ccet_code,
                 'ccet_code_mitigation'=>$ccet_code_mitigation,
                 'ccet_code_adaptation'=>$ccet_code_adaptation,
@@ -4795,7 +4797,7 @@ class RevisionPlanController extends Controller
 
         // 1️⃣ General Fund
         if (str_contains($normalized, 'GENERAL FUND') || $normalized === 'GF') {
-            $source = 'General Fund';
+            $source = 'GF';
         }
         // 2️⃣ LDRRMF (and variants)
         elseif (
