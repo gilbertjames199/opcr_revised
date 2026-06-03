@@ -3917,12 +3917,33 @@ class RevisionPlanController extends Controller
             ->where('status', '1')
             ->whereYear('date_start', $year)
             ->get();
+        // For GAS rows, replace paps with the matching ProgramAndProject by FFUNCCOD department_code.
+        $data = $data->map(function ($plan) {
+            if ($plan->scope !== 'GAS') {
+                return $plan;
+            }
 
+            $ffunccod = FFUNCCOD::where('FFUNCCOD', $plan->FFUNCCOD)->first();
+            if (!$ffunccod || !isset($ffunccod->department_code)) {
+                return $plan;
+            }
+
+            $gasPaps = ProgramAndProject::with(['office'])
+                ->where('department_code', $ffunccod->department_code)
+                ->where('type', 'GAS')
+                ->first();
+
+            if ($gasPaps) {
+                $plan->setRelation('paps', $gasPaps);
+            }
+
+            return $plan;
+        });
         // Apply paps filter only if the row's scope is not 'GAS'
         $data = $data->filter(function ($plan) use($request, $ssf_filter) {
-            if ($plan->scope === 'GAS') {
-                return true; // Include GAS scope without additional filter
-            }
+            // if ($plan->scope === 'GAS') {
+            //     return true; // Include GAS scope without additional filter
+            // }
 
             // For non-GAS scope, apply the paps filter
             if (!$request->ssf_filter) {
@@ -3947,28 +3968,7 @@ class RevisionPlanController extends Controller
             return true;
         });
 
-        // For GAS rows, replace paps with the matching ProgramAndProject by FFUNCCOD department_code.
-        $data = $data->map(function ($plan) {
-            if ($plan->scope !== 'GAS') {
-                return $plan;
-            }
 
-            $ffunccod = FFUNCCOD::where('FFUNCCOD', $plan->FFUNCCOD)->first();
-            if (!$ffunccod || !isset($ffunccod->department_code)) {
-                return $plan;
-            }
-
-            $gasPaps = ProgramAndProject::with(['office'])
-                ->where('department_code', $ffunccod->department_code)
-                ->where('type', 'GAS')
-                ->first();
-
-            if ($gasPaps) {
-                $plan->setRelation('paps', $gasPaps);
-            }
-
-            return $plan;
-        });
         // dd($data->first(), $data[296], );
         return $data;
     }
