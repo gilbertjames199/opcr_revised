@@ -3666,6 +3666,12 @@ class RevisionPlanController extends Controller
         $other_services_ccet_code_adaptation = $safeSum($other_services, 'ccet_code_adaptation') + $ldrrmf_ccet_code_adaptation;
         $other_services_ccet_code_mitigation = $safeSum($other_services, 'ccet_code_mitigation') + $ldrrmf_ccet_code_mitigation;
 
+        $ldrrmf_total_mooe = $safeSum($ldrrmf, 'total_mooe') + $safeSum($other_services, 'total_mooe');
+        $ldrrmf_total_ps   = $safeSum($ldrrmf, 'total_ps') + $safeSum($other_services, 'total_ps');
+        $ldrrmf_total_co   = $safeSum($ldrrmf, 'total_co') + $safeSum($other_services, 'total_co');
+        $ldrrmf_total_fe   = $safeSum($ldrrmf, 'total_fe') + $safeSum($other_services, 'total_fe');
+        $ldrrmf_ccet_code_adaptation = $safeSum($ldrrmf, 'ccet_code_adaptation') + $safeSum($other_services, 'ccet_code_adaptation');
+        $ldrrmf_ccet_code_mitigation = $safeSum($ldrrmf, 'ccet_code_mitigation') + $safeSum($other_services, 'ccet_code_mitigation');
         // Development Fund
         $dev_total_mooe = $safeSum($dev, 'total_mooe');
         $dev_total_ps   = $safeSum($dev, 'total_ps');
