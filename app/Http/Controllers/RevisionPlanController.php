@@ -3516,12 +3516,31 @@ class RevisionPlanController extends Controller
         $rev_ids = $strategies->pluck('id');
         $cap_ob = $this->capitalOutlayObject($request, $rev_ids);
         $capital_activities = $this->retrievingCapitalOutlay( $request->ccet, $cap_ob);
+        // Remember original order of activities
+        $grouped = $capital_activities->groupBy('id');
+        $result = collect();
+
+        foreach ($strategies as $strategy) {
+            $result->push($strategy);
+            $key = $strategy['id'];
+            if ($grouped->has($key)) {
+                $result = $result->concat($grouped[$key]);
+                $grouped->forget($key);
+            }
+        }
+        // Append any activities without a matching strategy (if needed)
+        foreach ($grouped as $activities) {
+            $result = $result->concat($activities);
+        }
+        $strategies=$result->values();
+        // dd($strategies);
         // $summary = $this->getRevisionPlanSummary($pln->concat($cap_ob));
         // dd($strategies->pluck('id'), $capital_activities->pluck('id'));
         // dd($strategies, $capital_activities->pluck('project_title'));
-        $strategies = $strategies
-            ->concat($capital_activities)
-            ->sort(function ($a, $b) {
+
+        // $strategies = $strategies
+        //     ->concat($capital_activities)
+        //     ->sort(function ($a, $b) {
 
                 /*
                 |--------------------------------------------------------------------------
@@ -3529,14 +3548,14 @@ class RevisionPlanController extends Controller
                 |--------------------------------------------------------------------------
                 */
 
-                $aipCompare = strcmp(
-                    (string)($a['aip_code'] ?? ''),
-                    (string)($b['aip_code'] ?? '')
-                );
+                // $aipCompare = strcmp(
+                //     (string)($a['aip_code'] ?? ''),
+                //     (string)($b['aip_code'] ?? '')
+                // );
 
-                if ($aipCompare !== 0) {
-                    return $aipCompare;
-                }
+                // if ($aipCompare !== 0) {
+                //     return $aipCompare;
+                // }
 
                 /*
                 |--------------------------------------------------------------------------
@@ -3544,11 +3563,11 @@ class RevisionPlanController extends Controller
                 |--------------------------------------------------------------------------
                 */
 
-                $idCompare = ($a['id'] ?? 0) <=> ($b['id'] ?? 0);
+                // $idCompare = ($a['id'] ?? 0) <=> ($b['id'] ?? 0);
 
-                if ($idCompare !== 0) {
-                    return $idCompare;
-                }
+                // if ($idCompare !== 0) {
+                //     return $idCompare;
+                // }
 
                 /*
                 |--------------------------------------------------------------------------
@@ -3556,9 +3575,10 @@ class RevisionPlanController extends Controller
                 |--------------------------------------------------------------------------
                 */
 
-                return ($a['level'] ?? 0) <=> ($b['level'] ?? 0);
-            })
-            ->values();
+            //     return ($a['level'] ?? 0) <=> ($b['level'] ?? 0);
+
+            // })
+            // ->values();
 
         // $strategies = $strategies->concat($capital_activities)->values();
         // dd($capital_activities);
@@ -4039,7 +4059,7 @@ class RevisionPlanController extends Controller
         ->whereIn('project_id', $ids)
         ->where('is_active', 1)
         ->whereHas('activity')
-	->orderBy('seq_no', 'ASC')
+        ->orderBy('seq_no', 'ASC')
         ->get();
     }
     public function retrievingCapitalOutlay($ccet, $cap_ob){
