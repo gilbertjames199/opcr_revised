@@ -4039,6 +4039,7 @@ class RevisionPlanController extends Controller
         ->whereIn('project_id', $ids)
         ->where('is_active', 1)
         ->whereHas('activity')
+	->orderBy('seq_no', 'ASC')
         ->get();
     }
     public function retrievingCapitalOutlay($ccet, $cap_ob){
