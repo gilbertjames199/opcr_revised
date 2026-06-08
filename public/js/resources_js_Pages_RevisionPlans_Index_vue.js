@@ -1683,15 +1683,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, _toConsumableArray(_cache[38] || (_cache[38] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fas fa-filter"
-  }, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Filter ", -1 /* CACHED */)]))), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Filter ", -1 /* CACHED */)]))), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 3,
     "class": "tool-btn tool-btn-info",
     onClick: _cache[3] || (_cache[3] = function ($event) {
       return $options.showAllowSubmissionModal();
     })
   }, _toConsumableArray(_cache[39] || (_cache[39] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fas fa-lock"
-  }, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Disable/Enable Annual Submissions ", -1 /* CACHED */)]))), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user.recid }} "), $props.auth.user.recid === 545 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 3,
+  }, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Disable/Enable Annual Submissions ", -1 /* CACHED */)])))) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user.recid }} "), $props.auth.user.recid === 545 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 4,
     "class": "tool-btn btn-success text-white",
     onClick: _cache[4] || (_cache[4] = function ($event) {
       return $options.syncOOEs();
@@ -1699,7 +1700,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, _toConsumableArray(_cache[40] || (_cache[40] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fas fa-filter"
   }, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sync OOEs ", -1 /* CACHED */)])))) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.auth.user.recid === 545 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 4,
+    key: 5,
     "class": "tool-btn btn-primary text-white",
     onClick: _cache[5] || (_cache[5] = function ($event) {
       return $options.generatePrograms();
@@ -1756,7 +1757,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onChange: _cache[11] || (_cache[11] = function () {
       return $options.filterProjects && $options.filterProjects.apply($options, arguments);
     })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <option value=\"\">All Types</option>\n                            <option value=\"p\">Project Profile</option>\n                            <option value=\"d\">Project Design</option> "), _cache[47] || (_cache[47] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<option value=\"General Public Services Sector\">General Public Services Sector</option><option value=\"Economic Services\">Economic Services</option><option value=\"Other Services\">Other Services</option><option value=\"Social Services Sector\">Social Services Sector</option><option value=\"gen_fund\">General Fund</option><option value=\"ldrrmf\">Local Disaster Risk Reduction and Management Fund</option><option value=\"other\">Other Sources</option><option value=\"dev\">Development Fund</option><option></option>", 9))], 544 /* NEED_HYDRATION, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.ssf_filter]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Search "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_cache[50] || (_cache[50] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <option value=\"\">All Types</option>\n                            <option value=\"p\">Project Profile</option>\n                            <option value=\"d\">Project Design</option> "), _cache[47] || (_cache[47] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<option value=\"General Public Services Sector\">General Public Services Sector</option><option value=\"Economic Services\">Economic Services</option><option value=\"Other Services\">Other Services</option><option value=\"Social Services Sector\">Social Services Sector</option><option value=\"gen_fund\">General Fund</option><option value=\"ldrrmf\">Local Disaster Risk Reduction and Management Fund</option><option value=\"other\">Other Sources</option><option value=\"dev\">20% Development Fund</option><option></option>", 9))], 544 /* NEED_HYDRATION, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.ssf_filter]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Search "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_cache[50] || (_cache[50] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "filter-label"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fas fa-search"

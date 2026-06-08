@@ -3347,6 +3347,8 @@ class RevisionPlanController extends Controller
             $strategy = optional($strategyProject)->strategy;
             return is_null($strategy);
         });
+
+        // return $plans;
         // dd($plansWithEmptyStrategy[11]);
         // ->pluck('project_title'));
         // dd($plansWithEmptyStrategy->pluck('project_title'));
@@ -3957,6 +3959,24 @@ class RevisionPlanController extends Controller
             ->where('status', '1')
             ->whereYear('date_start', $year)
             ->get();
+
+        // dd($data->pluck('id'), RevisionPlan::with([
+        //     'strategyProject.strategy',
+        //     'strategyProject.expected_output',
+        //     'strategyProject.expected_outcome',
+        //     'activityProject' => function ($query) {
+        //         $query->whereHas('activity');
+        //     },
+        //     'activityProject.activity',
+        //     'activityProject.expected_output',
+        //     'activityProject.expected_outcome',
+        //     'budget',
+        //     'paps',
+        //     'paps.office',
+        //     'paps.office.office',
+        //     'office'
+        // ])->where('id',655)->where('status', '1')
+        //     ->whereYear('date_start', $year)->first(), 'na filter siyua');
         // For GAS rows, replace paps with the matching ProgramAndProject by FFUNCCOD department_code.
         $data = $data->map(function ($plan) {
             if ($plan->scope !== 'GAS') {
@@ -3972,19 +3992,24 @@ class RevisionPlanController extends Controller
                 ->where('department_code', $ffunccod->department_code)
                 ->where('type', 'GAS')
                 ->first();
-
+            // if($plan->id==655){
+            //     dd($gasPaps,$ffunccod, 'plan 655 before mapping');
+            // }
             if ($gasPaps) {
                 $plan->setRelation('paps', $gasPaps);
             }
 
             return $plan;
         });
+        // dd($data->where('id',655)->first(), 'after mapping');
         // Apply paps filter only if the row's scope is not 'GAS'
         $data = $data->filter(function ($plan) use($request, $ssf_filter) {
             // if ($plan->scope === 'GAS') {
             //     return true; // Include GAS scope without additional filter
             // }
-
+            // if($plan->id==655){
+            //     dd($plan, 'plan 655 before filter');
+            // }
             // For non-GAS scope, apply the paps filter
             if (!$request->ssf_filter) {
                 return true; // No filter specified
@@ -4014,7 +4039,7 @@ class RevisionPlanController extends Controller
             return true;
         });
 
-
+        // dd($data->where('id',655)->first(), 'after filtering');
         // dd($data->first(), $data[296], );
         return $data;
     }

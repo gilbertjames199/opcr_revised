@@ -59,7 +59,7 @@
                         <button class="tool-btn tool-btn-outline" @click="showFilter()">
                             <i class="fas fa-filter"></i> Filter
                         </button>
-                        <button class="tool-btn tool-btn-info" @click="showAllowSubmissionModal()">
+                        <button v-if="auth.user.department_code === '04'" class="tool-btn tool-btn-info" @click="showAllowSubmissionModal()">
                             <i class="fas fa-lock"></i> Disable/Enable Annual Submissions
                         </button>
                         <!-- {{ auth.user.recid }} -->
@@ -119,7 +119,7 @@
                             <option value="gen_fund">General Fund</option>
                             <option value="ldrrmf">Local Disaster Risk Reduction and Management Fund</option>
                             <option value="other">Other Sources</option>
-                            <option value="dev">Development Fund</option>
+                            <option value="dev">20% Development Fund</option>
                             <option></option>
                         </select>
                     </div>
