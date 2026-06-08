@@ -4159,7 +4159,7 @@ class RevisionPlanController extends Controller
                 'ccet_code'=>optional($item)->ccet_code,
                 'ccet_code_mitigation'=>in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $ccet_code_mitigation : 0,
                 'ccet_code_adaptation'=>in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $ccet_code_adaptation : 0,
-                'aip_code'=>optional($plan)->aip_code,
+                'aip_code'=>optional($item)->aip_code,
                 'source'=>" ",
                 'ccet'=>$ccet,
                 'year'=>optional($plan)->year,
