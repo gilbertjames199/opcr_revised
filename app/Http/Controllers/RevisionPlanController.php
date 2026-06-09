@@ -3405,7 +3405,7 @@ class RevisionPlanController extends Controller
                 ->pluck('expected_output')
                 ->filter()
                 ->flatten(1)
-                ->map(function ($output) {
+                ->map(function ($output) use($plan){
                     $target_budget_year =
                         ($output->physical_q1 ? floatval($output->physical_q1) : 0) +
                         ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
@@ -3414,10 +3414,25 @@ class RevisionPlanController extends Controller
                     $description = trim($output->description ?? '');
 
                     // Check if description starts with a number
-                    if (preg_match('/^\d+/', $description)) {
+                    if (
+                        preg_match('/^\(\d+\)/', $description) ||
+                        preg_match('/^\d+/', $description)||
+                        preg_match('/^[^:]+:\s*/', $description)
+                    ) {
                         return $description;
                     }
 
+                    $formattedTarget = number_format($target_budget_year);
+                    if (
+                        str_contains($description, (string) $target_budget_year) ||
+                        str_contains($description, $formattedTarget)
+                    ) {
+                        return $description;
+                    }
+
+                    // if($plan->id==362){
+                    //     return $target_budget_year . ' fsdfsd ' . $description;
+                    // }
                     return $target_budget_year . ' ' . $description;
                 })
                 ->filter()
