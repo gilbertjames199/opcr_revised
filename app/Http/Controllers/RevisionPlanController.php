@@ -3447,7 +3447,7 @@ class RevisionPlanController extends Controller
             $ccet_code_mitigation = 0;
 
 
-            $ccetCode = null;
+            $ccetCode = '';
             $activityWithCcet = collect($plan->activityProject)->firstWhere('ccet_code', '!=', null);
 
 
@@ -3488,6 +3488,9 @@ class RevisionPlanController extends Controller
                         optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
                         optional(optional(optional($plan)->paps)->office)->FFUNCTION;
             // dd($source, optional(optional($plan)->paps)->source_of_funds);
+            // if ($plan->id==618) {
+            //     dd($plan, in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? '' : $ccetCode);
+            // }
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
@@ -3497,7 +3500,7 @@ class RevisionPlanController extends Controller
                     'total_ps' => floatval($total_ps),
                     'total_co' => floatval($total_co),
                     'total_fe' => floatval($total_fe),
-                    'ccet_code' => $ccetCode,
+                    'ccet_code' => in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? '' : $ccetCode,
                     'ccet_code_mitigation' => $ccet_code_mitigation,
                     'ccet_code_adaptation' => $ccet_code_adaptation,
                     'aip_code' => $plan->aip_code,
