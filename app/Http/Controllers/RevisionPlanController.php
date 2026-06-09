@@ -3342,12 +3342,12 @@ class RevisionPlanController extends Controller
         // ? "1":"0";
         // dd($ssf_filter);
         $plans = $this->getAllPlans($request, $year, $ssf_filter);
-        $plansWithEmptyStrategy = $plans->filter(function ($plan) {
-            $strategyProject = $plan->strategyProject()->whereHas('strategy')->first();
-            $strategy = optional($strategyProject)->strategy;
-            return is_null($strategy);
-        });
-
+        // $plansWithEmptyStrategy = $plans->filter(function ($plan) {
+        //     $strategyProject = $plan->strategyProject()->whereHas('strategy')->first();
+        //     $strategy = optional($strategyProject)->strategy;
+        //     return is_null($strategy);
+        // });
+        // dd($plans->pluck('aip_code'), $plansWithEmptyStrategy->pluck('project_title'));
         // return $plans;
         // dd($plansWithEmptyStrategy[11]);
         // ->pluck('project_title'));
@@ -3594,7 +3594,7 @@ class RevisionPlanController extends Controller
             ->where('source_of_funds', 'gen_fund')
             ->where('sector', 'General Public Services Sector')
             ->values();
-
+        // dd($general_public_services->pluck('aip_code'));
         $economic_services = $strategies
             ->where('source_of_funds', 'gen_fund')
             ->where('sector', 'Economic Services')
@@ -3731,7 +3731,7 @@ class RevisionPlanController extends Controller
         | Final Strategies
         |--------------------------------------------------------------------------
         */
-
+        // dd($general_public_services->pluck('aip_code'));
         $final_strategies = collect()
             ->concat($general_public_services)
             ->concat($economic_services)
@@ -3936,6 +3936,8 @@ class RevisionPlanController extends Controller
         // dd($final_strategies, $strategies);
         // dd($final_strategies->pluck('grand_total_mooe'), $final_strategies->pluck('grand_total_ps'), $final_strategies->pluck('grand_total_co'), $final_strategies->pluck('grand_total_fe'));
         // dd($final_strategies[78], $final_strategies[77]);
+
+        // dd($final_strategies->pluck('aip_code'));
         return $final_strategies;
     }
     public function getAllPlans(Request $request, $year, $ssf_filter){
@@ -3958,6 +3960,7 @@ class RevisionPlanController extends Controller
             ])
             ->where('status', '1')
             ->whereYear('date_start', $year)
+            ->orderBy('aip_code', 'asc')
             ->get();
 
         // dd($data->pluck('id'), RevisionPlan::with([
@@ -4038,7 +4041,7 @@ class RevisionPlanController extends Controller
 
             return true;
         });
-
+        // dd($data->pluck('aip_code'));
         // dd($data->where('id',655)->first(), 'after filtering');
         // dd($data->first(), $data[296], );
         return $data;
