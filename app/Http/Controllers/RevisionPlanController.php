@@ -4177,7 +4177,7 @@ class RevisionPlanController extends Controller
                 'total_ps'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_ps) : 0,
                 'total_co'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_co) : 0,
                 'total_fe'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_fe) : 0,
-                'ccet_code'=>optional($item)->ccet_code,
+                'ccet_code'=>optional($item)->ccet_code ? optional($item)->ccet_code:'',
                 'ccet_code_mitigation'=>in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $ccet_code_mitigation : 0,
                 'ccet_code_adaptation'=>in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $ccet_code_adaptation : 0,
                 'aip_code'=>optional($item)->aip_code,
