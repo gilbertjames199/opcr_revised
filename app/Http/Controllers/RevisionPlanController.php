@@ -3386,21 +3386,27 @@ class RevisionPlanController extends Controller
             //     ])
             //     ->filter(fn($item) => !empty($item['description']))
             //     ->values();
+
             $expected_outputs = in_array($source_of_funds, ['dev', 'other'])
                 ? ""
                 : collect($plan->activityProject)
-                 ->filter(function ($activityProject) {
+                 ->filter(function ($activityProject) use($plan) {
                     // Only active activity projects
                     if ((int)($activityProject->is_active ?? 0) !== 1) {
                         return false;
                     }
-                    $total_co =
-                        (float)($activityProject->co_q1 ?? 0) +
-                        (float)($activityProject->co_q2 ?? 0) +
-                        (float)($activityProject->co_q3 ?? 0) +
-                        (float)($activityProject->co_q4 ?? 0);
+                    if($plan->id==668){
+                        return true;
+                    }else{
+                        $total_co =
+                            (float)($activityProject->co_q1 ?? 0) +
+                            (float)($activityProject->co_q2 ?? 0) +
+                            (float)($activityProject->co_q3 ?? 0) +
+                            (float)($activityProject->co_q4 ?? 0);
 
-                    return $total_co <= 0;
+                        return $total_co <= 0;
+                    }
+
                 })
                 ->pluck('expected_output')
                 ->filter()
@@ -3437,6 +3443,73 @@ class RevisionPlanController extends Controller
                 })
                 ->filter()
                 ->implode("\n");
+            // if($plan->id==668){
+            //     dd('plan',
+            //         $plan,
+            //     'activity project',
+            //         $plan->activityProject,
+            //         'source of funds',
+            //         $source_of_funds,
+            //         'expected outputs',
+            //         $expected_outputs,
+            //         'activity project',
+            //         $plan->activityProject[1],
+            //         collect($plan->activityProject)
+            //             ->filter(function ($activityProject) {
+            //                 // Only active activity projects
+            //                 if ((int)($activityProject->is_active ?? 0) !== 1) {
+            //                     return false;
+            //                 }
+            //                 $total_co =
+            //                     (float)($activityProject->co_q1 ?? 0) +
+            //                     (float)($activityProject->co_q2 ?? 0) +
+            //                     (float)($activityProject->co_q3 ?? 0) +
+            //                     (float)($activityProject->co_q4 ?? 0);
+
+            //                 return $total_co <= 0;
+            //             })
+            //             ->pluck('expected_output')
+            //             ->filter(), "|dsdasdsa",
+            //         collect($plan->activityProject)->count(),"fdfsdfsdfsdfsdfsdfsdf",
+            //         collect($plan->activityProject)
+            //             ->filter(function ($activityProject) {
+            //                 return (int)($activityProject->is_active ?? 0) === 1;
+            //             })
+            //             ->pluck('expected_output')
+            //         ->filter()
+            //         ->flatten(1)
+            //         ->map(function ($output) use($plan){
+            //             $target_budget_year =
+            //                 ($output->physical_q1 ? floatval($output->physical_q1) : 0) +
+            //                 ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
+            //                 ($output->physical_q3 ? floatval($output->physical_q3) : 0) +
+            //                 ($output->physical_q4 ? floatval($output->physical_q4) : 0);
+            //             $description = trim($output->description ?? '');
+
+            //             // Check if description starts with a number
+            //             if (
+            //                 preg_match('/^\(\d+\)/', $description) ||
+            //                 preg_match('/^\d+/', $description)||
+            //                 preg_match('/^[^:]+:\s*/', $description)
+            //             ) {
+            //                 return $description;
+            //             }
+
+            //             $formattedTarget = number_format($target_budget_year);
+            //             if (
+            //                 str_contains($description, (string) $target_budget_year) ||
+            //                 str_contains($description, $formattedTarget)
+            //             ) {
+            //                 return $description;
+            //             }
+
+
+            //             return $target_budget_year . ' ' . $description;
+            //         })
+            //         ->filter()
+            //         ->implode("\n")
+            //     );
+            // }
             $total_mooe = $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
             $total_ps = $budget->where('category', 'Personnel Services')->sum('amount');
             $total_co = $budget->where('category', 'Capital Outlay')->sum('amount');
