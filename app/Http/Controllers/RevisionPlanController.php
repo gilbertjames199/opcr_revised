@@ -5354,7 +5354,8 @@ class RevisionPlanController extends Controller
                 'idpaps',
                 'date_start',
                 'version',
-                'status'
+                'status',
+                'scope'
             )
             ->get();
 
@@ -5408,6 +5409,7 @@ class RevisionPlanController extends Controller
                 'date_start'    => $plan->date_start,
                 'version'       => $plan->version,
                 'status'        => $plan->status,
+                'scope'         => $plan->scope,
 
 
                 // PAPS
@@ -5417,8 +5419,11 @@ class RevisionPlanController extends Controller
                 'FFUNCCOD'      => $plan->paps->FFUNCCOD ?? null,
                 'department_code' => $plan->paps->department_code ?? null,
 
+
                 // MFO
-                'mfo_desc'      => $plan->paps->MFO->mfo_desc ?? null,
+                'mfo_desc' => ($plan->scope === 'GAS')
+                    ? 'General Administrative Services'
+                    : ($plan->paps->MFO->mfo_desc ?? null),
 
                 // Budget
                 'PS'   => number_format((float) $budgetTotals->PS, 2, '.', ','),
