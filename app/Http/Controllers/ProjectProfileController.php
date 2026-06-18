@@ -60,24 +60,11 @@ class ProjectProfileController extends Controller
             ->where('FFUNCCOD', $FFUNCCOD)
             ->where('type', 'GAS')
             ->get()
-<<<<<<< HEAD
-            ->map(function ($item)  use ($year){
+            ->map(function ($item)  use ($year) {
                 // dd($item->FFUNCCOD);
                 $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
                     ->where('status', '1')
                     ->whereYear('date_start', $year)
-=======
-            ->map(function ($item)use($year) {
-                // dd($item->FFUNCCOD);
-                $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
-                    // ->where('status', '1')
-                    ->where(function($query)  {
-                        $query->where('status', '1')
-                            ->orWhere('status', '0');
-                    })
-                    ->whereYear(('date_start'), $year)
-                    ->where('idpaps',0)
->>>>>>> f9df842b00d1cee36e424c1ba93d9f7c3dd4fff3
                     ->with('budget')
                     ->orderBY('created_at', 'desc')
                     ->first();
@@ -121,7 +108,7 @@ class ProjectProfileController extends Controller
             'fund_owner',
         )
             // ->where('FFUNCCOD', $FFUNCCOD)
-            ->where(function($query) use ($FFUNCCOD, $shared_paps) {
+            ->where(function ($query) use ($FFUNCCOD, $shared_paps) {
                 $query->where('FFUNCCOD', $FFUNCCOD)
                     ->orWhereIn('id', $shared_paps);
             })
@@ -197,16 +184,16 @@ class ProjectProfileController extends Controller
             ->where('FFUNCCOD', $FFUNCCOD)
             ->where('type', 'GAS')
             ->get()
-            ->map(function ($item)use($year) {
+            ->map(function ($item) use ($year) {
                 // dd($item->FFUNCCOD);
                 $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
                     // ->where('status', '1')
-                    ->where(function($query)  {
+                    ->where(function ($query) {
                         $query->where('status', '1')
                             ->orWhere('status', '0');
                     })
                     ->whereYear(('date_start'), $year)
-                    ->where('idpaps',0)
+                    ->where('idpaps', 0)
                     ->with('budget')
                     ->orderBY('created_at', 'desc')
                     ->first();
@@ -250,7 +237,7 @@ class ProjectProfileController extends Controller
             'fund_owner',
         )
             // ->where('FFUNCCOD', $FFUNCCOD)
-            ->where(function($query) use ($FFUNCCOD, $shared_paps) {
+            ->where(function ($query) use ($FFUNCCOD, $shared_paps) {
                 $query->where('FFUNCCOD', $FFUNCCOD)
                     ->orWhereIn('id', $shared_paps);
             })
