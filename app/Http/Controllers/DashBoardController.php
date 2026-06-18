@@ -23,8 +23,8 @@ class DashBoardController extends Controller
 
     public function index()
     {
-        //dd('create: '.auth()->user()->can('create',User::class).'edit: '.auth()->user()->can('edit',User::class).'delete: '.auth()->user()->can('delete',User::class));
-
+        // dd('create: '.auth()->user()->can('create',User::class).'edit: '.auth()->user()->can('edit',User::class).'delete: '.auth()->user()->can('delete',User::class));
+        // dd(DB::connection()->getDatabaseName(), DB::connection('mysql2')->getDatabaseName());
         $dept_code = auth()->user()->department_code;
 
 

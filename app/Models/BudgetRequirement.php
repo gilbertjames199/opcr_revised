@@ -36,4 +36,8 @@ class BudgetRequirement extends Model
     {
         return $this->belongsTo(RevisionPlan::class, 'revision_plan_id', 'id');
     }
+
+    public function objectOfExpenditure(){
+        return $this->belongsTo(OOE::class, 'idooe', 'recid');
+    }
 }

@@ -105,6 +105,7 @@ use App\Http\Controllers\RevisionPlanCommentController;
 use App\Http\Controllers\RevisionPlanDocumentsController;
 use App\Http\Controllers\SentenceParserController;
 use App\Http\Controllers\SharedProgramAndProjectController;
+use App\Http\Controllers\AllowedSubmissionController;
 use App\Http\Controllers\StrategyProjectController;
 use App\Http\Controllers\TimeRangeController;
 use App\Http\Controllers\UserController;
@@ -130,6 +131,8 @@ use Carbon\Carbon;
 
 Auth::routes(['verify' => true]);
 
+// ->middleware('auth');
+
 Route::middleware(['auth', 'can:manage users'])->group(function () {
     Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
     Route::post('/admin/users/{user}/roles', [UserController::class, 'updateRoles']);
@@ -141,7 +144,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/manual', [DashBoardController::class, 'manual']);
     });
 
-
+    // Route to update allow_ipp_submissions flag (used by frontend ModalAllowSubmission)
+    Route::post('/allowed-submissions/update/{id}', [AllowedSubmissionController::class, 'update']);
     //HOME
     Route::prefix('/home')->group(function () {
         Route::get('/', [DashBoardController::class, 'index']);
@@ -456,6 +460,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/general/administration/services/{FFUNCCOD}/plan/store', [RevisionPlanController::class, 'gas_store']);
         Route::get('/export/aip', [RevisionPlanController::class, 'exportStrategies'])->name('export.aip');
         Route::post('/sync-ooes', [RevisionPlanController::class, 'syncOOEs'])->name('revision.sync-ooes');
+        Route::post('/generate-programs', [RevisionPlanController::class, 'generatePrograms'])->name('revision.generate-programs');
         Route::get('/automate/hospital/operations',[RevisionPlanController::class, 'automateHospitalOperations'])->name('revision.automate-hospital-operations');
     });
     // AIP Code
@@ -1305,6 +1310,7 @@ Route::prefix('printLBP')->group(function () {
     Route::get('/MFO', [AIPController::class, 'MFO']);
     Route::get('/PAPS', [AIPController::class, 'PAPS']);
 });
+// LBP Form 2 Printing
 Route::prefix('print/appropriations')->group(function () {
     Route::get('/', [AppropriationController::class, 'main']);
     Route::get('/paps/types', [AppropriationController::class, 'paps_types']);

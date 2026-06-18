@@ -261,7 +261,15 @@
                                     class="sub-row"
                                 >
                                     <!-- Col 1: AIP Code column — empty, acts as indent anchor -->
-                                    <td></td>
+                                    <td>
+                                        <input
+                                            v-model="activity.aip_code"
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            style="min-width: 160px;"
+                                            @blur="autosave(activity.id, 'activity_projects', 'aip_code', activity.aip_code)"
+                                        />
+                                    </td>
 
                                     <!-- Col 2: Project Title column — activity description -->
                                     <td style="padding-left: 20px;">

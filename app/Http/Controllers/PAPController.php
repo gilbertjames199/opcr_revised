@@ -423,7 +423,7 @@ class PAPController extends Controller
     }
     public function updated(Request $request, $id)
     {
-        $dept_code = auth()->user()->department_code;
+        // $dept_code = $request->department_code;
         $data = $this->model::findOrFail($request->id);
         // dd($request->all());
         // dd($request->chief_executive_agenda);
@@ -432,7 +432,7 @@ class PAPController extends Controller
         $data->update([
             'paps_desc' => $request->paps_desc,
             'FFUNCCOD' => $request->FFUNCCOD,
-            'department_code' => $dept_code,
+            // 'department_code' => $dept_code,
             'idmfo' => $request->idmfo,
             'MOV' => $request->MOV,
             'type' => $request->type,

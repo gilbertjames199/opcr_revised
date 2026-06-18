@@ -820,6 +820,7 @@ class AnnualInvestmentPlanController extends Controller
         $allowedColumns = [
             'revision_plans'      => ['aip_code'],
             'program_and_projects' => ['source_of_funds', 'sector','MOV'],
+            'activity_projects' => ['aip_code'],
         ];
 
         $validated = $request->validate([
@@ -842,7 +843,7 @@ class AnnualInvestmentPlanController extends Controller
         DB::table($table)
             ->where('id', $validated['id'])
             ->update([$column => $validated['value']]);
-
+        // dd("Updated {$table}.{$column} to '{$validated['value']}' for record ID {$validated['id']}");
         // return response()->json(['success' => true]);
         return redirect()->back();
     }

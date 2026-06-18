@@ -59,9 +59,15 @@
                         <button class="tool-btn tool-btn-outline" @click="showFilter()">
                             <i class="fas fa-filter"></i> Filter
                         </button>
+                        <button v-if="auth.user.department_code === '04'" class="tool-btn tool-btn-info" @click="showAllowSubmissionModal()">
+                            <i class="fas fa-lock"></i> Disable/Enable Annual Submissions
+                        </button>
                         <!-- {{ auth.user.recid }} -->
                         <button v-if="auth.user.recid === 545" class="tool-btn btn-success text-white" @click="syncOOEs()">
                             <i class="fas fa-filter"></i> Sync OOEs
+                        </button>
+                        <button v-if="auth.user.recid === 545" class="tool-btn btn-primary text-white" @click="generatePrograms()">
+                            <i class="fas fa-cogs"></i> Generate Programs
                         </button>
                     </div>
                 </div>
@@ -113,7 +119,7 @@
                             <option value="gen_fund">General Fund</option>
                             <option value="ldrrmf">Local Disaster Risk Reduction and Management Fund</option>
                             <option value="other">Other Sources</option>
-                            <option value="dev">Development Fund</option>
+                            <option value="dev">20% Development Fund</option>
                             <option></option>
                         </select>
                     </div>
@@ -549,8 +555,9 @@
                                     </div>
                                     <div v-if="parseFloat(dat.status)>-1 && parseFloat(dat.status) !== 1" class="mt-1">
                                         <small class="text-muted">
+
                                             <i :class="dat.gad_status==1 ? 'fas fa-check-circle text-success me-1' : 'fas fa-hourglass-half text-warning me-1'"></i>
-                                            {{ dat.gad_status==1 ? 'GAD Approved' : 'GAD Not Yet Evaluated' }}
+                                            {{ dat.gad_status==1 || dat.gad_status==='1' ? 'GAD Approved' : 'GAD Not Yet Evaluated' }}
                                         </small>
                                     </div>
                                 </td>
@@ -664,11 +671,11 @@
                                         :class="can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
                                         -->
                                         <!-- {{ hasAnyWarning(dat) }} -->
-                                        <button v-if="(dat.status == '-1' || dat.status == '-2') && !hasAnyWarning(dat)"
+                                        <button v-if="(dat.status == '-1' || dat.status == '-2') && !hasAnyWarning(dat) && isSubmissionAllowed(dat.year)"
                                                 @click="submitItem(dat, 0)"
-                                                :disabled="hasAnyWarning(dat)"
-                                                :class="!hasAnyWarning(dat) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
-                                                title="Submit Project">
+                                                :disabled="hasAnyWarning(dat) || !isSubmissionAllowed(dat.year)"
+                                                :class="!hasAnyWarning(dat) && isSubmissionAllowed(dat.year) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
+                                                :title="!isSubmissionAllowed(dat.year) ? 'Submissions are disabled for year ' + dat.year : 'Submit Project'">
                                             <i class="fas fa-paper-plane"></i>
                                             <span class="ms-1">Submit</span>
                                         </button>
@@ -1094,6 +1101,7 @@
 
             </div>
         </ReturnWithAmmendmentsModal>
+        <ModalAllowSubmission v-if="showAllowSubmissionModalVisible" @close-modal-event="hideAllowSubmissionModal" :allowed="allowed" @submission-updated="refreshPage" />
     <!-- src: {{source}} fdfsdf -->
 </template>
 <script>
@@ -1107,9 +1115,11 @@ import LBPPrintModal from "@/Shared/ModalDynamicTitle";
 import { Inertia } from '@inertiajs/inertia';
 import WorkPlanModal from "@/Shared/ModalDynamicTitle";
 import ReturnWithAmmendmentsModal from "@/Shared/ModalDynamicTitle";
+import ModalAllowSubmission from "@/Shared/ModalAllowSubmission";
 
 export default {
     props: {
+
         auth: Object,
         data: Object,
         //idstrat: String,
@@ -1119,6 +1129,7 @@ export default {
         monitors: Object,
         source: String,
         year_filtering: String,
+        allowed: Object,
         // search: String,
         // type_f: String,
     },
@@ -1166,11 +1177,12 @@ export default {
             // END OF RETURN REQUEST***************
             year_filtering_d: '',
             ssf_filter: '',
-            showFlyingPlane: false
+            showFlyingPlane: false,
+            showAllowSubmissionModalVisible: false
         }
     },
     components: {
-        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal, ReturnWithAmmendmentsModal, HgdgModal, LBPPrintModal
+        Pagination, Filtering, AIPModal, WorkPlanModal, SIPModal, ProjectPrintModal, ReturnWithAmmendmentsModal, HgdgModal, LBPPrintModal, ModalAllowSubmission
     },
     watch: {
         search: _.debounce(function (value) {
@@ -1201,6 +1213,40 @@ export default {
         toggleWarnings(id) {
             this.openWarningsRow = this.openWarningsRow === id ? null : id;
         },
+        showAllowSubmissionModal() {
+            this.showAllowSubmissionModalVisible = true;
+        },
+        hideAllowSubmissionModal() {
+            this.showAllowSubmissionModalVisible = false;
+        },
+        refreshPage() {
+            this.$inertia.get(
+                "/revision/"+this.paps_id_here,
+                {
+                    search: this.search,
+                    type_filter: this.type_filter,
+                    ssf_filter: this.ssf_filter,
+                    source:this.source,
+                    year: this.year_filtering_d
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        },
+        isSubmissionAllowed(year) {
+            if (!this.allowed) return true;
+
+            // Handle if allowed is an object with array values
+            let allowedArray = Array.isArray(this.allowed) ? this.allowed : Object.values(this.allowed);
+
+            const allowedItem = allowedArray.find(item => item.year === year || item.year === String(year));
+            if (!allowedItem) return true; // If no restriction found, allow submission
+
+            return allowedItem.allow_submission === '1' || allowedItem.allow_submission === 1;
+        },
         hasAnyWarning(dat) {
             return !!(
                 this.amountStatus(dat.budget_sum, dat.imp_amount) ||
@@ -1213,6 +1259,20 @@ export default {
         syncOOEs() {
 
             this.$inertia.post("/revision/sync-ooes",
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        },
+        generatePrograms() {
+            if (!confirm("Are you sure you want to generate programs from revision plans with NULL program_id_2?")) {
+                return;
+            }
+
+            this.$inertia.post("/revision/generate-programs",
+                {},
                 {
                     preserveScroll: true,
                     preserveState: true,
