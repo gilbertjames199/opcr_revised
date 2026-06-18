@@ -5334,16 +5334,17 @@ class RevisionPlanController extends Controller
 
     public function lbpform4(Request $request)
     {
-        $funccod = $request->FFUNCCOD;
+        $dept_code = $request->department_code;
         $currentYear = $request->year;
 
+        // dd($dept_code);
         $data = RevisionPlan::with([
-            'paps:id,paps_desc,idmfo,aip_code,FFUNCCOD',
+            'paps:id,paps_desc,idmfo,aip_code,department_code,FFUNCCOD',
             'paps.MFO:id,mfo_desc',
             'activityProject.expected_output',
         ])
-            ->whereHas('paps', function ($query) use ($funccod) {
-                $query->where('FFUNCCOD', $funccod);
+            ->whereHas('paps', function ($query) use ($dept_code) {
+                $query->where('department_code', $dept_code);
             })
             ->whereYear('date_start', $currentYear)
             ->where('status', 1)
@@ -5408,11 +5409,13 @@ class RevisionPlanController extends Controller
                 'version'       => $plan->version,
                 'status'        => $plan->status,
 
+
                 // PAPS
                 'paps_desc'     => $plan->paps->paps_desc ?? null,
                 'idmfo'         => $plan->paps->idmfo ?? null,
                 'aip_code'      => $plan->paps->aip_code ?? null,
                 'FFUNCCOD'      => $plan->paps->FFUNCCOD ?? null,
+                'department_code' => $plan->paps->department_code ?? null,
 
                 // MFO
                 'mfo_desc'      => $plan->paps->MFO->mfo_desc ?? null,
