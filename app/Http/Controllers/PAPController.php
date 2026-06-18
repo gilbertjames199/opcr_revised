@@ -263,6 +263,13 @@ class PAPController extends Controller
         }
         $msg = "Failed to add Programs and Projects(PAPS)";
         $status = "error";
+        $fundMap = [
+            'ldrrmf'   => '301',
+            'dev'      => '500',
+            'gen_fund' => '100',
+            'other'    => '400',
+        ];
+
         if ($proceed === "1") {
 
             //$this->model->create($attributes);
@@ -280,6 +287,7 @@ class PAPController extends Controller
             $paps->research_agenda = $request->research_agenda;
             $paps->sector = $request->sector;
             $paps->subsector = $request->subsector;
+            $paps->FFUNDCOD = $fundMap[$request->source_of_funds];
             $paps->source_of_funds = $request->source_of_funds;
             $paps->source_others_specify = $request->source_others_specify;
             $paps->funding_agency = $request->funding_agency;
@@ -429,6 +437,14 @@ class PAPController extends Controller
         // dd($request->chief_executive_agenda);
         // dd($request->aip_code);
         //$validatedData=$request->validate(ProgramAndProject::rules(), ProgramAndProject::errorMessages());
+        $fundMap = [
+            'ldrrmf'   => '301',
+            'dev'      => '500',
+            'gen_fund' => '100',
+            'other'    => '400',
+        ];
+
+        // dd($fundMap[$request->source_of_funds]);
         $data->update([
             'paps_desc' => $request->paps_desc,
             'FFUNCCOD' => $request->FFUNCCOD,
@@ -445,6 +461,7 @@ class PAPController extends Controller
             'subsector' => $request->subsector,
             'source_of_funds' => $request->source_of_funds,
             'source_others_specify' => $request->source_others_specify,
+            'FFUNDCOD' => $fundMap[$request->source_of_funds],
             'funding_agency' => $request->funding_agency,
             'popsp' => $request->popsp,
             'focus_area' => $request->focus_area,

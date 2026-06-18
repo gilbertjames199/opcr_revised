@@ -74,10 +74,10 @@
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.agency_name">{{ form.errors.agency_name }}</div>
                 <input type="checkbox"
-                v-model="form.is_mother_program"
-                :true-value="1"
-                :false-value="0">
-                    &nbsp;Is Mother PAPS
+                    v-model="form.is_mother_program"
+                    :true-value="1"
+                    :false-value="0">
+                        &nbsp;Is Mother PAPS
                 <br>
                 <div class="fs-6 c-red-500" v-if="form.errors.with_gad_training">{{ form.errors.with_gad_training }}</div>
 
@@ -138,16 +138,16 @@
                 <label>Fund Owner</label>
 
                 <select class="form-control" v-model="form.fund_owner_ffunccod">
-    <option value=""></option>
+                    <option value=""></option>
 
-    <option v-for="functional1 in functions1"
-            :key="functional1.FFUNCCOD"
-            :value="functional1.FFUNCCOD">
+                    <option v-for="functional1 in functions1"
+                            :key="functional1.FFUNCCOD"
+                            :value="functional1.FFUNCCOD">
 
-        {{ functional1.FFUNCTION }} ({{ functional1.FFUNCCOD }})
+                        {{ functional1.FFUNCTION }} ({{ functional1.FFUNCCOD }})
 
-    </option>
-</select>
+                    </option>
+                </select>
                 <!-- FUNDING AGENCY -->
                 <!-- <label for="">Funding Agency</label>
                 <input type="text" v-model="form.funding_agency" class="form-control" autocomplete="chrome-off">
@@ -174,8 +174,9 @@
                         {{ chief_agenda.agenda_description }}
                     </option>
                 </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.chief_executive_agenda">{{ form.errors.chief_executive_agenda
-                }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.chief_executive_agenda">
+                    {{ form.errors.chief_executive_agenda }}
+                </div>
 
                 <label for="">Socio-Economic Agenda</label>
                 <select class="form-control form-select" v-model="form.socio_economic_agenda">
@@ -203,8 +204,9 @@
                         {{ executive_legislative.agenda_description }}
                     </option>
                 </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.executive_legislative_agenda">{{
-                    form.errors.executive_legislative_agenda }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.executive_legislative_agenda">
+                    {{ form.errors.executive_legislative_agenda }}
+                </div>
 
                 <label for="">Research Agenda</label>
                 <select class="form-control form-select" v-model="form.research_agenda">

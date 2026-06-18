@@ -106,6 +106,7 @@ use App\Http\Controllers\RevisionPlanDocumentsController;
 use App\Http\Controllers\SentenceParserController;
 use App\Http\Controllers\SharedProgramAndProjectController;
 use App\Http\Controllers\AllowedSubmissionController;
+use App\Http\Controllers\SangguniangPanlalawiganApproverController;
 use App\Http\Controllers\StrategyProjectController;
 use App\Http\Controllers\TimeRangeController;
 use App\Http\Controllers\UserController;
@@ -574,6 +575,16 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/institutional_aip')->group(function () {
         Route::get('/', [AnnualInvestmentPlanInstitutionalController::class, 'index']);
         Route::post('/status/{type}', [AnnualInvestmentPlanInstitutionalController::class, 'updateInstitutionalAIPStatus']);
+    });
+
+    // SP Members/AIP APprovers
+    Route::prefix('/approvers')->group(function(){
+        Route::get('/', [SangguniangPanlalawiganApproverController::class, 'index']);
+        Route::get('/create',[SangguniangPanlalawiganApproverController::class, 'create']);
+        Route::post('/',[SangguniangPanlalawiganApproverController::class,'store']);
+        Route::get('/{id}/edit',[SangguniangPanlalawiganApproverController::class, 'edit']);
+        Route::delete('/{}',[SangguniangPanlalawiganApproverController::class, 'destroy']);
+        Route::patch('/',[SangguniangPanlalawiganApproverController::class, 'update']);
     });
     //Strategies and Activities
     Route::prefix('/strategies-and-activities')->group(function () {

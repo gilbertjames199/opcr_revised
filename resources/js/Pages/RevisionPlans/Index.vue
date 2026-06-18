@@ -810,6 +810,17 @@
             <iframe :src="aip_printLink" style="width:100%; height:500px" />
 
         </div>
+        <button class="btn btn-primary btn-sm mL-2 text-white" @click="updateAIPStatus('LDC0')"
+            v-if="auth.user.department_code==='04'"
+        >
+            Submit AIP for LDC Review
+        </button>
+        <button class="btn btn-primary btn-sm mL-2 text-white" v-if="auth.user.department_code==='04'"
+        @click="updateAIPStatus('SP0', year_period)">
+            Submit AIP for SP Review
+        </button>
+        {{ AIPInstitutional }}
+        <!-- {{ auth.user.department_code }} -->
         <!-- <Link :href="aip_printLink_excel" class="btn btn-primary text-white">
                 Export to Excel
             </Link> {{ aip_printLink_excel }}
@@ -819,289 +830,289 @@
                 Export to Excel
         </button> -->
     </AIPModal>
-        <WorkPlanModal v-if="WorkPlanModalVisible" @close-modal-event="toggleWorkPlanModal" title="Comprehensive Workplan/Schedule">
-            <div class="d-flex justify-content-center">
-                <!-- {{ cmp_link }} -->
-                <iframe :src="cmp_link" style="width:100%; height:500px" />
+    <WorkPlanModal v-if="WorkPlanModalVisible" @close-modal-event="toggleWorkPlanModal" title="Comprehensive Workplan/Schedule">
+        <div class="d-flex justify-content-center">
+            <!-- {{ cmp_link }} -->
+            <iframe :src="cmp_link" style="width:100%; height:500px" />
 
-            </div>
-        </WorkPlanModal>
-        <SIPModal v-if="SIPModalVisible" @close-modal-event="SIPModalVisible=false" title="SIP Profile">
-            Select PAPS: {{ selected_sip_paps }}
-            <select v-model="selected_sip_paps" class="form-select">
-                <option></option>
-                <option v-for="pap in paps" :value="pap.id" >
-                    {{ pap.paps_desc }}
-                </option>
-            </select>
-            <Link class="btn btn-primary btn-sm"
-                    :href="`/revision/streamlined/create/${selected_sip_paps}?source=sip`"
-                    :disabled="!selected_sip_paps"
-                    v-if="source=='sip'">
-                        Add SIP Profile
-            </Link>&nbsp;
-        </SIPModal>
-        <ProjectPrintModal v-if="printProfileVIsible" @close-modal-event="printProfileVIsible=false" title="Printed Output">
-            <h1>Project Profile</h1>
+        </div>
+    </WorkPlanModal>
+    <SIPModal v-if="SIPModalVisible" @close-modal-event="SIPModalVisible=false" title="SIP Profile">
+        Select PAPS: {{ selected_sip_paps }}
+        <select v-model="selected_sip_paps" class="form-select">
+            <option></option>
+            <option v-for="pap in paps" :value="pap.id" >
+                {{ pap.paps_desc }}
+            </option>
+        </select>
+        <Link class="btn btn-primary btn-sm"
+                :href="`/revision/streamlined/create/${selected_sip_paps}?source=sip`"
+                :disabled="!selected_sip_paps"
+                v-if="source=='sip'">
+                    Add SIP Profile
+        </Link>&nbsp;
+    </SIPModal>
+    <ProjectPrintModal v-if="printProfileVIsible" @close-modal-event="printProfileVIsible=false" title="Printed Output">
+        <h1>Project Profile</h1>
 
-            <div class="d-flex justify-content-center">
-                <!-- {{ aip_printLink }} -->
-                <iframe :src="ppa_link" style="width:100%; height:500px" />
+        <div class="d-flex justify-content-center">
+            <!-- {{ aip_printLink }} -->
+            <iframe :src="ppa_link" style="width:100%; height:500px" />
 
-            </div>
+        </div>
 
-            <!-- {{ppa_link}} -->
-        </ProjectPrintModal>
+        <!-- {{ppa_link}} -->
+    </ProjectPrintModal>
 
-        <LBPPrintModal v-if="printLBPForm4" @close-modal-event="printLBPForm4=false" title="Printed Output">
-            <h1>LBP Form 4</h1>
+    <LBPPrintModal v-if="printLBPForm4" @close-modal-event="printLBPForm4=false" title="Printed Output">
+        <h1>LBP Form 4</h1>
 
-            <div class="d-flex justify-content-center">
-                <!-- {{ aip_printLink }} -->
-                <iframe :src="ppa_link" style="width:100%; height:500px" />
+        <div class="d-flex justify-content-center">
+            <!-- {{ aip_printLink }} -->
+            <iframe :src="ppa_link" style="width:100%; height:500px" />
 
-            </div>
+        </div>
 
-            <!-- {{ppa_link}} -->
-        </LBPPrintModal>
-        <ReturnWithAmmendmentsModal v-if="ReturnWithAmmendmentsModalVisible" @close-modal-event="hideReturnWithAmmendmentsModal" title="REQUEST FOR RETURN">
-            <div class="peers mb-12">
+        <!-- {{ppa_link}} -->
+    </LBPPrintModal>
+    <ReturnWithAmmendmentsModal v-if="ReturnWithAmmendmentsModalVisible" @close-modal-event="hideReturnWithAmmendmentsModal" title="REQUEST FOR RETURN">
+        <div class="peers mb-12">
 
-                <table class="table">
-                    <thead>
+            <table class="table">
+                <thead>
+                <tr>
+                    <td><h6>PROJECT TITLE: </h6></td>
+                    <td><u>{{selected_plan.project_title }}</u></td>
+                    <td><h6>OFFICE: </h6></td>
+                    <td><u>{{selected_plan.FFUNCTION }}</u></td>
+                </tr>
+                </thead>
+                <tbody>
                     <tr>
-                        <td><h6>PROJECT TITLE: </h6></td>
-                        <td><u>{{selected_plan.project_title }}</u></td>
-                        <td><h6>OFFICE: </h6></td>
-                        <td><u>{{selected_plan.FFUNCTION }}</u></td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="2">
-                                <div class="col-md-5">
-                                <!-- Warnings -->
-                                <!-- <div v-if="show_warnings">
-                                    <div v-if="!isWithinLimit()" class="text-danger mt-2">
-                                    ❌ Total file size must not exceed 10 MB.
-                                    </div>
-                                    <div v-if="!isWithinCount()" class="text-danger mt-2">
-                                    ❌ You can only upload a maximum of 2 files.
-                                    </div>
-                                </div> -->
-
-                                <!-- :disabled="!(isWithinLimit() && isWithinCount())" -->
-                                <input
-                                    type="file"
-                                    multiple
-                                    @change="handleFiles"
-                                    accept="application/pdf"
-                                    ref="fileInput"
-                                />
-                                <!-- :disabled="!(isWithinLimit() && isWithinCount())" -->
-                                <div>
-                                    <button type="button" @click="uploadFiles" class="btn btn-primary text-white" >Upload</button>
-                                    <button type="button" @click="cancelFiles" class="btn btn-danger text-white">Cancel </button>
+                        <td colspan="2">
+                            <div class="col-md-5">
+                            <!-- Warnings -->
+                            <!-- <div v-if="show_warnings">
+                                <div v-if="!isWithinLimit()" class="text-danger mt-2">
+                                ❌ Total file size must not exceed 10 MB.
                                 </div>
-                                <p>
+                                <div v-if="!isWithinCount()" class="text-danger mt-2">
+                                ❌ You can only upload a maximum of 2 files.
+                                </div>
+                            </div> -->
 
-                                    <div v-if="files.length>0">
-                                        <h3>Selected Files (Pending Upload)</h3>
-                                        <table >
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>File Name</th>
-                                                    <th>File Type</th>
-                                                    <th>File Size</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="(file, index) in files" :key="index">
-                                                    <td>
-                                                        <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
-                                                    </td>
-                                                    <td>{{ file.name }}&nbsp;</td>
-                                                    <td>{{ file.name.split('.').pop() }}&nbsp;</td>
-                                                    <td>{{ formatFileSize(file.size) }}&nbsp;</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </p>
+                            <!-- :disabled="!(isWithinLimit() && isWithinCount())" -->
+                            <input
+                                type="file"
+                                multiple
+                                @change="handleFiles"
+                                accept="application/pdf"
+                                ref="fileInput"
+                            />
+                            <!-- :disabled="!(isWithinLimit() && isWithinCount())" -->
+                            <div>
+                                <button type="button" @click="uploadFiles" class="btn btn-primary text-white" >Upload</button>
+                                <button type="button" @click="cancelFiles" class="btn btn-danger text-white">Cancel </button>
                             </div>
+                            <p>
 
-                            </td>
-                            <td colspan="2">
-                                <div class="col-md-7">
-                                <div class="peers">
-                                    <h5>Justification Letters Uploaded</h5>&nbsp;
-                                    <button
-                                        @click="deleteFiles"
-                                        class="btn btn-danger btn-sm mL-2 text-white"
-                                        :disabled="!file_ids.length"
+                                <div v-if="files.length>0">
+                                    <h3>Selected Files (Pending Upload)</h3>
+                                    <table >
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>File Name</th>
+                                                <th>File Type</th>
+                                                <th>File Size</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(file, index) in files" :key="index">
+                                                <td>
+                                                    <img :src="getPreUploadFileIcon(file.name.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>
+                                                </td>
+                                                <td>{{ file.name }}&nbsp;</td>
+                                                <td>{{ file.name.split('.').pop() }}&nbsp;</td>
+                                                <td>{{ formatFileSize(file.size) }}&nbsp;</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </p>
+                        </div>
+
+                        </td>
+                        <td colspan="2">
+                            <div class="col-md-7">
+                            <div class="peers">
+                                <h5>Justification Letters Uploaded</h5>&nbsp;
+                                <button
+                                    @click="deleteFiles"
+                                    class="btn btn-danger btn-sm mL-2 text-white"
+                                    :disabled="!file_ids.length"
+                                    >
+                                    Delete Selected
+                                </button>
+                            </div>
+                            <!-- <button @click="previewFile(file)" class="btn btn-primary text-white">Preview</button>&nbsp; -->
+                            <!-- /files/proxy-download -->
+                            <!-- target="_blank" rel="noopener noreferrer" -->
+                            <!-- <a :href="`http://122.53.120.18:8067/images/${file.filename}`" class="btn btn-success">Download</a>&nbsp; -->
+                            <!-- http://122.53.120.18:8067/images/{{file.filename}} - /file-upload/download/ -->
+                            <!-- <p> http://192.168.80.89:8073//file-upload/download/{{file.id}}</p> -->
+                            <table name="tabel" class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input
+                                            type="checkbox"
+                                            :checked="allSelected"
+                                            v-model="allSelected"
+                                            @change="toggleSelectAll($event)"
+                                            />
+                                        </th>
+                                        <th></th>
+                                        <th>File Name</th>
+                                        <th>File Size</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                        <th>Return No.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="file in docs" :key="file.id">
+                                        <td>
+                                            <input
+                                            type="checkbox"
+                                            :value="file.id"
+                                            @change="toggleFileSelection(file.id, $event)"
+                                            v-model="file_ids"
+                                            />
+
+                                            <!-- {{ file }} -->
+                                        </td>
+                                        <!-- <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> -->
+                                        <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/></td>
+                                        <td>{{ file.filename }} </td>
+                                        <td>{{ format_number((file.file_size/1024),2,true) }} KB </td>
+                                        <th
+                                            :style="{
+                                                backgroundColor: file.return_executed === '0' ? '#d4f8d4' : '#f8d4d4'
+                                            }"
                                         >
-                                        Delete Selected
-                                    </button>
-                                </div>
-                                <!-- <button @click="previewFile(file)" class="btn btn-primary text-white">Preview</button>&nbsp; -->
-                                <!-- /files/proxy-download -->
-                                <!-- target="_blank" rel="noopener noreferrer" -->
-                                <!-- <a :href="`http://122.53.120.18:8067/images/${file.filename}`" class="btn btn-success">Download</a>&nbsp; -->
-                                <!-- http://122.53.120.18:8067/images/{{file.filename}} - /file-upload/download/ -->
-                                <!-- <p> http://192.168.80.89:8073//file-upload/download/{{file.id}}</p> -->
-                                <table name="tabel" class="table table-hover table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                <input
-                                                type="checkbox"
-                                                :checked="allSelected"
-                                                v-model="allSelected"
-                                                @change="toggleSelectAll($event)"
-                                                />
-                                            </th>
-                                            <th></th>
-                                            <th>File Name</th>
-                                            <th>File Size</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                            <th>Return No.</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="file in docs" :key="file.id">
-                                            <td>
-                                                <input
-                                                type="checkbox"
-                                                :value="file.id"
-                                                @change="toggleFileSelection(file.id, $event)"
-                                                v-model="file_ids"
-                                                />
-
-                                                <!-- {{ file }} -->
-                                            </td>
-                                            <!-- <p>http://122.53.120.18:8067/images/{{file.filepath}}</p> -->
-                                            <td><img :src="getFileIcon(file)" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/></td>
-                                            <td>{{ file.filename }} </td>
-                                            <td>{{ format_number((file.file_size/1024),2,true) }} KB </td>
-                                            <th
-                                                :style="{
-                                                    backgroundColor: file.return_executed === '0' ? '#d4f8d4' : '#f8d4d4'
-                                                }"
+                                            {{ file.return_executed === "0" ? 'New' : 'Used' }}
+                                        </th>
+                                        <td>
+                                            <button
+                                                @click="previewFile(file)"
+                                                class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
+                                                title="Preview"
                                             >
-                                                {{ file.return_executed === "0" ? 'New' : 'Used' }}
-                                            </th>
-                                            <td>
-                                                <button
-                                                    @click="previewFile(file)"
-                                                    class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
-                                                    title="Preview"
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="blue"
+                                                    class="bi bi-eye-fill"
+                                                    viewBox="0 0 16 16"
                                                 >
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="20"
-                                                        height="20"
-                                                        fill="blue"
-                                                        class="bi bi-eye-fill"
-                                                        viewBox="0 0 16 16"
-                                                    >
-                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                    </svg>
-                                                </button>&nbsp;
-                                                <!-- download -->
-                                                <a
-                                                    :href="`/movs/download/${file.id}`"
+                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                                </svg>
+                                            </button>&nbsp;
+                                            <!-- download -->
+                                            <a
+                                                :href="`/movs/download/${file.id}`"
 
-                                                    class="inline-flex items-center"
-                                                    title="Download"
-                                                    target="_blank"
+                                                class="inline-flex items-center"
+                                                title="Download"
+                                                target="_blank"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="green"
+                                                    class="bi bi-cloud-arrow-down-fill"
+                                                    viewBox="0 0 16 16"
                                                 >
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="20"
-                                                        height="20"
-                                                        fill="green"
-                                                        class="bi bi-cloud-arrow-down-fill"
-                                                        viewBox="0 0 16 16"
-                                                    >
-                                                        <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
-                                                    </svg>
-                                                </a>&nbsp;
+                                                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
+                                                </svg>
+                                            </a>&nbsp;
 
-                                                <!-- <button
-                                                    @click="deleteFile(file.id)"
-                                                    class="p-1 rounded-full bg-transparent hover:bg-red-100 border-0"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
+                                            <!-- <button
+                                                @click="deleteFile(file.id)"
+                                                class="p-1 rounded-full bg-transparent hover:bg-red-100 border-0"
+                                                data-toggle="tooltip"
+                                                title="Delete"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="red"
+                                                    class="bi bi-trash-fill"
+                                                    viewBox="0 0 16 16"
                                                 >
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="20"
-                                                        height="20"
-                                                        fill="red"
-                                                        class="bi bi-trash-fill"
-                                                        viewBox="0 0 16 16"
-                                                    >
-                                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                                    </svg>
-                                                </button> -->
+                                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                                </svg>
+                                            </button> -->
 
-                                            </td>
-                                            <td>0{{  file.return_batch }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table table-hover ">
-                                    <tbody>
-                                        <tr>
-                                            <td>Remarks:</td>
-                                            <td><textarea class="form-control" v-model="remarks"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <div>
-                                                    Type:
-                                                    <select v-model="return_request_type">
-                                                        <option></option>
-                                                        <option value="a">
-                                                            Administrative Order (New strategies/activities/ not included in approved project profile)
-                                                        </option>
-                                                        <option>
-                                                            Appropriation Ordinance
-                                                        </option>
-                                                        <option>Justification</option>
-                                                    </select>
-                                                </div>
-                                                <button
-                                                        @click="returnWithAmmendmentsActual()"
-                                                        :style="{
-                                                        padding: '4px 10px',
-                                                        border: 'none',
-                                                        borderRadius: '4px',
-                                                        backgroundColor: 'red',
-                                                        color: 'white',
-                                                        cursor: 'pointer',
-                                                        fontWeight: 'bold'
-                                                        }"
-                                                    >
-                                                        REQUEST FOR RETURN
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                        </td>
+                                        <td>0{{  file.return_batch }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-hover ">
+                                <tbody>
+                                    <tr>
+                                        <td>Remarks:</td>
+                                        <td><textarea class="form-control" v-model="remarks"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <div>
+                                                Type:
+                                                <select v-model="return_request_type">
+                                                    <option></option>
+                                                    <option value="a">
+                                                        Administrative Order (New strategies/activities/ not included in approved project profile)
+                                                    </option>
+                                                    <option>
+                                                        Appropriation Ordinance
+                                                    </option>
+                                                    <option>Justification</option>
+                                                </select>
+                                            </div>
+                                            <button
+                                                    @click="returnWithAmmendmentsActual()"
+                                                    :style="{
+                                                    padding: '4px 10px',
+                                                    border: 'none',
+                                                    borderRadius: '4px',
+                                                    backgroundColor: 'red',
+                                                    color: 'white',
+                                                    cursor: 'pointer',
+                                                    fontWeight: 'bold'
+                                                    }"
+                                                >
+                                                    REQUEST FOR RETURN
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
 
-            </div>
-        </ReturnWithAmmendmentsModal>
-        <ModalAllowSubmission v-if="showAllowSubmissionModalVisible" @close-modal-event="hideAllowSubmissionModal" :allowed="allowed" @submission-updated="refreshPage" />
+        </div>
+    </ReturnWithAmmendmentsModal>
+    <ModalAllowSubmission v-if="showAllowSubmissionModalVisible" @close-modal-event="hideAllowSubmissionModal" :allowed="allowed" @submission-updated="refreshPage" />
     <!-- src: {{source}} fdfsdf -->
 </template>
 <script>
@@ -1130,6 +1141,7 @@ export default {
         source: String,
         year_filtering: String,
         allowed: Object,
+        AIPInstitutional: Object
         // search: String,
         // type_f: String,
     },
@@ -1508,7 +1520,7 @@ export default {
         // GENERATE PROJECT DEISGN
         generateProjectDesign(id, type){
             if (!id) return;
-            alert(type);
+            // alert(type);
             // Browser confirmation
             if (!confirm("Are you sure you want to generate the Project Design for this project?")) {
                 return; // User canceled
