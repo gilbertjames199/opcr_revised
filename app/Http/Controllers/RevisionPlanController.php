@@ -169,6 +169,7 @@ class RevisionPlanController extends Controller
                 "source" => $request->source,
                 "year_filtering" => $year_filtering,
                 "allowed" => $allowed,
+                "AIPInstitutional"=>$AIPInstitutional,
                 'can' => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                     'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -3393,7 +3394,7 @@ class RevisionPlanController extends Controller
             $expected_outputs = in_array($source_of_funds, ['dev', 'other'])
                 ? ""
                 : collect($plan->activityProject)
-                ->filter(function ($activityProject) {
+                ->filter(function ($activityProject) use($plan) {
                     // Only active activity projects
                     if ((int)($activityProject->is_active ?? 0) !== 1) {
                         return false;
