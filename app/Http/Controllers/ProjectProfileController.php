@@ -70,10 +70,6 @@ class ProjectProfileController extends Controller
                     })
                     ->whereYear(('date_start'), $year)
                     ->where('idpaps',0)
-<<<<<<< HEAD
-
-=======
->>>>>>> 28cf959eaf056a9e039a6898e64ffc242940191e
                     ->with('budget')
                     ->orderBY('created_at', 'desc')
                     ->first();
@@ -211,10 +207,6 @@ class ProjectProfileController extends Controller
                             ->orWhere('scope', 'GAS');
                     })
                     // ->where('idpaps',0)
-<<<<<<< HEAD
-
-=======
->>>>>>> 28cf959eaf056a9e039a6898e64ffc242940191e
                     ->with('budget')
                     ->orderBY('created_at', 'desc')
                     ->first();
@@ -276,15 +268,9 @@ class ProjectProfileController extends Controller
                 'fund_owner',
             )
             // ->where('FFUNCCOD', $FFUNCCOD)
-<<<<<<< HEAD
-
             ->with(['office', 'fundOwner'])
             ->where(function($query) use ($FFUNCCOD, $shared_paps) {
 
-=======
-            ->with(['office', 'fundOwner'])
-            ->where(function($query) use ($FFUNCCOD, $shared_paps) {
->>>>>>> 28cf959eaf056a9e039a6898e64ffc242940191e
                 $query->where('FFUNCCOD', $FFUNCCOD)
                     ->orWhereIn('id', $shared_paps);
             })
