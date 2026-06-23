@@ -13,7 +13,7 @@ class CreateAIPApproversTable extends Migration
      */
     public function up()
     {
-        Schema::create('a_i_p_approvers', function (Blueprint $table) {
+        Schema::create('aip_approvers', function (Blueprint $table) {
             $table->id();
             $table->string('aip_institutional_id');
             $table->string('aip_approver_id');

@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class AIPApprover extends Model
 {
     use HasFactory;
+    protected $connection = "mysql";
+    protected $table='aip_approvers';
+    protected $guarded = [
+        'id'
+    ];
+
+
 }

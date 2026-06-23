@@ -3394,7 +3394,7 @@ class RevisionPlanController extends Controller
             $expected_outputs = in_array($source_of_funds, ['dev', 'other'])
                 ? ""
                 : collect($plan->activityProject)
-                ->filter(function ($activityProject) {
+                ->filter(function ($activityProject) use($plan) {
                     // Only active activity projects
                     if ((int)($activityProject->is_active ?? 0) !== 1) {
                         return false;
