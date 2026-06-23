@@ -17,7 +17,7 @@ class CreateSangguniangPanlalawiganApproversTable extends Migration
             $table->id();
             $table->string('employee_code');
             $table->string('name');
-            $table->string('post');
+            $table->string('position');
             $table->string('is_present')->default('1');
             $table->string('with_signature')->default('1');
             $table->timestamps();

@@ -3357,6 +3357,7 @@ class RevisionPlanController extends Controller
             'paps.office.office',
             'office'
         ])
+            ->whereYear('date_start', $year)
             ->where('status', '1')
             ->get();
 
