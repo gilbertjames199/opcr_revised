@@ -99,7 +99,8 @@ class MeansOfVerificationController extends Controller
     public function store(Request $request, $opcr_id, $opcr_list_id)
     {
         $disk = app()->environment('production') ? 'custom_uploads' : 'public';
-
+        $disk = 'public';
+        // dd($opcr_id);
         // Build safe subfolder path
         $username = trim(auth()->user()->UserName);
 

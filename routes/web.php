@@ -72,6 +72,7 @@ use App\Http\Controllers\AIPController;
 use App\Http\Controllers\aip_controller;
 use App\Http\Controllers\DailyAccomplishmentController;
 use App\Http\Controllers\AddAccomplishmentController;
+use App\Http\Controllers\AIPIndividualApproverController;
 use App\Http\Controllers\AnnualInvestmentPlanController;
 use App\Http\Controllers\AnnualInvestmentPlanInstitutionalController;
 use App\Http\Controllers\AppropriationAmountController;
@@ -350,6 +351,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [OutcomeController::class, 'destroy']);
     });
 
+
     //Intermediate Outcomes
     ///inter_outcome/${dat.id}
     Route::prefix('/inter_outcome')->group(function () {
@@ -578,13 +580,13 @@ Route::middleware('auth')->group(function () {
     });
 
     // SP Members/AIP APprovers
-    Route::prefix('/approvers')->group(function(){
-        Route::get('/', [SangguniangPanlalawiganApproverController::class, 'index']);
-        Route::get('/create',[SangguniangPanlalawiganApproverController::class, 'create']);
-        Route::post('/',[SangguniangPanlalawiganApproverController::class,'store']);
-        Route::get('/{id}/edit',[SangguniangPanlalawiganApproverController::class, 'edit']);
-        Route::delete('/{}',[SangguniangPanlalawiganApproverController::class, 'destroy']);
-        Route::patch('/',[SangguniangPanlalawiganApproverController::class, 'update']);
+    Route::prefix('/aip/approvers')->group(function(){
+        Route::get('/', [AIPIndividualApproverController::class, 'index']);
+        Route::get('/create',[AIPIndividualApproverController::class, 'create']);
+        Route::post('/',[AIPIndividualApproverController::class,'store']);
+        Route::get('/{id}/edit',[AIPIndividualApproverController::class, 'edit']);
+        Route::delete('/{}',[AIPIndividualApproverController::class, 'destroy']);
+        Route::patch('/',[AIPIndividualApproverController::class, 'update']);
     });
     //Strategies and Activities
     Route::prefix('/strategies-and-activities')->group(function () {
@@ -595,7 +597,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [StrategyProjectController::class, 'edit']);
         Route::patch('/{id}', [StrategyProjectController::class, 'update']);
         Route::delete('/{id}', [StrategyProjectController::class, 'destroy']);
-
         Route::get('/refresh/data/now/{idrevplan}', [StrategyProjectController::class, 'refresh']);
     });
     //Strategies and Projects

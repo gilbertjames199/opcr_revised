@@ -183,30 +183,205 @@ class OfficePerformanceCommitmentRatingController extends Controller
 
         $list = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
         // dd($list);
-        $opcr_targets = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_id)
-            ->get();
+        // $opcr_targets_o = OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_id)
+        //     ->get();
         // dd($opcr_targets);
-        foreach ($opcr_targets as $target) {
-            $opcr_rating = OfficePerformanceCommitmentRating::where('id_opcr_target', $target->id)
-                ->first();
-            $paps_here = ProgramAndProject::where('id', $target->idpaps)->first();
-            // dd($paps_here);
-            if (!$opcr_rating) {
-                $opcrf = new OfficePerformanceCommitmentRating();
-                $opcrf->id_paps = $target->idpaps;
-                $opcrf->id_opcr_target = $target->id;
-                $opcrf->success_indicator_id = '-';
-                $opcrf->accomplishments = "";
-                $opcrf->rating_q = "3";
-                $opcrf->rating_e = "3";
-                $opcrf->rating_t = "3";
-                $opcrf->remarks = "";
-                $opcrf->opcr_id    = $opcr_id;
-                $opcrf->FFUNCCOD = $list->FFUNCCOD;
-                $opcrf->department_code = $dept_code;
-                $opcrf->save();
-            }
-        }
+
+        $opcr_targets = OpcrTarget::with([
+                'opcrList',
+                'opcr_rating',
+                'opcr_rating.movs',
+                'opcr_rating2',
+                'paps',
+                'paps.MFO',
+                'paps.opcr_stardard',
+                'paps.divisionOutputs',
+                'paps.divisionOutputs.dpcrTargets',
+                'paps.divisionOutputs.dpcrTargets.ipcr_Semestral',
+                'paps.divisionOutputs.dpcrTargets.monthlyTargets',
+            ])
+                ->where('office_performance_commitment_rating_list_id', $opcr_id)
+                ->where('is_included', '1')
+                ->get()
+                // ->pluck('id');
+                ->map(function ($item) use ($opcr_id, $list, $dept_code) {
+
+                    // THESE*******************************************************
+                    $rating = null;
+                    $movs = [];
+                    $q1 = "";
+                    $q2 = "";
+                    $q3 = "";
+                    $e1 = "";
+                    $e2 = "";
+                    $e3 = "";
+                    $t1 = "";
+                    $rid = "";
+                    $show_mov = false;
+                    $count_movs = 0;
+                    if (!empty($item->opcr_rating2)) {
+                        //
+                        $rating = collect($item->opcr_rating2)->where('opcr_id', $opcr_id)->first();
+                        // dd($rating,'collect');
+                        $q1 = optional($rating)->q1;
+                        $q2 = optional($rating)->q2;
+                        $q3 = optional($rating)->q3;
+                        $e1 = optional($rating)->e1;
+                        $e2 = optional($rating)->e2;
+                        $e3 = optional($rating)->e3;
+                        $t1 = optional($rating)->t1;
+                        $rid = optional($rating)->id;
+                        // dd($rating);
+                        $movs = optional($item->opcr_rating)->movs;
+                        // $show_mov = !empty($movs);
+                        $movs = optional($item->opcr_rating)->movs;
+
+                        if ($movs instanceof Collection) {
+                            $show_mov = $movs->isNotEmpty();   // correct for Eloquent collections
+                            $count_movs = $movs->count();
+                        } else {
+                            // covers arrays, strings, nulls, etc.
+                            $show_mov = !empty($movs);
+                            $count_movs = $show_mov ? 1 : 0;
+                        }
+                    }
+                    $division_outputs = optional(optional($item)->paps)->divisionOutputs ?? [];
+                    $dpcr_targets = [];
+                    $sem = (optional(optional($item)->opcrList)->semester == 'Second Semester') ? '2' : '1';
+                    $year = optional(optional($item)->opcrList)->year;
+
+                    // dd(calculateMonthlyAverages($item, [
+                    //     'q1',
+                    //     'q2',
+                    //     'q3',
+                    //     'e1',
+                    //     'e2',
+                    //     'e3',
+                    //     't1'
+                    // ]));
+                    $monthly_targets = calculateMonthlyAverages($item, [
+                        'q1',
+                        'q2',
+                        'q3',
+                        'e1',
+                        'e2',
+                        'e3',
+                        't1'
+                    ]);
+                    // dd($monthly_targets, $item->id);
+
+                    // DPCR Rating
+
+
+                    // $dpcr_ave = optional($dpcr_targets)->pluck('monthlyTargets') ?? collect();
+                    $opcr_rating = OfficePerformanceCommitmentRating::where('id_opcr_target', $item->id)
+                        ->first();
+                    $paps_here = ProgramAndProject::where('id', $item->idpaps)->first();
+                    // dd($paps_here);
+                    if (!$opcr_rating) {
+                        $opcrf = new OfficePerformanceCommitmentRating();
+                        $opcrf->id_paps = $item->idpaps;
+                        $opcrf->id_opcr_target = $item->id;
+                        $opcrf->success_indicator_id = '-';
+                        $opcrf->accomplishments = "";
+                        $opcrf->rating_q = "3";
+                        $opcrf->rating_e = "3";
+                        $opcrf->rating_t = "3";
+                        $opcrf->remarks = "";
+                        $opcrf->opcr_id    = $opcr_id;
+                        $opcrf->FFUNCCOD = $list->FFUNCCOD;
+                        $opcrf->department_code = $dept_code;
+                        $opcrf->save();
+                    }
+                    // dd($rid);
+                    return [
+                        'id' => $item->id,
+                        // 'average_monthly'=>$average_monthly,
+                        'monthly_targets' => $monthly_targets,
+                        'mfo_desc' => optional(optional(optional($item)->paps)->MFO)->mfo_desc,
+                        'idpaps' => $item->idpaps,
+                        'paps_desc' => optional(optional($item)->paps)->paps_desc,
+                        // 'id' => $item->id,
+                        'target_success_indicator' => $item->target_success_indicator,
+                        'quantity' => $item->quantity,
+                        'success_indicator' => $item->success_indicator,
+                        "opcr_rating_id" => $rid,
+                        "accomplishments" => optional(optional($item)->opcr_rating)->accomplishments,
+                        "q1" => $q1,
+                        "q2" => $q2,
+                        "q3" => $q3,
+                        "e1" => $e1,
+                        "e2" => $e2,
+                        "e3" => $e3,
+                        "t1" => $t1,
+                        // 'q1_ave' => round($computeAve($summary['q1']), 2),
+                        // 'q2_ave' => round($computeAve($summary['q2']), 2),
+                        // 'q3_ave' => round($computeAve($summary['q3']), 2),
+
+                        // 'e1_ave' => round($computeAve($summary['e1']), 2),
+                        // 'e2_ave' => round($computeAve($summary['e2']), 2),
+                        // 'e3_ave' => round($computeAve($summary['e3']), 2),
+
+                        // 't1_ave' => round($computeAve($summary['t1']), 2),
+
+                        // // Now compute q_ave, e_ave, t_ave per original logic
+                        // 'q_ave' => round($computeAve(array_merge($summary['q1'], $summary['q2'], $summary['q3'])), 2),
+                        // 'e_ave' => round($computeAve(array_merge($summary['e1'], $summary['e2'], $summary['e3'])), 2),
+                        // 't_ave' => round($computeAve($summary['t1']), 2),
+
+                        // // Overall row average across all monthly row averages
+                        // 'average' => round($computeAve($summary['row_averages']), 2),
+                        "remarks" => optional($item->opcr_rating)->remarks,
+                        "q1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality1,
+                        "q2_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality2,
+                        "q3_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality3,
+                        "e1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency1,
+                        "e2_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency2,
+                        "e3_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency3,
+                        "t1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->timeliness,
+                        "movs" => $movs,
+                        "mov_is_visible" => $show_mov,
+                        "count_movs" => $count_movs,
+                        "division_outputs" => $division_outputs,
+                        "division_output_ids" => optional($division_outputs)->pluck('id'),
+                        // "q1_dpcr"=>$dpcr_ave,
+                        // "monthly_targets"=>optional($dpcr_targets)->pluck("monthlyTargets"),
+
+                        // count(optional($dpcr_targets)->pluck("monthlyTargets"))>0?$d
+                        // "monthly_targets"=> optional($dpcr_targets)->pluck("monthlyTargets"),
+
+                        "sem" => $sem,
+                        "year" => $year
+                        // ->monthlyTargets
+                        // "flat" => $flat,
+                        // 'standard'=>optional(optional($item)->paps)->opcr_stardard
+                    ];
+                });
+        // dd("opcr targets: ", $opcr_targets);
+        // dd($opcr_targets, $opcr_targets_o);
+        // foreach ($opcr_targets as $target) {
+        //     dd(OfficePerformanceCommitmentRating::where('id_opcr_target', $target->id)
+        //         ->first(),$target);
+        //     $opcr_rating = OfficePerformanceCommitmentRating::where('id_opcr_target', $target->id)
+        //         ->first();
+        //     $paps_here = ProgramAndProject::where('id', $target->idpaps)->first();
+        //     // dd($paps_here);
+        //     if (!$opcr_rating) {
+        //         $opcrf = new OfficePerformanceCommitmentRating();
+        //         $opcrf->id_paps = $target->idpaps;
+        //         $opcrf->id_opcr_target = $target->id;
+        //         $opcrf->success_indicator_id = '-';
+        //         $opcrf->accomplishments = "";
+        //         $opcrf->rating_q = "3";
+        //         $opcrf->rating_e = "3";
+        //         $opcrf->rating_t = "3";
+        //         $opcrf->remarks = "";
+        //         $opcrf->opcr_id    = $opcr_id;
+        //         $opcrf->FFUNCCOD = $list->FFUNCCOD;
+        //         $opcrf->department_code = $dept_code;
+        //         $opcrf->save();
+        //     }
+        // }
 
 
         $my_year = Carbon::parse($list->date_to)->format('Y');
@@ -234,6 +409,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $opcrs = OpcrTarget::with([
             'opcr_rating',
             'opcrList',
+            'opcr_rating.movs',
+            'opcr_rating2',
             'paps',
             'paps.MFO',
             'paps.opcr_stardard',
@@ -257,7 +434,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->groupBy('office_performance_commitment_rating_list_id')
             ->groupBy('idpaps')
             ->get()
-            ->map(function ($item) {
+            ->map(function ($item) use ($opcr_id, $list, $dept_code) {
                 // dd($item);
                 $id = $item->opcr_rating ? $item->opcr_rating->id : null;
                 $su = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
@@ -354,6 +531,52 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     // --- Compute Timeliness (t) ---
                     $r_t = $t1 != 0 ? round($t1, 2) : 0;
                 }
+
+                // &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                // THESE*******************************************************
+                $rating = null;
+                $movs = [];
+                $q1 = "";
+                $q2 = "";
+                $q3 = "";
+                $e1 = "";
+                $e2 = "";
+                $e3 = "";
+                $t1 = "";
+                $rid = "";
+                $show_mov = false;
+                $count_movs = 0;
+                if (!empty($item->opcr_rating2)) {
+                    //
+                    $rating = collect($item->opcr_rating2)->where('opcr_id', $opcr_id)->first();
+                    // dd($rating,'collect');
+                    $q1 = optional($rating)->q1;
+                    $q2 = optional($rating)->q2;
+                    $q3 = optional($rating)->q3;
+                    $e1 = optional($rating)->e1;
+                    $e2 = optional($rating)->e2;
+                    $e3 = optional($rating)->e3;
+                    $t1 = optional($rating)->t1;
+                    $rid = optional($rating)->id;
+                    // dd($rating);
+                    $movs = optional($item->opcr_rating)->movs;
+                    // $show_mov = !empty($movs);
+                    $movs = optional($item->opcr_rating)->movs;
+
+                    if ($movs instanceof Collection) {
+                        $show_mov = $movs->isNotEmpty();   // correct for Eloquent collections
+                        $count_movs = $movs->count();
+                    } else {
+                        // covers arrays, strings, nulls, etc.
+                        $show_mov = !empty($movs);
+                        $count_movs = $show_mov ? 1 : 0;
+                    }
+                }
+                $division_outputs = optional(optional($item)->paps)->divisionOutputs ?? [];
+                $dpcr_targets = [];
+                $sem = (optional(optional($item)->opcrList)->semester == 'Second Semester') ? '2' : '1';
+                $year = optional(optional($item)->opcrList)->year;
+                // &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
                 // dd($r_q, $r_e, $r_t, $monthly_ratings);
 
                 // dd(($rating_type == "1" ? "1 siya" : "0 siya"),
@@ -394,10 +617,19 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "e2" => $e2 ?? 0,
                     "e3" => $e3 ?? 0,
                     "t1" => $t1 ?? 0,
+                    "opcr_rating_id"=>$rid,
+
+                    "q1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality1,
+                    "q2_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality2,
+                    "q3_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality3,
+                    "e1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency1,
+                    "e2_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency2,
+                    "e3_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency3,
+                    "t1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->timeliness,
                 ];
             });
         // dd($opcrs);
-
+        // dd("opcr targets: ", $opcr_targets, "opcrs: ", $opcrs);
         //********************************************** */
         $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
             ->where('role', 'like', '%Department Head%')
@@ -435,6 +667,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // dd('targ ave: ' . $ave);
         //********************************************* */
         $component = $this->isBeforeSecondSem2025($list) ? 'OPCR/Form/Index' : 'OPCR/Form/Index2';
+        // dd($component);
         $baseUrl = app()->environment('production')
             ? 'http://122.53.120.18:8067/images/'
             : asset('storage/');

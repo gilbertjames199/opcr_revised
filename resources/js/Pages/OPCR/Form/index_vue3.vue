@@ -48,19 +48,15 @@
                                     <th scope="col" rowspan="2"><i class="fas fa-money-bill"></i> Alloted Budget</th>
                                     <th scope="col" rowspan="2"><i class="fas fa-user-tie"></i> Accountable Division</th>
                                     <th scope="col" rowspan="2"><i class="fas fa-check-circle"></i> Actual Accomplishments</th>
-                                    <th scope="col" colspan="7"><i class="fas fa-star"></i> Rating</th>
+                                    <th scope="col" colspan="4"><i class="fas fa-star"></i> Rating</th>
                                     <th scope="col" rowspan="2"><i class="fas fa-comment"></i> Remarks</th>
                                     <th scope="col" rowspan="2"><i class="fas fa-file-upload"></i> MOV</th>
                                 </tr>
                                 <tr>
-                                    <th scope="col">Q1</th>
-                                    <th scope="col">Q2</th>
-                                    <th scope="col">Q3</th>
-                                    <th scope="col">E1</th>
-                                    <th scope="col">E2</th>
-                                    <th scope="col">E3</th>
-                                    <th scope="col">T1</th>
-                                    <!-- <th scope="col">Average</th> -->
+                                    <th scope="col">Quality</th>
+                                    <th scope="col">Efficiency</th>
+                                    <th scope="col">Timeliness</th>
+                                    <th scope="col">Average</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,181 +92,24 @@
                                     </td>
 
                                     <!--RATINGS***************************************-->
-                                    <!-- <td>
+                                    <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
-                                        <select v-model="form.opcrs[index].rating_q" class="form-select">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
+                                            min="0" max="5" step="1" disabled>
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_e" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
-                                        <select v-model="form.opcrs[index].rating_e" class="form-select">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
+                                            min="0" max="5" step="1" disabled>
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_t" class="centered-input" type="number"
-                                            min="0" max="5" step="1">
-                                        <select v-model="form.opcrs[index].rating_t" class="form-select">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
+                                            min="0" max="5" step="1" disabled>
                                     </td>
                                     <td>
                                     <input :value="computeAverage(form.opcrs[index])" class="centered-input" type="number"
-                                       min="0" max="5" step="1" disabled>
-                                    </td> -->
-                                    <!-- RATINGS ****************************************************** -->
-                                    <!-- Q1 -->
-                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
-                                        <!-- width: 2.5em;  -->
+                                       min="0" max="5" step="1" disabled
+                                    >
+                                    </td>
 
-                                         <!-- {{ opcr.opcr_rating_id }} -->
-                                        <select v-model="opcr_data[index].q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                            @change="saveRating(opcr.q1, opcr.opcr_rating_id, 'q1', index)">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                        <div v-if="submit_attempt==true && !dat.q1" style="color: red; font-weight: bold">
-                                            Rating for this field is required to proceed with submission.
-                                        </div>
-                                    </td>
-                                    <!-- Q2 -->
-                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
-                                        <!-- {{  dat }} -->
-                                        <!-- width: 2.5em;  -->
-                                        <select v-model="opcr_data[index].q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                            @change="saveRating(opcr.q2, opcr.opcr_rating_id, 'q2', index)"
-                                        >
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                        <div v-if="submit_attempt==true && !dat.q2" style="color: red; font-weight: bold">
-                                            Rating for this field is required to proceed with submission.
-                                        </div>
-                                    </td>
-                                    <!-- Q3 -->
-                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
-                                        <!-- width: 2.5em;  -->
-                                        <select v-model="opcr_data[index].q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                            @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3', index)"
-                                        >
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                        <div v-if="submit_attempt==true && !dat.q3" style="color: red; font-weight: bold">
-                                            Rating for this field is required to proceed with submission.
-                                        </div>
-                                    </td>
-                                    <!-- E1 -->
-                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
-                                        <!--  width: 2.5em; -->
-                                        <select v-model="opcr_data[index].e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                            @change="saveRating(opcr_data[index].e1, opcr_data[index].opcr_rating_id, 'e1', index)"
-                                            :disabled="opcr.e1_standard === 'No'"
-                                            :style="opcr.e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
-                                        >
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                        <div v-if="submit_attempt==true && opcr.e1_standard === 'Yes' && !opcr.e1" style="color: red; font-weight: bold">
-                                            Rating for this field is required to proceed with submission.
-                                        </div>
-                                    </td>
-                                    <!-- E2 -->
-                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
-                                        <!-- width: 2.5em;  -->
-                                        <select v-model="opcr_data[index].e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                            @change="saveRating(opcr_data[index].e2, opcr_data[index].opcr_rating_id, 'e2', index)"
-                                            :disabled="opcr.e2_standard === 'No'"
-                                            :style="opcr.e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
-                                        >
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                        <div v-if="submit_attempt==true && opcr.e2_standard === 'Yes' && !opcr.e2" style="color: red; font-weight: bold">
-                                            Rating for this field is required to proceed with submission.
-                                        </div>
-                                    </td>
-                                    <!-- E3 -->
-                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
-                                        <!-- style="width: 2.5em; text-align: center;"   -->
-                                        <select v-model="opcr_data[index].e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
-                                            @change="saveRating(opcr_data[index].e3, opcr_data[index].opcr_rating_id, 'e3', index)"
-                                            :disabled="opcr.e3_standard === 'No'"
-                                            :style="opcr.e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
-                                        >
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                        <div v-if="submit_attempt==true && opcr.e3_standard === 'Yes' && !opcr.e3" style="color: red; font-weight: bold">
-                                            Rating for this field is required to proceed with submission.
-                                        </div>
-                                    </td>
-                                    <!-- T1 -->
-                                    <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
-                                        <!-- t1_standard: {{ dat.t1_standard }} -->
-                                        <!-- :disabled="dat.t1_standard !== 'Yes'"
-                                            :style="dat.t1_standard !== 'Yes' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''" -->
-                                        <select v-model="opcr_data[index].t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                            @change="saveRating(opcr_data[index].t1, opcr_data[index].opcr_rating_id, 't1', index)"
-
-                                            :disabled="
-                                                opcr.t1_standard === 'No' ||
-                                                opcr.t1_standard === null ||
-                                                opcr.t1_standard === undefined ||
-                                                Number.isNaN(opcr.t1_standard)
-                                            "
-                                            :style="
-                                                opcr.t1_standard === 'No' ||
-                                                opcr.t1_standard === null ||
-                                                opcr.t1_standard === undefined ||
-                                                Number.isNaN(opcr.t1_standard)
-                                                    ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;'
-                                                    : ''
-                                            "
-                                        >
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                        <div v-if="submit_attempt==true && opcr.t1_standard === 'Yes' && !opcr.t1" style="color: red; font-weight: bold">
-                                            Rating for this field is required to proceed with submission.
-                                        </div>
-                                    </td>
                                     <!--**********************************************-->
                                     <td><textarea v-model="form.opcrs[index].remarks"
                                             style="height: inherit"></textarea>
@@ -281,14 +120,14 @@
 
                                 </tr>
                                 <tr>
-                                    <td colspan="5"></td>
-                                    <td colspan="7">TOTAL RATING</td>
+                                    <td colspan="6"></td>
+                                    <td colspan="3">TOTAL RATING</td>
                                     <td>{{ getTotalAverage() }}</td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5"></td>
-                                    <td colspan="7">FINAL AVERAGE RATING</td>
+                                    <td colspan="6"></td>
+                                    <td colspan="3">FINAL AVERAGE RATING</td>
                                     <td>{{ getAverageAll() }}</td>
                                     <td></td>
                                 </tr>
@@ -720,8 +559,7 @@ export default {
             current_filepath: null,
             allSelected: false,
             rating_status_dt: null,
-            show_warnings: false,
-            opcr_data: []
+            show_warnings: false
         }
     },
     computed: {
@@ -741,7 +579,6 @@ export default {
     // },
     mounted() {
         //this.adjustTextareaHeight();
-        this.opcr_data = this.opcrs
         this.rating_status_dt = this.rating_status
         this.form.opcrs = this.opcrs
         if (localStorage.getItem('reloaded')) {
@@ -1362,50 +1199,7 @@ export default {
             .catch(error => {
                 console.error("Failed to submit OPCR Rating Form",  error);
             });
-        },
-
-        saveRating(rating, opcr_rating_id, column, index){
-            // alert("rating: "+ rating + " \n"+"opcr_rating_id: "+opcr_rating_id)
-            // review-approve/ratings/sub/mit/opcr/{opcr_rating_id}/{item_score}
-            // @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')"
-            if(!rating){
-                rating="rating is null";
-            }
-
-            if(column === 'q1' || column === 'q2' || column === 'q3'){
-                // this.opcr_data[index].rating_q = parseFloat(this.opcr_data[index].q1)+parseFloat(this.opcr_data[index].q2)+parseFloat(this.opcr_data[index].q3);
-                const values = [
-                    +this.opcr_data[index].q1 || 0,
-                    +this.opcr_data[index].q2 || 0,
-                    +this.opcr_data[index].q3 || 0
-                ];
-
-                this.opcr_data[index].rating_q =
-                    values.filter(v => v !== 0).reduce((a, b) => a + b, 0) /
-                    (values.filter(v => v !== 0).length || 1);
-            }else if(column === 'e1' || column === 'e2' || column === 'e3'){
-                // this.opcr_data[index].rating_e = rating;
-                const values = [
-                    +this.opcr_data[index].e1 || 0,
-                    +this.opcr_data[index].e2 || 0,
-                    +this.opcr_data[index].e3 || 0
-                ];
-
-                this.opcr_data[index].rating_e =
-                    values.filter(v => v !== 0).reduce((a, b) => a + b, 0) /
-                    (values.filter(v => v !== 0).length || 1);
-            }else if(column === 't1'){
-                this.opcr_data[index].rating_t = rating;
-            }
-            var url = "/review-approve/ratings/submit/opcr/"+column+"/"+opcr_rating_id+"/"+rating;
-                axios.post(url).then(response=>{
-
-            }).finally(response=>{
-
-            }).catch(error=>{
-
-            });
-        },
+        }
     }
 };
 </script>

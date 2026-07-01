@@ -13,6 +13,7 @@ class CreateAIPApproversTable extends Migration
      */
     public function up()
     {
+        // Purpose: connect aip with approver; allow inclusion/exclusion of AIP approvers per year
         Schema::create('aip_approvers', function (Blueprint $table) {
             $table->id();
             $table->string('aip_institutional_id');
