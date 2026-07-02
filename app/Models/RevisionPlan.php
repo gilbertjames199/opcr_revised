@@ -45,6 +45,12 @@ class RevisionPlan extends Model
     {
         return $this->belongsTo(ProgramAndProject::class, 'idpaps', 'id');
     }
+    public function gasPaps()
+    {
+        return $this->hasOne(ProgramAndProject::class, 'FFUNCCOD', 'FFUNCCOD')
+                    ->where('type', 'GAS')
+                    ->orderBy('id', 'asc'); // picks the first match by ID
+    }
     public function office()
     {
         return $this->hasOne(FFUNCCOD::class, 'FFUNCCOD', 'FFUNCCOD');
