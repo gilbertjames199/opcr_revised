@@ -598,8 +598,8 @@
         <SideModal v-if="displaySideModal"  @close-modal-event="displaySideModal = false" style="z-index: 9999;  ">
             <h2 class="text-lg font-semibold">Preview SideModal</h2>
             <!-- file_extension: {{ file_extension }} -- {{ view_link }} -- {{ disk }} -->
-             <!-- v-if="disk==='public'" below set to public_false -->
-            <div v-if="disk==='public_false'">
+             v-if="disk==='public'"
+            <div v-if="disk==='public'">
                 <!-- <iframe v-if="file_extension === 'pdf'"
                     :src="`/storage/${current_filepath}`"
                     width="100%"

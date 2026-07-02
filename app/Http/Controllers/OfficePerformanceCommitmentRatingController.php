@@ -671,7 +671,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $baseUrl = app()->environment('production')
             ? 'http://122.53.120.18:8067/images/'
             : asset('storage/');
-        $disk = app()->environment('production') ? 'custom_uploads' : 'public';
+        // $disk = app()->environment('production') ? 'custom_uploads' : 'public';
+        $disk = 'public';
         // dd($baseUrl);
         // dd($rating_status);
         // dd($baseUrl);
