@@ -13,16 +13,28 @@
             </Link>
         </div>
 
-        <!-- <div class="col-md-8">
-            <button class="btn btn-secondary" @click="showModal" :disabled="submitted">Permissions</button>
-        </div> -->
-
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <input type="hidden" required>
 
+                <!-- EMPLOYEE PICKER: search + select a single employee by empl_id -->
+                <label for="">SELECT EMPLOYEE</label>
+                <multiselect
+                    v-model="selected_empl_id"
+                    :options="employeeOptions"
+                    :searchable="true"
+                    :close-on-select="true"
+                    mode="single"
+                    placeholder="Search employee by name..."
+                    label="label"
+                    value-prop="empl_id"
+                    track-by="label"
+                    @select="onEmployeeSelect"
+                    @clear="onEmployeeClear"
+                />
+                <div class="fs-6 c-red-500" v-if="form.errors.employee_code">{{ form.errors.employee_code }}</div>
+
                 <label for="">EMPLOYEES</label>
-                <!-- <input type="text" v-model="form.goal_description" class="form-control" autocomplete="chrome-off"> -->
                 <QuillEditor theme="snow" v-model:content="form.goal_description" :style="{ backgroundColor: '#ffffff' }"
                     contentType="html" toolbar="full" />
                 <div class="fs-6 c-red-500" v-if="form.errors.goal_description">{{ form.errors.goal_description }}</div>
@@ -52,30 +64,22 @@
         </div>
 
     </div>
+    {{ employees }}
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
 import Places from "@/Shared/PlacesShared";
-//import BootstrapModalNoJquery from './BootstrapModalNoJquery.vue';
 
 export default {
     props: {
         editData: Object,
-        employees: Object
+        employees: Object // can arrive as an array OR an object map keyed by id
     },
-    // components: {
-    //BootstrapModalNoJquery,
 
-    //   Places: () => new Promise((resolve) => {
-    //     setTimeout(() => {
-    //         resolve(Places)
-    //     }, 2000)
-    // })
-
-    // },
     data() {
         return {
             submitted: false,
+            selected_empl_id: "", // holds the currently selected employee's empl_id
             form: useForm({
                 id: "",
                 employee_code: "",
@@ -89,15 +93,37 @@ export default {
         };
     },
 
+    computed: {
+        // Normalizes `employees` (array or object map) into the option
+        // shape @vueform/multiselect expects, and keeps the full row
+        // attached to each option so we can pull every field on select.
+        employeeOptions() {
+            if (!this.employees) return [];
+
+            const list = Array.isArray(this.employees)
+                ? this.employees
+                : Object.values(this.employees);
+
+            return list.map(emp => ({
+                empl_id: emp.empl_id,
+                label: emp.position ? `${emp.employee_name} — ${emp.position}` : emp.name,
+                // keep the original row so onEmployeeSelect can copy every field
+                ...emp
+            }));
+        }
+    },
+
     mounted() {
 
         if (this.editData !== undefined) {
-            // if(this.bari){
-            //     this.bar=this.bari
-            // }
             this.pageTitle = "Edit"
             this.form.goal_description = this.editData.goal_description
             this.form.id = this.editData.id
+
+            // if editing an existing record, preselect the matching employee
+            if (this.editData.employee_code) {
+                this.selected_empl_id = this.editData.employee_code
+            }
         } else {
             this.pageTitle = "Create"
         }
@@ -105,9 +131,31 @@ export default {
     },
 
     methods: {
+        // Fired by the multiselect's @select event. `option` is the full
+        // employee row (because we spread ...emp into employeeOptions above),
+        // so every column on the employees table is available here.
+        onEmployeeSelect(value, option) {
+            if (!option) return;
+
+            this.form.employee_code = option.empl_id ?? "";
+            this.form.name = option.name ?? "";
+            this.form.position = option.position ?? "";
+            this.form.type = option.type ?? this.form.type;
+            this.form.is_present = option.is_present ?? this.form.is_present;
+            this.form.with_signature = option.with_signature ?? this.form.with_signature;
+
+            // If you need the raw selected row elsewhere in the component:
+            // this.selectedEmployeeRow = option;
+        },
+
+        // Clears the dependent form fields when the selection is cleared
+        onEmployeeClear() {
+            this.form.employee_code = "";
+            this.form.name = "";
+            this.form.position = "";
+        },
+
         submit() {
-            // this.form.target_qty=parseFloat(this.form.target_qty1)+parseFloat(this.form.target_qty2)+parseFloat(this.form.target_qty3)+parseFloat(this.form.target_qty4);
-            //alert(this.form.target_qty);
             if (this.editData !== undefined) {
                 this.form.patch("/SDG/" + this.form.id, this.form);
             } else {
