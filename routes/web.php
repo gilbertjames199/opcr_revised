@@ -942,6 +942,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [OfficePerformanceCommitmentRatingController::class, 'destroy']);
         Route::get('/print/o/p/c/r', [OfficePerformanceCommitmentRatingController::class, 'print']);
     });
+    // OPCR Accomplishments
+    Route::prefix('/monthly-paps-accomplishments')->group(function () {
+        Route::get('/', [OpcrAccomplishmentController::class, 'accomplishment_opcr']);
+    });
     // MOV API
     Route::prefix('/movs')->group(function () {
         Route::get('', [MeansOfVerificationController::class, 'index']);

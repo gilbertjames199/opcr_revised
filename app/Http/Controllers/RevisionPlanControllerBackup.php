@@ -169,7 +169,6 @@ class RevisionPlanController extends Controller
                 "source" => $request->source,
                 "year_filtering" => $year_filtering,
                 "allowed" => $allowed,
-                "AIPInstitutional"=>$AIPInstitutional,
                 'can' => [
                     'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                     'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
@@ -281,7 +280,7 @@ class RevisionPlanController extends Controller
                 $query->where('revision_plans.date_start', $year_filtering);
             })
             ->get()
-            ->map(function ($item) use ($currentYear, $budget_controller) {
+            ->map(function ($item) use($currentYear, $budget_controller) {
                 // $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                 //     ->sum('amount');
                 $budgetary_requirement = 0;
@@ -337,10 +336,10 @@ class RevisionPlanController extends Controller
                 //     ->select('targets.*', 'implementation_plans.*')
                 //     ->sum('targets.planned_budget');
                 $total = [];
-                $imp_ps_total = 0.00;
-                $imp_mooe_total = 0.00;
-                $imp_co_total = 0.00;
-                $imp_fe_total = 0.00;
+                $imp_ps_total=0.00;
+                $imp_mooe_total=0.00;
+                $imp_co_total=0.00;
+                $imp_fe_total=0.00;
                 // $imp_amount = ImplementationPlan::where('implementation_plans.idrev_plan',$item->id)
                 //                 ->join('targets', 'targets.id','implementation_plans.id')
                 //                 ->sum('targets.planned_budget');
@@ -3341,33 +3340,24 @@ class RevisionPlanController extends Controller
         }
         // dd($year);
         // ? "1":"0";
-        $plans = RevisionPlan::with([
-            'strategyProject.strategy',
-            'strategyProject.expected_output',
-            'strategyProject.expected_outcome',
-            'activityProject' => function ($query) {
-                $query->whereHas('activity');
-            },
-            'activityProject.activity',
-            'activityProject.expected_output',
-            'activityProject.expected_outcome',
-            'budget',
-            'paps',
-            'paps.office',
-            'paps.office.office',
-            'gasPaps',
-            'gasPaps.office',
-            'gasPaps.office.office',
-            'office'
-        ])
-            ->whereYear('date_start', $year)
-            ->where('status', '1')
-            ->where('aip_code','<>', NULL)
-            ->orderBy('aip_code', 'asc')
-            ->get();
-
-        // dd("aip",$plans->pluck('aip_code'));
-        $pln = $plans;
+        // dd($ssf_filter);
+        $plans = $this->getAllPlans($request, $year, $ssf_filter);
+        // $plansWithEmptyStrategy = $plans->filter(function ($plan) {
+        //     $strategyProject = $plan->strategyProject()->whereHas('strategy')->first();
+        //     $strategy = optional($strategyProject)->strategy;
+        //     return is_null($strategy);
+        // });
+        // dd($plans->pluck('aip_code'), $plansWithEmptyStrategy->pluck('project_title'));
+        // return $plans;
+        // dd($plansWithEmptyStrategy[11]);
+        // ->pluck('project_title'));
+        // dd($plansWithEmptyStrategy->pluck('project_title'));
+        // dd($plans->pluck('project_title'));
+        $papss=$plans->pluck("paps");
+        // dd($papss->pluck('source_of_funds'));
+        // dd($plans->first());
+        $pln=$plans;
+        // dd($plans->first(), $plans[296]);
         foreach ($plans as $plan) {
             $strategyProject = $plan->strategyProject()->whereHas('strategy')->first();
             $strategy = optional($strategyProject)->strategy;
@@ -3379,30 +3369,35 @@ class RevisionPlanController extends Controller
             $source_of_funds = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
 
             $sector = optional(optional($plan)->paps)->sector;
-            if(!$sector){
-                // dd(optional($plan)->gasPaps);
-                $sector = optional(optional($plan)->gasPaps)->sector;
-                $source_of_funds =optional(optional($plan)->gasPaps)->source_of_funds;
-            }
             $strategyId = $plan->id;
             $budget = $plan->budget;
             $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
             if (count($budget) > 0) {
                 $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
             }
-
+            // $expected_outputs = collect($plan->activityProject)
+            //     ->pluck('expected_output')
+            //     ->filter()
+            //     ->flatten(1)
+            //     ->map(fn($output) => [
+            //         'target_budget_year' => (($output->physical_q1 ? floatval($output->physical_q1) : 0) + ($output->physical_q2 ? floatval($output->physical_q2) : 0)
+            //             + ($output->physical_q3 ? floatval($output->physical_q3) : 0) + ($output->physical_q4 ? floatval($output->physical_q4) : 0)),
+            //         'description' => $output->description ?? ''
+            //     ])
+            //     ->filter(fn($item) => !empty($item['description']))
+            //     ->values();
 
             $expected_outputs = in_array($source_of_funds, ['dev', 'other'])
                 ? ""
                 : collect($plan->activityProject)
-                ->filter(function ($activityProject) use($plan) {
+                 ->filter(function ($activityProject) use($plan) {
                     // Only active activity projects
                     if ((int)($activityProject->is_active ?? 0) !== 1) {
                         return false;
                     }
-                    if ($plan->id == 668) {
+                    if($plan->id==668){
                         return true;
-                    } else {
+                    }else{
                         $total_co =
                             (float)($activityProject->co_q1 ?? 0) +
                             (float)($activityProject->co_q2 ?? 0) +
@@ -3411,11 +3406,12 @@ class RevisionPlanController extends Controller
 
                         return $total_co <= 0;
                     }
+
                 })
                 ->pluck('expected_output')
                 ->filter()
                 ->flatten(1)
-                ->map(function ($output) use ($plan) {
+                ->map(function ($output) use($plan){
                     $target_budget_year =
                         ($output->physical_q1 ? floatval($output->physical_q1) : 0) +
                         ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
@@ -3426,7 +3422,7 @@ class RevisionPlanController extends Controller
                     // Check if description starts with a number
                     if (
                         preg_match('/^\(\d+\)/', $description) ||
-                        preg_match('/^\d+/', $description) ||
+                        preg_match('/^\d+/', $description)||
                         preg_match('/^[^:]+:\s*/', $description)
                     ) {
                         return $description;
@@ -3447,7 +3443,73 @@ class RevisionPlanController extends Controller
                 })
                 ->filter()
                 ->implode("\n");
+            // if($plan->id==668){
+            //     dd('plan',
+            //         $plan,
+            //     'activity project',
+            //         $plan->activityProject,
+            //         'source of funds',
+            //         $source_of_funds,
+            //         'expected outputs',
+            //         $expected_outputs,
+            //         'activity project',
+            //         $plan->activityProject[1],
+            //         collect($plan->activityProject)
+            //             ->filter(function ($activityProject) {
+            //                 // Only active activity projects
+            //                 if ((int)($activityProject->is_active ?? 0) !== 1) {
+            //                     return false;
+            //                 }
+            //                 $total_co =
+            //                     (float)($activityProject->co_q1 ?? 0) +
+            //                     (float)($activityProject->co_q2 ?? 0) +
+            //                     (float)($activityProject->co_q3 ?? 0) +
+            //                     (float)($activityProject->co_q4 ?? 0);
 
+            //                 return $total_co <= 0;
+            //             })
+            //             ->pluck('expected_output')
+            //             ->filter(), "|dsdasdsa",
+            //         collect($plan->activityProject)->count(),"fdfsdfsdfsdfsdfsdfsdf",
+            //         collect($plan->activityProject)
+            //             ->filter(function ($activityProject) {
+            //                 return (int)($activityProject->is_active ?? 0) === 1;
+            //             })
+            //             ->pluck('expected_output')
+            //         ->filter()
+            //         ->flatten(1)
+            //         ->map(function ($output) use($plan){
+            //             $target_budget_year =
+            //                 ($output->physical_q1 ? floatval($output->physical_q1) : 0) +
+            //                 ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
+            //                 ($output->physical_q3 ? floatval($output->physical_q3) : 0) +
+            //                 ($output->physical_q4 ? floatval($output->physical_q4) : 0);
+            //             $description = trim($output->description ?? '');
+
+            //             // Check if description starts with a number
+            //             if (
+            //                 preg_match('/^\(\d+\)/', $description) ||
+            //                 preg_match('/^\d+/', $description)||
+            //                 preg_match('/^[^:]+:\s*/', $description)
+            //             ) {
+            //                 return $description;
+            //             }
+
+            //             $formattedTarget = number_format($target_budget_year);
+            //             if (
+            //                 str_contains($description, (string) $target_budget_year) ||
+            //                 str_contains($description, $formattedTarget)
+            //             ) {
+            //                 return $description;
+            //             }
+
+
+            //             return $target_budget_year . ' ' . $description;
+            //         })
+            //         ->filter()
+            //         ->implode("\n")
+            //     );
+            // }
             $total_mooe = $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
             $total_ps = $budget->where('category', 'Personnel Services')->sum('amount');
             $total_co = $budget->where('category', 'Capital Outlay')->sum('amount');
@@ -3489,12 +3551,19 @@ class RevisionPlanController extends Controller
             if ($paps_title === mb_strtoupper($paps_title, 'UTF-8') && !preg_match('/^STF\s+\d{4}$/', $paps_title)) {
                 $paps_title = $this->titleCaseTransform($paps_title);
             }
-
+            // if($plan->id==272){
+            //     // dd($plan, $paps_title, $paps_temp);
+            //     dd($plan);
+            // }
             $paps_desc = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
             $paps_title_desc = "<b>" . $paps_title . "</b>\n\n<i>" . $paps_desc . "</i>";
-            $imp_office = optional(optional(optional($plan)->paps)->office)->office ?
-                optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
-                optional(optional(optional($plan)->paps)->office)->FFUNCTION;
+            $imp_office=optional(optional(optional($plan)->paps)->office)->office ?
+                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
+                        optional(optional(optional($plan)->paps)->office)->FFUNCTION;
+            // dd($source, optional(optional($plan)->paps)->source_of_funds);
+            // if ($plan->id==618) {
+            //     dd($plan, in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? '' : $ccetCode);
+            // }
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
@@ -3510,11 +3579,11 @@ class RevisionPlanController extends Controller
                     'aip_code' => $plan->aip_code,
                     'source' => $source . "\n",
                     'ccet' => $ccet,
-                    'year' => $year,
+                    'year'=>$year,
                     'id' => $plan->id,
-                    'source_of_funds' => optional(optional($plan)->paps)->source_of_funds ? optional(optional($plan)->paps)->source_of_funds : optional(optional($plan)->gasPaps)->source_of_funds,
+                    'source_of_funds' => optional(optional($plan)->paps)->source_of_funds,
                     'sector' => $sector,
-                    'level' => 1
+                    'level'=>1
                 ];
             } else {
                 continue;
@@ -3527,54 +3596,85 @@ class RevisionPlanController extends Controller
 
             }
         }
-
+        // dd($plansWithEmptyStrategy[11], );
+        // dd($plans[296], $plans->first()->strategyProject(), $strategies);
+        // ->first(), $plans[296]
+        // Optional: convert expected_output collections back to arrays
+        // foreach ($strategies as &$strategy) {
+        //     $strategy['expected_output'] = $strategy['expected_output']->toArray();
+        // }
 
         // return array_values($strategies);
         $strategies = collect($strategies);
-
         $rev_ids = $strategies->pluck('id');
-        // dd($rev_ids);
-        $cap_ob = $this->capitalOutlayObject($rev_ids);
-        $capital_activities = $this->retrievingCapitalOutlay($request->ccet, $cap_ob);
+        $cap_ob = $this->capitalOutlayObject($request, $rev_ids);
+        $capital_activities = $this->retrievingCapitalOutlay( $request->ccet, $cap_ob);
+        // Remember original order of activities
         $grouped = $capital_activities->groupBy('id');
-        $flattened_grouped = $grouped->flatten(1);
-        // dd($flattened_grouped, $flattened_grouped[520]);
-        $result = $strategies->concat($flattened_grouped)
-            ->sortBy([
-                ['aip_code', 'asc'],
-                ['level', 'asc'],
-            ])
-            ->values();
-        // dd($grouped, $flattened_grouped, $flattened_grouped->pluck('aip_code'), $rev_ids, $flattened_grouped[520]);
-        // dd($flattened_grouped, $flattened_grouped->pluck('aip_code'), $rev_ids, $flattened_grouped[520]);
-        // $strategies = $strategies->concat($flattened_grouped)->sortBy('aip_code')->values();
-        // dd($flattened_grouped, $flattened_grouped->pluck('aip_code'));
-        // $result = collect();
+        $result = collect();
 
-        // foreach ($strategies as $strategy) {
-        //     $result->push($strategy);
-        //     $key = $strategy['id'];
-        //     if($key==738){
-        //         // dd($strategy, $grouped[$key],
-        //         // $grouped[$key]->count(),
-        //         // $grouped[$key]->all());
-        //     }
-        //     $before = $result->count();
-        //     if ($grouped->has($key)) {
-        //         // dd("has key");
-        //         $result = $result->concat($grouped[$key]);
-        //         $kk = $key;
-        //         $grouped->forget($key);
-        //         if($kk==738){dd($before,$result->count(), $result);}
-
-        //     }
-        // }
+        foreach ($strategies as $strategy) {
+            $result->push($strategy);
+            $key = $strategy['id'];
+            if ($grouped->has($key)) {
+                $result = $result->concat($grouped[$key]);
+                $grouped->forget($key);
+            }
+        }
         // Append any activities without a matching strategy (if needed)
-        // foreach ($grouped as $activities) {
-        //     $result = $result->concat($activities);
-        // }
-        $strategies=$result;
-        // dd("foreach:",$plans->pluck('aip_code'),$strategies->pluck('sector'), $strategies->first());
+        foreach ($grouped as $activities) {
+            $result = $result->concat($activities);
+        }
+        $strategies=$result->values();
+        // dd($strategies);
+        // $summary = $this->getRevisionPlanSummary($pln->concat($cap_ob));
+        // dd($strategies->pluck('id'), $capital_activities->pluck('id'));
+        // dd($strategies, $capital_activities->pluck('project_title'));
+
+        // $strategies = $strategies
+        //     ->concat($capital_activities)
+        //     ->sort(function ($a, $b) {
+
+                /*
+                |--------------------------------------------------------------------------
+                | aip_code ASC
+                |--------------------------------------------------------------------------
+                */
+
+                // $aipCompare = strcmp(
+                //     (string)($a['aip_code'] ?? ''),
+                //     (string)($b['aip_code'] ?? '')
+                // );
+
+                // if ($aipCompare !== 0) {
+                //     return $aipCompare;
+                // }
+
+                /*
+                |--------------------------------------------------------------------------
+                | id ASC
+                |--------------------------------------------------------------------------
+                */
+
+                // $idCompare = ($a['id'] ?? 0) <=> ($b['id'] ?? 0);
+
+                // if ($idCompare !== 0) {
+                //     return $idCompare;
+                // }
+
+                /*
+                |--------------------------------------------------------------------------
+                | level ASC
+                |--------------------------------------------------------------------------
+                */
+
+            //     return ($a['level'] ?? 0) <=> ($b['level'] ?? 0);
+
+            // })
+            // ->values();
+
+        // $strategies = $strategies->concat($capital_activities)->values();
+        // dd($capital_activities);
         /*
         |--------------------------------------------------------------------------
         | General Fund Sectors
@@ -3690,6 +3790,12 @@ class RevisionPlanController extends Controller
         $other_services_ccet_code_mitigation = $safeSum($other_services, 'ccet_code_mitigation');
         // + $ldrrmf_ccet_code_mitigation;
 
+        // $ldrrmf_total_mooe = $safeSum($ldrrmf, 'total_mooe') + $safeSum($other_services, 'total_mooe');
+        // $ldrrmf_total_ps   = $safeSum($ldrrmf, 'total_ps') + $safeSum($other_services, 'total_ps');
+        // $ldrrmf_total_co   = $safeSum($ldrrmf, 'total_co') + $safeSum($other_services, 'total_co');
+        // $ldrrmf_total_fe   = $safeSum($ldrrmf, 'total_fe') + $safeSum($other_services, 'total_fe');
+        // $ldrrmf_ccet_code_adaptation = $safeSum($ldrrmf, 'ccet_code_adaptation') + $safeSum($other_services, 'ccet_code_adaptation');
+        // $ldrrmf_ccet_code_mitigation = $safeSum($ldrrmf, 'ccet_code_mitigation') + $safeSum($other_services, 'ccet_code_mitigation');
         // Development Fund
         $dev_total_mooe = $safeSum($dev, 'total_mooe');
         $dev_total_ps   = $safeSum($dev, 'total_ps');
@@ -3780,56 +3886,63 @@ class RevisionPlanController extends Controller
                 // dd($item['source_of_funds'], $item['sector']);
                 $sf = $item['source_of_funds'];
                 $sector = $item['sector'];
-                if ($sf == 'gen_fund' && $sector == 'General Public Services Sector') {
+                if($sf=='gen_fund' && $sector=='General Public Services Sector'){
                     $item['grand_total_mooe'] = (float) number_format($general_public_services_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = (float) number_format($general_public_services_total_ps, 2, '.', '');
                     $item['grand_total_co']   = (float) number_format($general_public_services_total_co, 2, '.', '');
                     $item['grand_total_fe']   = (float) number_format($general_public_services_total_fe, 2, '.', '');
                     $item['total_ccet_code_adaptation'] = (float) number_format($general_public_services_ccet_code_adaptation, 2, '.', '');
                     $item['total_ccet_code_mitigation'] = (float) number_format($general_public_services_ccet_code_mitigation, 2, '.', '');
-                } elseif ($sf == 'gen_fund' && $sector == 'Economic Services') {
+                }
+                elseif($sf=='gen_fund' && $sector=='Economic Services'){
                     $item['grand_total_mooe'] = (float) number_format($economic_services_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = (float) number_format($economic_services_total_ps, 2, '.', '');
                     $item['grand_total_co']   = (float) number_format($economic_services_total_co, 2, '.', '');
                     $item['grand_total_fe']   = (float) number_format($economic_services_total_fe, 2, '.', '');
                     $item['total_ccet_code_adaptation'] = (float) number_format($economic_services_ccet_code_adaptation, 2, '.', '');
                     $item['total_ccet_code_mitigation'] = (float) number_format($economic_services_ccet_code_mitigation, 2, '.', '');
-                } elseif ($sf == 'gen_fund' && $sector == 'Social Services Sector') {
+                }
+                elseif($sf=='gen_fund' && $sector=='Social Services Sector'){
                     $item['grand_total_mooe'] = (float) number_format($social_services_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = (float) number_format($social_services_total_ps, 2, '.', '');
                     $item['grand_total_co']   = (float) number_format($social_services_total_co, 2, '.', '');
                     $item['grand_total_fe']   = (float) number_format($social_services_total_fe, 2, '.', '');
                     $item['total_ccet_code_adaptation'] = (float) number_format($social_services_ccet_code_adaptation, 2, '.', '');
                     $item['total_ccet_code_mitigation'] = (float) number_format($social_services_ccet_code_mitigation, 2, '.', '');
-                } elseif ($sf == 'gen_fund' && $sector == 'Other Services') {
+                }
+                elseif($sf=='gen_fund' && $sector=='Other Services'){
                     $item['grand_total_mooe'] = number_format($other_services_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = number_format($other_services_total_ps, 2, '.', '');
                     $item['grand_total_co']   = number_format($other_services_total_co, 2, '.', '');
                     $item['grand_total_fe']   = number_format($other_services_total_fe, 2, '.', '');
                     $item['total_ccet_code_adaptation'] = number_format($other_services_ccet_code_adaptation, 2, '.', '');
                     $item['total_ccet_code_mitigation'] = number_format($other_services_ccet_code_mitigation, 2, '.', '');
-                } elseif ($sf == 'dev') {
+                }
+                elseif($sf=='dev'){
                     $item['grand_total_mooe'] = (float) number_format($dev_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = (float) number_format($dev_total_ps, 2, '.', '');
                     $item['grand_total_co']   = (float) number_format($dev_total_co, 2, '.', '');
                     $item['grand_total_fe']   = (float) number_format($dev_total_fe, 2, '.', '');
                     $item['total_ccet_code_adaptation'] = (float) number_format($dev_ccet_code_adaptation, 2, '.', '');
                     $item['total_ccet_code_mitigation'] = (float) number_format($dev_ccet_code_mitigation, 2, '.', '');
-                } elseif ($sf == 'ldrrmf') {
+                }
+                elseif($sf=='ldrrmf'){
                     $item['grand_total_mooe'] = number_format($ldrrmf_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = number_format($ldrrmf_total_ps, 2, '.', '');
                     $item['grand_total_co']   = number_format($ldrrmf_total_co, 2, '.', '');
                     $item['grand_total_fe']   = number_format($ldrrmf_total_fe, 2, '.', '');
                     $item['total_ccet_code_adaptation'] = number_format($ldrrmf_ccet_code_adaptation, 2, '.', '');
                     $item['total_ccet_code_mitigation'] = number_format($ldrrmf_ccet_code_mitigation, 2, '.', '');
-                } elseif ($sf == 'other') {
+                }
+                elseif($sf=='other'){
                     $item['grand_total_mooe'] = (float) number_format($other_total_mooe, 2, '.', '');
                     $item['grand_total_ps']   = (float) number_format($other_total_ps, 2, '.', '');
                     $item['grand_total_co']   = (float) number_format($other_total_co, 2, '.', '');
                     $item['grand_total_fe']   = (float) number_format($other_total_fe, 2, '.', '');
                     $item['total_ccet_code_adaptation'] = (float) number_format($other_ccet_code_adaptation, 2, '.', '');
                     $item['total_ccet_code_mitigation'] = (float) number_format($other_ccet_code_mitigation, 2, '.', '');
-                } else {
+                }
+                else{
                     $item['grand_total_mooe'] = (float) number_format(0, 2, '.', '');
                     $item['grand_total_ps']   = (float) number_format(0, 2, '.', '');
                     $item['grand_total_co']   = (float) number_format(0, 2, '.', '');
@@ -3837,7 +3950,74 @@ class RevisionPlanController extends Controller
                     $item['total_ccet_code_adaptation'] = (float) number_format(0, 2, '.', '');
                     $item['total_ccet_code_mitigation'] = (float) number_format(0, 2, '.', '');
                 }
+                // $item['grand_total_mooe'] = number_format($general_public_services_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($general_public_services_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($general_public_services_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($general_public_services_total_fe, 2, '.', '');
 
+                // $item['grand_total_mooe'] = number_format($economic_services_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($economic_services_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($economic_services_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($economic_services_total_fe, 2, '.', '');
+
+                // $item['grand_total_mooe'] = number_format($social_services_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($social_services_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($social_services_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($social_services_total_fe, 2, '.', '');
+
+                // $item['grand_total_mooe'] = number_format($other_services_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($other_services_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($other_services_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($other_services_total_fe, 2, '.', '');
+
+                // $item['grand_total_mooe'] = number_format($dev_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($dev_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($dev_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($dev_total_fe, 2, '.', '');
+
+                // $item['grand_total_mooe'] = number_format($ldrrmf_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($ldrrmf_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($ldrrmf_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($ldrrmf_total_fe, 2, '.', '');
+
+                // $item['grand_total_mooe'] = number_format($other_total_mooe, 2, '.', '');
+                // $item['grand_total_ps']   = number_format($other_total_ps, 2, '.', '');
+                // $item['grand_total_co']   = number_format($other_total_co, 2, '.', '');
+                // $item['grand_total_fe']   = number_format($other_total_fe, 2, '.', '');
+                // $item['general_public_services_total_mooe'] = number_format($general_public_services_total_mooe, 2, '.', '');
+                // $item['general_public_services_total_ps']   = number_format($general_public_services_total_ps, 2, '.', '');
+                // $item['general_public_services_total_co']   = number_format($general_public_services_total_co, 2, '.', '');
+                // $item['general_public_services_total_fe']   = number_format($general_public_services_total_fe, 2, '.', '');
+
+                // $item['economic_services_total_mooe'] = number_format($economic_services_total_mooe, 2, '.', '');
+                // $item['economic_services_total_ps']   = number_format($economic_services_total_ps, 2, '.', '');
+                // $item['economic_services_total_co']   = number_format($economic_services_total_co, 2, '.', '');
+                // $item['economic_services_total_fe']   = number_format($economic_services_total_fe, 2, '.', '');
+
+                // $item['social_services_total_mooe'] = number_format($social_services_total_mooe, 2, '.', '');
+                // $item['social_services_total_ps']   = number_format($social_services_total_ps, 2, '.', '');
+                // $item['social_services_total_co']   = number_format($social_services_total_co, 2, '.', '');
+                // $item['social_services_total_fe']   = number_format($social_services_total_fe, 2, '.', '');
+
+                // $item['other_services_total_mooe'] = number_format($other_services_total_mooe, 2, '.', '');
+                // $item['other_services_total_ps']   = number_format($other_services_total_ps, 2, '.', '');
+                // $item['other_services_total_co']   = number_format($other_services_total_co, 2, '.', '');
+                // $item['other_services_total_fe']   = number_format($other_services_total_fe, 2, '.', '');
+
+                // $item['dev_total_mooe'] = number_format($dev_total_mooe, 2, '.', '');
+                // $item['dev_total_ps']   = number_format($dev_total_ps, 2, '.', '');
+                // $item['dev_total_co']   = number_format($dev_total_co, 2, '.', '');
+                // $item['dev_total_fe']   = number_format($dev_total_fe, 2, '.', '');
+
+                // $item['ldrrmf_total_mooe'] = number_format($ldrrmf_total_mooe, 2, '.', '');
+                // $item['ldrrmf_total_ps']   = number_format($ldrrmf_total_ps, 2, '.', '');
+                // $item['ldrrmf_total_co']   = number_format($ldrrmf_total_co, 2, '.', '');
+                // $item['ldrrmf_total_fe']   = number_format($ldrrmf_total_fe, 2, '.', '');
+
+                // $item['other_total_mooe'] = number_format($other_total_mooe, 2, '.', '');
+                // $item['other_total_ps']   = number_format($other_total_ps, 2, '.', '');
+                // $item['other_total_co']   = number_format($other_total_co, 2, '.', '');
+                // $item['other_total_fe']   = number_format($other_total_fe, 2, '.', '');
 
                 return $item;
 
@@ -3851,25 +4031,24 @@ class RevisionPlanController extends Controller
         // dd($final_strategies->pluck('aip_code'));
         return $final_strategies;
     }
-    public function getAllPlans(Request $request, $year, $ssf_filter)
-    {
+    public function getAllPlans(Request $request, $year, $ssf_filter){
 
-        $data = RevisionPlan::with([
-            'strategyProject.strategy',
-            'strategyProject.expected_output',
-            'strategyProject.expected_outcome',
-            'activityProject' => function ($query) {
-                $query->whereHas('activity');
-            },
-            'activityProject.activity',
-            'activityProject.expected_output',
-            'activityProject.expected_outcome',
-            'budget',
-            'paps',
-            'paps.office',
-            'paps.office.office',
-            'office'
-        ])
+        $data= RevisionPlan::with([
+                'strategyProject.strategy',
+                'strategyProject.expected_output',
+                'strategyProject.expected_outcome',
+                'activityProject' => function ($query) {
+                    $query->whereHas('activity');
+                },
+                'activityProject.activity',
+                'activityProject.expected_output',
+                'activityProject.expected_outcome',
+                'budget',
+                'paps',
+                'paps.office',
+                'paps.office.office',
+                'office'
+            ])
             ->where('status', '1')
             ->whereYear('date_start', $year)
             ->orderBy('aip_code', 'asc')
@@ -3918,7 +4097,7 @@ class RevisionPlanController extends Controller
         });
         // dd($data->where('id',655)->first(), 'after mapping');
         // Apply paps filter only if the row's scope is not 'GAS'
-        $data = $data->filter(function ($plan) use ($request, $ssf_filter) {
+        $data = $data->filter(function ($plan) use($request, $ssf_filter) {
             // if ($plan->scope === 'GAS') {
             //     return true; // Include GAS scope without additional filter
             // }
@@ -3935,18 +4114,17 @@ class RevisionPlanController extends Controller
                 return false;
             }
 
-            if ($ssf_filter == 'gen_fund' || $ssf_filter == 'other' || $ssf_filter == 'dev' || $ssf_filter == 'ldrrmf') {
+            if ($ssf_filter == 'gen_fund' || $ssf_filter == 'other' || $ssf_filter == 'dev'|| $ssf_filter == 'ldrrmf' ) {
                 return $paps->source_of_funds === $request->ssf_filter;
             }
             // else if($ssf_filter == 'Other Services'  || $ssf_filter == 'ldrrmf' ){
             //     return $paps->source_of_funds === 'ldrrmf' || $paps->sector === 'Other Services';
 
             // }
-            else if (
-                $ssf_filter == 'General Public Services Sector' ||
-                $ssf_filter == 'Economic Services' ||
-                $ssf_filter == 'Social Services Sector' ||
-                $ssf_filter == 'Other Services'
+            else if ($ssf_filter == 'General Public Services Sector' ||
+                    $ssf_filter == 'Economic Services' ||
+                    $ssf_filter == 'Social Services Sector' ||
+                    $ssf_filter == 'Other Services'
             ) {
                 // $ssf_filter == 'Other Services' ||
                 return $paps->sector === $request->ssf_filter && $paps->source_of_funds === 'gen_fund';
@@ -3975,10 +4153,8 @@ class RevisionPlanController extends Controller
 
         return $sources[$source] ?? $source;
     }
-    public function capitalOutlayObject($ids)
-    {
-        return ActivityProject::with([
-            'revisionPlan',
+    public function capitalOutlayObject(Request $request, $ids){
+        return ActivityProject::with(['revisionPlan',
             // 'revisionPlan.strategyProject.strategy',
             // 'revisionPlan.strategyProject.expected_output',
             // 'revisionPlan.strategyProject.expected_outcome',
@@ -3986,111 +4162,111 @@ class RevisionPlanController extends Controller
             'expected_output',
             'expected_outcome',
             'revisionPlan.budget',
-            'revisionPlan.gasPaps',
-            'revisionPlan.gasPaps.office',
-            'revisionPlan.gasPaps.office.office',
             'revisionPlan.paps',
             'revisionPlan.paps.office',
             'revisionPlan.paps.office.office',
             'revisionPlan.office'
         ])
-            ->where(function ($queryBase) use ($ids) {
-                $queryBase->where(function ($query) use ($ids) {
+        ->where(function($queryBase)use($ids){
+            $queryBase->where(function($query) use ($ids){
                     $query->whereIn('project_id', $ids)
-                        ->where(function ($q) {
+                        ->where(function($q){
                             $q->where('co_q1', '>', 0)
                                 ->orWhere('co_q2', '>', 0)
                                 ->orWhere('co_q3', '>', 0)
                                 ->orWhere('co_q4', '>', 0);
                         });
                 })
-                    ->orWhere(function ($query) {
-                        $query->whereHas('revisionPlan.paps', function ($qpaps) {
-                            $qpaps->where('source_of_funds', 'dev')
-                                ->orWhere('source_of_funds', 'other');
-                        });
+                ->orWhere(function($query) {
+                    $query->whereHas('revisionPlan.paps', function($qpaps){
+                        $qpaps->where('source_of_funds', 'dev')
+                            ->orWhere('source_of_funds','other');
                     });
-            })
-            ->whereIn('project_id', $ids)
-            ->where('is_active', 1)
-            ->whereHas('activity')
-            ->get();
+                });
+        })
+        ->whereIn('project_id', $ids)
+        ->where('is_active', 1)
+        ->whereHas('activity')
+        ->orderBy('seq_no', 'ASC')
+        ->get();
     }
-    public function retrievingCapitalOutlay($ccet, $cap_ob)
-    {
+    public function retrievingCapitalOutlay($ccet, $cap_ob){
         // dd($ids);
         $revs = $cap_ob
-            ->map(function ($item) use ($ccet) {
-                $plan = optional($item)->revisionPlan;
+        ->map(function($item)use($ccet){
+            $plan = optional($item)->revisionPlan;
 
-                $imp_office = optional(optional(optional($plan)->paps)->office)->office ?
-                    optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
-                    optional(optional(optional($plan)->paps)->office)->FFUNCTION;
-                $total_mooe = optional($item)->mooe_q1 + optional($item)->mooe_q2 + optional($item)->mooe_q3 + optional($item)->mooe_q4;
-                $total_ps = optional($item)->ps_q1 + optional($item)->ps_q2 + optional($item)->ps_q3 + optional($item)->ps_q4;
-                $total_co = optional($item)->co_q1 + optional($item)->co_q2 + optional($item)->co_q3 + optional($item)->co_q4;
-                $total_fe = optional($item)->fe_q1 + optional($item)->fe_q2 + optional($item)->fe_q3 + optional($item)->fe_q4;
-                $total_all = $total_mooe + $total_ps + $total_co + $total_fe;
-                $activityWithCcet = $item->ccet_code;
-                $ccet_code_adaptation = 0;
-                $ccet_code_mitigation = 0;
-                if ($activityWithCcet) {
-                    // Found at least one with a ccet_code
-                    $ccetCode = $activityWithCcet;
-                    if ($ccetCode) {
-                        if (Str::startsWith($ccetCode, 'A')) {
-                            $ccet_code_adaptation = $total_all;
-                            $ccet_code_mitigation = 0;
-                        } elseif (Str::startsWith($ccetCode, 'M')) {
-                            $ccet_code_adaptation = 0;
-                            $ccet_code_mitigation = $total_all;
-                        } else {
-                            $ccet_code_adaptation = 0;
-                            $ccet_code_mitigation = 0;
-                        }
+            $imp_office=optional(optional(optional($plan)->paps)->office)->office ?
+                        optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
+                        optional(optional(optional($plan)->paps)->office)->FFUNCTION;
+            $total_mooe = optional($item)->mooe_q1 + optional($item)->mooe_q2 + optional($item)->mooe_q3 + optional($item)->mooe_q4;
+            $total_ps = optional($item)->ps_q1 + optional($item)->ps_q2 + optional($item)->ps_q3 + optional($item)->ps_q4;
+            $total_co = optional($item)->co_q1 + optional($item)->co_q2 + optional($item)->co_q3 + optional($item)->co_q4;
+            $total_fe = optional($item)->fe_q1 + optional($item)->fe_q2 + optional($item)->fe_q3 + optional($item)->fe_q4;
+            $total_all = $total_mooe + $total_ps + $total_co + $total_fe;
+            $activityWithCcet = $item->ccet_code;
+            $ccet_code_adaptation = 0;
+            $ccet_code_mitigation = 0;
+            if ($activityWithCcet) {
+                // Found at least one with a ccet_code
+                $ccetCode = $activityWithCcet;
+                if ($ccetCode) {
+                    if (Str::startsWith($ccetCode, 'A')) {
+                        $ccet_code_adaptation = $total_all;
+                        $ccet_code_mitigation = 0;
+                    } elseif (Str::startsWith($ccetCode, 'M')) {
+                        $ccet_code_adaptation = 0;
+                        $ccet_code_mitigation = $total_all;
+                    } else {
+                        $ccet_code_adaptation = 0;
+                        $ccet_code_mitigation = 0;
                     }
                 }
-                $source_of_funds = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
+            }
+            $source_of_funds = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
 
-                $source = $this->set_source($source_of_funds);
-                if (mb_strlen($source, 'UTF-8') < 25) {
+            $source = $this->set_source($source_of_funds);
+            if (mb_strlen($source, 'UTF-8') < 25) {
 
-                    $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
-                    $source = implode("\n", $chars);
-                }
-                // dd($plan);
-                return [
-                    'project_title' => optional(optional($item)->activity)->description,
-                    'implementing_office' => $imp_office,
-                    'expected_output' => collect($item->expected_output)
-                        ->pluck('description')
-                        ->filter()
-                        ->map(fn($desc) => trim($desc))
-                        ->implode("\n"),
-                    'total_mooe' => $total_mooe,
-                    'total_ps' => $total_ps,
-                    'total_co' => $total_co,
-                    'total_fe' => $total_fe,
-                    'ccet_code' => optional($item)->ccet_code,
-                    'ccet_code_mitigation' => $ccet_code_mitigation,
-                    'ccet_code_adaptation' => $ccet_code_adaptation,
-                    'aip_code' => optional($plan)->aip_code,
-                    'source' => " ",
-                    'ccet' => $ccet,
-                    'year' => optional($plan)->year,
-                    'id' => optional($plan)->id,
-                    // 'source_of_funds' => optional(optional($plan)->paps)->source_of_funds,
-                    'source_of_funds' => optional(optional($plan)->paps)->source_of_funds ? optional(optional($plan)->paps)->source_of_funds : optional(optional($plan)->gasPaps)->source_of_funds,
-                    'sector' => optional(optional($plan)->paps)->sector ? optional(optional($plan)->paps)->sector : optional(optional($plan)->gasPaps)->sector,
-                    // optional(optional($plan)->paps)->sector,
-                    'level' => 2
-                ];
-            });
+                $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
+                $source = implode("\n", $chars);
+            }
+            // dd($plan->id);
+            // if(optional($plan)->id==418){
+            //     dd($item, $plan, $source_of_funds, $source,"condition met");
+            // }else{
+            //     dd($item, $plan, $source_of_funds, $source, $item->id);
+            // }
+
+            return [
+                'project_title'=>optional(optional($item)->activity)->description,
+                'implementing_office'=>$imp_office,
+                'expected_output'=>collect($item->expected_output)
+                    ->pluck('description')
+                    ->filter()
+                    ->map(fn ($desc) => trim($desc))
+                    ->implode("\n"),
+                'total_mooe'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_mooe) : 0,
+                'total_ps'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_ps) : 0,
+                'total_co'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_co) : 0,
+                'total_fe'=> in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? floatval($total_fe) : 0,
+                'ccet_code' => in_array(optional($item)->ccet_code, [null, 'null'], true) ? '': optional($item)->ccet_code,
+                'ccet_code_mitigation'=>in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $ccet_code_mitigation : 0,
+                'ccet_code_adaptation'=>in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? $ccet_code_adaptation : 0,
+                'aip_code'=>optional($item)->aip_code,
+                'source'=>" ",
+                'ccet'=>$ccet,
+                'year'=>optional($plan)->year,
+                'id'=>optional($plan)->id,
+                'source_of_funds'=>optional(optional($plan)->paps)->source_of_funds,
+                'sector'=>optional(optional($plan)->paps)->sector,
+                'level'=>2
+            ];
+        });
 
         return $revs;
     }
-    public function retrievingCapitalOutlaytest($ids, $ccet)
-    {
+    public function retrievingCapitalOutlaytest($ids, $ccet){
         // use Illuminate\Support\Facades\DB;
         // dd($ids, RevisionPlan());
 
@@ -4146,7 +4322,7 @@ class RevisionPlanController extends Controller
 
                 $paps_title_desc = trim(
                     ($plan->project_title ?? '') .
-                        (!empty($activity_name) ? ' - ' . $activity_name : '')
+                    (!empty($activity_name) ? ' - ' . $activity_name : '')
                 );
 
                 /*
@@ -4281,32 +4457,11 @@ class RevisionPlanController extends Controller
 
             // Words to keep lowercase (unless first word)
             $lowercaseWords = [
-                'And',
-                'Or',
-                'Nor',
-                'But',
-                'For',
-                'So',
-                'Yet',
-                'A',
-                'An',
-                'The',
-                'Of',
-                'In',
-                'On',
-                'At',
-                'To',
-                'By',
-                'From',
-                'With',
-                'As',
-                'Per',
-                'Via',
-                'Over',
-                'Under',
-                'Into',
-                'Upon',
-                'Off'
+                'And', 'Or', 'Nor', 'But', 'For', 'So', 'Yet',
+                'A', 'An', 'The',
+                'Of', 'In', 'On', 'At', 'To', 'By', 'From',
+                'With', 'As', 'Per', 'Via', 'Over', 'Under',
+                'Into', 'Upon', 'Off'
             ];
 
             $words = explode(' ', $paps_title);
@@ -5182,112 +5337,86 @@ class RevisionPlanController extends Controller
         // return $revplan->concat($sigs);
     }
 
-
-
     public function lbpform4(Request $request)
     {
-        $dept_code = $request->department_code;
-        $currentYear = $request->year;
+        $rev_id = $request->id;
 
-        // dd($dept_code);
         $data = RevisionPlan::with([
-            'paps:id,paps_desc,idmfo,aip_code,department_code,FFUNCCOD',
+            'paps:id,paps_desc,idmfo,aip_code',
             'paps.MFO:id,mfo_desc',
-            'activityProject.expected_output',
+            'activityProject.expected_output'
         ])
-            ->whereHas('paps', function ($query) use ($dept_code) {
-                $query->where('department_code', $dept_code);
-            })
-            ->whereYear('date_start', $currentYear)
-            ->where('status', 1)
-            ->select(
-                'id',
-                'project_title',
-                'idpaps',
-                'date_start',
-                'version',
-                'status',
-                'scope'
-            )
-            ->get();
+            ->where('id', $rev_id)
+            ->select('id', 'project_title', 'idpaps')
+            ->first();
 
-        if ($data->isEmpty()) {
+        if (!$data) {
             return response()->json([
                 'message' => 'Revision Plan not found'
             ], 404);
         }
 
-        $result = $data->map(function ($plan) {
-
-            // ACTIVITIES
-            $activities = $plan->activityProject->map(function ($activity) {
-
-                return [
-                    'activity_project_id' => $activity->id,
-                    'activity_name'       => $activity->activity_name,
-
-                    'expected_outputs'    => $activity->expected_output->map(function ($output) {
-
-                        $totalTarget =
-                            (float) $output->physical_q1 +
-                            (float) $output->physical_q2 +
-                            (float) $output->physical_q3 +
-                            (float) $output->physical_q4;
-
-                        return [
-                            'id' => $output->id,
-                            'description' =>
-                            $output->description .
-                                "\n\nTotal Target: " . $totalTarget,
-                            'total_target' => $totalTarget,
-                        ];
-                    })->values(),
-                ];
-            })->values();
-
-            // BUDGET TOTALS (per revision plan)
-            $budgetTotals = BudgetRequirement::where('revision_plan_id', $plan->id)
-                ->selectRaw("
-                SUM(CASE WHEN category = 'Personnel Services' THEN amount ELSE 0 END) as PS,
-                SUM(CASE WHEN category = 'Maintenance, Operating, and Other Expenses' THEN amount ELSE 0 END) as MOOE,
-                SUM(CASE WHEN category = 'Capital Outlay' THEN amount ELSE 0 END) as CO
-            ")
-                ->first();
+        // GROUPED ACTIVITIES
+        $activities = $data->activityProject->map(function ($activity) {
 
             return [
-                'rev_id'        => $plan->id,
-                'project_title' => $plan->project_title,
-                'idpaps'        => $plan->idpaps,
-                'date_start'    => $plan->date_start,
-                'version'       => $plan->version,
-                'status'        => $plan->status,
-                'scope'         => $plan->scope,
+                'activity_project_id' => $activity->id,
+                'activity_name'       => $activity->activity_name,
 
+                'expected_outputs'    => $activity->expected_output->map(function ($output) {
 
-                // PAPS
-                'paps_desc'     => $plan->paps->paps_desc ?? null,
-                'idmfo'         => $plan->paps->idmfo ?? null,
-                'aip_code'      => $plan->paps->aip_code ?? null,
-                'FFUNCCOD'      => $plan->paps->FFUNCCOD ?? null,
-                'department_code' => $plan->paps->department_code ?? null,
+                    // TOTAL TARGET (Q1 + Q2 + Q3 + Q4)
+                    $totalTarget =
+                        (float) $output->physical_q1 +
+                        (float) $output->physical_q2 +
+                        (float) $output->physical_q3 +
+                        (float) $output->physical_q4;
 
+                    return [
+                        'id'                  => $output->id,
+                        'activity_project_id' => $output->activity_project_id,
 
-                // MFO
-                'mfo_desc' => ($plan->scope === 'GAS')
-                    ? 'General Administrative Services'
-                    : ($plan->paps->MFO->mfo_desc ?? null),
+                        // DESCRIPTION + TOTAL TARGET
+                        'description' =>
+                        $output->description
+                            . "\n\nTotal Target: " . $totalTarget,
 
-                // Budget
-                'PS'   => number_format((float) $budgetTotals->PS, 2, '.', ','),
-                'MOOE' => number_format((float) $budgetTotals->MOOE, 2, '.', ','),
-                'CO'   => number_format((float) $budgetTotals->CO, 2, '.', ','),
-
-                // Activities
-                'activities'    => $activities,
+                        'total_target' => $totalTarget,
+                    ];
+                })->values(),
             ];
-        });
+        })->values();
 
-        return response()->json($result);
+        // BUDGET TOTALS
+        $budgetTotals = BudgetRequirement::where('revision_plan_id', $rev_id)
+            ->selectRaw("
+            SUM(CASE WHEN category = 'Personnel Services' THEN amount ELSE 0 END) as PS,
+            SUM(CASE WHEN category = 'Maintenance, Operating, and Other Expenses' THEN amount ELSE 0 END) as MOOE,
+            SUM(CASE WHEN category = 'Capital Outlay' THEN amount ELSE 0 END) as CO
+        ")
+            ->first();
+
+        return response()->json([
+            'rev_id'        => $rev_id,
+            'project_title' => $data->project_title,
+            'idpaps'        => $data->idpaps,
+
+            // PAPS
+            'paps_desc'     => $data->paps->paps_desc ?? null,
+            'idmfo'         => $data->paps->idmfo ?? null,
+            'aip_code'      => $data->paps->aip_code ?? null,
+
+            // MFO
+            'mfo_desc'      => $data->paps->MFO->mfo_desc ?? null,
+
+            // MONEY FORMAT TOTALS
+            'PS'   => number_format((float) $budgetTotals->PS, 2, '.', ','),
+            'MOOE' => number_format((float) $budgetTotals->MOOE, 2, '.', ','),
+            'CO'   => number_format((float) $budgetTotals->CO, 2, '.', ','),
+
+            // ACTIVITIES
+            'activities'    => $activities,
+        ]);
     }
     public function quillToJasperText($html)
     {
@@ -6273,8 +6402,45 @@ class RevisionPlanController extends Controller
         return redirect()->back()->with('message', "OOE sync complete. {$updated} budget entr" . ($updated === 1 ? 'y' : 'ies') . " updated.");
     }
 
-    public function automateHospitalOperations(Request $request)
+    public function generatePrograms()
     {
+        try {
+            // Get all revision plans where program_id_2 is NULL
+            $revisionPlans = RevisionPlan::whereNull('program_id_2')->get();
+            // dd($revisionPlans->first());
+            // dd($revisionPlans);
+            $created = 0;
+            $updated = 0;
+
+            foreach ($revisionPlans as $revisionPlan) {
+                // Create a new Program with the revision plan's project_title as FPROGRAM
+                $program = new Program();
+                $program->FPROGRAM = $revisionPlan->project_title;
+                $program->ftype=4;
+
+                // Save the program to get the recid
+
+                if ($program->save()) {
+                    // dd($program);
+                    $created++;
+
+                    // Update the revision plan's program_id_2 with the new program's recid
+                    $revisionPlan->program_id_2 = $program->recid;
+                    if ($revisionPlan->save()) {
+                        $updated++;
+                    }
+                    // dd($program, $revisionPlan);
+                }
+            }
+
+            return redirect()->back()->with('message', "Program generation complete. {$created} program(s) created and {$updated} revision plan(s) updated.");
+        } catch (\Exception $e) {
+            Log::error('Error generating programs: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while generating programs: ' . $e->getMessage());
+        }
+    }
+
+    public function automateHospitalOperations(Request $request){
         // dd("dd");
         // 1880	Integrated and Hospital Operations and Management
         // 1965	Hospital Operations - DDOPH Pantukan
