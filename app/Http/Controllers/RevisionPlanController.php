@@ -3403,13 +3403,14 @@ class RevisionPlanController extends Controller
                     if ($plan->id == 668) {
                         return true;
                     } else {
-                        $total_co =
-                            (float)($activityProject->co_q1 ?? 0) +
-                            (float)($activityProject->co_q2 ?? 0) +
-                            (float)($activityProject->co_q3 ?? 0) +
-                            (float)($activityProject->co_q4 ?? 0);
+                        // $total_co =
+                        //     (float)($activityProject->co_q1 ?? 0) +
+                        //     (float)($activityProject->co_q2 ?? 0) +
+                        //     (float)($activityProject->co_q3 ?? 0) +
+                        //     (float)($activityProject->co_q4 ?? 0);
 
-                        return $total_co <= 0;
+                        // return $total_co <= 0;
+                        return true;
                     }
                 })
                 ->pluck('expected_output')
@@ -3996,13 +3997,13 @@ class RevisionPlanController extends Controller
         ])
             ->where(function ($queryBase) use ($ids) {
                 $queryBase->where(function ($query) use ($ids) {
-                    $query->whereIn('project_id', $ids)
-                        ->where(function ($q) {
-                            $q->where('co_q1', '>', 0)
-                                ->orWhere('co_q2', '>', 0)
-                                ->orWhere('co_q3', '>', 0)
-                                ->orWhere('co_q4', '>', 0);
-                        });
+                    // $query->whereIn('project_id', $ids)
+                    //     ->where(function ($q) {
+                    //         $q->where('co_q1', '>', 0)
+                    //             ->orWhere('co_q2', '>', 0)
+                    //             ->orWhere('co_q3', '>', 0)
+                    //             ->orWhere('co_q4', '>', 0);
+                    //     });
                 })
                     ->orWhere(function ($query) {
                         $query->whereHas('revisionPlan.paps', function ($qpaps) {
@@ -4793,40 +4794,19 @@ class RevisionPlanController extends Controller
             'Mitigation',
             'AIP Code',
             'Source'
-        ], $headerStyle);
-        $writer->addRow($headerRow);
+            ], $headerStyle);
+            $writer->addRow($headerRow);
 
-        // ✅ Data rows (flattened expected outputs)
-        foreach ($strategies as $item) {
-            $expectedOutputs = collect($item['expected_output']);
+            // ✅ Data rows (flattened expected outputs)
+            foreach ($strategies as $item) {
+                $expectedOutputs = collect($item['expected_output']);
 
-            if ($expectedOutputs->isEmpty()) {
-                // If there are no expected outputs, just print one row
-                $row = WriterEntityFactory::createRowFromArray([
-                    $item['project_title'],
-                    $item['implementing_office'],
-                    '',
-                    $item['total_mooe'],
-                    $item['total_ps'],
-                    $item['total_co'],
-                    $item['total_fe'],
-                    $item['ccet_code'],
-                    $item['ccet_code_adaptation'],
-                    $item['ccet_code_mitigation'],
-                    $item['aip_code'],
-                    $item['source']
-                ]);
-                $writer->addRow($row);
-                continue;
-            }
-
-            $first = true;
-            foreach ($expectedOutputs as $output) {
-                if ($first) {
+                if ($expectedOutputs->isEmpty()) {
+                    // If there are no expected outputs, just print one row
                     $row = WriterEntityFactory::createRowFromArray([
                         $item['project_title'],
                         $item['implementing_office'],
-                        $output['description'] ?? '',
+                        '',
                         $item['total_mooe'],
                         $item['total_ps'],
                         $item['total_co'],
@@ -4837,19 +4817,40 @@ class RevisionPlanController extends Controller
                         $item['aip_code'],
                         $item['source']
                     ]);
-                    $first = false;
-                } else {
-                    // Subsequent expected outputs → only this column filled
-                    $row = WriterEntityFactory::createRowFromArray([
-                        '', '', $output['description'] ?? '', '', '', '', '', '', '', '', '', ''
-                    ]);
+                    $writer->addRow($row);
+                    continue;
                 }
-                $writer->addRow($row);
-            }
-        }
 
-        $writer->close();
-    */
+                $first = true;
+                foreach ($expectedOutputs as $output) {
+                    if ($first) {
+                        $row = WriterEntityFactory::createRowFromArray([
+                            $item['project_title'],
+                            $item['implementing_office'],
+                            $output['description'] ?? '',
+                            $item['total_mooe'],
+                            $item['total_ps'],
+                            $item['total_co'],
+                            $item['total_fe'],
+                            $item['ccet_code'],
+                            $item['ccet_code_adaptation'],
+                            $item['ccet_code_mitigation'],
+                            $item['aip_code'],
+                            $item['source']
+                        ]);
+                        $first = false;
+                    } else {
+                        // Subsequent expected outputs → only this column filled
+                        $row = WriterEntityFactory::createRowFromArray([
+                            '', '', $output['description'] ?? '', '', '', '', '', '', '', '', '', ''
+                        ]);
+                    }
+                    $writer->addRow($row);
+                }
+            }
+
+            $writer->close();
+        */
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
     protected function set_source($source)
