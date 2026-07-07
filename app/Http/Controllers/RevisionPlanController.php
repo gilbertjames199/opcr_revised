@@ -3511,9 +3511,9 @@ class RevisionPlanController extends Controller
             //     }
             $source = $this->set_source($source);
 
-            if($plan->aip_code=='1000-001-1-1-01-001'){
-                    dd("source222", $plan, $source);
-                }
+            // if($plan->aip_code=='1000-001-1-1-01-001'){
+            //         dd("source222", $plan, $source);
+            //     }
             if (mb_strlen($source, 'UTF-8') < 25) {
 
                 $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
