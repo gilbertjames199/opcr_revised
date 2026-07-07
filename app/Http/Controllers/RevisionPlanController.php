@@ -3397,7 +3397,9 @@ class RevisionPlanController extends Controller
             if (!$strategy) {
                 continue;
             }
-            $source_of_funds = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
+            $source_of_funds = optional(optional($plan)->paps)->source_of_funds ?
+                $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds) :
+                $this->getSourceLabel(optional(optional($plan)->gasPaps)->source_of_funds);
 
             $sector = optional(optional($plan)->paps)->sector;
             if(!$sector){
@@ -3407,11 +3409,15 @@ class RevisionPlanController extends Controller
             }
             $strategyId = $plan->id;
             $budget = $plan->budget;
-            $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
+            $source = optional(optional($plan)->paps)->source_of_funds ?
+                $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds) :
+                $this->getSourceLabel(optional(optional($plan)->gasPaps)->source_of_funds);
             if (count($budget) > 0) {
-                $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
+                // $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
             }
-
+            // if($plan->aip_code=='1000-001-1-1-01-001'){
+            //     // dd("source222", $plan, $source);
+            // }
 
             $expected_outputs = in_array($source_of_funds, ['dev', 'other'])
                 ? ""
@@ -3500,11 +3506,19 @@ class RevisionPlanController extends Controller
                     }
                 }
             }
+            // if($plan->aip_code=='1000-001-1-1-01-001'){
+            //         dd("source111", $plan, $source);
+            //     }
             $source = $this->set_source($source);
+
+            if($plan->aip_code=='1000-001-1-1-01-001'){
+                    dd("source222", $plan, $source);
+                }
             if (mb_strlen($source, 'UTF-8') < 25) {
 
                 $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
                 $source = implode("\n", $chars);
+
             }
             $paps_title = $plan->project_title;
             // $paps_temp=$paps_title;
@@ -3517,6 +3531,8 @@ class RevisionPlanController extends Controller
             $imp_office = optional(optional(optional($plan)->paps)->office)->office ?
                 optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
                 optional(optional(optional($plan)->paps)->office)->FFUNCTION;
+
+
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
