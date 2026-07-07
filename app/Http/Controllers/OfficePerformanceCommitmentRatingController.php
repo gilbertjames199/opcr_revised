@@ -409,6 +409,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $opcrs = OpcrTarget::with([
             'opcr_rating',
             'opcrList',
+            'opcrList.office',
             'opcr_rating.movs',
             'opcr_rating2',
             'paps',
@@ -585,6 +586,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 //     $monthy_ratings['q1'],
                 //     ($rating_type == "1" ? ($monthy_ratings['q1'] ?? "0 here") : ($q1 ?? 0))
                 // );
+                $office = optional(optional($item)->opcrList)->office;
+                $dept_code = optional($office)->department_code;
                 return [
                     "id" => $id,
                     "success_indicator_id" => $su,
@@ -598,6 +601,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "success_indicator" => $su,
                     "target_success_indicator" => $su,
                     "office_accountable" => $office_accountable,
+                    "office" => $office,
+                    "department_code" => $dept_code,
+                    "year" => $year,
+                    "semester"=>$sem,
                     "paps_desc" => $paps_desc,
                     "mfo_desc" => $mfo_desc,
                     "created_at" => $mfo_created_at,

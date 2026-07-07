@@ -82,7 +82,7 @@
                                             halfSem(mooe) }} (annual={{ format_number_conv(mooe) }})
                                     </td> -->
                                     <td>
-                                        <!-- {{ opcr }} -->
+                                        {{ opcr }}
                                     </td>
                                     <td v-if="index === 0 || opcr.office_accountable !== opcrs[index - 1].office_accountable"
                                         :rowspan="getRowspan2(opcr.office_accountable, index)"
@@ -93,6 +93,7 @@
                                         <!-- {{ opcr.id }} -->
                                         <textarea v-model="form.opcrs[index].accomplishments"
                                             style="height: inherit"></textarea>
+
                                     </td>
 
                                     <!--RATINGS***************************************-->
@@ -276,7 +277,15 @@
                                             style="height: inherit"></textarea>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-primary text-white" @click="showModalMOV(form.opcrs[index].id)">Upload MOVs</button>
+                                        <button type="button" class="btn btn-primary text-white" @click="showModalMOV(form.opcrs[index].id)">
+                                            Upload MOVs
+                                        </button>
+                                        <hr>
+                                        <button type="button"
+                                            class="btn btn-primary text-white"
+                                            @click="showModalAccomplishmentMOV(form.opcrs[index], opcr.department_code, opcr.year, opcr.semester)">
+                                            Accomplishment MOVs
+                                        </button>
                                     </td>
 
                                 </tr>
@@ -667,7 +676,14 @@
         </SideModal>
         <!--IMAGE MODAL ************************************************************-->
         <!-- Fullscreen Modal -->
+        <!-- ACCOMPLISHMENT MOV MODAL -->
+        <ModalAccomplishmentMOV
+            v-if="displayModalAccomplishmentMOV"
+            @close-modal-event="displayModalAccomplishmentMOV=false"
+            title="Accomplishment MOV"
+        >
 
+        </ModalAccomplishmentMOV>
     </div>
     <!-- opcr_id: {{ opcr_id }} -->
     <!-- disk: {{ disk }} -->
@@ -680,7 +696,7 @@ import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/PrintModal";
 import SideModal from "@/Shared/PrintModal";
 import ModalMOV from "@/Shared/ModalDynamicTitle2";
-
+import ModalAccomplishmentMOV from "@/Shared/ModalDynamicTitle";
 
 export default {
     props: {
@@ -706,6 +722,7 @@ export default {
             displayModal: false,
             displayModalMOV: false,
             displaySideModal: false,
+            displayModalAccomplishmentMOV: false,
             showImageModal: false,
             opcr_rating_id: null,
             movs: [],
@@ -729,17 +746,9 @@ export default {
 
     },
     components: {
-        Pagination, Filtering, Modal, ModalMOV, SideModal,
+        Pagination, Filtering, Modal, ModalMOV, SideModal, ModalAccomplishmentMOV
     },
-    // beforeMount() {
-    //     this.form.opcrs = this.opcrs
-    //     if (localStorage.getItem('reloaded')) {
-    //         localStorage.removeItem('reloaded');
-    //     } else {
-    //         localStorage.setItem('reloaded', '1');
-    //         location.reload();
-    //     }
-    // },
+
     mounted() {
         //this.adjustTextareaHeight();
         this.opcr_data = this.opcrs
@@ -1056,6 +1065,11 @@ export default {
                 this.isLoading = false;
             });
             this.displayModalMOV=true
+        },
+
+        showModalAccomplishmentMOV(id){
+
+            this.displayModalAccomplishmentMOV=true
         },
         // async uploadFiles(){
         //     const payload = {
