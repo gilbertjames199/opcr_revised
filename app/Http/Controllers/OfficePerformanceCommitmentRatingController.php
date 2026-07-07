@@ -21,6 +21,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class OfficePerformanceCommitmentRatingController extends Controller
@@ -590,6 +591,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $dept_code = optional($office)->department_code;
                 return [
                     "id" => $id,
+                    "idpaps"=>$item->idpaps,
                     "success_indicator_id" => $su,
                     "accomplishments" => $accomp,
                     "rating_q" => $r_q,
@@ -2682,6 +2684,29 @@ class OfficePerformanceCommitmentRatingController extends Controller
             default:
                 return 'No Rating';
         }
+    }
+
+    public function mov_api(Request $request)
+    {
+        $response = Http::acceptJson()->get(
+            'https://accomplishment.davaodeoro.gov.ph/accomplishments/print-by-ppa',
+            [
+                'ppa_id'        => $request->ppa_id,
+                'year'          => $request->year,
+                'semester'      => $request->semester,
+                'department_id' => $request->department_id,
+            ]
+        );
+
+        if ($response->failed()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unable to fetch data from the API.',
+                'status'  => $response->status(),
+            ], $response->status());
+        }
+
+        return response()->json($response->json());
     }
     // public function print_accomplishment(Request $request)
     // {

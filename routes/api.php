@@ -90,3 +90,7 @@ Route::prefix('opcr-accomplishments-admin/print')->group(function () {
 Route::prefix('hgdg_printing')->group(function () {
     Route::get('/', [HGDGScoreController::class, 'print_hgdg_score']);
 });
+
+Route::prefix('opcr-mov-api')->group(function () {
+    Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'mov_api']);
+});

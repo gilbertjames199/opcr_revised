@@ -82,7 +82,7 @@
                                             halfSem(mooe) }} (annual={{ format_number_conv(mooe) }})
                                     </td> -->
                                     <td>
-                                        {{ opcr }}
+                                        <!-- {{ opcr }} -->
                                     </td>
                                     <td v-if="index === 0 || opcr.office_accountable !== opcrs[index - 1].office_accountable"
                                         :rowspan="getRowspan2(opcr.office_accountable, index)"
@@ -283,7 +283,7 @@
                                         <hr>
                                         <button type="button"
                                             class="btn btn-primary text-white"
-                                            @click="showModalAccomplishmentMOV(form.opcrs[index], opcr.department_code, opcr.year, opcr.semester)">
+                                            @click="showModalAccomplishmentMOV(opcr.idpaps, opcr.department_code, opcr.year, opcr.semester, opcr)">
                                             Accomplishment MOVs
                                         </button>
                                     </td>
@@ -303,8 +303,6 @@
                                 </tr>
                             </tbody>
                         </table>
-
-
                     </div>
                 </form>
                 <div class="table-responsive">
@@ -381,7 +379,6 @@
                         </p>
                     </div>
                 </div>
-
             </div>
         </div>
         <Modal v-if="displayModal" @close-modal-event="hideModal">
@@ -682,7 +679,59 @@
             @close-modal-event="displayModalAccomplishmentMOV=false"
             title="Accomplishment MOV"
         >
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="10%">Date</th>
+                        <th width="20%">Title of Accomplishment</th>
+                        <th width="25%">Brief Description</th>
+                        <th width="20%">Scope</th>
+                        <th width="25%">Images</th>
+                    </tr>
+                </thead>
 
+                <tbody>
+                    <tr v-for="(item, index) in mov_accomplishment" :key="index">
+                        <td>{{ item.date }}</td>
+
+                        <td>
+                            {{ item.title_of_accomplishment }}
+                        </td>
+
+                        <td>
+                            {{ item.brief_description }}
+                        </td>
+
+                        <td style="white-space: pre-line;">
+                            {{ item.scope }}
+                        </td>
+
+                        <td>
+                            <div class="d-flex flex-wrap">
+                                <img
+                                    v-if="item.image1"
+                                    :src="item.image1"
+                                    class="img-thumbnail mr-2 mb-2"
+                                    style="max-width:180px; max-height:180px;"
+                                >
+
+                                <img
+                                    v-if="item.image2"
+                                    :src="item.image2"
+                                    class="img-thumbnail mb-2"
+                                    style="max-width:180px; max-height:180px;"
+                                >
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr v-if="mov_accomplishment.length === 0">
+                        <td colspan="5" class="text-center">
+                            No accomplishments found.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </ModalAccomplishmentMOV>
     </div>
     <!-- opcr_id: {{ opcr_id }} -->
@@ -726,6 +775,8 @@ export default {
             showImageModal: false,
             opcr_rating_id: null,
             movs: [],
+            mov_accomplishment: [],
+            opcr_current: [],
             search: "",
             // total_divisor: 0,
             form: useForm({
@@ -1067,9 +1118,27 @@ export default {
             this.displayModalMOV=true
         },
 
-        showModalAccomplishmentMOV(id){
+        async showModalAccomplishmentMOV(idpaps, department_code,year,semester, opcr){
 
             this.displayModalAccomplishmentMOV=true
+            // Optional: clear previous data
+            this.mov_accomplishment = [];
+            this.opcr_current = opcr;
+            try {
+                const response = await axios.get('/api/opcr-mov-api', {
+                    params: {
+                        ppa_id: idpaps,
+                        year: year,
+                        semester: semester,
+                        department_id: department_code,
+                    }
+                });
+
+                this.mov_accomplishment = response.data;
+            } catch (error) {
+                console.error('Failed to fetch MOV accomplishment:', error);
+                this.mov_accomplishment = [];
+            }
         },
         // async uploadFiles(){
         //     const payload = {

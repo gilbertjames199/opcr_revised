@@ -3328,7 +3328,7 @@ class RevisionPlanController extends Controller
     {
         $strategies = [];
         $ccet = "0";
-        // dd("rerer");
+
         if ($request->ccet) {
             $ccet = $request->ccet;
         }
@@ -3384,9 +3384,21 @@ class RevisionPlanController extends Controller
                 }
 
             })
+            // ->where(function($query)use($request){
+            //     if($request->ssf_filter=='Other Services'){
+            //         // dd($request->ssf_filter);
+            //         $query->whereHas('gasPaps', function($q){
+            //             $q->where('source_of_funds','Other Services');
+            //         });
+            //     }
+            // })
             ->orderBy('aip_code', 'asc')
             ->get();
-
+        // $other_services1 = $plans
+        //     // ->where('source_of_funds', 'gen_fund')
+        //     ->where('FFUNCCOD', '4490')
+        //     ->values();
+        // dd('strategies',$plans->pluck('sector'), $plans->pluck('project_title'), $plans->pluck('source_of_funds'));
         // dd("aip",$plans->pluck('aip_code'));
         $pln = $plans;
         foreach ($plans as $plan) {
@@ -3536,7 +3548,8 @@ class RevisionPlanController extends Controller
                     'id' => $plan->id,
                     'source_of_funds' => optional(optional($plan)->paps)->source_of_funds ? optional(optional($plan)->paps)->source_of_funds : optional(optional($plan)->gasPaps)->source_of_funds,
                     'sector' => $sector,
-                    'level' => 1
+                    'level' => 1,
+                    'scope'=> $plan->scope
                 ];
             } else {
                 continue;
@@ -3549,11 +3562,14 @@ class RevisionPlanController extends Controller
 
             }
         }
+
+
+
         // dd($plans->pluck('aip_code'), $strategies);
 
         // return array_values($strategies);
         $strategies = collect($strategies);
-
+        
         $rev_ids = $strategies->pluck('id');
         // dd($rev_ids);
         $cap_ob = $this->capitalOutlayObject($rev_ids);
@@ -3579,6 +3595,26 @@ class RevisionPlanController extends Controller
             )
             ->values();
 
+        // dd()
+        // 250 => "Other Services"
+        // 253 => "Other Services"
+        // 254 => "Other Services"
+        // 256 => "Other Services"
+        // 257 => "Other Services"
+        // 260 => "Other Services"
+        // 264 => "Other Services"
+        // 265 => "Other Services"
+        // 266 => "Other Services"
+        // 267 => "Other Services"
+        // 268 => "Other Services"
+        // 269 => "Other Services"
+        // 270 => "Other Services"
+        // 271 => "Other Services"
+        // 275 => "Other Services"
+        // 276 => "Other Services"
+        // 277 => "Other Services"
+        // 278 => "Other Services"
+        // 280 => "Other Services"
         // dd($grouped, $flattened_grouped, $flattened_grouped->pluck('aip_code'), $rev_ids, $flattened_grouped[520]);
         // dd($flattened_grouped, $flattened_grouped->pluck('aip_code'), $rev_ids, $flattened_grouped[520]);
         // $strategies = $strategies->concat($flattened_grouped)->sortBy('aip_code')->values();
@@ -3622,6 +3658,8 @@ class RevisionPlanController extends Controller
                 'other',
             ];
             // dd($ssf_filter);
+
+
         if (!empty($ssf_filter)) {
             $strategies = $strategies->filter(function ($item) use ($ssf_filter, $sectorValues, $sourceOfFundValues) {
 
@@ -3641,6 +3679,8 @@ class RevisionPlanController extends Controller
                 return true;
             })->values();
         }
+
+
         // dd("foreach:",$plans->pluck('aip_code'),$strategies->pluck('sector'), $strategies->first());
         /*
         |--------------------------------------------------------------------------
@@ -3664,10 +3704,10 @@ class RevisionPlanController extends Controller
             ->values();
 
         $other_services = $strategies
-            ->where('source_of_funds', 'gen_fund')
+            // ->where('source_of_funds', 'gen_fund')
             ->where('sector', 'Other Services')
             ->values();
-
+        // dd($other_services, $strategies->pluck('source_of_funds'));
         /*
         |--------------------------------------------------------------------------
         | Other Source of Funds
@@ -3776,7 +3816,7 @@ class RevisionPlanController extends Controller
         $other_ccet_code_mitigation = $safeSum($other, 'ccet_code_mitigation');
 
 
-
+        // dd($other_services);
 
         /*
         |--------------------------------------------------------------------------
