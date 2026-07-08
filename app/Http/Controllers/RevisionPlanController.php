@@ -3605,7 +3605,8 @@ class RevisionPlanController extends Controller
                 function ($collection) {
                     return $collection->sortBy([
                         ['id', 'asc'],
-                        ['level', 'asc']
+                        ['level', 'asc'],
+                        ['activity_aip_code', 'asc']
                     ]);
                 }
             )
