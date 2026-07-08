@@ -3532,12 +3532,12 @@ class RevisionPlanController extends Controller
                 optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
                 optional(optional(optional($plan)->paps)->office)->FFUNCTION;
 
-
+            $ss = optional(optional($plan)->paps)->source_of_funds ? optional(optional($plan)->paps)->source_of_funds : optional(optional($plan)->gasPaps)->source_of_funds;
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
                     'implementing_office' => $imp_office ? $imp_office : optional(optional($plan)->office)->FFUNCTION,
-                    'expected_output' =>  $expected_outputs,
+                    'expected_output' =>  $ss=='dev' || $ss=='other' ? ' ' : $expected_outputs,
                     'total_mooe' => floatval($total_mooe),
                     'total_ps' => floatval($total_ps),
                     'total_co' => floatval($total_co),
@@ -3550,7 +3550,7 @@ class RevisionPlanController extends Controller
                     'ccet' => $ccet,
                     'year' => $year,
                     'id' => $plan->id,
-                    'source_of_funds' => optional(optional($plan)->paps)->source_of_funds ? optional(optional($plan)->paps)->source_of_funds : optional(optional($plan)->gasPaps)->source_of_funds,
+                    'source_of_funds' => $ss,
                     'sector' => $sector,
                     'level' => 1
                 ];
@@ -4164,6 +4164,9 @@ class RevisionPlanController extends Controller
                     $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
                     $source = implode("\n", $chars);
                 }
+
+                $ss = optional(optional($plan)->paps)->source_of_funds ? optional(optional($plan)->paps)->source_of_funds : optional(optional($plan)->gasPaps)->source_of_funds;
+
                 // dd($plan);
                 return [
                     'project_title' => optional(optional($item)->activity)->description,
@@ -4180,7 +4183,7 @@ class RevisionPlanController extends Controller
                     'ccet_code' => optional($item)->ccet_code,
                     'ccet_code_mitigation' => $ccet_code_mitigation,
                     'ccet_code_adaptation' => $ccet_code_adaptation,
-                    'aip_code' => optional($plan)->aip_code,
+                    'aip_code' => $ss=='dev' || $ss=='other' ? optional($item)->aip_code: optional($plan)->aip_code,
                     'source' => " ",
                     'ccet' => $ccet,
                     'year' => optional($plan)->year,
