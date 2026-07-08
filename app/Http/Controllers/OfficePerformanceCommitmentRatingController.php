@@ -452,7 +452,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 // dd($item->paps->opcr_standard);
                 $mfo_desc = $item->paps ? ($item->paps->MFO ? $item->paps->MFO->mfo_desc : null) : null;
                 $mfo_created_at = $item->paps ? ($item->paps->MFO ? $item->paps->MFO->created_at : null) : null;
-
+                if ($item->paps === null) {
+                    dd('no paps');
+                }
                 $performance_measure = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
                 $efficiency1 = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->efficiency1 : null) : null;
                 $timeliness = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->timeliness : null) : null;
@@ -635,6 +637,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "e2_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency2,
                     "e3_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->efficiency3,
                     "t1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->timeliness,
+                    "paps"=>$item->paps
                 ];
             });
         // dd($opcrs);

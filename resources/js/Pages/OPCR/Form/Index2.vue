@@ -337,34 +337,34 @@
                 <span class="text-danger font-weight-bold"><b>SAVE CHANGES THEN PRINT</b></span>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()"
+                        <!-- <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()"
                             :disabled="form.processing">
                             Save changes
                         </button>&nbsp;
                         <button type="button" class="btn btn-success mt-3 text-white" @click="showModal()"
                             :disabled="form.processing">
                             Print
-                        </button>&nbsp;
+                        </button>&nbsp; -->
                         <!-- rating_status_dt:{{ rating_status_dt }} -->
-                        <span v-if="rating_status_dt==-2">
+                        <!-- <span v-if="rating_status_dt==-2">
                             <button type="button" class="btn btn-primary mt-3 text-white" @click="submitRecallRating(-1,0,'Successfully submitted OPCR', 'Are you sure you want to submit this OPCR')"
                             :disabled="form.processing" >
                                 Submit
                             </button>&nbsp;
-                        </span>
-                        <span v-if="rating_status_dt==-1 || rating_status_dt==-2">
+                        </span> -->
+                        <!-- <span v-if="rating_status_dt==-1 || rating_status_dt==-2">
                             <button type="button" class="btn btn-primary mt-3 text-white" @click="submitRecallRating(-1,0,'Successfully submitted OPCR', 'Are you sure you want to submit this OPCR')"
                             :disabled="form.processing" >
                                 Submit
                             </button>&nbsp;
-                        </span>
+                        </span> -->
                         <!-- rating_status_dt{{ rating_status_dt }} -->
-                         <span v-if="rating_status_dt==0">
+                         <!-- <span v-if="rating_status_dt==0">
                             <button type="button" class="btn btn-secondary mt-3 text-white" @click="submitRecallRating(0,-1, 'Successfully recalled OPCR submission', 'Are you sure you want to recall the submission of this OPCR')"
                                 :disabled="form.processing" >
                                 Recall
                             </button>&nbsp;
-                        </span>
+                        </span> -->
 
                         <!-- <pagination :next="data.next_page_url" :prev="data.prev_page_url" /> -->
                     </div>

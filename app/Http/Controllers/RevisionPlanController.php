@@ -3471,7 +3471,16 @@ class RevisionPlanController extends Controller
                     // if($plan->id==362){
                     //     return $target_budget_year . ' fsdfsd ' . $description;
                     // }
-                    return $target_budget_year . ' ' . $description;
+                    // Exception for Repair and Maintenance of Provincial Roads and Bridges
+                    if($plan->idpaps=='1992' ){
+                        return ' ';
+                    }else{
+                        if(floatval($target_budget_year) < 1 || $plan->idpaps=='1950') {
+                            $target_budget_year ='';
+                        }
+                        return $target_budget_year . ' ' . $description;
+                    }
+
                 })
                 ->filter()
                 ->implode("\n");
@@ -3537,15 +3546,21 @@ class RevisionPlanController extends Controller
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
                     'implementing_office' => $imp_office ? $imp_office : optional(optional($plan)->office)->FFUNCTION,
-                    'expected_output' =>  $ss=='dev' || $ss=='other' ? ' ' : $expected_outputs,
+                    'expected_output' =>  $ss=='dev' || $ss=='other' ? ' ' :
+                        ($plan->idpaps=='1992' ? ' ' : $expected_outputs),
                     'total_mooe' => floatval($total_mooe),
                     'total_ps' => floatval($total_ps),
                     'total_co' => floatval($total_co),
                     'total_fe' => floatval($total_fe),
-                    'ccet_code' => in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? '' : $ccetCode,
+                    'ccet_code' => (
+                                in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other'])
+                                || $ccetCode === 'N/A'
+                            ) ? '' : $ccetCode,
+                    // in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? '' : $ccetCode,
                     'ccet_code_mitigation' => $ccet_code_mitigation,
                     'ccet_code_adaptation' => $ccet_code_adaptation,
                     'aip_code' => $plan->aip_code,
+                    'activity_aip_code' => ' ',
                     'source' => $source . "\n",
                     'ccet' => $ccet,
                     'year' => $year,
@@ -3579,22 +3594,23 @@ class RevisionPlanController extends Controller
         // dd($flattened_grouped, $flattened_grouped[520]);
         $result = $strategies->concat($flattened_grouped)
             ->when(
-        !in_array($request->ssf_filter, ['dev', 'other']),
+        !in_array($request->ssf_filter, ['dev', 'other']) ,
                 function ($collection) {
                     return $collection->sortBy([
                         ['aip_code', 'asc'],
                         ['level', 'asc'],
+                        ['activity_aip_code', 'asc'],
                     ]);
                 },
                 function ($collection) {
                     return $collection->sortBy([
                         ['id', 'asc'],
-                        ['level', 'asc'],
+                        ['level', 'asc']
                     ]);
                 }
             )
             ->values();
-
+        // dd($result->pluck('aip_code'), $result->pluck('level'), $result->pluck('activity_aip_code'));
         // dd($grouped, $flattened_grouped, $flattened_grouped->pluck('aip_code'), $rev_ids, $flattened_grouped[520]);
         // dd($flattened_grouped, $flattened_grouped->pluck('aip_code'), $rev_ids, $flattened_grouped[520]);
         // $strategies = $strategies->concat($flattened_grouped)->sortBy('aip_code')->values();
@@ -4113,7 +4129,8 @@ class RevisionPlanController extends Controller
                     ->orWhere(function ($query) {
                         $query->whereHas('revisionPlan.paps', function ($qpaps) {
                             $qpaps->where('source_of_funds', 'dev')
-                                ->orWhere('source_of_funds', 'other');
+                                ->orWhere('source_of_funds', 'other')
+                                ->orWHere('id', 1992); //Exception for Repair and Maintenance of Provincial Roads and Bridges
                         });
                     });
             })
@@ -4167,7 +4184,7 @@ class RevisionPlanController extends Controller
 
                 $ss = optional(optional($plan)->paps)->source_of_funds ? optional(optional($plan)->paps)->source_of_funds : optional(optional($plan)->gasPaps)->source_of_funds;
 
-                // dd($plan);
+                // dd($item);
                 return [
                     'project_title' => optional(optional($item)->activity)->description,
                     'implementing_office' => $imp_office,
@@ -4184,6 +4201,7 @@ class RevisionPlanController extends Controller
                     'ccet_code_mitigation' => $ccet_code_mitigation,
                     'ccet_code_adaptation' => $ccet_code_adaptation,
                     'aip_code' => $ss=='dev' || $ss=='other' ? optional($item)->aip_code: optional($plan)->aip_code,
+                    'activity_aip_code' => optional($item)->aip_code,
                     'source' => " ",
                     'ccet' => $ccet,
                     'year' => optional($plan)->year,
@@ -4195,8 +4213,8 @@ class RevisionPlanController extends Controller
                     'level' => 2
                 ];
             });
-
-        return $revs;
+        // dd($revs->sortBy('activity_aip_code')->values()->pluck('activity_aip_code'));
+        return $revs->sortBy('activity_aip_code')->values();
     }
     public function retrievingCapitalOutlaytest($ids, $ccet)
     {
