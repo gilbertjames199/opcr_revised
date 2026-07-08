@@ -3542,6 +3542,9 @@ class RevisionPlanController extends Controller
                 optional(optional(optional($plan)->paps)->office)->FFUNCTION;
 
             $ss = optional(optional($plan)->paps)->source_of_funds ? optional(optional($plan)->paps)->source_of_funds : optional(optional($plan)->gasPaps)->source_of_funds;
+            if ($plan->id == 736) {
+                $expected_outputs = str_repeat("\n", 8) . $expected_outputs;
+            }
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
