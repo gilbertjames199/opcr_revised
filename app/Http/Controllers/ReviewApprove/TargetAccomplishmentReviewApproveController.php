@@ -418,7 +418,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
         // ->where('rating_status', '<', 1)
         // $disk = app()->environment('production') ? 'custom_uploads' : 'public';
         // dd($disk);
-        $disk = 'custom_uploads';
+        $disk = 'public';
         if ((auth()->user()->department_code == '04') && $request->source!='ppdo_approval') {
             $data = OfficePerformanceCommitmentRatingList::
                     with([
