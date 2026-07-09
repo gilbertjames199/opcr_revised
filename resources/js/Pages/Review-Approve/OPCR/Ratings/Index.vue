@@ -151,7 +151,7 @@
         </div>
         <!-- </div> -->
         <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`">
-            {{ opcr_current }}
+            <!-- {{ opcr_current }} -->
             <div class="sticky-header">
                 <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current.office.FFUNCTION }}</u></div>
                 <div><b>SEMESTER:&nbsp;</b><u>{{ opcr_current.semester }}</u></div>
