@@ -100,12 +100,16 @@
                                 </td>
                                 <td>
                                     {{ dat.semester }}
+
+                                    <!-- {{ dat.rating_status }} -->
                                 </td>
                                 <td>
                                     {{ dat.opcr_date }}
                                 </td>
                                 <td>
                                     {{ getStatus(dat.rating_status) }}
+
+                                    {{  }}
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown dropstart">
@@ -147,7 +151,7 @@
         </div>
         <!-- </div> -->
         <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`">
-            <!-- {{ opcr_current }} -->
+            {{ opcr_current }}
             <div class="sticky-header">
                 <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current.office.FFUNCTION }}</u></div>
                 <div><b>SEMESTER:&nbsp;</b><u>{{ opcr_current.semester }}</u></div>
@@ -155,6 +159,7 @@
                 <div><b>STATUS:&nbsp;</b><u>{{ getStatus(opcr_current.rating_status) }}</u></div>
             </div>
 
+            <button @click="downloadExcel(opcrListId)">Export Excel</button>
 
             <div v-if="mode_1==='Review'">
                 <button @click="toggleAllMovVisibility(false)" v-if="!show_all_not_clicked" class="btn btn-link p-0">
@@ -900,7 +905,9 @@ export default {
             show_all_not_clicked: false,
             currentRatingType: 0,
             modal_mode: 'Review',
-            print_link: ""
+            print_link: "",
+            opcrListId: "",
+            file_name: ""
         }
     },
     mounted() {
@@ -998,6 +1005,7 @@ export default {
             this.status_val = status
             // alert(this.status_val)
             this.opcr_current = opcr
+            this.opcrListId=opcr_id;
             var url = "/review-approve/ratings/" + opcr_id + "/view/opcr/rating/submission"
             await axios.get(url, {
                 params: {
@@ -1439,15 +1447,43 @@ export default {
         // SET RATING TYPE
         // ===============================
         setRatingType(rating_type, id) {
-            Inertia.patch(`/review-approve/ratings/set/rating/type/${rating_type}/${id}`, {}, {
-                onSuccess: () => {
-                console.log(`Rating type ${type} updated for ID ${id}`);
-                },
-                onError: (errors) => {
-                console.error(errors);
-                }
-        });
-    }
+                Inertia.patch(`/review-approve/ratings/set/rating/type/${rating_type}/${id}`, {}, {
+                    onSuccess: () => {
+                    console.log(`Rating type ${type} updated for ID ${id}`);
+                    },
+                    onError: (errors) => {
+                    console.error(errors);
+                    }
+            });
+        },
+
+        // DOWNLOAD EXCEL
+        async downloadExcel(opcr_id) {
+            // opcr_list_id must be available, e.g., from a prop or data
+            // const opcrListId = this.opcr_list_id; // adjust to your variable
+            var file_name =this.opcr_current.semester + " - " + this.opcr_current.year + " - "+ this.opcr_current.office.FFUNCTION+".xlsx";
+            try {
+                const response = await axios.get(
+                    `/review-approve-ratings/${opcr_id}/view/opcr/rating/submission`,
+                    { responseType: 'blob' }   // important for file download
+                );
+
+                // Create a blob URL and trigger download
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', file_name);
+                document.body.appendChild(link);
+                link.click();
+
+                // Clean up
+                link.remove();
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Download failed:', error);
+                // Handle error (e.g., show a notification)
+            }
+        }
     }
 };
 </script>

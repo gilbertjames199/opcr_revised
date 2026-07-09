@@ -21,4 +21,17 @@ class OfficePerformanceCommitmentRatingList extends Model
     {
         return $this->hasMany(OpcrTargetBudget::class, 'opcr_list_id', 'id');
     }
+    public function opcrTarget(){
+        return $this->hasMany(OpcrTarget::class,
+        'office_performance_commitment_rating_list_id',
+        'id');
+    }
+    public function opcr_rating()
+    {
+        return $this->hasMany(OfficePerformanceCommitmentRating::class, 'opcr_id', 'id');
+    }
+    public function FFUNCCODOffice()
+    {
+        return $this->belongsTo(FFUNCCOD::class, 'FFUNCCOD', 'FFUNCCOD');
+    }
 }

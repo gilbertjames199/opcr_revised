@@ -1022,6 +1022,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/submit/opcr/{column}/{opcr_rating_id}/{item_score}', [TargetAccomplishmentReviewApproveController::class, 'update_rating_score']);
             Route::get('/{opcr_list_id}/view/opcr/rating/submission', [TargetAccomplishmentReviewApproveController::class, 'viewRating']);
             Route::patch('/set/rating/type/{rating_type}/{id}', [TargetAccomplishmentReviewApproveController::class, 'updateRatingType']);
+
         });
         Route::prefix('/ipp')->group(function () {
             Route::get('/', [ProjectProfileTrackingController::class, 'index_ipp']);
@@ -1036,6 +1037,12 @@ Route::middleware('auth')->group(function () {
         // approveOPCRAccomplishment
         // reviewOPCRRating
         // approveOPCRRating
+    });
+    Route::prefix('review-approve-ratings')->group(function(){
+        Route::get('/', [TargetAccomplishmentReviewApproveController::class, 'index_rating']);
+        Route::get('/{opcr_list_id}/view/opcr/rating/submission',
+        [TargetAccomplishmentReviewApproveController::class, 'download_rating'])
+        ->name('rating.download.excel');
     });
     //IPCR List
     Route::prefix('IPCR')->group(function () {
