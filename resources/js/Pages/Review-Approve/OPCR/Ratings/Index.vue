@@ -196,22 +196,23 @@
                             </thead>
                             <tbody>
                                 <template v-for="(dat, index) in opcr_data" :key="index">
+                                    <!-- MFO, PAPS, ACCOMPLISHMENTS -->
                                     <tr :style="{
                                             backgroundColor: opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
                                             '--bs-table-accent-bg': opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
                                             fontWeight: opcr_data[index].mov_is_visible ? 'bold' : 'normal',
                                         }">
                                         <!-- MFO -->
-                                        <td rowspan="2">
+                                        <td rowspan="3">
                                             <!-- {{ dat }} -->
                                             {{ dat.mfo_desc }}
                                         </td>
                                         <!-- PAPS -->
-                                        <td rowspan="2">
+                                        <td rowspan="3">
                                             {{ dat.paps_desc }}
                                         </td>
                                         <!-- Actual Accomplishments -->
-                                        <td rowspan="2">
+                                        <td rowspan="3">
                                             {{ dat.accomplishments }}
                                             <hr>
                                             <div><b>DPCR Score:&nbsp;</b>{{ computeAverageScore(dat.monthly_targets) }}</div>
@@ -376,6 +377,7 @@
                                             </button>
                                         </td>
                                     </tr>
+                                    <!-- SELF RATING -->
                                     <tr :style="{
                                             backgroundColor: opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
                                             '--bs-table-accent-bg': opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
@@ -385,7 +387,7 @@
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                                @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')">
+                                                @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')" disabled>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -402,7 +404,7 @@
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].q2, opcr_data[index].opcr_rating_id, 'q2')"
-                                            >
+                                            disabled>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -417,7 +419,7 @@
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                                @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3')"
+                                                @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3')" disabled
                                             >
                                                 <option>1</option>
                                                 <option>2</option>
@@ -434,7 +436,7 @@
                                             <!--  width: 2.5em; -->
                                             <select v-model="opcr_data[index].e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].e1, opcr_data[index].opcr_rating_id, 'e1')"
-                                                :disabled="dat.e1_standard === 'No'"
+                                                disabled
                                                 :style="dat.e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
                                             >
                                                 <option>1</option>
@@ -452,8 +454,9 @@
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].e2, opcr_data[index].opcr_rating_id, 'e2')"
-                                                :disabled="dat.e2_standard === 'No'"
+                                                disabled
                                                 :style="dat.e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
+
                                             >
                                                 <option>1</option>
                                                 <option>2</option>
@@ -470,7 +473,7 @@
                                             <!-- style="width: 2.5em; text-align: center;"   -->
                                             <select v-model="opcr_data[index].e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
                                                 @change="saveRating(opcr_data[index].e3, opcr_data[index].opcr_rating_id, 'e3')"
-                                                :disabled="dat.e3_standard === 'No'"
+                                                disabled
                                                 :style="dat.e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
                                             >
                                                 <option>1</option>
@@ -488,15 +491,14 @@
                                             <!-- t1_standard: {{ dat.t1_standard }} -->
                                             <!-- :disabled="dat.t1_standard !== 'Yes'"
                                                 :style="dat.t1_standard !== 'Yes' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''" -->
-                                            <select v-model="opcr_data[index].t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                                @change="saveRating(opcr_data[index].t1, opcr_data[index].opcr_rating_id, 't1')"
-
-                                                :disabled="
+                                                <!-- :disabled="
                                                     dat.t1_standard === 'No' ||
                                                     dat.t1_standard === null ||
                                                     dat.t1_standard === undefined ||
                                                     Number.isNaN(dat.t1_standard)
-                                                "
+                                                " -->
+                                            <select v-model="opcr_data[index].t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].t1, opcr_data[index].opcr_rating_id, 't1')"
                                                 :style="
                                                     dat.t1_standard === 'No' ||
                                                     dat.t1_standard === null ||
@@ -505,6 +507,7 @@
                                                         ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;'
                                                         : ''
                                                 "
+                                                disabled
                                             >
                                                 <option>1</option>
                                                 <option>2</option>
@@ -515,6 +518,185 @@
                                             <div v-if="submit_attempt==true && dat.t1_standard === 'Yes' && !dat.t1" style="color: red; font-weight: bold">
                                                 Rating for this field is required to proceed with submission.
                                             </div>
+                                        </td>
+
+                                    </tr>
+                                    <!-- PPDO Ratings -->
+                                    <tr :style="{
+                                            backgroundColor: opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
+                                            '--bs-table-accent-bg': opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
+                                            fontWeight: opcr_data[index].mov_is_visible ? 'bold' : 'normal',
+                                        }">
+                                        <!-- PPDO Q1 -->
+                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                            <select v-model="opcr_data[index].ppdo_q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_q1, opcr_data[index].opcr_rating_id, 'ppdo_q1')">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && !dat.ppdo_q1" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO Q2 -->
+                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                            <select v-model="opcr_data[index].ppdo_q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_q2, opcr_data[index].opcr_rating_id, 'ppdo_q2')">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && !dat.ppdo_q2" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO Q3 -->
+                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                            <select v-model="opcr_data[index].ppdo_q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_q3, opcr_data[index].opcr_rating_id, 'ppdo_q3')">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && !dat.ppdo_q3" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO E1 -->
+                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                            <select v-model="opcr_data[index].ppdo_e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_e1, opcr_data[index].opcr_rating_id, 'ppdo_e1')"
+                                                :disabled="dat.ppdo_e1_standard === 'No'"
+                                                :style="dat.ppdo_e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && dat.e1_standard === 'Yes' && !dat.ppdo_e1" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO E2 -->
+                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                            <select v-model="opcr_data[index].ppdo_e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_e2, opcr_data[index].opcr_rating_id, 'ppdo_e2')"
+                                                :disabled="dat.ppdo_e2_standard === 'No'"
+                                                :style="dat.ppdo_e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+
+
+                                            <div v-if="submit_attempt==true && dat.e2_standard === 'Yes' && !dat.ppdo_e2" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO E3 -->
+                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                            e3: {{ dat.e3_standard }}
+                                            <select v-model="opcr_data[index].ppdo_e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
+                                                @change="saveRating(opcr_data[index].ppdo_e3, opcr_data[index].opcr_rating_id, 'ppdo_e3')"
+                                                :disabled="dat.ppdo_e3_standard === 'No'"
+                                                :style="dat.ppdo_e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && dat.e3_standard === 'Yes' && !dat.ppdo_e3" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO T1 -->
+                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                            <select v-model="opcr_data[index].ppdo_t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_t1, opcr_data[index].opcr_rating_id, 'ppdo_t1')"
+                                                :disabled="
+                                                    dat.ppdo_t1_standard === 'No' ||
+                                                    dat.ppdo_t1_standard === null ||
+                                                    dat.ppdo_t1_standard === undefined ||
+                                                    Number.isNaN(dat.ppdo_t1_standard)
+                                                "
+                                                :style="
+                                                    dat.ppdo_t1_standard === 'No' ||
+                                                    dat.ppdo_t1_standard === null ||
+                                                    dat.ppdo_t1_standard === undefined ||
+                                                    Number.isNaN(dat.ppdo_t1_standard)
+                                                        ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;'
+                                                        : ''
+                                                ">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && dat.t1_standard === 'Yes' && !dat.ppdo_t1" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- REMARKS -->
+                                        <td rowspan="1">
+                                            <!-- @input="autoResize($event)" ref="remarksTextarea"-->
+                                            <textarea class="form-control"
+                                                v-model="opcr_data[index].remarks"
+                                                @change="saveRating(opcr_data[index].remarks, opcr_data[index].opcr_rating_id,'remarks')"
+
+                                            />
+                                        </td>
+                                        <!-- MOVS -->
+                                        <td rowspan="1">
+                                            <!--opcr_data[index].mov_is_visible: {{ opcr_data[index].mov_is_visible }}
+                                            count_movs: {{ opcr_data[index].count_movs }}
+                                            :disabled="!dat.movs"
+                                                :style="!dat.movs ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''" -->
+                                            <button
+                                                v-if="!opcr_data[index].mov_is_visible"
+                                                @click="updateMOVisVisible(opcr_data[index].mov_is_visible, index)"
+                                                class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
+                                                title="View MOVs"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="blue"
+                                                    class="bi bi-eye-fill"
+                                                    viewBox="0 0 16 16"
+                                                >
+                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                                </svg>
+                                            </button>
+                                            <button
+                                                v-else
+                                                @click="updateMOVisVisible(opcr_data[index].mov_is_visible, index)"
+                                                class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
+                                                title="View MOVs"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="currentColor"
+                                                    class="bi bi-eye-slash-fill"
+                                                    viewBox="0 0 16 16">
+                                                    <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
+                                                    <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
+                                                </svg>
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" >
@@ -591,7 +773,31 @@
                                             </div>
                                         </td>
                                     </tr>
+
                                 </template>
+                                <tr>
+                                    <td colspan="6"></td>
+                                    <td colspan="3">TOTAL RATING (Office)</td>
+                                    <td>{{ getTotalAverage() }}</td>
+                                    <td>TOTAL RATING (PPDO)</td>
+                                    <td>{{ ppdototalOfAverages() }}</td>
+
+                                    <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
+                                    <td>{{ computeDPCRTotal(opcr_data) }}</td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <td colspan="8"></td>
+                                    <td colspan="3">FINAL AVERAGE RATING (Office)</td>
+                                    <td>{{ getAverageAll() }}</td>
+                                    <td>FINAL AVERAGE RATING (PPDO)</td>
+                                    <td>{{ ppdoaverageOfAverages() }}</td>
+                                    <!-- <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
+                                    <td>{{ computeDPCRAverage(opcr_data) }}</td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
 
                             </tbody>
                         </table>
@@ -728,7 +934,7 @@
                                         <button type="button" class="btn btn-primary text-white" @click="showModalMOV(opcr_data[index].id)">Upload MOVs</button>
                                     </td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td colspan="5"></td>
                                     <td colspan="3">TOTAL RATING (PPDO)</td>
                                     <td>{{ getTotalAverage() }}</td>
@@ -919,6 +1125,7 @@ export default {
             });
         });
     },
+
     updated() {
         // auto-resize whenever data changes after updates
         this.$nextTick(() => {
@@ -933,7 +1140,24 @@ export default {
     components: {
         Pagination, Filtering, Modal, Modal2, SideModal, PrintModal
     },
+    computed: {
+        // First computed: sum of the three category averages
+        ppdototalOfAverages() {
+            const avgQ = this.categoryAverage('q');
+            const avgE = this.categoryAverage('e');
+            const avgT = this.categoryAverage('t');
+            return avgQ + avgE + avgT;
+        },
+        // Second computed: mean of the three category averages
+        ppdoaverageOfAverages() {
+            const avgQ = this.categoryAverage('q');
+            const avgE = this.categoryAverage('e');
+            const avgT = this.categoryAverage('t');
+            return (avgQ + avgE + avgT) / 3;
+        }
 
+
+    },
     methods: {
         // START OF PRINTING
         viewlink(opcr_id1,FFUNCCOD1) {
@@ -1118,7 +1342,14 @@ export default {
                     { score: row.e1, standard: row.e1_standard },
                     { score: row.e2, standard: row.e2_standard },
                     { score: row.e3, standard: row.e3_standard },
-                    { score: row.t1, standard: row.t1_standard }
+                    { score: row.t1, standard: row.t1_standard },
+                    { score: row.ppdo_q1, standard: 'Yes'},
+                    { score: row.ppdo_q2, standard: 'Yes'},
+                    { score: row.ppdo_q3, standard: 'Yes'},
+                    { score: row.ppdo_e1, standard: row.e1_standard },
+                    { score: row.ppdo_e2, standard: row.e2_standard },
+                    { score: row.ppdo_e3, standard: row.e3_standard },
+                    { score: row.ppdo_t1, standard: row.t1_standard }
                 ];
                 console.log(checks);
 
@@ -1483,7 +1714,40 @@ export default {
                 console.error('Download failed:', error);
                 // Handle error (e.g., show a notification)
             }
+        },
+
+        // AVERAGE
+        // Method 1: returns sum of the three averages
+        ppdototalOfAverages() {
+            const avgQ = this.categoryAverage('q')
+            const avgE = this.categoryAverage('e')
+            const avgT = this.categoryAverage('t')
+            return avgQ + avgE + avgT
+        },
+        // Method 2: returns mean of the three averages
+        ppdoaverageOfAverages() {
+            const avgQ = this.categoryAverage('q')
+            const avgE = this.categoryAverage('e')
+            const avgT = this.categoryAverage('t')
+            return (avgQ + avgE + avgT) / 3
+        },
+        categoryAverage(type) {
+            // same helper as before
+            const values = []
+            this.opcr_data.forEach(row => {
+                if (type === 't') {
+                const val = row.ppdo_t1
+                if (val !== 0) values.push(val)
+                } else {
+                for (let i = 1; i <= 3; i++) {
+                    const val = row[`ppdo_${type}${i}`]
+                    if (val !== 0) values.push(val)
+                }
+                }
+            })
+            return values.length ? values.reduce((s, v) => s + v, 0) / values.length : 0
         }
+
     }
 };
 </script>

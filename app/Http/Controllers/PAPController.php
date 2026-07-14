@@ -339,7 +339,7 @@ class PAPController extends Controller
         $sustainable = SDG::get();
         $executive_legislative = ELA::get();
         $research = ResearchAgenda::get();
-        $data = $this->model->where('id', $id)->first([
+        $data = $this->model->with(['revisionPlan'])->where('id', $id)->first([
             'id',
             'paps_desc',
             'FFUNCCOD',
@@ -364,6 +364,10 @@ class PAPController extends Controller
             'aip_code',
             'agency_name'
         ]);
+        // dd($data);
+        if ($data->revisionPlan && $data->revisionPlan->isNotEmpty()) {
+            return redirect()->back()->with('error', 'Unable to edit. The PPA is associated with existing Project Profiles');
+        }
         // dd($data);
         $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')
             ->join(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', 'accountaccess.ffunccod')
@@ -507,7 +511,10 @@ class PAPController extends Controller
         } else {
             $msg = "Program/Project/Activity Successfully deleted!";
             $status = "deleted";
-            $data = $this->model->findOrFail($id);
+            $data = $this->model->with(['revisionPlan'])->findOrFail($id);
+            if ($data->revisionPlan && $data->revisionPlan->isNotEmpty()) {
+                return redirect()->back()->with('error', 'Unable to delete. The PPA is associated with existing Project Profiles');
+            }
             $data->delete();
         }
         //dd($request->raao_id);
@@ -692,7 +699,6 @@ class PAPController extends Controller
         return ['data' => $data];
     }
 
-
     public function FUNCTIONS(Request $request)
     {
 
@@ -704,6 +710,7 @@ class PAPController extends Controller
 
 
     }
+
     public function mfos_filter_division(Request $request, $division_code)
     {
         $MY_FFUNCCOD = $division_code;
@@ -713,6 +720,7 @@ class PAPController extends Controller
             ->get();
         return ['data' => $data];
     }
+
     public function mother_paps_filter(Request $request, $idmfo)
     {
         // dd($request->search);
@@ -721,6 +729,7 @@ class PAPController extends Controller
             ->get();
         return ['data' => $data];
     }
+
     public function getPAPS(){
         $usedPapsIds = RevisionPlan::whereIn('type', ['d', 'sip'])
             ->where('status', 1)

@@ -689,6 +689,19 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     $e3 = "";
                     $t1 = "";
                     $rid = "";
+                    $ppdo_q1 = "";
+                    $ppdo_q2 = "";
+                    $ppdo_q3 = "";
+                    $ppdo_e1 = "";
+                    $ppdo_e2 = "";
+                    $ppdo_e3 = "";
+                    $ppdo_t1 = "";
+                    $rating_e="";
+                    $rating_q="";
+                    $rating_t="";
+                    $ppdo_rating_e="";
+                    $ppdo_rating_q="";
+                    $ppdo_rating_t="";
                     $show_mov = false;
                     $count_movs = 0;
                     if (!empty($item->opcr_rating2)) {
@@ -702,6 +715,16 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         $e2 = optional($rating)->e2;
                         $e3 = optional($rating)->e3;
                         $t1 = optional($rating)->t1;
+                        $ppdo_q1 = optional($rating)->ppdo_q1;
+                        $ppdo_q2 = optional($rating)->ppdo_q2;
+                        $ppdo_q3 = optional($rating)->ppdo_q3;
+                        $ppdo_e1 = optional($rating)->ppdo_e1;
+                        $ppdo_e2 = optional($rating)->ppdo_e2;
+                        $ppdo_e3 = optional($rating)->ppdo_e3;
+                        $ppdo_t1 = optional($rating)->ppdo_t1;
+                        // $rating_e=
+                        // $rating_q=
+                        // $rating_t=
                         $rid = optional($rating)->id;
                         // dd($rating);
                         $movs = optional($item->opcr_rating)->movs;
@@ -746,7 +769,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
 
 
                     // $dpcr_ave = optional($dpcr_targets)->pluck('monthlyTargets') ?? collect();
-
+                    // dd($item);
                     return [
                         'id' => $item->id,
                         // 'average_monthly'=>$average_monthly,
@@ -767,6 +790,14 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "e2" => $e2,
                         "e3" => $e3,
                         "t1" => $t1,
+
+                        "ppdo_q1" => $ppdo_q1,
+                        "ppdo_q2" => $ppdo_q2,
+                        "ppdo_q3" => $ppdo_q3,
+                        "ppdo_e1" => $ppdo_e1,
+                        "ppdo_e2" => $ppdo_e2,
+                        "ppdo_e3" => $ppdo_e3,
+                        "ppdo_t1" => $ppdo_t1,
                         // 'q1_ave' => round($computeAve($summary['q1']), 2),
                         // 'q2_ave' => round($computeAve($summary['q2']), 2),
                         // 'q3_ave' => round($computeAve($summary['q3']), 2),
@@ -804,12 +835,16 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         // "monthly_targets"=> optional($dpcr_targets)->pluck("monthlyTargets"),
 
                         "sem" => $sem,
-                        "year" => $year
+                        "year" => $year,
+                        "idpaps"=>$item->idpaps,
                         // ->monthlyTargets
                         // "flat" => $flat,
                         // 'standard'=>optional(optional($item)->paps)->opcr_stardard
                     ];
                 });
+                // 1561, 1562, 1564, 1572, 1566, 1568, 1567, 1570, 1797, 1569, 1571, 1577, 1576, 1565, 1580, 1579, 1578,
+                // 1728,     1729,     1730,     1731,     1732,     1733,     1678,     1724,     1725,     1726,     1727,     1734,
+                // dd($data->pluck('idpaps'));
         } else {
             $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
             $opcr_id = $opcr_list_id;

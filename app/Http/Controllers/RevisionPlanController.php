@@ -4085,6 +4085,872 @@ class RevisionPlanController extends Controller
         // dd($data->first(), $data[296], );
         return $data;
     }
+
+    public function aip_excel(Request $request){
+         $strategies = [];
+        $ccet = "0";
+        // dd("rerer");
+        if ($request->ccet) {
+            $ccet = $request->ccet;
+        }
+
+        $ssf_filter = $request->ssf_filter ? $request->ssf_filter : null;
+        $year = filter_var($request->year, FILTER_VALIDATE_INT);
+
+        if (!$year || !checkdate(1, 1, $year)) {
+            $year = Carbon::now()->year;
+        }
+        // dd($year);
+        // ? "1":"0";
+        // $plans = $this->getAllPlans($request, $year, $ssf_filter);
+        // dd($plans[28]);
+        $plans =RevisionPlan::with([
+            'strategyProject.strategy',
+            'strategyProject.expected_output',
+            'strategyProject.expected_outcome',
+            'activityProject' => function ($query) {
+                $query->whereHas('activity');
+            },
+            'activityProject.activity',
+            'activityProject.expected_output',
+            'activityProject.expected_outcome',
+            'budget',
+            'paps',
+            'paps.office',
+            'paps.office.office',
+            'gasPaps',
+            'gasPaps.office',
+            'gasPaps.office.office',
+            'office'
+        ])
+            ->whereYear('date_start', $year)
+            ->when(request()->ssf_filter == 'dev' || request()->ssf_filter == 'other', function ($query) use($request){
+                // dd($request->ssf_filter);
+                if ($request->ssf_filter === 'dev') {
+                    $query->whereIn('status', [1, 0, -1, -2]);
+                }
+
+                if ($request->ssf_filter === 'other') {
+                    $query->where(function ($q) {
+                        $q->where('FFUNCCOD', '8751')
+                        ->orWhere('FFUNCCOD', '1071');
+                    })->whereIn('status', [1, 0, -1, -2]);
+                }
+            }, function ($query) use ($request){
+                $query->where('status', 1);
+                if($request->ssf_filter=='Other Sources'){
+
+                }else{
+                    $query->where('aip_code','<>', NULL);
+                }
+
+            })
+            ->orderBy('aip_code', 'asc')
+            ->get();
+
+        // dd("aip",$plans->pluck('aip_code'));
+        $pln = $plans;
+        foreach ($plans as $plan) {
+            $strategyProject = $plan->strategyProject()->whereHas('strategy')->first();
+            $strategy = optional($strategyProject)->strategy;
+            // dd($plan );
+
+            if (!$strategy) {
+                continue;
+            }
+            $source_of_funds = optional(optional($plan)->paps)->source_of_funds ?
+                $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds) :
+                $this->getSourceLabel(optional(optional($plan)->gasPaps)->source_of_funds);
+
+            $sector = optional(optional($plan)->paps)->sector;
+            if(!$sector){
+                // dd(optional($plan)->gasPaps);
+                $sector = optional(optional($plan)->gasPaps)->sector;
+                $source_of_funds =optional(optional($plan)->gasPaps)->source_of_funds;
+            }
+            $strategyId = $plan->id;
+            $budget = $plan->budget;
+            $source = optional(optional($plan)->paps)->source_of_funds ?
+                $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds) :
+                $this->getSourceLabel(optional(optional($plan)->gasPaps)->source_of_funds);
+            if (count($budget) > 0) {
+                // $source = $this->getSourceLabel(optional(optional($plan)->paps)->source_of_funds);
+            }
+            // if($plan->aip_code=='1000-001-1-1-01-001'){
+            //     // dd("source222", $plan, $source);
+            // }
+
+            $expected_outputs = in_array($source_of_funds, ['dev', 'other'])
+                ? ""
+                : collect($plan->activityProject)
+                ->filter(function ($activityProject) use($plan) {
+                    // Only active activity projects
+                    if ((int)($activityProject->is_active ?? 0) !== 1) {
+                        return false;
+                    }
+                    if ($plan->id == 668) {
+                        return true;
+                    } else {
+                        // $total_co =
+                        //     (float)($activityProject->co_q1 ?? 0) +
+                        //     (float)($activityProject->co_q2 ?? 0) +
+                        //     (float)($activityProject->co_q3 ?? 0) +
+                        //     (float)($activityProject->co_q4 ?? 0);
+
+                        // return $total_co <= 0;
+                        return true;
+                    }
+                })
+                ->pluck('expected_output')
+                ->filter()
+                ->flatten(1)
+                ->map(function ($output) use ($plan) {
+                    $target_budget_year =
+                        ($output->physical_q1 ? floatval($output->physical_q1) : 0) +
+                        ($output->physical_q2 ? floatval($output->physical_q2) : 0) +
+                        ($output->physical_q3 ? floatval($output->physical_q3) : 0) +
+                        ($output->physical_q4 ? floatval($output->physical_q4) : 0);
+                    $description = trim($output->description ?? '');
+
+                    // Check if description starts with a number
+                    if (
+                        preg_match('/^\(\d+\)/', $description) ||
+                        preg_match('/^\d+/', $description) ||
+                        preg_match('/^[^:]+:\s*/', $description)
+                    ) {
+                        return $description;
+                    }
+
+                    $formattedTarget = number_format($target_budget_year);
+                    if (
+                        str_contains($description, (string) $target_budget_year) ||
+                        str_contains($description, $formattedTarget)
+                    ) {
+                        return $description;
+                    }
+
+                    // if($plan->id==362){
+                    //     return $target_budget_year . ' fsdfsd ' . $description;
+                    // }
+                    // Exception for Repair and Maintenance of Provincial Roads and Bridges
+                    if($plan->idpaps=='1992' ){
+                        return ' ';
+                    }else{
+                        if(floatval($target_budget_year) < 1 || $plan->idpaps=='1950') {
+                            $target_budget_year ='';
+                        }
+                        return $target_budget_year . ' ' . $description;
+                    }
+
+                })
+                ->filter()
+                ->implode("\n");
+
+            $total_mooe = $budget->where('category', 'Maintenance, Operating, and Other Expenses')->sum('amount');
+            $total_ps = $budget->where('category', 'Personnel Services')->sum('amount');
+            $total_co = $budget->where('category', 'Capital Outlay')->sum('amount');
+            $total_fe = $budget->where('category', 'Financial Expenses')->sum('amount');
+
+            $total_all = $total_mooe + $total_ps + $total_co + $total_fe;
+            $ccet_code_adaptation = 0;
+            $ccet_code_mitigation = 0;
+
+
+            $ccetCode = '';
+            $activityWithCcet = collect($plan->activityProject)->firstWhere('ccet_code', '!=', null);
+
+
+            if ($activityWithCcet) {
+                // Found at least one with a ccet_code
+                $ccetCode = $activityWithCcet->ccet_code;
+                if ($ccetCode) {
+                    if (Str::startsWith($ccetCode, 'A')) {
+                        $ccet_code_adaptation = $total_all;
+                        $ccet_code_mitigation = 0;
+                    } elseif (Str::startsWith($ccetCode, 'M')) {
+                        $ccet_code_adaptation = 0;
+                        $ccet_code_mitigation = $total_all;
+                    } else {
+                        $ccet_code_adaptation = 0;
+                        $ccet_code_mitigation = 0;
+                    }
+                }
+            }
+            // if($plan->aip_code=='1000-001-1-1-01-001'){
+            //         dd("source111", $plan, $source);
+            //     }
+            $source = $this->set_source($source);
+
+            // if($plan->aip_code=='1000-001-1-1-01-001'){
+            //         dd("source222", $plan, $source);
+            //     }
+            if (mb_strlen($source, 'UTF-8') < 25) {
+
+                $chars = preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
+                $source = implode("\n", $chars);
+
+            }
+            $paps_title = $plan->project_title;
+            // $paps_temp=$paps_title;
+            if ($paps_title === mb_strtoupper($paps_title, 'UTF-8') && !preg_match('/^STF\s+\d{4}$/', $paps_title)) {
+                $paps_title = $this->titleCaseTransform($paps_title);
+            }
+
+            $paps_desc = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
+            $paps_title_desc = "<b>" . $paps_title . "</b>";
+            $imp_office = optional(optional(optional($plan)->paps)->office)->office ?
+                optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
+                optional(optional(optional($plan)->paps)->office)->FFUNCTION;
+
+            $ss = optional(optional($plan)->paps)->source_of_funds ? optional(optional($plan)->paps)->source_of_funds : optional(optional($plan)->gasPaps)->source_of_funds;
+            if ($plan->id == 736) {
+                $expected_outputs = str_repeat("\n", 10) . $expected_outputs;
+            }
+            if (!isset($strategies[$strategyId])) {
+                $strategies[$strategyId] = [
+                    'project_title' => $paps_title_desc,
+                    'implementing_office' => $imp_office ? $imp_office : optional(optional($plan)->office)->FFUNCTION,
+                    'expected_output' =>  $ss=='dev' || $ss=='other' ? ' ' :
+                        ($plan->idpaps=='1992' ? ' ' : $expected_outputs),
+                    'total_mooe' => floatval($total_mooe),
+                    'total_ps' => floatval($total_ps),
+                    'total_co' => floatval($total_co),
+                    'total_fe' => floatval($total_fe),
+                    'ccet_code' => (
+                                in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other'])
+                                || $ccetCode === 'N/A'
+                            ) ? '' : $ccetCode,
+                    // in_array(optional(optional($plan)->paps)->source_of_funds, ['dev', 'other']) ? '' : $ccetCode,
+                    'ccet_code_mitigation' => $ccet_code_mitigation,
+                    'ccet_code_adaptation' => $ccet_code_adaptation,
+                    'aip_code' => $plan->aip_code,
+                    'activity_aip_code' => ' ',
+                    'source' => $source . "\n",
+                    'ccet' => $ccet,
+                    'year' => $year,
+                    'id' => $plan->id,
+                    'source_of_funds' => $ss,
+                    'sector' => $sector,
+                    'level' => 1
+                ];
+            } else {
+                continue;
+                // dd($plans[276], $plan, $strategies, $strategyId, $strategy, $strategies[$strategyId]);
+                // If the same strategy appears again, merge expected outputs
+                // $strategies[$strategyId]['expected_output'] = $strategies[$strategyId]['expected_output']
+                //     ->merge($expected_outputs)
+                //     ->unique('id') // remove duplicates if outputs have IDs
+                //     ->values();
+
+            }
+        }
+        // dd($plans->pluck('aip_code'), $strategies);
+
+        // return array_values($strategies);
+        $strategies = collect($strategies);
+
+        $rev_ids = $strategies->pluck('id');
+        // dd($rev_ids);
+        $cap_ob = $this->capitalOutlayObject($rev_ids);
+        $capital_activities = $this->retrievingCapitalOutlay($request->ccet, $cap_ob);
+        $grouped = $capital_activities->groupBy('id');
+        $flattened_grouped = $grouped->flatten(1);
+        // dd($flattened_grouped, $flattened_grouped[520]);
+        $result = $strategies->concat($flattened_grouped)
+            ->when(
+        !in_array($request->ssf_filter, ['dev', 'other']) ,
+                function ($collection) {
+                    return $collection->sortBy([
+                        ['aip_code', 'asc'],
+                        ['level', 'asc'],
+                        ['activity_aip_code', 'asc'],
+                    ]);
+                },
+                function ($collection) {
+                    return $collection->sortBy([
+                        ['id', 'asc'],
+                        ['level', 'asc'],
+                        ['activity_aip_code', 'asc']
+                    ]);
+                }
+            )
+            ->values();
+        // dd($result->pluck('aip_code'), $result->pluck('level'), $result->pluck('activity_aip_code'));
+        // dd($grouped, $flattened_grouped, $flattened_grouped->pluck('aip_code'), $rev_ids, $flattened_grouped[520]);
+        // dd($flattened_grouped, $flattened_grouped->pluck('aip_code'), $rev_ids, $flattened_grouped[520]);
+        // $strategies = $strategies->concat($flattened_grouped)->sortBy('aip_code')->values();
+        // dd($flattened_grouped, $flattened_grouped->pluck('aip_code'));
+        // $result = collect();
+
+        // foreach ($strategies as $strategy) {
+        //     $result->push($strategy);
+        //     $key = $strategy['id'];
+        //     if($key==738){
+        //         // dd($strategy, $grouped[$key],
+        //         // $grouped[$key]->count(),
+        //         // $grouped[$key]->all());
+        //     }
+        //     $before = $result->count();
+        //     if ($grouped->has($key)) {
+        //         // dd("has key");
+        //         $result = $result->concat($grouped[$key]);
+        //         $kk = $key;
+        //         $grouped->forget($key);
+        //         if($kk==738){dd($before,$result->count(), $result);}
+
+        //     }
+        // }
+        // Append any activities without a matching strategy (if needed)
+        // foreach ($grouped as $activities) {
+        //     $result = $result->concat($activities);
+        // }
+        $strategies=$result;
+        $sectorValues  = [
+                'General Public Services Sector',
+                'Economic Services',
+                'Other Services',
+                'Social Services Sector',
+            ];
+
+        $sourceOfFundValues  = [
+                'gen_fund',
+                'ldrrmf',
+                'dev',
+                'other',
+            ];
+            // dd($ssf_filter);
+        if (!empty($ssf_filter)) {
+            $strategies = $strategies->filter(function ($item) use ($ssf_filter, $sectorValues, $sourceOfFundValues) {
+
+                // Filter by sector, but only General Fund records
+                if (in_array($ssf_filter, $sectorValues, true)) {
+
+                    return $item['sector'] === $ssf_filter
+                        && $item['source_of_funds'] === 'gen_fund';
+                }
+
+                // Filter by source of funds
+                if (in_array($ssf_filter, $sourceOfFundValues, true)) {
+                    return $item['source_of_funds'] === $ssf_filter;
+                }
+
+                // Unknown filter value - don't exclude anything
+                return true;
+            })->values();
+        }
+        // dd("foreach:",$plans->pluck('aip_code'),$strategies->pluck('sector'), $strategies->first());
+        /*
+        |--------------------------------------------------------------------------
+        | General Fund Sectors
+        |--------------------------------------------------------------------------
+        */
+
+        $general_public_services = $strategies
+            ->where('source_of_funds', 'gen_fund')
+            ->where('sector', 'General Public Services Sector')
+            ->values();
+        // dd($general_public_services->pluck('aip_code'));
+        $economic_services = $strategies
+            ->where('source_of_funds', 'gen_fund')
+            ->where('sector', 'Economic Services')
+            ->values();
+
+        $social_services = $strategies
+            ->where('source_of_funds', 'gen_fund')
+            ->where('sector', 'Social Services Sector')
+            ->values();
+
+        $other_services = $strategies
+            ->where('source_of_funds', 'gen_fund')
+            ->where('sector', 'Other Services')
+            ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Other Source of Funds
+        |--------------------------------------------------------------------------
+        */
+
+        $dev = $strategies
+            ->where('source_of_funds', 'dev')
+            ->values();
+
+        $ldrrmf = $strategies
+            ->where('source_of_funds', 'ldrrmf')
+            ->values();
+
+        $other = $strategies
+            ->where('source_of_funds', 'other')
+            ->values();
+        // dd($other, $social_services);
+        // ->pluck('project_title')
+        /*
+        |--------------------------------------------------------------------------
+        | Final Ordered Collection
+        |--------------------------------------------------------------------------
+        |
+        | Order:
+        | 1. General Public Services Sector
+        | 2. Economic Services
+        | 3. Social Services Sector
+        | 4. dev
+        | 5. ldrrmf
+        | 6. other
+        |
+        */
+        // $Revision
+
+        // dd($dev, $summary, $cap_ob);
+        /*
+        |--------------------------------------------------------------------------
+        | Totals
+        |--------------------------------------------------------------------------
+        */
+
+        $safeSum = fn($collection, $key) => $collection->sum(fn($item) => floatval($item[$key] ?? 0));
+
+        // General Public Services
+        $general_public_services_total_mooe = $safeSum($general_public_services, 'total_mooe');
+        $general_public_services_total_ps   = $safeSum($general_public_services, 'total_ps');
+        $general_public_services_total_co   = $safeSum($general_public_services, 'total_co');
+        $general_public_services_total_fe   = $safeSum($general_public_services, 'total_fe');
+        $general_public_services_ccet_code_adaptation = $safeSum($general_public_services, 'ccet_code_adaptation');
+        $general_public_services_ccet_code_mitigation = $safeSum($general_public_services, 'ccet_code_mitigation');
+
+        // Economic Services
+        $economic_services_total_mooe = $safeSum($economic_services, 'total_mooe');
+        $economic_services_total_ps   = $safeSum($economic_services, 'total_ps');
+        $economic_services_total_co   = $safeSum($economic_services, 'total_co');
+        $economic_services_total_fe   = $safeSum($economic_services, 'total_fe');
+        $economic_services_ccet_code_adaptation = $safeSum($economic_services, 'ccet_code_adaptation');
+        $economic_services_ccet_code_mitigation = $safeSum($economic_services, 'ccet_code_mitigation');
+
+        // Social Services
+        $social_services_total_mooe = $safeSum($social_services, 'total_mooe');
+        $social_services_total_ps   = $safeSum($social_services, 'total_ps');
+        $social_services_total_co   = $safeSum($social_services, 'total_co');
+        $social_services_total_fe   = $safeSum($social_services, 'total_fe');
+        $social_services_ccet_code_adaptation = $safeSum($social_services, 'ccet_code_adaptation');
+        $social_services_ccet_code_mitigation = $safeSum($social_services, 'ccet_code_mitigation');
+
+        // LDRRMF
+        $ldrrmf_total_mooe = $safeSum($ldrrmf, 'total_mooe');
+        $ldrrmf_total_ps   = $safeSum($ldrrmf, 'total_ps');
+        $ldrrmf_total_co   = $safeSum($ldrrmf, 'total_co');
+        $ldrrmf_total_fe   = $safeSum($ldrrmf, 'total_fe');
+        $ldrrmf_ccet_code_adaptation = $safeSum($ldrrmf, 'ccet_code_adaptation');
+        $ldrrmf_ccet_code_mitigation = $safeSum($ldrrmf, 'ccet_code_mitigation');
+        // Other Services
+        $other_services_total_mooe = $safeSum($other_services, 'total_mooe');
+        // + $ldrrmf_total_mooe;
+        $other_services_total_ps   = $safeSum($other_services, 'total_ps');
+        // + $ldrrmf_total_ps;
+        $other_services_total_co   = $safeSum($other_services, 'total_co');
+        // + $ldrrmf_total_co;
+        $other_services_total_fe   = $safeSum($other_services, 'total_fe');
+        // + $ldrrmf_total_fe;
+        $other_services_ccet_code_adaptation = $safeSum($other_services, 'ccet_code_adaptation');
+        // + $ldrrmf_ccet_code_adaptation;
+        $other_services_ccet_code_mitigation = $safeSum($other_services, 'ccet_code_mitigation');
+        // + $ldrrmf_ccet_code_mitigation;
+
+        // Development Fund
+        $dev_total_mooe = $safeSum($dev, 'total_mooe');
+        $dev_total_ps   = $safeSum($dev, 'total_ps');
+        $dev_total_co   = $safeSum($dev, 'total_co');
+        $dev_total_fe   = $safeSum($dev, 'total_fe');
+        $dev_ccet_code_adaptation = $safeSum($dev, 'ccet_code_adaptation');
+        $dev_ccet_code_mitigation = $safeSum($dev, 'ccet_code_mitigation');
+
+
+
+        // Other Source
+        $other_total_mooe = $safeSum($other, 'total_mooe');
+        $other_total_ps   = $safeSum($other, 'total_ps');
+        $other_total_co   = $safeSum($other, 'total_co');
+        $other_total_fe   = $safeSum($other, 'total_fe');
+        $other_ccet_code_adaptation = $safeSum($other, 'ccet_code_adaptation');
+        $other_ccet_code_mitigation = $safeSum($other, 'ccet_code_mitigation');
+
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Final Strategies
+        |--------------------------------------------------------------------------
+        */
+        // dd($general_public_services->pluck('aip_code'), $general_public_services);
+        $final_strategies = collect()
+            ->concat($general_public_services)
+            ->concat($economic_services)
+            ->concat($social_services)
+            ->concat($other_services)
+            ->concat($dev)
+            ->concat($ldrrmf)
+            ->concat($other)
+            ->map(function ($item) use (
+                $general_public_services_total_mooe,
+                $general_public_services_total_ps,
+                $general_public_services_total_co,
+                $general_public_services_total_fe,
+                $general_public_services_ccet_code_adaptation,
+                $general_public_services_ccet_code_mitigation,
+
+                $economic_services_total_mooe,
+                $economic_services_total_ps,
+                $economic_services_total_co,
+                $economic_services_total_fe,
+                $economic_services_ccet_code_adaptation,
+                $economic_services_ccet_code_mitigation,
+
+                $social_services_total_mooe,
+                $social_services_total_ps,
+                $social_services_total_co,
+                $social_services_total_fe,
+                $social_services_ccet_code_adaptation,
+                $social_services_ccet_code_mitigation,
+
+                $other_services_total_mooe,
+                $other_services_total_ps,
+                $other_services_total_co,
+                $other_services_total_fe,
+                $other_services_ccet_code_adaptation,
+                $other_services_ccet_code_mitigation,
+
+                $dev_total_mooe,
+                $dev_total_ps,
+                $dev_total_co,
+                $dev_total_fe,
+                $dev_ccet_code_adaptation,
+                $dev_ccet_code_mitigation,
+
+                $ldrrmf_total_mooe,
+                $ldrrmf_total_ps,
+                $ldrrmf_total_co,
+                $ldrrmf_total_fe,
+                $ldrrmf_ccet_code_adaptation,
+                $ldrrmf_ccet_code_mitigation,
+
+                $other_total_mooe,
+                $other_total_ps,
+                $other_total_co,
+                $other_total_fe,
+                $other_ccet_code_adaptation,
+                $other_ccet_code_mitigation
+
+
+            ) {
+                // dd($item['source_of_funds'], $item['sector']);
+                $sf = $item['source_of_funds'];
+                $sector = $item['sector'];
+                if ($sf == 'gen_fund' && $sector == 'General Public Services Sector') {
+                    $item['grand_total_mooe'] = (float) number_format($general_public_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($general_public_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($general_public_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($general_public_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($general_public_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($general_public_services_ccet_code_mitigation, 2, '.', '');
+                } elseif ($sf == 'gen_fund' && $sector == 'Economic Services') {
+                    $item['grand_total_mooe'] = (float) number_format($economic_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($economic_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($economic_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($economic_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($economic_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($economic_services_ccet_code_mitigation, 2, '.', '');
+                } elseif ($sf == 'gen_fund' && $sector == 'Social Services Sector') {
+                    $item['grand_total_mooe'] = (float) number_format($social_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($social_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($social_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($social_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($social_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($social_services_ccet_code_mitigation, 2, '.', '');
+                } elseif ($sf == 'gen_fund' && $sector == 'Other Services') {
+                    $item['grand_total_mooe'] = number_format($other_services_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($other_services_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($other_services_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($other_services_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($other_services_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($other_services_ccet_code_mitigation, 2, '.', '');
+                } elseif ($sf == 'dev') {
+                    $item['grand_total_mooe'] = (float) number_format($dev_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($dev_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($dev_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($dev_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($dev_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($dev_ccet_code_mitigation, 2, '.', '');
+                } elseif ($sf == 'ldrrmf') {
+                    $item['grand_total_mooe'] = number_format($ldrrmf_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = number_format($ldrrmf_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = number_format($ldrrmf_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = number_format($ldrrmf_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = number_format($ldrrmf_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = number_format($ldrrmf_ccet_code_mitigation, 2, '.', '');
+                } elseif ($sf == 'other') {
+                    $item['grand_total_mooe'] = (float) number_format($other_total_mooe, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format($other_total_ps, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format($other_total_co, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format($other_total_fe, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format($other_ccet_code_adaptation, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format($other_ccet_code_mitigation, 2, '.', '');
+                } else {
+                    $item['grand_total_mooe'] = (float) number_format(0, 2, '.', '');
+                    $item['grand_total_ps']   = (float) number_format(0, 2, '.', '');
+                    $item['grand_total_co']   = (float) number_format(0, 2, '.', '');
+                    $item['grand_total_fe']   = (float) number_format(0, 2, '.', '');
+                    $item['total_ccet_code_adaptation'] = (float) number_format(0, 2, '.', '');
+                    $item['total_ccet_code_mitigation'] = (float) number_format(0, 2, '.', '');
+                }
+
+
+                return $item;
+
+                // return $item;
+            })
+            ->values();
+        // dd($final_strategies, $strategies);
+        // dd($final_strategies->pluck('grand_total_mooe'), $final_strategies->pluck('grand_total_ps'), $final_strategies->pluck('grand_total_co'), $final_strategies->pluck('grand_total_fe'));
+        // dd($final_strategies[78], $final_strategies[77]);
+
+        // dd($final_strategies->pluck('aip_code'));
+
+        $year = $request->get('year', date('Y'));
+        $filename = "AIP_Report_{$year}.xlsx";
+
+        // Define the seven sheets in the required order
+        $sheets = [
+            ['name' => 'General Public Services', 'data' => $general_public_services],
+            ['name' => 'Economic Services',      'data' => $economic_services],
+            ['name' => 'Social Services',        'data' => $social_services],
+            ['name' => 'Other Services',         'data' => $other_services],
+            ['name' => 'DEV',                    'data' => $dev],
+            ['name' => 'LDRRMF',                 'data' => $ldrrmf],
+            ['name' => 'Other Sources',          'data' => $other],
+        ];
+        // return $sheets;
+        // return response()->streamDownload(function () {
+        //     $writer = WriterEntityFactory::createXLSXWriter();
+        //     $writer->openToFile('php://output');
+        //     $writer->addRow(WriterEntityFactory::createRowFromArray(['Hello']));
+        //     $writer->close();
+        // }, 'test.xlsx', ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']);
+        if($request->get('format_type')=='aip'){
+            return response()->streamDownload(function () use ($sheets) {
+                $writer = WriterEntityFactory::createXLSXWriter();
+                $writer->openToFile('php://output');
+
+                foreach ($sheets as $index => $sheet) {
+                    // Add a new sheet (the first sheet is already created by openToFile)
+                    if ($index > 0) {
+                        $writer->addNewSheetAndMakeItCurrent();
+                    }
+                    $writer->getCurrentSheet()->setName($sheet['name']);
+
+                    // --- Header row ---
+                    $headerRow = WriterEntityFactory::createRowFromArray([
+                        'AIP REFERENCE CODE',
+                        'PROGRAM/PROJECT/TITLE Description',
+                        'IMPLEMENTING OFFICE/DEPARTMENT',
+                        'Start Date',
+                        'Completion Date',
+                        'EXPECTED OUTPUTS',
+                        'FUNDING SOURCE',
+                        'PS',
+                        'MOOE',
+                        'FE',
+                        'CO',
+                        'TOTAL',
+                        'Climate Change Adaptation',
+                        'Cliamte Change Mitigation',
+                        'Climate Change TOpology Code',
+                        'Sector',
+                        'Source of Funds',
+                        'Level'
+                    ]);
+
+                    //  'AIP REFERENCE CODE',
+                    //     'Project Title',
+                    //     'Level',
+                    //     'MOOE',
+                    //     'PS',
+                    //     'FE',
+                    //     'CO',
+                    //     'Total',
+                    //     'Implementing Office',
+                    //     'Sector',
+                    //     'Source of Funds',
+                    $writer->addRow($headerRow);
+
+                    // --- Data rows ---
+                    foreach ($sheet['data'] as $item) {
+                        // Numeric values
+                        $mooe = (float) ($item['total_mooe'] ?? 0);
+                        $ps   = (float) ($item['total_ps']   ?? 0);
+                        $fe   = (float) ($item['total_fe']   ?? 0);
+                        $co   = (float) ($item['total_co']   ?? 0);
+                        $total = $mooe + $ps + $fe + $co;
+
+                        // Clean project title (remove HTML tags)
+                        $projectTitle = strip_tags($item['project_title'] ?? '');
+                        $projectTitle = trim($projectTitle);
+
+                        // Human‑readable source of funds
+                        $fundLabels = [
+                            'gen_fund' => 'GF',
+                            'dev'      => 'DF',
+                            'ldrrmf'   => 'LDRRMF',
+                            'other'    => 'Other Sources',
+                        ];
+                        $sourceLabel = $fundLabels[$item['source_of_funds'] ?? ''] ?? ($item['source_of_funds'] ?? '');
+                        $start_date = 'January '.$item['year'];
+                        $end_date = 'December '.$item['year'];
+                        $rowArray = [
+                            // $item['aip_code']            ?? '',
+                            // 'AIP REFERENCE CODE',
+                            ($item['level'] == 2) ? ($item['activity_aip_code'] ?? '') : ($item['aip_code'] ?? ''),
+                            // 'PROGRAM/PROJECT/TITLE Description',
+                            $projectTitle,
+                            // 'IMPLEMENTING OFFICE/DEPARTMENT',
+                            $item['implementing_office']  ?? '',
+                            // 'Start Date',
+                            $start_date,
+                            // 'Completion Date',
+                            $end_date,
+                            // 'EXPECTED OUTPUTS',
+                            $item['expected_output']  ?? '',
+                            // 'FUNDING SOURCE',
+                            $sourceLabel,
+                            // 'PS',
+                            $ps,
+                            // 'MOOE',
+                            $mooe,
+                            // 'FE',
+                            $fe,
+                            // 'CO',
+                            $co,
+                            // 'TOTAL',
+                            $total,
+                            // 'Climate Change Adaptation',
+                            $item['ccet_code_adaptation']  ?? '',
+                            // 'Cliamte Change Mitigation',
+                            $item['ccet_code_mitigation']  ?? '',
+                            // 'Climate Change TOpology Code',
+                            $item['ccet_code']  ?? '',
+                            // 'Sector',
+                            $item['sector']  ?? '',
+                            // 'Source of Funds',
+                            $sourceLabel,
+                            // 'Level'
+                            $item['level']  ?? ''
+
+                        ];
+
+                        $row = WriterEntityFactory::createRowFromArray($rowArray);
+                        $writer->addRow($row);
+                    }
+                }
+
+                $writer->close();
+            }, $filename, [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            ]);
+        }
+        else{
+            return response()->streamDownload(function () use ($sheets) {
+                $writer = WriterEntityFactory::createXLSXWriter();
+                $writer->openToFile('php://output');
+
+                foreach ($sheets as $index => $sheet) {
+                    // Add a new sheet (the first sheet is already created by openToFile)
+                    if ($index > 0) {
+                        $writer->addNewSheetAndMakeItCurrent();
+                    }
+                    $writer->getCurrentSheet()->setName($sheet['name']);
+
+                    // --- Header row ---
+                    $headerRow = WriterEntityFactory::createRowFromArray([
+                        'AIP Code',
+                        'Project Title',
+                        'Level',
+                        'MOOE',
+                        'PS',
+                        'FE',
+                        'CO',
+                        'Total',
+                        'Implementing Office',
+                        'Sector',
+                        'Source of Funds',
+                        // 'AIP REFERENCE CODE',
+                        // 'PROGRAM/PROJECT/TITLE Description',
+                        // 'IMPLEMENTING OFFICE/DEPARTMENT',
+                        // 'Start Date',
+                        // 'Completion Date',
+                        // 'EXPECTED OUTPUTS',
+                        // 'FUNDING SOURCE',
+                        // 'PS',
+                        // 'MOOE',
+                        // 'FE',
+                        // 'CO',
+                        // 'TOTAL',
+                        // 'Climate Change Adaptation',
+                        // 'Cliamte Change Mitigation',
+                        // 'Climate Change TOpology Code',
+                        // 'Sector',
+                        // 'Source of Funds',
+                        // 'Level'
+                    ]);
+
+
+                    $writer->addRow($headerRow);
+
+                    // --- Data rows ---
+                    foreach ($sheet['data'] as $item) {
+                        // Numeric values
+                        $mooe = (float) ($item['total_mooe'] ?? 0);
+                        $ps   = (float) ($item['total_ps']   ?? 0);
+                        $fe   = (float) ($item['total_fe']   ?? 0);
+                        $co   = (float) ($item['total_co']   ?? 0);
+                        $total = $mooe + $ps + $fe + $co;
+
+                        // Clean project title (remove HTML tags)
+                        $projectTitle = strip_tags($item['project_title'] ?? '');
+                        $projectTitle = trim($projectTitle);
+
+                        // Human‑readable source of funds
+                        $fundLabels = [
+                            'gen_fund' => 'GF',
+                            'dev'      => 'DF',
+                            'ldrrmf'   => 'LDRRMF',
+                            'other'    => 'Other Sources',
+                        ];
+                        $sourceLabel = $fundLabels[$item['source_of_funds'] ?? ''] ?? ($item['source_of_funds'] ?? '');
+
+                        $rowArray = [
+                            ($item['level'] == 2) ? ($item['activity_aip_code'] ?? '') : ($item['aip_code'] ?? ''),
+                            $projectTitle,
+                            $item['level']               ?? '',
+                            $mooe,
+                            $ps,
+                            $fe,
+                            $co,
+                            $total,
+                            $item['implementing_office']  ?? '',
+                            $item['sector']               ?? '',
+                            $sourceLabel,
+                        ];
+
+                        $row = WriterEntityFactory::createRowFromArray($rowArray);
+                        $writer->addRow($row);
+                    }
+                }
+
+                $writer->close();
+            }, $filename, [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            ]);
+        }
+        // return $final_strategies;
+    }
     protected function getRevisionPlanSummary($plans)
     {
         return app(RevisionPlanSummaryService::class)->summarize($plans);

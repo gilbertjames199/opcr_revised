@@ -33,6 +33,7 @@ Route::prefix('api_ppa')->group(function () {
     Route::get('/aip', [RevisionPlanController::class, 'aip_api']);
     Route::get('/print/aip', [RevisionPlanController::class, 'print_aip']);
     Route::get('/print/aip/sp', [RevisionPlanController::class, 'print_aip_sp']);
+    Route::get('/print/aip/excel/version', [RevisionPlanController::class, 'aip_excel']);
 });
 
 Route::prefix('/project/profile/api')->group(function () {
