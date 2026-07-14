@@ -605,7 +605,7 @@
                                         </td>
                                         <!-- PPDO E3 -->
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
-                                            e3: {{ dat.e3_standard }}
+                                            <!-- rating e3: {{ dat.rating_e }} -->
                                             <select v-model="opcr_data[index].ppdo_e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
                                                 @change="saveRating(opcr_data[index].ppdo_e3, opcr_data[index].opcr_rating_id, 'ppdo_e3')"
                                                 :disabled="dat.ppdo_e3_standard === 'No'"
@@ -662,41 +662,20 @@
                                             <!--opcr_data[index].mov_is_visible: {{ opcr_data[index].mov_is_visible }}
                                             count_movs: {{ opcr_data[index].count_movs }}
                                             :disabled="!dat.movs"
-                                                :style="!dat.movs ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''" -->
+                                                :style="!dat.movs ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' :
+                                            @click="updateMOVisVisible(opcr_data[index].mov_is_visible, index)"
+                                            ''" -->
+                                            <!-- idpaps: {{ dat.idpaps }} -department_code- {{dat.department_code}} -year- {{dat.year}} --semester- {{ dat.sem }} -->
                                             <button
-                                                v-if="!opcr_data[index].mov_is_visible"
-                                                @click="updateMOVisVisible(opcr_data[index].mov_is_visible, index)"
-                                                class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
+
+
+                                                @click="showModalAccomplishmentMOV(dat.idpaps, dat.department_code, dat.year, dat.sem, dat)"
+                                                class="button"
                                                 title="View MOVs"
                                             >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="20"
-                                                    height="20"
-                                                    fill="blue"
-                                                    class="bi bi-eye-fill"
-                                                    viewBox="0 0 16 16"
-                                                >
-                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                </svg>
+                                                SHOW MOV
                                             </button>
-                                            <button
-                                                v-else
-                                                @click="updateMOVisVisible(opcr_data[index].mov_is_visible, index)"
-                                                class="p-1 rounded bg-transparent hover:bg-blue-100 border-0"
-                                                title="View MOVs"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    width="20"
-                                                    height="20"
-                                                    fill="currentColor"
-                                                    class="bi bi-eye-slash-fill"
-                                                    viewBox="0 0 16 16">
-                                                    <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
-                                                    <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
-                                                </svg>
-                                            </button>
+
                                         </td>
                                     </tr>
                                     <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" >
@@ -775,28 +754,29 @@
                                     </tr>
 
                                 </template>
-                                <tr>
-                                    <td colspan="6"></td>
+                                 <tr>
+                                    <td colspan="1"></td>
                                     <td colspan="3">TOTAL RATING (Office)</td>
                                     <td>{{ getTotalAverage() }}</td>
-                                    <td>TOTAL RATING (PPDO)</td>
-                                    <td>{{ ppdototalOfAverages() }}</td>
+                                    <td colspan="3">TOTAL RATING (PPDO)</td>
+                                    <td>{{ calculatePpdoTotal() }}
+                                    </td>
 
-                                    <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
-                                    <td>{{ computeDPCRTotal(opcr_data) }}</td>
+                                     <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
+                                    <td>{{ computeDPCRTotal(opcr_data) }}</td> -->
                                     <td></td>
-                                    <td></td> -->
+                                    <td></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="8"></td>
+                                    <td colspan="1"></td>
                                     <td colspan="3">FINAL AVERAGE RATING (Office)</td>
                                     <td>{{ getAverageAll() }}</td>
-                                    <td>FINAL AVERAGE RATING (PPDO)</td>
-                                    <td>{{ ppdoaverageOfAverages() }}</td>
-                                    <!-- <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
-                                    <td>{{ computeDPCRAverage(opcr_data) }}</td>
+                                    <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
+                                    <td>{{ calculatePpdoAverage() }}</td>
+                                     <!-- <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
+                                    <td>{{ computeDPCRAverage(opcr_data) }}</td> -->
                                     <td></td>
-                                    <td></td> -->
+                                    <td></td>
                                 </tr>
 
                             </tbody>
@@ -1050,6 +1030,66 @@
                 <iframe :src="print_link" style="width:100%; height:400px" />
             </div>
         </PrintModal>
+        <!-- ACCOMPLISHMENT MOV MODAL -->
+        <ModalAccomplishmentMOV
+            v-if="displayModalAccomplishmentMOV"
+            @close-modal-event="displayModalAccomplishmentMOV=false"
+            title="Accomplishment MOV"
+        >
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="10%">Date</th>
+                        <th width="20%">Title of Accomplishment</th>
+                        <th width="25%">Brief Description</th>
+                        <th width="20%">Scope</th>
+                        <th width="25%">Images</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="(item, index) in mov_accomplishment" :key="index">
+                        <td>{{ item.date }}</td>
+
+                        <td>
+                            {{ item.title_of_accomplishment }}
+                        </td>
+
+                        <td>
+                            {{ item.brief_description }}
+                        </td>
+
+                        <td style="white-space: pre-line;">
+                            {{ item.scope }}
+                        </td>
+
+                        <td>
+                            <div class="d-flex flex-wrap">
+                                <img
+                                    v-if="item.image1"
+                                    :src="item.image1"
+                                    class="img-thumbnail mr-2 mb-2"
+                                    style="max-width:180px; max-height:180px;"
+                                >
+
+                                <img
+                                    v-if="item.image2"
+                                    :src="item.image2"
+                                    class="img-thumbnail mb-2"
+                                    style="max-width:180px; max-height:180px;"
+                                >
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr v-if="mov_accomplishment.length === 0">
+                        <td colspan="5" class="text-center">
+                            No accomplishments found.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </ModalAccomplishmentMOV>
         <!--
         <Modal2 v-if="displayModal2" @close-modal-event="hideModal">
             <button @click="backTo()" class="btn btn-light">
@@ -1082,6 +1122,8 @@ import Modal2 from "@/Shared/PrintModal";
 import PrintModal from "@/Shared/ModalDynamicTitle2";
 import SideModal from "@/Shared/PrintModal";
 import { Inertia } from '@inertiajs/inertia';
+import ModalAccomplishmentMOV from "@/Shared/ModalDynamicTitle";
+
 
 export default {
     props: {
@@ -1097,6 +1139,8 @@ export default {
             displayModal2: false,
             displaySideModal: false,
             displayPrintModal: false,
+            displayModalAccomplishmentMOV: false,
+            mov_accomplishment: [],
             opcr_data: [],
             status_val: -3,
             opcr_current: [],
@@ -1138,23 +1182,23 @@ export default {
         });
     },
     components: {
-        Pagination, Filtering, Modal, Modal2, SideModal, PrintModal
+        Pagination, Filtering, Modal, Modal2, SideModal, PrintModal, ModalAccomplishmentMOV
     },
     computed: {
         // First computed: sum of the three category averages
-        ppdototalOfAverages() {
-            const avgQ = this.categoryAverage('q');
-            const avgE = this.categoryAverage('e');
-            const avgT = this.categoryAverage('t');
-            return avgQ + avgE + avgT;
-        },
-        // Second computed: mean of the three category averages
-        ppdoaverageOfAverages() {
-            const avgQ = this.categoryAverage('q');
-            const avgE = this.categoryAverage('e');
-            const avgT = this.categoryAverage('t');
-            return (avgQ + avgE + avgT) / 3;
-        }
+        // ppdototalOfAverages() {
+        //     // const avgQ = this.categoryAverage('q');
+        //     // const avgE = this.categoryAverage('e');
+        //     // const avgT = this.categoryAverage('t');
+        //     return
+        // },
+        // // Second computed: mean of the three category averages
+        // ppdoaverageOfAverages() {
+        //     const avgQ = this.categoryAverage('q');
+        //     const avgE = this.categoryAverage('e');
+        //     const avgT = this.categoryAverage('t');
+        //     return (avgQ + avgE + avgT) / 3;
+        // }
 
 
     },
@@ -1716,38 +1760,149 @@ export default {
             }
         },
 
-        // AVERAGE
-        // Method 1: returns sum of the three averages
-        ppdototalOfAverages() {
-            const avgQ = this.categoryAverage('q')
-            const avgE = this.categoryAverage('e')
-            const avgT = this.categoryAverage('t')
-            return avgQ + avgE + avgT
-        },
-        // Method 2: returns mean of the three averages
-        ppdoaverageOfAverages() {
-            const avgQ = this.categoryAverage('q')
-            const avgE = this.categoryAverage('e')
-            const avgT = this.categoryAverage('t')
-            return (avgQ + avgE + avgT) / 3
-        },
-        categoryAverage(type) {
-            // same helper as before
-            const values = []
-            this.opcr_data.forEach(row => {
-                if (type === 't') {
-                const val = row.ppdo_t1
-                if (val !== 0) values.push(val)
-                } else {
-                for (let i = 1; i <= 3; i++) {
-                    const val = row[`ppdo_${type}${i}`]
-                    if (val !== 0) values.push(val)
-                }
-                }
-            })
-            return values.length ? values.reduce((s, v) => s + v, 0) / values.length : 0
-        }
+        // // AVERAGE
+        // // Method 1: returns sum of the three averages
+        // categoryAverage(type) {
+        //     const values = [];
 
+        //     this.rows.forEach(row => {
+        //         if (type === 't') {
+        //         // Only one 't' column per row
+        //         const val = row.ppdo_t1;
+        //         if (val != null && Number(val) !== 0) {
+        //             values.push(Number(val));
+        //         }
+        //         } else {
+        //         // For 'q' or 'e': three columns (1, 2, 3)
+        //         for (let i = 1; i <= 3; i++) {
+        //             const key = `ppdo_${type}${i}`;
+        //             const val = row[key];
+        //             if (val != null && Number(val) !== 0) {
+        //             values.push(Number(val));
+        //             }
+        //         }
+        //         }
+        //     });
+
+        //     if (values.length === 0) return 0;
+        //     const sum = values.reduce((s, v) => s + v, 0);
+        //     return sum / values.length;
+        // },
+
+        //     /**
+        //     * Method 1: Total of the three category averages
+        //     * returns avgQ + avgE + avgT
+        //     */
+        // ppdototalOfAverages() {
+        //     const avgQ = this.categoryAverage('q');
+        //     const avgE = this.categoryAverage('e');
+        //     const avgT = this.categoryAverage('t');
+        //     return avgQ + avgE + avgT;
+        // },
+
+        //     /**
+        //     * Method 2: Average of the three category averages
+        //     * returns (avgQ + avgE + avgT) / 3
+        //     */
+        // ppdoaverageOfAverages() {
+        //     const avgQ = this.categoryAverage('q');
+        //     const avgE = this.categoryAverage('e');
+        //     const avgT = this.categoryAverage('t');
+        //     return (avgQ + avgE + avgT) / 3;
+        // }
+        average(values) {
+            const valid = values
+                .map(Number)
+                .filter(v => !isNaN(v) && v > 0);
+
+            if (!valid.length) return 0;
+
+            return valid.reduce((sum, val) => sum + val, 0) / valid.length;
+        },
+
+        // Sum of the averages of all OPCR items
+        calculatePpdoTotal() {
+            let total = 0;
+
+            this.opcr_data.forEach(item => {
+                const qAvg = this.average([
+                    item.ppdo_q1,
+                    item.ppdo_q2,
+                    item.ppdo_q3
+                ]);
+
+                const eAvg = this.average([
+                    item.ppdo_e1,
+                    item.ppdo_e2,
+                    item.ppdo_e3
+                ]);
+
+                const tAvg = this.average([
+                    item.ppdo_t1
+                ]);
+
+                total += qAvg + eAvg + tAvg;
+            });
+
+            return Number(total.toFixed(2));
+        },
+
+        // Average of all averages across the entire OPCR data
+        calculatePpdoAverage() {
+            let total = 0;
+            let count = 0;
+
+            this.opcr_data.forEach(item => {
+                const qAvg = this.average([
+                    item.ppdo_q1,
+                    item.ppdo_q2,
+                    item.ppdo_q3
+                ]);
+
+                const eAvg = this.average([
+                    item.ppdo_e1,
+                    item.ppdo_e2,
+                    item.ppdo_e3
+                ]);
+
+                const tAvg = this.average([
+                    item.ppdo_t1
+                ]);
+
+                [qAvg, eAvg, tAvg].forEach(avg => {
+                    if (avg > 0) {
+                        total += avg;
+                        count++;
+                    }
+                });
+            });
+
+            return count ? Number((total / count).toFixed(2)) : 0;
+        },
+
+        // ACCOMPLISHMENT MOV
+        async showModalAccomplishmentMOV(idpaps, department_code,year,semester, opcr){
+
+            this.displayModalAccomplishmentMOV=true
+            // Optional: clear previous data
+            this.mov_accomplishment = [];
+            this.opcr_current = opcr;
+            try {
+                const response = await axios.get('/api/opcr-mov-api', {
+                    params: {
+                        ppa_id: idpaps,
+                        year: year,
+                        semester: semester,
+                        department_id: department_code,
+                    }
+                });
+
+                this.mov_accomplishment = response.data;
+            } catch (error) {
+                console.error('Failed to fetch MOV accomplishment:', error);
+                this.mov_accomplishment = [];
+            }
+        },
     }
 };
 </script>

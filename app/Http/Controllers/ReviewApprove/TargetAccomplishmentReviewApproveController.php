@@ -677,7 +677,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->get()
                 // ->pluck('id');
                 ->map(function ($item) use ($opcr_list_id) {
-
+                    // dd($item->paps);
                     // THESE*******************************************************
                     $rating = null;
                     $movs = [];
@@ -777,7 +777,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'mfo_desc' => optional(optional(optional($item)->paps)->MFO)->mfo_desc,
                         'idpaps' => $item->idpaps,
                         'paps_desc' => optional(optional($item)->paps)->paps_desc,
-                        'id' => $item->id,
+                        // 'id' => $item->id,
                         'target_success_indicator' => $item->target_success_indicator,
                         'quantity' => $item->quantity,
                         'success_indicator' => $item->success_indicator,
@@ -812,7 +812,21 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         // 'q_ave' => round($computeAve(array_merge($summary['q1'], $summary['q2'], $summary['q3'])), 2),
                         // 'e_ave' => round($computeAve(array_merge($summary['e1'], $summary['e2'], $summary['e3'])), 2),
                         // 't_ave' => round($computeAve($summary['t1']), 2),
+                        "rating_q" => $this->averageRating([
+                            $q1,
+                            $q2,
+                            $q3,
+                        ]),
 
+                        "rating_e" => $this->averageRating([
+                            $e1,
+                            $e2,
+                            $e3,
+                        ]),
+
+                        "rating_t" => $this->averageRating([
+                            $t1,
+                        ]),
                         // // Overall row average across all monthly row averages
                         // 'average' => round($computeAve($summary['row_averages']), 2),
                         "remarks" => optional($item->opcr_rating)->remarks,
@@ -835,6 +849,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         // "monthly_targets"=> optional($dpcr_targets)->pluck("monthlyTargets"),
 
                         "sem" => $sem,
+                        "semester"=>$sem,
+                        "department_code"=> optional(optional($item)->paps)->department_code,
                         "year" => $year,
                         "idpaps"=>$item->idpaps,
                         // ->monthlyTargets
@@ -980,9 +996,11 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     ];
                 });
         }
+        // dd($data);
         // dd($data->pluck("dpcr_targets")->first());
         return $data;
     }
+
     public function download_rating(Request $request, $opcr_list_id){
         $data = OpcrTarget::with([
                 'opcrList',
@@ -1152,6 +1170,19 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             ]);
 
+    }
+
+    private function averageRating(array $values)
+    {
+        $values = collect($values)
+            ->map(fn ($value) => (float) $value)
+            ->filter(fn ($value) => $value > 0);
+
+        if ($values->isEmpty()) {
+            return 0.00;
+        }
+
+        return round($values->avg(), 2);
     }
     // private function calculateMonthlyAverages($item, array $columns)
     // {
