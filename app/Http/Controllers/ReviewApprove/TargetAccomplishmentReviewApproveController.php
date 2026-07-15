@@ -867,6 +867,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
             $FFUNCCOD = $opcr_list->FFUNCCOD;
             $data = OpcrTarget::with([
                 'opcr_rating',
+                'opcr_rating2',
                 'opcrList',
                 'paps',
                 'paps.MFO',
@@ -897,6 +898,13 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->values()
                 ->map(function ($item) {
                     // dd($item);
+                    $ppdo_q1 = "";
+                    $ppdo_q2 = "";
+                    $ppdo_q3 = "";
+                    $ppdo_e1 = "";
+                    $ppdo_e2 = "";
+                    $ppdo_e3 = "";
+                    $ppdo_t1 = "";
                     $id = $item->opcr_rating ? $item->opcr_rating->id : null;
                     $su = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
                     $accomp = $item->opcr_rating ? $item->opcr_rating->accomplishments : null;
@@ -969,6 +977,19 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'e3',
                         't1'
                     ]);
+                    $sem = (optional(optional($item)->opcrList)->semester == 'Second Semester') ? '2' : '1';
+                    $year = optional(optional($item)->opcrList)->year;
+                    if (!empty($item->opcr_rating2)) {
+                        $rating = collect($item->opcr_rating2)->where('opcr_id', $opcr_list_id)->first();
+                        $ppdo_q1 = optional($rating)->ppdo_q1;
+                        $ppdo_q2 = optional($rating)->ppdo_q2;
+                        $ppdo_q3 = optional($rating)->ppdo_q3;
+                        $ppdo_e1 = optional($rating)->ppdo_e1;
+                        $ppdo_e2 = optional($rating)->ppdo_e2;
+                        $ppdo_e3 = optional($rating)->ppdo_e3;
+                        $ppdo_t1 = optional($rating)->ppdo_t1;
+                        // dd($ppdo_q1.' '.$ppdo_q2, $rating);
+                    }
                     return [
                         "id" => $id,
                         "monthly_targets" => $monthly_targets,
@@ -993,6 +1014,18 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "e2" => $e2 ?? 0,
                         "e3" => $e3 ?? 0,
                         "t1" => $t1 ?? 0,
+                        "ppdo_q1" => $ppdo_q1,
+                        "ppdo_q2" => $ppdo_q2,
+                        "ppdo_q3" => $ppdo_q3,
+                        "ppdo_e1" => $ppdo_e1,
+                        "ppdo_e2" => $ppdo_e2,
+                        "ppdo_e3" => $ppdo_e3,
+                        "ppdo_t1" => $ppdo_t1,
+                        "sem" => $sem,
+                        "semester"=>$sem,
+                        "department_code"=> optional(optional($item)->paps)->department_code,
+                        "year" => $year,
+                        "idpaps"=>$item->idpaps,
                     ];
                 });
         }
@@ -1438,7 +1471,9 @@ class TargetAccomplishmentReviewApproveController extends Controller
             $rating->rating_type = 0;
         } elseif ($rating_type === 'dpcr') {
             $rating->rating_type = 1;
-        } else {
+        } elseif($rating_type==='ppdo_verification'){
+            $rating->rating_type = 2;
+        }else {
             return response()->json(['message' => 'Invalid rating type'], 400);
         }
 

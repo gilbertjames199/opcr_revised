@@ -125,12 +125,18 @@
                                         <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <li>
                                                 <!-- <Link class="dropdown-item" :href="`/Societal/${dat.id}/edit`">Edit</Link> -->
-                                                <button class="dropdown-item"
-                                                    @click="viewModal(dat.id, dat.rating_status, dat)">View</button>
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="viewModal(dat.id, dat.rating_status, dat)">
+                                                        View
+                                                </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item"
-                                                    @click="viewPrintModal(dat.id, dat.office.FFUNCCOD)">Print</button>
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="viewPrintModal(dat.id, dat.office.FFUNCCOD)">
+                                                        Print
+                                                </button>
                                                 <!-- <Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">
                                                 Delete</Link> -->
                                             </li>
@@ -751,7 +757,7 @@
                                     <td>{{ calculatePpdoTotal() }}
                                     </td>
 
-                                        <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
+                                    <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
                                     <td>{{ computeDPCRTotal(opcr_data) }}</td> -->
                                     <td></td>
                                     <td></td>
@@ -762,7 +768,7 @@
                                     <td>{{ getAverageAll() }}</td>
                                     <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
                                     <td>{{ calculatePpdoAverage() }}</td>
-                                        <!-- <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
+                                    <!-- <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
                                     <td>{{ computeDPCRAverage(opcr_data) }}</td> -->
                                     <td></td>
                                     <td></td>
@@ -794,17 +800,18 @@
                                             :checked="currentRatingType === '0'"
                                             @change="setRatingType('ppdo', opcr_current.id)"
                                         >
-                                        Rating (PPDO Score)
+                                        Rating (Self Rating)
                                         <!-- -{{ opcr_current.id }} -ratingxcxv type - {{ currentRatingType }} -->
                                     </th>
                                     <th colspan="4">
+                                        <!-- @change="setRatingType('dpcr', opcr_current.id)" -->
                                         <input
                                             type="radio"
                                             name="rating"
                                             :checked="currentRatingType === '1'"
-                                            @change="setRatingType('dpcr', opcr_current.id)"
+                                            @change="setRatingType('ppdo_verification', opcr_current.id)"
                                         >
-                                        Rating (DPCR Score)
+                                        Rating (PPDO Score)
                                     </th>
                                     <th rowspan="2">Remarks</th>
                                     <th rowspan="2">MOV</th>
@@ -846,13 +853,13 @@
                                     <td>
                                         <!-- <textarea v-model="opcr_data[index].accomplishments"
                                             style="height: inherit"></textarea> -->
-                                            {{ opcr_data[index].accomplishments }}
+                                        {{ opcr_data[index].accomplishments }}
                                     </td>
-                                    <!-- PPDO RATING ********************************************* -->
+                                    <!-- SELF RATING ********************************************* -->
                                     <td>
                                         <!-- <input v-model="opcr_data[index].rating_q" class="centered-input" type="number"
                                             min="0" max="5" step="1" disabled> -->
-                                            {{ opcr_data[index].rating_q }}
+                                        {{ opcr_data[index].rating_q }}
                                     </td>
                                     <td>
                                         {{ opcr_data[index].rating_e }}
@@ -860,23 +867,29 @@
                                     <td>
                                         <!-- <input v-model="opcr_data[index].rating_t" class="centered-input" type="number"
                                             min="0" max="5" step="1" disabled> -->
-                                            {{ opcr_data[index].rating_t }}
+                                        {{ opcr_data[index].rating_t }}
                                     </td>
                                     <td>
-                                    <!-- <input :value="computeAverage(opcr_data[index])" class="centered-input" type="number"
-                                       min="0" max="5" step="1" disabled
-                                    > -->
-                                    {{ computeAverage(opcr_data[index]) }}
+                                        <!-- <input :value="computeAverage(opcr_data[index])" class="centered-input" type="number"
+                                        min="0" max="5" step="1" disabled
+                                        > -->
+                                        {{ computeAverage(opcr_data[index]) }}
                                     </td>
-                                    <!-- DPCR RATING ************************************************-->
+                                    <!-- PPDO RATING ************************************************-->
                                      <td>
-                                        {{ computeAverageByType(opcr_data[index].monthly_targets,"q") }}
+                                        {{ format_number_conv(average([opcr.ppdo_q1, opcr.ppdo_q2, opcr.ppdo_q3]),
+                                                2,true
+                                            ) }}
                                     </td>
                                     <td>
-                                        {{ computeAverageByType(opcr_data[index].monthly_targets,"e") }}
+                                        {{ format_number_conv(average([opcr.ppdo_e1, opcr.ppdo_e2, opcr.ppdo_e3]),
+                                                2,true
+                                            ) }}
+                                        <!-- {{ computeAverageByType(opcr_data[index].monthly_targets,"e") }} -->
                                     </td>
                                     <td>
-                                        {{ opcr_data[index].monthly_targets.t1 }}
+                                        {{ opcr.ppdo_t1 }}
+                                        <!-- {{ opcr_data[index].monthly_targets.t1 }} -->
                                     </td>
                                     <td>
                                     <!-- <input :value="computeAverage(opcr_data[index])" class="centered-input" type="number"
@@ -885,9 +898,9 @@
                                         {{
                                             format_number_conv(
                                                 computeAverageQET(
-                                                    computeAverageByType(opcr_data[index].monthly_targets,"q"),
-                                                    computeAverageByType(opcr_data[index].monthly_targets,"e"),
-                                                    opcr_data[index].monthly_targets.t1
+                                                    average([opcr.ppdo_q1, opcr.ppdo_q2, opcr.ppdo_q3]),
+                                                    average([opcr.ppdo_e1, opcr.ppdo_e2, opcr.ppdo_e3]),
+                                                    opcr.ppdo_t1
                                                 ),
                                                 2,true
                                             )
@@ -905,20 +918,30 @@
                                 </tr>
                                 <tr>
                                     <td colspan="5"></td>
-                                    <td colspan="3">TOTAL RATING (PPDO)</td>
-                                    <td>{{ getTotalAverage() }}</td>
+                                    <td colspan="3">TOTAL RATING (Self Rating)</td>
+                                    <td>
+                                        {{ getTotalAverage() }}
 
-                                    <td colspan="3">TOTAL RATING (DPCR)</td>
-                                    <td>{{ computeDPCRTotal(opcr_data) }}</td>
+                                    </td>
+
+                                    <td colspan="3">TOTAL RATING (PPDO)</td>
+                                    <td>
+                                        {{ calculatePpdoTotal() }}
+                                        <!--DPCR {{ computeDPCRTotal(opcr_data) }} -->
+                                    </td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <td colspan="5"></td>
-                                    <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
+                                    <td colspan="3">FINAL AVERAGE RATING (Self Rating)</td>
                                     <td>{{ getAverageAll() }}</td>
-                                    <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
-                                    <td>{{ computeDPCRAverage(opcr_data) }}</td>
+                                    <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
+                                    <td>
+                                        {{ calculatePpdoAverage() }}
+                                        <!-- DPCR -->
+                                        <!-- {{ computeDPCRAverage(opcr_data) }} -->
+                                    </td>
                                     <td></td>
                                     <td></td>
                                 </tr>

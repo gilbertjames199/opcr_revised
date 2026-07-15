@@ -1695,7 +1695,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     }
                     $ave = $average;
                     // dd("0");
-                } else {
+                } else if($rating_type == "1"){
                     // dd("1");
                     //
                     $monthly_ratings = calculateMonthlyAverages($item, [
@@ -1773,6 +1773,81 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     }
                     $ave = $request->average;
                     // dd($item->id, $item, $monthly_ratings, $monthly_ratings['q1'], $var_q);
+                }else{
+                    $monthly_ratings = calculateMonthlyAverages($item, [
+                        'ppdo_q1',
+                        'ppdo_q2',
+                        'ppdo_q3',
+                        'ppdo_e1',
+                        'ppdo_e2',
+                        'ppdo_e3',
+                        'ppdo_t1'
+                    ]);
+
+                    // dd()
+                    // dd($item->id);
+                    // if (intval($item->id) === 684) {
+                    //     dd($monthly_ratings);
+                    // } else {
+                    //     // dd("wala")
+                    // }
+                    $qValues = array_filter([
+                        $monthly_ratings['ppdo_q1'] ?? 0,
+                        $monthly_ratings['ppdo_q2'] ?? 0,
+                        $monthly_ratings['ppdo_q3'] ?? 0
+                    ], fn($v) => $v != 0);
+
+                    $eValues = array_filter([
+                        $monthly_ratings['ppdo_e1'] ?? 0,
+                        $monthly_ratings['ppdo_e2'] ?? 0,
+                        $monthly_ratings['ppdo_e3'] ?? 0
+                    ], fn($v) => $v != 0);
+
+                    $tValues = array_filter([
+                        $monthly_ratings['ppdo_t1'] ?? 0
+                    ], fn($v) => $v != 0);
+
+                    // --- Compute averages, default to 0 if no non-zero values ---
+                    $var_q = count($qValues) > 0 ? round(array_sum($qValues) / count($qValues), 2) : 0;
+                    $var_e = count($eValues) > 0 ? round(array_sum($eValues) / count($eValues), 2) : 0;
+                    $var_t = count($tValues) > 0 ? round(array_sum($tValues) / count($tValues), 2) : 0;
+
+                    // --- Compute how many valid groups to divide by ---
+                    $div = 3;
+
+                    try {
+                        if (intval($var_q) < 1) {
+                            $div--;
+                        }
+                    } catch (Exception $e) {
+                        $div--;
+                    }
+
+                    try {
+                        if (intval($var_e) < 1) {
+                            $div--;
+                        }
+                    } catch (Exception $e) {
+                        $div--;
+                    }
+
+                    try {
+                        if (intval($var_t) < 1) {
+                            $div--;
+                        }
+                    } catch (Exception $e) {
+                        $div--;
+                    }
+
+                    // --- Compute overall QET average ---
+                    $sum = $var_q + $var_e + $var_t;
+                    $ave_qet = 0;
+
+                    if ($div > 0) {
+                        $ave_qet = $sum / $div;
+                        $ave_qet = number_format(floatval($ave_qet), 2);
+                    }
+                    $ave = $request->average;
                 }
                 $adj = "Outstanding";
 
@@ -1820,10 +1895,10 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "assistant_pg_head2" => $assistant_pg_head2,
                     "assistant_pg_head3" => $assistant_pg_head3,
                     "opcr_date" => $opcr_date,
-                    "opcr_id" => $opcr_id,
+                    // "opcr_id" => $opcr_id,
                     "mooe" => $mooe,
                     "ps" => $ps,
-                    "FFUNCCOD" => $FFUNCCOD,
+                    // "FFUNCCOD" => $FFUNCCOD,
                     "date_now" => $date_now,
                     "approver" => $approver,
                     "position" => $pos,
