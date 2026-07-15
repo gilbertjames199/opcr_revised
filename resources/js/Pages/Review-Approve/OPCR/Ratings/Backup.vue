@@ -59,7 +59,7 @@
         </div>
 
         <div class="masonry-sizer col-md-6"></div>
-        <div class="masonry-item w-100">
+        <div class="masonry-item w-100" >
             <div class="bgc-white p-20 bd">
                 <!-- Table Header with Title and Stats -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -73,7 +73,7 @@
                 </div>
 
                 <!-- Responsive Table Container -->
-                <div class="table-responsive">
+                <div class="table-responsive" v-if="!displayModal" >
                     <table class="table table-hover align-middle">
                         <thead class="table-head-sticky">
                             <tr>
@@ -157,8 +157,21 @@
 
         </div>
         <!-- </div> -->
-        <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`">
+         <!-- Modal -->
+        <div v-if="displayModal" class="bg-white p-4 rounded shadow-sm">
+            <!-- @close-modal-event="hideModal" :title="`${mode_1}`" -->
             <!-- {{ opcr_current }} -->
+            <div class="d-flex justify-content-end mb-3">
+                <button
+                    type="button"
+                    class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
+                    @click="displayModal = false"
+                    title="Close"
+                >
+                    <i class="fas fa-times"></i>
+                    <span>Close</span>
+                </button>
+            </div>
             <div class="sticky-header">
                 <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current.office.FFUNCTION }}</u></div>
                 <div><b>SEMESTER:&nbsp;</b><u>{{ opcr_current.semester }}</u></div>
@@ -977,7 +990,7 @@
                     class="btn btn-success text-white">Approve</button>&nbsp;
                 <button @click="returnSubmit()" class="btn btn-danger text-white">Return</button>
             </div>
-        </Modal>
+        </div>
         <SideModal v-if="displaySideModal"  @close-modal-event="displaySideModal = false" style="z-index: 9999;  ">
             <h2 class="text-lg font-semibold">Preview SideModal</h2>
             <!-- file_extension: {{ file_extension }} -- {{ view_link }} -- {{ disk }} -->
@@ -1058,7 +1071,6 @@
             v-if="displayModalAccomplishmentMOV"
             @close-modal-event="displayModalAccomplishmentMOV=false"
             title="Accomplishment MOV"
-            style="z-index: 9999;  "
         >
             <table class="table table-bordered table-striped">
                 <thead>
