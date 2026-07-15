@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <!-- <p class="text-center"> -->
-        <h4 class="text-center">Review/Approve displayModal: {{ displayModal }}</h4>
+        <h4 class="text-center">Review/Approve </h4>
         <!-- </p> -->
         <div class="peers fxw-nw jc-sb ai-c">
             <div class="peers">
@@ -35,7 +35,7 @@
                         <!-- <Link class="tool-btn tool-btn-primary" :href="`/Societal/create`">
                             <i class="fas fa-plus"></i> Add Societal Goals
                         </Link> -->
-                        displayModal: {{ displayModal }}
+                        test displayModal: {{ displayModal }}
                     </div>
                 </div>
 
