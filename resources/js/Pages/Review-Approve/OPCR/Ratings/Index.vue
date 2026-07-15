@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <!-- <p class="text-center"> -->
-        <h4 class="text-center">Review/Approve </h4>
+        <h4 class="text-center">Review/Approve displayModal: {{ displayModal }}</h4>
         <!-- </p> -->
         <div class="peers fxw-nw jc-sb ai-c">
             <div class="peers">
@@ -32,9 +32,10 @@
                         </span>
                     </div>
                     <div class="toolbar-right">
-                        <Link class="tool-btn tool-btn-primary" :href="`/Societal/create`">
+                        <!-- <Link class="tool-btn tool-btn-primary" :href="`/Societal/create`">
                             <i class="fas fa-plus"></i> Add Societal Goals
-                        </Link>
+                        </Link> -->
+                        displayModal: {{ displayModal }}
                     </div>
                 </div>
 
@@ -172,7 +173,7 @@
                     <!-- <iframe :src="my_link" style="width:100%; height:500px" /> -->
                     <!-- {{ opcr_data }} -->
                     <!-- d-flex justify-content-center  -->
-                     <div class="table-responsive w-100" style="max-width:100%; overflow-x:auto;">
+                    <div class="table-responsive w-100" style="max-width:100%; overflow-x:auto;">
                         <table class="table table-sm table-bordered border-dark table-striped table-hover" style="table-layout: fixed;">
                             <thead class="sticky-header">
                                 <tr class="text-white" style="background-color: #026673">
@@ -519,7 +520,6 @@
                                                 Rating for this field is required to proceed with submission.
                                             </div>
                                         </td>
-
                                     </tr>
                                     <!-- PPDO Ratings -->
                                     <tr :style="{
@@ -659,23 +659,13 @@
                                         </td>
                                         <!-- MOVS -->
                                         <td rowspan="1">
-                                            <!--opcr_data[index].mov_is_visible: {{ opcr_data[index].mov_is_visible }}
-                                            count_movs: {{ opcr_data[index].count_movs }}
-                                            :disabled="!dat.movs"
-                                                :style="!dat.movs ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' :
-                                            @click="updateMOVisVisible(opcr_data[index].mov_is_visible, index)"
-                                            ''" -->
-                                            <!-- idpaps: {{ dat.idpaps }} -department_code- {{dat.department_code}} -year- {{dat.year}} --semester- {{ dat.sem }} -->
                                             <button
-
-
                                                 @click="showModalAccomplishmentMOV(dat.idpaps, dat.department_code, dat.year, dat.sem, dat)"
                                                 class="button"
                                                 title="View MOVs"
                                             >
                                                 SHOW MOV
                                             </button>
-
                                         </td>
                                     </tr>
                                     <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" >
@@ -752,9 +742,8 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                 </template>
-                                 <tr>
+                                <tr>
                                     <td colspan="1"></td>
                                     <td colspan="3">TOTAL RATING (Office)</td>
                                     <td>{{ getTotalAverage() }}</td>
@@ -762,7 +751,7 @@
                                     <td>{{ calculatePpdoTotal() }}
                                     </td>
 
-                                     <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
+                                        <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
                                     <td>{{ computeDPCRTotal(opcr_data) }}</td> -->
                                     <td></td>
                                     <td></td>
@@ -773,7 +762,7 @@
                                     <td>{{ getAverageAll() }}</td>
                                     <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
                                     <td>{{ calculatePpdoAverage() }}</td>
-                                     <!-- <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
+                                        <!-- <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
                                     <td>{{ computeDPCRAverage(opcr_data) }}</td> -->
                                     <td></td>
                                     <td></td>
@@ -781,7 +770,7 @@
 
                             </tbody>
                         </table>
-                     </div>
+                    </div>
 
                 </div>
             </div>
