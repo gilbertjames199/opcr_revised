@@ -658,9 +658,8 @@
                                         <td rowspan="1">
                                             <!-- @input="autoResize($event)" ref="remarksTextarea"-->
                                             <textarea class="form-control"
-                                                v-model="opcr_data[index].remarks"
-                                                @change="saveRating(opcr_data[index].remarks, opcr_data[index].opcr_rating_id,'remarks')"
-
+                                                v-model="opcr_data[index].ppdo_remarks"
+                                                @change="saveRating(opcr_data[index].ppdo_remarks, opcr_data[index].opcr_rating_id,'ppdo_remarks')"
                                             />
                                         </td>
                                         <!-- MOVS -->
@@ -913,7 +912,19 @@
                                             style="height: inherit"></textarea>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-primary text-white" @click="showModalMOV(opcr_data[index].id)">Upload MOVs</button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary text-white"
+                                            @click="showModalMOV(opcr_data[index].id)">Upload MOVs
+                                        </button>
+                                        <hr>
+                                        <button
+                                            @click="showModalAccomplishmentMOV(opcr.idpaps, opcr.department_code, opcr.year, opcr.sem, opcr)"
+                                            class="btn btn-primary text-white"
+                                            title="View MOVs"
+                                        >
+                                            SHOW MOV
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>

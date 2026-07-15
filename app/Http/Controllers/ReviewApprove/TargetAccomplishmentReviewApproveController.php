@@ -722,6 +722,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         $ppdo_e2 = optional($rating)->ppdo_e2;
                         $ppdo_e3 = optional($rating)->ppdo_e3;
                         $ppdo_t1 = optional($rating)->ppdo_t1;
+                        $ppdo_remarks = optional($rating)->ppdo_remarks;
                         // $rating_e=
                         // $rating_q=
                         // $rating_t=
@@ -830,6 +831,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         // // Overall row average across all monthly row averages
                         // 'average' => round($computeAve($summary['row_averages']), 2),
                         "remarks" => optional($item->opcr_rating)->remarks,
+                        "ppdo_remarks"=>$ppdo_remarks,
                         "q1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality1,
                         "q2_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality2,
                         "q3_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->quality3,
