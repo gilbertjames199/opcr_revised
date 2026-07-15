@@ -1039,7 +1039,6 @@
 
 
             </div>
-
             <!-- <br>
             <iframe :src="`/storage/${current_filepath}`"></iframe>
             <br>
@@ -1054,11 +1053,12 @@
             </div>
         </PrintModal>
         <!-- ACCOMPLISHMENT MOV MODAL -->
+         <!-- title="Accomplishment MOV" -->
         <ModalAccomplishmentMOV
             v-if="displayModalAccomplishmentMOV"
             @close-modal-event="displayModalAccomplishmentMOV=false"
-            title="Accomplishment MOV"
             style="z-index: 9999;  "
+            :backdrop="false"
         >
             <table class="table table-bordered table-striped">
                 <thead>
@@ -1146,8 +1146,8 @@ import Modal2 from "@/Shared/PrintModal";
 import PrintModal from "@/Shared/ModalDynamicTitle2";
 import SideModal from "@/Shared/PrintModal";
 import { Inertia } from '@inertiajs/inertia';
-import ModalAccomplishmentMOV from "@/Shared/ModalDynamicTitle";
-
+// import ModalAccomplishmentMOV from "@/Shared/ModalDynamicTitle";
+import ModalAccomplishmentMOV from "@/Shared/PrintModal";
 
 export default {
     props: {
