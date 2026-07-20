@@ -157,7 +157,7 @@
 
         </div>
         <!-- </div> -->
-        <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`">
+        <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`" :z-index="1055">
             <!-- {{ opcr_current }} -->
             <div class="sticky-header">
                 <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current.office.FFUNCTION }}</u></div>
@@ -533,10 +533,13 @@
                                             '--bs-table-accent-bg': opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
                                             fontWeight: opcr_data[index].mov_is_visible ? 'bold' : 'normal',
                                         }">
+
                                         <!-- PPDO Q1 -->
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+
                                             <select v-model="opcr_data[index].ppdo_q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_q1, opcr_data[index].opcr_rating_id, 'ppdo_q1')">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -551,6 +554,7 @@
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <select v-model="opcr_data[index].ppdo_q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_q2, opcr_data[index].opcr_rating_id, 'ppdo_q2')">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -565,6 +569,7 @@
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <select v-model="opcr_data[index].ppdo_q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_q3, opcr_data[index].opcr_rating_id, 'ppdo_q3')">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -579,8 +584,9 @@
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <select v-model="opcr_data[index].ppdo_e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_e1, opcr_data[index].opcr_rating_id, 'ppdo_e1')"
-                                                :disabled="dat.ppdo_e1_standard === 'No'"
-                                                :style="dat.ppdo_e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                :disabled="dat.e1_standard === 'No'"
+                                                :style="dat.e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -595,8 +601,9 @@
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <select v-model="opcr_data[index].ppdo_e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_e2, opcr_data[index].opcr_rating_id, 'ppdo_e2')"
-                                                :disabled="dat.ppdo_e2_standard === 'No'"
-                                                :style="dat.ppdo_e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                :disabled="dat.e2_standard === 'No'"
+                                                :style="dat.e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -614,8 +621,9 @@
                                             <!-- rating e3: {{ dat.rating_e }} -->
                                             <select v-model="opcr_data[index].ppdo_e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
                                                 @change="saveRating(opcr_data[index].ppdo_e3, opcr_data[index].opcr_rating_id, 'ppdo_e3')"
-                                                :disabled="dat.ppdo_e3_standard === 'No'"
-                                                :style="dat.ppdo_e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                :disabled="dat.e3_standard === 'No'"
+                                                :style="dat.e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -628,22 +636,25 @@
                                         </td>
                                         <!-- PPDO T1 -->
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                            <!-- dat.ppdo_t1_standard: {{ dat.ppdo_t1_standard }} --
+                                            dat.t1_standard: {{ dat.t1_standard }} -->
                                             <select v-model="opcr_data[index].ppdo_t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_t1, opcr_data[index].opcr_rating_id, 'ppdo_t1')"
                                                 :disabled="
-                                                    dat.ppdo_t1_standard === 'No' ||
-                                                    dat.ppdo_t1_standard === null ||
-                                                    dat.ppdo_t1_standard === undefined ||
+                                                    dat.t1_standard === 'No' ||
+                                                    dat.t1_standard === null ||
+                                                    dat.t1_standard === undefined ||
                                                     Number.isNaN(dat.ppdo_t1_standard)
                                                 "
                                                 :style="
-                                                    dat.ppdo_t1_standard === 'No' ||
-                                                    dat.ppdo_t1_standard === null ||
-                                                    dat.ppdo_t1_standard === undefined ||
+                                                    dat.t1_standard === 'No' ||
+                                                    dat.t1_standard === null ||
+                                                    dat.t1_standard === undefined ||
                                                     Number.isNaN(dat.ppdo_t1_standard)
                                                         ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;'
                                                         : ''
                                                 ">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -1057,7 +1068,8 @@
         <ModalAccomplishmentMOV
             v-if="displayModalAccomplishmentMOV"
             @close-modal-event="displayModalAccomplishmentMOV=false"
-            style="z-index: 9999;  "
+            :z-index="1100"
+            style="z-index: 1100;"
             :backdrop="false"
         >
             <table class="table table-bordered table-striped">
@@ -1095,7 +1107,6 @@
                                     class="img-thumbnail mr-2 mb-2"
                                     style="max-width:180px; max-height:180px;"
                                 >
-
                                 <img
                                     v-if="item.image2"
                                     :src="item.image2"
@@ -1143,11 +1154,11 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/ModalDynamicTitle2";
 import Modal2 from "@/Shared/PrintModal";
-import PrintModal from "@/Shared/ModalDynamicTitle2";
+import PrintModal from "@/Shared/ModalDynamicTitle22";
 import SideModal from "@/Shared/PrintModal";
 import { Inertia } from '@inertiajs/inertia';
 // import ModalAccomplishmentMOV from "@/Shared/ModalDynamicTitle";
-import ModalAccomplishmentMOV from "@/Shared/PrintModal";
+import ModalAccomplishmentMOV from "@/Shared/PrintModal1";
 
 export default {
     props: {

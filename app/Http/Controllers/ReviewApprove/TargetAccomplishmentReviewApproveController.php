@@ -666,6 +666,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 'opcr_rating2',
                 'paps',
                 'paps.MFO',
+                'paps.office',
                 'paps.opcr_stardard',
                 'paps.divisionOutputs',
                 'paps.divisionOutputs.dpcrTargets',
@@ -702,6 +703,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     $ppdo_rating_e="";
                     $ppdo_rating_q="";
                     $ppdo_rating_t="";
+                    $office =[];
                     $show_mov = false;
                     $count_movs = 0;
                     if (!empty($item->opcr_rating2)) {
@@ -841,6 +843,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "t1_standard" => optional(optional(optional($item)->paps)->opcr_stardard)->timeliness,
                         "movs" => $movs,
                         "mov_is_visible" => $show_mov,
+                        "mov_is_visible_2"=> false,
                         "count_movs" => $count_movs,
                         "division_outputs" => $division_outputs,
                         "division_output_ids" => optional($division_outputs)->pluck('id'),
@@ -1028,6 +1031,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         "department_code"=> optional(optional($item)->paps)->department_code,
                         "year" => $year,
                         "idpaps"=>$item->idpaps,
+                        "mov_is_visible_2"=> false,
                     ];
                 });
         }
