@@ -56,8 +56,12 @@
                         <button @click="exportUsers" class="tool-btn tool-btn-success">
                             <i class="fas fa-file-excel"></i> Export to Excel
                         </button>
-                        <button @click="downloadExcel('sim')">Export Excel Validation (Simple)</button>
-                        <button @click="downloadExcel('aip')">Export Excel Validation (FOrmatted)</button>
+                        <button @click="downloadExcel('sim')" class="btn btn-success text-white">
+                            Export Excel Validation (Simple)
+                        </button>
+                        <button @click="downloadExcel('aip')" class="btn btn-success text-white">
+                            Export Excel Validation (FOrmatted)
+                        </button>
                         <button class="tool-btn tool-btn-outline" @click="showFilter()">
                             <i class="fas fa-filter"></i> Filter
                         </button>
