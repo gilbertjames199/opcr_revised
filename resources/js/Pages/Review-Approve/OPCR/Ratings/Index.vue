@@ -612,7 +612,10 @@
                                             </select>
 
 
-                                            <div v-if="submit_attempt==true && dat.e2_standard === 'Yes' && !dat.ppdo_e2" style="color: red; font-weight: bold">
+                                            <div v-if="submit_attempt==true &&
+                                                dat.e2_standard === 'Yes' &&
+                                                !dat.ppdo_e2"
+                                                style="color: red; font-weight: bold">
                                                 Rating for this field is required to proceed with submission.
                                             </div>
                                         </td>
@@ -622,7 +625,8 @@
                                             <select v-model="opcr_data[index].ppdo_e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
                                                 @change="saveRating(opcr_data[index].ppdo_e3, opcr_data[index].opcr_rating_id, 'ppdo_e3')"
                                                 :disabled="dat.e3_standard === 'No'"
-                                                :style="dat.e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                :style="dat.e3_standard === 'No' ?
+                                                'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
                                                 <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -1414,14 +1418,15 @@ export default {
         // loop through each row in opcr_data
             for (let row of this.opcr_data) {
                 // define the mappings of score fields to their standards
+                // { score: row.q1, standard: 'Yes'},
+                //     { score: row.q2, standard: 'Yes'},
+                //     { score: row.q3, standard: 'Yes'},
+                //     { score: row.e1, standard: row.e1_standard },
+                //     { score: row.e2, standard: row.e2_standard },
+                //     { score: row.e3, standard: row.e3_standard },
+                //     { score: row.t1, standard: row.t1_standard },
                 const checks = [
-                    { score: row.q1, standard: 'Yes'},
-                    { score: row.q2, standard: 'Yes'},
-                    { score: row.q3, standard: 'Yes'},
-                    { score: row.e1, standard: row.e1_standard },
-                    { score: row.e2, standard: row.e2_standard },
-                    { score: row.e3, standard: row.e3_standard },
-                    { score: row.t1, standard: row.t1_standard },
+
                     { score: row.ppdo_q1, standard: 'Yes'},
                     { score: row.ppdo_q2, standard: 'Yes'},
                     { score: row.ppdo_q3, standard: 'Yes'},
@@ -1439,10 +1444,10 @@ export default {
                             score === null ||
                             score === "" ||
                             isNaN(score) ||
-                            Number(score) < 1 ||
+                            Number(score) < 0 ||
                             Number(score) > 5
                         ) {
-                            // alert("null ang score "+score)
+                            alert("null ang score "+score)
                             return false;
                         }
                     }else{
