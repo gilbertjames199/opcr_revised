@@ -172,6 +172,7 @@
                     <span>Close</span>
                 </button>
             </div>
+
             <div class="sticky-header">
                 <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current.office.FFUNCTION }}</u></div>
                 <div><b>SEMESTER:&nbsp;</b><u>{{ opcr_current.semester }}</u></div>
@@ -678,7 +679,13 @@
                                         <!-- MOVS -->
                                         <td rowspan="1">
                                             <button
-                                                @click="showModalAccomplishmentMOV(dat.idpaps, dat.department_code, dat.year, dat.sem, dat)"
+                                                @click="showModalAccomplishmentMOV(
+                                                    dat.idpaps,
+                                                    dat.department_code,
+                                                    dat.year,
+                                                    dat.sem,
+                                                    dat
+                                                )"
                                                 class="button"
                                                 title="View MOVs"
                                             >
@@ -1236,7 +1243,9 @@ export default {
         //     return (avgQ + avgE + avgT) / 3;
         // }
 
-
+        current_id_paps(){
+            return this.idpaps
+        }
     },
     methods: {
         // START OF PRINTING
@@ -1918,11 +1927,10 @@ export default {
 
         // ACCOMPLISHMENT MOV
         async showModalAccomplishmentMOV(idpaps, department_code,year,semester, opcr){
-
             this.displayModalAccomplishmentMOV=true
             // Optional: clear previous data
             this.mov_accomplishment = [];
-            this.opcr_current = opcr;
+            // this.opcr_current = opcr;
             try {
                 const response = await axios.get('/api/opcr-mov-api', {
                     params: {

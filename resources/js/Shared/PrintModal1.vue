@@ -1,12 +1,12 @@
 <template>
     <div class="permissions-modal" :style="{ zIndex: zIndex }">
         <div class="modal" tabindex="-1" role="dialog" :style="{ zIndex: Number(zIndex) + 5 }">
-            <div class="modal-dialog custom-modal">
+            <div class="modal-dialog modal-xl">
                 <div class="d-flex justify-content-center">
                     <div class="modal-content" style="width: 100% !important; height: 40% !important; ">
                         <div class="modal-header" style="background-color:#030014">
                             <h4 class="modal-title" style="color: #ffe819; text-align: center !important;">
-                                <b>{{ title }}</b>
+                                <b>PRINT PREVIEW</b>
                             </h4>
                             <button type="button" class="btn btn-danger" style="font-weight: bold; color: white" data-dismiss="modal" aria-label="Close" @click="closeModal">
                                 <span aria-hidden="true">&times;</span>
@@ -33,21 +33,20 @@
     export default {
       props: {
           //userId: Object,
-          title: String,
           zIndex: {
               type: [Number, String],
-              default: 1055,
+              default: 1060,
           },
       },
       data(){
           return{
               //my_id: this.props.userId,
               value: null,
-            //   options: [
-            //       'Batman',
-            //       'Robin',
-            //       'Joker',
-            //       ],
+              options: [
+                  'Batman',
+                  'Robin',
+                  'Joker',
+                  ],
           }
       },
       mounted(){
@@ -71,17 +70,13 @@
   </script>
 
   <style scoped>
-  .custom-modal {
-  max-width: 80% !important; /* width of modal */
-  width: 80% !important;
-}
-  .permissions-modal {
-    position: fixed;
-    inset: 0;
-    overflow-y: auto;
-    padding: 20px 0;
-    background-color: rgba(0, 0, 0, 0.15);
-  }
+    .permissions-modal {
+      position: fixed;
+      inset: 0;
+      overflow-y: auto;
+      padding: 20px 0;
+      background-color: rgba(0, 0, 0, 0.15);
+    }
     /* Override default value of 'none' */
     .modal {
       display: block !important;
