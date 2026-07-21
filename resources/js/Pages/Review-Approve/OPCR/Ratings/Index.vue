@@ -171,13 +171,13 @@
             </div> -->
 
             <!-- {{ opcr_current }} -->
-            <div class="sticky-header">
-                <div class="d-flex justify-content-end mb-3">
+            <div class="sticky-header modal-summary-card">
+                <div class="d-flex justify-content-end mb-2">
                     <button
                         type="button"
-                        class="btn btn-success text-white"
+                        class="btn btn-success text-white shadow-sm"
                         @click="downloadExcel(opcrListId)">
-                        <i class="fas fa-file-excel mr-2"></i>
+                        <i class="fas fa-file-excel me-2"></i>
                         Export to Excel
                     </button>
                 </div>
@@ -201,7 +201,7 @@
                     <!-- {{ opcr_data }} -->
                     <!-- d-flex justify-content-center  -->
                     <div class="table-responsive w-100" style="max-width:100%; overflow-x:auto;">
-                        <table class="table table-sm table-bordered border-dark table-striped table-hover" style="table-layout: fixed;">
+                        <table class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
                             <thead class="sticky-header">
                                 <tr class="text-white" style="background-color: #026673">
                                     <th rowspan="2" ><h5>MFO</h5></th>
@@ -231,39 +231,39 @@
                                             fontWeight: opcr_data[index].mov_is_visible ? 'bold' : 'normal',
                                         }">
                                         <!-- MFO -->
-                                        <td rowspan="3">
+                                        <td rowspan="3" class="review-col-mfo">
                                             <!-- {{ dat }} -->
                                             {{ dat.mfo_desc }}
                                         </td>
                                         <!-- PAPS -->
-                                        <td rowspan="3">
+                                        <td rowspan="3" class="review-col-paps">
                                             {{ dat.paps_desc }}
                                         </td>
                                         <!-- Actual Accomplishments -->
-                                        <td rowspan="3">
+                                        <td rowspan="3" class="review-col-accomplishment">
                                             {{ dat.accomplishments }}
                                             <hr>
                                             <div><b>DPCR Score:&nbsp;</b>{{ computeAverageScore(dat.monthly_targets) }}</div>
                                         </td>
 
                                         <!-- Q1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <div>{{ dat.q1_standard }}</div>
                                         </td>
                                         <!-- Q2 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- {{  dat }} -->
                                             <!-- width: 2.5em;  -->
                                             <div>{{ dat.q2_standard }}</div>
                                         </td>
                                         <!-- Q3 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <div>{{ dat.q3_standard }}</div>
                                         </td>
                                         <!-- E1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!--  width: 2.5em; -->
                                             <div>Standard Response Time</div>
                                             <!-- <select v-model="opcr_data[index].e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
@@ -282,7 +282,7 @@
                                             </div> -->
                                         </td>
                                         <!-- E2 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <div>Quantity Based</div>
                                             <!-- <select v-model="opcr_data[index].e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
@@ -301,7 +301,7 @@
                                             </div> -->
                                         </td>
                                         <!-- E3 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- style="width: 2.5em; text-align: center;"   -->
                                             <div>Optimum use of resources</div>
                                             <!-- <select v-model="opcr_data[index].e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
@@ -320,7 +320,7 @@
                                             </div> -->
                                         </td>
                                         <!-- T1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <div>Timeliness (Deadline)</div>
                                             <!-- t1_standard: {{ dat.t1_standard }} -->
                                             <!-- :disabled="dat.t1_standard !== 'Yes'"
@@ -355,7 +355,7 @@
                                         </td>
                                         <!-- <td></td> -->
                                         <!-- REMARKS -->
-                                        <td rowspan="2">
+                                        <td rowspan="2" class="review-col-remarks">
                                             <!-- @input="autoResize($event)" ref="remarksTextarea"-->
                                             <textarea class="form-control"
                                                 v-model="opcr_data[index].remarks"
@@ -364,7 +364,7 @@
                                             />
                                         </td>
                                         <!-- MOVS -->
-                                        <td rowspan="2">
+                                        <td rowspan="2" class="review-col-mov">
                                             <!--opcr_data[index].mov_is_visible: {{ opcr_data[index].mov_is_visible }}
                                             count_movs: {{ opcr_data[index].count_movs }}
                                             :disabled="!dat.movs"
@@ -412,7 +412,7 @@
                                             fontWeight: opcr_data[index].mov_is_visible ? 'bold' : 'normal',
                                         }">
                                         <!-- Q1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')" disabled>
@@ -427,7 +427,7 @@
                                             </div>
                                         </td>
                                         <!-- Q2 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- {{  dat }} -->
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
@@ -444,7 +444,7 @@
                                             </div>
                                         </td>
                                         <!-- Q3 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3')" disabled
@@ -460,7 +460,7 @@
                                             </div>
                                         </td>
                                         <!-- E1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!--  width: 2.5em; -->
                                             <select v-model="opcr_data[index].e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].e1, opcr_data[index].opcr_rating_id, 'e1')"
@@ -478,7 +478,7 @@
                                             </div>
                                         </td>
                                         <!-- E2 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].e2, opcr_data[index].opcr_rating_id, 'e2')"
@@ -497,7 +497,7 @@
                                             </div>
                                         </td>
                                         <!-- E3 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- style="width: 2.5em; text-align: center;"   -->
                                             <select v-model="opcr_data[index].e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
                                                 @change="saveRating(opcr_data[index].e3, opcr_data[index].opcr_rating_id, 'e3')"
@@ -515,7 +515,7 @@
                                             </div>
                                         </td>
                                         <!-- T1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- t1_standard: {{ dat.t1_standard }} -->
                                             <!-- :disabled="dat.t1_standard !== 'Yes'"
                                                 :style="dat.t1_standard !== 'Yes' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''" -->
@@ -556,7 +556,7 @@
                                         }">
 
                                         <!-- PPDO Q1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
 
                                             <select v-model="opcr_data[index].ppdo_q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_q1, opcr_data[index].opcr_rating_id, 'ppdo_q1')">
@@ -572,7 +572,7 @@
                                             </div>
                                         </td>
                                         <!-- PPDO Q2 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <select v-model="opcr_data[index].ppdo_q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_q2, opcr_data[index].opcr_rating_id, 'ppdo_q2')">
                                                 <option>0</option>
@@ -587,7 +587,7 @@
                                             </div>
                                         </td>
                                         <!-- PPDO Q3 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <select v-model="opcr_data[index].ppdo_q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_q3, opcr_data[index].opcr_rating_id, 'ppdo_q3')">
                                                 <option>0</option>
@@ -602,7 +602,7 @@
                                             </div>
                                         </td>
                                         <!-- PPDO E1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <select v-model="opcr_data[index].ppdo_e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_e1, opcr_data[index].opcr_rating_id, 'ppdo_e1')"
                                                 :disabled="dat.e1_standard === 'No'"
@@ -619,7 +619,7 @@
                                             </div>
                                         </td>
                                         <!-- PPDO E2 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <select v-model="opcr_data[index].ppdo_e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_e2, opcr_data[index].opcr_rating_id, 'ppdo_e2')"
                                                 :disabled="dat.e2_standard === 'No'"
@@ -641,7 +641,7 @@
                                             </div>
                                         </td>
                                         <!-- PPDO E3 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- rating e3: {{ dat.rating_e }} -->
                                             <select v-model="opcr_data[index].ppdo_e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
                                                 @change="saveRating(opcr_data[index].ppdo_e3, opcr_data[index].opcr_rating_id, 'ppdo_e3')"
@@ -660,7 +660,7 @@
                                             </div>
                                         </td>
                                         <!-- PPDO T1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- dat.ppdo_t1_standard: {{ dat.ppdo_t1_standard }} --
                                             dat.t1_standard: {{ dat.t1_standard }} -->
                                             <select v-model="opcr_data[index].ppdo_t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
@@ -691,7 +691,7 @@
                                             </div>
                                         </td>
                                         <!-- REMARKS -->
-                                        <td rowspan="1">
+                                        <td rowspan="1" class="review-col-remarks">
                                             <!-- @input="autoResize($event)" ref="remarksTextarea"-->
                                             <textarea class="form-control"
                                                 v-model="opcr_data[index].ppdo_remarks"
@@ -699,7 +699,7 @@
                                             />
                                         </td>
                                         <!-- MOVS -->
-                                        <td rowspan="1">
+                                        <td rowspan="1" class="review-col-mov">
                                             <button
                                                 @click="showModalAccomplishmentMOV(dat.idpaps, dat.department_code, dat.year, dat.sem, dat)"
                                                 class="button"
@@ -710,8 +710,8 @@
                                         </td>
                                     </tr>
                                     <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" >
-                                        <th class="no-stripe-bg">
-
+                                        <th class="bg-secondary text-white">
+<!-- class="no-stripe-bg" -->
                                         </th>
                                         <th class="bg-secondary text-white">
                                             <span v-if="parseFloat(opcr_data[index].count_movs)>1">Files</span>
@@ -724,7 +724,7 @@
                                             View
                                         </th>
                                         <th colspan="7" class="bg-secondary text-white"></th>
-                                        <th></th>
+                                        <th class="bg-secondary text-white"></th>
                                     </tr>
                                     <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" v-for="file in dat.movs">
                                         <td class="no-stripe-bg">
@@ -784,7 +784,7 @@
                                         </td>
                                     </tr>
                                 </template>
-                                <tr>
+                                <tr class="table-summary-row">
                                     <td colspan="1"></td>
                                     <td colspan="3">TOTAL RATING (Office)</td>
                                     <td>{{ getTotalAverage() }}</td>
@@ -797,8 +797,8 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr>
-                                    <td colspan="1"></td>
+                                <tr class="table-summary-row">
+                                    <td colspan="2"></td>
                                     <td colspan="3">FINAL AVERAGE RATING (Office)</td>
                                     <td>{{ getAverageAll() }}</td>
                                     <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
@@ -807,6 +807,7 @@
                                     <td>{{ computeDPCRAverage(opcr_data) }}</td> -->
                                     <td></td>
                                     <td></td>
+
                                 </tr>
 
                             </tbody>
@@ -820,7 +821,7 @@
                 <div class="d-flex justify-content-center" >
                     <div class="table-responsive w-100" style="max-width:100%; overflow-x:auto;">
                         <!-- <table class="table table-hover table-bordered border-dark"> -->
-                        <table class="table table-sm table-bordered border-dark table-striped table-hover" style="table-layout: fixed;">
+                        <table class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
                             <thead class="sticky-header">
                                 <tr class="bg-secondary text-white">
                                     <th rowspan="2">Major Final Output</th>
@@ -963,7 +964,7 @@
                                         </button>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr class="table-summary-row">
                                     <td colspan="5"></td>
                                     <td colspan="3">TOTAL RATING (Self Rating)</td>
                                     <td>
@@ -979,7 +980,7 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr>
+                                <tr class="table-summary-row">
                                     <td colspan="5"></td>
                                     <td colspan="3">FINAL AVERAGE RATING (Self Rating)</td>
                                     <td>{{ getAverageAll() }}</td>
@@ -1100,7 +1101,7 @@
             style="z-index: 1100;"
             :backdrop="false"
         >
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped accomplishment-modal-table">
                 <thead>
                     <tr>
                         <th width="10%">Date</th>
@@ -1979,9 +1980,152 @@ export default {
 .sticky-header {
   position: sticky;
   top: 0;
-  background: white; /* Important so header isn’t transparent */
-  z-index: 2;        /* Keeps header above body rows */
+  background: linear-gradient(135deg, #f6fcfd 0%, #ebf8fb 100%);
+  z-index: 2;
+  border: 1px solid #d8eef2;
+  border-radius: 0.75rem;
+  padding: 0.9rem 1rem;
+  box-shadow: 0 4px 16px rgba(2, 102, 115, 0.08);
 }
+
+.modal-summary-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.modal-summary-card div {
+    color: #0d4b54;
+    font-size: 0.95rem;
+}
+
+.modern-rating-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(2, 49, 58, 0.08);
+}
+
+.modern-rating-table thead th {
+    background: linear-gradient(135deg, #026673 0%, #038695 100%);
+    color: #fff;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.7rem 0.55rem;
+    vertical-align: middle;
+    border-color: #02595f;
+}
+
+.modern-rating-table tbody td,
+.modern-rating-table tbody th {
+    padding: 0.6rem 0.55rem;
+    vertical-align: top;
+    border-color: #e2ebee;
+}
+
+.modern-rating-table tbody tr:nth-child(even) {
+    background-color: #fcfdfd;
+}
+
+.modern-rating-table tbody tr:hover {
+    background-color: #eef8fb !important;
+}
+
+.modern-rating-table .form-select,
+.modern-rating-table .form-control,
+.modern-rating-table textarea {
+    border: 1px solid #cde2e6;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    font-size: 0.86rem;
+    box-shadow: none;
+}
+
+.modern-rating-table .form-select:focus,
+.modern-rating-table .form-control:focus,
+.modern-rating-table textarea:focus {
+    border-color: #026673;
+    box-shadow: 0 0 0 0.2rem rgba(2, 102, 115, 0.16);
+}
+
+.table-summary-row td {
+    background-color: #f2fafb;
+    color: #02454d;
+    font-weight: 600;
+}
+
+.accomplishment-modal-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(2, 49, 58, 0.08);
+}
+
+.accomplishment-modal-table thead th {
+    background: linear-gradient(135deg, #026673 0%, #038695 100%);
+    color: #fff;
+}
+
+.accomplishment-modal-table tbody td {
+    vertical-align: top;
+}
+
+.accomplishment-modal-table img {
+    border-radius: 0.5rem;
+}
+
+.review-col-mfo,
+.review-col-paps,
+.review-col-accomplishment,
+.review-col-remarks,
+.review-col-mov,
+.review-col-rating {
+    vertical-align: top;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.review-col-mfo {
+    min-width: 180px;
+    max-width: 220px;
+    width: 180px;
+}
+
+.review-col-paps {
+    min-width: 180px;
+    max-width: 220px;
+    width: 180px;
+}
+
+.review-col-accomplishment {
+    min-width: 260px;
+    max-width: 320px;
+    width: 260px;
+}
+
+.review-col-remarks {
+    min-width: 180px;
+    max-width: 220px;
+    width: 180px;
+}
+
+.review-col-mov {
+    min-width: 110px;
+    max-width: 130px;
+    width: 110px;
+}
+
+.review-col-rating {
+    min-width: 95px;
+    max-width: 110px;
+    width: 95px;
+}
+
 .row-centered {
     text-align: center;
 }

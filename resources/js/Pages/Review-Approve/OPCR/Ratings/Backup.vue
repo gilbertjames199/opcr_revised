@@ -7,7 +7,7 @@
     </p>-->
     <div class="row gap-20 masonry pos-r">
         <!-- <p class="text-center"> -->
-        <h4 class="text-center">Review/Approve displayModal: {{ displayModal }}</h4>
+        <h4 class="text-center">Review/Approve </h4>
         <!-- </p> -->
         <div class="peers fxw-nw jc-sb ai-c">
             <div class="peers">
@@ -35,7 +35,7 @@
                         <!-- <Link class="tool-btn tool-btn-primary" :href="`/Societal/create`">
                             <i class="fas fa-plus"></i> Add Societal Goals
                         </Link> -->
-                        displayModal: {{ displayModal }}
+                        test displayModal: {{ displayModal }}
                     </div>
                 </div>
 
@@ -59,7 +59,7 @@
         </div>
 
         <div class="masonry-sizer col-md-6"></div>
-        <div class="masonry-item w-100" >
+        <div class="masonry-item w-100" v-if="!displayModal">
             <div class="bgc-white p-20 bd">
                 <!-- Table Header with Title and Stats -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -73,7 +73,7 @@
                 </div>
 
                 <!-- Responsive Table Container -->
-                <div class="table-responsive" v-if="!displayModal" >
+                <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-head-sticky">
                             <tr>
@@ -157,30 +157,37 @@
 
         </div>
         <!-- </div> -->
-         <!-- Modal -->
-        <div v-if="displayModal" class="bg-white p-4 rounded shadow-sm">
-            <!-- @close-modal-event="hideModal" :title="`${mode_1}`" -->
-            <!-- {{ opcr_current }} -->
-            <div class="d-flex justify-content-end mb-3">
+        <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`" :z-index="1055">
+        <!-- <div class="masonry-item w-100" v-if="displayModal">
+            <div class="bgc-white p-20 bd">
+
+            <div class="d-flex justify-content-end">
                 <button
                     type="button"
-                    class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
-                    @click="displayModal = false"
-                    title="Close"
-                >
-                    <i class="fas fa-times"></i>
-                    <span>Close</span>
+                    class="btn-close"
+                    aria-label="Close"
+                    @click="hideModal">
                 </button>
-            </div>
+            </div> -->
 
+            <!-- {{ opcr_current }} -->
             <div class="sticky-header">
-                <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current.office.FFUNCTION }}</u></div>
+                <div class="d-flex justify-content-end mb-3">
+                    <button
+                        type="button"
+                        class="btn btn-success text-white"
+                        @click="downloadExcel(opcrListId)">
+                        <i class="fas fa-file-excel mr-2"></i>
+                        Export to Excel
+                    </button>
+                </div>
+                <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current?.office?.FFUNCTION ?? '-' }}</u></div>
                 <div><b>SEMESTER:&nbsp;</b><u>{{ opcr_current.semester }}</u></div>
                 <div><b>PERIOD COVERED:&nbsp;</b><u>{{ opcr_current.opcr_date }}</u></div>
                 <div><b>STATUS:&nbsp;</b><u>{{ getStatus(opcr_current.rating_status) }}</u></div>
             </div>
 
-            <button @click="downloadExcel(opcrListId)">Export Excel</button>
+            <!-- <button @click="downloadExcel(opcrListId)">Export Excel</button> -->
 
             <div v-if="mode_1==='Review'">
                 <button @click="toggleAllMovVisibility(false)" v-if="!show_all_not_clicked" class="btn btn-link p-0">
@@ -547,10 +554,13 @@
                                             '--bs-table-accent-bg': opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
                                             fontWeight: opcr_data[index].mov_is_visible ? 'bold' : 'normal',
                                         }">
+
                                         <!-- PPDO Q1 -->
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+
                                             <select v-model="opcr_data[index].ppdo_q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_q1, opcr_data[index].opcr_rating_id, 'ppdo_q1')">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -565,6 +575,7 @@
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <select v-model="opcr_data[index].ppdo_q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_q2, opcr_data[index].opcr_rating_id, 'ppdo_q2')">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -579,6 +590,7 @@
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <select v-model="opcr_data[index].ppdo_q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_q3, opcr_data[index].opcr_rating_id, 'ppdo_q3')">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -593,8 +605,9 @@
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <select v-model="opcr_data[index].ppdo_e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_e1, opcr_data[index].opcr_rating_id, 'ppdo_e1')"
-                                                :disabled="dat.ppdo_e1_standard === 'No'"
-                                                :style="dat.ppdo_e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                :disabled="dat.e1_standard === 'No'"
+                                                :style="dat.e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -609,8 +622,9 @@
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                             <select v-model="opcr_data[index].ppdo_e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_e2, opcr_data[index].opcr_rating_id, 'ppdo_e2')"
-                                                :disabled="dat.ppdo_e2_standard === 'No'"
-                                                :style="dat.ppdo_e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                :disabled="dat.e2_standard === 'No'"
+                                                :style="dat.e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -619,7 +633,10 @@
                                             </select>
 
 
-                                            <div v-if="submit_attempt==true && dat.e2_standard === 'Yes' && !dat.ppdo_e2" style="color: red; font-weight: bold">
+                                            <div v-if="submit_attempt==true &&
+                                                dat.e2_standard === 'Yes' &&
+                                                !dat.ppdo_e2"
+                                                style="color: red; font-weight: bold">
                                                 Rating for this field is required to proceed with submission.
                                             </div>
                                         </td>
@@ -628,8 +645,10 @@
                                             <!-- rating e3: {{ dat.rating_e }} -->
                                             <select v-model="opcr_data[index].ppdo_e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
                                                 @change="saveRating(opcr_data[index].ppdo_e3, opcr_data[index].opcr_rating_id, 'ppdo_e3')"
-                                                :disabled="dat.ppdo_e3_standard === 'No'"
-                                                :style="dat.ppdo_e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                :disabled="dat.e3_standard === 'No'"
+                                                :style="dat.e3_standard === 'No' ?
+                                                'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -642,22 +661,25 @@
                                         </td>
                                         <!-- PPDO T1 -->
                                         <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                            <!-- dat.ppdo_t1_standard: {{ dat.ppdo_t1_standard }} --
+                                            dat.t1_standard: {{ dat.t1_standard }} -->
                                             <select v-model="opcr_data[index].ppdo_t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].ppdo_t1, opcr_data[index].opcr_rating_id, 'ppdo_t1')"
                                                 :disabled="
-                                                    dat.ppdo_t1_standard === 'No' ||
-                                                    dat.ppdo_t1_standard === null ||
-                                                    dat.ppdo_t1_standard === undefined ||
+                                                    dat.t1_standard === 'No' ||
+                                                    dat.t1_standard === null ||
+                                                    dat.t1_standard === undefined ||
                                                     Number.isNaN(dat.ppdo_t1_standard)
                                                 "
                                                 :style="
-                                                    dat.ppdo_t1_standard === 'No' ||
-                                                    dat.ppdo_t1_standard === null ||
-                                                    dat.ppdo_t1_standard === undefined ||
+                                                    dat.t1_standard === 'No' ||
+                                                    dat.t1_standard === null ||
+                                                    dat.t1_standard === undefined ||
                                                     Number.isNaN(dat.ppdo_t1_standard)
                                                         ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;'
                                                         : ''
                                                 ">
+                                                <option>0</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -679,13 +701,7 @@
                                         <!-- MOVS -->
                                         <td rowspan="1">
                                             <button
-                                                @click="showModalAccomplishmentMOV(
-                                                    dat.idpaps,
-                                                    dat.department_code,
-                                                    dat.year,
-                                                    dat.sem,
-                                                    dat
-                                                )"
+                                                @click="showModalAccomplishmentMOV(dat.idpaps, dat.department_code, dat.year, dat.sem, dat)"
                                                 class="button"
                                                 title="View MOVs"
                                             >
@@ -997,7 +1013,10 @@
                     class="btn btn-success text-white">Approve</button>&nbsp;
                 <button @click="returnSubmit()" class="btn btn-danger text-white">Return</button>
             </div>
-        </div>
+
+            <!-- </div>
+        </div> -->
+        </Modal>
         <SideModal v-if="displaySideModal"  @close-modal-event="displaySideModal = false" style="z-index: 9999;  ">
             <h2 class="text-lg font-semibold">Preview SideModal</h2>
             <!-- file_extension: {{ file_extension }} -- {{ view_link }} -- {{ disk }} -->
@@ -1059,7 +1078,6 @@
 
 
             </div>
-
             <!-- <br>
             <iframe :src="`/storage/${current_filepath}`"></iframe>
             <br>
@@ -1074,10 +1092,13 @@
             </div>
         </PrintModal>
         <!-- ACCOMPLISHMENT MOV MODAL -->
+         <!-- title="Accomplishment MOV" -->
         <ModalAccomplishmentMOV
             v-if="displayModalAccomplishmentMOV"
-            @close-modal-event="displayModalAccomplishmentMOV=false"
-            title="Accomplishment MOV"
+            @close-modal-event="closeDisplayModalAccomplishmentMOV"
+            :z-index="1100"
+            style="z-index: 1100;"
+            :backdrop="false"
         >
             <table class="table table-bordered table-striped">
                 <thead>
@@ -1114,7 +1135,6 @@
                                     class="img-thumbnail mr-2 mb-2"
                                     style="max-width:180px; max-height:180px;"
                                 >
-
                                 <img
                                     v-if="item.image2"
                                     :src="item.image2"
@@ -1162,11 +1182,11 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/ModalDynamicTitle2";
 import Modal2 from "@/Shared/PrintModal";
-import PrintModal from "@/Shared/ModalDynamicTitle2";
+import PrintModal from "@/Shared/ModalDynamicTitle22";
 import SideModal from "@/Shared/PrintModal";
 import { Inertia } from '@inertiajs/inertia';
-import ModalAccomplishmentMOV from "@/Shared/ModalDynamicTitle";
-
+// import ModalAccomplishmentMOV from "@/Shared/ModalDynamicTitle";
+import ModalAccomplishmentMOV from "@/Shared/PrintModal1";
 
 export default {
     props: {
@@ -1243,9 +1263,7 @@ export default {
         //     return (avgQ + avgE + avgT) / 3;
         // }
 
-        current_id_paps(){
-            return this.idpaps
-        }
+
     },
     methods: {
         // START OF PRINTING
@@ -1424,14 +1442,15 @@ export default {
         // loop through each row in opcr_data
             for (let row of this.opcr_data) {
                 // define the mappings of score fields to their standards
+                // { score: row.q1, standard: 'Yes'},
+                //     { score: row.q2, standard: 'Yes'},
+                //     { score: row.q3, standard: 'Yes'},
+                //     { score: row.e1, standard: row.e1_standard },
+                //     { score: row.e2, standard: row.e2_standard },
+                //     { score: row.e3, standard: row.e3_standard },
+                //     { score: row.t1, standard: row.t1_standard },
                 const checks = [
-                    { score: row.q1, standard: 'Yes'},
-                    { score: row.q2, standard: 'Yes'},
-                    { score: row.q3, standard: 'Yes'},
-                    { score: row.e1, standard: row.e1_standard },
-                    { score: row.e2, standard: row.e2_standard },
-                    { score: row.e3, standard: row.e3_standard },
-                    { score: row.t1, standard: row.t1_standard },
+
                     { score: row.ppdo_q1, standard: 'Yes'},
                     { score: row.ppdo_q2, standard: 'Yes'},
                     { score: row.ppdo_q3, standard: 'Yes'},
@@ -1449,7 +1468,7 @@ export default {
                             score === null ||
                             score === "" ||
                             isNaN(score) ||
-                            Number(score) < 1 ||
+                            Number(score) < 0 ||
                             Number(score) > 5
                         ) {
                             // alert("null ang score "+score)
@@ -1927,6 +1946,7 @@ export default {
 
         // ACCOMPLISHMENT MOV
         async showModalAccomplishmentMOV(idpaps, department_code,year,semester, opcr){
+
             this.displayModalAccomplishmentMOV=true
             // Optional: clear previous data
             this.mov_accomplishment = [];
@@ -1947,6 +1967,11 @@ export default {
                 this.mov_accomplishment = [];
             }
         },
+        closeDisplayModalAccomplishmentMOV(){
+            this.displayModalAccomplishmentMOV=false;
+            this.displayModal=true;
+            // alert(this.displayModal);
+        }
     }
 };
 </script>
