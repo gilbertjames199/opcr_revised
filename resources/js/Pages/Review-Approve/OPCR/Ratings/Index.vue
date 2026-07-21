@@ -203,7 +203,8 @@
                     <!-- d-flex justify-content-center  -->
                     <div class="table-responsive w-100" style="max-width:100%; overflow-x:auto;">
                         <table class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
-                            <thead class="sticky-header">
+                            <!-- class="sticky-header" -->
+                            <thead >
                                 <tr class="text-white" style="background-color: #026673">
                                     <th rowspan="2" ><h5>MFO</h5></th>
                                     <th rowspan="2" ><h5>PAPS</h5></th>
@@ -832,7 +833,8 @@
                     <div class="table-responsive w-100" style="max-width:100%; overflow-x:auto;">
                         <!-- <table class="table table-hover table-bordered border-dark"> -->
                         <table class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
-                            <thead class="sticky-header">
+                            <!-- class="sticky-header" -->
+                            <thead >
                                 <tr class="bg-secondary text-white">
                                     <th rowspan="2">Major Final Output</th>
                                     <th rowspan="2">Success Indicators (Targets + Measures)</th>
@@ -2010,7 +2012,7 @@ export default {
     font-size: 0.95rem;
 }
 
-.modern-rating-table thead.sticky-header {
+/* .modern-rating-table thead.sticky-header {
     position: sticky;
     top: 6rem;
     z-index: 3;
@@ -2018,7 +2020,7 @@ export default {
     border: none;
     border-radius: 0;
     padding: 0;
-}
+} */
 
 .modal-summary-card.sticky-header {
     position: sticky;
