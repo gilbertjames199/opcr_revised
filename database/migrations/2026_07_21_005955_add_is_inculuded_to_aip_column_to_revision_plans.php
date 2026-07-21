@@ -14,10 +14,10 @@ class AddIsInculudedToAipColumnToRevisionPlans extends Migration
     public function up()
     {
         Schema::table('revision_plans', function (Blueprint $table) {
-            $table->string('is_included_to_aip')
+            $table->unsignedTinyInteger('is_included_to_aip')
                 ->after('type')
                 ->default(1)
-                ->comment('1 -included to aip report; 0 -not included');
+                ->comment('1 -included to aip report; 0 -not included, 2 -included to sp aip');
         });
     }
 
