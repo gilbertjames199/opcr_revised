@@ -171,6 +171,7 @@
             </div> -->
 
             <!-- {{ opcr_current }} -->
+            <!-- LABEL CARD  -->
             <div class="sticky-header modal-summary-card">
                 <div class="d-flex justify-content-end mb-2">
                     <button
@@ -714,15 +715,18 @@
                                     </tr>
                                     <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" >
                                         <th class="bg-secondary text-white">
-<!-- class="no-stripe-bg" -->
+                                            <!-- class="no-stripe-bg" -->
                                         </th>
+                                        <!-- FILES LABEL -->
                                         <th class="bg-secondary text-white">
                                             <span v-if="parseFloat(opcr_data[index].count_movs)>1">Files</span>
                                             <span v-else>File</span>
                                         </th>
+                                        <!-- DOWNLOAD LABEL -->
                                         <th class="bg-secondary text-white">
                                             Download
                                         </th>
+                                        <!-- VIEW LABEL -->
                                         <th class="bg-secondary text-white">
                                             View
                                         </th>
@@ -733,10 +737,12 @@
                                         <td class="no-stripe-bg">
 
                                         </td>
+                                        <!-- FILENAME -->
                                         <td>
                                             <img :src="getPreUploadFileIcon(file.filename.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>&nbsp;
                                             {{ file.filename }}
                                         </td>
+                                        <!-- MOV ICON -->
                                         <td><a
                                             :href="`/movs/download/${file.id}`"
 
@@ -755,6 +761,7 @@
                                                 <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
                                             </svg>
                                         </a>&nbsp;</td>
+                                        <!-- PREVIEW -->
                                         <td>
                                             <button
                                                 @click="previewFile(file)"
@@ -2001,6 +2008,22 @@ export default {
 .modal-summary-card div {
     color: #0d4b54;
     font-size: 0.95rem;
+}
+
+.modern-rating-table thead.sticky-header {
+    position: sticky;
+    top: 6rem;
+    z-index: 3;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+.modal-summary-card.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .modern-rating-table {
