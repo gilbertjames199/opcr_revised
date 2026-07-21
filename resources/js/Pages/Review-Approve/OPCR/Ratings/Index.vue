@@ -59,7 +59,7 @@
         </div>
 
         <div class="masonry-sizer col-md-6"></div>
-        <div class="masonry-item w-100">
+        <div class="masonry-item w-100" v-if="!displayModal">
             <div class="bgc-white p-20 bd">
                 <!-- Table Header with Title and Stats -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -158,15 +158,36 @@
         </div>
         <!-- </div> -->
         <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`" :z-index="1055">
+        <!-- <div class="masonry-item w-100" v-if="displayModal">
+            <div class="bgc-white p-20 bd">
+
+            <div class="d-flex justify-content-end">
+                <button
+                    type="button"
+                    class="btn-close"
+                    aria-label="Close"
+                    @click="hideModal">
+                </button>
+            </div> -->
+
             <!-- {{ opcr_current }} -->
             <div class="sticky-header">
-                <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current.office.FFUNCTION }}</u></div>
+                <div class="d-flex justify-content-end mb-3">
+                    <button
+                        type="button"
+                        class="btn btn-success text-white"
+                        @click="downloadExcel(opcrListId)">
+                        <i class="fas fa-file-excel mr-2"></i>
+                        Export to Excel
+                    </button>
+                </div>
+                <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current?.office?.FFUNCTION ?? '-' }}</u></div>
                 <div><b>SEMESTER:&nbsp;</b><u>{{ opcr_current.semester }}</u></div>
                 <div><b>PERIOD COVERED:&nbsp;</b><u>{{ opcr_current.opcr_date }}</u></div>
                 <div><b>STATUS:&nbsp;</b><u>{{ getStatus(opcr_current.rating_status) }}</u></div>
             </div>
 
-            <button @click="downloadExcel(opcrListId)">Export Excel</button>
+            <!-- <button @click="downloadExcel(opcrListId)">Export Excel</button> -->
 
             <div v-if="mode_1==='Review'">
                 <button @click="toggleAllMovVisibility(false)" v-if="!show_all_not_clicked" class="btn btn-link p-0">
@@ -992,6 +1013,9 @@
                     class="btn btn-success text-white">Approve</button>&nbsp;
                 <button @click="returnSubmit()" class="btn btn-danger text-white">Return</button>
             </div>
+
+            <!-- </div>
+        </div> -->
         </Modal>
         <SideModal v-if="displaySideModal"  @close-modal-event="displaySideModal = false" style="z-index: 9999;  ">
             <h2 class="text-lg font-semibold">Preview SideModal</h2>
@@ -1071,7 +1095,7 @@
          <!-- title="Accomplishment MOV" -->
         <ModalAccomplishmentMOV
             v-if="displayModalAccomplishmentMOV"
-            @close-modal-event="displayModalAccomplishmentMOV=false"
+            @close-modal-event="closeDisplayModalAccomplishmentMOV"
             :z-index="1100"
             style="z-index: 1100;"
             :backdrop="false"
@@ -1926,7 +1950,7 @@ export default {
             this.displayModalAccomplishmentMOV=true
             // Optional: clear previous data
             this.mov_accomplishment = [];
-            this.opcr_current = opcr;
+            // this.opcr_current = opcr;
             try {
                 const response = await axios.get('/api/opcr-mov-api', {
                     params: {
@@ -1943,6 +1967,11 @@ export default {
                 this.mov_accomplishment = [];
             }
         },
+        closeDisplayModalAccomplishmentMOV(){
+            this.displayModalAccomplishmentMOV=false;
+            this.displayModal=true;
+            // alert(this.displayModal);
+        }
     }
 };
 </script>

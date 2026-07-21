@@ -1,5 +1,9 @@
 <template>
-    <div class="permissions-modal" :style="{ zIndex: zIndex }">
+    <div
+        class="permissions-modal"
+        :class="{ 'no-backdrop': !backdrop }"
+        :style="{ zIndex: zIndex }"
+    >
         <div class="modal" tabindex="-1" role="dialog" :style="{ zIndex: Number(zIndex) + 5 }">
             <div class="modal-dialog custom-modal">
                 <div class="d-flex justify-content-center">
@@ -37,6 +41,10 @@
           zIndex: {
               type: [Number, String],
               default: 1055,
+          },
+          backdrop: {
+              type: Boolean,
+              default: true,
           },
       },
       data(){
@@ -81,6 +89,19 @@
     overflow-y: auto;
     padding: 20px 0;
     background-color: rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .permissions-modal.no-backdrop {
+    background-color: transparent;
+    pointer-events: none;
+  }
+
+  .permissions-modal.no-backdrop .modal {
+    pointer-events: auto;
+    margin: 0 auto;
   }
     /* Override default value of 'none' */
     .modal {
