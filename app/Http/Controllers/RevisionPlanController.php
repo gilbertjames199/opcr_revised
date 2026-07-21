@@ -3357,12 +3357,15 @@ class RevisionPlanController extends Controller
             'paps',
             'paps.office',
             'paps.office.office',
+            'paps.fundOwner.office',
             'gasPaps',
             'gasPaps.office',
             'gasPaps.office.office',
+            'gasPaps.fundOwner.office',
             'office'
         ])
             ->whereYear('date_start', $year)
+            ->where('is_included_to_aip',1)
             ->when(request()->ssf_filter == 'dev' || request()->ssf_filter == 'other', function ($query) use($request){
                 // dd($request->ssf_filter);
                 if ($request->ssf_filter === 'dev') {
@@ -3537,9 +3540,20 @@ class RevisionPlanController extends Controller
 
             $paps_desc = optional($plan->paps)->MOV == "-" ? "" : optional($plan->paps)->MOV;
             $paps_title_desc = "<b>" . $paps_title . "</b>\n\n<i>" . $paps_desc . "</i>";
-            $imp_office = optional(optional(optional($plan)->paps)->office)->office ?
-                optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
-                optional(optional(optional($plan)->paps)->office)->FFUNCTION;
+            // $imp_office = optional(optional(optional($plan)->paps)->office)->office ?
+            //     optional(optional(optional(optional($plan)->paps)->office)->office)->short_name :
+            //     optional(optional(optional($plan)->paps)->office)->FFUNCTION;
+            $imp_office = in_array(optional($plan)->idpaps, [1968, 1965, 1966, 1967])
+                    ? (
+                        optional(optional(optional($plan)->paps)->fundOwner)->office
+                            ? optional(optional(optional(optional($plan)->paps)->fundOwner)->office)->short_name
+                            : optional(optional(optional($plan)->paps)->fundOwner)->FFUNCTION
+                    )
+                    : (
+                        optional(optional(optional($plan)->paps)->office)->office
+                            ? optional(optional(optional(optional($plan)->paps)->office)->office)->short_name
+                            : optional(optional(optional($plan)->paps)->office)->FFUNCTION
+                    );
 
             $ss = optional(optional($plan)->paps)->source_of_funds ? optional(optional($plan)->paps)->source_of_funds : optional(optional($plan)->gasPaps)->source_of_funds;
             if ($plan->id == 736) {
@@ -3548,7 +3562,7 @@ class RevisionPlanController extends Controller
             if (!isset($strategies[$strategyId])) {
                 $strategies[$strategyId] = [
                     'project_title' => $paps_title_desc,
-                    'implementing_office' => $imp_office ? $imp_office : optional(optional($plan)->office)->FFUNCTION,
+                    'implementing_office' => $imp_office ? $imp_office : optional(optional(optional($plan)->office)->office)->short_name,
                     'expected_output' =>  $ss=='dev' || $ss=='other' ? ' ' :
                         ($plan->idpaps=='1992' ? ' ' : $expected_outputs),
                     'total_mooe' => floatval($total_mooe),
