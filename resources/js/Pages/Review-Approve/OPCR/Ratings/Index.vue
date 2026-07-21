@@ -700,13 +700,16 @@
                                         </td>
                                         <!-- MOVS -->
                                         <td rowspan="1" class="review-col-mov">
-                                            <button
-                                                @click="showModalAccomplishmentMOV(dat.idpaps, dat.department_code, dat.year, dat.sem, dat)"
-                                                class="button"
-                                                title="View MOVs"
-                                            >
-                                                SHOW MOV
-                                            </button>
+                                            <div class="d-flex justify-content-center px-2">
+                                                <button
+                                                    @click="showModalAccomplishmentMOV(dat.idpaps, dat.department_code, dat.year, dat.sem, dat)"
+                                                    class="btn btn-sm btn-primary mov-btn text-white"
+                                                    title="View MOVs"
+                                                >
+                                                    <i class="fas fa-folder-open me-1"></i>
+                                                    SHOW MOV
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" >
@@ -2118,6 +2121,20 @@ export default {
     min-width: 110px;
     max-width: 130px;
     width: 110px;
+    text-align: center;
+}
+
+.mov-btn {
+    white-space: nowrap;
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.mov-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(2, 102, 115, 0.16);
 }
 
 .review-col-rating {
