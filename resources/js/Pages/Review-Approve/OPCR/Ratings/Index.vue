@@ -1471,7 +1471,7 @@ export default {
                             Number(score) < 0 ||
                             Number(score) > 5
                         ) {
-                            alert("null ang score "+score)
+                            // alert("null ang score "+score)
                             return false;
                         }
                     }else{
