@@ -1020,6 +1020,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/approve/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'approveOPCRRating']);
             Route::post('/return/remarks/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'returnOpcrRating']);
             Route::post('/submit/opcr/{column}/{opcr_rating_id}/{item_score}', [TargetAccomplishmentReviewApproveController::class, 'update_rating_score']);
+            Route::patch('/save-remarks/{opcr_list_id}', [TargetAccomplishmentReviewApproveController::class, 'saveRemarks']);
             Route::get('/{opcr_list_id}/view/opcr/rating/submission', [TargetAccomplishmentReviewApproveController::class, 'viewRating']);
             Route::patch('/set/rating/type/{rating_type}/{id}', [TargetAccomplishmentReviewApproveController::class, 'updateRatingType']);
 

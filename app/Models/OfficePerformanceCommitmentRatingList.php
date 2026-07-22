@@ -30,8 +30,15 @@ class OfficePerformanceCommitmentRatingList extends Model
     {
         return $this->hasMany(OfficePerformanceCommitmentRating::class, 'opcr_id', 'id');
     }
+    public function opcrRemarks()
+    {
+        return $this->hasMany(OpcrRemarks::class, 'id_opcr_list', 'id');
+    }
+
     public function FFUNCCODOffice()
     {
         return $this->belongsTo(FFUNCCOD::class, 'FFUNCCOD', 'FFUNCCOD');
     }
+
+
 }

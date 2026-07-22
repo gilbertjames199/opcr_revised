@@ -110,7 +110,7 @@
                                 <td>
                                     {{ getStatus(dat.rating_status) }}
 
-                                    {{  }}
+
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown dropstart">
@@ -700,6 +700,7 @@
                                             <!-- @input="autoResize($event)" ref="remarksTextarea"-->
                                             <textarea class="form-control"
                                                 v-model="opcr_data[index].ppdo_remarks"
+                                                @input="markPpdoRemarksUnsaved(opcr_data[index].opcr_rating_id)"
                                                 @change="saveRating(opcr_data[index].ppdo_remarks, opcr_data[index].opcr_rating_id,'ppdo_remarks')"
                                             />
                                         </td>
@@ -1015,9 +1016,27 @@
                 </div>
             </div>
             <!-- {{ opcr_data }} -->
-            <div class="d-flex justify-content-center">
-                <label>REMARKS: </label>&nbsp;&nbsp;&nbsp;
-                <input class="form-control" v-model="form.remarks" type="text" /><br />
+            <!-- opcr remarks -->
+            <table v-for="remark in opcr_current?.opcr_remarks" class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
+                <thead>
+                    <tr>
+                        <th >Remarks</th>
+                        <th>Created at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ remark.remarks }}</td>
+                        <td>{{ remark.created_at }}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div class="d-flex justify-content-center align-items-center gap-2">
+                <label class="mb-0">REMARKS:</label>
+
+                <input class="form-control" v-model="form.remarks" type="text" @input="markFinalRemarkUnsaved" />
+                <button class="btn btn-secondary text-white" @click="saveRemarks">Save Remarks</button>
             </div>
             <div>
                 <hr>
@@ -1258,10 +1277,13 @@ export default {
             print_link: "",
             opcrListId: "",
             file_name: "",
-            paps_current: []
+            paps_current: [],
+            unsavedPpdoRemarks: {},
+            unsavedFinalRemark: false
         }
     },
     mounted() {
+        window.addEventListener('beforeunload', this.handleBeforeUnload);
         // auto-resize all rendered textareas on initial load
         this.$nextTick(() => {
             this.$refs.remarksTextarea.forEach((ta) => {
@@ -1269,6 +1291,9 @@ export default {
             ta.style.height = ta.scrollHeight + "px";
             });
         });
+    },
+    beforeUnmount() {
+        window.removeEventListener('beforeunload', this.handleBeforeUnload);
     },
 
     updated() {
@@ -1343,6 +1368,31 @@ export default {
         hidePrintModal(){
             this.displayPrintModal=false;
         },
+        handleBeforeUnload(event) {
+            const hasUnsaved = this.displayModal && (
+                Object.keys(this.unsavedPpdoRemarks).length > 0 ||
+                this.unsavedFinalRemark
+            );
+            if (hasUnsaved) {
+                event.preventDefault();
+                event.returnValue = '';
+                return '';
+            }
+        },
+        markPpdoRemarksUnsaved(opcr_rating_id) {
+            if (!opcr_rating_id) return;
+            this.unsavedPpdoRemarks = {
+                ...this.unsavedPpdoRemarks,
+                [opcr_rating_id]: true
+            };
+        },
+        markFinalRemarkUnsaved() {
+            this.unsavedFinalRemark = true;
+        },
+        clearUnsavedRemarks() {
+            this.unsavedPpdoRemarks = {};
+            this.unsavedFinalRemark = false;
+        },
         //END OF PRINTING
         updateMOVisVisible(mov_is_visible, index){
             this.opcr_data[index].mov_is_visible = !mov_is_visible
@@ -1387,11 +1437,13 @@ export default {
             });
             this.displayModal = true;
             this.currentRatingType=this.opcr_current.rating_type
+            this.clearUnsavedRemarks();
         },
         hideModal() {
             this.displayModal = false;
             this.displayModal2 = false;
             this.submit_attempt =false;
+            this.clearUnsavedRemarks();
         },
         showModal2(md) {
             this.hideModal();
@@ -1469,11 +1521,42 @@ export default {
             }
             var url = "/review-approve/ratings/submit/opcr/"+column+"/"+opcr_rating_id+"/"+rating;
             axios.post(url).then(response=>{
-
+                if (column === 'ppdo_remarks' && opcr_rating_id) {
+                    if (this.unsavedPpdoRemarks[opcr_rating_id]) {
+                        const { [opcr_rating_id]: removed, ...rest } = this.unsavedPpdoRemarks;
+                        this.unsavedPpdoRemarks = rest;
+                    }
+                }
             }).finally(response=>{
 
             }).catch(error=>{
 
+            });
+        },
+        saveRemarks() {
+            if (!this.opcr_current?.id) {
+                return;
+            }
+
+            const payload = {
+                ppdo_remarks: this.opcr_data.map(item => ({
+                    opcr_rating_id: item.opcr_rating_id,
+                    ppdo_remarks: item.ppdo_remarks || ''
+                })),
+                final_remark: this.form.remarks || ''
+            };
+            const url = `/review-approve/ratings/save-remarks/${this.opcr_current.id}`;
+
+            Inertia.patch(url, payload, {
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: () => {
+                    // alert('Remarks saved successfully.');
+                    this.clearUnsavedRemarks();
+                },
+                onError: (errors) => {
+                    console.error('Failed to save remarks', errors);
+                }
             });
         },
         canSubmit() {
@@ -1986,6 +2069,7 @@ export default {
         async showModalAccomplishmentMOV(idpaps, department_code,year,semester, paps_param){
 
             this.displayModalAccomplishmentMOV=true
+            this.displayModal=false;
             // Optional: clear previous data
             this.mov_accomplishment = [];
             // this.opcr_current = opcr;

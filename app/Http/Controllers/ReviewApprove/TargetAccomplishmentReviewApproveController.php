@@ -425,7 +425,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'FFUNCCODOffice',
                         'opcrTarget',
                         'opcrTarget.opcr_rating',
-                        'opcr_rating'
+                        'opcr_rating',
+                        'opcrRemarks'
                     ])
                 ->where('rating_status', '>', -1)
                 ->orderBy('year', 'desc')
@@ -484,7 +485,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'total' => $total,
                         'ave' => $ave,
                         'opcr_date' => $opcr_date,
-                        'office' => $office
+                        'office' => $office,
+                        'opcr_remarks'=> optional($item)->opcrRemarks
                     ];
                 });
 
@@ -651,6 +653,53 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 'message' => "Record not found"
             ], 404);
         }
+    }
+
+    public function saveRemarks(Request $request, $opcr_list_id)
+    {
+        $data = $request->validate([
+            'ppdo_remarks' => 'array',
+            'ppdo_remarks.*.opcr_rating_id' => 'required|integer',
+            'ppdo_remarks.*.ppdo_remarks' => 'nullable|string',
+            'final_remark' => 'nullable|string',
+        ]);
+        // dd($request);
+        if (!empty($data['ppdo_remarks'])) {
+            foreach ($data['ppdo_remarks'] as $row) {
+                $rating = OfficePerformanceCommitmentRating::find($row['opcr_rating_id']);
+                if ($rating) {
+                    $rating->ppdo_remarks = $row['ppdo_remarks'];
+                    $rating->save();
+                }
+            }
+        }
+
+        if (!empty($data['final_remark'])) {
+            $opcr_rem = OpcrRemarks::where('id_opcr_list', $opcr_list_id)
+                ->where('type', 'rating')
+                ->where('status', 'final')
+                ->first();
+
+            if (!$opcr_rem) {
+                $opcr_num = OpcrRemarks::where('id_opcr_list', $opcr_list_id)
+                    ->orderBy('number', 'desc')
+                    ->first();
+
+                $opcr_rem = new OpcrRemarks();
+                $opcr_rem->id_opcr_list = $opcr_list_id;
+                $opcr_rem->type = 'rating';
+                $opcr_rem->status = 'final';
+                $opcr_rem->number = $opcr_num ? ((int)$opcr_num->number + 1) . '' : '1';
+            }
+
+            $opcr_rem->remarks = $data['final_remark'];
+            $opcr_rem->save();
+        }
+        return redirect()->back()->with('message','Remarks saved successfully');
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Remarks saved successfully.'
+        // ]);
     }
     public function viewRating(Request $request, $opcr_list_id)
     {
