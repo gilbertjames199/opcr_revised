@@ -359,10 +359,12 @@
                                         <!-- REMARKS -->
                                         <td rowspan="2" class="review-col-remarks">
                                             <!-- @input="autoResize($event)" ref="remarksTextarea"-->
+                                            <p><b>Office Remarks</b></p>
                                             <textarea class="form-control"
                                                 v-model="opcr_data[index].remarks"
                                                 @change="saveRating(opcr_data[index].remarks, opcr_data[index].opcr_rating_id,'remarks')"
-
+                                                style="background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;"
+                                                disabled
                                             />
                                         </td>
                                         <!-- MOVS -->
@@ -694,6 +696,7 @@
                                         </td>
                                         <!-- REMARKS -->
                                         <td rowspan="1" class="review-col-remarks">
+                                            <p><b>PPDO Remarks</b></p>
                                             <!-- @input="autoResize($event)" ref="remarksTextarea"-->
                                             <textarea class="form-control"
                                                 v-model="opcr_data[index].ppdo_remarks"
@@ -1113,6 +1116,27 @@
             style="z-index: 1100;"
             :backdrop="false"
         >
+            <div class="sticky-header modal-summary-card">
+                <!-- <div class="d-flex justify-content-end mb-2">
+                    <button
+                        type="button"
+                        class="btn btn-success text-white shadow-sm"
+                        @click="downloadExcel(opcrListId)">
+                        <i class="fas fa-file-excel me-2"></i>
+                        Export to Excel
+                    </button>
+                </div> -->
+                <div>
+                    <!-- paps_cuirrent: {{ paps_current }} -->
+                    <b>PPA:&nbsp;</b> <u>{{ paps_current?.paps_desc }}</u>
+                </div>
+                <div><b>MFO:&nbsp;</b><u>{{ paps_current?.mfo_desc }}</u></div>
+                <div><b>Accomplishments:&nbsp;</b><u>{{ paps_current?.accomplishments }}</u></div>
+                <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current?.office?.FFUNCTION ?? '-' }}</u></div>
+                <div><b>SEMESTER:&nbsp;</b><u>{{ opcr_current.semester }}</u></div>
+                <div><b>PERIOD COVERED:&nbsp;</b><u>{{ opcr_current.opcr_date }}</u></div>
+                <div><b>STATUS:&nbsp;</b><u>{{ getStatus(opcr_current.rating_status) }}</u></div>
+            </div>
             <table class="table table-bordered table-striped accomplishment-modal-table">
                 <thead>
                     <tr>
@@ -1233,7 +1257,8 @@ export default {
             modal_mode: 'Review',
             print_link: "",
             opcrListId: "",
-            file_name: ""
+            file_name: "",
+            paps_current: []
         }
     },
     mounted() {
@@ -1958,12 +1983,13 @@ export default {
         },
 
         // ACCOMPLISHMENT MOV
-        async showModalAccomplishmentMOV(idpaps, department_code,year,semester, opcr){
+        async showModalAccomplishmentMOV(idpaps, department_code,year,semester, paps_param){
 
             this.displayModalAccomplishmentMOV=true
             // Optional: clear previous data
             this.mov_accomplishment = [];
             // this.opcr_current = opcr;
+            this.paps_current=paps_param
             try {
                 const response = await axios.get('/api/opcr-mov-api', {
                     params: {
