@@ -363,7 +363,7 @@
                                             <textarea class="form-control"
                                                 v-model="opcr_data[index].remarks"
                                                 @change="saveRating(opcr_data[index].remarks, opcr_data[index].opcr_rating_id,'remarks')"
-                                                style="background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;"
+                                                style="background-color: #ABB3BFFF; color: #212427FF;"
                                                 disabled
                                             />
                                         </td>
@@ -808,8 +808,8 @@
 
                                     <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
                                     <td>{{ computeDPCRTotal(opcr_data) }}</td> -->
-                                    <td></td>
-                                    <td></td>
+                                    <td colspan="3"></td>
+                                    <!-- <td></td> -->
                                 </tr>
                                 <tr class="table-summary-row">
                                     <td colspan="2"></td>
