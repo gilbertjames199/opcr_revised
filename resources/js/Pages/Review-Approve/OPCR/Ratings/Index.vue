@@ -1025,10 +1025,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="remark in opcr_current?.opcr_remarks" >
-                        <td>{{ remark.remarks }}</td>
-                        <td>{{ remark.created_at }}</td>
-                    </tr>
+                    <template v-for="remark in opcr_current?.opcr_remarks">
+                        <tr  v-if="remark.remarks && remark.remarks.trim() !== ''">
+                            <td>{{ remark.remarks }}</td>
+                            <td>{{ remark.created_at }}</td>
+                        </tr>
+                    </template>
+
                 </tbody>
 
             </table>
