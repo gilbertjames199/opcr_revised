@@ -1017,7 +1017,7 @@
             </div>
             <!-- {{ opcr_data }} -->
             <!-- opcr remarks -->
-            <table v-for="remark in opcr_current?.opcr_remarks" class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
+            <table class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
                 <thead>
                     <tr>
                         <th >Remarks</th>
@@ -1025,7 +1025,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr v-for="remark in opcr_current?.opcr_remarks" >
                         <td>{{ remark.remarks }}</td>
                         <td>{{ remark.created_at }}</td>
                     </tr>
