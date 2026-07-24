@@ -351,8 +351,8 @@
                         </button>&nbsp;
                         <!-- opcr_id:: {{ opcr_id }} -->
                         <!-- rating_status_dt:{{ rating_status_dt }} -->
-                         <!-- || opcr_id ==137  -->
-                        <span v-if="rating_status_dt==-2" >
+                         <!--   -->
+                        <span v-if="rating_status_dt==-2 || opcr_id ==137" >
                             <button type="button" class="btn btn-primary mt-3 text-white" @click="submitRecallRating(-1,0,'Successfully submitted OPCR', 'Are you sure you want to submit this OPCR')"
                             :disabled="form.processing" >
                                 Submit
