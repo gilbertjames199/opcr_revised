@@ -17,4 +17,9 @@ class UserEmployees extends Model
     {
         return $this->hasOne(OfficeDivision::class, 'division_code', 'division_code');
     }
+
+    public function Office()
+    {
+        return $this->belongsTo(Office::class, 'department_code', 'department_code');
+    }
 }

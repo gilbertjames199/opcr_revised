@@ -696,11 +696,27 @@ class TargetAccomplishmentReviewApproveController extends Controller
             $opcr_rem->save();
         }
         return redirect()->back()->with('message','Remarks saved successfully');
-        // return response()->json([
-        //     'success' => true,
-        //     'message' => 'Remarks saved successfully.'
-        // ]);
     }
+
+    public function deleteRemark(Request $request, $remark_id)
+    {
+        $remark = OpcrRemarks::find($remark_id);
+
+        if (! $remark) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Remark not found.'
+            ], 404);
+        }
+
+        $remark->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Remark deleted successfully.'
+        ]);
+    }
+
     public function viewRating(Request $request, $opcr_list_id)
     {
 
@@ -1421,7 +1437,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
          * PER-ENTRY AVERAGE
          */
         $entriesWithAverage = $entries->map(function ($monthly) {
-            dd($monthly);
+            // dd($monthly);
             $values = [
                 $monthly->q1,
                 $monthly->q2,

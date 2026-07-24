@@ -13,4 +13,9 @@ class AIPIndividualApprover extends Model
     protected $guarded = [
         'id'
     ];
+
+    public function userEmployee()
+    {
+        return $this->belongsTo(UserEmployees::class, 'employee_code', 'empl_id');
+    }
 }

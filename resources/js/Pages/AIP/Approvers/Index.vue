@@ -65,7 +65,13 @@
                         <thead class="table-head-sticky">
                             <tr>
                                 <th scope="col">
-                                    <i class="fas fa-align-left"></i> Description
+                                    <i class="fas fa-align-left"></i> Name
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-align-left"></i> Type
+                                </th>
+                                <th scope="col">
+                                    <i class="fas fa-align-left"></i> Office
                                 </th>
                                 <th scope="col" class="text-end">
                                     <i class="fas fa-cogs"></i> Action
@@ -78,8 +84,10 @@
                                 <td>
                                     <!-- <div align="justify" v-html="dat.goal_description"></div> -->
                                     <!-- {{ truncateText(dat.goal_description, 10) }} -->
-                                      {{ dat }}
+                                      {{ dat.name }}
                                 </td>
+                                <td>{{ getTypeFullName(dat.type) }}</td>
+                                <td>{{ dat?.user_employee?.office?.office }}</td>
                                 <td class="text-end">
                                     <div class="dropdown dropstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button"
@@ -92,7 +100,7 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <li>
-                                                <!--<Link class="dropdown-item" :href="`/SDG/${dat.id}/edit`">Edit</Link>-->
+                                                <Link class="dropdown-item" :href="`/aip/approvers/${dat.id}/edit`">Edit</Link>
                                             </li>
                                             <li>
                                                 <!--<Link class="text-danger dropdown-item" @click="deleteSdg(dat.id)">Delete
@@ -105,7 +113,7 @@
                         </tbody>
                     </table>
                 </div>
-                {{ data }}
+                <!-- {{ data }} -->
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <pagination :next="data.next_page_url" :prev="data.prev_page_url" />
@@ -164,6 +172,7 @@ export default {
                 this.$inertia.delete("/SDG/" + id);
             }
         },
+
         // getAccomplishment(tar_id){
         //     this.$inertia.get(
         //         "/accomplishments",

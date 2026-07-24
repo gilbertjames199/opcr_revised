@@ -32,12 +32,19 @@
                     @select="onEmployeeSelect"
                     @clear="onEmployeeClear"
                 />
-                <div class="fs-6 c-red-500" v-if="form.errors.employee_code">{{ form.errors.employee_code }}</div>
+                <div
+                    class="fs-6 c-red-500"
+                    v-if="form.errors.employee_code">
+                        {{ form.errors.employee_code }}
+                </div>
 
-                <label for="">EMPLOYEES</label>
+                <!-- <label for="">EMPLOYEES</label>
                 <QuillEditor theme="snow" v-model:content="form.goal_description" :style="{ backgroundColor: '#ffffff' }"
                     contentType="html" toolbar="full" />
-                <div class="fs-6 c-red-500" v-if="form.errors.goal_description">{{ form.errors.goal_description }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.goal_description">{{ form.errors.goal_description }}</div> -->
+                <label>EMPLOYEE CODE</label>
+                <input type="text" v-model="selected_empl_id" class="form-control">
+                <div class="fs-6 c-red-500" v-if="form.errors.employee_code">{{ form.errors.employee_code }}</div>
 
                 <label>NAME</label>
                 <input type="text" v-model="form.name" class="form-control">
@@ -48,10 +55,10 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.position">{{ form.errors.position }}</div>
 
                 <label>TYPE</label>
-                <select v-model="form.type">
-                    <option>SP Approver</option>
-                    <option>PBO</option>
-                    <option>PPDO</option>
+                <select v-model="form.type" class="form-select">
+                    <option value="sp">SP Approver</option>
+                    <option value="pbo">PBO</option>
+                    <option value="ppdo">PPDO</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.type">{{ form.errors.type }}</div>
 
@@ -64,7 +71,8 @@
         </div>
 
     </div>
-    {{ employees }}
+    <!-- {{ employees }} -->
+      <!-- {{ editData }} -->
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -105,8 +113,9 @@ export default {
                 : Object.values(this.employees);
 
             return list.map(emp => ({
-                empl_id: emp.empl_id,
-                label: emp.position ? `${emp.employee_name} — ${emp.position}` : emp.name,
+                employee_code: emp.empl_id,
+                name: emp.employee_name,
+                label: emp.position_long_title ? `${emp.employee_name} — ${emp.position_long_title}` : emp.employee_name,
                 // keep the original row so onEmployeeSelect can copy every field
                 ...emp
             }));
@@ -123,6 +132,10 @@ export default {
             // if editing an existing record, preselect the matching employee
             if (this.editData.employee_code) {
                 this.selected_empl_id = this.editData.employee_code
+                this.form.employee_code = this.editData.employee_code
+                this.form.name = this.editData.name
+                this.form.position = this.editData.position
+                this.form.type = this.editData.type
             }
         } else {
             this.pageTitle = "Create"
@@ -137,8 +150,10 @@ export default {
         onEmployeeSelect(value, option) {
             if (!option) return;
 
+            const selectedName = option.name ?? option.employee_name ?? option.label ?? "";
+
             this.form.employee_code = option.empl_id ?? "";
-            this.form.name = option.name ?? "";
+            this.form.name = selectedName;
             this.form.position = option.position ?? "";
             this.form.type = option.type ?? this.form.type;
             this.form.is_present = option.is_present ?? this.form.is_present;
@@ -157,9 +172,9 @@ export default {
 
         submit() {
             if (this.editData !== undefined) {
-                this.form.patch("/SDG/" + this.form.id, this.form);
+                this.form.patch("/aip/approvers");
             } else {
-                this.form.post("/SDG");
+                this.form.post("/aip/approvers");
             }
         },
     },

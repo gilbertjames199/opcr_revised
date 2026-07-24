@@ -1017,27 +1017,34 @@
             </div>
             <!-- {{ opcr_data }} -->
             <!-- opcr remarks -->
-            <table class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
+            <table v-if="hasOpcrRemarks" class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
                 <thead>
                     <tr>
-                        <th >Remarks</th>
+                        <th>Remarks</th>
                         <th>Created at</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="remark in opcr_current?.opcr_remarks">
-                        <tr  v-if="remark.remarks && remark.remarks.trim() !== ''">
+                    <template v-for="remark in opcr_current?.opcr_remarks" :key="remark.id">
+                        <tr v-if="remark.remarks && remark.remarks.trim() !== ''">
                             <td>{{ remark.remarks }}</td>
                             <td>{{ remark.created_at }}</td>
+                            <td>
+                                <button
+                                    class="btn btn-sm btn-danger"
+                                    type="button"
+                                    @click="deleteRemark(remark.id)"
+                                >
+                                    Delete
+                                </button>
+                            </td>
                         </tr>
                     </template>
-
                 </tbody>
-
             </table>
             <div class="d-flex justify-content-center align-items-center gap-2">
                 <label class="mb-0">REMARKS:</label>
-
                 <input class="form-control" v-model="form.remarks" type="text" @input="markFinalRemarkUnsaved" />
                 <button class="btn btn-secondary text-white" @click="saveRemarks">Save Remarks</button>
             </div>
@@ -1561,6 +1568,23 @@ export default {
                     console.error('Failed to save remarks', errors);
                 }
             });
+        },
+        deleteRemark(remarkId) {
+            if (!remarkId) return;
+
+            if (!confirm('Are you sure you want to delete this remark?')) {
+                return;
+            }
+
+            axios.delete(`/review-approve/ratings/remark/${remarkId}`)
+                .then(() => {
+                    this.opcr_current.opcr_remarks = this.opcr_current.opcr_remarks.filter(
+                        remark => remark.id !== remarkId
+                    );
+                })
+                .catch(error => {
+                    console.error('Failed to delete remark', error);
+                });
         },
         canSubmit() {
         // loop through each row in opcr_data
