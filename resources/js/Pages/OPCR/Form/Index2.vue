@@ -337,6 +337,10 @@
                 <span class="text-danger font-weight-bold"><b>SAVE CHANGES THEN PRINT</b></span>
                 <div class="row justify-content-center">
                     <div class="col-md-12">
+                        <button v-if="rating_status_dt==-2 || opcr_id ==137" type="button" class="btn btn-primary mt-3 text-white" @click="submit()"
+                            :disabled="form.processing">
+                            Save changes
+                        </button>
                         <!-- <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()"
                             :disabled="form.processing">
                             Save changes
