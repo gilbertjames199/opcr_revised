@@ -585,7 +585,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/create',[AIPIndividualApproverController::class, 'create']);
         Route::post('/',[AIPIndividualApproverController::class,'store']);
         Route::get('/{id}/edit',[AIPIndividualApproverController::class, 'edit']);
-        Route::delete('/{}',[AIPIndividualApproverController::class, 'destroy']);
+        Route::delete('/{id}',[AIPIndividualApproverController::class, 'destroy']);
         Route::patch('/',[AIPIndividualApproverController::class, 'update']);
     });
     //Strategies and Activities

@@ -44,10 +44,10 @@ __webpack_require__.r(__webpack_exports__);
     //         }
     //     );
     // },
-    deleteSdg: function deleteSdg(id) {
-      var text = "WARNING!\nAre you sure you want to delete the Sustainable Development Goals?" + id;
+    deleteApprover: function deleteApprover(id) {
+      var text = "WARNING!\nAre you sure you want to delete the approver?";
       if (confirm(text) == true) {
-        this.$inertia["delete"]("/SDG/" + id);
+        this.$inertia["delete"]("/aip/approvers/" + id);
       }
     } // getAccomplishment(tar_id){
     //     this.$inertia.get(
@@ -306,7 +306,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return _toConsumableArray(_cache[13] || (_cache[13] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Edit", -1 /* CACHED */)]));
       }),
       _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["href"])]), _cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<Link class=\"text-danger dropdown-item\" @click=\"deleteSdg(dat.id)\">Delete\n                                                </Link>")], -1 /* CACHED */))])])])]);
+    }, 8 /* PROPS */, ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+      "class": "text-danger dropdown-item",
+      onClick: function onClick($event) {
+        return $options.deleteApprover(dat.id);
+      }
+    }, {
+      "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+        return _toConsumableArray(_cache[14] || (_cache[14] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Delete ", -1 /* CACHED */)]));
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["onClick"])])])])])]);
   }), 256 /* UNKEYED_FRAGMENT */))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ data }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {
     next: $props.data.next_page_url,
     prev: $props.data.prev_page_url

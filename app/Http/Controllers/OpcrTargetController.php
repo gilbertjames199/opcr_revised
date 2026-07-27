@@ -492,7 +492,7 @@ class OpcrTargetController extends Controller
                 //     // dd($item->is_included);
                 //     dd($targ);
                 // }
-                // dd($item);
+                // dd($item->opcr_stardard);
 
                 return [
                     'mfo_desc' => $item->MFO ? $item->MFO->mfo_desc : "",
@@ -510,7 +510,8 @@ class OpcrTargetController extends Controller
                     'office_performance_commitment_rating_list_id' => $opcr_list_id,
                     'division_outputs' => $item->divisionOutputs,
                     'allotted' => $allotted,
-                    'opcr_target_budget_id' => $opcr_target_budget_id
+                    'opcr_target_budget_id' => $opcr_target_budget_id,
+                    'opcr_standard'=>optional($item)->opcr_stardard
                 ];
             });
         // dd($data);

@@ -15,6 +15,9 @@ class AIPIndividualApproverController extends Controller
     }
 
     public function index(Request $request){
+        if (!in_array(auth()->user()->recid, [681, 682, 683, 684, 685])) {
+            return redirect()->back()->with('error', 'Access forbidden.');
+        }
         $data = AIPIndividualApprover::with(['userEmployee.Office'])->paginate(15);
 
         // dd($data);
@@ -59,8 +62,11 @@ class AIPIndividualApproverController extends Controller
         ]);
     }
 
-    public function destroy(Request $request){
-
+    public function destroy(Request $request, $id){
+        // dd($id);
+        $aip_app = AIPIndividualApprover::where('id', $id)->first();
+        $aip_app->delete();
+        return redirect()->back()->with('message','Successfully deleted');
     }
 
     public function update(Request $request){

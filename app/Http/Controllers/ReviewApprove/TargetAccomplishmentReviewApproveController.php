@@ -721,6 +721,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
     {
 
         // dd($request->type);
+        // dd($opcr_list_id);
         $data = [];
         if ($request->type == 'Review') {
             // dd(OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)->where('is_included', '1')->get());
@@ -931,6 +932,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 // 1561, 1562, 1564, 1572, 1566, 1568, 1567, 1570, 1797, 1569, 1571, 1577, 1576, 1565, 1580, 1579, 1578,
                 // 1728,     1729,     1730,     1731,     1732,     1733,     1678,     1724,     1725,     1726,     1727,     1734,
                 // dd($data->pluck('idpaps'));
+            // dd($data);
         } else {
             $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
             $opcr_id = $opcr_list_id;

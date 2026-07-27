@@ -648,7 +648,7 @@
                             </Link>
                         </li>
                         <!-- AIP APPROVER ********************************************************************************************************************  -->
-                        <li>
+                        <li v-if="[681, 682, 683, 684, 685].includes($page.props.auth.user.recid)">
                             <Link class="sidebar-link" href="/aip/approvers"
                                 :class="{ 'active': $page.url === '/aip/approvers' }">
 

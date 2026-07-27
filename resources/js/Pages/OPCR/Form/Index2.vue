@@ -369,7 +369,7 @@
                             </button>&nbsp;
                         </span> -->
                         <!-- rating_status_dt{{ rating_status_dt }} -->
-                         <!-- <span v-if="rating_status_dt==0">
+                        <!-- <span v-if="rating_status_dt==0">
                             <button type="button" class="btn btn-secondary mt-3 text-white" @click="submitRecallRating(0,-1, 'Successfully recalled OPCR submission', 'Are you sure you want to recall the submission of this OPCR')"
                                 :disabled="form.processing" >
                                 Recall
@@ -490,18 +490,18 @@
                     <table name="tabel" class="table table-hover table-striped">
                         <thead>
                             <tr>
-                            <th>
-                                <input
-                                type="checkbox"
-                                :checked="allSelected"
-                                v-model="allSelected"
-                                @change="toggleSelectAll($event)"
-                                />
-                            </th>
-                            <th></th>
-                            <th>File Name</th>
-                            <th>File Size</th>
-                            <th>Actions</th>
+                                <th>
+                                    <input
+                                    type="checkbox"
+                                    :checked="allSelected"
+                                    v-model="allSelected"
+                                    @change="toggleSelectAll($event)"
+                                    />
+                                </th>
+                                <th></th>
+                                <th>File Name</th>
+                                <th>File Size</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>

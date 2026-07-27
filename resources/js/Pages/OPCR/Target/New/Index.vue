@@ -69,8 +69,20 @@
                                     <!-- {{ dat.opcr_target_binary }}  -->
                                     <input type="checkbox"
                                         :checked="dat.opcr_target_binary"
+                                        :disabled="!dat.opcr_target_binary && !dat.opcr_standard"
                                         @click="toggleTarget(dat, dat.opcr_target_binary)"
                                     >
+                                    <div v-if="!dat.opcr_standard || Object.keys(dat.opcr_standard).length === 0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-primary text-white"
+                                            @click="openOPCRStandard(dat.idpaps)"
+                                        >
+                                            Create Standard
+                                        </button>
+
+                                        <!-- {{ dat.idpaps }} -->
+                                    </div>
                                 </td>
                                 <td>{{ dat.mfo_desc }}</td>
                                 <td v-if="index === 0 || dat.paps_desc !== data[index - 1].paps_desc"
@@ -81,18 +93,36 @@
                                     <Link :href="`/opcrbudgeting/edit/${dat.opcr_target_budget_id}`" v-if="dat.allotted!='0.00' && dat.allotted!=undefined">{{ dat.paps_desc }}</Link>
                                     <span v-else>{{ dat.paps_desc }}</span>
                                 </td>
-                                <td>
+                                <td class="p-0">
                                     <!-- {{ dat.division_outputs }} -->
-
-                                        <tr v-for="(div_output, div_index) in dat.division_outputs" :key="div_index">
-                                            <td>{{ div_output.output }}
-                                                <hr>
-                                            </td>
-                                        </tr>
-
-
+                                    <!-- <tr v-for="(div_output, div_index) in dat.division_outputs" :key="div_index">
+                                        <td>{{ div_output.output }}
+                                            <hr>
+                                        </td>
+                                    </tr> -->
+                                    <div
+                                        v-for="(div_output, div_index) in dat.division_outputs"
+                                        :key="div_index"
+                                        class="w-100"
+                                    >
+                                        <div class="px-3 py-2">
+                                            {{ div_output.output }}
+                                        </div>
+                                        <hr v-if="div_index < dat.division_outputs.length - 1"
+                                        style="
+                                                border: 0 !important;
+                                                border-top: 1px solid #000 !important;
+                                                background: #000 !important;
+                                                color: #000 !important;
+                                                opacity: 1 !important;
+                                                height: 1px !important;
+                                                margin: 0.5rem 0 !important;
+                                            "
+                                        >
+                                    </div>
                                 </td>
                                 <td>
+                                    <!-- {{ dat.opcr_standard }} -->
                                     {{ dat.performance_measure }}
                                 </td>
 
@@ -229,11 +259,15 @@ export default {
         },
         createTarget(idopcr, idpaps) {
 
-            this.form.post(`/opcrtargetrevised/store/${idopcr}/${idpaps}`);
+            this.form.post(`/opcrtargetrevised/store/${idopcr}/${idpaps}`, {
+                preserveScroll: true,
+            });
 
         },
         deleteTarget(opcrTargetId) {
-            this.$inertia.delete("/opcrtargetrevised/" + opcrTargetId);
+            this.$inertia.delete("/opcrtargetrevised/" + opcrTargetId, {
+                preserveScroll: true,
+            });
             // let text = "WARNING!\nAre you sure you want to delete the Target?";
             // if (confirm(text) == true) {
             //     this.$inertia.delete("/opcrtargetrevised/" + opcrTargetId);
@@ -263,7 +297,11 @@ export default {
             //         }
             //     }
             // });
-        }
+        },
+        // Open OPCR Standard in New Tab
+        openOPCRStandard(idpaps) {
+            window.open(`/OPCRpaps/create/${idpaps}`, '_blank');
+        },
     }
 };
 </script>

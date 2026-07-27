@@ -103,8 +103,8 @@
                                                 <Link class="dropdown-item" :href="`/aip/approvers/${dat.id}/edit`">Edit</Link>
                                             </li>
                                             <li>
-                                                <!--<Link class="text-danger dropdown-item" @click="deleteSdg(dat.id)">Delete
-                                                </Link>-->
+                                                <Link class="text-danger dropdown-item" @click="deleteApprover(dat.id)">Delete
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -166,10 +166,10 @@ export default {
         //         }
         //     );
         // },
-        deleteSdg(id) {
-            let text = "WARNING!\nAre you sure you want to delete the Sustainable Development Goals?" + id;
+        deleteApprover(id) {
+            let text = "WARNING!\nAre you sure you want to delete the approver?" ;
             if (confirm(text) == true) {
-                this.$inertia.delete("/SDG/" + id);
+                this.$inertia.delete("/aip/approvers/" + id);
             }
         },
 
