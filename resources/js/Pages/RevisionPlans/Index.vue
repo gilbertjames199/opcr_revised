@@ -2125,6 +2125,10 @@ export default {
             // Use the same filename logic you already have, or customize as needed
             // Use the same filename logic you already have, or customize as needed
             // const file_name = this.opcr_current.semester + " - " + this.opcr_current.year + " - " + this.opcr_current.office.FFUNCTION + ".xlsx";
+            if(this.year_filtering_d === ''){
+                alert('Please select year first before printing.');
+                return;
+            }
             const file_name = this.year_filtering_d+ " "+this.ssf_filter+" AIP Test "+format_type+".xlsx"
             try {
                 const response = await axios.get('/api/api_ppa/print/aip/excel/version', {

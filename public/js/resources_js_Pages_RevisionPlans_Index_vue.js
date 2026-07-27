@@ -1002,12 +1002,16 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         return _regenerator().w(function (_context5) {
           while (1) switch (_context5.p = _context5.n) {
             case 0:
-              // Use the same filename logic you already have, or customize as needed
-              // Use the same filename logic you already have, or customize as needed
-              // const file_name = this.opcr_current.semester + " - " + this.opcr_current.year + " - " + this.opcr_current.office.FFUNCTION + ".xlsx";
+              if (!(_this7.year_filtering_d === '')) {
+                _context5.n = 1;
+                break;
+              }
+              alert('Please select year first before printing.');
+              return _context5.a(2);
+            case 1:
               file_name = _this7.year_filtering_d + " " + _this7.ssf_filter + " AIP Test " + format_type + ".xlsx";
-              _context5.p = 1;
-              _context5.n = 2;
+              _context5.p = 2;
+              _context5.n = 3;
               return axios.get('/api/api_ppa/print/aip/excel/version', {
                 params: {
                   ccet: _this7.ccet,
@@ -1017,7 +1021,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
                 },
                 responseType: 'blob' // required for file download
               });
-            case 2:
+            case 3:
               response = _context5.v;
               // Create a blob URL and trigger the download
               url = window.URL.createObjectURL(new Blob([response.data]));
@@ -1030,17 +1034,17 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               // Clean up
               link.remove();
               window.URL.revokeObjectURL(url);
-              _context5.n = 4;
+              _context5.n = 5;
               break;
-            case 3:
-              _context5.p = 3;
+            case 4:
+              _context5.p = 4;
               _t2 = _context5.v;
               console.error('Download failed:', _t2);
               // Show user feedback (e.g., toast notification)
-            case 4:
+            case 5:
               return _context5.a(2);
           }
-        }, _callee5, null, [[1, 3]]);
+        }, _callee5, null, [[2, 4]]);
       }))();
     }
   }
