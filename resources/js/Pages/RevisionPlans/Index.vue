@@ -62,6 +62,9 @@
                         <button @click="downloadExcel('aip')" class="tool-btn tool-btn-success">
                             <i class="fas fa-file-excel"></i> Export Excel Validation (With Expected Outputs)
                         </button>
+                        <button @click="downloadExcel('single_sheet')" class="tool-btn tool-btn-success">
+                            <i class="fas fa-file-excel"></i> Export Excel Validation (Single Sheet)
+                        </button>
                         <button class="tool-btn tool-btn-outline" @click="showFilter()">
                             <i class="fas fa-filter"></i> Filter
                         </button>

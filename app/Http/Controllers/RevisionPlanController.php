@@ -4138,6 +4138,79 @@ class RevisionPlanController extends Controller
             'office'
         ])
             ->whereYear('date_start', $year)
+            ->where('is_included_to_aip',1)
+            ->when(is_null($request->ssf_filter), function ($query) {
+
+                $query->where(function ($q) {
+
+                    /*
+                    |----------------------------------------------------------
+                    | Non-GAS Revision Plans (uses paps)
+                    |----------------------------------------------------------
+                    */
+
+                    // General Fund
+                    $q->where(function ($qq) {
+                        $qq->where('scope', '<>', 'gas')
+                            ->where('status', 1)
+                            ->whereHas('paps', function ($p) {
+                                $p->where('source_of_funds', 'gen_fund');
+                            });
+                    })
+
+                    // Development Fund
+                    ->orWhere(function ($qq) {
+                        $qq->where('scope', '<>', 'gas')
+                            ->whereIn('status', [1, 0, -1, -2])
+                            ->whereHas('paps', function ($p) {
+                                $p->where('source_of_funds', 'dev');
+                            });
+                    })
+
+                    // Other Sources
+                    ->orWhere(function ($qq) {
+                        $qq->where('scope', '<>', 'gas')
+                            ->whereIn('status', [1, 0, -1, -2])
+                            ->whereHas('paps', function ($p) {
+                                $p->where('source_of_funds', 'other')
+                                ->whereIn('FFUNCCOD', ['8751', '1071']);
+                            });
+                    })
+
+                    /*
+                    |----------------------------------------------------------
+                    | GAS Revision Plans (uses gasPaps)
+                    |----------------------------------------------------------
+                    */
+
+                    ->orWhere(function ($qq) {
+                        $qq->where('scope', 'gas')
+                            ->where('status', 1)
+                            ->whereHas('gasPaps', function ($p) {
+                                $p->where('source_of_funds', 'gen_fund');
+                            });
+                    })
+
+                    ->orWhere(function ($qq) {
+                        $qq->where('scope', 'gas')
+                            ->whereIn('status', [1, 0, -1, -2])
+                            ->whereHas('gasPaps', function ($p) {
+                                $p->where('source_of_funds', 'dev');
+                            });
+                    })
+
+                    ->orWhere(function ($qq) {
+                        $qq->where('scope', 'gas')
+                            ->whereIn('status', [1, 0, -1, -2])
+                            ->whereHas('gasPaps', function ($p) {
+                                $p->where('source_of_funds', 'other')
+                                ->whereIn('FFUNCCOD', ['8751', '1071']);
+                            });
+                    });
+
+                });
+
+            })
             ->when(request()->ssf_filter == 'dev' || request()->ssf_filter == 'other', function ($query) use($request){
                 // dd($request->ssf_filter);
                 if ($request->ssf_filter === 'dev') {
@@ -4722,6 +4795,7 @@ class RevisionPlanController extends Controller
                 // return $item;
             })
             ->values();
+        // return $final_strategies;
         // dd($final_strategies, $strategies);
         // dd($final_strategies->pluck('grand_total_mooe'), $final_strategies->pluck('grand_total_ps'), $final_strategies->pluck('grand_total_co'), $final_strategies->pluck('grand_total_fe'));
         // dd($final_strategies[78], $final_strategies[77]);
@@ -4734,10 +4808,10 @@ class RevisionPlanController extends Controller
         // Define the seven sheets in the required order
         $sheets = [
             ['name' => 'General Public Services', 'data' => $general_public_services],
-            ['name' => 'Economic Services',      'data' => $economic_services],
             ['name' => 'Social Services',        'data' => $social_services],
-            ['name' => 'Other Services',         'data' => $other_services],
+            ['name' => 'Economic Services',      'data' => $economic_services],
             ['name' => 'DEV',                    'data' => $dev],
+            ['name' => 'Other Services',         'data' => $other_services],
             ['name' => 'LDRRMF',                 'data' => $ldrrmf],
             ['name' => 'Other Sources',          'data' => $other],
         ];
@@ -4775,8 +4849,8 @@ class RevisionPlanController extends Controller
                         'CO',
                         'TOTAL',
                         'Climate Change Adaptation',
-                        'Cliamte Change Mitigation',
-                        'Climate Change TOpology Code',
+                        'Climate Change Mitigation',
+                        'Climate Change Topology Code',
                         'Sector',
                         'Source of Funds',
                         'Level'
@@ -4822,39 +4896,39 @@ class RevisionPlanController extends Controller
                             // $item['aip_code']            ?? '',
                             // 'AIP REFERENCE CODE',
                             ($item['level'] == 2) ? ($item['activity_aip_code'] ?? '') : ($item['aip_code'] ?? ''),
-                            // 'PROGRAM/PROJECT/TITLE Description',
+                            // 'PROGRAM/PROJECT/TITLE Description',-----------------------------------------------
                             $projectTitle,
-                            // 'IMPLEMENTING OFFICE/DEPARTMENT',
+                            // 'IMPLEMENTING OFFICE/DEPARTMENT',--------------------------------------------------
                             $item['implementing_office']  ?? '',
-                            // 'Start Date',
+                            // 'Start Date',----------------------------------------------------------------------
                             $start_date,
-                            // 'Completion Date',
+                            // 'Completion Date',-----------------------------------------------------------------
                             $end_date,
-                            // 'EXPECTED OUTPUTS',
+                            // 'EXPECTED OUTPUTS',----------------------------------------------------------------
                             $item['expected_output']  ?? '',
-                            // 'FUNDING SOURCE',
+                            // 'FUNDING SOURCE',------------------------------------------------------------------
                             $sourceLabel,
-                            // 'PS',
+                            // 'PS',------------------------------------------------------------------------------
                             $ps,
-                            // 'MOOE',
+                            // 'MOOE',----------------------------------------------------------------------------
                             $mooe,
-                            // 'FE',
+                            // 'FE',------------------------------------------------------------------------------
                             $fe,
-                            // 'CO',
+                            // 'CO',------------------------------------------------------------------------------
                             $co,
-                            // 'TOTAL',
+                            // 'TOTAL',---------------------------------------------------------------------------
                             $total,
-                            // 'Climate Change Adaptation',
+                            // 'Climate Change Adaptation',-------------------------------------------------------
                             $item['ccet_code_adaptation']  ?? '',
-                            // 'Cliamte Change Mitigation',
+                            // 'Cliamte Change Mitigation',-------------------------------------------------------
                             $item['ccet_code_mitigation']  ?? '',
-                            // 'Climate Change TOpology Code',
+                            // 'Climate Change TOpology Code',----------------------------------------------------
                             $item['ccet_code']  ?? '',
-                            // 'Sector',
+                            // 'Sector',--------------------------------------------------------------------------
                             $item['sector']  ?? '',
-                            // 'Source of Funds',
+                            // 'Source of Funds',-----------------------------------------------------------------
                             $sourceLabel,
-                            // 'Level'
+                            // 'Level'----------------------------------------------------------------------------
                             $item['level']  ?? ''
 
                         ];
@@ -4869,7 +4943,154 @@ class RevisionPlanController extends Controller
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             ]);
         }
-        else{
+        elseif ($request->get('format_type') == 'single_sheet') {
+
+            return response()->streamDownload(function () use ($sheets) {
+
+                $writer = WriterEntityFactory::createXLSXWriter();
+                $writer->openToFile('php://output');
+
+                $writer->getCurrentSheet()->setName('AIP');
+
+                // Header
+                $writer->addRow(
+                    WriterEntityFactory::createRowFromArray([
+                        'AIP REFERENCE CODE',
+                        'PROGRAM/PROJECT/TITLE Description',
+                        'IMPLEMENTING OFFICE/DEPARTMENT',
+                        'Start Date',
+                        'Completion Date',
+                        'EXPECTED OUTPUTS',
+                        'FUNDING SOURCE',
+                        'PS',
+                        'MOOE',
+                        'FE',
+                        'CO',
+                        'TOTAL',
+                        'Climate Change Adaptation',
+                        'Climate Change Mitigation',
+                        'Climate Change Topology Code',
+                        'Sector',
+                        'Source of Funds',
+                        'Level'
+                    ])
+                );
+
+                foreach ($sheets as $sheet) {
+
+                    // Category title
+                    $writer->addRow(
+                        WriterEntityFactory::createRowFromArray([
+                            $sheet['name']
+                        ])
+                    );
+
+                    $totalPS = 0;
+                    $totalMOOE = 0;
+                    $totalFE = 0;
+                    $totalCO = 0;
+                    $grandTotal = 0;
+
+                    $totalCCA = 0;
+                    $totalCCM = 0;
+
+                    foreach ($sheet['data'] as $item) {
+
+                        $mooe = (float)($item['total_mooe'] ?? 0);
+                        $ps   = (float)($item['total_ps'] ?? 0);
+                        $fe   = (float)($item['total_fe'] ?? 0);
+                        $co   = (float)($item['total_co'] ?? 0);
+
+                        $total = $mooe + $ps + $fe + $co;
+
+                        $projectTitle = trim(strip_tags($item['project_title'] ?? ''));
+
+                        $fundLabels = [
+                            'gen_fund' => 'GF',
+                            'dev'      => 'DF',
+                            'ldrrmf'   => 'LDRRMF',
+                            'other'    => 'Other Sources',
+                        ];
+
+                        $sourceLabel = $fundLabels[$item['source_of_funds'] ?? '']
+                            ?? ($item['source_of_funds'] ?? '');
+
+                        $start_date = 'January '.$item['year'];
+                        $end_date   = 'December '.$item['year'];
+
+                        // accumulate totals
+                        $totalPS += $ps;
+                        $totalMOOE += $mooe;
+                        $totalFE += $fe;
+                        $totalCO += $co;
+                        $grandTotal += $total;
+
+                        $totalCCA += (float)($item['ccet_code_adaptation'] ?? 0);
+                        $totalCCM += (float)($item['ccet_code_mitigation'] ?? 0);
+
+                        $writer->addRow(
+                            WriterEntityFactory::createRowFromArray([
+                                ($item['level'] == 2)
+                                    ? ($item['activity_aip_code'] ?? '')
+                                    : ($item['aip_code'] ?? ''),
+
+                                $projectTitle,
+                                $item['implementing_office'] ?? '',
+                                $start_date,
+                                $end_date,
+                                $item['expected_output'] ?? '',
+                                $sourceLabel,
+                                $ps,
+                                $mooe,
+                                $fe,
+                                $co,
+                                $total,
+                                $item['ccet_code_adaptation'] ?? '',
+                                $item['ccet_code_mitigation'] ?? '',
+                                $item['ccet_code'] ?? '',
+                                $item['sector'] ?? '',
+                                $sourceLabel,
+                                $item['level'] ?? ''
+                            ])
+                        );
+                    }
+
+                    // Totals row
+                    $writer->addRow(
+                        WriterEntityFactory::createRowFromArray([
+                            '',
+                            'TOTAL',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            $totalPS,
+                            $totalMOOE,
+                            $totalFE,
+                            $totalCO,
+                            $grandTotal,
+                            $totalCCA,
+                            $totalCCM,
+                            '',
+                            '',
+                            '',
+                            ''
+                        ])
+                    );
+
+                    // Blank row between categories
+                    $writer->addRow(
+                        WriterEntityFactory::createRowFromArray([])
+                    );
+                }
+
+                $writer->close();
+
+            }, $filename, [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            ]);
+        }else{
             return response()->streamDownload(function () use ($sheets) {
                 $writer = WriterEntityFactory::createXLSXWriter();
                 $writer->openToFile('php://output');
