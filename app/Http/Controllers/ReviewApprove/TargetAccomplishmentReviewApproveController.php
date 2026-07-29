@@ -489,7 +489,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'opcr_remarks'=> optional($item)->opcrRemarks
                     ];
                 });
-                dd($data);
+                // dd($data);
             // $data->getCollection()->transform(function ($item) {
             //     $opcr_id = $item->id;
             //     // dd($item);
