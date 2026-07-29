@@ -491,7 +491,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'opcr_remarks'=> optional($item)->opcrRemarks
                     ];
                 });
-            dd(OfficePerformanceCommitmentRatingList::where('rating_status','>',-1)->get());
+            dd(OfficePerformanceCommitmentRatingList::where('rating_status','>',-1)->get()->pluck('id'));
                 // dd(DB::getQueryLog());
                 // dd($data);
             // $data->getCollection()->transform(function ($item) {
