@@ -98,6 +98,7 @@
                             <tr v-for="dat in data.data">
                                 <td>
                                     {{ dat.office.FFUNCTION }}
+                                    {{ dat.id }}
                                 </td>
                                 <td>
                                     {{ dat.semester }}
