@@ -420,6 +420,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
         // dd($disk);
         $disk = 'public';
         if ((auth()->user()->department_code == '04') && $request->source!='ppdo_approval') {
+            DB::flushQueryLog();
+            DB::enableQueryLog();
             $data = OfficePerformanceCommitmentRatingList::
                     with([
                         'FFUNCCODOffice',
@@ -489,6 +491,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'opcr_remarks'=> optional($item)->opcrRemarks
                     ];
                 });
+
+                dd(DB::getQueryLog());
                 // dd($data);
             // $data->getCollection()->transform(function ($item) {
             //     $opcr_id = $item->id;
