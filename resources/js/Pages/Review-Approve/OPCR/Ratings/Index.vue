@@ -98,7 +98,7 @@
                             <tr v-for="dat in data.data">
                                 <td>
                                     {{ dat.office.FFUNCTION }}
-                                    {{ dat.id }}
+                                    <!-- {{ dat.id }} -->
                                 </td>
                                 <td>
                                     {{ dat.semester }}
@@ -155,7 +155,7 @@
                 </div>
 
             </div>
-            {{ data }}
+            <!-- {{ data }} -->
         </div>
         <!-- </div> -->
         <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`" :z-index="1055">
