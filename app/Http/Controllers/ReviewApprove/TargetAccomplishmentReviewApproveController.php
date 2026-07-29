@@ -494,13 +494,27 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'opcr_remarks'=> optional($item)->opcrRemarks
                     ];
                 });
-
+            // dd($data);
                 dd(
-    OfficePerformanceCommitmentRatingList::where('rating_status', '>', -1)
+    OfficePerformanceCommitmentRatingList::
+                    with([
+                        'FFUNCCODOffice',
+                        'opcrTarget',
+                        'opcrTarget.opcr_rating',
+                        'opcr_rating',
+                        'opcrRemarks'
+                    ])->where('rating_status', '>', -1)
         ->orderBy('year', 'desc')
         ->orderBy('semester', 'desc')
         ->toSql(),
-    OfficePerformanceCommitmentRatingList::where('rating_status', '>', -1)
+    OfficePerformanceCommitmentRatingList::
+                    with([
+                        'FFUNCCODOffice',
+                        'opcrTarget',
+                        'opcrTarget.opcr_rating',
+                        'opcr_rating',
+                        'opcrRemarks'
+                    ])->where('rating_status', '>', -1)
         ->orderBy('year', 'desc')
         ->orderBy('semester', 'desc')
         ->get()
