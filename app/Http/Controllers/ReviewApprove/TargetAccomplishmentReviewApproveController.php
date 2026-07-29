@@ -517,7 +517,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     ])->where('rating_status', '>', -1)
         ->orderBy('year', 'desc')
         ->orderBy('semester', 'desc')
-        ->get()
+        ->paginate(10)
         ->pluck('id')
 );
     //         dd(OfficePerformanceCommitmentRatingList::with([
