@@ -506,6 +506,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     ])->where('rating_status', '>', -1)
         ->orderBy('year', 'desc')
         ->orderBy('semester', 'desc')
+        ->orderBy('id','desc')
         ->toSql(),
     OfficePerformanceCommitmentRatingList::
                     with([
@@ -517,6 +518,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     ])->where('rating_status', '>', -1)
         ->orderBy('year', 'desc')
         ->orderBy('semester', 'desc')
+        ->orderBy('id','desc')
         ->paginate(10)
         ->pluck('id')
 );
