@@ -494,6 +494,10 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'opcr_remarks'=> optional($item)->opcrRemarks
                     ];
                 });
+
+                dd(
+    OfficePerformanceCommitmentRatingList::query()->toSql(),  OfficePerformanceCommitmentRatingList::query()->getQuery()
+);
     //         dd(OfficePerformanceCommitmentRatingList::with([
     //     'FFUNCCODOffice',
     //     'opcrTarget',
