@@ -512,7 +512,24 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->orderBy('semester','desc')
                 ->orderBy('id','desc')
                 ->get()
-                ->pluck('id')
+                ->pluck('id'),
+                OfficePerformanceCommitmentRatingList::with(['FFUNCCODOffice',
+                        'opcrTarget',
+                        'opcrTarget.opcr_rating',
+                        'opcr_rating',
+                        'opcrRemarks'])
+                ->where('rating_status','>',-1)
+                ->orderBy('year','desc')
+                ->orderBy('semester','desc')
+                ->orderBy('id','desc')
+                ->get()
+                ->map(function($item){
+                    return [
+                        'sem'=>$item->semester,
+                        'FFUNCTION'=>optional(optional($item)->FFUNCCODOffice)->FFUNCTION
+                    ];
+                }),
+
         );
                 // dd(DB::getQueryLog());
                 // dd($data);
