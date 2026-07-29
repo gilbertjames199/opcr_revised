@@ -154,7 +154,7 @@
                 </div>
 
             </div>
-
+            {{ data }}
         </div>
         <!-- </div> -->
         <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`" :z-index="1055">

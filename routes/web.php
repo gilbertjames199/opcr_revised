@@ -1040,6 +1040,9 @@ Route::middleware('auth')->group(function () {
         // reviewOPCRRating
         // approveOPCRRating
     });
+    Route::prefix('review-approve-ratings-ppdo')->group(function(){
+        Route::get('/', [TargetAccomplishmentReviewApproveController::class, 'index_rating']);
+    });
     Route::prefix('review-approve-ratings')->group(function(){
         Route::get('/', [TargetAccomplishmentReviewApproveController::class, 'index_rating']);
         Route::get('/{opcr_list_id}/view/opcr/rating/submission',

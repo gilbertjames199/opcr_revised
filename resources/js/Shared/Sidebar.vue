@@ -691,8 +691,8 @@
                             </Link>
                         </li>
                         <li>
-                            <Link class="sidebar-link" href="/review-approve-ratings/"
-                                :class="{ 'active': $page.url === '/review-approve-ratings/' }">
+                            <Link class="sidebar-link" href="/review-approve-ratings-ppdo/"
+                                :class="{ 'active': $page.url === '/review-approve-ratings-ppdo/' }">
                             <span class="title">Rating</span>
                             </Link>
                         </li>
