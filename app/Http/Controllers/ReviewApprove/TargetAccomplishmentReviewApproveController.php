@@ -432,10 +432,11 @@ class TargetAccomplishmentReviewApproveController extends Controller
                     ])
                 ->where('rating_status', '>', -1)
                 ->orderBy('year', 'desc')
-                ->orderBy('semester', 'desc');
-            dd($data->get()->pluck('id'));
+                ->orderBy('semester', 'desc')
+            // dd($data->get()->pluck('id'));
                 // ->orderBy('id','desc')
-                $data->paginate(10)
+                // $data
+                ->paginate(10)
                 ->through(function($item){
                     $opcr_id = $item->id;
                     // dd($item);
