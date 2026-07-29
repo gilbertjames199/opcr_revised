@@ -491,7 +491,15 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'opcr_remarks'=> optional($item)->opcrRemarks
                     ];
                 });
-            dd(OfficePerformanceCommitmentRatingList::where('rating_status','>',-1)->get()->pluck('id'));
+            dd(OfficePerformanceCommitmentRatingList::with([
+        'FFUNCCODOffice',
+        'opcrTarget',
+        'opcrTarget.opcr_rating',
+        'opcr_rating',
+        'opcrRemarks'
+    ])
+    ->where('id',131)
+    ->first());
                 // dd(DB::getQueryLog());
                 // dd($data);
             // $data->getCollection()->transform(function ($item) {
