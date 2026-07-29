@@ -433,7 +433,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->where('rating_status', '>', -1)
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
-
+                ->orderBy('id','desc')
                 ->paginate(10)
                 ->through(function($item){
                     $opcr_id = $item->id;
@@ -501,36 +501,36 @@ class TargetAccomplishmentReviewApproveController extends Controller
     // ])
     // ->where('id',131)
     // ->first());
-            dd(
-            OfficePerformanceCommitmentRatingList::with(['FFUNCCODOffice',
-                        'opcrTarget',
-                        'opcrTarget.opcr_rating',
-                        'opcr_rating',
-                        'opcrRemarks'])
-                ->where('rating_status','>',-1)
-                ->orderBy('year','desc')
-                ->orderBy('semester','desc')
-                ->orderBy('id','desc')
-                ->get()
-                ->pluck('id'),
-                OfficePerformanceCommitmentRatingList::with(['FFUNCCODOffice',
-                        'opcrTarget',
-                        'opcrTarget.opcr_rating',
-                        'opcr_rating',
-                        'opcrRemarks'])
-                ->where('rating_status','>',-1)
-                ->orderBy('year','desc')
-                ->orderBy('semester','desc')
-                ->orderBy('id','desc')
-                ->get()
-                ->map(function($item){
-                    return [
-                        'sem'=>$item->semester,
-                        'FFUNCTION'=>optional(optional($item)->FFUNCCODOffice)->FFUNCTION
-                    ];
-                }),
+        //     dd(
+        //     OfficePerformanceCommitmentRatingList::with(['FFUNCCODOffice',
+        //                 'opcrTarget',
+        //                 'opcrTarget.opcr_rating',
+        //                 'opcr_rating',
+        //                 'opcrRemarks'])
+        //         ->where('rating_status','>',-1)
+        //         ->orderBy('year','desc')
+        //         ->orderBy('semester','desc')
+        //         ->orderBy('id','desc')
+        //         ->get()
+        //         ->pluck('id'),
+        //         OfficePerformanceCommitmentRatingList::with(['FFUNCCODOffice',
+        //                 'opcrTarget',
+        //                 'opcrTarget.opcr_rating',
+        //                 'opcr_rating',
+        //                 'opcrRemarks'])
+        //         ->where('rating_status','>',-1)
+        //         ->orderBy('year','desc')
+        //         ->orderBy('semester','desc')
+        //         ->orderBy('id','desc')
+        //         ->get()
+        //         ->map(function($item){
+        //             return [
+        //                 'sem'=>$item->semester,
+        //                 'FFUNCTION'=>optional(optional($item)->FFUNCCODOffice)->FFUNCTION
+        //             ];
+        //         }),
 
-        );
+        // );
                 // dd(DB::getQueryLog());
                 // dd($data);
             // $data->getCollection()->transform(function ($item) {
