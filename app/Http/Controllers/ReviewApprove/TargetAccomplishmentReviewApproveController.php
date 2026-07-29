@@ -496,7 +496,15 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 });
 
                 dd(
-    OfficePerformanceCommitmentRatingList::query()->toSql(),  OfficePerformanceCommitmentRatingList::query()->getQuery()
+    OfficePerformanceCommitmentRatingList::where('rating_status', '>', -1)
+        ->orderBy('year', 'desc')
+        ->orderBy('semester', 'desc')
+        ->toSql(),
+    OfficePerformanceCommitmentRatingList::where('rating_status', '>', -1)
+        ->orderBy('year', 'desc')
+        ->orderBy('semester', 'desc')
+        ->get()
+        ->pluck('id')
 );
     //         dd(OfficePerformanceCommitmentRatingList::with([
     //     'FFUNCCODOffice',
