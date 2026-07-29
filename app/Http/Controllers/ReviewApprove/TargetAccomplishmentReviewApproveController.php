@@ -433,6 +433,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->where('rating_status', '>', -1)
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
+
                 ->paginate(10)
                 ->through(function($item){
                     $opcr_id = $item->id;
@@ -491,15 +492,28 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'opcr_remarks'=> optional($item)->opcrRemarks
                     ];
                 });
-            dd(OfficePerformanceCommitmentRatingList::with([
-        'FFUNCCODOffice',
-        'opcrTarget',
-        'opcrTarget.opcr_rating',
-        'opcr_rating',
-        'opcrRemarks'
-    ])
-    ->where('id',131)
-    ->first());
+    //         dd(OfficePerformanceCommitmentRatingList::with([
+    //     'FFUNCCODOffice',
+    //     'opcrTarget',
+    //     'opcrTarget.opcr_rating',
+    //     'opcr_rating',
+    //     'opcrRemarks'
+    // ])
+    // ->where('id',131)
+    // ->first());
+            dd(
+            OfficePerformanceCommitmentRatingList::with(['FFUNCCODOffice',
+                        'opcrTarget',
+                        'opcrTarget.opcr_rating',
+                        'opcr_rating',
+                        'opcrRemarks'])
+                ->where('rating_status','>',-1)
+                ->orderBy('year','desc')
+                ->orderBy('semester','desc')
+                ->orderBy('id','desc')
+                ->get()
+                ->pluck('id')
+        );
                 // dd(DB::getQueryLog());
                 // dd($data);
             // $data->getCollection()->transform(function ($item) {
