@@ -4139,78 +4139,78 @@ class RevisionPlanController extends Controller
         ])
             ->whereYear('date_start', $year)
             ->where('is_included_to_aip',1)
-            ->when(is_null($request->ssf_filter), function ($query) {
+            // ->when(is_null($request->ssf_filter), function ($query) {
 
-                $query->where(function ($q) {
+            //     $query->where(function ($q) {
 
-                    /*
-                    |----------------------------------------------------------
-                    | Non-GAS Revision Plans (uses paps)
-                    |----------------------------------------------------------
-                    */
+            //         /*
+            //         |----------------------------------------------------------
+            //         | Non-GAS Revision Plans (uses paps)
+            //         |----------------------------------------------------------
+            //         */
 
-                    // General Fund
-                    $q->where(function ($qq) {
-                        $qq->where('scope', '<>', 'gas')
-                            ->where('status', 1)
-                            ->whereHas('paps', function ($p) {
-                                $p->where('source_of_funds', 'gen_fund');
-                            });
-                    })
+            //         // General Fund
+            //         $q->where(function ($qq) {
+            //             $qq->where('scope', '<>', 'gas')
+            //                 ->where('status', 1)
+            //                 ->whereHas('paps', function ($p) {
+            //                     $p->where('source_of_funds', 'gen_fund');
+            //                 });
+            //         })
 
-                    // Development Fund
-                    ->orWhere(function ($qq) {
-                        $qq->where('scope', '<>', 'gas')
-                            ->whereIn('status', [1, 0, -1, -2])
-                            ->whereHas('paps', function ($p) {
-                                $p->where('source_of_funds', 'dev');
-                            });
-                    })
+            //         // Development Fund
+            //         ->orWhere(function ($qq) {
+            //             $qq->where('scope', '<>', 'gas')
+            //                 ->whereIn('status', [1, 0, -1, -2])
+            //                 ->whereHas('paps', function ($p) {
+            //                     $p->where('source_of_funds', 'dev');
+            //                 });
+            //         })
 
-                    // Other Sources
-                    ->orWhere(function ($qq) {
-                        $qq->where('scope', '<>', 'gas')
-                            ->whereIn('status', [1, 0, -1, -2])
-                            ->whereHas('paps', function ($p) {
-                                $p->where('source_of_funds', 'other')
-                                ->whereIn('FFUNCCOD', ['8751', '1071']);
-                            });
-                    })
+            //         // Other Sources
+            //         ->orWhere(function ($qq) {
+            //             $qq->where('scope', '<>', 'gas')
+            //                 ->whereIn('status', [1, 0, -1, -2])
+            //                 ->whereHas('paps', function ($p) {
+            //                     $p->where('source_of_funds', 'other')
+            //                     ->whereIn('FFUNCCOD', ['8751', '1071']);
+            //                 });
+            //         })
 
-                    /*
-                    |----------------------------------------------------------
-                    | GAS Revision Plans (uses gasPaps)
-                    |----------------------------------------------------------
-                    */
+            //         /*
+            //         |----------------------------------------------------------
+            //         | GAS Revision Plans (uses gasPaps)
+            //         |----------------------------------------------------------
+            //         */
 
-                    ->orWhere(function ($qq) {
-                        $qq->where('scope', 'gas')
-                            ->where('status', 1)
-                            ->whereHas('gasPaps', function ($p) {
-                                $p->where('source_of_funds', 'gen_fund');
-                            });
-                    })
+            //         ->orWhere(function ($qq) {
+            //             $qq->where('scope', 'gas')
+            //                 ->where('status', 1)
+            //                 ->whereHas('gasPaps', function ($p) {
+            //                     $p->where('source_of_funds', 'gen_fund');
+            //                 });
+            //         })
 
-                    ->orWhere(function ($qq) {
-                        $qq->where('scope', 'gas')
-                            ->whereIn('status', [1, 0, -1, -2])
-                            ->whereHas('gasPaps', function ($p) {
-                                $p->where('source_of_funds', 'dev');
-                            });
-                    })
+            //         ->orWhere(function ($qq) {
+            //             $qq->where('scope', 'gas')
+            //                 ->whereIn('status', [1, 0, -1, -2])
+            //                 ->whereHas('gasPaps', function ($p) {
+            //                     $p->where('source_of_funds', 'dev');
+            //                 });
+            //         })
 
-                    ->orWhere(function ($qq) {
-                        $qq->where('scope', 'gas')
-                            ->whereIn('status', [1, 0, -1, -2])
-                            ->whereHas('gasPaps', function ($p) {
-                                $p->where('source_of_funds', 'other')
-                                ->whereIn('FFUNCCOD', ['8751', '1071']);
-                            });
-                    });
+            //         ->orWhere(function ($qq) {
+            //             $qq->where('scope', 'gas')
+            //                 ->whereIn('status', [1, 0, -1, -2])
+            //                 ->whereHas('gasPaps', function ($p) {
+            //                     $p->where('source_of_funds', 'other')
+            //                     ->whereIn('FFUNCCOD', ['8751', '1071']);
+            //                 });
+            //         });
 
-                });
+            //     });
 
-            })
+            // })
             ->when(request()->ssf_filter == 'dev' || request()->ssf_filter == 'other', function ($query) use($request){
                 // dd($request->ssf_filter);
                 if ($request->ssf_filter === 'dev') {

@@ -590,6 +590,7 @@ class OpcrTargetController extends Controller
         // }
         // dd("dd");
         $off = FFUNCCOD::where('FFUNCCOD', $opcr_list->FFUNCCOD)->first();
+        // dd($opcr_list);
         return inertia('OPCR/Target/New/Index', [
             "opcr_list_id" => $opcr_list_id,
             "opcr_list" => $opcr_list,

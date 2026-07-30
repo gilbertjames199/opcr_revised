@@ -6,6 +6,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>OPCR Targets </h3>
+            <!-- {{ opcr_list }} -->
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -40,6 +41,13 @@
         <div class="peers fxw-nw jc-sb ai-c">
             <div v-if="office"><b>Office: </b><u>{{ office.FFUNCTION }}</u></div>
             <p><b>Status</b>: {{ getStatus(opcr_list.target_status) }}</p>
+            <p><b>Period</b>:
+                <u>
+                    <span v-if="opcr_list.semester=='Second Semester'">July to December</span>
+                    <span v-else>January to June</span>
+                    {{ opcr_list.year }}
+                </u>
+            </p>
         </div>
 
         <div class="masonry-item w-100">
@@ -83,6 +91,13 @@
 
                                         <!-- {{ dat.idpaps }} -->
                                     </div>
+                                    <div
+                                        v-if="is_submitted && (!dat.opcr_standard || Object.keys(dat.opcr_standard).length === 0)"
+                                        class="alert alert-warning py-2 mb-0"
+                                    >   <i class="fas fa-triangle-exclamation me-2"></i>
+                                        <strong>Warning:</strong> This PPA has no standard assigned.
+                                    </div>
+                                    <!-- {{ dat }} -->
                                 </td>
                                 <td>{{ dat.mfo_desc }}</td>
                                 <td v-if="index === 0 || dat.paps_desc !== data[index - 1].paps_desc"
@@ -125,7 +140,6 @@
                                     <!-- {{ dat.opcr_standard }} -->
                                     {{ dat.performance_measure }}
                                 </td>
-
                             </tr>
 
                         </tbody>
@@ -182,7 +196,8 @@ export default {
             form: useForm({
                 idpaps: "",
                 idopcr: "",
-            })
+            }),
+            is_submitted:false,
         }
     },
     components: {
@@ -235,10 +250,24 @@ export default {
         },
 
         submitThis() {
+            this.is_submitted=true;
+            if (!this.hasValidTargetStandards()) {
+                alert("Some targeted PPAs have no standards set. Please set standards for all targeted PPAs before submitting.");
+                return;
+            }
             let text = "WARNING!\nAre you sure you want to submit this target?";
             if (confirm(text) == true) {
                 this.$inertia.post("/opcrtarget/" + this.opcr_list_id + "/submit/target/opcr/now");
             }
+        },
+        hasValidTargetStandards() {
+            // Get only rows that are targeted
+            const targetedRows = this.data.filter(row => row.opcr_target_binary === 1 || row.opcr_target_binary ===true);
+
+            // Return false if any targeted row has a null/undefined opcr_standard
+            const hasMissingStandard = targetedRows.some(row => row.opcr_standard == null);
+            console.log("hasMissingStandard "+hasMissingStandard);
+            return !hasMissingStandard;
         },
         toggleTarget(dat, isChecked){
             // if(this.bulk_selected==false){

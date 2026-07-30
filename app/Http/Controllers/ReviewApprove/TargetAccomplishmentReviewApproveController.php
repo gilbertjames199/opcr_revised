@@ -69,6 +69,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->orderBy('semester', 'desc')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
+
+            // dd($data);
             $data->getCollection()->transform(function ($item) {
                 $opcr_id = $item->id;
                 // dd($item);

@@ -1006,12 +1006,19 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
                 _context5.n = 1;
                 break;
               }
-              alert('Please select year first before printing.');
+              alert('Please select year first before generating.');
               return _context5.a(2);
             case 1:
+              if (!(_this7.ssf_filter === '')) {
+                _context5.n = 2;
+                break;
+              }
+              alert('Please select sector/source of funds first before generating.');
+              return _context5.a(2);
+            case 2:
               file_name = _this7.year_filtering_d + " " + _this7.ssf_filter + " AIP Test " + format_type + ".xlsx";
-              _context5.p = 2;
-              _context5.n = 3;
+              _context5.p = 3;
+              _context5.n = 4;
               return axios.get('/api/api_ppa/print/aip/excel/version', {
                 params: {
                   ccet: _this7.ccet,
@@ -1021,7 +1028,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
                 },
                 responseType: 'blob' // required for file download
               });
-            case 3:
+            case 4:
               response = _context5.v;
               // Create a blob URL and trigger the download
               url = window.URL.createObjectURL(new Blob([response.data]));
@@ -1034,17 +1041,17 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               // Clean up
               link.remove();
               window.URL.revokeObjectURL(url);
-              _context5.n = 5;
+              _context5.n = 6;
               break;
-            case 4:
-              _context5.p = 4;
+            case 5:
+              _context5.p = 5;
               _t2 = _context5.v;
               console.error('Download failed:', _t2);
               // Show user feedback (e.g., toast notification)
-            case 5:
+            case 6:
               return _context5.a(2);
           }
-        }, _callee5, null, [[2, 4]]);
+        }, _callee5, null, [[3, 5]]);
       }))();
     }
   }

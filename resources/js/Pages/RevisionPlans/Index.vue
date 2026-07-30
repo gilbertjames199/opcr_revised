@@ -2129,7 +2129,11 @@ export default {
             // Use the same filename logic you already have, or customize as needed
             // const file_name = this.opcr_current.semester + " - " + this.opcr_current.year + " - " + this.opcr_current.office.FFUNCTION + ".xlsx";
             if(this.year_filtering_d === ''){
-                alert('Please select year first before printing.');
+                alert('Please select year first before generating.');
+                return;
+            }
+            if(this.ssf_filter === ''){
+                alert('Please select sector/source of funds first before generating.');
                 return;
             }
             const file_name = this.year_filtering_d+ " "+this.ssf_filter+" AIP Test "+format_type+".xlsx"
