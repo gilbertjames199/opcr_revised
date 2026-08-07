@@ -817,15 +817,14 @@
         <div class="d-flex justify-content-center">
             <!-- {{ aip_printLink }} -->
             <iframe :src="aip_printLink" style="width:100%; height:500px" />
-
         </div>
-        <button class="btn btn-primary btn-sm mL-2 text-white" @click="updateAIPStatus('LDC0')"
+        <button class="btn btn-primary btn-sm mL-2 text-white" @click="updateAIPStatus('LDC0', year_filtering_d)"
             v-if="auth.user.department_code==='04'"
         >
             Submit AIP for LDC Review
         </button>
         <button class="btn btn-primary btn-sm mL-2 text-white" v-if="auth.user.department_code==='04'"
-        @click="updateAIPStatus('SP0', year_period)">
+        @click="updateAIPStatus('SP0', year_filtering_d)">
             Submit AIP for SP Review
         </button>
         {{ AIPInstitutional }}

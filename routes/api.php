@@ -36,6 +36,11 @@ Route::prefix('api_ppa')->group(function () {
     Route::get('/print/aip/excel/version', [RevisionPlanController::class, 'aip_excel']);
 });
 
+Route::prefix('sp-aip')->group(function () {
+    Route::get('/', [RevisionPlanController::class, 'sp_api']);
+    Route::get('/sectors', [RevisionPlanController::class, 'sp_sectors']);
+    Route::get('/aip', [RevisionPlanController::class, 'sp_aip_api']);
+});
 Route::prefix('/project/profile/api')->group(function () {
     Route::get('/', [RevisionPlanController::class, 'ipp']);
     Route::get('/list', [RevisionPlanController::class, 'list']);

@@ -35,6 +35,8 @@
                                 <th rowspan="2">Year Period</th>
                                 <th colspan="3" style="text-align: center">SANGUNIANG PANLALAWIGAN</th>
                                 <!-- <th colspan="3" style="text-align: center">LOCAL DEVELOPMENT COUNCIL</th> -->
+                                 <th rowspan="2">SP Resolution Number</th>
+                                 <th rowspan="2">Last Page Number</th>
                                  <th rowspan="2">SIP Period</th>
                                 <th rowspan="2">Action</th>
                             </tr>
@@ -42,55 +44,86 @@
                                 <th>Year Period</th>
                                 <th>Approve</th>
                                 <th>Return</th>
+
                                 <!-- <th>Year Period</th>
                                 <th>Approve</th>
                                 <th>Return</th> -->
                             </tr>
                         </thead>
                         <tbody>
-
-                            <tr v-for="dat in data">
-                                <td>{{ dat.year_period }}</td>
-                                <td>{{ formatAipStatus(dat.sp_approved,"sp") }}</td>
-                                <td>
-                                    <button
-                                        class="btn btn-success btn-sm text-white"
-                                        :class="{ 'btn-light text-secondary': dat.sp_approved !== '0' }"
-                                        :disabled="dat.sp_approved !== '0'"
-                                        @click="updateAIPStatus('SP1', dat.year_period)"
-                                    >
-                                        Approve AIP
-                                    </button>
-                                </td>
-                                <td>
-                                    <button
-                                        class="btn btn-danger btn-sm text-white"
-                                        :class="{ 'btn-light text-secondary': dat.sp_approved !== '0' }"
-                                        :disabled="dat.sp_approved !== '0'"
-                                        @click="updateAIPStatus('SP-2', dat.year_period)"
-                                    >
-                                        Return AIP
-                                    </button>
-                                </td>
-                                <td>{{ dat.sip_period }}</td>
-                                <!-- <td>{{ formatAipStatus(dat.ldc_approved,"ldc") }}</td>
-                                <td>Approve</td>
-                                <td>Return</td> -->
-                                <!-- <td>{{ dat.role }}</td> -->
-                                <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                            </svg>
+                            <template v-for="(dat, index) in localData" :key="dat.id || index">
+                                <tr class="clickable-row" @click="toggleAccordion(index)">
+                                    <td>{{ dat.year_period }}</td>
+                                    <td>{{ formatAipStatus(dat.sp_approved,"sp") }}
+                                        <!-- {{ dat.aip_individuals }} -->
+                                        <!-- {{ dat }} -->
+                                    </td>
+                                    <td>
+                                        <button
+                                            class="btn btn-success btn-sm text-white"
+                                            :class="{ 'btn-light text-secondary': dat.sp_approved !== '0' }"
+                                            :disabled="dat.sp_approved !== '0'"
+                                            @click.stop="updateAIPStatus('SP1', dat.year_period)"
+                                        >
+                                            Approve AIP
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <!-- <li><Link class="dropdown-item" :href="`/ImplementingTeam/${dat.id}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteImplementingTeam(dat.id)">Delete</Link></li> -->
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td>
+                                        <button
+                                            class="btn btn-danger btn-sm text-white"
+                                            :class="{ 'btn-light text-secondary': dat.sp_approved !== '0' }"
+                                            :disabled="dat.sp_approved !== '0'"
+                                            @click.stop="updateAIPStatus('SP-2', dat.year_period)"
+                                        >
+                                            Return AIP
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                        v-model="dat.sprn"
+                                        class="form-control
+                                        orm-control-sm"
+                                        @change="updateAnnualInvestmentPlanInstitutional(dat.id, dat.sprn, 'sprn')">
+                                    </td>
+                                    <td>
+                                        <input
+                                        type="text" v-model="dat.last_page_number" class="form-control form-control-sm" @change="updateAnnualInvestmentPlanInstitutional(dat.id, dat.last_page_number, 'last_page_number')">
+                                    </td>
+                                    <td>{{ dat.sip_period }}</td>
+                                    <!-- <td>{{ formatAipStatus(dat.ldc_approved,"ldc") }}</td>
+                                    <td>Approve</td>
+                                    <td>Return</td> -->
+                                    <!-- <td>{{ dat.role }}</td> -->
+                                    <td>
+                                        <div class="dropdown dropstart" >
+                                            <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" @click.stop>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                                </svg>
+                                            </button>
+                                            <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                                <!-- <li><Link class="dropdown-item" :href="`/ImplementingTeam/${dat.id}/edit`">Edit</Link></li>
+                                                <li><Link class="text-danger dropdown-item" @click="deleteImplementingTeam(dat.id)">Delete</Link></li> -->
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr v-if="dat.accordion_visible == 1">
+                                    <td :colspan="6" class="p-0">
+                                        <table class="table table-sm table-borderless mb-0">
+                                            <tbody>
+                                                <tr v-for="(person, pidx) in dat.aip_individuals" :key="person.id || pidx">
+                                                    <td style="width:40px">
+                                                        <input type="checkbox" v-model="dat.aip_individuals[pidx].is_present">
+                                                    </td>
+                                                    <td>{{ person.name }}</td>
+                                                    <td>SP Member</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </div>
@@ -123,13 +156,21 @@ export default {
     },
     data() {
         return{
-            // search: this.$props.filters.search,
+            search: this.$props.filters ? this.$props.filters.search : '',
+            localData: Array.isArray(this.$props.data) ? JSON.parse(JSON.stringify(this.$props.data)) : (this.$props.data || []),
         }
     },
     components: {
         Pagination, Filtering,
     },
     watch: {
+        data: {
+            handler(val) {
+                // keep a local reactive copy of the prop so we can toggle accordion visibility
+                this.localData = Array.isArray(val) ? JSON.parse(JSON.stringify(val)) : (val || []);
+            },
+            deep: true,
+        },
         search: _.debounce(function (value) {
             this.$inertia.get(
                 "/institutional_aip",
@@ -150,6 +191,32 @@ export default {
         }, 300),
     },
     methods:{
+
+        toggleAccordion(index) {
+            // toggle accordion_visible on the local copy
+            const item = this.localData[index];
+            if (!item) return;
+            // Vue 3 doesn't provide this.$set — assign directly to keep reactivity
+            item.accordion_visible = item.accordion_visible == 1 ? 0 : 1;
+        },
+
+        updateAnnualInvestmentPlanInstitutional(id, value, field) {
+            if (!id || !field) {
+                return;
+            }
+
+            this.$inertia.post(
+                `/institutional_aip/update/${field}/value`,
+                {
+                    id,
+                    value,
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                }
+            );
+        },
 
         // showCreate(){
         //     this.$inertia.get(
@@ -210,5 +277,8 @@ export default {
             .pos{
                 position: top;
                 top: 240px;
+            }
+            .clickable-row{
+                cursor: pointer;
             }
 </style>

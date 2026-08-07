@@ -577,9 +577,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/institutional_aip')->group(function () {
         Route::get('/', [AnnualInvestmentPlanInstitutionalController::class, 'index']);
         Route::post('/status/{type}', [AnnualInvestmentPlanInstitutionalController::class, 'updateInstitutionalAIPStatus']);
+        Route::post('/update/{table_name}/value', [AnnualInvestmentPlanInstitutionalController::class, 'updateTableValue']);
     });
 
-    // SP Members/AIP APprovers
+    // SP Members/AIP Approvers
     Route::prefix('/aip/approvers')->group(function(){
         Route::get('/', [AIPIndividualApproverController::class, 'index']);
         Route::get('/create',[AIPIndividualApproverController::class, 'create']);

@@ -41,6 +41,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
     public function index_target(Request $request)
     {
         // $data = $this->revapp->paginate(10);
+        // dd("index target", auth()->user()->department_code);
         if (auth()->user()->department_code == '04') {
             // $data = $this->revapp->with(['office'])
             //     // ->where('target_status', '>', -1)
@@ -62,8 +63,9 @@ class TargetAccomplishmentReviewApproveController extends Controller
 
             // Step 2: Use whereIn instead of whereHas
             $data = $this->revapp
-                ->with(['office'])
+                ->with(['office','FFUNCCODOffice'])
                 ->where('target_status', 0)
+
                 ->whereIn('department_code', $matchingCodes) // ✅ no cross-DB join
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
@@ -75,8 +77,10 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 $opcr_id = $item->id;
                 // dd($item);
                 //OFFICE
-                $office = FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)
-                    ->first();
+                // $office = FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)
+                //     ->first();
+                    // dd($office, $item->office);
+                    $office = $item->FFUNCCODOffice;
                 //TOTAL & AVERAGE
                 $averageSum = $this->getRating($opcr_id);
                 $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
@@ -123,7 +127,8 @@ class TargetAccomplishmentReviewApproveController extends Controller
 
             // dd($data);
             return inertia('Review-Approve/OPCR/Targets/Index', [
-                'data' => $data
+                'data' => $data,
+                "filters" => $request->only(['search']),
             ]);
         } else if (auth()->user()->department_code == '02') {
             $data = $this->revapp

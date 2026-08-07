@@ -62,6 +62,16 @@
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.type">{{ form.errors.type }}</div>
 
+                <label>YEAR</label>
+                <select v-model="form.year" class="form-select">
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.year">{{ form.errors.year }}</div>
+
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
 
                 <button type="button" class="btn btn-primary mt-3 text-white" @click="submit()" :disabled="form.processing">
@@ -96,6 +106,7 @@ export default {
                 type: "",
                 is_present: "",
                 with_signature: "",
+                year: ""
             }),
             pageTitle: ""
         };
@@ -136,6 +147,7 @@ export default {
                 this.form.name = this.editData.name
                 this.form.position = this.editData.position
                 this.form.type = this.editData.type
+                this.form.year = this.editData.year
             }
         } else {
             this.pageTitle = "Create"

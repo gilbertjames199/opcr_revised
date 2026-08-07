@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AIPIndividualApprover;
 use App\Models\AnnualInvestmentInstitutionalTracking;
 use App\Models\AnnualInvestmentPlanInstitutional;
 use Illuminate\Http\Request;
@@ -16,7 +17,24 @@ class AnnualInvestmentPlanInstitutionalController extends Controller
     public function index(Request $request)
     {
         // where('ldc_approved', 0)->orWhere('sp_approved', 0)->get
-        $AllAIP = AnnualInvestmentPlanInstitutional::all();
+        // dd(AIPIndividualApprover::all());
+        // $aip_individuals = AIPIndividualApprover::with([''])->get();
+        $AllAIP = AnnualInvestmentPlanInstitutional::with(['aipIndividualApprovers'])
+        ->where('ldc_approved', 0)
+        ->orWhere('sp_approved', 0)
+        ->get()->map(function($item) {
+            return [
+                'id' => $item->id,
+                'year_period' => $item->year_period,
+                'ldc_approved' => $item->ldc_approved,
+                'sp_approved' => $item->sp_approved,
+                'sip_period' => $item->sip_period,
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at,
+                'aip_individuals'=>$item->aipIndividualApprovers,
+                'accordion_visible' => 0,
+            ];
+        });
         // dd($AllAIP);
         return inertia("AnnualInvestmentPlan/Institutional/Index", [
             "data" => $AllAIP
@@ -86,5 +104,31 @@ class AnnualInvestmentPlanInstitutionalController extends Controller
         ]);
 
         return redirect()->back()->with('message', 'AIP status updated successfully.');
+    }
+
+    public function updateTableValue(Request $request, $table_name)
+    {
+        $validated = $request->validate([
+            'id' => 'required|integer|exists:annual_investment_plan_institutionals,id',
+            'value' => 'nullable|string',
+        ]);
+
+        $allowedFields = ['sprn', 'last_page_number'];
+        if (!in_array($table_name, $allowedFields)) {
+            return response()->json(['error' => 'Invalid field specified.'], 422);
+        }
+
+        $aip = AnnualInvestmentPlanInstitutional::find($validated['id']);
+        dd($aip, $validated['id']);
+        if (!$aip) {
+            return response()->json(['error' => 'Record not found.'], 404);
+        }
+
+        $aip->{$table_name} = $validated['value'];
+        $aip->updated_at = now();
+        $aip->save();
+
+        // return response()->json(['success' => true, 'field' => $table_name, 'value' => $validated['value']]);
+        return redirect()->back()->with('success', 'Field updated successfully.');
     }
 }

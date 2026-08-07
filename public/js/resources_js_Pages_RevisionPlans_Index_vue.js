@@ -2260,13 +2260,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         key: 0,
         "class": "btn btn-primary btn-sm mL-2 text-white",
         onClick: _cache[19] || (_cache[19] = function ($event) {
-          return _ctx.updateAIPStatus('LDC0');
+          return _ctx.updateAIPStatus('LDC0', $data.year_filtering_d);
         })
       }, " Submit AIP for LDC Review ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.auth.user.department_code === '04' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "btn btn-primary btn-sm mL-2 text-white",
         onClick: _cache[20] || (_cache[20] = function ($event) {
-          return _ctx.updateAIPStatus('SP0', _ctx.year_period);
+          return _ctx.updateAIPStatus('SP0', $data.year_filtering_d);
         })
       }, " Submit AIP for SP Review ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.AIPInstitutional) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ auth.user.department_code }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link :href=\"aip_printLink_excel\" class=\"btn btn-primary text-white\">\n                Export to Excel\n            </Link> {{ aip_printLink_excel }}\n            <br>\n            {{ aip_printLink }}<br>\n        <button @click=\"exportUsers\" class=\"btn btn-primary text-white\">\n                Export to Excel\n        </button> ")];
     }),
