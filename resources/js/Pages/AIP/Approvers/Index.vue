@@ -86,7 +86,7 @@
                                     <!-- {{ truncateText(dat.goal_description, 10) }} -->
                                       {{ dat.name }}
                                 </td>
-                                <td>{{ getTypeFullName(dat.type) }}</td>
+                                <td>{{ getTypeFullName(dat.type) }}({{ dat.position }})</td>
                                 <td>{{ dat?.user_employee?.office?.office }}</td>
                                 <td class="text-end">
                                     <div class="dropdown dropstart">
