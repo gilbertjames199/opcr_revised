@@ -7656,7 +7656,7 @@ class RevisionPlanController extends Controller
             'pos15'=>$pos15,
             'year'=>$request->year,
             'ssf_filter'=>$request->ssf_filter,
-            ''
+
 
             // ''
         ];
