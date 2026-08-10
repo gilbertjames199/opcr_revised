@@ -39,7 +39,7 @@ Route::prefix('api_ppa')->group(function () {
 Route::prefix('sp-aip')->group(function () {
     Route::get('/', [RevisionPlanController::class, 'sp_api']);
     Route::get('/sectors', [RevisionPlanController::class, 'sp_sectors']);
-    Route::get('/aip', [RevisionPlanController::class, 'sp_aip_api']);
+    Route::get('/aip/details', [RevisionPlanController::class, 'sp_aip_api']);
 });
 Route::prefix('/project/profile/api')->group(function () {
     Route::get('/', [RevisionPlanController::class, 'ipp']);

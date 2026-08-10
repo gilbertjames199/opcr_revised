@@ -7704,6 +7704,33 @@ class RevisionPlanController extends Controller
             ];
         });
     }
+
+    public function sp_aip_api(Request $request){
+        // $RevisionPlanController = print_aip
+        // dd($request);
+        $data = $this->print_aip($request);
+        $final_data = count($data) > 0 ? $data[0] : [];
+        if (!empty($final_data)) {
+            $final_data['project_title'] = 'Total';
+            $final_data['implementing_office']='';
+            $final_data['expected_output']='';
+            $final_data['ccet_code_mitigation']='';
+            $final_data['ccet_code_adaptation']='';
+            $final_data['aip_code']='';
+            $final_data['activity_aip_code']='';
+            $final_data['source']='';
+            $final_data['id']='0';
+            $final_data['level']='1';
+            $final_data['total_mooe'] = $final_data['grand_total_mooe'] ?? 0;
+            $final_data['total_ps']   = $final_data['grand_total_ps'] ?? 0;
+            $final_data['total_co']   = $final_data['grand_total_co'] ?? 0;
+            $final_data['total_fe']   = $final_data['grand_total_fe'] ?? 0;
+        }
+        if (count($data) > 0) {
+            $data[count($data) ]= $final_data;
+        }
+        return $data;
+    }
     // public function replicate(RevisionPlan $revisionPlan)
     // {
     //     $revisionPlanIds = [543, 418, 462];
