@@ -7590,7 +7590,22 @@ class RevisionPlanController extends Controller
         return redirect()->back()->with('success', 'Replication completed successfully.');
     }
     public function sp_api(Request $request){
+        $params = [
+            'aip_institutional_id',
+            'page_number',
+            'sprn',
+            'year',
+        ];
+
+        foreach ($params as $param) {
+            if (!$request->filled($param)) {
+                return [];
+            }
+        }
         $aip_indiv = AIPIndividualApprover::where('aip_institutional_id', $request->aip_institutional_id)->get();
+        if(count($aip_indiv)<1){
+            return [];
+        }
         $sig1 = $aip_indiv[0]->name;
         $pos1 = $aip_indiv[0]->position;
         $sig2 = $aip_indiv[1]->name;
