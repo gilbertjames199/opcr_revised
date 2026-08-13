@@ -7725,22 +7725,22 @@ class RevisionPlanController extends Controller
 
             // dd($result['plans']);
             // ****************************************************************************
-            // $data  = $this->print_aip($request);
-            // $filter['ccet_code_mitigation']=0;
-            // $filter['ccet_code_adaptation']=0;
-            // $filter['total_mooe'] =  0;
-            // $filter['total_ps']   = 0;
-            // $filter['total_co']   =  0;
-            // $filter['total_fe']   =  0;
-            // $final_data = count($data) > 0 ? $data[0] : [];
-            // if (!empty($final_data)) {
-            //     $filter['ccet_code_mitigation']=$final_data['ccet_code_mitigation'] ?? 0;
-            //     $filter['ccet_code_adaptation']=$final_data['ccet_code_adaptation'] ?? 0;
-            //     $filter['total_mooe'] = $final_data['grand_total_mooe'] ?? 0;
-            //     $filter['total_ps']   = $final_data['grand_total_ps'] ?? 0;
-            //     $filter['total_co']   = $final_data['grand_total_co'] ?? 0;
-            //     $filter['total_fe']   = $final_data['grand_total_fe'] ?? 0;
-            // }
+            $data  = $this->print_aip($request);
+            $filter['ccet_code_mitigation']=0;
+            $filter['ccet_code_adaptation']=0;
+            $filter['total_mooe'] =  0;
+            $filter['total_ps']   = 0;
+            $filter['total_co']   =  0;
+            $filter['total_fe']   =  0;
+            $final_data = count($data) > 0 ? $data[0] : [];
+            if (!empty($final_data)) {
+                $filter['ccet_code_mitigation']=$final_data['ccet_code_mitigation'] ?? 0;
+                $filter['ccet_code_adaptation']=$final_data['ccet_code_adaptation'] ?? 0;
+                $filter['total_mooe'] = $final_data['grand_total_mooe'] ?? 0;
+                $filter['total_ps']   = $final_data['grand_total_ps'] ?? 0;
+                $filter['total_co']   = $final_data['grand_total_co'] ?? 0;
+                $filter['total_fe']   = $final_data['grand_total_fe'] ?? 0;
+            }
             // ****************************************************************************
 
             // $filter['total_mooe'] = $result['total_mooe'];
@@ -7750,7 +7750,7 @@ class RevisionPlanController extends Controller
 
         }
         // ****************************************************************************
-        // unset($filter);
+        unset($filter);
         // ****************************************************************************
 
         // return $result;
@@ -7760,12 +7760,12 @@ class RevisionPlanController extends Controller
                 'year'=>$item['year'],
 
                 // ****************************************************************************
-                // 'total_mooe'=>$item['total_mooe'],
-                // 'total_co' => $item['total_co'],
-                // 'total_ps' => $item['total_ps'],
-                // 'total_fe' => $item['total_fe'],
-                // 'ccet_code_mitigation'=>$item['ccet_code_mitigation'],
-                // 'ccet_code_adaptation'=>$item['ccet_code_adaptation'],
+                'total_mooe'=>$item['total_mooe'],
+                'total_co' => $item['total_co'],
+                'total_ps' => $item['total_ps'],
+                'total_fe' => $item['total_fe'],
+                'ccet_code_mitigation'=>$item['ccet_code_mitigation'],
+                'ccet_code_adaptation'=>$item['ccet_code_adaptation'],
                 // 'plans'=>$item['plans']
             ];
         });
