@@ -7731,8 +7731,8 @@ class RevisionPlanController extends Controller
             $final_data['project_title'] = 'Total';
             $final_data['implementing_office']='';
             $final_data['expected_output']='';
-            $final_data['ccet_code_mitigation']='';
-            $final_data['ccet_code_adaptation']='';
+            $final_data['ccet_code_mitigation']=0;
+            $final_data['ccet_code_adaptation']=0;
             $final_data['aip_code']='';
             $final_data['activity_aip_code']='';
             $final_data['source']='';
