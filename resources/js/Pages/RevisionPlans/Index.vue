@@ -680,6 +680,8 @@
                                         :class="can_submit(dat.budget_sum, dat.imp_amount) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"
                                         -->
                                         <!-- {{ hasAnyWarning(dat) }} -->
+
+                                        <!-- SUBMIT*************************************** -->
                                         <button v-if="(dat.status == '-1' || dat.status == '-2') && !hasAnyWarning(dat) && isSubmissionAllowed(dat.year)"
                                                 @click="submitItem(dat, 0)"
                                                 :disabled="hasAnyWarning(dat) || !isSubmissionAllowed(dat.year)"
@@ -689,7 +691,7 @@
                                             <span class="ms-1">Submit</span>
                                         </button>
 
-                                        <!-- Recall button when status = 0 -->
+                                        <!-- Recall button when status = 0 *****************-->
                                         <button v-if="dat.status == '0'"
                                                 @click="submitItem(dat, -1)"
                                                 class="btn btn-warning btn-sm btn-icon"

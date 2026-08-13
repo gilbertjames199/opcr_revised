@@ -25,6 +25,8 @@ class AnnualInvestmentPlanInstitutionalController extends Controller
         ->get()->map(function($item) {
             return [
                 'id' => $item->id,
+                'sprn'=>$item->sprn,
+                'last_page_number'=>$item->last_page_number,
                 'year_period' => $item->year_period,
                 'ldc_approved' => $item->ldc_approved,
                 'sp_approved' => $item->sp_approved,
@@ -106,29 +108,67 @@ class AnnualInvestmentPlanInstitutionalController extends Controller
         return redirect()->back()->with('message', 'AIP status updated successfully.');
     }
 
-    public function updateTableValue(Request $request, $table_name)
+    public function updateTableValue2(Request $request, $column)
     {
         $validated = $request->validate([
             'id' => 'required|integer|exists:annual_investment_plan_institutionals,id',
             'value' => 'nullable|string',
+            'table'=> 'required'
         ]);
 
-        $allowedFields = ['sprn', 'last_page_number'];
-        if (!in_array($table_name, $allowedFields)) {
+        $allowedFields = ['sprn', 'last_page_number','seq_no'];
+        if (!in_array($column, $allowedFields)) {
             return response()->json(['error' => 'Invalid field specified.'], 422);
         }
 
         $aip = AnnualInvestmentPlanInstitutional::find($validated['id']);
-        dd($aip, $validated['id']);
+        // dd($aip, $validated['id']);
         if (!$aip) {
             return response()->json(['error' => 'Record not found.'], 404);
         }
 
-        $aip->{$table_name} = $validated['value'];
+        $aip->{$column} = $validated['value'];
         $aip->updated_at = now();
         $aip->save();
 
         // return response()->json(['success' => true, 'field' => $table_name, 'value' => $validated['value']]);
         return redirect()->back()->with('success', 'Field updated successfully.');
+    }
+    public function updateTableValue(Request $request, $column){
+        $validated = $request->validate([
+            'id'    => 'required|integer',
+            'value' => 'nullable|string',
+            'table' => 'required|string',
+        ]);
+
+        $allowedFields = ['sprn', 'last_page_number', 'seq_num'];
+
+        if (!in_array($column, $allowedFields)) {
+            return response()->json(['error' => 'Invalid field specified.'], 422);
+        }
+
+        $modelMap = [
+            'annual_investment_plan_institutionals' => AnnualInvestmentPlanInstitutional::class,
+            'aip_individual_approvers'      => AIPIndividualApprover::class,
+            // 'annual_investment_plan_projects'       => AnnualInvestmentPlanProject::class,
+        ];
+
+        if (!isset($modelMap[$validated['table']])) {
+            return response()->json(['error' => 'Invalid table specified.'], 422);
+        }
+
+        $modelClass = $modelMap[$validated['table']];
+
+        $record = $modelClass::find($validated['id']);
+
+        if (!$record) {
+            return response()->json(['error' => 'Record not found.'], 404);
+        }
+
+        $record->{$column} = $validated['value'];
+        $record->updated_at = now();
+        $record->save();
+
+        return redirect()->back()->with('message', 'Field updated successfully.');
     }
 }

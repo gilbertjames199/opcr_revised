@@ -52,8 +52,8 @@
                         </thead>
                         <tbody>
                             <template v-for="(dat, index) in localData" :key="dat.id || index">
-                                <tr class="clickable-row" @click="toggleAccordion(index)">
-                                    <td>{{ dat.year_period }}</td>
+                                <tr >
+                                    <td class="clickable-row" @click="toggleAccordion(index)">{{ dat.year_period }}</td>
                                     <td>{{ formatAipStatus(dat.sp_approved,"sp") }}
                                         <!-- {{ dat.aip_individuals }} -->
                                         <!-- {{ dat }} -->
@@ -83,11 +83,24 @@
                                         v-model="dat.sprn"
                                         class="form-control
                                         orm-control-sm"
-                                        @change="updateAnnualInvestmentPlanInstitutional(dat.id, dat.sprn, 'sprn')">
+                                        @change="updateAnnualInvestmentPlanInstitutional(
+                                            dat.id,
+                                            dat.sprn,
+                                            'sprn',
+                                            'annual_investment_plan_institutionals'
+                                        )">
                                     </td>
                                     <td>
                                         <input
-                                        type="text" v-model="dat.last_page_number" class="form-control form-control-sm" @change="updateAnnualInvestmentPlanInstitutional(dat.id, dat.last_page_number, 'last_page_number')">
+                                        type="text"
+                                        v-model="dat.last_page_number"
+                                        class="form-control form-control-sm"
+                                        @change="updateAnnualInvestmentPlanInstitutional(
+                                            dat.id,
+                                            dat.last_page_number,
+                                            'last_page_number',
+                                            'annual_investment_plan_institutionals'
+                                        )">
                                     </td>
                                     <td>{{ dat.sip_period }}</td>
                                     <!-- <td>{{ formatAipStatus(dat.ldc_approved,"ldc") }}</td>
@@ -102,6 +115,9 @@
                                                 </svg>
                                             </button>
                                             <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                                <li>
+                                                    <button type="button" class="dropdown-item" @click="printAIP(dat)">Print AIP</button>
+                                                </li>
                                                 <!-- <li><Link class="dropdown-item" :href="`/ImplementingTeam/${dat.id}/edit`">Edit</Link></li>
                                                 <li><Link class="text-danger dropdown-item" @click="deleteImplementingTeam(dat.id)">Delete</Link></li> -->
                                             </ul>
@@ -110,14 +126,34 @@
                                 </tr>
                                 <tr v-if="dat.accordion_visible == 1">
                                     <td :colspan="6" class="p-0">
+
                                         <table class="table table-sm table-borderless mb-0">
+                                            <thead>
+                                                <tr>
+                                                <th></th>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Seq No.</th>
+                                                </tr>
+                                            </thead>
                                             <tbody>
                                                 <tr v-for="(person, pidx) in dat.aip_individuals" :key="person.id || pidx">
                                                     <td style="width:40px">
                                                         <input type="checkbox" v-model="dat.aip_individuals[pidx].is_present">
                                                     </td>
                                                     <td>{{ person.name }}</td>
-                                                    <td>SP Member</td>
+                                                    <td>{{ person.position }}</td>
+                                                    <td>
+                                                        <input type="text"
+                                                            v-model="person.seq_num"
+                                                            class="form-control-sm"
+                                                            @change="updateAnnualInvestmentPlanInstitutional(
+                                                                person.id,
+                                                                person.seq_num,
+                                                                'seq_num',
+                                                                'aip_individual_approvers'
+                                                            )">
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -143,12 +179,20 @@
 
             </div>
         </div>
-
+        <SpModal v-if="showSPModal" @close-modal-event="showSPModal=false" title="Annual Investment Plans">
+            <div class="d-flex justify-content-center">
+            <!-- {{ aip_printLink }} -->
+                <iframe :src="aip_printLink" style="width:100%; height:500px" />
+            </div>
+        </SpModal>
+        <!-- aip_printLink: {{ aip_printLink }} -->
     </div>
+
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import SpModal from "@/Shared/ModalDynamicTitle";
 export default {
     props: {
         data: Object,
@@ -158,16 +202,28 @@ export default {
         return{
             search: this.$props.filters ? this.$props.filters.search : '',
             localData: Array.isArray(this.$props.data) ? JSON.parse(JSON.stringify(this.$props.data)) : (this.$props.data || []),
+            showSPModal: false,
+            aip_printLink: '',
+            ccet: 0,
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, SpModal
     },
     watch: {
         data: {
             handler(val) {
                 // keep a local reactive copy of the prop so we can toggle accordion visibility
-                this.localData = Array.isArray(val) ? JSON.parse(JSON.stringify(val)) : (val || []);
+                const newData = Array.isArray(val) ? JSON.parse(JSON.stringify(val)) : (val || []);
+
+                // Preserve accordion visibility state
+                newData.forEach((item, index) => {
+                    if (this.localData[index]) {
+                        item.accordion_visible = this.localData[index].accordion_visible;
+                    }
+                });
+
+                this.localData = newData;
             },
             deep: true,
         },
@@ -200,7 +256,7 @@ export default {
             item.accordion_visible = item.accordion_visible == 1 ? 0 : 1;
         },
 
-        updateAnnualInvestmentPlanInstitutional(id, value, field) {
+        updateAnnualInvestmentPlanInstitutional(id, value, field, table) {
             if (!id || !field) {
                 return;
             }
@@ -210,6 +266,7 @@ export default {
                 {
                     id,
                     value,
+                    table
                 },
                 {
                     preserveScroll: true,
@@ -218,49 +275,24 @@ export default {
             );
         },
 
-        // showCreate(){
-        //     this.$inertia.get(
-        //         "/institutional_aip",
-        //         {
-        //             raao_id: this.raao_id
-        //         },
-        //         {
-        //             preserveScroll: true,
-        //             preserveState: true,
-        //             replace: true,
-        //         }
-        //     );
-        // },
-        // deleteImplementingTeam(id) {
-        //     let text = "WARNING!\nAre you sure you want to delete the Implementing Team?"+id;
-        //       if (confirm(text) == true) {
-        //         this.$inertia.delete("/ImplementingTeam/" + id);
-        //     }
-        // },
-        // getAccomplishment(tar_id){
-        //     this.$inertia.get(
-        //         "/accomplishments",
-        //         {
-        //             idtarget: tar_id
-        //         },
-        //         {
-        //             preserveScroll: true,
-        //             preserveState: true,
-        //             replace: true,
-        //         }
-        //     );
-        // },
-        // getPercent(accomp, targqty){
-        //     var accSum=0;
-        //     accomp.forEach(myFunction);
-        //     function myFunction(item){
-        //         accSum += parseFloat(item.accomplishment_qty)
+        printAIP(dat){
+            if(this.year_filtering_d === ''){
+                alert('Please select year first before printing.');
+                return;
+            }
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link ='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_SP&standAlone=true&decorate=no&output=pdf';
+            // var params ='&ccet='+this.ccet+'&year='+this.year_filtering_d+'&ssf_filter='+this.ssf_filter
+            // aip_institutional_id=1&page_number=1&sprn=1011111&year=2027
+            var params ='&aip_institutional_id='+dat.id+'&page_number='+dat.last_page_number+'&sprn='+dat.sprn+'&year='+dat.year_period+'&ccet='
+            // console.log(params);
+            this.aip_printLink = linkt+jasper_ip+jasper_link+params;
+            // this.aip_printLink_excel = this.aip_printLink.replace('&output=pdf', '&output=csv');
 
-        //     }
-        //     var percentt = (accSum/targqty)*100
-        //     percentt=this.format_number(percentt,2,true)
-        //     return percentt;
-        // }
+            // this.aip_printLink_excel =linkt+jasper_ip+'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no&output=xlsx&ccet='+this.ccet;
+            this.showSPModal=true;
+        }
     }
 };
 </script>
