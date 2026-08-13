@@ -664,9 +664,11 @@
                 </li>
 
                 <hr>
+                1083
                 <!-- department_code: {{ $page.props.auth.user.department_code }} -->
                  <!-- REVIEW/APPROVE ********************************************************** -->
-                <li class="nav-item dropdown" v-if="$page.props.auth.user.department_code == '04' || $page.props.auth.user.department_code == '02'">
+                <li class="nav-item dropdown"
+                    v-if="$page.props.auth.user.department_code == '04' || $page.props.auth.user.department_code == '02'">
                     <a class="dropdown-toggle" href="javascript:void(0);">
                         <span class="icon-holder">
 
@@ -721,6 +723,34 @@
                             </Link>
                         </li>
                         <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/institutional_aip"
+                                :class="{ 'active': $page.url === '/institutional_aip' }">
+                            <span class="title">AIP</span>
+                            </Link>
+                        </li>
+                    </ul>
+                </li>
+                <!-- REVIEW/APPROVE SP********************************************************* -->
+                <li class="nav-item dropdown"
+                    v-if="$page.props.auth.user.department_code == '19'">
+                    <a class="dropdown-toggle" href="javascript:void(0);">
+                        <span class="icon-holder">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-aspect-ratio-fill" viewBox="0 0 16 16">
+                                <path d="M0 12.5v-9A1.5 1.5 0 0 1 1.5 2h13A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5M2.5 4a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 1 0V5h2.5a.5.5 0 0 0 0-1zm11 8a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-1 0V11h-2.5a.5.5 0 0 0 0 1z"/>
+                            </svg>
+                        </span>
+                        <span class="title">Review/Approve</span>
+                        <span class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
                             <Link class="sidebar-link" href="/institutional_aip"
                                 :class="{ 'active': $page.url === '/institutional_aip' }">
                             <span class="title">AIP</span>
