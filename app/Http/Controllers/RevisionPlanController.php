@@ -4233,6 +4233,7 @@ class RevisionPlanController extends Controller
                 }
 
             })
+            ->where('type','p')
             ->orderBy('aip_code', 'asc')
             ->get();
 
@@ -7639,6 +7640,7 @@ class RevisionPlanController extends Controller
         return [
             'page_number'=>$request->page_number,
             'sprn'=>$request->sprn,
+            'ccet'=>$request->ccet,
             'sig1'=>$sig1,
             'pos1'=>$pos1,
             'sig2'=>$sig2,

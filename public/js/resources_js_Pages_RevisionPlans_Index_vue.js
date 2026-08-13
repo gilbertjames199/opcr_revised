@@ -385,7 +385,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       if (!confirm("Are you sure you want to generate the Project Design for this project?")) {
         return; // User canceled
       }
-      if (type == 'p') {
+      if (type == 'd') {
         // Make the Inertia POST request
         _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__.Inertia.post("/project/design/generate/".concat(id), {
           'type': type
@@ -424,6 +424,8 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
             console.error(errors);
           }
         });
+      } else {
+        alert("Invalid type specified for project design generation.");
       }
     },
     // NEW SIP GENERATION

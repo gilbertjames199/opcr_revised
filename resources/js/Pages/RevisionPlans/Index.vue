@@ -1533,7 +1533,7 @@ export default {
             if (!confirm("Are you sure you want to generate the Project Design for this project?")) {
                 return; // User canceled
             }
-            if(type=='p'){
+            if(type=='d'){
                 // Make the Inertia POST request
                 Inertia.post(`/project/design/generate/${id}`, {
                     'type': type
@@ -1572,6 +1572,8 @@ export default {
                         console.error(errors);
                     }
                 });
+            }else{
+                alert("Invalid type specified for project design generation.");
             }
 
 

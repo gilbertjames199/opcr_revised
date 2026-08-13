@@ -3237,6 +3237,7 @@ class RevisionPlanController extends Controller
             // ->leftJoin(DB::raw('program_and_projects paps'), 'paps.id', '=', 'revision_plans.idpaps')
             // ->leftJoin(DB::raw('major_final_outputs mfo'), 'mfo.id', '=', 'paps.idmfo')
             // ->leftJoin(DB::raw('fms.functions ff'), 'ff.FFUNCCOD', '=', 'mfo.FFUNCCOD')
+            ->where('type','p')
             ->when($request->search, function ($query) use ($request) {
                 $query->where('project_title', 'LIKE', '%' . $request->search . '%');
             })
