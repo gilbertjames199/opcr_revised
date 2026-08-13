@@ -636,7 +636,7 @@
                                 <td class="text-center">
                                     <!-- {{ (parseInt(dat.year) + 1 == new Date().getFullYear()+1) }}  -- {{  dat.status }} -->
                                     <!-- (parseInt(dat.status == 0 || dat.status == 1) -->
-                                    <button v-if="parseInt(dat.number_of_clones)<1 && dat.type==='p'"
+                                    <button v-if="parseInt(dat.number_of_clones)<1 && dat.type==='p' && parseInt(dat.year) <= 2026"
                                             @click="generateProjectDesign(dat.id, 'ny')"
                                             :disabled="!((parseInt(dat.year) + 1 == new Date().getFullYear()+1) && ([0,1].includes(parseInt(dat.status))))"
                                             :class="getForwardButtonClass(dat)"
