@@ -43,8 +43,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-
-class RevisionPlanController extends Controller
+// RevisionPlanController
+class RevisionPlanControlerBackup4 extends Controller
 {
     protected $model;
     protected $imp;
@@ -3569,7 +3569,7 @@ class RevisionPlanController extends Controller
 
         // return array_values($strategies);
         $strategies = collect($strategies);
-        
+
         $rev_ids = $strategies->pluck('id');
         // dd($rev_ids);
         $cap_ob = $this->capitalOutlayObject($rev_ids);
