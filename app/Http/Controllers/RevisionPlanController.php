@@ -7603,7 +7603,9 @@ class RevisionPlanController extends Controller
                 return [];
             }
         }
-        $aip_indiv = AIPIndividualApprover::where('aip_institutional_id', $request->aip_institutional_id)->get();
+        $aip_indiv = AIPIndividualApprover::where('aip_institutional_id', $request->aip_institutional_id)
+            ->orderBy('seq_num', 'asc')
+            ->get();
         if(count($aip_indiv)<1){
             return [];
         }
