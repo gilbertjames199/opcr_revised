@@ -1342,6 +1342,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     // ASSISTANT PG HEAD
                     $ap_head_m = UserEmployees::where('department_code', $office_id)
                         ->where('salary_grade', '24')
+                        ->where('active_status', 'ACTIVE')
                         ->get();
                     // dd($ap_head_m);
                     if (count($ap_head_m) > 0) {
