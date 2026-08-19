@@ -939,6 +939,7 @@ class OpcrTargetController extends Controller
                 }else{
                     $ap_head = UserEmployees::where('department_code',$opcr_sem->department_code)
                     ->where('salary_grade','24')
+                    ->where('active_status','ACTIVE')
                     ->first();
                     if($ap_head){
                         $assistant_pg_head = $ap_head->first_name . ' ' . $ap_head->middle_name[0] . '. ' .
