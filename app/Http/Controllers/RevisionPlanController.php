@@ -7604,6 +7604,7 @@ class RevisionPlanController extends Controller
             }
         }
         $aip_indiv = AIPIndividualApprover::where('aip_institutional_id', $request->aip_institutional_id)
+            ->whereNull('deleted_at')
             ->orderBy('seq_num', 'asc')
             ->get();
         if(count($aip_indiv)<1){

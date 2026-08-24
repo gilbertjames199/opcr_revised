@@ -365,7 +365,7 @@ class PAPController extends Controller
             'agency_name'
         ]);
         // dd($data);
-        if ($data->revisionPlan && $data->revisionPlan->isNotEmpty()) {
+        if ($data->revisionPlan && $data->revisionPlan->where('status', '<', 1)->isNotEmpty()) {
             return redirect()->back()->with('error', 'Unable to edit. The PPA is associated with existing Project Profiles');
         }
         // dd($data);
