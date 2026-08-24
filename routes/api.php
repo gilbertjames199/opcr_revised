@@ -41,6 +41,9 @@ Route::prefix('sp-aip')->group(function () {
     Route::get('/sectors', [RevisionPlanController::class, 'sp_sectors']);
     Route::get('/aip/details', [RevisionPlanController::class, 'sp_aip_api']);
 });
+Route::prefix('sp-aip-n')->group(function () {
+    Route::get('/', [RevisionPlanController::class, 'sp_api_new']);
+});
 Route::prefix('/project/profile/api')->group(function () {
     Route::get('/', [RevisionPlanController::class, 'ipp']);
     Route::get('/list', [RevisionPlanController::class, 'list']);

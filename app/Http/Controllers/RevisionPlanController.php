@@ -7610,6 +7610,7 @@ class RevisionPlanController extends Controller
         if(count($aip_indiv)<1){
             return [];
         }
+        
         $sig1 = $aip_indiv[0]->name;
         $pos1 = $aip_indiv[0]->position;
         $sig2 = $aip_indiv[1]->name;
@@ -7638,8 +7639,8 @@ class RevisionPlanController extends Controller
         $pos13 = $aip_indiv[12]->position;
         $sig14 = $aip_indiv[13]->name;
         $pos14 = $aip_indiv[13]->position;
-        $sig15 = $aip_indiv[14]->name;
-        $pos15 = $aip_indiv[14]->position;
+        // $sig15 = optional($aip_indiv[14])->name;
+        // $pos15 = optional($aip_indiv[14])->position;
         return [
             'page_number'=>$request->page_number,
             'sprn'=>$request->sprn,
@@ -7672,8 +7673,8 @@ class RevisionPlanController extends Controller
             'pos13'=>$pos13,
             'sig14'=>$sig14,
             'pos14'=>$pos14,
-            'sig15'=>$sig15,
-            'pos15'=>$pos15,
+            // 'sig15'=>$sig15,
+            // 'pos15'=>$pos15,
             'year'=>$request->year,
             'ssf_filter'=>$request->ssf_filter,
 
@@ -7681,6 +7682,7 @@ class RevisionPlanController extends Controller
             // ''
         ];
     }
+
     public function sp_sectors(Request $request){
         // $sectors = Sector::where('is_active',1)->get();
         // return $sectors;
@@ -7930,6 +7932,317 @@ class RevisionPlanController extends Controller
         //     $data[count($data) ]= $final_data;
         // }
         return $data;
+    }
+    public function sp_api_new(Request $request){
+        $params = [
+            'aip_institutional_id',
+            'page_number',
+            'sprn',
+            'year',
+        ];
+
+        foreach ($params as $param) {
+            if (!$request->filled($param)) {
+                return [];
+            }
+        }
+        $aip_indiv = AIPIndividualApprover::where('aip_institutional_id', $request->aip_institutional_id)
+            ->whereNull('deleted_at')
+            ->orderBy('seq_num', 'asc')
+            ->get();
+        if(count($aip_indiv)<1){
+            return [];
+        }
+        $sig1 = $aip_indiv[0]->name;
+        $pos1 = $aip_indiv[0]->position;
+        $sig2 = $aip_indiv[1]->name;
+        $pos2 = $aip_indiv[1]->position;
+        $sig3 = $aip_indiv[2]->name;
+        $pos3 = $aip_indiv[2]->position;
+        $sig4 = $aip_indiv[3]->name;
+        $pos4 = $aip_indiv[3]->position;
+        $sig5 = $aip_indiv[4]->name;
+        $pos5 = $aip_indiv[4]->position;
+        $sig6 = $aip_indiv[5]->name;
+        $pos6 = $aip_indiv[5]->position;
+        $sig7 = $aip_indiv[6]->name;
+        $pos7 = $aip_indiv[6]->position;
+        $sig8 = $aip_indiv[7]->name;
+        $pos8 = $aip_indiv[7]->position;
+        $sig9 = $aip_indiv[8]->name;
+        $pos9 = $aip_indiv[8]->position;
+        $sig10 = $aip_indiv[9]->name;
+        $pos10 = $aip_indiv[9]->position;
+        $sig11 = $aip_indiv[10]->name;
+        $pos11 = $aip_indiv[10]->position;
+        $sig12 = $aip_indiv[11]->name;
+        $pos12 = $aip_indiv[11]->position;
+        $sig13 = $aip_indiv[12]->name;
+        $pos13 = $aip_indiv[12]->position;
+        $sig14 = $aip_indiv[13]->name;
+        $pos14 = $aip_indiv[13]->position;
+        // $sig15 = optional($aip_indiv[14])->name;
+        // $pos15 = optional($aip_indiv[14])->position;
+        $sectors = $this->sp_sectors_new($request);
+        $result= [
+            'page_number'=>$request->page_number,
+            'sprn'=>$request->sprn,
+            'ccet'=>$request->ccet,
+            'sig1'=>$sig1,
+            'pos1'=>$pos1,
+            'sig2'=>$sig2,
+            'pos2'=>$pos2,
+            'sig3'=>$sig3,
+            'pos3'=>$pos3,
+            'sig4'=>$sig4,
+            'pos4'=>$pos4,
+            'sig5'=>$sig5,
+            'pos5'=>$pos5,
+            'sig6'=>$sig6,
+            'pos6'=>$pos6,
+            'sig7'=>$sig7,
+            'pos7'=>$pos7,
+            'sig8'=>$sig8,
+            'pos8'=>$pos8,
+            'sig9'=>$sig9,
+            'pos9'=>$pos9,
+            'sig10'=>$sig10,
+            'pos10'=>$pos10,
+            'sig11'=>$sig11,
+            'pos11'=>$pos11,
+            'sig12'=>$sig12,
+            'pos12'=>$pos12,
+            'sig13'=>$sig13,
+            'pos13'=>$pos13,
+            'sig14'=>$sig14,
+            'pos14'=>$pos14,
+            // 'sig15'=>$sig15,
+            // 'pos15'=>$pos15,
+            'year'=>$request->year,
+            'ssf_filter'=>$request->ssf_filter,
+            'sectors'=>$sectors
+
+            // ''
+        ];
+        // dd($result);
+        return $this->flattenSpApi($result);
+
+    }
+    public function sp_sectors_new(Request $request){
+        // $sectors = Sector::where('is_active',1)->get();
+        // return $sectors;
+        $year = $request->year;
+
+        $ssf_filters = [
+
+            [
+                'ssf_filter'=>'General Public Services Sector',
+                'year'=>$year,
+
+            ],[
+                'ssf_filter'=>'Social Services Sector',
+                'year'=>$request->year
+            ],
+            [
+                'ssf_filter'=>'Economic Services',
+                'year'=>$request->year
+            ],
+            [
+                'ssf_filter'=>'Other Services',
+                'year'=>$request->year
+            ],
+            [
+                'ssf_filter'=>'ldrrmf',
+                'year'=>$request->year
+            ],
+            [
+                'ssf_filter'=>'dev',
+                'year'=>$request->year
+            ],
+            [
+                'ssf_filter'=>'other',
+                'year'=>$request->year
+            ],
+
+        ];
+        $data =[];
+        foreach ($ssf_filters as &$filter) {
+            // dd($filter['ssf_filter']);
+            $request->merge([
+                'ssf_filter' => $filter['ssf_filter'],
+                'year'       => $year,
+            ]);
+
+            // dd($result['plans']);
+            // ****************************************************************************
+            $data  = $this->print_aip($request);
+            // dd($data);
+            $filter['ccet_code_mitigation']=0;
+            $filter['ccet_code_adaptation']=0;
+            $filter['total_mooe'] =  0;
+            $filter['total_ps']   = 0;
+            $filter['total_co']   =  0;
+            $filter['total_fe']   =  0;
+            $final_data = count($data) > 0 ? $data[0] : [];
+            if (!empty($final_data)) {
+                $filter['ccet_code_mitigation']=$final_data['total_ccet_code_mitigation'] ?? 0;
+                $filter['ccet_code_adaptation']=$final_data['total_ccet_code_adaptation'] ?? 0;
+                $filter['total_mooe'] = $final_data['grand_total_mooe'] ?? 0;
+                $filter['total_ps']   = $final_data['grand_total_ps'] ?? 0;
+                $filter['total_co']   = $final_data['grand_total_co'] ?? 0;
+                $filter['total_fe']   = $final_data['grand_total_fe'] ?? 0;
+                $filter['data'] = $data;
+            }
+            // ****************************************************************************
+
+            // $filter['total_mooe'] = $result['total_mooe'];
+            // $filter['total_co']   = $result['total_co'];
+            // $filter['total_ps']   = $result['total_ps'];
+            // $filter['total_fe']   = $result['total_fe'];
+
+        }
+        // ****************************************************************************
+        unset($filter);
+        // ****************************************************************************
+
+        // return $result;
+        return $sectors = collect($ssf_filters)->map(function($item){
+            return [
+                'ssf_filter'=>$item['ssf_filter'],
+                'year'=>$item['year'],
+
+                // ****************************************************************************
+                'total_mooe'=>$item['total_mooe'],
+                'total_co' => $item['total_co'],
+                'total_ps' => $item['total_ps'],
+                'total_fe' => $item['total_fe'],
+                'ccet_code_mitigation'=>$item['ccet_code_mitigation'],
+                'ccet_code_adaptation'=>$item['ccet_code_adaptation'],
+                'data' => $item['data']
+                // 'plans'=>$item['plans']
+            ];
+        });
+    }
+    private function flattenSpApi($result)
+    {
+        $flattened = [];
+
+        /*
+        * Everything at the top level, except "sectors",
+        * will be copied into every individual data record.
+        */
+        $common = $result;
+
+        unset($common['sectors']);
+
+        /*
+        * Get sectors regardless of whether $result['sectors']
+        * is an array or Collection.
+        */
+        $sectors = data_get($result, 'sectors', []);
+
+        /*
+        * Convert Collection to array if necessary.
+        */
+        if ($sectors instanceof \Illuminate\Support\Collection) {
+            $sectors = $sectors->toArray();
+        }
+
+        if (!is_array($sectors)) {
+            return [];
+        }
+
+        foreach ($sectors as $sector) {
+
+            /*
+            * Get sector-level information.
+            *
+            * data_get() works with both arrays and objects.
+            */
+            $sectorDetails = [
+                'ssf_filter' => data_get($sector, 'ssf_filter'),
+
+                'year' => data_get(
+                    $sector,
+                    'year',
+                    data_get($common, 'year')
+                ),
+
+                'total_mooe' => data_get(
+                    $sector,
+                    'total_mooe',
+                    0
+                ),
+
+                'total_co' => data_get(
+                    $sector,
+                    'total_co',
+                    0
+                ),
+
+                'total_ps' => data_get(
+                    $sector,
+                    'total_ps',
+                    0
+                ),
+
+                'total_fe' => data_get(
+                    $sector,
+                    'total_fe',
+                    0
+                ),
+
+                'ccet_code_mitigation' => data_get(
+                    $sector,
+                    'ccet_code_mitigation',
+                    0
+                ),
+
+                'ccet_code_adaptation' => data_get(
+                    $sector,
+                    'ccet_code_adaptation',
+                    0
+                ),
+            ];
+
+            /*
+            * Get the data belonging to this sector.
+            */
+            $sectorData = data_get($sector, 'data', []);
+
+            /*
+            * If data is a Collection, convert it to an array.
+            */
+            if ($sectorData instanceof \Illuminate\Support\Collection) {
+                $sectorData = $sectorData->toArray();
+            }
+
+            if (!is_array($sectorData)) {
+                continue;
+            }
+
+            /*
+            * Every item in sector.data becomes one
+            * record in the flattened result.
+            */
+            foreach ($sectorData as $data) {
+
+                /*
+                * Convert data object to array if necessary.
+                */
+                if (is_object($data)) {
+                    $data = (array) $data;
+                }
+
+                $flattened[] = array_merge(
+                    $common,
+                    $sectorDetails,
+                    $data
+                );
+            }
+        }
+
+        return $flattened;
     }
     // public function replicate(RevisionPlan $revisionPlan)
     // {
