@@ -779,6 +779,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         }, _callee2, null, [[1, 3]]);
       }))();
     },
+    //FLEXIBLE TOTAL
     // // AVERAGE
     // // Method 1: returns sum of the three averages
     // categoryAverage(type) {
@@ -839,13 +840,77 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       var _this1 = this;
       var total = 0;
       this.opcr_data.forEach(function (item) {
+        var divisor = 0;
         var qAvg = _this1.average([item.ppdo_q1, item.ppdo_q2, item.ppdo_q3]);
         var eAvg = _this1.average([item.ppdo_e1, item.ppdo_e2, item.ppdo_e3]);
         var tAvg = _this1.average([item.ppdo_t1]);
-        total += qAvg + eAvg + tAvg;
+        if (parseFloat(qAvg) > 0) {
+          divisor += 1;
+        }
+        if (parseFloat(eAvg) > 0) {
+          divisor += 1;
+        }
+        if (parseFloat(tAvg) > 0) {
+          divisor += 1;
+        }
+        total += (qAvg + eAvg + tAvg) / divisor;
       });
       return Number(total.toFixed(2));
     },
+    calculatePpdoTotal2: function calculatePpdoTotal2() {
+      var total = 0;
+      for (var i = 0; i < this.opcr_data.length; i++) {
+        var rat_e = this.opcr_data[i].ppdo_rating_e;
+        var rat_q = this.opcr_data[i].ppdo_rating_q;
+        var rat_t = this.opcr_data[i].ppdo_rating_t;
+        var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t);
+        // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
+        var div = 0;
+        if (parseFloat(rat_e) >= 1) {
+          div = div + 1;
+        }
+        if (parseFloat(rat_q) >= 1) {
+          div = div + 1;
+        }
+        if (parseFloat(rat_t) >= 1) {
+          div = div + 1;
+        }
+        if (div == 0) {
+          div = 1;
+        }
+        total = total + avee / div;
+      }
+      // total = "44.44555555";
+      // this.total_ave = total;
+      return this.format_number_conv(total, 2, true);
+    },
+    // getTotalAverage2() {
+    //     var total = 0;
+    //     for (let i = 0; i < this.opcr_data.length; i++) {
+    //         var rat_e = this.opcr_data[i].rating_e;
+    //         var rat_q = this.opcr_data[i].rating_q;
+    //         var rat_t = this.opcr_data[i].rating_t;
+    //         var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+    //         // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
+    //         var div = 0;
+    //         if (parseFloat(rat_e) >= 1) {
+    //             div = div + 1;
+    //         }
+    //         if (parseFloat(rat_q) >= 1) {
+    //             div = div + 1;
+    //         }
+    //         if (parseFloat(rat_t) >= 1) {
+    //             div = div + 1;
+    //         }
+    //         if (div == 0) {
+    //             div = 1;
+    //         }
+    //         total = total + (avee / div);
+    //     }
+    //     // total = "44.44555555";
+    //     // this.total_ave = total;
+    //     return this.format_number_conv(total, 2, true);
+    // },
     // Average of all averages across the entire OPCR data
     calculatePpdoAverage: function calculatePpdoAverage() {
       var _this10 = this;
@@ -863,6 +928,41 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         });
       });
       return count ? Number((total / count).toFixed(2)) : 0;
+    },
+    calculatePpdoAverage2: function calculatePpdoAverage2() {
+      var total = 0;
+      var counter = 0;
+      for (var i = 0; i < this.opcr_data.length; i++) {
+        var rat_e = this.opcr_data[i].ppdo_rating_e;
+        var rat_q = this.opcr_data[i].ppdo_rating_q;
+        var rat_t = this.opcr_data[i].ppdo_rating_t;
+        var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t);
+        // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
+        var div = 0;
+        if (parseFloat(rat_e) >= 1) {
+          div = div + 1;
+        }
+        if (parseFloat(rat_q) >= 1) {
+          div = div + 1;
+        }
+        if (parseFloat(rat_t) >= 1) {
+          div = div + 1;
+        }
+        if (div == 0) {
+          div = 1;
+        }
+        total = total + avee / div;
+        if (total > 0) {
+          counter += 1;
+        }
+      }
+      // total = "44.44555555";
+      // this.total_ave = total;
+      if (counter < 0) {
+        counter = 1;
+      }
+      var ave = total / counter;
+      return this.format_number_conv(ave, 2, true);
     },
     // ACCOMPLISHMENT MOV
     showModalAccomplishmentMOV: function showModalAccomplishmentMOV(idpaps, department_code, year, semester, paps_param) {
@@ -2042,7 +2142,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             viewBox: "0 0 16 16"
           }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
             d: "M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"
-          })], -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_91), _cache[59] || (_cache[59] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ", -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" PREVIEW "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+          })], -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_91), _cache[59] || (_cache[59] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  ", -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" PREVIEW "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
             onClick: function onClick($event) {
               return $options.previewFile(file);
             },
@@ -2075,7 +2175,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         colspan: "3"
       }, "TOTAL RATING (Office)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getTotalAverage()), 1 /* TEXT */), _cache[68] || (_cache[68] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
-      }, "TOTAL RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoTotal()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td colspan=\"3\">TOTAL RATING (DPCR)</td>\n                                    <td>{{ computeDPCRTotal(opcr_data) }}</td> "), _cache[69] || (_cache[69] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "TOTAL RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoTotal2()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td colspan=\"3\">TOTAL RATING (DPCR)</td>\n                                    <td>{{ computeDPCRTotal(opcr_data) }}</td> "), _cache[69] || (_cache[69] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
       }, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td></td> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_95, [_cache[70] || (_cache[70] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "2"
@@ -2083,7 +2183,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         colspan: "3"
       }, "FINAL AVERAGE RATING (Office)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getAverageAll()), 1 /* TEXT */), _cache[72] || (_cache[72] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
-      }, "FINAL AVERAGE RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoAverage()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td colspan=\"3\">FINAL AVERAGE RATING (DPCR)</td>\n                                    <td>{{ computeDPCRAverage(opcr_data) }}</td> "), _cache[73] || (_cache[73] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[74] || (_cache[74] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.mode_1 === 'Approve' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_96, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_97, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_98, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <table class=\"table table-hover table-bordered border-dark\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_99, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" class=\"sticky-header\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_100, [_cache[78] || (_cache[78] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+      }, "FINAL AVERAGE RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoAverage2()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td colspan=\"3\">FINAL AVERAGE RATING (DPCR)</td>\n                                    <td>{{ computeDPCRAverage(opcr_data) }}</td> "), _cache[73] || (_cache[73] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[74] || (_cache[74] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.mode_1 === 'Approve' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_96, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_97, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_98, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <table class=\"table table-hover table-bordered border-dark\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_99, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" class=\"sticky-header\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_100, [_cache[78] || (_cache[78] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
         rowspan: "2"
       }, "Major Final Output", -1 /* CACHED */)), _cache[79] || (_cache[79] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
         rowspan: "2"

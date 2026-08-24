@@ -419,12 +419,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
     }
     public function index_rating(Request $request)
     {
-        // dd("rating");
-        // dd(auth()->user());
-        // dd($request);
-        // ->where('rating_status', '<', 1)
-        // $disk = app()->environment('production') ? 'custom_uploads' : 'public';
-        // dd($disk);
+        
         $disk = 'public';
         if ((auth()->user()->department_code == '04') && $request->source!='ppdo_approval') {
             // DB::flushQueryLog();
@@ -440,7 +435,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 ->where('rating_status', '>', -1)
                 ->orderBy('year', 'desc')
                 ->orderBy('semester', 'desc')
-            // dd($data->get()->pluck('id'));
+                // dd($data->get()->pluck('id'));
                 ->orderBy('id','desc')
                 // $data
                 ->paginate(10)
@@ -501,131 +496,6 @@ class TargetAccomplishmentReviewApproveController extends Controller
                         'opcr_remarks'=> optional($item)->opcrRemarks
                     ];
                 });
-            // dd($data);
-//                 dd(
-//     OfficePerformanceCommitmentRatingList::
-//                     with([
-//                         'FFUNCCODOffice',
-//                         'opcrTarget',
-//                         'opcrTarget.opcr_rating',
-//                         'opcr_rating',
-//                         'opcrRemarks'
-//                     ])->where('rating_status', '>', -1)
-//         ->orderBy('year', 'desc')
-//         ->orderBy('semester', 'desc')
-//         ->orderBy('id','desc')
-//         ->toSql(),
-//     OfficePerformanceCommitmentRatingList::
-//                     with([
-//                         'FFUNCCODOffice',
-//                         'opcrTarget',
-//                         'opcrTarget.opcr_rating',
-//                         'opcr_rating',
-//                         'opcrRemarks'
-//                     ])->where('rating_status', '>', -1)
-//         ->orderBy('year', 'desc')
-//         ->orderBy('semester', 'desc')
-//         ->orderBy('id','desc')
-//         ->paginate(10)
-//         ->pluck('id')
-// );
-    //         dd(OfficePerformanceCommitmentRatingList::with([
-    //     'FFUNCCODOffice',
-    //     'opcrTarget',
-    //     'opcrTarget.opcr_rating',
-    //     'opcr_rating',
-    //     'opcrRemarks'
-    // ])
-    // ->where('id',131)
-    // ->first());
-        //     dd(
-        //     OfficePerformanceCommitmentRatingList::with(['FFUNCCODOffice',
-        //                 'opcrTarget',
-        //                 'opcrTarget.opcr_rating',
-        //                 'opcr_rating',
-        //                 'opcrRemarks'])
-        //         ->where('rating_status','>',-1)
-        //         ->orderBy('year','desc')
-        //         ->orderBy('semester','desc')
-        //         ->orderBy('id','desc')
-        //         ->get()
-        //         ->pluck('id'),
-        //         OfficePerformanceCommitmentRatingList::with(['FFUNCCODOffice',
-        //                 'opcrTarget',
-        //                 'opcrTarget.opcr_rating',
-        //                 'opcr_rating',
-        //                 'opcrRemarks'])
-        //         ->where('rating_status','>',-1)
-        //         ->orderBy('year','desc')
-        //         ->orderBy('semester','desc')
-        //         ->orderBy('id','desc')
-        //         ->get()
-        //         ->map(function($item){
-        //             return [
-        //                 'sem'=>$item->semester,
-        //                 'FFUNCTION'=>optional(optional($item)->FFUNCCODOffice)->FFUNCTION
-        //             ];
-        //         }),
-
-        // );
-                // dd(DB::getQueryLog());
-                // dd($data);
-            // $data->getCollection()->transform(function ($item) {
-            //     $opcr_id = $item->id;
-            //     // dd($item);
-            //     //OFFICE
-            //     $office = FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)
-            //         ->first();
-            //     //TOTAL & AVERAGE
-            //     $averageSum = $this->getRating($opcr_id);
-            //     $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
-            //     if ($count < 1) {
-            //         $count = 1;
-            //     }
-            //     $total = number_format($averageSum, 2);
-            //     $ave_pre = $total / $count;
-            //     $ave = number_format($ave_pre, 2);
-
-            //     //OPCR LIST
-            //     $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
-            //     // dd($my_opcr, $item);
-            //     //OPCR DATE
-            //     $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
-            //     $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
-            //     $start = $dateStart->format('F');
-            //     $end = $dateEnd->format('F Y');
-            //     $opcr_date = $start . " to " . $end;
-            //     $opcr_date = Str::upper($opcr_date);
-
-            //     //YEAR NOW
-            //     $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
-            //     // dd($my_year);
-            //     //REVISION PLAN ID/ GET MOOE & PS
-
-            //     return [
-            //         'id' => $item->id,
-            //         'semester' => $item->semester,
-            //         'date_from' => $item->date_from,
-            //         'date_to' => $item->date_to,
-            //         'year' => $item->year,
-            //         'FFUNCCOD' => $item->FFUNCCOD,
-            //         'target_status' => $item->target_status,
-            //         'rating_status' => $item->rating_status,
-            //         'accomplishment_status' => $item->accomplishment_status,
-            //         'allotment' => $item->allotment,
-            //         'total' => $total,
-            //         'ave' => $ave,
-            //         'opcr_date' => $opcr_date,
-            //         'office' => $office
-            //     ];
-            // });
-            // $data1 = OfficePerformanceCommitmentRatingList::with([])
-            //     ->where('rating_status', '>', -1)
-            //     ->where('year',2026)
-            //     ->orderBy('year', 'desc')
-            //     ->orderBy('semester', 'desc')
-            //     ->get();
-            // dd($data1, $data1->pluck('FFUNCCOD'), $data1[5]);
 
             return inertia('Review-Approve/OPCR/Ratings/Index', [
                 'data' => $data,
@@ -633,6 +503,9 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 'disk' => $disk,
                 'source'=>$request->source
             ]);
+            
+
+            
         } else if ((auth()->user()->department_code == '02' && auth()->user()->recid == '795') ||
             ((auth()->user()->department_code == '04') && $request->source=='ppdo_approval')
         ) {
@@ -975,6 +848,22 @@ class TargetAccomplishmentReviewApproveController extends Controller
 
                         "rating_t" => $this->averageRating([
                             $t1,
+                        ]),
+
+                        "ppdo_rating_q" => $this->averageRating([
+                            $ppdo_q1,
+                            $ppdo_q2,
+                            $ppdo_q3,
+                        ]),
+
+                        "ppdo_rating_e" => $this->averageRating([
+                            $ppdo_e1,
+                            $ppdo_e2,
+                            $ppdo_e3,
+                        ]),
+
+                        "ppdo_rating_t" => $this->averageRating([
+                            $ppdo_t1,
                         ]),
                         // // Overall row average across all monthly row averages
                         // 'average' => round($computeAve($summary['row_averages']), 2),
@@ -1636,5 +1525,300 @@ class TargetAccomplishmentReviewApproveController extends Controller
         //     'message' => 'Rating type updated successfully',
         //     'rating_type' => $rating->rating_type
         // ]);
+    }
+
+    public function index_rating_backup(Request $request)
+    {
+        // dd("rating");
+        // dd(auth()->user());
+        // dd($request);
+        // ->where('rating_status', '<', 1)
+        // $disk = app()->environment('production') ? 'custom_uploads' : 'public';
+        // dd($disk);
+        $disk = 'public';
+        if ((auth()->user()->department_code == '04') && $request->source!='ppdo_approval') {
+            // DB::flushQueryLog();
+            // DB::enableQueryLog();
+            $data = OfficePerformanceCommitmentRatingList::
+                    with([
+                        'FFUNCCODOffice',
+                        'opcrTarget',
+                        'opcrTarget.opcr_rating',
+                        'opcr_rating',
+                        'opcrRemarks'
+                    ])
+                ->where('rating_status', '>', -1)
+                ->orderBy('year', 'desc')
+                ->orderBy('semester', 'desc')
+                // dd($data->get()->pluck('id'));
+                ->orderBy('id','desc')
+                // $data
+                ->paginate(10)
+                ->through(function($item){
+                    $opcr_id = $item->id;
+                    // dd($item);
+                    //OFFICE
+                    // $office = FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)
+                    //     ->first();
+                    $office = $item->FFUNCCODOffice;
+                        // dd($office, $item->FFUNCCODOffice);
+                    //TOTAL & AVERAGE
+                    $averageSum = $this->getRating($opcr_id);
+                    $opcr_rating = $item->opcr_rating;
+                    $count = optional($opcr_rating)->count();
+                    // $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+
+                    // dd($opcr_rating, $count1, $count, $opcr_id);
+                    if ($count < 1) {
+                        $count = 1;
+                    }
+                    $total = number_format($averageSum, 2);
+                    $ave_pre = $total / $count;
+                    $ave = number_format($ave_pre, 2);
+
+                    //OPCR LIST
+                    // $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+                    $my_opcr =$item;
+                    // dd($my_opcr, $item);
+                    //OPCR DATE
+                    $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+                    $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+                    $start = $dateStart->format('F');
+                    $end = $dateEnd->format('F Y');
+                    $opcr_date = $start . " to " . $end;
+                    $opcr_date = Str::upper($opcr_date);
+
+                    //YEAR NOW
+                    $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
+                    // dd($my_year);
+                    //REVISION PLAN ID/ GET MOOE & PS
+
+                    return [
+                        'id' => $item->id,
+                        'semester' => $item->semester,
+                        'date_from' => $item->date_from,
+                        'date_to' => $item->date_to,
+                        'year' => $item->year,
+                        'FFUNCCOD' => $item->FFUNCCOD,
+                        'target_status' => $item->target_status,
+                        'rating_status' => $item->rating_status,
+                        'accomplishment_status' => $item->accomplishment_status,
+                        'allotment' => $item->allotment,
+                        'total' => $total,
+                        'ave' => $ave,
+                        'opcr_date' => $opcr_date,
+                        'office' => $office,
+                        'opcr_remarks'=> optional($item)->opcrRemarks
+                    ];
+                });
+
+            return inertia('Review-Approve/OPCR/Ratings/Index', [
+                'data' => $data,
+                'mode_1' => 'Review',
+                'disk' => $disk,
+                'source'=>$request->source
+            ]);
+            // dd($data);
+            //                 dd(
+            //     OfficePerformanceCommitmentRatingList::
+            //                     with([
+            //                         'FFUNCCODOffice',
+            //                         'opcrTarget',
+            //                         'opcrTarget.opcr_rating',
+            //                         'opcr_rating',
+            //                         'opcrRemarks'
+            //                     ])->where('rating_status', '>', -1)
+            //         ->orderBy('year', 'desc')
+            //         ->orderBy('semester', 'desc')
+            //         ->orderBy('id','desc')
+            //         ->toSql(),
+            //     OfficePerformanceCommitmentRatingList::
+            //                     with([
+            //                         'FFUNCCODOffice',
+            //                         'opcrTarget',
+            //                         'opcrTarget.opcr_rating',
+            //                         'opcr_rating',
+            //                         'opcrRemarks'
+            //                     ])->where('rating_status', '>', -1)
+            //         ->orderBy('year', 'desc')
+            //         ->orderBy('semester', 'desc')
+            //         ->orderBy('id','desc')
+            //         ->paginate(10)
+            //         ->pluck('id')
+            // );
+            //         dd(OfficePerformanceCommitmentRatingList::with([
+            //     'FFUNCCODOffice',
+            //     'opcrTarget',
+            //     'opcrTarget.opcr_rating',
+            //     'opcr_rating',
+            //     'opcrRemarks'
+            // ])
+            // ->where('id',131)
+            // ->first());
+            //     dd(
+            //     OfficePerformanceCommitmentRatingList::with(['FFUNCCODOffice',
+            //                 'opcrTarget',
+            //                 'opcrTarget.opcr_rating',
+            //                 'opcr_rating',
+            //                 'opcrRemarks'])
+            //         ->where('rating_status','>',-1)
+            //         ->orderBy('year','desc')
+            //         ->orderBy('semester','desc')
+            //         ->orderBy('id','desc')
+            //         ->get()
+            //         ->pluck('id'),
+            //         OfficePerformanceCommitmentRatingList::with(['FFUNCCODOffice',
+            //                 'opcrTarget',
+            //                 'opcrTarget.opcr_rating',
+            //                 'opcr_rating',
+            //                 'opcrRemarks'])
+            //         ->where('rating_status','>',-1)
+            //         ->orderBy('year','desc')
+            //         ->orderBy('semester','desc')
+            //         ->orderBy('id','desc')
+            //         ->get()
+            //         ->map(function($item){
+            //             return [
+            //                 'sem'=>$item->semester,
+            //                 'FFUNCTION'=>optional(optional($item)->FFUNCCODOffice)->FFUNCTION
+            //             ];
+            //         }),
+
+            // );
+            // dd(DB::getQueryLog());
+            // dd($data);
+            // $data->getCollection()->transform(function ($item) {
+            //     $opcr_id = $item->id;
+            //     // dd($item);
+            //     //OFFICE
+            //     $office = FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)
+            //         ->first();
+            //     //TOTAL & AVERAGE
+            //     $averageSum = $this->getRating($opcr_id);
+            //     $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+            //     if ($count < 1) {
+            //         $count = 1;
+            //     }
+            //     $total = number_format($averageSum, 2);
+            //     $ave_pre = $total / $count;
+            //     $ave = number_format($ave_pre, 2);
+
+            //     //OPCR LIST
+            //     $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+            //     // dd($my_opcr, $item);
+            //     //OPCR DATE
+            //     $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+            //     $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+            //     $start = $dateStart->format('F');
+            //     $end = $dateEnd->format('F Y');
+            //     $opcr_date = $start . " to " . $end;
+            //     $opcr_date = Str::upper($opcr_date);
+
+            //     //YEAR NOW
+            //     $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
+            //     // dd($my_year);
+            //     //REVISION PLAN ID/ GET MOOE & PS
+
+            //     return [
+            //         'id' => $item->id,
+            //         'semester' => $item->semester,
+            //         'date_from' => $item->date_from,
+            //         'date_to' => $item->date_to,
+            //         'year' => $item->year,
+            //         'FFUNCCOD' => $item->FFUNCCOD,
+            //         'target_status' => $item->target_status,
+            //         'rating_status' => $item->rating_status,
+            //         'accomplishment_status' => $item->accomplishment_status,
+            //         'allotment' => $item->allotment,
+            //         'total' => $total,
+            //         'ave' => $ave,
+            //         'opcr_date' => $opcr_date,
+            //         'office' => $office
+            //     ];
+            // });
+            // $data1 = OfficePerformanceCommitmentRatingList::with([])
+            //     ->where('rating_status', '>', -1)
+            //     ->where('year',2026)
+            //     ->orderBy('year', 'desc')
+            //     ->orderBy('semester', 'desc')
+            //     ->get();
+            // dd($data1, $data1->pluck('FFUNCCOD'), $data1[5]);
+
+            
+        } else if ((auth()->user()->department_code == '02' && auth()->user()->recid == '795') ||
+            ((auth()->user()->department_code == '04') && $request->source=='ppdo_approval')
+        ) {
+            $data = $this->revapp
+                ->where('rating_status', '>', 0)
+                ->where('rating_status', '<', 5)
+                ->orderBy('year', 'desc')
+                ->orderBy('semester', 'desc')
+                ->orderBy('rating_status', 'asc')
+                ->paginate(10);
+            if (request('source') === 'ppdo_approval') {
+                $data->appends([
+                    'source' => request('source'),
+                ]);
+            }
+            $data->getCollection()->transform(function ($item) {
+                $opcr_id = $item->id;
+                // dd($item);
+                //OFFICE
+                $office = FFUNCCOD::where('FFUNCCOD', $item->FFUNCCOD)
+                    ->first();
+                //TOTAL & AVERAGE
+                $averageSum = $this->getRating($opcr_id);
+                $count = OfficePerformanceCommitmentRating::where('opcr_id', $opcr_id)->count();
+                if ($count < 1) {
+                    $count = 1;
+                }
+                $total = number_format($averageSum, 2);
+                $ave_pre = $total / $count;
+                $ave = number_format($ave_pre, 2);
+
+                //OPCR LIST
+                $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
+
+                //OPCR DATE
+                $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
+                $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
+                $start = $dateStart->format('F');
+                $end = $dateEnd->format('F Y');
+                $opcr_date = $start . " to " . $end;
+                $opcr_date = Str::upper($opcr_date);
+
+                //YEAR NOW
+                $my_year = Carbon::parse($my_opcr->date_to)->format('Y');
+                // dd($my_year);
+                //REVISION PLAN ID/ GET MOOE & PS
+
+                return [
+                    'id' => $item->id,
+                    'semester' => $item->semester,
+                    'date_from' => $item->date_from,
+                    'date_to' => $item->date_to,
+                    'year' => $item->year,
+                    'FFUNCCOD' => $item->FFUNCCOD,
+                    'target_status' => $item->target_status,
+                    'rating_status' => $item->rating_status,
+                    'accomplishment_status' => $item->accomplishment_status,
+                    'allotment' => $item->allotment,
+                    'total' => $total,
+                    'ave' => $ave,
+                    'opcr_date' => $opcr_date,
+                    'office' => $office,
+                    'rating_type' => $item->rating_type
+                ];
+            });
+            // dd($data);
+            return inertia('Review-Approve/OPCR/Ratings/Index', [
+                'data' => $data,
+                'mode_1' => 'Approve',
+                'disk' => $disk
+            ]);
+        } else {
+            return redirect('/forbidden')
+                ->with('error', 'Access forbidden!');
+        }
     }
 }

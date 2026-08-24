@@ -159,7 +159,7 @@
         </div>
         <!-- </div> -->
         <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`" :z-index="1055">
-        <!-- <div class="masonry-item w-100" v-if="displayModal">
+            <!-- <div class="masonry-item w-100" v-if="displayModal">
             <div class="bgc-white p-20 bd">
 
             <div class="d-flex justify-content-end">
@@ -749,24 +749,26 @@
                                             {{ file.filename }}
                                         </td>
                                         <!-- MOV ICON -->
-                                        <td><a
-                                            :href="`/movs/download/${file.id}`"
+                                        <td>
+                                            <a
+                                                :href="`/movs/download/${file.id}`"
 
-                                            class="inline-flex items-center"
-                                            title="Download"
-                                            target="_blank"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="20"
-                                                height="20"
-                                                fill="green"
-                                                class="bi bi-cloud-arrow-down-fill"
-                                                viewBox="0 0 16 16"
+                                                class="inline-flex items-center"
+                                                title="Download"
+                                                target="_blank"
                                             >
-                                                <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
-                                            </svg>
-                                        </a>&nbsp;</td>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="green"
+                                                    class="bi bi-cloud-arrow-down-fill"
+                                                    viewBox="0 0 16 16"
+                                                >
+                                                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
+                                                </svg>
+                                            </a>&nbsp;
+                                        </td>
                                         <!-- PREVIEW -->
                                         <td>
                                             <button
@@ -803,9 +805,12 @@
                                 <tr class="table-summary-row">
                                     <td colspan="1"></td>
                                     <td colspan="3">TOTAL RATING (Office)</td>
-                                    <td>{{ getTotalAverage() }}</td>
+                                    <td>{{ getTotalAverage() }}
+                                        
+                                    </td>
                                     <td colspan="3">TOTAL RATING (PPDO)</td>
-                                    <td>{{ calculatePpdoTotal() }}
+                                    <td>
+                                        {{ calculatePpdoTotal2()}} 
                                     </td>
 
                                     <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
@@ -818,7 +823,7 @@
                                     <td colspan="3">FINAL AVERAGE RATING (Office)</td>
                                     <td>{{ getAverageAll() }}</td>
                                     <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
-                                    <td>{{ calculatePpdoAverage() }}</td>
+                                    <td> {{ calculatePpdoAverage2() }}</td>
                                     <!-- <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
                                     <td>{{ computeDPCRAverage(opcr_data) }}</td> -->
                                     <td></td>
@@ -1763,7 +1768,6 @@ export default {
             // total = "44.44555555";
             // this.total_ave = total;
             return this.format_number_conv(total, 2, true);
-
         },
         computeRowAverage(opcr) {
             const values = [opcr.rating_q, opcr.rating_e, opcr.rating_t];
@@ -1893,7 +1897,7 @@ export default {
 
             return Number(total.toFixed(2))
         },
-
+        
         // ===============================
         // AVERAGE of DPCR (ignore zero rows)
         // ===============================
@@ -1973,6 +1977,9 @@ export default {
             }
         },
 
+
+        //FLEXIBLE TOTAL
+
         // // AVERAGE
         // // Method 1: returns sum of the three averages
         // categoryAverage(type) {
@@ -2038,6 +2045,7 @@ export default {
             let total = 0;
 
             this.opcr_data.forEach(item => {
+                var divisor =0;
                 const qAvg = this.average([
                     item.ppdo_q1,
                     item.ppdo_q2,
@@ -2053,13 +2061,68 @@ export default {
                 const tAvg = this.average([
                     item.ppdo_t1
                 ]);
-
-                total += qAvg + eAvg + tAvg;
+                if(parseFloat(qAvg)>0){divisor+=1}
+                if(parseFloat(eAvg)>0){divisor+=1}
+                if(parseFloat(tAvg)>0){divisor+=1}
+                total += (qAvg + eAvg + tAvg)/divisor;
             });
 
             return Number(total.toFixed(2));
         },
-
+        calculatePpdoTotal2() {
+            var total = 0;
+            for (let i = 0; i < this.opcr_data.length; i++) {
+                var rat_e = this.opcr_data[i].ppdo_rating_e;
+                var rat_q = this.opcr_data[i].ppdo_rating_q;
+                var rat_t = this.opcr_data[i].ppdo_rating_t;
+                var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+                // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
+                var div = 0;
+                if (parseFloat(rat_e) >= 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_q) >= 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_t) >= 1) {
+                    div = div + 1;
+                }
+                if (div == 0) {
+                    div = 1;
+                }
+                total = total + (avee / div);
+            }
+            // total = "44.44555555";
+            // this.total_ave = total;
+            return this.format_number_conv(total, 2, true);
+        },
+        // getTotalAverage2() {
+        //     var total = 0;
+        //     for (let i = 0; i < this.opcr_data.length; i++) {
+        //         var rat_e = this.opcr_data[i].rating_e;
+        //         var rat_q = this.opcr_data[i].rating_q;
+        //         var rat_t = this.opcr_data[i].rating_t;
+        //         var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+        //         // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
+        //         var div = 0;
+        //         if (parseFloat(rat_e) >= 1) {
+        //             div = div + 1;
+        //         }
+        //         if (parseFloat(rat_q) >= 1) {
+        //             div = div + 1;
+        //         }
+        //         if (parseFloat(rat_t) >= 1) {
+        //             div = div + 1;
+        //         }
+        //         if (div == 0) {
+        //             div = 1;
+        //         }
+        //         total = total + (avee / div);
+        //     }
+        //     // total = "44.44555555";
+        //     // this.total_ave = total;
+        //     return this.format_number_conv(total, 2, true);
+        // },
         // Average of all averages across the entire OPCR data
         calculatePpdoAverage() {
             let total = 0;
@@ -2092,7 +2155,41 @@ export default {
 
             return count ? Number((total / count).toFixed(2)) : 0;
         },
-
+        calculatePpdoAverage2() {
+            var total = 0;
+            var counter = 0;
+            for (let i = 0; i < this.opcr_data.length; i++) {
+                var rat_e = this.opcr_data[i].ppdo_rating_e;
+                var rat_q = this.opcr_data[i].ppdo_rating_q;
+                var rat_t = this.opcr_data[i].ppdo_rating_t;
+                var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+                // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
+                var div = 0;
+                if (parseFloat(rat_e) >= 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_q) >= 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_t) >= 1) {
+                    div = div + 1;
+                }
+                if (div == 0) {
+                    div = 1;
+                }
+                total = total + (avee / div);
+                if(total>0){
+                    counter+=1;
+                }
+            }
+            // total = "44.44555555";
+            // this.total_ave = total;
+            if(counter<0){
+                counter=1;
+            }
+            var ave =total/counter;
+            return this.format_number_conv(ave, 2, true);
+        },
         // ACCOMPLISHMENT MOV
         async showModalAccomplishmentMOV(idpaps, department_code,year,semester, paps_param){
 
