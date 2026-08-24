@@ -564,6 +564,27 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       // this.total_ave = total;
       return this.format_number_conv(total, 2, true);
     },
+    getTotalAverage2: function getTotalAverage2() {
+      var _this7 = this;
+      var total = 0;
+      this.opcr_data.forEach(function (item) {
+        var divisor = 0;
+        var qAvg = _this7.average([item.q1, item.q2, item.q3]);
+        var eAvg = _this7.average([item.e1, item.e2, item.e3]);
+        var tAvg = _this7.average([item.t1]);
+        if (parseFloat(qAvg) > 0) {
+          divisor += 1;
+        }
+        if (parseFloat(eAvg) > 0) {
+          divisor += 1;
+        }
+        if (parseFloat(tAvg) > 0) {
+          divisor += 1;
+        }
+        total += (qAvg + eAvg + tAvg) / divisor;
+      });
+      return Number(total.toFixed(2));
+    },
     computeRowAverage: function computeRowAverage(opcr) {
       var values = [opcr.rating_q, opcr.rating_e, opcr.rating_t];
       var validValues = values.filter(function (v) {
@@ -596,10 +617,10 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       return (sum / validValues.length).toFixed(2); // keep 2 decimals
     },
     getAverageAll: function getAverageAll() {
-      var _this7 = this;
+      var _this8 = this;
       // compute averages for all rows
       var rowAverages = this.opcr_data.map(function (opcr) {
-        return _this7.computeRowAverage(opcr);
+        return _this8.computeRowAverage(opcr);
       });
 
       // filter out rows that are 0
@@ -613,6 +634,23 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         return a + b;
       }, 0);
       return (total / validAverages.length).toFixed(2); // keep 2 decimals
+    },
+    getAverageAll2: function getAverageAll2() {
+      var _this9 = this;
+      var total = 0;
+      var count = 0;
+      this.opcr_data.forEach(function (item) {
+        var qAvg = _this9.average([item.q1, item.q2, item.q3]);
+        var eAvg = _this9.average([item.e1, item.e2, item.e3]);
+        var tAvg = _this9.average([item.t1]);
+        [qAvg, eAvg, tAvg].forEach(function (avg) {
+          if (avg > 0) {
+            total += avg;
+            count++;
+          }
+        });
+      });
+      return count ? Number((total / count).toFixed(2)) : 0;
     },
     // *********************************************AVERAGE -DPCR SCORES *********************************************
     computeAverageScore: function computeAverageScore(monthly_ratings) {
@@ -670,7 +708,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     // TOTAL of DPCR (sum of row averages)
     // ===============================
     computeDPCRTotal: function computeDPCRTotal(rows) {
-      var _this8 = this;
+      var _this0 = this;
       if (!Array.isArray(rows)) {
         // console.log("zero cya")
         return 0;
@@ -682,10 +720,10 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         if (!ratings || _typeof(ratings) !== 'object') {
           return;
         }
-        var q = _this8.computeAverageByType(ratings, 'q');
-        var e = _this8.computeAverageByType(ratings, 'e');
+        var q = _this0.computeAverageByType(ratings, 'q');
+        var e = _this0.computeAverageByType(ratings, 'e');
         var t = Number(ratings === null || ratings === void 0 ? void 0 : ratings.t1) > 0 ? Number(ratings.t1) : 0;
-        var rowAverage = _this8.computeAverageQET(q, e, t);
+        var rowAverage = _this0.computeAverageQET(q, e, t);
         console.log(rowAverage);
         if (rowAverage > 0) {
           total += rowAverage;
@@ -697,7 +735,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     // AVERAGE of DPCR (ignore zero rows)
     // ===============================
     computeDPCRAverage: function computeDPCRAverage(rows) {
-      var _this9 = this;
+      var _this1 = this;
       if (!Array.isArray(rows)) {
         return 0;
       }
@@ -707,10 +745,10 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         if (!ratings || _typeof(ratings) !== 'object') {
           return;
         }
-        var q = _this9.computeAverageByType(ratings, 'q');
-        var e = _this9.computeAverageByType(ratings, 'e');
+        var q = _this1.computeAverageByType(ratings, 'q');
+        var e = _this1.computeAverageByType(ratings, 'e');
         var t = Number(ratings === null || ratings === void 0 ? void 0 : ratings.t1) > 0 ? Number(ratings.t1) : 0;
-        var rowAverage = _this9.computeAverageQET(q, e, t);
+        var rowAverage = _this1.computeAverageQET(q, e, t);
         if (rowAverage > 0) {
           rowAverages.push(rowAverage);
         }
@@ -738,7 +776,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     },
     // DOWNLOAD EXCEL
     downloadExcel: function downloadExcel(opcr_id) {
-      var _this0 = this;
+      var _this10 = this;
       return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
         var file_name, response, url, link, _t;
         return _regenerator().w(function (_context2) {
@@ -746,7 +784,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
             case 0:
               // opcr_list_id must be available, e.g., from a prop or data
               // const opcrListId = this.opcr_list_id; // adjust to your variable
-              file_name = _this0.opcr_current.semester + " - " + _this0.opcr_current.year + " - " + _this0.opcr_current.office.FFUNCTION + ".xlsx";
+              file_name = _this10.opcr_current.semester + " - " + _this10.opcr_current.year + " - " + _this10.opcr_current.office.FFUNCTION + ".xlsx";
               _context2.p = 1;
               _context2.n = 2;
               return axios.get("/review-approve-ratings/".concat(opcr_id, "/view/opcr/rating/submission"), {
@@ -837,13 +875,13 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     },
     // Sum of the averages of all OPCR items
     calculatePpdoTotal: function calculatePpdoTotal() {
-      var _this1 = this;
+      var _this11 = this;
       var total = 0;
       this.opcr_data.forEach(function (item) {
         var divisor = 0;
-        var qAvg = _this1.average([item.ppdo_q1, item.ppdo_q2, item.ppdo_q3]);
-        var eAvg = _this1.average([item.ppdo_e1, item.ppdo_e2, item.ppdo_e3]);
-        var tAvg = _this1.average([item.ppdo_t1]);
+        var qAvg = _this11.average([item.ppdo_q1, item.ppdo_q2, item.ppdo_q3]);
+        var eAvg = _this11.average([item.ppdo_e1, item.ppdo_e2, item.ppdo_e3]);
+        var tAvg = _this11.average([item.ppdo_t1]);
         if (parseFloat(qAvg) > 0) {
           divisor += 1;
         }
@@ -913,13 +951,13 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     // },
     // Average of all averages across the entire OPCR data
     calculatePpdoAverage: function calculatePpdoAverage() {
-      var _this10 = this;
+      var _this12 = this;
       var total = 0;
       var count = 0;
       this.opcr_data.forEach(function (item) {
-        var qAvg = _this10.average([item.ppdo_q1, item.ppdo_q2, item.ppdo_q3]);
-        var eAvg = _this10.average([item.ppdo_e1, item.ppdo_e2, item.ppdo_e3]);
-        var tAvg = _this10.average([item.ppdo_t1]);
+        var qAvg = _this12.average([item.ppdo_q1, item.ppdo_q2, item.ppdo_q3]);
+        var eAvg = _this12.average([item.ppdo_e1, item.ppdo_e2, item.ppdo_e3]);
+        var tAvg = _this12.average([item.ppdo_t1]);
         [qAvg, eAvg, tAvg].forEach(function (avg) {
           if (avg > 0) {
             total += avg;
@@ -966,18 +1004,18 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     },
     // ACCOMPLISHMENT MOV
     showModalAccomplishmentMOV: function showModalAccomplishmentMOV(idpaps, department_code, year, semester, paps_param) {
-      var _this11 = this;
+      var _this13 = this;
       return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
         var response, _t2;
         return _regenerator().w(function (_context3) {
           while (1) switch (_context3.p = _context3.n) {
             case 0:
-              _this11.displayModalAccomplishmentMOV = true;
-              _this11.displayModal = false;
+              _this13.displayModalAccomplishmentMOV = true;
+              _this13.displayModal = false;
               // Optional: clear previous data
-              _this11.mov_accomplishment = [];
+              _this13.mov_accomplishment = [];
               // this.opcr_current = opcr;
-              _this11.paps_current = paps_param;
+              _this13.paps_current = paps_param;
               _context3.p = 1;
               _context3.n = 2;
               return axios.get('/api/opcr-mov-api', {
@@ -990,14 +1028,14 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
               });
             case 2:
               response = _context3.v;
-              _this11.mov_accomplishment = response.data;
+              _this13.mov_accomplishment = response.data;
               _context3.n = 4;
               break;
             case 3:
               _context3.p = 3;
               _t2 = _context3.v;
               console.error('Failed to fetch MOV accomplishment:', _t2);
-              _this11.mov_accomplishment = [];
+              _this13.mov_accomplishment = [];
             case 4:
               return _context3.a(2);
           }
@@ -2173,17 +2211,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         colspan: "1"
       }, null, -1 /* CACHED */)), _cache[67] || (_cache[67] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
-      }, "TOTAL RATING (Office)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getTotalAverage()), 1 /* TEXT */), _cache[68] || (_cache[68] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "TOTAL RATING (Office)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getTotalAverage2()), 1 /* TEXT */), _cache[68] || (_cache[68] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
-      }, "TOTAL RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoTotal2()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td colspan=\"3\">TOTAL RATING (DPCR)</td>\n                                    <td>{{ computeDPCRTotal(opcr_data) }}</td> "), _cache[69] || (_cache[69] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "TOTAL RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoTotal()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td colspan=\"3\">TOTAL RATING (DPCR)</td>\n                                    <td>{{ computeDPCRTotal(opcr_data) }}</td> "), _cache[69] || (_cache[69] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
       }, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td></td> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_95, [_cache[70] || (_cache[70] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "2"
       }, null, -1 /* CACHED */)), _cache[71] || (_cache[71] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
-      }, "FINAL AVERAGE RATING (Office)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getAverageAll()), 1 /* TEXT */), _cache[72] || (_cache[72] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "FINAL AVERAGE RATING (Office)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getAverageAll2()), 1 /* TEXT */), _cache[72] || (_cache[72] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
-      }, "FINAL AVERAGE RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoAverage2()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td colspan=\"3\">FINAL AVERAGE RATING (DPCR)</td>\n                                    <td>{{ computeDPCRAverage(opcr_data) }}</td> "), _cache[73] || (_cache[73] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[74] || (_cache[74] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.mode_1 === 'Approve' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_96, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_97, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_98, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <table class=\"table table-hover table-bordered border-dark\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_99, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" class=\"sticky-header\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_100, [_cache[78] || (_cache[78] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+      }, "FINAL AVERAGE RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoAverage()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td colspan=\"3\">FINAL AVERAGE RATING (DPCR)</td>\n                                    <td>{{ computeDPCRAverage(opcr_data) }}</td> "), _cache[73] || (_cache[73] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[74] || (_cache[74] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.mode_1 === 'Approve' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_96, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_97, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_98, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <table class=\"table table-hover table-bordered border-dark\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_99, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" class=\"sticky-header\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_100, [_cache[78] || (_cache[78] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
         rowspan: "2"
       }, "Major Final Output", -1 /* CACHED */)), _cache[79] || (_cache[79] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
         rowspan: "2"

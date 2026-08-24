@@ -805,12 +805,12 @@
                                 <tr class="table-summary-row">
                                     <td colspan="1"></td>
                                     <td colspan="3">TOTAL RATING (Office)</td>
-                                    <td>{{ getTotalAverage() }}
-                                        
+                                    <td>
+                                        {{ getTotalAverage2() }}
                                     </td>
                                     <td colspan="3">TOTAL RATING (PPDO)</td>
                                     <td>
-                                        {{ calculatePpdoTotal2()}} 
+                                        {{ calculatePpdoTotal()}} 
                                     </td>
 
                                     <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
@@ -821,9 +821,9 @@
                                 <tr class="table-summary-row">
                                     <td colspan="2"></td>
                                     <td colspan="3">FINAL AVERAGE RATING (Office)</td>
-                                    <td>{{ getAverageAll() }}</td>
+                                    <td>{{ getAverageAll2() }}</td>
                                     <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
-                                    <td> {{ calculatePpdoAverage2() }}</td>
+                                    <td>{{ calculatePpdoAverage() }} </td>
                                     <!-- <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
                                     <td>{{ computeDPCRAverage(opcr_data) }}</td> -->
                                     <td></td>
@@ -1769,6 +1769,34 @@ export default {
             // this.total_ave = total;
             return this.format_number_conv(total, 2, true);
         },
+        getTotalAverage2() {
+            let total = 0;
+
+            this.opcr_data.forEach(item => {
+                var divisor =0;
+                const qAvg = this.average([
+                    item.q1,
+                    item.q2,
+                    item.q3
+                ]);
+
+                const eAvg = this.average([
+                    item.e1,
+                    item.e2,
+                    item.e3
+                ]);
+
+                const tAvg = this.average([
+                    item.t1
+                ]);
+                if(parseFloat(qAvg)>0){divisor+=1}
+                if(parseFloat(eAvg)>0){divisor+=1}
+                if(parseFloat(tAvg)>0){divisor+=1}
+                total += (qAvg + eAvg + tAvg)/divisor;
+            });
+
+            return Number(total.toFixed(2));
+        },
         computeRowAverage(opcr) {
             const values = [opcr.rating_q, opcr.rating_e, opcr.rating_t];
             const validValues = values.filter(v => v > 0);
@@ -1811,6 +1839,37 @@ export default {
             const total = validAverages.reduce((a, b) => a + b, 0);
             return (total / validAverages.length).toFixed(2); // keep 2 decimals
 
+        },
+        getAverageAll2() {
+            let total = 0;
+            let count = 0;
+
+            this.opcr_data.forEach(item => {
+                const qAvg = this.average([
+                    item.q1,
+                    item.q2,
+                    item.q3
+                ]);
+
+                const eAvg = this.average([
+                    item.e1,
+                    item.e2,
+                    item.e3
+                ]);
+
+                const tAvg = this.average([
+                    item.t1
+                ]);
+
+                [qAvg, eAvg, tAvg].forEach(avg => {
+                    if (avg > 0) {
+                        total += avg;
+                        count++;
+                    }
+                });
+            });
+
+            return count ? Number((total / count).toFixed(2)) : 0;
         },
         // *********************************************AVERAGE -DPCR SCORES *********************************************
         computeAverageScore(monthly_ratings) {
