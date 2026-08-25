@@ -139,7 +139,16 @@
                                             <tbody>
                                                 <tr v-for="(person, pidx) in dat.aip_individuals" :key="person.id || pidx">
                                                     <td style="width:40px">
-                                                        <input type="checkbox" v-model="dat.aip_individuals[pidx].is_present">
+                                                        <input
+                                                            type="checkbox"
+                                                            :checked="person.is_present == 1"
+                                                            @change="person.is_present = $event.target.checked ? 1 : 0; updateAnnualInvestmentPlanInstitutional(
+                                                                person.id,
+                                                                person.is_present,
+                                                                'is_present',
+                                                                'aip_individual_approvers'
+                                                            )"
+                                                        >
                                                     </td>
                                                     <td>{{ person.name }}</td>
                                                     <td>{{ person.position }}</td>
@@ -260,7 +269,7 @@ export default {
             if (!id || !field) {
                 return;
             }
-
+            // alert(id+ " "+value+" "+field+" "+ table)
             this.$inertia.post(
                 `/institutional_aip/update/${field}/value`,
                 {
@@ -271,6 +280,17 @@ export default {
                 {
                     preserveScroll: true,
                     preserveState: true,
+                    onSuccess: () => {
+                        this.$nextTick(() => {
+                            const person = this.localData
+                                .flatMap(item => item.aip_individuals || [])
+                                .find(item => item.id == id);
+
+                            if (person) {
+                                person[field] = value;
+                            }
+                        });
+                    },
                 }
             );
         },

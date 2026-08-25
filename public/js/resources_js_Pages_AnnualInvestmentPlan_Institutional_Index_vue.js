@@ -77,16 +77,30 @@ __webpack_require__.r(__webpack_exports__);
       item.accordion_visible = item.accordion_visible == 1 ? 0 : 1;
     },
     updateAnnualInvestmentPlanInstitutional: function updateAnnualInvestmentPlanInstitutional(id, value, field, table) {
+      var _this2 = this;
       if (!id || !field) {
         return;
       }
+      // alert(id+ " "+value+" "+field+" "+ table)
       this.$inertia.post("/institutional_aip/update/".concat(field, "/value"), {
         id: id,
         value: value,
         table: table
       }, {
         preserveScroll: true,
-        preserveState: true
+        preserveState: true,
+        onSuccess: function onSuccess() {
+          _this2.$nextTick(function () {
+            var person = _this2.localData.flatMap(function (item) {
+              return item.aip_individuals || [];
+            }).find(function (item) {
+              return item.id == id;
+            });
+            if (person) {
+              person[field] = value;
+            }
+          });
+        }
       });
     },
     printAIP: function printAIP(dat) {
@@ -312,7 +326,7 @@ var _hoisted_20 = {
     "width": "40px"
   }
 };
-var _hoisted_21 = ["onUpdate:modelValue"];
+var _hoisted_21 = ["checked", "onChange"];
 var _hoisted_22 = ["onUpdate:modelValue", "onChange"];
 var _hoisted_23 = {
   "class": "d-flex justify-content-center"
@@ -425,12 +439,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, "Print AIP", 8 /* PROPS */, _hoisted_16)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"dropdown-item\" :href=\"`/ImplementingTeam/${dat.id}/edit`\">Edit</Link></li>\n                                                <li><Link class=\"text-danger dropdown-item\" @click=\"deleteImplementingTeam(dat.id)\">Delete</Link></li> ")])])])]), dat.accordion_visible == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_19, [_cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Name"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Type"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Seq No.")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(dat.aip_individuals, function (person, pidx) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
         key: person.id || pidx
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         type: "checkbox",
-        "onUpdate:modelValue": function onUpdateModelValue($event) {
-          return dat.aip_individuals[pidx].is_present = $event;
+        checked: person.is_present == 1,
+        onChange: function onChange($event) {
+          person.is_present = $event.target.checked ? 1 : 0;
+          $options.updateAnnualInvestmentPlanInstitutional(person.id, person.is_present, 'is_present', 'aip_individual_approvers');
         }
-      }, null, 8 /* PROPS */, _hoisted_21), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, dat.aip_individuals[pidx].is_present]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(person.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(person.position), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_21)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(person.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(person.position), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         type: "text",
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return person.seq_num = $event;

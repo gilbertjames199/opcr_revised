@@ -137,14 +137,14 @@ class AnnualInvestmentPlanInstitutionalController extends Controller
     public function updateTableValue(Request $request, $column){
         $validated = $request->validate([
             'id'    => 'required|integer',
-            'value' => 'nullable|string',
+            'value' => 'nullable',
             'table' => 'required|string',
         ]);
-
-        $allowedFields = ['sprn', 'last_page_number', 'seq_num'];
+        $allowedFields = ['sprn', 'last_page_number', 'seq_num','is_present'];
 
         if (!in_array($column, $allowedFields)) {
-            return response()->json(['error' => 'Invalid field specified.'], 422);
+            // return response()->json(['error' => 'Invalid field specified.'], 422);
+            return redirect()->back()->with('error', 'Invalid field specified.');
         }
 
         $modelMap = [
@@ -154,7 +154,8 @@ class AnnualInvestmentPlanInstitutionalController extends Controller
         ];
 
         if (!isset($modelMap[$validated['table']])) {
-            return response()->json(['error' => 'Invalid table specified.'], 422);
+            // return response()->json(['error' => 'Invalid table specified.'], 422);
+            return redirect()->back()->with('error', 'Invalid table specified.');
         }
 
         $modelClass = $modelMap[$validated['table']];
@@ -162,13 +163,14 @@ class AnnualInvestmentPlanInstitutionalController extends Controller
         $record = $modelClass::find($validated['id']);
 
         if (!$record) {
-            return response()->json(['error' => 'Record not found.'], 404);
+            // return response()->json(['error' => 'Record not found.'], 404);
+            return redirect()->back()->with('error', 'Record not found.');
         }
 
         $record->{$column} = $validated['value'];
         $record->updated_at = now();
         $record->save();
-
-        return redirect()->back()->with('message', 'Field updated successfully.');
+            // ->with('message', 'Field updated successfully.')
+        return redirect()->back();
     }
 }
