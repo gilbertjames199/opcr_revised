@@ -7610,7 +7610,7 @@ class RevisionPlanController extends Controller
         if(count($aip_indiv)<1){
             return [];
         }
-        
+
         $sig1 = $aip_indiv[0]->name;
         $pos1 = $aip_indiv[0]->position;
         $sig2 = $aip_indiv[1]->name;
@@ -7947,40 +7947,82 @@ class RevisionPlanController extends Controller
             }
         }
         $aip_indiv = AIPIndividualApprover::where('aip_institutional_id', $request->aip_institutional_id)
+            ->where('is_present',1)
             ->whereNull('deleted_at')
             ->orderBy('seq_num', 'asc')
             ->get();
         if(count($aip_indiv)<1){
             return [];
         }
-        $sig1 = $aip_indiv[0]->name;
-        $pos1 = $aip_indiv[0]->position;
-        $sig2 = $aip_indiv[1]->name;
-        $pos2 = $aip_indiv[1]->position;
-        $sig3 = $aip_indiv[2]->name;
-        $pos3 = $aip_indiv[2]->position;
-        $sig4 = $aip_indiv[3]->name;
-        $pos4 = $aip_indiv[3]->position;
-        $sig5 = $aip_indiv[4]->name;
-        $pos5 = $aip_indiv[4]->position;
-        $sig6 = $aip_indiv[5]->name;
-        $pos6 = $aip_indiv[5]->position;
-        $sig7 = $aip_indiv[6]->name;
-        $pos7 = $aip_indiv[6]->position;
-        $sig8 = $aip_indiv[7]->name;
-        $pos8 = $aip_indiv[7]->position;
-        $sig9 = $aip_indiv[8]->name;
-        $pos9 = $aip_indiv[8]->position;
-        $sig10 = $aip_indiv[9]->name;
-        $pos10 = $aip_indiv[9]->position;
-        $sig11 = $aip_indiv[10]->name;
-        $pos11 = $aip_indiv[10]->position;
-        $sig12 = $aip_indiv[11]->name;
-        $pos12 = $aip_indiv[11]->position;
-        $sig13 = $aip_indiv[12]->name;
-        $pos13 = $aip_indiv[12]->position;
-        $sig14 = $aip_indiv[13]->name;
-        $pos14 = $aip_indiv[13]->position;
+        // $sig1 = $aip_indiv[0]->name;
+        // $pos1 = $aip_indiv[0]->position;
+        // $sig2 = $aip_indiv[1]->name;
+        // $pos2 = $aip_indiv[1]->position;
+        // $sig3 = $aip_indiv[2]->name;
+        // $pos3 = $aip_indiv[2]->position;
+        // $sig4 = $aip_indiv[3]->name;
+        // $pos4 = $aip_indiv[3]->position;
+        // $sig5 = $aip_indiv[4]->name;
+        // $pos5 = $aip_indiv[4]->position;
+        // $sig6 = $aip_indiv[5]->name;
+        // $pos6 = $aip_indiv[5]->position;
+        // $sig7 = $aip_indiv[6]->name;
+        // $pos7 = $aip_indiv[6]->position;
+        // $sig8 = $aip_indiv[7]->name;
+        // $pos8 = $aip_indiv[7]->position;
+        // $sig9 = $aip_indiv[8]->name;
+        // $pos9 = $aip_indiv[8]->position;
+        // $sig10 = $aip_indiv[9]->name;
+        // $pos10 = $aip_indiv[9]->position;
+        // $sig11 = $aip_indiv[10]->name;
+        // $pos11 = $aip_indiv[10]->position;
+        // $sig12 = $aip_indiv[11]->name;
+        // $pos12 = $aip_indiv[11]->position;
+        // $sig13 = $aip_indiv[12]->name;
+        // $pos13 = $aip_indiv[12]->position;
+        // $sig14 = $aip_indiv[13]->name;
+        // $pos14 = $aip_indiv[13]->position;
+        $sig1  = $aip_indiv->get(0)->name ?? '';
+        $pos1  = $aip_indiv->get(0)->position ?? '';
+
+        $sig2  = $aip_indiv->get(1)->name ?? '';
+        $pos2  = $aip_indiv->get(1)->position ?? '';
+
+        $sig3  = $aip_indiv->get(2)->name ?? '';
+        $pos3  = $aip_indiv->get(2)->position ?? '';
+
+        $sig4  = $aip_indiv->get(3)->name ?? '';
+        $pos4  = $aip_indiv->get(3)->position ?? '';
+
+        $sig5  = $aip_indiv->get(4)->name ?? '';
+        $pos5  = $aip_indiv->get(4)->position ?? '';
+
+        $sig6  = $aip_indiv->get(5)->name ?? '';
+        $pos6  = $aip_indiv->get(5)->position ?? '';
+
+        $sig7  = $aip_indiv->get(6)->name ?? '';
+        $pos7  = $aip_indiv->get(6)->position ?? '';
+
+        $sig8  = $aip_indiv->get(7)->name ?? '';
+        $pos8  = $aip_indiv->get(7)->position ?? '';
+
+        $sig9  = $aip_indiv->get(8)->name ?? '';
+        $pos9  = $aip_indiv->get(8)->position ?? '';
+
+        $sig10 = $aip_indiv->get(9)->name ?? '';
+        $pos10 = $aip_indiv->get(9)->position ?? '';
+
+        $sig11 = $aip_indiv->get(10)->name ?? '';
+        $pos11 = $aip_indiv->get(10)->position ?? '';
+
+        $sig12 = $aip_indiv->get(11)->name ?? '';
+        $pos12 = $aip_indiv->get(11)->position ?? '';
+
+        $sig13 = $aip_indiv->get(12)->name ?? '';
+        $pos13 = $aip_indiv->get(12)->position ?? '';
+
+        $sig14 = $aip_indiv->get(13)->name ?? '';
+        $pos14 = $aip_indiv->get(13)->position ?? '';
         // $sig15 = optional($aip_indiv[14])->name;
         // $pos15 = optional($aip_indiv[14])->position;
         $sectors = $this->sp_sectors_new($request);
