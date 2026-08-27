@@ -1523,6 +1523,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             ->leftjoin('opcr_targets', 'opcr_targets.id', 'office_performance_commitment_ratings.id_opcr_target')
             ->where('office_performance_commitment_ratings.opcr_id', $opcr_id)
             ->where('opcr_targets.is_included', '1')
+            ->whereNull('paps.deleted_at')
             ->whereNull('mfo.from_excel')
             ->where('office_performance_commitment_ratings.FFUNCCOD', $FFUNCCOD)
             ->orderBy('mfo.id', 'asc')
