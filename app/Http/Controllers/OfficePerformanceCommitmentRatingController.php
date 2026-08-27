@@ -1546,6 +1546,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'PAPS.idmfo AS paps_idmfo',
             'opcr_targets.target_success_indicator AS target_success_indicator',
             'opcr_targets.quantity_unit',
+            'opcr_targets.is_included',
             'os.performance_measure',
             'os.efficiency1',
             'os.efficiency2',
