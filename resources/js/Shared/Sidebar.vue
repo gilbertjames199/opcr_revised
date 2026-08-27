@@ -753,7 +753,7 @@
                         <li>
                             <Link class="sidebar-link" href="/institutional_aip"
                                 :class="{ 'active': $page.url === '/institutional_aip' }">
-                            <span class="title">AIP</span>
+                                <span class="title">AIP</span>
                             </Link>
                         </li>
                     </ul>

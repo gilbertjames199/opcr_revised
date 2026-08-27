@@ -810,7 +810,7 @@
                                     </td>
                                     <td colspan="3">TOTAL RATING (PPDO)</td>
                                     <td>
-                                        {{ calculatePpdoTotal()}} 
+                                        {{ calculatePpdoTotal()}}
                                     </td>
 
                                     <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
@@ -866,7 +866,9 @@
                                         <input
                                             type="radio"
                                             name="rating"
-                                            :checked="currentRatingType === '1'"
+                                            :checked="opcr_current.year < 2026
+                                                ? currentRatingType === '1'
+                                                : currentRatingType === '2'"
                                             @change="setRatingType('ppdo_verification', opcr_current.id)"
                                         >
                                         Rating (PPDO Score)
@@ -1956,7 +1958,7 @@ export default {
 
             return Number(total.toFixed(2))
         },
-        
+
         // ===============================
         // AVERAGE of DPCR (ignore zero rows)
         // ===============================

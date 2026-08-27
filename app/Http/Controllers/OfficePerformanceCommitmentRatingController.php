@@ -1774,7 +1774,74 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     }
                     $ave = $request->average;
                     // dd($item->id, $item, $monthly_ratings, $monthly_ratings['q1'], $var_q);
-                }else{
+                } else if($rating_type == "2"){
+                    $monthly_ratings = calculateMonthlyAverages($item, [
+                        'q1',
+                        'q2',
+                        'q3',
+                        'e1',
+                        'e2',
+                        'e3',
+                        't1'
+                    ]);
+                    $qValues = array_filter([
+                        $monthly_ratings['q1'] ?? 0,
+                        $monthly_ratings['q2'] ?? 0,
+                        $monthly_ratings['q3'] ?? 0
+                    ], fn($v) => $v != 0);
+
+                    $eValues = array_filter([
+                        $monthly_ratings['e1'] ?? 0,
+                        $monthly_ratings['e2'] ?? 0,
+                        $monthly_ratings['e3'] ?? 0
+                    ], fn($v) => $v != 0);
+
+                    $tValues = array_filter([
+                        $monthly_ratings['t1'] ?? 0
+                    ], fn($v) => $v != 0);
+
+                    // --- Compute averages, default to 0 if no non-zero values ---
+                    $var_q = count($qValues) > 0 ? round(array_sum($qValues) / count($qValues), 2) : 0;
+                    $var_e = count($eValues) > 0 ? round(array_sum($eValues) / count($eValues), 2) : 0;
+                    $var_t = count($tValues) > 0 ? round(array_sum($tValues) / count($tValues), 2) : 0;
+
+                    // --- Compute how many valid groups to divide by ---
+                    $div = 3;
+
+                    try {
+                        if (intval($var_q) < 1) {
+                            $div--;
+                        }
+                    } catch (Exception $e) {
+                        $div--;
+                    }
+
+                    try {
+                        if (intval($var_e) < 1) {
+                            $div--;
+                        }
+                    } catch (Exception $e) {
+                        $div--;
+                    }
+
+                    try {
+                        if (intval($var_t) < 1) {
+                            $div--;
+                        }
+                    } catch (Exception $e) {
+                        $div--;
+                    }
+
+                    // --- Compute overall QET average ---
+                    $sum = $var_q + $var_e + $var_t;
+                    $ave_qet = 0;
+
+                    if ($div > 0) {
+                        $ave_qet = $sum / $div;
+                        $ave_qet = number_format(floatval($ave_qet), 2);
+                    }
+                    $ave = $request->average;
+                } else{
                     $monthly_ratings = calculateMonthlyAverages($item, [
                         'ppdo_q1',
                         'ppdo_q2',
