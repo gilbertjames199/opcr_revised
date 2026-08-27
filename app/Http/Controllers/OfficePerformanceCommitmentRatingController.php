@@ -1393,30 +1393,42 @@ class OfficePerformanceCommitmentRatingController extends Controller
                         }
 
                         if ($my_opcr->department_code == '17' || $my_opcr->department_code == '11') {
-                            $ap_head_2 = $ap_head_m[1];
-                            $assistant_pg_head2 = $ap_head_2->first_name . ' ' . $ap_head_2->middle_name[0] . '. ' .
-                                $ap_head_2->last_name;
-                            $ap2_suffix = $ap_head_2->suffix_name;
-                            $ap2_post = $ap_head_2->postfix_name;
-                            if ($ap2_suffix) {
-                                $assistant_pg_head2 = $assistant_pg_head2 . ', ' . $ap2_suffix;
+                            $ap_head_2 = $ap_head_m[1] ?? null;
+                            if (!$ap_head_2) {
+                                $assistant_pg_head2 = '';
+                            }else{
+                                $ap_head_2 = $ap_head_m[1];
+                                $assistant_pg_head2 = $ap_head_2->first_name . ' ' . $ap_head_2->middle_name[0] . '. ' .
+                                    $ap_head_2->last_name;
+                                $ap2_suffix = $ap_head_2->suffix_name;
+                                $ap2_post = $ap_head_2->postfix_name;
+                                if ($ap2_suffix) {
+                                    $assistant_pg_head2 = $assistant_pg_head2 . ', ' . $ap2_suffix;
+                                }
+                                if ($ap2_post) {
+                                    $assistant_pg_head2 = $assistant_pg_head2 . ', ' . $ap2_post;
+                                }
                             }
-                            if ($ap2_post) {
-                                $assistant_pg_head2 = $assistant_pg_head2 . ', ' . $ap2_post;
-                            }
+                            // dd($ap_head_2);
+
                         }
                         if ($my_opcr->department_code == '17') {
-                            $ap_head_3 = $ap_head_m[2];
-                            $assistant_pg_head3 = $ap_head_3->first_name . ' ' . $ap_head_3->middle_name[0] . '. ' .
+                            $ap_head_3 = $ap_head_m[2] ?? null;
+                            if(!$ap_head_3){
+                                $assistant_pg_head3 ='';
+                            }else{
+                                $assistant_pg_head3 = $ap_head_3->first_name . ' ' . $ap_head_3->middle_name[0] . '. ' .
                                 $ap_head_3->last_name;
-                            $ap3_suffix = $ap_head_3->suffix_name;
-                            $ap3_post = $ap_head_3->postfix_name;
-                            if ($ap3_suffix) {
-                                $assistant_pg_head3 = $assistant_pg_head3 . ', ' . $ap3_suffix;
+                                $ap3_suffix = $ap_head_3->suffix_name;
+                                $ap3_post = $ap_head_3->postfix_name;
+                                if ($ap3_suffix) {
+                                    $assistant_pg_head3 = $assistant_pg_head3 . ', ' . $ap3_suffix;
+                                }
+                                if ($ap3_post) {
+                                    $assistant_pg_head3 = $assistant_pg_head3 . ', ' . $ap3_post;
+                                }
                             }
-                            if ($ap3_post) {
-                                $assistant_pg_head3 = $assistant_pg_head3 . ', ' . $ap3_post;
-                            }
+
                         }
                     }
                 }
